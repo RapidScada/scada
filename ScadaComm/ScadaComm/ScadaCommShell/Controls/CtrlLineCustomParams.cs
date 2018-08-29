@@ -114,20 +114,7 @@ namespace Scada.Comm.Shell.Controls
             if (CommLine == null)
                 throw new InvalidOperationException("CommLine must not be null.");
 
-            try
-            {
-                lvCustomParams.BeginUpdate();
-                lvCustomParams.Items.Clear();
-
-                foreach (KeyValuePair<string, string> pair in CommLine.CustomParams)
-                {
-                    lvCustomParams.Items.Add(CreateCustomParamItem(pair.Key, pair.Value));
-                }
-            }
-            finally
-            {
-                lvCustomParams.EndUpdate();
-            }
+            SetCustomParams(CommLine.CustomParams);
         }
 
         /// <summary>
@@ -138,13 +125,45 @@ namespace Scada.Comm.Shell.Controls
             if (CommLine == null)
                 throw new InvalidOperationException("CommLine must not be null.");
 
-            CommLine.CustomParams.Clear();
+            GetCustomParams(CommLine.CustomParams);
+        }
+
+        /// <summary>
+        /// Fills the displayed list with the specified custom parameters.
+        /// </summary>
+        public void SetCustomParams(SortedList<string, string> customParams)
+        {
+            try
+            {
+                lvCustomParams.BeginUpdate();
+                lvCustomParams.Items.Clear();
+
+                foreach (KeyValuePair<string, string> pair in customParams)
+                {
+                    lvCustomParams.Items.Add(CreateCustomParamItem(pair.Key, pair.Value));
+                }
+
+                if (lvCustomParams.Items.Count > 0)
+                    lvCustomParams.Items[0].Selected = true;
+            }
+            finally
+            {
+                lvCustomParams.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Fills the specified list with actual custom parameters.
+        /// </summary>
+        public void GetCustomParams(SortedList<string, string> customParams)
+        {
+            customParams.Clear();
 
             foreach (ListViewItem item in lvCustomParams.Items)
             {
                 string name = item.SubItems[0].Text.Trim();
                 if (name != "")
-                    CommLine.CustomParams[name] = item.SubItems[1].Text.Trim();
+                    customParams[name] = item.SubItems[1].Text.Trim();
             }
         }
 

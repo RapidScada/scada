@@ -41,6 +41,7 @@ namespace Scada.Comm.Shell.Forms
     {
         private readonly Settings.CommLine commLine;  // the communication line settings to edit
         private readonly CommEnvironment environment; // the application environment
+        private readonly SortedList<string, string> customParams; // the working copy of the custom parameters
 
 
         /// <summary>
@@ -59,6 +60,7 @@ namespace Scada.Comm.Shell.Forms
         {
             this.commLine = commLine ?? throw new ArgumentNullException("commLine");
             this.environment = environment ?? throw new ArgumentNullException("environment");
+            customParams = new SortedList<string, string>();
         }
 
 
@@ -116,6 +118,7 @@ namespace Scada.Comm.Shell.Forms
             ctrlLineCustomParams.CommLine = commLine;
             ctrlLineReqSequence.CommLine = commLine;
             ctrlLineReqSequence.Environment = environment;
+            ctrlLineReqSequence.CustomParams = customParams;
             SettingsToControls();
         }
 
@@ -137,6 +140,9 @@ namespace Scada.Comm.Shell.Forms
         private void lbTabs_SelectedIndexChanged(object sender, EventArgs e)
         {
             DisplayControl(lbTabs.SelectedIndex);
+
+            if (ctrlLineReqSequence.Visible)
+                ctrlLineCustomParams.GetCustomParams(customParams);
         }
 
         private void control_SettingsChanged(object sender, EventArgs e)
@@ -144,9 +150,10 @@ namespace Scada.Comm.Shell.Forms
             ChildFormTag.Modified = true;
         }
 
-        private void ctrlLineReqSequence_CustomParamsChanged(object sender, SortedList<string, string> customParams)
+        private void ctrlLineReqSequence_CustomParamsChanged(object sender, EventArgs e)
         {
-
+            // update displayed custom parameters
+            ctrlLineCustomParams.SetCustomParams(customParams);
         }
     }
 }

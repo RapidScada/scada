@@ -74,6 +74,11 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public CommEnvironment Environment { get; set; }
 
+        /// <summary>
+        /// Gets or sets the working copy of the custom parameters.
+        /// </summary>
+        public SortedList<string, string> CustomParams { get; set; }
+
 
         /// <summary>
         /// Sets the column names for the translation.
@@ -143,6 +148,43 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
+        /// Displays the device properties.
+        /// </summary>
+        private void DisplayDevice(Settings.KP kp)
+        {
+            if (kp == null)
+            {
+                chkDeviceActive.Checked = false;
+                chkDeviceBound.Checked = false;
+                numDeviceNumber.Value = 0;
+                txtDeviceName.Text = "";
+                cbDeviceDll.Text = "";
+                numDeviceAddress.Value = 0;
+                txtDeviceCallNum.Text = "";
+                numDeviceTimeout.Value = 0;
+                numDeviceDelay.Value = 0;
+                dtpDeviceTime.Value = dtpDeviceTime.MinDate;
+                dtpDevicePeriod.Value = dtpDevicePeriod.MinDate;
+                txtDeviceCmdLine.Text = "";
+            }
+            else
+            {
+                chkDeviceActive.Checked = kp.Active;
+                chkDeviceBound.Checked = kp.Bind;
+                numDeviceNumber.SetValue(kp.Number);
+                txtDeviceName.Text = kp.Name;
+                cbDeviceDll.Text = kp.Dll;
+                numDeviceAddress.SetValue(kp.Address);
+                txtDeviceCallNum.Text = kp.CallNum;
+                numDeviceTimeout.SetValue(kp.Timeout);
+                numDeviceDelay.SetValue(kp.Delay);
+                dtpDeviceTime.SetTime(kp.Time);
+                dtpDevicePeriod.SetTime(kp.Period);
+                txtDeviceCmdLine.Text = kp.CmdLine;
+            }
+        }
+
+        /// <summary>
         /// Adds the device to the request sequence.
         /// </summary>
         private void AddDevice(Settings.KP kp)
@@ -205,7 +247,7 @@ namespace Scada.Comm.Shell.Controls
                 else
                 {
                     kpView = KPFactory.GetKPView(commonKpView.GetType(), kp.Number);
-                    kpView.KPProps = new KPView.KPProperties(CommLine.CustomParams, kp.CmdLine);
+                    kpView.KPProps = new KPView.KPProperties(CustomParams, kp.CmdLine);
                     kpView.AppDirs = Environment.AppDirs;
                 }
 
@@ -231,9 +273,9 @@ namespace Scada.Comm.Shell.Controls
         /// <summary>
         /// Raises a CustomParamsChanged event.
         /// </summary>
-        private void OnCustomParamsChanged(SortedList<string, string> customParams)
+        private void OnCustomParamsChanged()
         {
-            CustomParamsChanged?.Invoke(this, customParams);
+            CustomParamsChanged?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -255,6 +297,9 @@ namespace Scada.Comm.Shell.Controls
                 {
                     lvReqSequence.Items.Add(CreateDeviceItem(kp.Clone(), ref index));
                 }
+
+                if (lvReqSequence.Items.Count > 0)
+                    lvReqSequence.Items[0].Selected = true;
             }
             finally
             {
@@ -287,7 +332,7 @@ namespace Scada.Comm.Shell.Controls
         /// <summary>
         /// Occurs when the custom line parameters changes.
         /// </summary>
-        public event EventHandler<SortedList<string, string>> CustomParamsChanged;
+        public event EventHandler CustomParamsChanged;
 
 
         private void CtrlLineReqSequence_Load(object sender, EventArgs e)
@@ -429,38 +474,10 @@ namespace Scada.Comm.Shell.Controls
             // display the selected item properties
             changing = true;
 
-            if (lvReqSequence.SelectedItems.Count > 0)
-            {
-                Settings.KP kp = (Settings.KP)lvReqSequence.SelectedItems[0].Tag;
-                chkDeviceActive.Checked = kp.Active;
-                chkDeviceBound.Checked = kp.Bind;
-                numDeviceNumber.SetValue(kp.Number);
-                txtDeviceName.Text = kp.Name;
-                cbDeviceDll.Text = kp.Dll;
-                numDeviceAddress.SetValue(kp.Address);
-                txtDeviceCallNum.Text = kp.CallNum;
-                numDeviceTimeout.SetValue(kp.Timeout);
-                numDeviceDelay.SetValue(kp.Delay);
-                dtpDeviceTime.SetTime(kp.Time);
-                dtpDevicePeriod.SetTime(kp.Period);
-                txtDeviceCmdLine.Text = kp.CmdLine;
-            }
-            else
-            {
-                chkDeviceActive.Checked = false;
-                chkDeviceBound.Checked = false;
-                numDeviceNumber.Value = 0;
-                txtDeviceName.Text = "";
-                cbDeviceDll.Text = "";
-                numDeviceAddress.Value = 0;
-                txtDeviceCallNum.Text = "";
-                numDeviceTimeout.Value = 0;
-                numDeviceDelay.Value = 0;
-                dtpDeviceTime.Value = dtpDeviceTime.MinDate;
-                dtpDevicePeriod.Value = dtpDevicePeriod.MinDate;
-                txtDeviceCmdLine.Text = "";
-            }
+            Settings.KP kp = lvReqSequence.SelectedItems.Count > 0 ?
+                (Settings.KP)lvReqSequence.SelectedItems[0].Tag : null;
 
+            DisplayDevice(kp);
             SetControlsEnabled();
             changing = false;
         }
@@ -615,7 +632,7 @@ namespace Scada.Comm.Shell.Controls
                 if (kpView.KPProps.Modified)
                 {
                     txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
-                    OnCustomParamsChanged(kpView.KPProps.CustomParams);
+                    OnCustomParamsChanged();
                     OnSettingsChanged();
                 }
             }

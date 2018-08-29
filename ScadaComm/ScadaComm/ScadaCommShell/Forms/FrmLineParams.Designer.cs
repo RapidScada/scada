@@ -63,6 +63,7 @@
             this.ctrlLineReqSequence.Size = new System.Drawing.Size(584, 461);
             this.ctrlLineReqSequence.TabIndex = 4;
             this.ctrlLineReqSequence.SettingsChanged += new System.EventHandler(this.control_SettingsChanged);
+            this.ctrlLineReqSequence.CustomParamsChanged += new System.EventHandler(this.ctrlLineReqSequence_CustomParamsChanged);
             // 
             // ctrlLineCustomParams
             // 
