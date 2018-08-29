@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2018
  */
 
 using System;
@@ -129,6 +129,24 @@ namespace Scada.UI
                 num.Value = num.Maximum;
             else
                 num.Value = val;
+        }
+
+        /// <summary>
+        /// Установить время элемента управления типа DateTimePicker
+        /// </summary>
+        public static void SetTime(this DateTimePicker picker, DateTime time)
+        {
+            DateTime date = picker.MinDate;
+            picker.Value = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+        }
+
+        /// <summary>
+        /// Установить время элемента управления типа DateTimePicker
+        /// </summary>
+        public static void SetTime(this DateTimePicker picker, TimeSpan timeSpan)
+        {
+            DateTime date = picker.MinDate;
+            picker.Value = (new DateTime(date.Year, date.Month, date.Day)).Add(timeSpan);
         }
 
         /// <summary>
