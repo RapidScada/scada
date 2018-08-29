@@ -23,8 +23,10 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Shell.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using WinControl;
@@ -37,7 +39,8 @@ namespace Scada.Comm.Shell.Forms
     /// </summary>
     public partial class FrmLineParams : Form, IChildForm
     {
-        private Settings.CommLine commLine; // the communication line settings to edit
+        private readonly Settings.CommLine commLine;  // the communication line settings to edit
+        private readonly CommEnvironment environment; // the application environment
 
 
         /// <summary>
@@ -51,10 +54,11 @@ namespace Scada.Comm.Shell.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmLineParams(Settings.CommLine commLine)
+        public FrmLineParams(Settings.CommLine commLine, CommEnvironment environment)
             : this()
         {
             this.commLine = commLine ?? throw new ArgumentNullException("commLine");
+            this.environment = environment ?? throw new ArgumentNullException("environment");
         }
 
 
@@ -111,6 +115,7 @@ namespace Scada.Comm.Shell.Forms
             ctrlLineMainParams.CommLine = commLine;
             ctrlLineCustomParams.CommLine = commLine;
             ctrlLineReqSequence.CommLine = commLine;
+            ctrlLineReqSequence.Environment = environment;
             SettingsToControls();
         }
 
@@ -137,6 +142,11 @@ namespace Scada.Comm.Shell.Forms
         private void control_SettingsChanged(object sender, EventArgs e)
         {
             ChildFormTag.Modified = true;
+        }
+
+        private void ctrlLineReqSequence_CustomParamsChanged(object sender, SortedList<string, string> customParams)
+        {
+
         }
     }
 }

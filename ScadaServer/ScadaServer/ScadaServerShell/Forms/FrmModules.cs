@@ -150,7 +150,7 @@ namespace Scada.Server.Shell.Forms
 
                 try
                 {
-                    if (environment.ModuleViews.TryGetValue(moduleItem.FileName, out ModView modView))
+                    if (environment.ModuleViews.TryGetValue(moduleItem.FilePath, out ModView modView))
                     {
                         moduleItem.Descr = CorrectItemDescr(modView.Descr);
                         moduleItem.ModView = modView;
@@ -163,7 +163,7 @@ namespace Scada.Server.Shell.Forms
                         moduleItem.Descr = CorrectItemDescr(modView.Descr);
                         moduleItem.ModView = modView;
 
-                        environment.ModuleViews[moduleItem.FileName] = modView;
+                        environment.ModuleViews[moduleItem.FilePath] = modView;
                     }
                     else
                     {

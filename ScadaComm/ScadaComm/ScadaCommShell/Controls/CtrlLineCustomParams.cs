@@ -71,6 +71,23 @@ namespace Scada.Comm.Shell.Controls
             colParamName.Name = "colParamName";
             colParamValue.Name = "colParamValue";
         }
+        
+        /// <summary>
+        /// Enables or disables the controls.
+        /// </summary>
+        private void SetControlsEnabled()
+        {
+            if (lvCustomParams.SelectedItems.Count > 0)
+            {
+                btnDeleteCustomParam.Enabled = true;
+                gbSelectedParam.Enabled = true;
+            }
+            else
+            {
+                btnDeleteCustomParam.Enabled = false;
+                gbSelectedParam.Enabled = false;
+            }
+        }
 
         /// <summary>
         /// Creates a new list view item that represents a custom parameter.
@@ -138,6 +155,11 @@ namespace Scada.Comm.Shell.Controls
         public event EventHandler SettingsChanged;
 
 
+        private void CtrlLineCustomParams_Load(object sender, EventArgs e)
+        {
+            SetControlsEnabled();
+        }
+
         private void btnAddCustomParam_Click(object sender, EventArgs e)
         {
             ListViewItem item = CreateCustomParamItem("", "");
@@ -176,19 +198,16 @@ namespace Scada.Comm.Shell.Controls
             if (lvCustomParams.SelectedItems.Count > 0)
             {
                 ListViewItem item = lvCustomParams.SelectedItems[0];
-                btnDeleteCustomParam.Enabled = true;
-                gbSelectedParam.Enabled = true;
                 txtParamName.Text = item.SubItems[0].Text;
                 txtParamValue.Text = item.SubItems[1].Text;
             }
             else
             {
-                btnDeleteCustomParam.Enabled = false;
-                gbSelectedParam.Enabled = false;
                 txtParamName.Text = "";
                 txtParamValue.Text = "";
             }
 
+            SetControlsEnabled();
             changing = false;
         }
 

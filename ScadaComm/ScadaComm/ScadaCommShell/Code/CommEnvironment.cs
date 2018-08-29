@@ -26,6 +26,7 @@
 using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
+using Utils;
 
 namespace Scada.Comm.Shell.Code
 {
@@ -41,9 +42,14 @@ namespace Scada.Comm.Shell.Code
         public AppDirs AppDirs { get; set; }
 
         /// <summary>
-        /// Gets or sets the user interface of the modules accessed by short file name.
+        /// Gets or sets the user interface of the drivers accessed by full file name.
         /// </summary>
         public Dictionary<string, KPView> KPViews { get; set; }
+
+        /// <summary>
+        /// Gets the application error log.
+        /// </summary>
+        public Log ErrLog { get; set; }
 
 
         /// <summary>
@@ -56,6 +62,24 @@ namespace Scada.Comm.Shell.Code
 
             if (KPViews == null)
                 throw new InvalidOperationException("KPViews must not be null.");
+
+            if (ErrLog == null)
+                throw new InvalidOperationException("ErrLog must not be null.");
+        }
+
+        /// <summary>
+        /// Gets the user interface of the driver.
+        /// </summary>
+        public KPView GetKPView(string dllPath)
+        {
+            if (!KPViews.TryGetValue(dllPath, out KPView kpView))
+            {
+                kpView = KPFactory.GetKPView(dllPath);
+                kpView.AppDirs = AppDirs;
+                KPViews[dllPath] = kpView;
+            }
+
+            return kpView;
         }
     }
 }

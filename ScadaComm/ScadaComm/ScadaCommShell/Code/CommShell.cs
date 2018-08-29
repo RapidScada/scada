@@ -124,7 +124,7 @@ namespace Scada.Comm.Shell.Code
                     Tag = new TreeNodeTag()
                     {
                         FormType = typeof(FrmLineParams),
-                        FormArgs = new object[] { commLine }
+                        FormArgs = new object[] { commLine, environment }
                     }
                 });
 

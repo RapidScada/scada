@@ -154,6 +154,7 @@
             this.Controls.Add(this.lvCustomParams);
             this.Name = "CtrlLineCustomParams";
             this.Size = new System.Drawing.Size(500, 450);
+            this.Load += new System.EventHandler(this.CtrlLineCustomParams_Load);
             this.gbSelectedParam.ResumeLayout(false);
             this.gbSelectedParam.PerformLayout();
             this.ResumeLayout(false);

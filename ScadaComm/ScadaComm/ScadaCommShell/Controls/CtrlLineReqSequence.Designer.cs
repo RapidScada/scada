@@ -34,8 +34,8 @@
             this.btnResetReqParams = new System.Windows.Forms.Button();
             this.cbDeviceDll = new System.Windows.Forms.ComboBox();
             this.txtDeviceCmdLine = new System.Windows.Forms.TextBox();
-            this.timeDevicePeriod = new System.Windows.Forms.DateTimePicker();
-            this.timeDeviceTime = new System.Windows.Forms.DateTimePicker();
+            this.dtpDevicePeriod = new System.Windows.Forms.DateTimePicker();
+            this.dtpDeviceTime = new System.Windows.Forms.DateTimePicker();
             this.lblDeviceCmdLine = new System.Windows.Forms.Label();
             this.lblDevicePeriod = new System.Windows.Forms.Label();
             this.lblDeviceTime = new System.Windows.Forms.Label();
@@ -90,8 +90,8 @@
             this.gbSelectedDevice.Controls.Add(this.btnResetReqParams);
             this.gbSelectedDevice.Controls.Add(this.cbDeviceDll);
             this.gbSelectedDevice.Controls.Add(this.txtDeviceCmdLine);
-            this.gbSelectedDevice.Controls.Add(this.timeDevicePeriod);
-            this.gbSelectedDevice.Controls.Add(this.timeDeviceTime);
+            this.gbSelectedDevice.Controls.Add(this.dtpDevicePeriod);
+            this.gbSelectedDevice.Controls.Add(this.dtpDeviceTime);
             this.gbSelectedDevice.Controls.Add(this.lblDeviceCmdLine);
             this.gbSelectedDevice.Controls.Add(this.lblDevicePeriod);
             this.gbSelectedDevice.Controls.Add(this.lblDeviceTime);
@@ -157,29 +157,29 @@
             this.txtDeviceCmdLine.TabIndex = 21;
             this.txtDeviceCmdLine.TextChanged += new System.EventHandler(this.txtDeviceCmdLine_TextChanged);
             // 
-            // timeDevicePeriod
+            // dtpDevicePeriod
             // 
-            this.timeDevicePeriod.CustomFormat = "HH:mm:ss";
-            this.timeDevicePeriod.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timeDevicePeriod.Location = new System.Drawing.Point(317, 133);
-            this.timeDevicePeriod.Name = "timeDevicePeriod";
-            this.timeDevicePeriod.ShowUpDown = true;
-            this.timeDevicePeriod.Size = new System.Drawing.Size(120, 20);
-            this.timeDevicePeriod.TabIndex = 19;
-            this.timeDevicePeriod.Value = new System.DateTime(2018, 1, 1, 0, 1, 0, 0);
-            this.timeDevicePeriod.ValueChanged += new System.EventHandler(this.timeDevicePeriod_ValueChanged);
+            this.dtpDevicePeriod.CustomFormat = "HH:mm:ss";
+            this.dtpDevicePeriod.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDevicePeriod.Location = new System.Drawing.Point(317, 133);
+            this.dtpDevicePeriod.Name = "dtpDevicePeriod";
+            this.dtpDevicePeriod.ShowUpDown = true;
+            this.dtpDevicePeriod.Size = new System.Drawing.Size(120, 20);
+            this.dtpDevicePeriod.TabIndex = 19;
+            this.dtpDevicePeriod.Value = new System.DateTime(2018, 1, 1, 0, 1, 0, 0);
+            this.dtpDevicePeriod.ValueChanged += new System.EventHandler(this.dtpDevicePeriod_ValueChanged);
             // 
-            // timeDeviceTime
+            // dtpDeviceTime
             // 
-            this.timeDeviceTime.CustomFormat = "HH:mm:ss";
-            this.timeDeviceTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.timeDeviceTime.Location = new System.Drawing.Point(191, 133);
-            this.timeDeviceTime.Name = "timeDeviceTime";
-            this.timeDeviceTime.ShowUpDown = true;
-            this.timeDeviceTime.Size = new System.Drawing.Size(120, 20);
-            this.timeDeviceTime.TabIndex = 17;
-            this.timeDeviceTime.Value = new System.DateTime(2018, 1, 1, 10, 0, 0, 0);
-            this.timeDeviceTime.ValueChanged += new System.EventHandler(this.timeDeviceTime_ValueChanged);
+            this.dtpDeviceTime.CustomFormat = "HH:mm:ss";
+            this.dtpDeviceTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
+            this.dtpDeviceTime.Location = new System.Drawing.Point(191, 133);
+            this.dtpDeviceTime.Name = "dtpDeviceTime";
+            this.dtpDeviceTime.ShowUpDown = true;
+            this.dtpDeviceTime.Size = new System.Drawing.Size(120, 20);
+            this.dtpDeviceTime.TabIndex = 17;
+            this.dtpDeviceTime.Value = new System.DateTime(2018, 1, 1, 10, 0, 0, 0);
+            this.dtpDeviceTime.ValueChanged += new System.EventHandler(this.dtpDeviceTime_ValueChanged);
             // 
             // lblDeviceCmdLine
             // 
@@ -558,6 +558,7 @@
             this.Controls.Add(this.lvReqSequence);
             this.Name = "CtrlLineReqSequence";
             this.Size = new System.Drawing.Size(600, 450);
+            this.Load += new System.EventHandler(this.CtrlLineReqSequence_Load);
             this.gbSelectedDevice.ResumeLayout(false);
             this.gbSelectedDevice.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceDelay)).EndInit();
@@ -573,8 +574,8 @@
         private System.Windows.Forms.GroupBox gbSelectedDevice;
         private System.Windows.Forms.ComboBox cbDeviceDll;
         private System.Windows.Forms.TextBox txtDeviceCmdLine;
-        private System.Windows.Forms.DateTimePicker timeDevicePeriod;
-        private System.Windows.Forms.DateTimePicker timeDeviceTime;
+        private System.Windows.Forms.DateTimePicker dtpDevicePeriod;
+        private System.Windows.Forms.DateTimePicker dtpDeviceTime;
         private System.Windows.Forms.Label lblDeviceCmdLine;
         private System.Windows.Forms.Label lblDevicePeriod;
         private System.Windows.Forms.Label lblDeviceTime;

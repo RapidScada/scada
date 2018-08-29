@@ -237,7 +237,8 @@ namespace Scada.Admin.App.Forms
             return new ServerEnvironment()
             {
                 AppDirs = new ServerDirs(appData.AppSettings.ServerDir, instance),
-                ModuleViews = moduleViews
+                ModuleViews = moduleViews,
+                ErrLog = log
             };
         }
 
@@ -249,7 +250,8 @@ namespace Scada.Admin.App.Forms
             return new CommEnvironment()
             {
                 AppDirs = new CommDirs(appData.AppSettings.CommDir, instance),
-                KPViews = kpViews
+                KPViews = kpViews,
+                ErrLog = log
             };
         }
 

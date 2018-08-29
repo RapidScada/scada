@@ -33,6 +33,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Scada.UI;
+using Scada.Comm.Devices;
+using Scada.Comm.Shell.Code;
+using System.IO;
 
 namespace Scada.Comm.Shell.Controls
 {
@@ -43,6 +46,7 @@ namespace Scada.Comm.Shell.Controls
     public partial class CtrlLineReqSequence : UserControl
     {
         private bool changing; // controls are being changed programmatically
+        private Settings.KP deviceBuf; // buffer to copy device
 
 
         /// <summary>
@@ -54,6 +58,9 @@ namespace Scada.Comm.Shell.Controls
 
             SetColumnNames();
             changing = false;
+            deviceBuf = null;
+            CommLine = null;
+            Environment = null;
         }
 
 
@@ -61,6 +68,11 @@ namespace Scada.Comm.Shell.Controls
         /// Gets or sets the communication line settings to edit.
         /// </summary>
         public Settings.CommLine CommLine { get; set; }
+
+        /// <summary>
+        /// Gets or sets the application environment.
+        /// </summary>
+        public CommEnvironment Environment { get; set; }
 
 
         /// <summary>
@@ -81,6 +93,32 @@ namespace Scada.Comm.Shell.Controls
             colDeviceTime.Name = "colDeviceTime";
             colDevicePeriod.Name = "colDevicePeriod";
             colDeviceCmdLine.Name = "colDeviceCmdLine";
+        }
+
+        /// <summary>
+        /// Enables or disables the controls.
+        /// </summary>
+        private void SetControlsEnabled()
+        {
+            if (lvReqSequence.SelectedItems.Count > 0)
+            {
+                int index = lvReqSequence.SelectedIndices[0];
+                btnMoveUpDevice.Enabled = index > 0;
+                btnMoveDownDevice.Enabled = index < lvReqSequence.Items.Count - 1;
+                btnDeleteDevice.Enabled = true;
+                btnCutDevice.Enabled = true;
+                btnCopyDevice.Enabled = true;
+                gbSelectedDevice.Enabled = true;
+            }
+            else
+            {
+                btnMoveUpDevice.Enabled = false;
+                btnMoveDownDevice.Enabled = false;
+                btnDeleteDevice.Enabled = false;
+                btnCutDevice.Enabled = false;
+                btnCopyDevice.Enabled = false;
+                gbSelectedDevice.Enabled = false;
+            }
         }
 
         /// <summary>
@@ -105,6 +143,33 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
+        /// Adds the device to the request sequence.
+        /// </summary>
+        private void AddDevice(Settings.KP kp)
+        {
+            try
+            {
+                // add the device
+                lvReqSequence.BeginUpdate();
+                int index = lvReqSequence.SelectedIndices.Count > 0 ?
+                    lvReqSequence.SelectedIndices[0] + 1 : lvReqSequence.Items.Count;
+                lvReqSequence.Items.Insert(index, CreateDeviceItem(kp, ref index)).Selected = true;
+
+                // update item numbers
+                for (int i = index, cnt = lvReqSequence.Items.Count; i < cnt; i++)
+                {
+                    lvReqSequence.Items[i].Text = (i + 1).ToString();
+                }
+            }
+            finally
+            {
+                lvReqSequence.EndUpdate();
+                numDeviceNumber.Focus();
+                OnSettingsChanged();
+            }
+        }
+
+        /// <summary>
         /// Gets the selected list view item and the corresponding device.
         /// </summary>
         private bool GetSelectedItem(out ListViewItem item, out Settings.KP kp)
@@ -124,11 +189,51 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
+        /// Gets a user interface object for the device.
+        /// </summary>
+        private bool GetDeviceView(Settings.KP kp, bool common, out KPView kpView)
+        {
+            try
+            {
+                string dllPath = Path.Combine(Environment.AppDirs.KPDir, kp.Dll);
+                KPView commonKpView = Environment.GetKPView(dllPath);
+
+                if (common)
+                {
+                    kpView = commonKpView;
+                }
+                else
+                {
+                    kpView = KPFactory.GetKPView(commonKpView.GetType(), kp.Number);
+                    kpView.KPProps = new KPView.KPProperties(CommLine.CustomParams, kp.CmdLine);
+                    kpView.AppDirs = Environment.AppDirs;
+                }
+
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(ex.Message);
+                Environment.ErrLog.WriteException(ex);
+                kpView = null;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Raises a SettingsChanged event.
         /// </summary>
         private void OnSettingsChanged()
         {
             SettingsChanged?.Invoke(this, EventArgs.Empty);
+        }
+
+        /// <summary>
+        /// Raises a CustomParamsChanged event.
+        /// </summary>
+        private void OnCustomParamsChanged(SortedList<string, string> customParams)
+        {
+            CustomParamsChanged?.Invoke(this, customParams);
         }
 
 
@@ -179,29 +284,22 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public event EventHandler SettingsChanged;
 
+        /// <summary>
+        /// Occurs when the custom line parameters changes.
+        /// </summary>
+        public event EventHandler<SortedList<string, string>> CustomParamsChanged;
+
+
+        private void CtrlLineReqSequence_Load(object sender, EventArgs e)
+        {
+            SetControlsEnabled();
+            btnPasteDevice.Enabled = false;
+        }
 
         private void btnAddDevice_Click(object sender, EventArgs e)
         {
-            try
-            {
-                // add a new device
-                lvReqSequence.BeginUpdate();
-                int index = lvReqSequence.SelectedIndices.Count > 0 ?
-                    lvReqSequence.SelectedIndices[0] + 1 : lvReqSequence.Items.Count;
-                lvReqSequence.Items.Insert(index, CreateDeviceItem(new Settings.KP(), ref index)).Selected = true;
-
-                // update item numbers
-                for (int i = index, cnt = lvReqSequence.Items.Count; i < cnt; i++)
-                {
-                    lvReqSequence.Items[i].Text = (i + 1).ToString();
-                }
-            }
-            finally
-            {
-                lvReqSequence.EndUpdate();
-                numDeviceNumber.Focus();
-                OnSettingsChanged();
-            }
+            // add a new device
+            AddDevice(new Settings.KP());
         }
 
         private void btnMoveUpDevice_Click(object sender, EventArgs e)
@@ -300,17 +398,30 @@ namespace Scada.Comm.Shell.Controls
 
         private void btnCutDevice_Click(object sender, EventArgs e)
         {
-
+            // cut the selected device
+            btnCopyDevice_Click(null, null);
+            btnDeleteDevice_Click(null, null);
         }
 
         private void btnCopyDevice_Click(object sender, EventArgs e)
         {
+            // copy the selected device
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp))
+            {
+                btnPasteDevice.Enabled = true;
+                deviceBuf = kp.Clone();
+            }
 
+            lvReqSequence.Focus();
         }
 
         private void btnPasteDevice_Click(object sender, EventArgs e)
         {
-
+            // paste the copied device
+            if (deviceBuf == null)
+                lvReqSequence.Focus();
+            else
+                AddDevice(deviceBuf.Clone());
         }
 
         private void lvReqSequence_SelectedIndexChanged(object sender, EventArgs e)
@@ -320,16 +431,7 @@ namespace Scada.Comm.Shell.Controls
 
             if (lvReqSequence.SelectedItems.Count > 0)
             {
-                ListViewItem item = lvReqSequence.SelectedItems[0];
-                Settings.KP kp = (Settings.KP)item.Tag;
-
-                btnMoveUpDevice.Enabled = item.Index > 0;
-                btnMoveDownDevice.Enabled = item.Index < lvReqSequence.Items.Count - 1;
-                btnDeleteDevice.Enabled = true;
-                btnCutDevice.Enabled = true;
-                btnCopyDevice.Enabled = true;
-
-                gbSelectedDevice.Enabled = true;
+                Settings.KP kp = (Settings.KP)lvReqSequence.SelectedItems[0].Tag;
                 chkDeviceActive.Checked = kp.Active;
                 chkDeviceBound.Checked = kp.Bind;
                 numDeviceNumber.SetValue(kp.Number);
@@ -339,21 +441,12 @@ namespace Scada.Comm.Shell.Controls
                 txtDeviceCallNum.Text = kp.CallNum;
                 numDeviceTimeout.SetValue(kp.Timeout);
                 numDeviceDelay.SetValue(kp.Delay);
-                timeDeviceTime.Value = new DateTime(timeDeviceTime.MinDate.Year, timeDeviceTime.MinDate.Month,
-                    timeDeviceTime.MinDate.Day, kp.Time.Hour, kp.Time.Minute, kp.Time.Second);
-                timeDevicePeriod.Value = new DateTime(timeDevicePeriod.MinDate.Year, timeDevicePeriod.MinDate.Month,
-                    timeDevicePeriod.MinDate.Day, kp.Period.Hours, kp.Period.Minutes, kp.Period.Seconds);
+                dtpDeviceTime.SetTime(kp.Time);
+                dtpDevicePeriod.SetTime(kp.Period);
                 txtDeviceCmdLine.Text = kp.CmdLine;
             }
             else
             {
-                btnMoveUpDevice.Enabled = false;
-                btnMoveDownDevice.Enabled = false;
-                btnDeleteDevice.Enabled = false;
-                btnCutDevice.Enabled = false;
-                btnCopyDevice.Enabled = false;
-
-                gbSelectedDevice.Enabled = false;
                 chkDeviceActive.Checked = false;
                 chkDeviceBound.Checked = false;
                 numDeviceNumber.Value = 0;
@@ -363,11 +456,12 @@ namespace Scada.Comm.Shell.Controls
                 txtDeviceCallNum.Text = "";
                 numDeviceTimeout.Value = 0;
                 numDeviceDelay.Value = 0;
-                timeDeviceTime.Value = timeDeviceTime.MinDate;
-                timeDevicePeriod.Value = timeDevicePeriod.MinDate;
+                dtpDeviceTime.Value = dtpDeviceTime.MinDate;
+                dtpDevicePeriod.Value = dtpDevicePeriod.MinDate;
                 txtDeviceCmdLine.Text = "";
             }
 
+            SetControlsEnabled();
             changing = false;
         }
 
@@ -461,23 +555,23 @@ namespace Scada.Comm.Shell.Controls
             }
         }
 
-        private void timeDeviceTime_ValueChanged(object sender, EventArgs e)
+        private void dtpDeviceTime_ValueChanged(object sender, EventArgs e)
         {
             if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
                 kp.Time = new DateTime(DateTime.MinValue.Year, DateTime.MinValue.Month, DateTime.MinValue.Day,
-                    timeDeviceTime.Value.Hour, timeDeviceTime.Value.Minute, timeDeviceTime.Value.Second);
+                    dtpDeviceTime.Value.Hour, dtpDeviceTime.Value.Minute, dtpDeviceTime.Value.Second);
                 item.SubItems[10].Text = kp.Time.ToString("T", Localization.Culture);
                 OnSettingsChanged();
             }
         }
 
-        private void timeDevicePeriod_ValueChanged(object sender, EventArgs e)
+        private void dtpDevicePeriod_ValueChanged(object sender, EventArgs e)
         {
             if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
-                kp.Period = new TimeSpan(timeDevicePeriod.Value.Hour, timeDevicePeriod.Value.Minute, 
-                    timeDevicePeriod.Value.Second);
+                kp.Period = new TimeSpan(dtpDevicePeriod.Value.Hour, dtpDevicePeriod.Value.Minute, 
+                    dtpDevicePeriod.Value.Second);
                 item.SubItems[11].Text = kp.Period.ToString();
                 OnSettingsChanged();
             }
@@ -495,8 +589,16 @@ namespace Scada.Comm.Shell.Controls
 
         private void btnResetReqParams_Click(object sender, EventArgs e)
         {
-            if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
+            // set the request parameters of the selected device by default
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) &&
+                GetDeviceView(kp, true, out KPView kpView))
             {
+                KPReqParams reqParams = kpView.DefaultReqParams;
+                numDeviceTimeout.SetValue(reqParams.Timeout);
+                numDeviceDelay.SetValue(reqParams.Delay);
+                dtpDeviceTime.SetTime(reqParams.Time);
+                dtpDevicePeriod.SetTime(reqParams.Period);
+                txtDeviceCmdLine.Text = reqParams.CmdLine;
 
                 OnSettingsChanged();
             }
@@ -504,9 +606,18 @@ namespace Scada.Comm.Shell.Controls
 
         private void btnDeviceProps_Click(object sender, EventArgs e)
         {
-            if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
+            // show the properties of the selected device
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) && 
+                GetDeviceView(kp, false, out KPView kpView) && kpView.CanShowProps)
             {
+                kpView.ShowProps();
 
+                if (kpView.KPProps.Modified)
+                {
+                    txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
+                    OnCustomParamsChanged(kpView.KPProps.CustomParams);
+                    OnSettingsChanged();
+                }
             }
         }
     }

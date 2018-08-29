@@ -26,6 +26,7 @@
 using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
+using Utils;
 
 namespace Scada.Server.Shell.Code
 {
@@ -41,9 +42,14 @@ namespace Scada.Server.Shell.Code
         public AppDirs AppDirs { get; set; }
 
         /// <summary>
-        /// Gets or sets the user interface of the modules accessed by short file name.
+        /// Gets or sets the user interface of the modules accessed by full file name.
         /// </summary>
         public Dictionary<string, ModView> ModuleViews { get; set; }
+
+        /// <summary>
+        /// Gets the application error log.
+        /// </summary>
+        public Log ErrLog { get; set; }
 
 
         /// <summary>
@@ -56,6 +62,9 @@ namespace Scada.Server.Shell.Code
 
             if (ModuleViews == null)
                 throw new InvalidOperationException("ModuleViews must not be null.");
+
+            if (ErrLog == null)
+                throw new InvalidOperationException("ErrLog must not be null.");
         }
     }
 }
