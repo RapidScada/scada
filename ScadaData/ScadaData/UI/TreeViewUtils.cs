@@ -494,7 +494,7 @@ namespace Scada.UI
         /// </summary>
         public static object GetSelectedObject(this TreeView treeView)
         {
-            return treeView.SelectedNode?.Tag;
+            return GetRelatedObject(treeView.SelectedNode);
         }
 
         /// <summary>
@@ -502,9 +502,9 @@ namespace Scada.UI
         /// </summary>
         public static void UpdateSelectedNodeText(this TreeView treeView)
         {
-            TreeNode selectedNode = treeView.SelectedNode;
-            if (selectedNode != null && selectedNode.Tag != null)
-                selectedNode.Text = selectedNode.Tag.ToString();
+            object relatedObj = GetRelatedObject(treeView.SelectedNode);
+            if (relatedObj != null)
+                treeView.SelectedNode.Text = relatedObj.ToString();
         }
 
         /// <summary>
