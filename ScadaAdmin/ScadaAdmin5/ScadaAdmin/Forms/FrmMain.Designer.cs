@@ -59,10 +59,16 @@
             this.pnlRight = new System.Windows.Forms.Panel();
             this.wctrlMain = new WinControl.WinControl();
             this.ofdProject = new System.Windows.Forms.OpenFileDialog();
+            this.cmsCommLine = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miCommLineAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineMoveUp = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineMoveDown = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlRight.SuspendLayout();
+            this.cmsCommLine.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -323,6 +329,46 @@
             this.wctrlMain.TabIndex = 0;
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
             // 
+            // cmsCommLine
+            // 
+            this.cmsCommLine.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miCommLineAdd,
+            this.miCommLineMoveUp,
+            this.miCommLineMoveDown,
+            this.miCommLineDelete});
+            this.cmsCommLine.Name = "cmsCommLine";
+            this.cmsCommLine.Size = new System.Drawing.Size(181, 114);
+            this.cmsCommLine.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCommLine_Opening);
+            // 
+            // miCommLineAdd
+            // 
+            this.miCommLineAdd.Name = "miCommLineAdd";
+            this.miCommLineAdd.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineAdd.Text = "Add Line";
+            this.miCommLineAdd.Click += new System.EventHandler(this.miCommLineAdd_Click);
+            // 
+            // miCommLineMoveUp
+            // 
+            this.miCommLineMoveUp.Name = "miCommLineMoveUp";
+            this.miCommLineMoveUp.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineMoveUp.Text = "Move Line Up";
+            this.miCommLineMoveUp.Click += new System.EventHandler(this.miCommLineMoveUp_Click);
+            // 
+            // miCommLineMoveDown
+            // 
+            this.miCommLineMoveDown.Name = "miCommLineMoveDown";
+            this.miCommLineMoveDown.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineMoveDown.Text = "Move Line Down";
+            this.miCommLineMoveDown.Click += new System.EventHandler(this.miCommLineMoveDown_Click);
+            // 
+            // miCommLineDelete
+            // 
+            this.miCommLineDelete.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineDelete.Image")));
+            this.miCommLineDelete.Name = "miCommLineDelete";
+            this.miCommLineDelete.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineDelete.Text = "Delete Line";
+            this.miCommLineDelete.Click += new System.EventHandler(this.miCommLineDelete_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -349,6 +395,7 @@
             this.tsMain.PerformLayout();
             this.pnlLeft.ResumeLayout(false);
             this.pnlRight.ResumeLayout(false);
+            this.cmsCommLine.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -385,6 +432,11 @@
         private WinControl.WinControl wctrlMain;
         private System.Windows.Forms.ImageList ilExplorer;
         private System.Windows.Forms.OpenFileDialog ofdProject;
+        private System.Windows.Forms.ContextMenuStrip cmsCommLine;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineAdd;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineMoveUp;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineMoveDown;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineDelete;
     }
 }
 

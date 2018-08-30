@@ -36,8 +36,8 @@ namespace Scada.Comm.Shell.Code
         // Scada.Comm.Shell.Code.CommShell
         public static string CommonParamsNode { get; private set; }
         public static string DriversNode { get; private set; }
-        public static string LinesNode { get; private set; }
-        public static string LineNode { get; private set; }
+        public static string CommLinesNode { get; private set; }
+        public static string CommLineNode { get; private set; }
         public static string LineParamsNode { get; private set; }
         public static string LineStatsNode { get; private set; }
         public static string DeviceNode { get; private set; }
@@ -48,8 +48,8 @@ namespace Scada.Comm.Shell.Code
             Localization.Dict dict = Localization.GetDictionary("Scada.Comm.Shell.Code.CommShell");
             CommonParamsNode = dict.GetPhrase("CommonParamsNode");
             DriversNode = dict.GetPhrase("DriversNode");
-            LinesNode = dict.GetPhrase("LinesNode");
-            LineNode = dict.GetPhrase("LineNode");
+            CommLinesNode = dict.GetPhrase("CommLinesNode");
+            CommLineNode = dict.GetPhrase("CommLineNode");
             LineParamsNode = dict.GetPhrase("LineParamsNode");
             LineStatsNode = dict.GetPhrase("LineStatsNode");
             DeviceNode = dict.GetPhrase("DeviceNode");

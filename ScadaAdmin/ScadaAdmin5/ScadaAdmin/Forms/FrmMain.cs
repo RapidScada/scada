@@ -34,6 +34,7 @@ using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -94,7 +95,8 @@ namespace Scada.Admin.App.Forms
             log = appData.ErrLog;
             serverShell = new ServerShell();
             commShell = new CommShell();
-            explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer);
+            explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer,
+                new ContextMenus() { CommLineMenu = cmsCommLine });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -221,6 +223,32 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Determines if the tree node tag has the specified type.
+        /// </summary>
+        private bool TagIs(TreeNode treeNode, string nodeType)
+        {
+            return treeNode?.Tag is TreeNodeTag tag && tag.NodeType == nodeType;
+        }
+
+        /// <summary>
+        /// Finds the closest instance in the explorer starting from the selected node and traversing up.
+        /// </summary>
+        private bool FindClosestInstance(out LiveInstance liveInstance)
+        {
+            TreeNode instanceNode = tvExplorer.FindClosest(AppNodeType.Instance);
+
+            if (instanceNode == null)
+            {
+                liveInstance = null;
+                return false;
+            }
+            {
+                liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
+                return true;
+            }
+        }
+
+        /// <summary>
         /// Creates and displays a new project.
         /// </summary>
         private void CreateProject()
@@ -276,7 +304,9 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
-            //MessageBox.Show(e.Clicks.ToString());
+            // select a tree node on right click
+            if (e.Button == MouseButtons.Right && e.Node != null)
+                tvExplorer.SelectedNode = e.Node;
         }
 
         private void tvExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
@@ -288,18 +318,23 @@ namespace Scada.Admin.App.Forms
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             // load application settings of the instance
-            if (e.Node.Tag is TreeNodeTag treeNodeTag && 
-                treeNodeTag.RelatedObject is Instance instance && 
-                !instance.AppSettingsLoaded)
+            if (TagIs(e.Node, AppNodeType.Instance))
             {
-                if (instance.LoadAppSettings(out string errMsg))
+                LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
+                Instance instance = liveInstance.Instance;
+
+                if (!instance.AppSettingsLoaded)
                 {
-                    explorerBuilder.FillInstanceNode(e.Node, instance,
-                        CreateServerEnvironment(instance), CreateCommEnvironment(instance));
-                }
-                else
-                {
-                    appData.ProcError(errMsg);
+                    if (instance.LoadAppSettings(out string errMsg))
+                    {
+                        liveInstance.ServerEnvironment = CreateServerEnvironment(instance);
+                        liveInstance.CommEnvironment = CreateCommEnvironment(instance);
+                        explorerBuilder.FillInstanceNode(e.Node);
+                    }
+                    else
+                    {
+                        appData.ProcError(errMsg);
+                    }
                 }
             }
         }
@@ -418,6 +453,57 @@ namespace Scada.Admin.App.Forms
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private void cmsCommLine_Opening(object sender, CancelEventArgs e)
+        {
+            // enable or disable the menu items
+            TreeNode treeNode = tvExplorer.SelectedNode;
+            bool isLineNode = TagIs(treeNode, CommNodeType.CommLine);
+            miCommLineMoveUp.Enabled = isLineNode && treeNode.PrevNode != null;
+            miCommLineMoveDown.Enabled = isLineNode && treeNode.NextNode != null;
+            miCommLineDelete.Enabled = isLineNode;
+        }
+
+        private void miCommLineAdd_Click(object sender, EventArgs e)
+        {
+            // add a new communication line
+            if ((TagIs(tvExplorer.SelectedNode, CommNodeType.CommLines) ||
+                TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine)) &&
+                FindClosestInstance(out LiveInstance liveInstance))
+            {
+                TreeNode commLinesNode = tvExplorer.FindClosest(CommNodeType.CommLines);
+                TreeNode commLineNode = commShell.CreateCommLineNode(liveInstance.CommEnvironment);
+                tvExplorer.Insert(commLinesNode, commLineNode);
+            }
+        }
+
+        private void miCommLineMoveUp_Click(object sender, EventArgs e)
+        {
+            // move up the selected communication line
+            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            {
+                tvExplorer.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
+            }
+        }
+
+        private void miCommLineMoveDown_Click(object sender, EventArgs e)
+        {
+            // move up the selected communication line
+            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            {
+                tvExplorer.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
+            }
+        }
+
+        private void miCommLineDelete_Click(object sender, EventArgs e)
+        {
+            // delete the selected communication line
+            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            {
+                tvExplorer.RemoveSelectedNode();
+            }
         }
     }
 }

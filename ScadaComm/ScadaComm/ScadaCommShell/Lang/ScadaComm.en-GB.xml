@@ -106,8 +106,8 @@
   <Dictionary key="Scada.Comm.Shell.Code.CommShell">
     <Phrase key="CommonParamsNode">Common Parameters</Phrase>
     <Phrase key="DriversNode">Device Drivers</Phrase>
-    <Phrase key="LinesNode">Communication Lines</Phrase>
-    <Phrase key="LineNode">[{0}] {1}</Phrase>
+    <Phrase key="CommLinesNode">Communication Lines</Phrase>
+    <Phrase key="CommLineNode">[{0}] {1}</Phrase>
     <Phrase key="LineParamsNode">Line Parameters</Phrase>
     <Phrase key="LineStatsNode">Line Stats</Phrase>
     <Phrase key="DeviceNode">[{0}] {1}</Phrase>

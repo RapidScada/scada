@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Channels;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -36,7 +37,7 @@ namespace Scada.Comm
     /// SCADA-Communicator settings
     /// <para>Настройки SCADA-Коммуникатора</para>
     /// </summary>
-    public class Settings
+    public class Settings : ITreeNode
     {
         /// <summary>
         /// Общие параметры
@@ -119,7 +120,7 @@ namespace Scada.Comm
         /// <summary>
         /// Линия связи
         /// </summary>
-        public class CommLine
+        public class CommLine : ITreeNode
         {
             /// <summary>
             /// Конструктор
@@ -209,6 +210,21 @@ namespace Scada.Comm
             /// Получить последовательность опроса КП
             /// </summary>
             public List<KP> ReqSequence { get; private set; }
+            
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return ReqSequence;
+                }
+            }
 
             /// <summary>
             /// Создать полную копию настроек линии связи
@@ -225,7 +241,9 @@ namespace Scada.Comm
                 commLine.CommCnlType = CommCnlType;
                 commLine.CommCnlParams = new SortedList<string, string>();
                 foreach (KeyValuePair<string, string> commCnlParam in CommCnlParams)
+                {
                     commLine.CommCnlParams.Add(commCnlParam.Key, commCnlParam.Value);
+                }
 
                 commLine.ReqTriesCnt = ReqTriesCnt;
                 commLine.CycleDelay = CycleDelay;
@@ -235,12 +253,19 @@ namespace Scada.Comm
 
                 commLine.CustomParams = new SortedList<string, string>();
                 foreach (KeyValuePair<string, string> customParam in CustomParams)
+                {
                     commLine.CustomParams.Add(customParam.Key, customParam.Value);
+                }
 
                 commLine.ReqSequence = new List<KP>();
                 foreach (KP kp in ReqSequence)
-                    commLine.ReqSequence.Add(kp.Clone());
+                {
+                    KP kpCopy = kp.Clone();
+                    kpCopy.Parent = commLine;
+                    commLine.ReqSequence.Add(kpCopy);
+                }
 
+                commLine.Parent = Parent;
                 return commLine;
             }
             /// <summary>
@@ -256,7 +281,7 @@ namespace Scada.Comm
         /// <summary>
         /// КП
         /// </summary>
-        public class KP
+        public class KP : ITreeNode
         {
             /// <summary>
             /// Конструктор
@@ -275,6 +300,7 @@ namespace Scada.Comm
                 Time = DateTime.MinValue;
                 Period = new TimeSpan(0);
                 CmdLine = "";
+                Parent = null;
             }
 
             /// <summary>
@@ -336,6 +362,21 @@ namespace Scada.Comm
             /// Получить или установить командную строку
             /// </summary>
             public string CmdLine { get; set; }
+            
+            /// <summary>
+            /// Получить или установить родительский узел
+            /// </summary>
+            public ITreeNode Parent { get; set; }
+            /// <summary>
+            /// Получить список дочерних узлов - он всегда равен null
+            /// </summary>
+            public IList Children
+            {
+                get
+                {
+                    return null;
+                }
+            }
 
             /// <summary>
             /// Создать полную копию КП
@@ -344,18 +385,19 @@ namespace Scada.Comm
             {
                 return new KP()
                 {
-                    Active = this.Active,
-                    Bind = this.Bind,
-                    Number = this.Number,
-                    Name = this.Name,
-                    Dll = this.Dll,
-                    Address = this.Address,
-                    CallNum = this.CallNum,
-                    Timeout = this.Timeout,
-                    Delay = this.Delay,
-                    Time = this.Time,
-                    Period = this.Period,
-                    CmdLine = this.CmdLine
+                    Active = Active,
+                    Bind = Bind,
+                    Number = Number,
+                    Name = Name,
+                    Dll = Dll,
+                    Address = Address,
+                    CallNum = CallNum,
+                    Timeout = Timeout,
+                    Delay = Delay,
+                    Time = Time,
+                    Period = Period,
+                    CmdLine = CmdLine,
+                    Parent = Parent
                 };
             }
             /// <summary>
@@ -394,6 +436,33 @@ namespace Scada.Comm
         /// Получить настройки линий связи
         /// </summary>
         public List<CommLine> CommLines { get; private set; }
+        
+        
+        /// <summary>
+        /// Получить или установить родительский узел - он всегда равен null
+        /// </summary>
+        ITreeNode ITreeNode.Parent
+        {
+            get
+            {
+                return null;
+            }
+            set
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
+        /// <summary>
+        /// Получить список дочерних узлов
+        /// </summary>
+        IList ITreeNode.Children
+        {
+            get
+            {
+                return CommLines;
+            }
+        }
 
 
         /// <summary>
@@ -603,6 +672,9 @@ namespace Scada.Comm
                     }
                 }
             }
+
+            // установка родителя
+            commLine.Parent = this;
 
             return commLine;
         }
@@ -814,12 +886,18 @@ namespace Scada.Comm
         /// </summary>
         public Settings Clone()
         {
-            Settings settings = new Settings();
+            Settings settings = new Settings
+            {
+                Params = Params.Clone(),
+                CommLines = new List<CommLine>()
+            };
 
-            settings.Params = Params.Clone();
-            settings.CommLines = new List<CommLine>();
             foreach (CommLine commLine in CommLines)
-                settings.CommLines.Add(commLine.Clone());
+            {
+                CommLine commLineCopy = commLine.Clone();
+                commLineCopy.Parent = settings;
+                settings.CommLines.Add(commLineCopy);
+            }
 
             return settings;
         }

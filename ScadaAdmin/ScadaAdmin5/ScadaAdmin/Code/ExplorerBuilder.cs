@@ -39,22 +39,25 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal class ExplorerBuilder
     {
-        private readonly AppData appData;         // the common data of the application
-        private readonly ServerShell serverShell; // the shell to edit Server settings
-        private readonly CommShell commShell;     // the shell to edit Communicator settings
-        private readonly TreeView treeView;       // the manipulated tree view 
-        private ScadaProject project;             // the current project to build tree
+        private readonly AppData appData;           // the common data of the application
+        private readonly ServerShell serverShell;   // the shell to edit Server settings
+        private readonly CommShell commShell;       // the shell to edit Communicator settings
+        private readonly TreeView treeView;         // the manipulated tree view 
+        private readonly ContextMenus contextMenus; // references to the context menus
+        private ScadaProject project;               // the current project to build tree
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ExplorerBuilder(AppData appData, ServerShell serverShell, CommShell commShell, TreeView treeView)
+        public ExplorerBuilder(AppData appData, ServerShell serverShell, CommShell commShell, 
+            TreeView treeView, ContextMenus contextMenus)
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
             this.serverShell = serverShell ?? throw new ArgumentNullException("serverShell");
             this.commShell = commShell ?? throw new ArgumentNullException("commShell");
             this.treeView = treeView ?? throw new ArgumentNullException("treeView");
+            this.contextMenus = contextMenus ?? throw new ArgumentNullException("contextMenus");
             project = null;
         }
 
@@ -64,12 +67,14 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private TreeNode CreateBaseNode(ConfigBase configBase)
         {
-            TreeNode baseNode = new TreeNode(AppPhrases.BaseNode);
-            baseNode.ImageKey = baseNode.SelectedImageKey = "database.png";
+            TreeNode baseNode = TreeViewUtils.CreateNode(AppPhrases.BaseNode, "database.png");
+            baseNode.Tag = new TreeNodeTag()
+            {
+                RelatedObject = project.ConfigBase,
+                NodeType = AppNodeType.Base
+            };
 
-            TreeNode sysTableNode = new TreeNode(AppPhrases.SysTableNode);
-            sysTableNode.ImageKey = sysTableNode.SelectedImageKey = "folder_closed.png";
-
+            TreeNode sysTableNode = TreeViewUtils.CreateNode(AppPhrases.SysTableNode, "folder_closed.png");
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTable));
@@ -81,9 +86,7 @@ namespace Scada.Admin.App.Code
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));
             baseNode.Nodes.Add(sysTableNode);
 
-            TreeNode dictTableNode = new TreeNode(AppPhrases.DictTableNode);
-            dictTableNode.ImageKey = dictTableNode.SelectedImageKey = "folder_closed.png";
-
+            TreeNode dictTableNode = TreeViewUtils.CreateNode(AppPhrases.DictTableNode, "folder_closed.png");
             dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CnlTypeTable));
             dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.CmdTypeTable));
             dictTableNode.Nodes.Add(CreateBaseTableNode(configBase.EvTypeTable));
@@ -103,8 +106,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
         {
-            TreeNode baseTableNode = new TreeNode(baseTable.Title);
-            baseTableNode.ImageKey = baseTableNode.SelectedImageKey = "table.png";
+            TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
             baseTableNode.Tag = new TreeNodeTag()
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
@@ -118,12 +120,14 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private TreeNode CreateInstanceNode(Instance instance)
         {
-            TreeNode instanceNode = new TreeNode(instance.Name);
-            instanceNode.ImageKey = instanceNode.SelectedImageKey = "instance.png";
-            instanceNode.Tag = new TreeNodeTag() { RelatedObject = instance };
+            TreeNode instanceNode = TreeViewUtils.CreateNode(instance.Name, "instance.png");
+            instanceNode.Tag = new TreeNodeTag()
+            {
+                RelatedObject = new LiveInstance(instance),
+                NodeType = AppNodeType.Instance
+            };
 
-            TreeNode emptyNode = new TreeNode(AppPhrases.EmptyNode);
-            emptyNode.ImageKey = emptyNode.SelectedImageKey = "empty.png";
+            TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
             instanceNode.Nodes.Add(emptyNode);
 
             return instanceNode;
@@ -142,29 +146,36 @@ namespace Scada.Admin.App.Code
                 treeView.BeginUpdate();
                 treeView.Nodes.Clear();
 
-                TreeNode projectNode = new TreeNode(project.Name);
-                projectNode.ImageKey = projectNode.SelectedImageKey = "project.png";
-                projectNode.Tag = new TreeNodeTag() { RelatedObject = project };
+                TreeNode projectNode = TreeViewUtils.CreateNode(project.Name, "project.png", true);
+                projectNode.Tag = new TreeNodeTag()
+                {
+                    RelatedObject = project,
+                    NodeType = AppNodeType.Project
+                };
                 treeView.Nodes.Add(projectNode);
 
                 TreeNode baseNode = CreateBaseNode(project.ConfigBase);
-                baseNode.Tag = new TreeNodeTag() { RelatedObject = project.ConfigBase };
                 projectNode.Nodes.Add(baseNode);
 
-                TreeNode interfaceNode = new TreeNode(AppPhrases.InterfaceNode);
-                interfaceNode.ImageKey = interfaceNode.SelectedImageKey = "ui.png";
-                interfaceNode.Tag = new TreeNodeTag() { RelatedObject = project.Interface };
+                TreeNode interfaceNode = TreeViewUtils.CreateNode(AppPhrases.InterfaceNode, "ui.png");
+                interfaceNode.Tag = new TreeNodeTag()
+                {
+                    RelatedObject = project.Interface,
+                    NodeType = AppNodeType.Interface
+                };
                 projectNode.Nodes.Add(interfaceNode);
 
-                TreeNode instancesNode = new TreeNode(AppPhrases.InstancesNode);
-                instancesNode.ImageKey = instancesNode.SelectedImageKey = "instances.png";
-                instancesNode.Tag = new TreeNodeTag() { RelatedObject = project.Instances };
+                TreeNode instancesNode = TreeViewUtils.CreateNode(AppPhrases.InstancesNode, "instances.png");
+                instancesNode.Tag = new TreeNodeTag()
+                {
+                    RelatedObject = project.Instances,
+                    NodeType = AppNodeType.Instances
+                };
                 projectNode.Nodes.Add(instancesNode);
 
                 foreach (Instance instance in project.Instances)
                 {
-                    TreeNode instanceNode = CreateInstanceNode(instance);
-                    instancesNode.Nodes.Add(instanceNode);
+                    instancesNode.Nodes.Add(CreateInstanceNode(instance));
                 }
 
                 projectNode.Expand();
@@ -179,39 +190,64 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Fills the instance node by child nodes.
         /// </summary>
-        public void FillInstanceNode(TreeNode instanceNode, Instance instance, 
-            ServerEnvironment serverEnvironment, CommEnvironment commEnvironment)
+        public void FillInstanceNode(TreeNode instanceNode)
         {
+            LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
+            Instance instance = liveInstance.Instance;
+
             try
             {
                 treeView.BeginUpdate();
                 instanceNode.Nodes.Clear();
 
+                // create Server nodes
                 if (instance.ServerApp.Enabled)
                 {
-                    TreeNode serverNode = new TreeNode(AppPhrases.ServerNode);
-                    serverNode.ImageKey = serverNode.SelectedImageKey = "server.png";
-                    serverNode.Tag = new TreeNodeTag() { RelatedObject = instance.ServerApp };
+                    TreeNode serverNode = TreeViewUtils.CreateNode(AppPhrases.ServerNode, "server.png");
+                    serverNode.Tag = new TreeNodeTag()
+                    {
+                        RelatedObject = instance.ServerApp,
+                        NodeType = AppNodeType.ServerApp
+                    };
                     serverNode.Nodes.AddRange(serverShell.GetTreeNodes(
-                        instance.ServerApp.Settings, serverEnvironment));
+                        instance.ServerApp.Settings, liveInstance.ServerEnvironment));
                     instanceNode.Nodes.Add(serverNode);
                 }
 
+                // create Communicator nodes
                 if (instance.CommApp.Enabled)
                 {
-                    TreeNode commNode = new TreeNode(AppPhrases.CommNode);
-                    commNode.ImageKey = commNode.SelectedImageKey = "comm.png";
-                    commNode.Tag = new TreeNodeTag() { RelatedObject = instance.CommApp };
+                    TreeNode commNode = TreeViewUtils.CreateNode(AppPhrases.CommNode, "comm.png");
+                    commNode.Tag = new TreeNodeTag()
+                    {
+                        RelatedObject = instance.CommApp,
+                        NodeType = AppNodeType.CommApp
+                    };
                     commNode.Nodes.AddRange(commShell.GetTreeNodes(
-                        instance.CommApp.Settings, commEnvironment));
+                        instance.CommApp.Settings, liveInstance.CommEnvironment));
+
+                    foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(commNode.Nodes))
+                    {
+                        if (treeNode.Tag is TreeNodeTag tag && 
+                            (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine))
+                        {
+                            treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
+                        }
+                    }
+
                     instanceNode.Nodes.Add(commNode);
                 }
 
+                // create Webstation nodes
                 if (instance.WebApp.Enabled)
                 {
                     TreeNode webNode = new TreeNode(AppPhrases.WebNode);
                     webNode.ImageKey = webNode.SelectedImageKey = "chrome.png";
-                    webNode.Tag = new TreeNodeTag() { RelatedObject = instance.WebApp };
+                    webNode.Tag = new TreeNodeTag()
+                    {
+                        RelatedObject = instance.WebApp,
+                        NodeType = AppNodeType.WebApp
+                    };
                     instanceNode.Nodes.Add(webNode);
                 }
             }

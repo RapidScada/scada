@@ -49,6 +49,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CommNodeType.cs" />
     <Compile Include="Code\CommShell.cs" />
     <Compile Include="Code\CommEnvironment.cs" />
     <Compile Include="Code\CommShellPhrases.cs" />
