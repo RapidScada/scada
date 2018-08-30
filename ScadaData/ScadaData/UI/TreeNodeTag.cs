@@ -43,6 +43,7 @@ namespace Scada.UI
             FormArgs = null;
             ExistingForm = null;
             RelatedObject = null;
+            NodeType = "";
         }
 
 
@@ -65,5 +66,10 @@ namespace Scada.UI
         /// Gets or sets the object related to the node.
         /// </summary>
         public object RelatedObject { get; set; }
+
+        /// <summary>
+        /// Gets or sets the node type that determines possible actions with the node.
+        /// </summary>
+        public string NodeType { get; set; }
     }
 }

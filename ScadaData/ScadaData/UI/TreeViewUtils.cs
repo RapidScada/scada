@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -64,6 +64,15 @@ namespace Scada.UI
             return parentNode == null ? treeView.Nodes : parentNode.Nodes;
         }
 
+        /// <summary>
+        /// Получить объект, связанный с узлом дерева
+        /// </summary>
+        private static object GetRelatedObject(TreeNode treeNode)
+        {
+            return treeNode?.Tag is TreeNodeTag treeNodeTag ?
+                treeNodeTag.RelatedObject : treeNode?.Tag;
+        }
+
 
         /// <summary>
         /// Создать узел дерева
@@ -105,8 +114,27 @@ namespace Scada.UI
                 throw new ArgumentNullException("tagType");
 
             TreeNode node = treeView.SelectedNode;
-            while (node != null && !(tagType.IsInstanceOfType(node.Tag)))
+
+            while (node != null && !tagType.IsInstanceOfType(node.Tag))
+            {
                 node = node.Parent;
+            }
+
+            return node;
+        }
+
+        /// <summary>
+        /// Найти ближайший узел дерева заданного типа по отношению к выбранному узлу вверх по дереву
+        /// </summary>
+        public static TreeNode FindClosest(this TreeView treeView, string nodeType)
+        {
+            TreeNode node = treeView.SelectedNode;
+
+            while (node != null && !(node.Tag is TreeNodeTag tag && tag.NodeType == nodeType))
+            {
+                node = node.Parent;
+            }
+
             return node;
         }
 
@@ -138,11 +166,13 @@ namespace Scada.UI
         public static int FindInsertIndex(this TreeView treeView, TreeNode parentNode)
         {
             TreeNode node = treeView.SelectedNode;
-            while (node != null && node.Parent != parentNode)
-                node = node.Parent;
 
-            TreeNodeCollection nodes = treeView.GetChildNodes(parentNode); 
-            return node == null ? nodes.Count : node.Index + 1;
+            while (node != null && node.Parent != parentNode)
+            {
+                node = node.Parent;
+            }
+
+            return node == null ? treeView.GetChildNodes(parentNode).Count : node.Index + 1;
         }
 
 
@@ -156,17 +186,16 @@ namespace Scada.UI
             if (parentObj == null)
                 throw new ArgumentNullException("parentObj");
             if (nodeToAdd == null)
-                throw new ArgumentNullException("nodeToInsert");
+                throw new ArgumentNullException("nodeToAdd");
 
-            if (parentObj.Children != null && nodeToAdd.Tag is ITreeNode)
+            if (parentObj.Children != null && GetRelatedObject(nodeToAdd) is ITreeNode objToAdd)
             {
                 TreeNodeCollection nodes = treeView.GetChildNodes(parentNode);
                 IList list = parentObj.Children;
-                ITreeNode obj = (ITreeNode)nodeToAdd.Tag;
-                obj.Parent = parentObj;
+                objToAdd.Parent = parentObj;
 
                 nodes.Add(nodeToAdd);
-                list.Add(obj);
+                list.Add(objToAdd);
                 treeView.SelectedNode = nodeToAdd;
             }
         }
@@ -180,8 +209,8 @@ namespace Scada.UI
             if (parentNode == null)
                 throw new ArgumentNullException("parentNode");
 
-            if (parentNode.Tag is ITreeNode)
-                treeView.Add(parentNode, (ITreeNode)parentNode.Tag, nodeToAdd);
+            if (GetRelatedObject(parentNode) is ITreeNode parentObj)
+                treeView.Add(parentNode, parentObj, nodeToAdd);
         }
 
         /// <summary>
@@ -197,16 +226,15 @@ namespace Scada.UI
             if (nodeToInsert == null)
                 throw new ArgumentNullException("nodeToInsert");
 
-            if (parentObj.Children != null && nodeToInsert.Tag is ITreeNode)
+            if (parentObj.Children != null && GetRelatedObject(nodeToInsert) is ITreeNode objToInsert)
             {
                 int index = treeView.FindInsertIndex(parentNode);
                 TreeNodeCollection nodes = treeView.GetChildNodes(parentNode);
                 IList list = parentObj.Children;
-                ITreeNode obj = (ITreeNode)nodeToInsert.Tag;
-                obj.Parent = parentObj;
+                objToInsert.Parent = parentObj;
 
                 nodes.Insert(index, nodeToInsert);
-                list.Insert(index, obj);
+                list.Insert(index, objToInsert);
                 treeView.SelectedNode = nodeToInsert;
             }
         }
@@ -220,8 +248,8 @@ namespace Scada.UI
             if (parentNode == null)
                 throw new ArgumentNullException("parentNode");
 
-            if (parentNode.Tag is ITreeNode)
-                treeView.Insert(parentNode, (ITreeNode)parentNode.Tag, nodeToInsert);
+            if (GetRelatedObject(parentNode) is ITreeNode parentObj)
+                treeView.Insert(parentNode, parentObj, nodeToInsert);
         }
 
         /// <summary>
@@ -230,9 +258,8 @@ namespace Scada.UI
         public static void MoveUpSelectedNode(this TreeView treeView, MoveBehavior moveBehavior)
         {
             TreeNode selectedNode = treeView.SelectedNode;
-            ITreeNode selectedObj = selectedNode == null ? null : selectedNode.Tag as ITreeNode;
 
-            if (selectedObj != null)
+            if (GetRelatedObject(selectedNode) is ITreeNode selectedObj)
             {
                 try
                 {
@@ -289,9 +316,8 @@ namespace Scada.UI
         public static void MoveDownSelectedNode(this TreeView treeView, MoveBehavior moveBehavior)
         {
             TreeNode selectedNode = treeView.SelectedNode;
-            ITreeNode selectedObj = selectedNode == null ? null : selectedNode.Tag as ITreeNode;
 
-            if (selectedObj != null)
+            if (GetRelatedObject(selectedNode) is ITreeNode selectedObj)
             {
                 try
                 {
@@ -385,10 +411,10 @@ namespace Scada.UI
         public static void RemoveSelectedNode(this TreeView treeView)
         {
             TreeNode selectedNode = treeView.SelectedNode;
-            if (selectedNode != null && selectedNode.Tag is ITreeNode)
+            if (GetRelatedObject(selectedNode) is ITreeNode treeNodeObj)
             {
                 TreeNodeCollection nodes = treeView.GetChildNodes(selectedNode.Parent);
-                IList list = ((ITreeNode)selectedNode.Tag).Parent.Children;
+                IList list = treeNodeObj.Parent.Children;
                 
                 int selectedIndex = selectedNode.Index;
                 nodes.RemoveAt(selectedIndex);
