@@ -57,22 +57,22 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Gets the application directories.
         /// </summary>
-        public AdminDirs AppDirs { get; private set; }
+        public AdminDirs AppDirs { get; }
 
         /// <summary>
         /// Gets the application error log.
         /// </summary>
-        public Log ErrLog { get; private set; }
+        public Log ErrLog { get; }
 
         /// <summary>
         /// Gets the application settings.
         /// </summary>
-        public AdminSettings AppSettings { get; private set; }
+        public AdminSettings AppSettings { get; }
 
         /// <summary>
         /// Gets the state of application controls.
         /// </summary>
-        public AppState AppState { get; private set; }
+        public AppState AppState { get; }
 
 
         /// <summary>
