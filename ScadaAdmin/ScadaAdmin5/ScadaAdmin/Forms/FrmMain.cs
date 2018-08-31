@@ -196,7 +196,7 @@ namespace Scada.Admin.App.Forms
                         if (formObj is Form form)
                         {
                             tag.ExistingForm = form;
-                            wctrlMain.AddForm(form, "", ilExplorer.Images[treeNode.ImageKey], treeNode);
+                            wctrlMain.AddForm(form, treeNode.FullPath, ilExplorer.Images[treeNode.ImageKey], treeNode);
                         }
                     }
                 }
@@ -500,7 +500,9 @@ namespace Scada.Admin.App.Forms
         private void miCommLineDelete_Click(object sender, EventArgs e)
         {
             // delete the selected communication line
-            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine) &&
+                MessageBox.Show(AppPhrases.ConfirmDeleteCommLine, CommonPhrases.QuestionCaption, 
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
             {
                 tvExplorer.RemoveSelectedNode();
             }

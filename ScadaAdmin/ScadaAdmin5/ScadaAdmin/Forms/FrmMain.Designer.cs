@@ -337,27 +337,30 @@
             this.miCommLineMoveDown,
             this.miCommLineDelete});
             this.cmsCommLine.Name = "cmsCommLine";
-            this.cmsCommLine.Size = new System.Drawing.Size(181, 114);
+            this.cmsCommLine.Size = new System.Drawing.Size(164, 92);
             this.cmsCommLine.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCommLine_Opening);
             // 
             // miCommLineAdd
             // 
+            this.miCommLineAdd.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineAdd.Image")));
             this.miCommLineAdd.Name = "miCommLineAdd";
-            this.miCommLineAdd.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineAdd.Size = new System.Drawing.Size(163, 22);
             this.miCommLineAdd.Text = "Add Line";
             this.miCommLineAdd.Click += new System.EventHandler(this.miCommLineAdd_Click);
             // 
             // miCommLineMoveUp
             // 
+            this.miCommLineMoveUp.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineMoveUp.Image")));
             this.miCommLineMoveUp.Name = "miCommLineMoveUp";
-            this.miCommLineMoveUp.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineMoveUp.Size = new System.Drawing.Size(163, 22);
             this.miCommLineMoveUp.Text = "Move Line Up";
             this.miCommLineMoveUp.Click += new System.EventHandler(this.miCommLineMoveUp_Click);
             // 
             // miCommLineMoveDown
             // 
+            this.miCommLineMoveDown.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineMoveDown.Image")));
             this.miCommLineMoveDown.Name = "miCommLineMoveDown";
-            this.miCommLineMoveDown.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineMoveDown.Size = new System.Drawing.Size(163, 22);
             this.miCommLineMoveDown.Text = "Move Line Down";
             this.miCommLineMoveDown.Click += new System.EventHandler(this.miCommLineMoveDown_Click);
             // 
@@ -365,7 +368,7 @@
             // 
             this.miCommLineDelete.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineDelete.Image")));
             this.miCommLineDelete.Name = "miCommLineDelete";
-            this.miCommLineDelete.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineDelete.Size = new System.Drawing.Size(163, 22);
             this.miCommLineDelete.Text = "Delete Line";
             this.miCommLineDelete.Click += new System.EventHandler(this.miCommLineDelete_Click);
             // 

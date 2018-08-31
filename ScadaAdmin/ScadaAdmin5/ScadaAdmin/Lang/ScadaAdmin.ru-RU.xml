@@ -150,6 +150,7 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
+    <Phrase key="ConfirmDeleteCommLine">Вы уверены, что хотите удалить линию связи?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
     <Phrase key="this">Новый проект</Phrase>
