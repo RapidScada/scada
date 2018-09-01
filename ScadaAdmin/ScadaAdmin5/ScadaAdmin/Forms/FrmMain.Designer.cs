@@ -328,6 +328,7 @@
             this.wctrlMain.Size = new System.Drawing.Size(431, 340);
             this.wctrlMain.TabIndex = 0;
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
+            this.wctrlMain.ChildFormMessage += new System.EventHandler<WinControl.FormMessageEventArgs>(this.wctrlMain_ChildFormMessage);
             // 
             // cmsCommLine
             // 

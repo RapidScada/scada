@@ -209,17 +209,24 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Finds a tree node tag that relates to the specified child form.
+        /// Finds a tree node that relates to the specified child form.
         /// </summary>
-        private TreeNodeTag FindNodeTag(Form childForm)
+        private TreeNode FindTreeNode(Form form)
         {
-            foreach (TreeNode node in TreeViewUtils.IterateNodes(tvExplorer.Nodes))
+            if (form is IChildForm childForm)
             {
-                if (node.Tag is TreeNodeTag tag && tag.ExistingForm == childForm)
-                    return tag;
+                return childForm.ChildFormTag.TreeNode;
             }
+            else
+            {
+                foreach (TreeNode node in TreeViewUtils.IterateNodes(tvExplorer.Nodes))
+                {
+                    if (node.Tag is TreeNodeTag tag && tag.ExistingForm == form)
+                        return node;
+                }
 
-            return null;
+                return null;
+            }
         }
 
         /// <summary>
@@ -347,19 +354,20 @@ namespace Scada.Admin.App.Forms
         private void wctrlMain_ChildFormClosed(object sender, ChildFormClosedEventArgs e)
         {
             // clear the form pointer of the node
-            TreeNodeTag nodeTag;
+            TreeNode treeNode = FindTreeNode(e.ChildForm);
 
-            if (e.ChildForm is IChildForm childForm)
-            {
-                nodeTag = childForm.ChildFormTag.TreeNode.Tag as TreeNodeTag;
-            }
-            else
-            {
-                nodeTag = FindNodeTag(e.ChildForm);
-            }
+            if (treeNode != null && treeNode.Tag is TreeNodeTag tag)
+                tag.ExistingForm = null;
+        }
 
-            if (nodeTag != null)
-                nodeTag.ExistingForm = null;
+        private void wctrlMain_ChildFormMessage(object sender, FormMessageEventArgs e)
+        {
+
+            if (e.Message == "ScadaComm.SaveSettings") // TODO: const
+            {
+                //TreeNode treeNode = FindTreeNode(e.Source);
+                //TreeNode instanceNode = tvExplorer.FindClosest(AppNodeType.Instance);
+            }
         }
 
 
