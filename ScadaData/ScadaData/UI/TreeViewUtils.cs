@@ -135,6 +135,14 @@ namespace Scada.UI
         }
 
         /// <summary>
+        /// Проверить, имеет ли тег узла дерева указанный тип
+        /// </summary>
+        public static bool TagIs(this TreeNode treeNode, string nodeType)
+        {
+            return treeNode.Tag is TreeNodeTag tag && tag.NodeType == nodeType;
+        }
+
+        /// <summary>
         /// Найти родительский узел и индекс для вставки нового узла дерева с учётом выбранного узла
         /// </summary>
         public static bool FindInsertLocation(this TreeView treeView, Type tagType,
@@ -525,6 +533,19 @@ namespace Scada.UI
                 {
                     yield return childNode;
                 }
+            }
+        }
+
+        /// <summary>
+        /// Рекурсивный обход узлов дерева
+        /// </summary>
+        public static IEnumerable<TreeNode> IterateNodes(TreeNode treeNode)
+        {
+            yield return treeNode;
+
+            foreach (TreeNode childNode in IterateNodes(treeNode.Nodes))
+            {
+                yield return childNode;
             }
         }
     }

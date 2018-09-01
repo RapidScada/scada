@@ -424,6 +424,7 @@ namespace Scada.Comm
         {
             Params = new CommonParams();
             CommLines = new List<CommLine>();
+            CreateBakFile = true;
         }
 
 
@@ -436,6 +437,11 @@ namespace Scada.Comm
         /// Получить настройки линий связи
         /// </summary>
         public List<CommLine> CommLines { get; private set; }
+
+        /// <summary>
+        /// Получить или установить признак создания резервного файла при сохранении настроек
+        /// </summary>
+        public bool CreateBakFile { get; set; }
         
         
         /// <summary>
@@ -821,7 +827,9 @@ namespace Scada.Comm
                     commChannelElem.SetAttribute("type", commLine.CommCnlType);
 
                     foreach (KeyValuePair<string, string> commCnlParam in commLine.CommCnlParams)
+                    {
                         commChannelElem.AppendParamElem(commCnlParam.Key, commCnlParam.Value);
+                    }
 
                     // параметры связи
                     paramsElem = xmlDoc.CreateElement("LineParams");
@@ -840,8 +848,11 @@ namespace Scada.Comm
                     // пользовательские параметры
                     paramsElem = xmlDoc.CreateElement("CustomParams");
                     lineElem.AppendChild(paramsElem);
+
                     foreach (KeyValuePair<string, string> customParam in commLine.CustomParams)
+                    {
                         paramsElem.AppendParamElem(customParam.Key, customParam.Value);
+                    }
 
                     // последовательность опроса
                     XmlElement reqSeqElem = xmlDoc.CreateElement("ReqSequence");
@@ -867,8 +878,12 @@ namespace Scada.Comm
                 }
 
                 // сохранение XML-документа в файле
-                string bakName = fileName + ".bak";
-                File.Copy(fileName, bakName, true);
+                if (CreateBakFile)
+                {
+                    string bakName = fileName + ".bak";
+                    File.Copy(fileName, bakName, true);
+                }
+
                 xmlDoc.Save(fileName);
 
                 errMsg = "";

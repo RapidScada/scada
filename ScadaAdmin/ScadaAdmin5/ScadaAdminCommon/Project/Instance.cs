@@ -146,5 +146,13 @@ namespace Scada.Admin.Project
                 return false;
             }
         }
+
+        /// <summary>
+        /// Saves the Communicator settings.
+        /// </summary>
+        public bool SaveCommSettigns(out string errMsg)
+        {
+            return CommApp.Settings.Save(CommApp.GetSettingsPath(InstanceDir), out errMsg);
+        }
     }
 }

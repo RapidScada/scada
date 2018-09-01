@@ -230,11 +230,17 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Determines if the tree node tag has the specified type.
+        /// Updates hints of the child forms corresponding to the specified node and its children.
         /// </summary>
-        private bool TagIs(TreeNode treeNode, string nodeType)
+        private void UpdateChildFormHints(TreeNode treeNode)
         {
-            return treeNode?.Tag is TreeNodeTag tag && tag.NodeType == nodeType;
+            foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
+            {
+                if (node.Tag is TreeNodeTag tag && tag.ExistingForm != null)
+                {
+                    wctrlMain.UpdateHint(tag.ExistingForm, node.FullPath);
+                }
+            }
         }
 
         /// <summary>
@@ -242,7 +248,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private bool FindClosestInstance(out LiveInstance liveInstance)
         {
-            TreeNode instanceNode = tvExplorer.FindClosest(AppNodeType.Instance);
+            TreeNode instanceNode = tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance);
 
             if (instanceNode == null)
             {
@@ -325,7 +331,7 @@ namespace Scada.Admin.App.Forms
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             // load application settings of the instance
-            if (TagIs(e.Node, AppNodeType.Instance))
+            if (e.Node.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
                 Instance instance = liveInstance.Instance;
@@ -356,17 +362,46 @@ namespace Scada.Admin.App.Forms
             // clear the form pointer of the node
             TreeNode treeNode = FindTreeNode(e.ChildForm);
 
-            if (treeNode != null && treeNode.Tag is TreeNodeTag tag)
+            if (treeNode?.Tag is TreeNodeTag tag)
                 tag.ExistingForm = null;
         }
 
         private void wctrlMain_ChildFormMessage(object sender, FormMessageEventArgs e)
         {
-
-            if (e.Message == "ScadaComm.SaveSettings") // TODO: const
+            if (e.Message == CommMessage.SaveSettings)
             {
-                //TreeNode treeNode = FindTreeNode(e.Source);
-                //TreeNode instanceNode = tvExplorer.FindClosest(AppNodeType.Instance);
+                // find the instance corresponding to the message source
+                TreeNode sourceNode = FindTreeNode(e.Source);
+                TreeNode instanceNode = sourceNode?.FindClosest(AppNodeType.Instance);
+
+                if (instanceNode?.Tag is TreeNodeTag tag)
+                {
+                    // save the Communicator settings
+                    LiveInstance liveInstance = (LiveInstance)tag.RelatedObject;
+                    if (liveInstance.Instance.SaveCommSettigns(out string errMsg))
+                    {
+                        // update the explorer
+                        TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
+                        if (commLineNode != null)
+                        {
+                            try
+                            {
+                                tvExplorer.BeginUpdate();
+                                commShell.UpdateCommLineNode(commLineNode);
+                                UpdateChildFormHints(commLineNode);
+                            }
+                            finally
+                            {
+                                tvExplorer.EndUpdate();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        e.Cancel = true;
+                        appData.ProcError(errMsg);
+                    }
+                }
             }
         }
 
@@ -468,7 +503,7 @@ namespace Scada.Admin.App.Forms
         {
             // enable or disable the menu items
             TreeNode treeNode = tvExplorer.SelectedNode;
-            bool isLineNode = TagIs(treeNode, CommNodeType.CommLine);
+            bool isLineNode = treeNode != null && treeNode.TagIs(CommNodeType.CommLine);
             miCommLineMoveUp.Enabled = isLineNode && treeNode.PrevNode != null;
             miCommLineMoveDown.Enabled = isLineNode && treeNode.NextNode != null;
             miCommLineDelete.Enabled = isLineNode;
@@ -477,11 +512,12 @@ namespace Scada.Admin.App.Forms
         private void miCommLineAdd_Click(object sender, EventArgs e)
         {
             // add a new communication line
-            if ((TagIs(tvExplorer.SelectedNode, CommNodeType.CommLines) ||
-                TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine)) &&
+            if (tvExplorer.SelectedNode != null &&
+                (tvExplorer.SelectedNode.TagIs(CommNodeType.CommLines) ||
+                tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine)) &&
                 FindClosestInstance(out LiveInstance liveInstance))
             {
-                TreeNode commLinesNode = tvExplorer.FindClosest(CommNodeType.CommLines);
+                TreeNode commLinesNode = tvExplorer.SelectedNode.FindClosest(CommNodeType.CommLines);
                 TreeNode commLineNode = commShell.CreateCommLineNode(liveInstance.CommEnvironment);
                 tvExplorer.Insert(commLinesNode, commLineNode);
             }
@@ -490,7 +526,7 @@ namespace Scada.Admin.App.Forms
         private void miCommLineMoveUp_Click(object sender, EventArgs e)
         {
             // move up the selected communication line
-            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine))
             {
                 tvExplorer.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
             }
@@ -499,7 +535,7 @@ namespace Scada.Admin.App.Forms
         private void miCommLineMoveDown_Click(object sender, EventArgs e)
         {
             // move up the selected communication line
-            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine))
+            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine))
             {
                 tvExplorer.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
             }
@@ -508,7 +544,7 @@ namespace Scada.Admin.App.Forms
         private void miCommLineDelete_Click(object sender, EventArgs e)
         {
             // delete the selected communication line
-            if (TagIs(tvExplorer.SelectedNode, CommNodeType.CommLine) &&
+            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine) &&
                 MessageBox.Show(AppPhrases.ConfirmDeleteCommLine, CommonPhrases.QuestionCaption, 
                 MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
             {

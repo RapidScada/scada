@@ -40,6 +40,7 @@ namespace Scada.Admin.Project
             : base()
         {
             Settings = new Comm.Settings();
+            Settings.CreateBakFile = false;
         }
 
 

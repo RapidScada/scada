@@ -106,7 +106,9 @@ namespace Scada.Comm.Shell.Forms
         public void Save()
         {
             ControlsToSettings();
-            ChildFormTag.Modified = false;
+
+            if (ChildFormTag.SendMessage(this, CommMessage.SaveSettings))
+                ChildFormTag.Modified = false;
         }
 
 
