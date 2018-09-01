@@ -106,36 +106,32 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Найти ближайший узел дерева заданного типа по отношению к выбранному узлу вверх по дереву
+        /// Найти ближайший узел дерева заданного типа по отношению к заданному узлу вверх по дереву
         /// </summary>
-        public static TreeNode FindClosest(this TreeView treeView, Type tagType)
+        public static TreeNode FindClosest(this TreeNode treeNode, Type tagType)
         {
             if (tagType == null)
                 throw new ArgumentNullException("tagType");
 
-            TreeNode node = treeView.SelectedNode;
-
-            while (node != null && !tagType.IsInstanceOfType(node.Tag))
+            while (treeNode != null && !tagType.IsInstanceOfType(treeNode.Tag))
             {
-                node = node.Parent;
+                treeNode = treeNode.Parent;
             }
 
-            return node;
+            return treeNode;
         }
 
         /// <summary>
-        /// Найти ближайший узел дерева заданного типа по отношению к выбранному узлу вверх по дереву
+        /// Найти ближайший узел дерева заданного типа по отношению к заданному узлу вверх по дереву
         /// </summary>
-        public static TreeNode FindClosest(this TreeView treeView, string nodeType)
+        public static TreeNode FindClosest(this TreeNode treeNode, string nodeType)
         {
-            TreeNode node = treeView.SelectedNode;
-
-            while (node != null && !(node.Tag is TreeNodeTag tag && tag.NodeType == nodeType))
+            while (treeNode != null && !(treeNode.Tag is TreeNodeTag tag && tag.NodeType == nodeType))
             {
-                node = node.Parent;
+                treeNode = treeNode.Parent;
             }
 
-            return node;
+            return treeNode;
         }
 
         /// <summary>
@@ -144,7 +140,7 @@ namespace Scada.UI
         public static bool FindInsertLocation(this TreeView treeView, Type tagType,
             out TreeNode parentNode, out int index)
         {
-            TreeNode node = treeView.FindClosest(tagType);
+            TreeNode node = treeView.SelectedNode?.FindClosest(tagType);
 
             if (node == null)
             {

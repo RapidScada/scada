@@ -295,7 +295,7 @@ namespace Scada.Comm.Devices.AB
         private void btnAddContact_Click(object sender, EventArgs e)
         {
             // добавление контакта
-            TreeNode contactGroupNode = treeView.FindClosest(typeof(AddressBook.ContactGroup));
+            TreeNode contactGroupNode = treeView.SelectedNode?.FindClosest(typeof(AddressBook.ContactGroup));
             if (contactGroupNode != null)
             {
                 AddressBook.Contact contact = new AddressBook.Contact(AbPhrases.NewContact);
@@ -310,7 +310,7 @@ namespace Scada.Comm.Devices.AB
         private void btnAddPhoneNumber_Click(object sender, EventArgs e)
         {
             // добавление телефонного номера
-            TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
+            TreeNode contactNode = treeView.SelectedNode?.FindClosest(typeof(AddressBook.Contact));
             if (contactNode != null)
             {
                 AddressBook.PhoneNumber phoneNumber = new AddressBook.PhoneNumber(AbPhrases.NewPhoneNumber);
@@ -325,7 +325,7 @@ namespace Scada.Comm.Devices.AB
         private void btnAddEmail_Click(object sender, EventArgs e)
         {
             // добавление адреса электронной почты
-            TreeNode contactNode = treeView.FindClosest(typeof(AddressBook.Contact));
+            TreeNode contactNode = treeView.SelectedNode?.FindClosest(typeof(AddressBook.Contact));
             if (contactNode != null)
             {
                 AddressBook.Email email = new AddressBook.Email(AbPhrases.NewEmail);
