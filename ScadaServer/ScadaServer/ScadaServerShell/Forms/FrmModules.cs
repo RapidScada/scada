@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Shell.Code;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -227,7 +228,9 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         public void Save()
         {
-            ChildFormTag.Modified = false;
+            // TODO: controls to settings
+            if (ChildFormTag.SendMessage(this, ServerMessage.SaveSettings))
+                ChildFormTag.Modified = false;
         }
 
 

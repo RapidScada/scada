@@ -39,8 +39,7 @@ namespace Scada.Admin.Project
         public CommApp()
             : base()
         {
-            Settings = new Comm.Settings();
-            Settings.CreateBakFile = false;
+            Settings = new Comm.Settings { CreateBakFile = false };
         }
 
 

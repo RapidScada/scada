@@ -15,8 +15,8 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Communicator Shell
- * Summary  : Messages sent by Communicator forms
+ * Module   : Server Shell
+ * Summary  : Messages sent by Server forms
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -28,11 +28,11 @@
 namespace Scada.Comm.Shell.Code
 {
     /// <summary>
-    /// Messages sent by Communicator forms.
-    /// <para>Сообщения, отправляемые формами Коммуникатора.</para>
+    /// Messages sent by Server forms.
+    /// <para>Сообщения, отправляемые формами Сервера.</para>
     /// </summary>
-    public static class CommMessage
+    public static class ServerMessage
     {
-        public const string SaveSettings = "Comm.SaveSettings";
+        public const string SaveSettings = "Server.SaveSettings";
     }
 }

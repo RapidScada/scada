@@ -50,6 +50,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\ServerMessage.cs" />
     <Compile Include="Code\ServerEnvironment.cs" />
     <Compile Include="Code\ServerShell.cs" />
     <Compile Include="Code\ServerShellPhrases.cs" />

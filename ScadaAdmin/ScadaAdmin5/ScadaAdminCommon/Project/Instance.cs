@@ -148,6 +148,14 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Saves the Server settings.
+        /// </summary>
+        public bool SaveServerSettigns(out string errMsg)
+        {
+            return ServerApp.Settings.Save(ServerApp.GetSettingsPath(InstanceDir), out errMsg);
+        }
+
+        /// <summary>
         /// Saves the Communicator settings.
         /// </summary>
         public bool SaveCommSettigns(out string errMsg)

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2014 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2014
+ * Modified : 2018
  */
 
 using System;
@@ -52,6 +52,7 @@ namespace Scada.Server
         public Settings()
         {
             ModuleFileNames = new List<string>();
+            CreateBakFile = true;
             SetToDefault();
         }
 
@@ -179,6 +180,11 @@ namespace Scada.Server
         /// Получить список имён файлов модулей
         /// </summary>
         public List<string> ModuleFileNames { get; private set; }
+
+        /// <summary>
+        /// Получить или установить признак создания резервного файла при сохранении настроек
+        /// </summary>
+        public bool CreateBakFile { get; set; }
 
 
         /// <summary>
@@ -444,8 +450,12 @@ namespace Scada.Server
                 }
 
                 // сохранение XML-документа в файле
-                string bakName = fileName + ".bak";
-                File.Copy(fileName, bakName, true);
+                if (CreateBakFile)
+                {
+                    string bakName = fileName + ".bak";
+                    File.Copy(fileName, bakName, true);
+                }
+
                 xmlDoc.Save(fileName);
 
                 errMsg = "";

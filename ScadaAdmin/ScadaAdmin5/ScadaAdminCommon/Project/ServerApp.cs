@@ -39,7 +39,7 @@ namespace Scada.Admin.Project
         public ServerApp()
             : base()
         {
-            Settings = new Server.Settings();
+            Settings = new Server.Settings { CreateBakFile = false };
         }
 
 

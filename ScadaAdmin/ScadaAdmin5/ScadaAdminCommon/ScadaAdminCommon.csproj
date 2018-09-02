@@ -42,8 +42,9 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaServerCommon">
-      <HintPath>..\..\..\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
+    <Reference Include="ScadaServerCommon, Version=5.1.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaWebCommon5">
       <HintPath>..\..\..\ScadaWeb\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
