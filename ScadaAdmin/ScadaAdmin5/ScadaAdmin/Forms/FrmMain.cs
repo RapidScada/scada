@@ -244,11 +244,25 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Finds the closest instance in the explorer starting from the selected node and traversing up.
+        /// Closes the child forms corresponding to the specified node and its children.
         /// </summary>
-        private bool FindClosestInstance(out LiveInstance liveInstance)
+        private void CloseChildForms(TreeNode treeNode)
         {
-            TreeNode instanceNode = tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance);
+            foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
+            {
+                if (node.Tag is TreeNodeTag tag && tag.ExistingForm != null)
+                {
+                    wctrlMain.CloseForm(tag.ExistingForm);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds the closest instance in the explorer starting from the specified node and traversing up.
+        /// </summary>
+        private bool FindClosestInstance(TreeNode treeNode, out LiveInstance liveInstance)
+        {
+            TreeNode instanceNode = treeNode?.FindClosest(AppNodeType.Instance);
 
             if (instanceNode == null)
             {
@@ -294,6 +308,36 @@ namespace Scada.Admin.App.Forms
                 KPViews = kpViews,
                 ErrLog = log
             };
+        }
+
+        /// <summary>
+        /// Saves the Communicator settings and optionally updates the explorer.
+        /// </summary>
+        private bool SaveCommSettigns(Instance instance, TreeNode commLineNode)
+        {
+            if (instance.SaveCommSettigns(out string errMsg))
+            {
+                if (commLineNode != null)
+                {
+                    try
+                    {
+                        tvExplorer.BeginUpdate();
+                        commShell.UpdateCommLineNode(commLineNode);
+                        UpdateChildFormHints(commLineNode);
+                    }
+                    finally
+                    {
+                        tvExplorer.EndUpdate();
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                appData.ProcError(errMsg);
+                return false;
+            }
         }
 
 
@@ -368,39 +412,25 @@ namespace Scada.Admin.App.Forms
 
         private void wctrlMain_ChildFormMessage(object sender, FormMessageEventArgs e)
         {
-            if (e.Message == CommMessage.SaveSettings)
-            {
-                // find the instance corresponding to the message source
-                TreeNode sourceNode = FindTreeNode(e.Source);
-                TreeNode instanceNode = sourceNode?.FindClosest(AppNodeType.Instance);
+            TreeNode sourceNode = FindTreeNode(e.Source);
 
-                if (instanceNode?.Tag is TreeNodeTag tag)
+            if (FindClosestInstance(sourceNode, out LiveInstance liveInstance))
+            {
+                if (e.Message == ServerMessage.SaveSettings)
+                {
+                    // save the Server settings
+                    if (!liveInstance.Instance.SaveServerSettigns(out string errMsg))
+                    {
+                        appData.ProcError(errMsg);
+                        e.Cancel = true;
+                    }
+                }
+                else if (e.Message == CommMessage.SaveSettings)
                 {
                     // save the Communicator settings
-                    LiveInstance liveInstance = (LiveInstance)tag.RelatedObject;
-                    if (liveInstance.Instance.SaveCommSettigns(out string errMsg))
-                    {
-                        // update the explorer
-                        TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
-                        if (commLineNode != null)
-                        {
-                            try
-                            {
-                                tvExplorer.BeginUpdate();
-                                commShell.UpdateCommLineNode(commLineNode);
-                                UpdateChildFormHints(commLineNode);
-                            }
-                            finally
-                            {
-                                tvExplorer.EndUpdate();
-                            }
-                        }
-                    }
-                    else
-                    {
+                    TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
+                    if (!SaveCommSettigns(liveInstance.Instance, commLineNode))
                         e.Cancel = true;
-                        appData.ProcError(errMsg);
-                    }
                 }
             }
         }
@@ -512,43 +542,59 @@ namespace Scada.Admin.App.Forms
         private void miCommLineAdd_Click(object sender, EventArgs e)
         {
             // add a new communication line
-            if (tvExplorer.SelectedNode != null &&
-                (tvExplorer.SelectedNode.TagIs(CommNodeType.CommLines) ||
-                tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine)) &&
-                FindClosestInstance(out LiveInstance liveInstance))
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null &&
+                (selectedNode.TagIs(CommNodeType.CommLines) || selectedNode.TagIs(CommNodeType.CommLine)) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 TreeNode commLinesNode = tvExplorer.SelectedNode.FindClosest(CommNodeType.CommLines);
                 TreeNode commLineNode = commShell.CreateCommLineNode(liveInstance.CommEnvironment);
+                commLineNode.ContextMenuStrip = cmsCommLine;
                 tvExplorer.Insert(commLinesNode, commLineNode);
+                SaveCommSettigns(liveInstance.Instance, null);
             }
         }
 
         private void miCommLineMoveUp_Click(object sender, EventArgs e)
         {
             // move up the selected communication line
-            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine))
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 tvExplorer.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
+                SaveCommSettigns(liveInstance.Instance, null);
             }
         }
 
         private void miCommLineMoveDown_Click(object sender, EventArgs e)
         {
             // move up the selected communication line
-            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine))
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 tvExplorer.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
+                SaveCommSettigns(liveInstance.Instance, null);
             }
         }
 
         private void miCommLineDelete_Click(object sender, EventArgs e)
         {
             // delete the selected communication line
-            if (tvExplorer.SelectedNode != null && tvExplorer.SelectedNode.TagIs(CommNodeType.CommLine) &&
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance) &&
                 MessageBox.Show(AppPhrases.ConfirmDeleteCommLine, CommonPhrases.QuestionCaption, 
                 MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
             {
+                CloseChildForms(selectedNode);
                 tvExplorer.RemoveSelectedNode();
+                SaveCommSettigns(liveInstance.Instance, null);
             }
         }
     }

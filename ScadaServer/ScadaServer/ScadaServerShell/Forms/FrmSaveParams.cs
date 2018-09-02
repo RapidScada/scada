@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Shell.Code;
 using Scada.UI;
 using System;
 using System.Windows.Forms;

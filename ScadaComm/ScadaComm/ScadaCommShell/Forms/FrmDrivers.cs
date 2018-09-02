@@ -100,6 +100,7 @@ namespace Scada.Comm.Shell.Forms
             try
             {
                 lbDrivers.BeginUpdate();
+                lbDrivers.Items.Clear();
 
                 DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.KPDir);
 

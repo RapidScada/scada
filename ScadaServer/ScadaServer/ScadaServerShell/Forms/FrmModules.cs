@@ -89,25 +89,14 @@ namespace Scada.Server.Shell.Forms
 
 
         /// <summary>
-        /// Fills the lists of modules.
+        /// Fills the list of unused modules.
         /// </summary>
-        private void FillModuleLists()
+        private void FillUnusedModules()
         {
             try
             {
                 lbUnusedModules.BeginUpdate();
-                lbActiveModules.BeginUpdate();
-
-                // fill the list of active modules
-                foreach (string fileName in settings.ModuleFileNames)
-                {
-                    lbActiveModules.Items.Add(new ModuleItem()
-                    {
-                        IsInitialized = false,
-                        FileName = fileName,
-                        FilePath = Path.Combine(environment.AppDirs.ModDir, fileName)
-                    });
-                }
+                lbUnusedModules.Items.Clear();
 
                 // read all available modules
                 DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.ModDir);
@@ -128,6 +117,33 @@ namespace Scada.Server.Shell.Forms
                         });
                     }
                 }
+            }
+            finally
+            {
+                lbUnusedModules.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Setup the controls according to the settings.
+        /// </summary>
+        private void SettingsToControls()
+        {
+            try
+            {
+                lbActiveModules.BeginUpdate();
+                lbActiveModules.Items.Clear();
+
+                // fill the list of active modules
+                foreach (string fileName in settings.ModuleFileNames)
+                {
+                    lbActiveModules.Items.Add(new ModuleItem()
+                    {
+                        IsInitialized = false,
+                        FileName = fileName,
+                        FilePath = Path.Combine(environment.AppDirs.ModDir, fileName)
+                    });
+                }
 
                 // select an item
                 if (lbActiveModules.Items.Count > 0)
@@ -135,8 +151,20 @@ namespace Scada.Server.Shell.Forms
             }
             finally
             {
-                lbUnusedModules.EndUpdate();
                 lbActiveModules.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Set the settings according to the controls.
+        /// </summary>
+        private void ControlsToSettings()
+        {
+            settings.ModuleFileNames.Clear();
+
+            foreach (ModuleItem item in lbActiveModules.Items)
+            {
+                settings.ModuleFileNames.Add(item.FileName);
             }
         }
 
@@ -228,7 +256,8 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         public void Save()
         {
-            // TODO: controls to settings
+            ControlsToSettings();
+
             if (ChildFormTag.SendMessage(this, ServerMessage.SaveSettings))
                 ChildFormTag.Modified = false;
         }
@@ -237,37 +266,32 @@ namespace Scada.Server.Shell.Forms
         private void FrmModules_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmModules");
-            FillModuleLists();
+            SettingsToControls();
+            FillUnusedModules();
             SetButtonsEnabled();
         }
 
         private void btnActivate_Click(object sender, EventArgs e)
         {
-            // add the selected module to the settings
-            if (lbUnusedModules.SelectedItem is ModuleItem moduleItem &&
-                !settings.ModuleFileNames.Contains(moduleItem.FileName))
+            // move the selected module from unused modules to active modules
+            if (lbUnusedModules.SelectedItem is ModuleItem moduleItem)
             {
-                settings.ModuleFileNames.Add(moduleItem.FileName);
-                ChildFormTag.Modified = true;
-
                 lbUnusedModules.Items.RemoveAt(lbUnusedModules.SelectedIndex);
                 lbActiveModules.SelectedIndex = lbActiveModules.Items.Add(moduleItem);
                 lbActiveModules.Focus();
+                ChildFormTag.Modified = true;
             }
         }
 
         private void btnDeactivate_Click(object sender, EventArgs e)
         {
-            // remove the selected module from the settings
-            if (lbActiveModules.SelectedItem is ModuleItem moduleItem &&
-                settings.ModuleFileNames.Contains(moduleItem.FileName))
+            // move the selected module from active modules to unused modules
+            if (lbActiveModules.SelectedItem is ModuleItem moduleItem)
             {
-                settings.ModuleFileNames.Remove(moduleItem.FileName);
-                ChildFormTag.Modified = true;
-
                 lbActiveModules.Items.RemoveAt(lbActiveModules.SelectedIndex);
                 lbUnusedModules.SelectedIndex = lbUnusedModules.Items.Add(moduleItem);
                 lbUnusedModules.Focus();
+                ChildFormTag.Modified = true;
             }
         }
 
@@ -281,14 +305,11 @@ namespace Scada.Server.Shell.Forms
 
                 if (prevInd >= 0)
                 {
-                    settings.ModuleFileNames.RemoveAt(curInd);
-                    settings.ModuleFileNames.Insert(prevInd, moduleItem.FileName);
-                    ChildFormTag.Modified = true;
-
                     lbActiveModules.Items.RemoveAt(curInd);
                     lbActiveModules.Items.Insert(prevInd, moduleItem);
                     lbActiveModules.SelectedIndex = prevInd;
                     lbActiveModules.Focus();
+                    ChildFormTag.Modified = true;
                 }
             }
         }
@@ -303,14 +324,11 @@ namespace Scada.Server.Shell.Forms
 
                 if (nextInd < lbActiveModules.Items.Count)
                 {
-                    settings.ModuleFileNames.RemoveAt(curInd);
-                    settings.ModuleFileNames.Insert(nextInd, moduleItem.FileName);
-                    ChildFormTag.Modified = true;
-
                     lbActiveModules.Items.RemoveAt(curInd);
                     lbActiveModules.Items.Insert(nextInd, moduleItem);
                     lbActiveModules.SelectedIndex = nextInd;
                     lbActiveModules.Focus();
+                    ChildFormTag.Modified = true;
                 }
             }
         }
