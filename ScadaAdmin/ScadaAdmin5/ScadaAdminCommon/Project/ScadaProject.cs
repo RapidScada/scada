@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
@@ -143,6 +144,7 @@ namespace Scada.Admin.Project
             Instances.Clear();
         }
 
+
         /// <summary>
         /// Loads the project from the specified file.
         /// </summary>
@@ -213,7 +215,7 @@ namespace Scada.Admin.Project
 
             // save intances
             XmlElement instancesElem = xmlDoc.CreateElement("Instances");
-            xmlDoc.AppendChild(instancesElem);
+            rootElem.AppendChild(instancesElem);
 
             foreach (Instance instance in Instances)
             {
@@ -241,6 +243,19 @@ namespace Scada.Admin.Project
                 errMsg = AdminPhrases.SaveProjectError + ": " + ex.Message;
                 return false;
             }
+        }
+        
+        /// <summary>
+        /// Creates a new instance that is not added to any project.
+        /// </summary>
+        public Instance CreateInstance(string name)
+        {
+            string projectDir = Path.GetDirectoryName(FileName);
+            return new Instance()
+            {
+                Name = name,
+                InstanceDir = Path.Combine(projectDir, "Instances", name)
+            };
         }
 
 

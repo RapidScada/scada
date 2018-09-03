@@ -150,6 +150,7 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
+    <Phrase key="ConfirmDeleteInstance">Are you sure you want to delete the instance?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Are you sure you want to delete the communication line?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
@@ -171,6 +172,10 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ConfigBase">
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.Instance">
+    <Phrase key="CreateInstanceFilesError">Error creating instance files</Phrase>
+    <Phrase key="DeleteInstanceFilesError">Error deleting instance files</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Error creating project</Phrase>

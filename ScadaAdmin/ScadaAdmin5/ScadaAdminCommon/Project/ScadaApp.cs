@@ -40,6 +40,7 @@ namespace Scada.Admin.Project
         public ScadaApp()
         {
             Enabled = true;
+            AppDir = "";
         }
 
 
@@ -47,6 +48,11 @@ namespace Scada.Admin.Project
         /// Gets or sets a value indicating whether the application is present in the instance.
         /// </summary>
         public bool Enabled { get; set; }
+        
+        /// <summary>
+        /// Gets or sets the directory of the application files.
+        /// </summary>
+        public string AppDir { get; set; }
 
 
         /// <summary>
@@ -70,15 +76,5 @@ namespace Scada.Admin.Project
 
             xmlElem.SetAttribute("enabled", Enabled);
         }
-
-        /// <summary>
-        /// Gets the directory of the application configuration.
-        /// </summary>
-        public abstract string GetConfigDir(string parentDir);
-
-        /// <summary>
-        /// Gets the full file name of the application settings.
-        /// </summary>
-        public abstract string GetSettingsPath(string parentDir);
     }
 }

@@ -40,30 +40,31 @@ namespace Scada.Admin.Project
         public WebApp()
             : base()
         {
-            Settings = new WebSettings();
         }
-
-
-        /// <summary>
-        /// Gets the settings of the application
-        /// </summary>
-        public WebSettings Settings { get; protected set; }
 
 
         /// <summary>
         /// Gets the directory of the application configuration.
         /// </summary>
-        public override string GetConfigDir(string parentDir)
+        public string GetConfigDir()
         {
-            return Path.Combine(parentDir, "ScadaWeb", "config");
+            return Path.Combine(AppDir, "config");
         }
 
         /// <summary>
-        /// Gets the full file name of the application settings.
+        /// Gets the directory of the application storage.
         /// </summary>
-        public override string GetSettingsPath(string parentDir)
+        public string GetStorageDir()
         {
-            return Path.Combine(GetConfigDir(parentDir), WebSettings.DefFileName);
+            return Path.Combine(AppDir, "storage");
+        }
+
+        /// <summary>
+        /// Gets the directory of the application.
+        /// </summary>
+        public static string GetAppDir(string parentDir)
+        {
+            return Path.Combine(parentDir, "ScadaWeb");
         }
     }
 }

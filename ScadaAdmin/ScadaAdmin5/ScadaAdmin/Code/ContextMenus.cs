@@ -33,6 +33,8 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal class ContextMenus
     {
+        public ContextMenuStrip InstanceMenu { get; set; }
+
         public ContextMenuStrip CommLineMenu { get; set; }
     }
 }

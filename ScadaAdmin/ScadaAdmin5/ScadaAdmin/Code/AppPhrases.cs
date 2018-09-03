@@ -54,6 +54,7 @@ namespace Scada.Admin.App.Code
 
         // Scada.Admin.App.Forms.FrmMain
         public static string ProjectFileFilter { get; private set; }
+        public static string ConfirmDeleteInstance { get; private set; }
         public static string ConfirmDeleteCommLine { get; private set; }
 
         // Scada.Admin.App.Forms.FrmNewProject
@@ -84,6 +85,7 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
             ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
+            ConfirmDeleteInstance = dict.GetPhrase("ConfirmDeleteInstance");
             ConfirmDeleteCommLine = dict.GetPhrase("ConfirmDeleteCommLine");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmNewProject");

@@ -101,6 +101,12 @@
     <Compile Include="Forms\FrmBaseTableGeneric.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FrmInstanceName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmInstanceName.Designer.cs">
+      <DependentUpon>FrmInstanceName.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -117,6 +123,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmInstanceName.resx">
+      <DependentUpon>FrmInstanceName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

@@ -36,6 +36,10 @@ namespace Scada.Admin
         // Scada.Admin.Project.ConfigBase
         public static string LoadConfigBaseError { get; private set; }
 
+        // Scada.Admin.Project.Instance
+        public static string CreateInstanceFilesError { get; private set; }
+        public static string DeleteInstanceFilesError { get; private set; }
+
         // Scada.Admin.Project.ScadaProject
         public static string CreateProjectError { get; private set; }
         public static string LoadProjectError { get; private set; }
@@ -48,6 +52,10 @@ namespace Scada.Admin
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.ConfigBase");
             LoadConfigBaseError = dict.GetPhrase("LoadConfigBaseError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.Instance");
+            CreateInstanceFilesError = dict.GetPhrase("CreateInstanceFilesError");
+            DeleteInstanceFilesError = dict.GetPhrase("DeleteInstanceFilesError");
 
             dict = Localization.GetDictionary("Scada.Admin.Project.ScadaProject");
             CreateProjectError = dict.GetPhrase("CreateProjectError");

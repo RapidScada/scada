@@ -50,19 +50,43 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
-        /// Gets the directory of the application configuration.
+        /// Gets the full file name of the application settings.
         /// </summary>
-        public override string GetConfigDir(string parentDir)
+        private string GetSettingsPath()
         {
-            return Path.Combine(parentDir, "ScadaServer", "Config");
+            return Path.Combine(GetConfigDir(), Server.Settings.DefFileName);
         }
 
         /// <summary>
-        /// Gets the full file name of the application settings.
+        /// Gets the directory of the application configuration.
         /// </summary>
-        public override string GetSettingsPath(string parentDir)
+        public string GetConfigDir()
         {
-            return Path.Combine(GetConfigDir(parentDir), Server.Settings.DefFileName);
+            return Path.Combine(AppDir, "Config");
+        }
+
+        /// <summary>
+        /// Loads the settings.
+        /// </summary>
+        public bool LoadSettings(out string errMsg)
+        {
+            return Settings.Load(GetSettingsPath(), out errMsg);
+        }
+
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public bool SaveSettings(out string errMsg)
+        {
+            return Settings.Save(GetSettingsPath(), out errMsg);
+        }
+
+        /// <summary>
+        /// Gets the directory of the application.
+        /// </summary>
+        public static string GetAppDir(string parentDir)
+        {
+            return Path.Combine(parentDir, "ScadaServer");
         }
     }
 }

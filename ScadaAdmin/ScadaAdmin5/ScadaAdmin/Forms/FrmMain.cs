@@ -96,7 +96,7 @@ namespace Scada.Admin.App.Forms
             serverShell = new ServerShell();
             commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer,
-                new ContextMenus() { CommLineMenu = cmsCommLine });
+                new ContextMenus() { InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -311,11 +311,20 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Saves the current project settings.
+        /// </summary>
+        private void SaveProjectSettings()
+        {
+            if (!project.Save(project.FileName, out string errMsg))
+                appData.ProcError(errMsg);
+        }
+
+        /// <summary>
         /// Saves the Communicator settings and optionally updates the explorer.
         /// </summary>
         private bool SaveCommSettigns(Instance instance, TreeNode commLineNode)
         {
-            if (instance.SaveCommSettigns(out string errMsg))
+            if (instance.CommApp.SaveSettings(out string errMsg))
             {
                 if (commLineNode != null)
                 {
@@ -419,7 +428,7 @@ namespace Scada.Admin.App.Forms
                 if (e.Message == ServerMessage.SaveSettings)
                 {
                     // save the Server settings
-                    if (!liveInstance.Instance.SaveServerSettigns(out string errMsg))
+                    if (!liveInstance.Instance.ServerApp.SaveSettings(out string errMsg))
                     {
                         appData.ProcError(errMsg);
                         e.Cancel = true;
@@ -529,6 +538,96 @@ namespace Scada.Admin.App.Forms
         }
 
 
+        private void cmsInstance_Opening(object sender, CancelEventArgs e)
+        {
+            // enable or disable the menu items
+            TreeNode treeNode = tvExplorer.SelectedNode;
+            bool isInstanceNode = treeNode != null && treeNode.TagIs(AppNodeType.Instance);
+            miInstanceMoveUp.Enabled = isInstanceNode && treeNode.PrevNode != null;
+            miInstanceMoveDown.Enabled = isInstanceNode && treeNode.NextNode != null;
+            miInstanceDelete.Enabled = isInstanceNode;
+        }
+
+        private void miInstanceAdd_Click(object sender, EventArgs e)
+        {
+            // add a new instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null &&
+                (selectedNode.TagIs(AppNodeType.Instances) || selectedNode.TagIs(AppNodeType.Instance)))
+            {
+                FrmInstanceName frmInstanceName = new FrmInstanceName();
+
+                if (frmInstanceName.ShowDialog() == DialogResult.OK)
+                {
+                    Instance instance = project.CreateInstance(frmInstanceName.InstanceName);
+
+                    if (instance.CreateInstanceFiles(out string errMsg))
+                    {
+                        TreeNode instancesNode = selectedNode.FindClosest(AppNodeType.Instances);
+                        TreeNode instanceNode = explorerBuilder.CreateInstanceNode(instance);
+                        instanceNode.Expand();
+                        tvExplorer.Insert(instancesNode, instanceNode, project.Instances, instance);
+                        SaveProjectSettings();
+                    }
+                    else
+                    {
+                        appData.ProcError(errMsg);
+                    }
+                }
+            }
+        }
+
+        private void miInstanceMoveUp_Click(object sender, EventArgs e)
+        {
+            // move up the selected instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance))
+            {
+                tvExplorer.MoveUpSelectedNode(project.Instances);
+                SaveProjectSettings();
+            }
+        }
+
+        private void miInstanceMoveDown_Click(object sender, EventArgs e)
+        {
+            // move down the selected instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance))
+            {
+                tvExplorer.MoveDownSelectedNode(project.Instances);
+                SaveProjectSettings();
+            }
+        }
+
+        private void miInstanceDelete_Click(object sender, EventArgs e)
+        {
+            // delete the selected instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance) &&
+                MessageBox.Show(AppPhrases.ConfirmDeleteInstance, CommonPhrases.QuestionCaption,
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                CloseChildForms(selectedNode);
+                tvExplorer.RemoveNode(selectedNode, project.Instances);
+
+                if (!liveInstance.Instance.DeleteInstanceFiles(out string errMsg))
+                    appData.ProcError(errMsg);
+
+                SaveProjectSettings();
+            }
+        }
+
+        private void miInstanceRename_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
         private void cmsCommLine_Opening(object sender, CancelEventArgs e)
         {
             // enable or disable the menu items
@@ -548,9 +647,10 @@ namespace Scada.Admin.App.Forms
                 (selectedNode.TagIs(CommNodeType.CommLines) || selectedNode.TagIs(CommNodeType.CommLine)) &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                TreeNode commLinesNode = tvExplorer.SelectedNode.FindClosest(CommNodeType.CommLines);
+                TreeNode commLinesNode = selectedNode.FindClosest(CommNodeType.CommLines);
                 TreeNode commLineNode = commShell.CreateCommLineNode(liveInstance.CommEnvironment);
                 commLineNode.ContextMenuStrip = cmsCommLine;
+                commLineNode.Expand();
                 tvExplorer.Insert(commLinesNode, commLineNode);
                 SaveCommSettigns(liveInstance.Instance, null);
             }

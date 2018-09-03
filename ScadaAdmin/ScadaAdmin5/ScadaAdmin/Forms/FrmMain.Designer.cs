@@ -64,11 +64,19 @@
             this.miCommLineMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.miCommLineMoveDown = new System.Windows.Forms.ToolStripMenuItem();
             this.miCommLineDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsInstance = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miInstanceAdd = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceMoveUp = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceMoveDown = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceSep = new System.Windows.Forms.ToolStripSeparator();
+            this.miInstanceRename = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.cmsCommLine.SuspendLayout();
+            this.cmsInstance.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -373,6 +381,64 @@
             this.miCommLineDelete.Text = "Delete Line";
             this.miCommLineDelete.Click += new System.EventHandler(this.miCommLineDelete_Click);
             // 
+            // cmsInstance
+            // 
+            this.cmsInstance.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miInstanceAdd,
+            this.miInstanceMoveUp,
+            this.miInstanceMoveDown,
+            this.miInstanceDelete,
+            this.miInstanceSep,
+            this.miInstanceRename});
+            this.cmsInstance.Name = "cmsCommLine";
+            this.cmsInstance.Size = new System.Drawing.Size(186, 142);
+            this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
+            // 
+            // miInstanceAdd
+            // 
+            this.miInstanceAdd.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceAdd.Image")));
+            this.miInstanceAdd.Name = "miInstanceAdd";
+            this.miInstanceAdd.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceAdd.Text = "Add Instance";
+            this.miInstanceAdd.Click += new System.EventHandler(this.miInstanceAdd_Click);
+            // 
+            // miInstanceMoveUp
+            // 
+            this.miInstanceMoveUp.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveUp.Image")));
+            this.miInstanceMoveUp.Name = "miInstanceMoveUp";
+            this.miInstanceMoveUp.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceMoveUp.Text = "Move Instance Up";
+            this.miInstanceMoveUp.Click += new System.EventHandler(this.miInstanceMoveUp_Click);
+            // 
+            // miInstanceMoveDown
+            // 
+            this.miInstanceMoveDown.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveDown.Image")));
+            this.miInstanceMoveDown.Name = "miInstanceMoveDown";
+            this.miInstanceMoveDown.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceMoveDown.Text = "Move Instance Down";
+            this.miInstanceMoveDown.Click += new System.EventHandler(this.miInstanceMoveDown_Click);
+            // 
+            // miInstanceDelete
+            // 
+            this.miInstanceDelete.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceDelete.Image")));
+            this.miInstanceDelete.Name = "miInstanceDelete";
+            this.miInstanceDelete.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceDelete.Text = "Delete Instance";
+            this.miInstanceDelete.Click += new System.EventHandler(this.miInstanceDelete_Click);
+            // 
+            // miInstanceSep
+            // 
+            this.miInstanceSep.Name = "miInstanceSep";
+            this.miInstanceSep.Size = new System.Drawing.Size(182, 6);
+            // 
+            // miInstanceRename
+            // 
+            this.miInstanceRename.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceRename.Image")));
+            this.miInstanceRename.Name = "miInstanceRename";
+            this.miInstanceRename.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceRename.Text = "Rename Instance";
+            this.miInstanceRename.Click += new System.EventHandler(this.miInstanceRename_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -400,6 +466,7 @@
             this.pnlLeft.ResumeLayout(false);
             this.pnlRight.ResumeLayout(false);
             this.cmsCommLine.ResumeLayout(false);
+            this.cmsInstance.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -441,6 +508,13 @@
         private System.Windows.Forms.ToolStripMenuItem miCommLineMoveUp;
         private System.Windows.Forms.ToolStripMenuItem miCommLineMoveDown;
         private System.Windows.Forms.ToolStripMenuItem miCommLineDelete;
+        private System.Windows.Forms.ContextMenuStrip cmsInstance;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceAdd;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceMoveUp;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceMoveDown;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceDelete;
+        private System.Windows.Forms.ToolStripSeparator miInstanceSep;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceRename;
     }
 }
 

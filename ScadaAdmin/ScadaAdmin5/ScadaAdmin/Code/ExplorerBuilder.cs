@@ -115,24 +115,6 @@ namespace Scada.Admin.App.Code
             return baseTableNode;
         }
 
-        /// <summary>
-        /// Creates a node that represents the instance.
-        /// </summary>
-        private TreeNode CreateInstanceNode(Instance instance)
-        {
-            TreeNode instanceNode = TreeViewUtils.CreateNode(instance.Name, "instance.png");
-            instanceNode.Tag = new TreeNodeTag()
-            {
-                RelatedObject = new LiveInstance(instance),
-                NodeType = AppNodeType.Instance
-            };
-
-            TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
-            instanceNode.Nodes.Add(emptyNode);
-
-            return instanceNode;
-        }
-
 
         /// <summary>
         /// Creates tree nodes according to the project structure.
@@ -166,6 +148,7 @@ namespace Scada.Admin.App.Code
                 projectNode.Nodes.Add(interfaceNode);
 
                 TreeNode instancesNode = TreeViewUtils.CreateNode(AppPhrases.InstancesNode, "instances.png");
+                instancesNode.ContextMenuStrip = contextMenus.InstanceMenu;
                 instancesNode.Tag = new TreeNodeTag()
                 {
                     RelatedObject = project.Instances,
@@ -185,6 +168,25 @@ namespace Scada.Admin.App.Code
             {
                 treeView.EndUpdate();
             }
+        }
+
+        /// <summary>
+        /// Creates a node that represents the instance.
+        /// </summary>
+        public TreeNode CreateInstanceNode(Instance instance)
+        {
+            TreeNode instanceNode = TreeViewUtils.CreateNode(instance.Name, "instance.png");
+            instanceNode.ContextMenuStrip = contextMenus.InstanceMenu;
+            instanceNode.Tag = new TreeNodeTag()
+            {
+                RelatedObject = new LiveInstance(instance),
+                NodeType = AppNodeType.Instance
+            };
+
+            TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
+            instanceNode.Nodes.Add(emptyNode);
+
+            return instanceNode;
         }
 
         /// <summary>

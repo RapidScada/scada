@@ -25,6 +25,7 @@
 
 using Scada.Web;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -47,6 +48,12 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
+        /// The directory of the instance files
+        /// </summary>
+        protected string instnaceDir;
+
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public Instance()
@@ -66,24 +73,47 @@ namespace Scada.Admin.Project
         public string Name { get; set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Server application.
+        /// Gets the object represents the Server application.
         /// </summary>
-        public ServerApp ServerApp { get; set; }
+        public ServerApp ServerApp { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Communicator application.
+        /// Gets the object represents the Communicator application.
         /// </summary>
-        public CommApp CommApp { get; set; }
+        public CommApp CommApp { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the object represents the Webstation application.
+        /// Gets the object represents the Webstation application.
         /// </summary>
-        public WebApp WebApp { get; set; }
+        public WebApp WebApp { get; protected set; }
 
         /// <summary>
         /// Gets or sets the directory of the instance files.
         /// </summary>
-        public string InstanceDir { get; set; }
+        public string InstanceDir
+        {
+            get
+            {
+                return instnaceDir;
+            }
+            set
+            {
+                instnaceDir = value;
+
+                if (string.IsNullOrEmpty(instnaceDir))
+                {
+                    ServerApp.AppDir = "";
+                    CommApp.AppDir = "";
+                    WebApp.AppDir = "";
+                }
+                else
+                {
+                    ServerApp.AppDir = ServerApp.GetAppDir(instnaceDir);
+                    CommApp.AppDir = CommApp.GetAppDir(instnaceDir);
+                    WebApp.AppDir = WebApp.GetAppDir(instnaceDir);
+                }
+            }
+        }
 
         /// <summary>
         /// Gets a value indicating whether the application settings are loaded.
@@ -119,6 +149,7 @@ namespace Scada.Admin.Project
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");
 
+            xmlElem.AppendElem("Name", Name);
             ServerApp.SaveToXml(xmlElem.AppendElem("ServerApp"));
             CommApp.SaveToXml(xmlElem.AppendElem("CommApp"));
             WebApp.SaveToXml(xmlElem.AppendElem("WebApp"));
@@ -134,11 +165,11 @@ namespace Scada.Admin.Project
                 errMsg = "";
                 return true;
             }
-            else if (ServerApp.Settings.Load(ServerApp.GetSettingsPath(InstanceDir), out errMsg) &&
-                CommApp.Settings.Load(CommApp.GetSettingsPath(InstanceDir), out errMsg) &&
-                WebApp.Settings.LoadFromFile(WebApp.GetSettingsPath(InstanceDir), out errMsg))
+            else if ((!ServerApp.Enabled || ServerApp.LoadSettings(out errMsg)) &&
+                (!CommApp.Enabled || CommApp.LoadSettings(out errMsg)))
             {
                 AppSettingsLoaded = true;
+                errMsg = "";
                 return true;
             }
             else
@@ -148,19 +179,62 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
-        /// Saves the Server settings.
+        /// Creates all files required for the instance.
         /// </summary>
-        public bool SaveServerSettigns(out string errMsg)
+        public bool CreateInstanceFiles(out string errMsg)
         {
-            return ServerApp.Settings.Save(ServerApp.GetSettingsPath(InstanceDir), out errMsg);
+            try
+            {
+                Directory.CreateDirectory(InstanceDir);
+
+                if (ServerApp.Enabled)
+                {
+                    Directory.CreateDirectory(ServerApp.GetConfigDir());
+                    if (!ServerApp.SaveSettings(out errMsg))
+                        return false;
+                }
+
+                if (CommApp.Enabled)
+                {
+                    Directory.CreateDirectory(CommApp.GetConfigDir());
+                    if (!CommApp.SaveSettings(out errMsg))
+                        return false;
+                }
+
+                if (WebApp.Enabled)
+                {
+                    Directory.CreateDirectory(WebApp.GetConfigDir());
+                    Directory.CreateDirectory(WebApp.GetStorageDir());
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.CreateInstanceFilesError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
-        /// Saves the Communicator settings.
+        /// Deletes all files of the instance.
         /// </summary>
-        public bool SaveCommSettigns(out string errMsg)
+        public bool DeleteInstanceFiles(out string errMsg)
         {
-            return CommApp.Settings.Save(CommApp.GetSettingsPath(InstanceDir), out errMsg);
+            try
+            {
+                if (Directory.Exists(InstanceDir))
+                    Directory.Delete(InstanceDir, true);
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.DeleteInstanceFilesError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }
