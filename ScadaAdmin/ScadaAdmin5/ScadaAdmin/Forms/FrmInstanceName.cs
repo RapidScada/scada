@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  :  Form for entering an instance name
+ * Summary  : Form for entering an instance name
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018

@@ -179,7 +179,7 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
-        /// Creates all files required for the instance.
+        /// Creates all project files required for the instance.
         /// </summary>
         public bool CreateInstanceFiles(out string errMsg)
         {
@@ -187,12 +187,8 @@ namespace Scada.Admin.Project
             {
                 Directory.CreateDirectory(InstanceDir);
 
-                if (ServerApp.Enabled)
-                {
-                    Directory.CreateDirectory(ServerApp.GetConfigDir());
-                    if (!ServerApp.SaveSettings(out errMsg))
-                        return false;
-                }
+                if (ServerApp.Enabled && !ServerApp.CreateAppFiles(out errMsg))
+                    return false;
 
                 if (CommApp.Enabled)
                 {
@@ -218,7 +214,7 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
-        /// Deletes all files of the instance.
+        /// Deletes all project files of the instance.
         /// </summary>
         public bool DeleteInstanceFiles(out string errMsg)
         {

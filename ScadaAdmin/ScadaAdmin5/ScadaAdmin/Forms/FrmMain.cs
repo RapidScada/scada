@@ -546,6 +546,7 @@ namespace Scada.Admin.App.Forms
             miInstanceMoveUp.Enabled = isInstanceNode && treeNode.PrevNode != null;
             miInstanceMoveDown.Enabled = isInstanceNode && treeNode.NextNode != null;
             miInstanceDelete.Enabled = isInstanceNode;
+            miInstanceProperties.Enabled = isInstanceNode;
         }
 
         private void miInstanceAdd_Click(object sender, EventArgs e)
@@ -556,11 +557,14 @@ namespace Scada.Admin.App.Forms
             if (selectedNode != null &&
                 (selectedNode.TagIs(AppNodeType.Instances) || selectedNode.TagIs(AppNodeType.Instance)))
             {
-                FrmInstanceName frmInstanceName = new FrmInstanceName();
+                FrmInstanceEdit frmInstanceEdit = new FrmInstanceEdit();
 
-                if (frmInstanceName.ShowDialog() == DialogResult.OK)
+                if (frmInstanceEdit.ShowDialog() == DialogResult.OK)
                 {
-                    Instance instance = project.CreateInstance(frmInstanceName.InstanceName);
+                    Instance instance = project.CreateInstance(frmInstanceEdit.InstanceName);
+                    instance.ServerApp.Enabled = frmInstanceEdit.ServerAppEnabled;
+                    instance.CommApp.Enabled = frmInstanceEdit.CommAppEnabled;
+                    instance.WebApp.Enabled = frmInstanceEdit.WebAppEnabled;
 
                     if (instance.CreateInstanceFiles(out string errMsg))
                     {
@@ -625,6 +629,74 @@ namespace Scada.Admin.App.Forms
         private void miInstanceRename_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void miInstanceProperties_Click(object sender, EventArgs e)
+        {
+            // edit properties of the selected instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                FrmInstanceEdit frmInstanceEdit = new FrmInstanceEdit() { Mode = FrmInstanceEdit.OperatingMode.Edit };
+                Instance instance = liveInstance.Instance;
+                frmInstanceEdit.Init(instance);
+
+                if (frmInstanceEdit.ShowDialog() == DialogResult.OK)
+                {
+                    // enable or disable the applications
+                    bool projectModified = false;
+                    ServerApp serverApp = instance.ServerApp;
+                    CommApp commApp = instance.CommApp;
+                    WebApp webApp = instance.WebApp;
+
+                    if (!serverApp.Enabled && frmInstanceEdit.ServerAppEnabled)
+                    {
+                        if (serverApp.CreateAppFiles(out string errMsg))
+                        {
+                            serverApp.Enabled = true;
+                            projectModified = true;
+                        }
+                        else
+                        {
+                            appData.ProcError(errMsg);
+                        }
+                    }
+
+                    if (serverApp.Enabled && !frmInstanceEdit.ServerAppEnabled)
+                    {
+                        if (serverApp.DeleteAppFiles(out string errMsg))
+                        {
+                            serverApp.Enabled = false;
+                            projectModified = true;
+                        }
+                        else
+                        {
+                            appData.ProcError(errMsg);
+                        }
+                    }
+
+                    // save the changes and update the explorer
+                    if (projectModified)
+                    {
+                        CloseChildForms(selectedNode);
+                        TreeNode newInstanceNode = explorerBuilder.CreateInstanceNode(instance);
+
+                        if (selectedNode.IsExpanded)
+                            newInstanceNode.Expand(); 
+
+                        // replace the instance node
+                        int index = selectedNode.Index;
+                        TreeNode parentNode = selectedNode.Parent;
+                        selectedNode.Remove();
+                        parentNode.Nodes.Insert(index, newInstanceNode);
+                        tvExplorer.SelectedNode = newInstanceNode;
+
+                        SaveProjectSettings();
+                    }
+                }
+            }
         }
 
 

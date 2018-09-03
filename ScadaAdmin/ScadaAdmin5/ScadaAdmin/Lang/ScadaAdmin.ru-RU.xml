@@ -174,8 +174,8 @@
     <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.Instance">
-    <Phrase key="CreateInstanceFilesError">Ошибка при создании файлов экземпляра</Phrase>
-    <Phrase key="DeleteInstanceFilesError">Ошибка при удалении файлов экземпляра</Phrase>
+    <Phrase key="CreateInstanceFilesError">Ошибка при создании проектных файлов экземпляра</Phrase>
+    <Phrase key="DeleteInstanceFilesError">Ошибка при удалении проектных файлов экземпляра</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Ошибка при создании проекта</Phrase>
@@ -184,5 +184,9 @@
     <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
     <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}: {1}</Phrase>
     <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}: {1}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ServerApp">
+    <Phrase key="CreateServerFilesError">Ошибка при создании проектных файлов Сервера</Phrase>
+    <Phrase key="DeleteServerFilesError">Ошибка при удалении проектных файлов Сервера</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

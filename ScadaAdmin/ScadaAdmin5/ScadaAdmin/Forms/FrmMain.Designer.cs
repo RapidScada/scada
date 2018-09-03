@@ -71,6 +71,7 @@
             this.miInstanceDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceSep = new System.Windows.Forms.ToolStripSeparator();
             this.miInstanceRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -389,7 +390,8 @@
             this.miInstanceMoveDown,
             this.miInstanceDelete,
             this.miInstanceSep,
-            this.miInstanceRename});
+            this.miInstanceRename,
+            this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
             this.cmsInstance.Size = new System.Drawing.Size(186, 142);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
@@ -438,6 +440,14 @@
             this.miInstanceRename.Size = new System.Drawing.Size(185, 22);
             this.miInstanceRename.Text = "Rename Instance";
             this.miInstanceRename.Click += new System.EventHandler(this.miInstanceRename_Click);
+            // 
+            // miInstanceProperties
+            // 
+            this.miInstanceProperties.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProperties.Image")));
+            this.miInstanceProperties.Name = "miInstanceProperties";
+            this.miInstanceProperties.Size = new System.Drawing.Size(185, 22);
+            this.miInstanceProperties.Text = "Properties";
+            this.miInstanceProperties.Click += new System.EventHandler(this.miInstanceProperties_Click);
             // 
             // FrmMain
             // 
@@ -515,6 +525,7 @@
         private System.Windows.Forms.ToolStripMenuItem miInstanceDelete;
         private System.Windows.Forms.ToolStripSeparator miInstanceSep;
         private System.Windows.Forms.ToolStripMenuItem miInstanceRename;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceProperties;
     }
 }
 

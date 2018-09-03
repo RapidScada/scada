@@ -78,7 +78,7 @@ namespace Scada.Admin.Project
         /// </summary>
         public bool SaveSettings(out string errMsg)
         {
-            return Settings.Save(AppDir, out errMsg);
+            return Settings.Save(GetSettingsPath(), out errMsg);
         }
 
         /// <summary>

@@ -174,8 +174,8 @@
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.Instance">
-    <Phrase key="CreateInstanceFilesError">Error creating instance files</Phrase>
-    <Phrase key="DeleteInstanceFilesError">Error deleting instance files</Phrase>
+    <Phrase key="CreateInstanceFilesError">Error creating instance project files</Phrase>
+    <Phrase key="DeleteInstanceFilesError">Error deleting instance project files</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Error creating project</Phrase>
@@ -184,5 +184,9 @@
     <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
     <Phrase key="LoadBaseTableError">Error loading the {0} table: {1}</Phrase>
     <Phrase key="SaveBaseTableError">Error saving the {0} table: {1}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ServerApp">
+    <Phrase key="CreateServerFilesError">Error creating Server project files</Phrase>
+    <Phrase key="DeleteServerFilesError">Error deleting Server project files</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -48,6 +48,10 @@ namespace Scada.Admin
         public static string LoadBaseTableError { get; private set; }
         public static string SaveBaseTableError { get; private set; }
 
+        // Scada.Admin.Project.ServerApp
+        public static string CreateServerFilesError { get; private set; }
+        public static string DeleteServerFilesError { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.ConfigBase");
@@ -64,6 +68,10 @@ namespace Scada.Admin
             LoadProjectDescrError = dict.GetPhrase("LoadProjectDescrError");
             LoadBaseTableError = dict.GetPhrase("LoadBaseTableError");
             SaveBaseTableError = dict.GetPhrase("SaveBaseTableError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.ServerApp");
+            CreateServerFilesError = dict.GetPhrase("CreateServerFilesError");
+            DeleteServerFilesError = dict.GetPhrase("DeleteServerFilesError");
         }
     }
 }
