@@ -170,6 +170,10 @@
     <Phrase key="ProjectTemplateEmpty">Creating a project without a template is not recommended. Continue?</Phrase>
     <Phrase key="ProjectTemplateNotFound">The project template not found.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.Project.CommApp">
+    <Phrase key="CreateCommFilesError">Error creating Communicator project files</Phrase>
+    <Phrase key="DeleteCommFilesError">Error deleting Communicator project files</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.ConfigBase">
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
   </Dictionary>
@@ -188,5 +192,9 @@
   <Dictionary key="Scada.Admin.Project.ServerApp">
     <Phrase key="CreateServerFilesError">Error creating Server project files</Phrase>
     <Phrase key="DeleteServerFilesError">Error deleting Server project files</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.WebApp">
+    <Phrase key="CreateWebFilesError">Error creating Webstation project files</Phrase>
+    <Phrase key="DeleteWebFilesError">Error deleting Webstation project files</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -33,6 +33,10 @@ namespace Scada.Admin
     /// </summary>
     public static class AdminPhrases
     {
+        // Scada.Admin.Project.CommApp
+        public static string CreateCommFilesError { get; private set; }
+        public static string DeleteCommFilesError { get; private set; }
+
         // Scada.Admin.Project.ConfigBase
         public static string LoadConfigBaseError { get; private set; }
 
@@ -52,9 +56,17 @@ namespace Scada.Admin
         public static string CreateServerFilesError { get; private set; }
         public static string DeleteServerFilesError { get; private set; }
 
+        // Scada.Admin.Project.WebApp
+        public static string CreateWebFilesError { get; private set; }
+        public static string DeleteWebFilesError { get; private set; }
+
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.ConfigBase");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.CommApp");
+            CreateCommFilesError = dict.GetPhrase("CreateCommFilesError");
+            DeleteCommFilesError = dict.GetPhrase("DeleteCommFilesError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.ConfigBase");
             LoadConfigBaseError = dict.GetPhrase("LoadConfigBaseError");
 
             dict = Localization.GetDictionary("Scada.Admin.Project.Instance");
@@ -72,6 +84,10 @@ namespace Scada.Admin
             dict = Localization.GetDictionary("Scada.Admin.Project.ServerApp");
             CreateServerFilesError = dict.GetPhrase("CreateServerFilesError");
             DeleteServerFilesError = dict.GetPhrase("DeleteServerFilesError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.WebApp");
+            CreateWebFilesError = dict.GetPhrase("CreateWebFilesError");
+            DeleteWebFilesError = dict.GetPhrase("DeleteWebFilesError");
         }
     }
 }

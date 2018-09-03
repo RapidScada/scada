@@ -127,8 +127,23 @@ namespace Scada.Admin.App.Forms
 
             InstanceName = instance.Name;
             ServerAppEnabled = instance.ServerApp.Enabled;
-            CommAppEnabled = instance.ServerApp.Enabled;
-            WebAppEnabled = instance.ServerApp.Enabled;
+            CommAppEnabled = instance.CommApp.Enabled;
+            WebAppEnabled = instance.WebApp.Enabled;
+        }
+
+        /// <summary>
+        /// Determines whether the application is enabled or not.
+        /// </summary>
+        public bool GetAppEnabled(ScadaApp scadaApp)
+        {
+            if (scadaApp is ServerApp)
+                return ServerAppEnabled;
+            else if (scadaApp is CommApp)
+                return CommAppEnabled;
+            else if (scadaApp is WebApp)
+                return WebAppEnabled;
+            else
+                return false;
         }
 
 

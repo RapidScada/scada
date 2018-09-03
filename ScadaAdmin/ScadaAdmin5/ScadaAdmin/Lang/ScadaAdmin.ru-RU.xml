@@ -170,6 +170,10 @@
     <Phrase key="ProjectTemplateEmpty">Создание проекта без шаблона не рекомендуется. Продолжить?</Phrase>
     <Phrase key="ProjectTemplateNotFound">Шаблон проекта не найден.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.Project.CommApp">
+    <Phrase key="CreateCommFilesError">Ошибка при создании проектных файлов Коммуникатора</Phrase>
+    <Phrase key="DeleteCommFilesError">Ошибка при удалении проектных файлов Коммуникатора</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.ConfigBase">
     <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
   </Dictionary>
@@ -188,5 +192,9 @@
   <Dictionary key="Scada.Admin.Project.ServerApp">
     <Phrase key="CreateServerFilesError">Ошибка при создании проектных файлов Сервера</Phrase>
     <Phrase key="DeleteServerFilesError">Ошибка при удалении проектных файлов Сервера</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.WebApp">
+    <Phrase key="CreateWebFilesError">Ошибка при создании проектных файлов Вебстанции</Phrase>
+    <Phrase key="DeleteWebFilesError">Ошибка при удалении проектных файлов Вебстанции</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

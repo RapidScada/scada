@@ -546,6 +546,7 @@ namespace Scada.Admin.App.Forms
             miInstanceMoveUp.Enabled = isInstanceNode && treeNode.PrevNode != null;
             miInstanceMoveDown.Enabled = isInstanceNode && treeNode.NextNode != null;
             miInstanceDelete.Enabled = isInstanceNode;
+            miInstanceRename.Enabled = isInstanceNode;
             miInstanceProperties.Enabled = isInstanceNode;
         }
 
@@ -647,33 +648,37 @@ namespace Scada.Admin.App.Forms
                 {
                     // enable or disable the applications
                     bool projectModified = false;
-                    ServerApp serverApp = instance.ServerApp;
-                    CommApp commApp = instance.CommApp;
-                    WebApp webApp = instance.WebApp;
+                    ScadaApp[] scadaApps = new ScadaApp[] { instance.ServerApp, instance.CommApp, instance.WebApp };
 
-                    if (!serverApp.Enabled && frmInstanceEdit.ServerAppEnabled)
+                    foreach (ScadaApp scadaApp in scadaApps)
                     {
-                        if (serverApp.CreateAppFiles(out string errMsg))
-                        {
-                            serverApp.Enabled = true;
-                            projectModified = true;
-                        }
-                        else
-                        {
-                            appData.ProcError(errMsg);
-                        }
-                    }
+                        bool prevState = scadaApp.Enabled;
+                        bool curState = frmInstanceEdit.GetAppEnabled(scadaApp);
 
-                    if (serverApp.Enabled && !frmInstanceEdit.ServerAppEnabled)
-                    {
-                        if (serverApp.DeleteAppFiles(out string errMsg))
+                        if (!prevState && curState)
                         {
-                            serverApp.Enabled = false;
-                            projectModified = true;
+                            if (scadaApp.CreateAppFiles(out string errMsg))
+                            {
+                                scadaApp.Enabled = true;
+                                projectModified = true;
+                            }
+                            else
+                            {
+                                appData.ProcError(errMsg);
+                            }
                         }
-                        else
+
+                        if (prevState && !curState)
                         {
-                            appData.ProcError(errMsg);
+                            if (scadaApp.DeleteAppFiles(out string errMsg))
+                            {
+                                scadaApp.Enabled = false;
+                                projectModified = true;
+                            }
+                            else
+                            {
+                                appData.ProcError(errMsg);
+                            }
                         }
                     }
 
@@ -681,18 +686,7 @@ namespace Scada.Admin.App.Forms
                     if (projectModified)
                     {
                         CloseChildForms(selectedNode);
-                        TreeNode newInstanceNode = explorerBuilder.CreateInstanceNode(instance);
-
-                        if (selectedNode.IsExpanded)
-                            newInstanceNode.Expand(); 
-
-                        // replace the instance node
-                        int index = selectedNode.Index;
-                        TreeNode parentNode = selectedNode.Parent;
-                        selectedNode.Remove();
-                        parentNode.Nodes.Insert(index, newInstanceNode);
-                        tvExplorer.SelectedNode = newInstanceNode;
-
+                        explorerBuilder.FillInstanceNode(selectedNode);
                         SaveProjectSettings();
                     }
                 }

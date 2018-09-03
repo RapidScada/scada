@@ -76,5 +76,15 @@ namespace Scada.Admin.Project
 
             xmlElem.SetAttribute("enabled", Enabled);
         }
+
+        /// <summary>
+        /// Creates project files required for the application.
+        /// </summary>
+        public abstract bool CreateAppFiles(out string errMsg);
+
+        /// <summary>
+        /// Delete project files of the application.
+        /// </summary>
+        public abstract bool DeleteAppFiles(out string errMsg);
     }
 }

@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using System;
 using System.IO;
 
 namespace Scada.Admin.Project
@@ -79,6 +80,41 @@ namespace Scada.Admin.Project
         public bool SaveSettings(out string errMsg)
         {
             return Settings.Save(GetSettingsPath(), out errMsg);
+        }
+
+        /// <summary>
+        /// Creates project files required for the application.
+        /// </summary>
+        public override bool CreateAppFiles(out string errMsg)
+        {
+            try
+            {
+                Directory.CreateDirectory(GetConfigDir());
+                return SaveSettings(out errMsg);
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.CreateCommFilesError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Delete project files of the application.
+        /// </summary>
+        public override bool DeleteAppFiles(out string errMsg)
+        {
+            try
+            {
+                Directory.Delete(AppDir, true);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.DeleteCommFilesError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>

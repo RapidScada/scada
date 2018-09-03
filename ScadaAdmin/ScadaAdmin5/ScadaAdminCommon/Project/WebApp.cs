@@ -24,6 +24,7 @@
  */
 
 using Scada.Web;
+using System;
 using System.IO;
 
 namespace Scada.Admin.Project
@@ -57,6 +58,43 @@ namespace Scada.Admin.Project
         public string GetStorageDir()
         {
             return Path.Combine(AppDir, "storage");
+        }
+
+        /// <summary>
+        /// Creates project files required for the application.
+        /// </summary>
+        public override bool CreateAppFiles(out string errMsg)
+        {
+            try
+            {
+                Directory.CreateDirectory(GetConfigDir());
+                Directory.CreateDirectory(GetStorageDir());
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.CreateWebFilesError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Delete project files of the application.
+        /// </summary>
+        public override bool DeleteAppFiles(out string errMsg)
+        {
+            try
+            {
+                Directory.Delete(AppDir, true);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.DeleteWebFilesError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>

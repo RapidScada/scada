@@ -186,21 +186,12 @@ namespace Scada.Admin.Project
             try
             {
                 Directory.CreateDirectory(InstanceDir);
+                ScadaApp[] scadaApps = new ScadaApp[] { ServerApp, CommApp, WebApp };
 
-                if (ServerApp.Enabled && !ServerApp.CreateAppFiles(out errMsg))
-                    return false;
-
-                if (CommApp.Enabled)
+                foreach (ScadaApp scadaApp in scadaApps)
                 {
-                    Directory.CreateDirectory(CommApp.GetConfigDir());
-                    if (!CommApp.SaveSettings(out errMsg))
+                    if (scadaApp.Enabled && !scadaApp.CreateAppFiles(out errMsg))
                         return false;
-                }
-
-                if (WebApp.Enabled)
-                {
-                    Directory.CreateDirectory(WebApp.GetConfigDir());
-                    Directory.CreateDirectory(WebApp.GetStorageDir());
                 }
 
                 errMsg = "";

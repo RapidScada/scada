@@ -85,7 +85,7 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Creates project files required for the application.
         /// </summary>
-        public bool CreateAppFiles(out string errMsg)
+        public override bool CreateAppFiles(out string errMsg)
         {
             try
             {
@@ -102,7 +102,7 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Delete project files of the application.
         /// </summary>
-        public bool DeleteAppFiles(out string errMsg)
+        public override bool DeleteAppFiles(out string errMsg)
         {
             try
             {
