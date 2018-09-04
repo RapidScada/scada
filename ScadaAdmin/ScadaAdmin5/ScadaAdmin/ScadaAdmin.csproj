@@ -88,6 +88,7 @@
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ContextMenus.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
+    <Compile Include="Code\FileItem.cs" />
     <Compile Include="Code\FormState.cs" />
     <Compile Include="Code\CommDirs.cs" />
     <Compile Include="Code\LiveInstance.cs" />
@@ -224,6 +225,7 @@
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\file.png" />
     <None Include="Resources\chrome.png" />
     <None Include="Resources\ui.png" />
     <None Include="Resources\table.png" />

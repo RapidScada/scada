@@ -205,6 +205,10 @@
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmRename">
+    <Phrase key="this">Переименование</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
     <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
   </Dictionary>

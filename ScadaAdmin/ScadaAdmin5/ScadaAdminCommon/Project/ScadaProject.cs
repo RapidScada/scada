@@ -325,13 +325,17 @@ namespace Scada.Admin.Project
                     project.Load(template);
 
                 string projectDir = Path.Combine(location, name);
+                project.FileName = GetProjectFileName(projectDir, name);
 
                 if (Directory.Exists(projectDir))
                     throw new ScadaException(AdminPhrases.ProjectDirectoryExists);
 
                 Directory.CreateDirectory(projectDir);
+                Directory.CreateDirectory(project.ConfigBase.BaseDir);
+                Directory.CreateDirectory(project.Interface.InterfaceDir);
+
                 project.Description = "";
-                project.Save(GetProjectFileName(projectDir, name));
+                project.Save(project.FileName);
 
                 errMsg = "";
                 return true;

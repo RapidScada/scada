@@ -40,5 +40,7 @@ namespace Scada.Admin.App.Code
         public const string ServerApp = "ServerApp";
         public const string CommApp = "CommApp";
         public const string WebApp = "WebApp";
+        public const string Directory = "Directory";
+        public const string File = "File";
     }
 }

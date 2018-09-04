@@ -205,6 +205,10 @@
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmRename">
+    <Phrase key="this">Rename</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ItemNameEmpty">The name can not be empty.</Phrase>
     <Phrase key="ItemNameInvalid">The name contains invalid characters.</Phrase>
   </Dictionary>

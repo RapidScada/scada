@@ -155,6 +155,7 @@ namespace Scada.Admin.App.Forms
             ilExplorer.Images.Add("comm.png", Resources.comm);
             ilExplorer.Images.Add("database.png", Resources.database);
             ilExplorer.Images.Add("empty.png", Resources.empty);
+            ilExplorer.Images.Add("file.png", Resources.file);
             ilExplorer.Images.Add("folder_closed.png", Resources.folder_closed);
             ilExplorer.Images.Add("folder_open.png", Resources.folder_open);
             ilExplorer.Images.Add("instance.png", Resources.instance);
@@ -406,11 +407,21 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            // prepare an instance node
-            if (e.Node.TagIs(AppNodeType.Instance))
+            // fill a node on demand
+            TreeNode treeNode = e.Node;
+
+            if (treeNode.TagIs(AppNodeType.Interface))
+            {
+                explorerBuilder.FillInterfaceNode(treeNode);
+            }
+            else if (treeNode.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
-                PrepareInstanceNode(e.Node, liveInstance);
+                PrepareInstanceNode(treeNode, liveInstance);
+            }
+            else if (treeNode.TagIs(AppNodeType.WebApp))
+            {
+                explorerBuilder.FillWebstationNode(treeNode);
             }
         }
 

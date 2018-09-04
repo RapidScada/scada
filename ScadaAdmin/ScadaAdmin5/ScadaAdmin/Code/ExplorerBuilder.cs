@@ -29,6 +29,7 @@ using Scada.Comm.Shell.Code;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
@@ -68,7 +69,7 @@ namespace Scada.Admin.App.Code
         private TreeNode CreateBaseNode(ConfigBase configBase)
         {
             TreeNode baseNode = TreeViewUtils.CreateNode(AppPhrases.BaseNode, "database.png");
-            baseNode.Tag = new TreeNodeTag()
+            baseNode.Tag = new TreeNodeTag
             {
                 RelatedObject = project.ConfigBase,
                 NodeType = AppNodeType.Base
@@ -107,12 +108,46 @@ namespace Scada.Admin.App.Code
         private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
         {
             TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
-            baseTableNode.Tag = new TreeNodeTag()
+            baseTableNode.Tag = new TreeNodeTag
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
-                FormArgs = new object[] { appData, project, baseTable }
+                FormArgs = new object[] { appData, project, baseTable },
+                RelatedObject = baseTable,
+                NodeType = AppNodeType.BaseTable
             };
             return baseTableNode;
+        }
+
+        /// <summary>
+        /// Fills the tree node according to the file system.
+        /// </summary>
+        private void FillFileNode(TreeNode treeNode, DirectoryInfo directoryInfo)
+        {
+            DirectoryInfo[] dirInfoArr = directoryInfo.GetDirectories();
+            TreeNodeCollection nodes = treeNode.Nodes;
+
+            foreach (DirectoryInfo subdirInfo in directoryInfo.GetDirectories())
+            {
+                TreeNode subdirNode = TreeViewUtils.CreateNode(subdirInfo.Name, "folder_closed.png");
+                subdirNode.Tag = new TreeNodeTag
+                {
+                    RelatedObject = new FileItem(directoryInfo),
+                    NodeType = AppNodeType.Directory
+                };
+                FillFileNode(subdirNode, subdirInfo);
+                nodes.Add(subdirNode);
+            }
+
+            foreach (FileInfo fileInfo in directoryInfo.GetFiles())
+            {
+                TreeNode fileNode = TreeViewUtils.CreateNode(fileInfo.Name, "file.png");
+                fileNode.Tag = new TreeNodeTag
+                {
+                    RelatedObject = new FileItem(fileInfo),
+                    NodeType = AppNodeType.File
+                };
+                nodes.Add(fileNode);
+            }
         }
 
 
@@ -130,7 +165,7 @@ namespace Scada.Admin.App.Code
 
                 TreeNode projectNode = TreeViewUtils.CreateNode(project.Name, "project.png", true);
                 projectNode.ContextMenuStrip = contextMenus.ProjectMenu;
-                projectNode.Tag = new TreeNodeTag()
+                projectNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project,
                     NodeType = AppNodeType.Project
@@ -141,16 +176,19 @@ namespace Scada.Admin.App.Code
                 projectNode.Nodes.Add(baseNode);
 
                 TreeNode interfaceNode = TreeViewUtils.CreateNode(AppPhrases.InterfaceNode, "ui.png");
-                interfaceNode.Tag = new TreeNodeTag()
+                interfaceNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project.Interface,
                     NodeType = AppNodeType.Interface
                 };
                 projectNode.Nodes.Add(interfaceNode);
 
+                TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
+                interfaceNode.Nodes.Add(emptyNode);
+
                 TreeNode instancesNode = TreeViewUtils.CreateNode(AppPhrases.InstancesNode, "instances.png");
                 instancesNode.ContextMenuStrip = contextMenus.InstanceMenu;
-                instancesNode.Tag = new TreeNodeTag()
+                instancesNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project.Instances,
                     NodeType = AppNodeType.Instances
@@ -178,7 +216,7 @@ namespace Scada.Admin.App.Code
         {
             TreeNode instanceNode = TreeViewUtils.CreateNode(instance.Name, "instance.png");
             instanceNode.ContextMenuStrip = contextMenus.InstanceMenu;
-            instanceNode.Tag = new TreeNodeTag()
+            instanceNode.Tag = new TreeNodeTag
             {
                 RelatedObject = new LiveInstance(instance),
                 NodeType = AppNodeType.Instance
@@ -191,7 +229,26 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
-        /// Fills the instance node by child nodes.
+        /// Fills the interface node, creating child nodes.
+        /// </summary>
+        public void FillInterfaceNode(TreeNode interfaceNode)
+        {
+            Interface interfaceObj = (Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
+
+            try
+            {
+                treeView.BeginUpdate();
+                interfaceNode.Nodes.Clear();
+                FillFileNode(interfaceNode, new DirectoryInfo(interfaceObj.InterfaceDir));
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Fills the instance node, creating child nodes.
         /// </summary>
         public void FillInstanceNode(TreeNode instanceNode)
         {
@@ -207,7 +264,7 @@ namespace Scada.Admin.App.Code
                 if (instance.ServerApp.Enabled)
                 {
                     TreeNode serverNode = TreeViewUtils.CreateNode(AppPhrases.ServerNode, "server.png");
-                    serverNode.Tag = new TreeNodeTag()
+                    serverNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.ServerApp,
                         NodeType = AppNodeType.ServerApp
@@ -221,7 +278,7 @@ namespace Scada.Admin.App.Code
                 if (instance.CommApp.Enabled)
                 {
                     TreeNode commNode = TreeViewUtils.CreateNode(AppPhrases.CommNode, "comm.png");
-                    commNode.Tag = new TreeNodeTag()
+                    commNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.CommApp,
                         NodeType = AppNodeType.CommApp
@@ -246,13 +303,35 @@ namespace Scada.Admin.App.Code
                 {
                     TreeNode webNode = new TreeNode(AppPhrases.WebNode);
                     webNode.ImageKey = webNode.SelectedImageKey = "chrome.png";
-                    webNode.Tag = new TreeNodeTag()
+                    webNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.WebApp,
                         NodeType = AppNodeType.WebApp
                     };
                     instanceNode.Nodes.Add(webNode);
+
+                    TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
+                    webNode.Nodes.Add(emptyNode);
                 }
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Fills the web application node, creating child nodes.
+        /// </summary>
+        public void FillWebstationNode(TreeNode webNode)
+        {
+            WebApp webApp = (WebApp)((TreeNodeTag)webNode.Tag).RelatedObject;
+
+            try
+            {
+                treeView.BeginUpdate();
+                webNode.Nodes.Clear();
+                FillFileNode(webNode, new DirectoryInfo(webApp.AppDir));
             }
             finally
             {
