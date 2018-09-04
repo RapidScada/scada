@@ -223,5 +223,31 @@ namespace Scada.Admin.Project
                 return false;
             }
         }
+
+        /// <summary>
+        /// Renames the instance.
+        /// </summary>
+        public bool Rename(string name, out string errMsg)
+        {
+            try
+            {
+                if (!AdminUtils.NameIsValid(name))
+                    throw new ArgumentException("The specified name is incorrect.");
+
+                DirectoryInfo directoryInfo = new DirectoryInfo(instnaceDir);                
+                string newInstanceDir = Path.Combine(directoryInfo.Parent.FullName, name);
+                Directory.Move(InstanceDir, newInstanceDir);
+                InstanceDir = newInstanceDir;
+                Name = name;
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.RenameInstanceError + ": " + ex.Message;
+                return false;
+            }
+        }
     }
 }

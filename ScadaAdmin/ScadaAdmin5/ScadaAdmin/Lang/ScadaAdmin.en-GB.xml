@@ -148,12 +148,39 @@
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmInstanceEdit">
+    <Phrase key="lblName">Instance name</Phrase>
+    <Phrase key="gbApplications">Applications</Phrase>
+    <Phrase key="chkServerApp">Server</Phrase>
+    <Phrase key="chkCommApp">Communicator</Phrase>
+    <Phrase key="chkWebApp">Webstation</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="NewInstanceTitle">New Instance</Phrase>
+    <Phrase key="EditInstanceTitle">Edit Instance</Phrase>
+    <Phrase key="InstanceNameEmpty">The instance name can not be empty.</Phrase>
+    <Phrase key="InstanceNameInvalid">The instance name contains invalid characters.</Phrase>
+    <Phrase key="InstanceSelectApps">Select at least one application.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
+    <Phrase key="miProjectRename">Rename Project</Phrase>
+    <Phrase key="miProjectProperties">Properties</Phrase>
+    <Phrase key="miInstanceAdd">Add Instance</Phrase>
+    <Phrase key="miInstanceMoveUp">Move Instance Up</Phrase>
+    <Phrase key="miInstanceMoveDown">Move Instance Down</Phrase>
+    <Phrase key="miInstanceDelete">Delete Instance</Phrase>
+    <Phrase key="miInstanceRename">Rename Instance</Phrase>
+    <Phrase key="miInstanceProperties">Properties</Phrase>
+    <Phrase key="miCommLineAdd">Add Line</Phrase>
+    <Phrase key="miCommLineMoveUp">Move Line Up</Phrase>
+    <Phrase key="miCommLineMoveDown">Move Line Down</Phrase>
+    <Phrase key="miCommLineDelete">Delete Line</Phrase>
     <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
     <Phrase key="ConfirmDeleteInstance">Are you sure you want to delete the instance?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Are you sure you want to delete the communication line?</Phrase>
+    <Phrase key="InstanceAlreadyExists">An instance with the same name already exists.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">New Project</Phrase>
     <Phrase key="lblName">Project name</Phrase>
     <Phrase key="lblLocation">Location</Phrase>
@@ -166,9 +193,20 @@
     <Phrase key="ProjectNameEmpty">The project name can not be empty.</Phrase>
     <Phrase key="ProjectNameInvalid">The project name contains invalid characters.</Phrase>
     <Phrase key="ProjectLocationNotExists">The project location does not exist.</Phrase>
-    <Phrase key="ProjectAlreadyExists">The project with the same name already exists.</Phrase>
+    <Phrase key="ProjectAlreadyExists">A project with the same name already exists.</Phrase>
     <Phrase key="ProjectTemplateEmpty">Creating a project without a template is not recommended. Continue?</Phrase>
     <Phrase key="ProjectTemplateNotFound">The project template not found.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
+    <Phrase key="this">Project Properties</Phrase>
+    <Phrase key="lblName">Project name</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmRename">
+    <Phrase key="ItemNameEmpty">The name can not be empty.</Phrase>
+    <Phrase key="ItemNameInvalid">The name contains invalid characters.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Error creating Communicator project files</Phrase>
@@ -180,6 +218,7 @@
   <Dictionary key="Scada.Admin.Project.Instance">
     <Phrase key="CreateInstanceFilesError">Error creating instance project files</Phrase>
     <Phrase key="DeleteInstanceFilesError">Error deleting instance project files</Phrase>
+    <Phrase key="RenameInstanceError">Error renaming instance</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Error creating project</Phrase>
@@ -188,6 +227,8 @@
     <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
     <Phrase key="LoadBaseTableError">Error loading the {0} table: {1}</Phrase>
     <Phrase key="SaveBaseTableError">Error saving the {0} table: {1}</Phrase>
+    <Phrase key="RenameProjectError">Error renaming project</Phrase>
+    <Phrase key="ProjectDirectoryExists">The project directory already exists.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ServerApp">
     <Phrase key="CreateServerFilesError">Error creating Server project files</Phrase>

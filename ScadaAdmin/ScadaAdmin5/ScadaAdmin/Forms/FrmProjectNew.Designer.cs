@@ -1,6 +1,6 @@
 ﻿namespace Scada.Admin.App.Forms
 {
-    partial class FrmNewProject
+    partial class FrmProjectNew
     {
         /// <summary>
         /// Required designer variable.

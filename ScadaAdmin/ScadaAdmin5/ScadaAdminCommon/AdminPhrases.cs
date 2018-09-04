@@ -43,6 +43,7 @@ namespace Scada.Admin
         // Scada.Admin.Project.Instance
         public static string CreateInstanceFilesError { get; private set; }
         public static string DeleteInstanceFilesError { get; private set; }
+        public static string RenameInstanceError { get; private set; }
 
         // Scada.Admin.Project.ScadaProject
         public static string CreateProjectError { get; private set; }
@@ -51,6 +52,8 @@ namespace Scada.Admin
         public static string LoadProjectDescrError { get; private set; }
         public static string LoadBaseTableError { get; private set; }
         public static string SaveBaseTableError { get; private set; }
+        public static string RenameProjectError { get; private set; }
+        public static string ProjectDirectoryExists { get; private set; }
 
         // Scada.Admin.Project.ServerApp
         public static string CreateServerFilesError { get; private set; }
@@ -72,6 +75,7 @@ namespace Scada.Admin
             dict = Localization.GetDictionary("Scada.Admin.Project.Instance");
             CreateInstanceFilesError = dict.GetPhrase("CreateInstanceFilesError");
             DeleteInstanceFilesError = dict.GetPhrase("DeleteInstanceFilesError");
+            RenameInstanceError = dict.GetPhrase("RenameInstanceError");
 
             dict = Localization.GetDictionary("Scada.Admin.Project.ScadaProject");
             CreateProjectError = dict.GetPhrase("CreateProjectError");
@@ -80,6 +84,8 @@ namespace Scada.Admin
             LoadProjectDescrError = dict.GetPhrase("LoadProjectDescrError");
             LoadBaseTableError = dict.GetPhrase("LoadBaseTableError");
             SaveBaseTableError = dict.GetPhrase("SaveBaseTableError");
+            RenameProjectError = dict.GetPhrase("RenameProjectError");
+            ProjectDirectoryExists = dict.GetPhrase("ProjectDirectoryExists");
 
             dict = Localization.GetDictionary("Scada.Admin.Project.ServerApp");
             CreateServerFilesError = dict.GetPhrase("CreateServerFilesError");

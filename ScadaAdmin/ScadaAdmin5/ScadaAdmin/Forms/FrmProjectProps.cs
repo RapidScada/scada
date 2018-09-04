@@ -16,13 +16,14 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : Form for entering an instance name
+ * Summary  : Form for editing project properties
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,24 +37,24 @@ using System.Windows.Forms;
 namespace Scada.Admin.App.Forms
 {
     /// <summary>
-    /// Form for entering an instance name.
-    /// <para>Форма ввода наименования экземпляра.</para>
+    /// Form for editing project properties.
+    /// <para>Форма редактирования свойств проекта.</para>
     /// </summary>
-    public partial class FrmInstanceName : Form
+    public partial class FrmProjectProps : Form
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmInstanceName()
+        public FrmProjectProps()
         {
             InitializeComponent();
         }
 
 
         /// <summary>
-        /// Gets or sets the instance name.
+        /// Gets or sets the project name.
         /// </summary>
-        public string InstanceName
+        public string ProjectName
         {
             get
             {
@@ -65,10 +66,38 @@ namespace Scada.Admin.App.Forms
             }
         }
 
-
-        private void FrmInstanceName_Load(object sender, EventArgs e)
+        /// <summary>
+        /// Gets or sets the project description.
+        /// </summary>
+        public string Description
         {
+            get
+            {
+                return txtDescr.Text.Trim();
+            }
+            set
+            {
+                txtDescr.Text = value;
+            }
+        }
 
+        /// <summary>
+        /// Gets a value indicating whether the project properties was modified.
+        /// </summary>
+        public bool Modified { get; private set; }
+
+
+        private void FrmProjectProps_Load(object sender, EventArgs e)
+        {
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmProjectProps");
+            Modified = false;
+            ActiveControl = txtDescr;
+            txtDescr.Select(0, 0);
+        }
+
+        private void txtDescr_TextChanged(object sender, EventArgs e)
+        {
+            Modified = true;
         }
 
         private void btnOK_Click(object sender, EventArgs e)

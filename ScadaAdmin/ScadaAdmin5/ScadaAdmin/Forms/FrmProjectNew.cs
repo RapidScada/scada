@@ -37,7 +37,7 @@ namespace Scada.Admin.App.Forms
     /// Form for creating a new project.
     /// <para>Форма создания нового проекта.</para>
     /// </summary>
-    public partial class FrmNewProject : Form
+    public partial class FrmProjectNew : Form
     {
         /// <summary>
         /// Item of the project template list.
@@ -60,7 +60,7 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private FrmNewProject()
+        private FrmProjectNew()
         {
             InitializeComponent();
         }
@@ -68,7 +68,7 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmNewProject(AppData appData)
+        public FrmProjectNew(AppData appData)
             : this()
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
@@ -200,8 +200,7 @@ namespace Scada.Admin.App.Forms
                 return false;
             }
 
-            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 || 
-                name.Contains(Path.DirectorySeparatorChar) || name.Contains(Path.AltDirectorySeparatorChar))
+            if (!AdminUtils.NameIsValid(name))
             {
                 ScadaUiUtils.ShowError(AppPhrases.ProjectNameInvalid);
                 return false;
@@ -242,7 +241,7 @@ namespace Scada.Admin.App.Forms
         private void FrmNewProject_Load(object sender, EventArgs e)
         {
             // translate the form
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmNewProject");
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmProjectNew");
             fbdLocation.Description = AppPhrases.ChooseProjectLocation;
             ofdTemplate.Filter = AppPhrases.ProjectFileFilter;
 

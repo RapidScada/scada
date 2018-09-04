@@ -148,12 +148,39 @@
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmInstanceEdit">
+    <Phrase key="lblName">Наименование экземпляра</Phrase>
+    <Phrase key="gbApplications">Приложения</Phrase>
+    <Phrase key="chkServerApp">Сервер</Phrase>
+    <Phrase key="chkCommApp">Коммуникатор</Phrase>
+    <Phrase key="chkWebApp">Вебстанция</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="NewInstanceTitle">Новый экземпляр</Phrase>
+    <Phrase key="EditInstanceTitle">Редактирование экземпляра</Phrase>
+    <Phrase key="InstanceNameEmpty">Наименование экземпляра не может быть пустым.</Phrase>
+    <Phrase key="InstanceNameInvalid">Наименование экземпляра содержит недопустимые символы.</Phrase>
+    <Phrase key="InstanceSelectApps">Выберите хотя бы одно приложение.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
+    <Phrase key="miProjectRename">Переименовать проект</Phrase>
+    <Phrase key="miProjectProperties">Свойства</Phrase>
+    <Phrase key="miInstanceAdd">Добавить экземпляр</Phrase>
+    <Phrase key="miInstanceMoveUp">Переместить экземпляр вверх</Phrase>
+    <Phrase key="miInstanceMoveDown">Переместить экземпляр вниз</Phrase>
+    <Phrase key="miInstanceDelete">Удалить экземпляр</Phrase>
+    <Phrase key="miInstanceRename">Переименовать экземпляр</Phrase>
+    <Phrase key="miInstanceProperties">Свойства</Phrase>
+    <Phrase key="miCommLineAdd">Добавить линию</Phrase>
+    <Phrase key="miCommLineMoveUp">Переместить линию вверх</Phrase>
+    <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>
+    <Phrase key="miCommLineDelete">Удалить линию</Phrase>
     <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
     <Phrase key="ConfirmDeleteInstance">Вы уверены, что хотите удалить экземпляр?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Вы уверены, что хотите удалить линию связи?</Phrase>
+    <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmNewProject">
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">Новый проект</Phrase>
     <Phrase key="lblName">Наименование проекта</Phrase>
     <Phrase key="lblLocation">Расположение</Phrase>
@@ -170,6 +197,17 @@
     <Phrase key="ProjectTemplateEmpty">Создание проекта без шаблона не рекомендуется. Продолжить?</Phrase>
     <Phrase key="ProjectTemplateNotFound">Шаблон проекта не найден.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
+    <Phrase key="this">Свойства проекта</Phrase>
+    <Phrase key="lblName">Наименование проекта</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmRename">
+    <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
+    <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Ошибка при создании проектных файлов Коммуникатора</Phrase>
     <Phrase key="DeleteCommFilesError">Ошибка при удалении проектных файлов Коммуникатора</Phrase>
@@ -180,6 +218,7 @@
   <Dictionary key="Scada.Admin.Project.Instance">
     <Phrase key="CreateInstanceFilesError">Ошибка при создании проектных файлов экземпляра</Phrase>
     <Phrase key="DeleteInstanceFilesError">Ошибка при удалении проектных файлов экземпляра</Phrase>
+    <Phrase key="RenameInstanceError">Ошибка при переименовании экземпляра</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ScadaProject">
     <Phrase key="CreateProjectError">Ошибка при создании проекта</Phrase>
@@ -188,6 +227,8 @@
     <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
     <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}: {1}</Phrase>
     <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}: {1}</Phrase>
+    <Phrase key="RenameProjectError">Ошибка при переименовании проекта</Phrase>
+    <Phrase key="ProjectDirectoryExists">Директория проекта уже существует.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ServerApp">
     <Phrase key="CreateServerFilesError">Ошибка при создании проектных файлов Сервера</Phrase>

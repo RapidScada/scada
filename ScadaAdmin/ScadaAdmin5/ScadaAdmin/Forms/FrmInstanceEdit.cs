@@ -23,7 +23,9 @@
  * Modified : 2018
  */
 
+using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.UI;
 using System;
 using System.Windows.Forms;
 
@@ -118,6 +120,39 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
+        /// Validates the form fields.
+        /// </summary>
+        private bool ValidateFields()
+        {
+            // validate the name
+            if (Mode == OperatingMode.New)
+            {
+                string name = InstanceName;
+
+                if (name == "")
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.InstanceNameEmpty);
+                    return false;
+                }
+
+                if (!AdminUtils.NameIsValid(name))
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.InstanceNameInvalid);
+                    return false;
+                }
+            }
+
+            // validate the applications
+            if (!(ServerAppEnabled || CommAppEnabled || WebAppEnabled))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.InstanceSelectApps);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Initializes the properties based on the specified instance.
         /// </summary>
         public void Init(Instance instance)
@@ -149,12 +184,24 @@ namespace Scada.Admin.App.Forms
 
         private void FrmInstanceEdit_Load(object sender, EventArgs e)
         {
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmInstanceEdit");
 
+            if (Mode == OperatingMode.New)
+            {
+                Text = AppPhrases.NewInstanceTitle;
+            }
+            else
+            {
+                Text = AppPhrases.EditInstanceTitle;
+                txtName.ReadOnly = true;
+                ActiveControl = gbApplications;
+            }
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            DialogResult = DialogResult.OK;
+            if (ValidateFields())
+                DialogResult = DialogResult.OK;
         }
     }
 }

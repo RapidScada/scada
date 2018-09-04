@@ -24,6 +24,8 @@
  */
 
 using System;
+using System.IO;
+using System.Linq;
 
 namespace Scada.Admin
 {
@@ -70,6 +72,15 @@ namespace Scada.Admin
         public static bool IsNullable(this Type type)
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
+        /// Validates the name of a project item.
+        /// </summary>
+        public static bool NameIsValid(string name)
+        {
+            return !(string.IsNullOrWhiteSpace(name) || name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0 ||
+                name.Contains(Path.DirectorySeparatorChar) || name.Contains(Path.AltDirectorySeparatorChar));
         }
     }
 }

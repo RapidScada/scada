@@ -95,8 +95,8 @@ namespace Scada.Admin.App.Forms
             log = appData.ErrLog;
             serverShell = new ServerShell();
             commShell = new CommShell();
-            explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer,
-                new ContextMenus() { InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
+            explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer, new ContextMenus() {
+                ProjectMenu = cmsProject, InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -115,7 +115,8 @@ namespace Scada.Admin.App.Forms
             // load Administrator dictionaries
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
-                Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain");
+                Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null, 
+                    cmsProject, cmsInstance, cmsCommLine);
                 ofdProject.Filter = AppPhrases.ProjectFileFilter;
             }
             else
@@ -276,6 +277,28 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Prepares data and fills the instance node.
+        /// </summary>
+        private void PrepareInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
+        {
+            Instance instance = liveInstance.Instance;
+
+            if (!instance.AppSettingsLoaded)
+            {
+                if (instance.LoadAppSettings(out string errMsg))
+                {
+                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance);
+                    liveInstance.CommEnvironment = CreateCommEnvironment(instance);
+                    explorerBuilder.FillInstanceNode(instanceNode);
+                }
+                else
+                {
+                    appData.ProcError(errMsg);
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates and displays a new project.
         /// </summary>
         private void CreateProject()
@@ -383,25 +406,11 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            // load application settings of the instance
+            // prepare an instance node
             if (e.Node.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
-                Instance instance = liveInstance.Instance;
-
-                if (!instance.AppSettingsLoaded)
-                {
-                    if (instance.LoadAppSettings(out string errMsg))
-                    {
-                        liveInstance.ServerEnvironment = CreateServerEnvironment(instance);
-                        liveInstance.CommEnvironment = CreateCommEnvironment(instance);
-                        explorerBuilder.FillInstanceNode(e.Node);
-                    }
-                    else
-                    {
-                        appData.ProcError(errMsg);
-                    }
-                }
+                PrepareInstanceNode(e.Node, liveInstance);
             }
         }
 
@@ -448,7 +457,7 @@ namespace Scada.Admin.App.Forms
         private void miFileNewProject_Click(object sender, EventArgs e)
         {
             // create a new project
-            FrmNewProject frmNewProject = new FrmNewProject(appData);
+            FrmProjectNew frmNewProject = new FrmProjectNew(appData);
 
             if (frmNewProject.ShowDialog() == DialogResult.OK)
             {
@@ -535,6 +544,49 @@ namespace Scada.Admin.App.Forms
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
 
+        }
+
+
+        private void miProjectRename_Click(object sender, EventArgs e)
+        {
+            // rename the selected project
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Project))
+            {
+                FrmRename frmRename = new FrmRename() { ItemName = project.Name };
+
+                if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                {
+                    if (!project.Rename(frmRename.ItemName, out string errMsg))
+                        appData.ProcError(errMsg);
+
+                    selectedNode.Text = project.Name;
+                    UpdateChildFormHints(selectedNode);
+                    SaveProjectSettings();
+                }
+            }
+        }
+
+        private void miProjectProperties_Click(object sender, EventArgs e)
+        {
+            // edit properties of the selected project
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Project))
+            {
+                FrmProjectProps frmProjectProps = new FrmProjectProps
+                {
+                    ProjectName = project.Name,
+                    Description = project.Description
+                };
+
+                if (frmProjectProps.ShowDialog() == DialogResult.OK && frmProjectProps.Modified)
+                {
+                    project.Description = frmProjectProps.Description;
+                    SaveProjectSettings();
+                }
+            }
         }
 
 
@@ -629,7 +681,32 @@ namespace Scada.Admin.App.Forms
 
         private void miInstanceRename_Click(object sender, EventArgs e)
         {
+            // rename the selected instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                Instance instance = liveInstance.Instance;
+                FrmRename frmRename = new FrmRename() { ItemName = instance.Name };
+
+                if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                {
+                    if (project.ContainsInstance(frmRename.ItemName))
+                    {
+                        ScadaUiUtils.ShowError(AppPhrases.InstanceAlreadyExists);
+                    }
+                    else
+                    {
+                        if (!instance.Rename(frmRename.ItemName, out string errMsg))
+                            appData.ProcError(errMsg);
+
+                        selectedNode.Text = instance.Name;
+                        UpdateChildFormHints(selectedNode);
+                        SaveProjectSettings();
+                    }
+                }
+            }
         }
 
         private void miInstanceProperties_Click(object sender, EventArgs e)
@@ -686,7 +763,7 @@ namespace Scada.Admin.App.Forms
                     if (projectModified)
                     {
                         CloseChildForms(selectedNode);
-                        explorerBuilder.FillInstanceNode(selectedNode);
+                        PrepareInstanceNode(selectedNode, liveInstance);
                         SaveProjectSettings();
                     }
                 }

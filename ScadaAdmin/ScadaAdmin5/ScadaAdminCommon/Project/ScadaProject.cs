@@ -76,6 +76,7 @@ namespace Scada.Admin.Project
             protected set
             {
                 fileName = value;
+                Name = Path.GetFileNameWithoutExtension(fileName);
 
                 if (string.IsNullOrEmpty(fileName))
                 {
@@ -144,6 +145,14 @@ namespace Scada.Admin.Project
             Instances.Clear();
         }
 
+        /// <summary>
+        /// Gets a file name to store a project.
+        /// </summary>
+        private static string GetProjectFileName(string projectDir, string projectName)
+        {
+            return Path.Combine(projectDir, projectName + AdminUtils.ProjectExt);
+        }
+
 
         /// <summary>
         /// Loads the project from the specified file.
@@ -151,7 +160,6 @@ namespace Scada.Admin.Project
         public void Load(string fileName)
         {
             Clear();
-            Name = Path.GetFileNameWithoutExtension(fileName);
             FileName = fileName;
 
             XmlDocument xmlDoc = new XmlDocument();
@@ -201,7 +209,6 @@ namespace Scada.Admin.Project
         /// </summary>
         public void Save(string fileName)
         {
-            Name = Path.GetFileNameWithoutExtension(fileName);
             FileName = fileName;
 
             XmlDocument xmlDoc = new XmlDocument();
@@ -244,7 +251,38 @@ namespace Scada.Admin.Project
                 return false;
             }
         }
-        
+
+        /// <summary>
+        /// Renames the instance.
+        /// </summary>
+        public bool Rename(string name, out string errMsg)
+        {
+            try
+            {
+                if (!AdminUtils.NameIsValid(name))
+                    throw new ArgumentException("The specified name is incorrect.");
+
+                string projectDir = Path.GetDirectoryName(FileName);
+                DirectoryInfo directoryInfo = new DirectoryInfo(projectDir);
+                string newProjectDir = Path.Combine(directoryInfo.Parent.FullName, name);
+
+                if (Directory.Exists(newProjectDir))
+                    throw new ScadaException(AdminPhrases.ProjectDirectoryExists);
+
+                File.Move(FileName, GetProjectFileName(projectDir, name));
+                Directory.Move(projectDir, newProjectDir);
+                FileName = GetProjectFileName(newProjectDir, name);
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.RenameProjectError + ": " + ex.Message;
+                return false;
+            }
+        }
+
         /// <summary>
         /// Creates a new instance that is not added to any project.
         /// </summary>
@@ -258,6 +296,20 @@ namespace Scada.Admin.Project
             };
         }
 
+        /// <summary>
+        /// Determines whether an instance is in the project.
+        /// </summary>
+        public bool ContainsInstance(string name)
+        {
+            foreach (Instance instance in Instances)
+            {
+                if (string.Equals(instance.Name, name, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+
 
         /// <summary>
         /// Creates a new project with the specified parameters.
@@ -267,7 +319,7 @@ namespace Scada.Admin.Project
         {
             try
             {
-                project = new ScadaProject() { Name = name };
+                project = new ScadaProject { Name = name };
 
                 if (File.Exists(template))
                     project.Load(template);
@@ -275,11 +327,11 @@ namespace Scada.Admin.Project
                 string projectDir = Path.Combine(location, name);
 
                 if (Directory.Exists(projectDir))
-                    Directory.Delete(projectDir, true);
+                    throw new ScadaException(AdminPhrases.ProjectDirectoryExists);
 
                 Directory.CreateDirectory(projectDir);
                 project.Description = "";
-                project.Save(Path.Combine(projectDir, name + AdminUtils.ProjectExt));
+                project.Save(GetProjectFileName(projectDir, name));
 
                 errMsg = "";
                 return true;

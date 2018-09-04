@@ -129,6 +129,7 @@ namespace Scada.Admin.App.Code
                 treeView.Nodes.Clear();
 
                 TreeNode projectNode = TreeViewUtils.CreateNode(project.Name, "project.png", true);
+                projectNode.ContextMenuStrip = contextMenus.ProjectMenu;
                 projectNode.Tag = new TreeNodeTag()
                 {
                     RelatedObject = project,

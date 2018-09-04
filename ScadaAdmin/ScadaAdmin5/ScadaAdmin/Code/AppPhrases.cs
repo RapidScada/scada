@@ -52,12 +52,20 @@ namespace Scada.Admin.App.Code
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
 
+        // Scada.Admin.App.Forms.FrmInstanceEdit
+        public static string NewInstanceTitle { get; private set; }
+        public static string EditInstanceTitle { get; private set; }
+        public static string InstanceNameEmpty { get; private set; }
+        public static string InstanceNameInvalid { get; private set; }
+        public static string InstanceSelectApps { get; private set; }
+
         // Scada.Admin.App.Forms.FrmMain
         public static string ProjectFileFilter { get; private set; }
         public static string ConfirmDeleteInstance { get; private set; }
         public static string ConfirmDeleteCommLine { get; private set; }
+        public static string InstanceAlreadyExists { get; private set; }
 
-        // Scada.Admin.App.Forms.FrmNewProject
+        // Scada.Admin.App.Forms.FrmProjectNew
         public static string ChooseProjectLocation { get; private set; }
         public static string ProjectNameEmpty { get; private set; }
         public static string ProjectNameInvalid { get; private set; }
@@ -65,6 +73,10 @@ namespace Scada.Admin.App.Code
         public static string ProjectAlreadyExists { get; private set; }
         public static string ProjectTemplateEmpty { get; private set; }
         public static string ProjectTemplateNotFound { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmRename
+        public static string ItemNameEmpty { get; private set; }
+        public static string ItemNameInvalid { get; private set; }
 
         public static void Init()
         {
@@ -83,12 +95,20 @@ namespace Scada.Admin.App.Code
             GridViewError = dict.GetPhrase("GridViewError");
             ColumnLabel = dict.GetPhrase("ColumnLabel");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmInstanceEdit");
+            NewInstanceTitle = dict.GetPhrase("NewInstanceTitle");
+            EditInstanceTitle = dict.GetPhrase("EditInstanceTitle");
+            InstanceNameEmpty = dict.GetPhrase("InstanceNameEmpty");
+            InstanceNameInvalid = dict.GetPhrase("InstanceNameInvalid");
+            InstanceSelectApps = dict.GetPhrase("InstanceSelectApps");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
             ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
             ConfirmDeleteInstance = dict.GetPhrase("ConfirmDeleteInstance");
             ConfirmDeleteCommLine = dict.GetPhrase("ConfirmDeleteCommLine");
+            InstanceAlreadyExists = dict.GetPhrase("InstanceAlreadyExists");
 
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmNewProject");
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmProjectNew");
             ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");
             ProjectNameEmpty = dict.GetPhrase("ProjectNameEmpty");
             ProjectNameInvalid = dict.GetPhrase("ProjectNameInvalid");
@@ -96,6 +116,10 @@ namespace Scada.Admin.App.Code
             ProjectAlreadyExists = dict.GetPhrase("ProjectAlreadyExists");
             ProjectTemplateEmpty = dict.GetPhrase("ProjectTemplateEmpty");
             ProjectTemplateNotFound = dict.GetPhrase("ProjectTemplateNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmRename");
+            ItemNameEmpty = dict.GetPhrase("ItemNameEmpty");
+            ItemNameInvalid = dict.GetPhrase("ItemNameInvalid");
         }
     }
 }

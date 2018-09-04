@@ -72,12 +72,16 @@
             this.miInstanceSep = new System.Windows.Forms.ToolStripSeparator();
             this.miInstanceRename = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsProject = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miProjectRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.miProjectProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.cmsCommLine.SuspendLayout();
             this.cmsInstance.SuspendLayout();
+            this.cmsProject.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -449,6 +453,30 @@
             this.miInstanceProperties.Text = "Properties";
             this.miInstanceProperties.Click += new System.EventHandler(this.miInstanceProperties_Click);
             // 
+            // cmsProject
+            // 
+            this.cmsProject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miProjectRename,
+            this.miProjectProperties});
+            this.cmsProject.Name = "cmsCommLine";
+            this.cmsProject.Size = new System.Drawing.Size(181, 70);
+            // 
+            // miProjectRename
+            // 
+            this.miProjectRename.Image = ((System.Drawing.Image)(resources.GetObject("miProjectRename.Image")));
+            this.miProjectRename.Name = "miProjectRename";
+            this.miProjectRename.Size = new System.Drawing.Size(180, 22);
+            this.miProjectRename.Text = "Rename Project";
+            this.miProjectRename.Click += new System.EventHandler(this.miProjectRename_Click);
+            // 
+            // miProjectProperties
+            // 
+            this.miProjectProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProjectProperties.Image")));
+            this.miProjectProperties.Name = "miProjectProperties";
+            this.miProjectProperties.Size = new System.Drawing.Size(180, 22);
+            this.miProjectProperties.Text = "Properties";
+            this.miProjectProperties.Click += new System.EventHandler(this.miProjectProperties_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -477,6 +505,7 @@
             this.pnlRight.ResumeLayout(false);
             this.cmsCommLine.ResumeLayout(false);
             this.cmsInstance.ResumeLayout(false);
+            this.cmsProject.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -526,6 +555,9 @@
         private System.Windows.Forms.ToolStripSeparator miInstanceSep;
         private System.Windows.Forms.ToolStripMenuItem miInstanceRename;
         private System.Windows.Forms.ToolStripMenuItem miInstanceProperties;
+        private System.Windows.Forms.ContextMenuStrip cmsProject;
+        private System.Windows.Forms.ToolStripMenuItem miProjectRename;
+        private System.Windows.Forms.ToolStripMenuItem miProjectProperties;
     }
 }
 
