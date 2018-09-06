@@ -66,6 +66,11 @@ namespace Scada.Admin.App.Forms
         /// The hyperlink to the support in Russian.
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
+        /// <summary>
+        /// The file extensions supported by the internal editor.
+        /// </summary>
+        private static readonly HashSet<string> KnownExtenstions = 
+            new HashSet<string> { ".sch", ".tbl", ".txt", ".xml" };
 
         private readonly AppData appData;                 // the common data of the application
         private readonly Log log;                         // the application log
@@ -96,7 +101,8 @@ namespace Scada.Admin.App.Forms
             serverShell = new ServerShell();
             commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer, new ContextMenus() {
-                ProjectMenu = cmsProject, InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
+                ProjectMenu = cmsProject, DirectoryMenu = cmsDirectory, FileItemMenu = cmsFileItem,
+                InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -116,7 +122,7 @@ namespace Scada.Admin.App.Forms
             if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null, 
-                    cmsProject, cmsInstance, cmsCommLine);
+                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsCommLine);
                 ofdProject.Filter = AppPhrases.ProjectFileFilter;
             }
             else
@@ -257,6 +263,36 @@ namespace Scada.Admin.App.Forms
                     wctrlMain.CloseForm(tag.ExistingForm);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets the path associated with the specified node.
+        /// </summary>
+        private bool TryGetFilePath(TreeNode treeNode, out string path)
+        {
+            if (treeNode?.Tag is TreeNodeTag tag)
+            {
+                if (tag.NodeType == AppNodeType.Directory || tag.NodeType == AppNodeType.File)
+                {
+                    FileItem fileItem = (FileItem)tag.RelatedObject;
+                    path = fileItem.Path;
+                    return true;
+                }
+                else if (tag.NodeType == AppNodeType.Interface)
+                {
+                    path = project.Interface.InterfaceDir;
+                    return true;
+                }
+                else if (tag.NodeType == AppNodeType.WebApp &&
+                    FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                {
+                    path = liveInstance.Instance.WebApp.AppDir;
+                    return true;
+                }
+            }
+
+            path = "";
+            return false;
         }
 
         /// <summary>
@@ -598,6 +634,99 @@ namespace Scada.Admin.App.Forms
                     SaveProjectSettings();
                 }
             }
+        }
+
+
+        private void cmsDirectory_Opening(object sender, CancelEventArgs e)
+        {
+            // enable or disable the menu items
+            TreeNode treeNode = tvExplorer.SelectedNode;
+            bool isDirectoryNode = treeNode != null && treeNode.TagIs(AppNodeType.Directory);
+            miDirectoryDelete.Enabled = isDirectoryNode;
+            miDirectoryRename.Enabled = isDirectoryNode;
+        }
+
+        private void miDirectoryNewFile_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDirectoryNewFolder_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDirectoryDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDirectoryRename_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDirectoryOpenInExplorer_Click(object sender, EventArgs e)
+        {
+            // open the selected directory in File Explorer
+            if (TryGetFilePath(tvExplorer.SelectedNode, out string path))
+            {
+                string directory = Path.GetDirectoryName(path);
+                if (Directory.Exists(directory))
+                    Process.Start(directory);
+                else
+                    ScadaUiUtils.ShowError(CommonPhrases.DirNotExists);
+            }
+        }
+
+        private void miDirectoryRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+
+        private void cmsFileItem_Opening(object sender, CancelEventArgs e)
+        {
+            // enable or disable the Open menu item
+            if (tvExplorer.SelectedNode.Tag is TreeNodeTag tag && tag.NodeType == AppNodeType.File)
+            {
+                FileItem fileItem = (FileItem)tag.RelatedObject;
+                miFileItemOpen.Enabled = KnownExtenstions.Contains(Path.GetExtension(fileItem.Path));
+            }
+        }
+
+        private void miFileItemOpen_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileItemOpenLocation_Click(object sender, EventArgs e)
+        {
+            // open the selected file in File Explorer
+            if (TryGetFilePath(tvExplorer.SelectedNode, out string path))
+            {
+                if (File.Exists(path))
+                {
+                    if (AdminUtils.IsRunningOnWin)
+                        Process.Start("explorer.exe", "/select, \"" + path + "\"");
+                    else
+                        Process.Start(Path.GetDirectoryName(path));
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(CommonPhrases.FileNotFound);
+                }
+            }
+        }
+
+        private void miFileItemDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileItemRename_Click(object sender, EventArgs e)
+        {
+
         }
 
 

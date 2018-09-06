@@ -129,9 +129,10 @@ namespace Scada.Admin.App.Code
             foreach (DirectoryInfo subdirInfo in directoryInfo.GetDirectories())
             {
                 TreeNode subdirNode = TreeViewUtils.CreateNode(subdirInfo.Name, "folder_closed.png");
+                subdirNode.ContextMenuStrip = contextMenus.DirectoryMenu;
                 subdirNode.Tag = new TreeNodeTag
                 {
-                    RelatedObject = new FileItem(directoryInfo),
+                    RelatedObject = new FileItem(subdirInfo),
                     NodeType = AppNodeType.Directory
                 };
                 FillFileNode(subdirNode, subdirInfo);
@@ -141,6 +142,7 @@ namespace Scada.Admin.App.Code
             foreach (FileInfo fileInfo in directoryInfo.GetFiles())
             {
                 TreeNode fileNode = TreeViewUtils.CreateNode(fileInfo.Name, "file.png");
+                fileNode.ContextMenuStrip = contextMenus.FileItemMenu;
                 fileNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = new FileItem(fileInfo),
@@ -176,6 +178,7 @@ namespace Scada.Admin.App.Code
                 projectNode.Nodes.Add(baseNode);
 
                 TreeNode interfaceNode = TreeViewUtils.CreateNode(AppPhrases.InterfaceNode, "ui.png");
+                interfaceNode.ContextMenuStrip = contextMenus.DirectoryMenu;
                 interfaceNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project.Interface,
@@ -301,8 +304,8 @@ namespace Scada.Admin.App.Code
                 // create Webstation nodes
                 if (instance.WebApp.Enabled)
                 {
-                    TreeNode webNode = new TreeNode(AppPhrases.WebNode);
-                    webNode.ImageKey = webNode.SelectedImageKey = "chrome.png";
+                    TreeNode webNode = TreeViewUtils.CreateNode(AppPhrases.WebNode, "chrome.png");
+                    webNode.ContextMenuStrip = contextMenus.DirectoryMenu;
                     webNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.WebApp,

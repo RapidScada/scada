@@ -75,6 +75,21 @@
             this.cmsProject = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miProjectRename = new System.Windows.Forms.ToolStripMenuItem();
             this.miProjectProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDirectory = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miDirectoryNewFile = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDirectoryNewFolder = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDirectorySep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miDirectoryDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDirectoryRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDirectorySep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miDirectoryOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDirectoryRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsFileItem = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miFileItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileItemOpenLocation = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileItemDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileItemRename = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -82,6 +97,8 @@
             this.cmsCommLine.SuspendLayout();
             this.cmsInstance.SuspendLayout();
             this.cmsProject.SuspendLayout();
+            this.cmsDirectory.SuspendLayout();
+            this.cmsFileItem.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -405,7 +422,7 @@
             this.miInstanceAdd.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceAdd.Image")));
             this.miInstanceAdd.Name = "miInstanceAdd";
             this.miInstanceAdd.Size = new System.Drawing.Size(185, 22);
-            this.miInstanceAdd.Text = "Add Instance";
+            this.miInstanceAdd.Text = "Add Instance...";
             this.miInstanceAdd.Click += new System.EventHandler(this.miInstanceAdd_Click);
             // 
             // miInstanceMoveUp
@@ -459,13 +476,13 @@
             this.miProjectRename,
             this.miProjectProperties});
             this.cmsProject.Name = "cmsCommLine";
-            this.cmsProject.Size = new System.Drawing.Size(181, 70);
+            this.cmsProject.Size = new System.Drawing.Size(158, 48);
             // 
             // miProjectRename
             // 
             this.miProjectRename.Image = ((System.Drawing.Image)(resources.GetObject("miProjectRename.Image")));
             this.miProjectRename.Name = "miProjectRename";
-            this.miProjectRename.Size = new System.Drawing.Size(180, 22);
+            this.miProjectRename.Size = new System.Drawing.Size(157, 22);
             this.miProjectRename.Text = "Rename Project";
             this.miProjectRename.Click += new System.EventHandler(this.miProjectRename_Click);
             // 
@@ -473,9 +490,130 @@
             // 
             this.miProjectProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProjectProperties.Image")));
             this.miProjectProperties.Name = "miProjectProperties";
-            this.miProjectProperties.Size = new System.Drawing.Size(180, 22);
+            this.miProjectProperties.Size = new System.Drawing.Size(157, 22);
             this.miProjectProperties.Text = "Properties";
             this.miProjectProperties.Click += new System.EventHandler(this.miProjectProperties_Click);
+            // 
+            // cmsDirectory
+            // 
+            this.cmsDirectory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miDirectoryNewFile,
+            this.miDirectoryNewFolder,
+            this.miDirectorySep1,
+            this.miDirectoryDelete,
+            this.miDirectoryRename,
+            this.miDirectorySep2,
+            this.miDirectoryOpenInExplorer,
+            this.miDirectoryRefresh});
+            this.cmsDirectory.Name = "cmsDirectory";
+            this.cmsDirectory.Size = new System.Drawing.Size(219, 170);
+            this.cmsDirectory.Opening += new System.ComponentModel.CancelEventHandler(this.cmsDirectory_Opening);
+            // 
+            // miDirectoryNewFile
+            // 
+            this.miDirectoryNewFile.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryNewFile.Image")));
+            this.miDirectoryNewFile.Name = "miDirectoryNewFile";
+            this.miDirectoryNewFile.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryNewFile.Text = "New File...";
+            this.miDirectoryNewFile.Click += new System.EventHandler(this.miDirectoryNewFile_Click);
+            // 
+            // miDirectoryNewFolder
+            // 
+            this.miDirectoryNewFolder.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryNewFolder.Image")));
+            this.miDirectoryNewFolder.Name = "miDirectoryNewFolder";
+            this.miDirectoryNewFolder.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryNewFolder.Text = "New Folder...";
+            this.miDirectoryNewFolder.Click += new System.EventHandler(this.miDirectoryNewFolder_Click);
+            // 
+            // miDirectorySep1
+            // 
+            this.miDirectorySep1.Name = "miDirectorySep1";
+            this.miDirectorySep1.Size = new System.Drawing.Size(215, 6);
+            // 
+            // miDirectoryDelete
+            // 
+            this.miDirectoryDelete.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryDelete.Image")));
+            this.miDirectoryDelete.Name = "miDirectoryDelete";
+            this.miDirectoryDelete.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryDelete.Text = "Delete";
+            this.miDirectoryDelete.Click += new System.EventHandler(this.miDirectoryDelete_Click);
+            // 
+            // miDirectoryRename
+            // 
+            this.miDirectoryRename.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryRename.Image")));
+            this.miDirectoryRename.Name = "miDirectoryRename";
+            this.miDirectoryRename.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryRename.Text = "Rename";
+            this.miDirectoryRename.Click += new System.EventHandler(this.miDirectoryRename_Click);
+            // 
+            // miDirectorySep2
+            // 
+            this.miDirectorySep2.Name = "miDirectorySep2";
+            this.miDirectorySep2.Size = new System.Drawing.Size(215, 6);
+            // 
+            // miDirectoryOpenInExplorer
+            // 
+            this.miDirectoryOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryOpenInExplorer.Image")));
+            this.miDirectoryOpenInExplorer.Name = "miDirectoryOpenInExplorer";
+            this.miDirectoryOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryOpenInExplorer.Text = "Open Folder in File Explorer";
+            this.miDirectoryOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
+            // 
+            // miDirectoryRefresh
+            // 
+            this.miDirectoryRefresh.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryRefresh.Image")));
+            this.miDirectoryRefresh.Name = "miDirectoryRefresh";
+            this.miDirectoryRefresh.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryRefresh.Text = "Refresh";
+            this.miDirectoryRefresh.Click += new System.EventHandler(this.miDirectoryRefresh_Click);
+            // 
+            // cmsFileItem
+            // 
+            this.cmsFileItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miFileItemOpen,
+            this.miFileItemOpenLocation,
+            this.toolStripMenuItem4,
+            this.miFileItemDelete,
+            this.miFileItemRename});
+            this.cmsFileItem.Name = "cmsFileItem";
+            this.cmsFileItem.Size = new System.Drawing.Size(232, 98);
+            this.cmsFileItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileItem_Opening);
+            // 
+            // miFileItemOpen
+            // 
+            this.miFileItemOpen.Name = "miFileItemOpen";
+            this.miFileItemOpen.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemOpen.Text = "Open";
+            this.miFileItemOpen.Click += new System.EventHandler(this.miFileItemOpen_Click);
+            // 
+            // miFileItemOpenLocation
+            // 
+            this.miFileItemOpenLocation.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemOpenLocation.Image")));
+            this.miFileItemOpenLocation.Name = "miFileItemOpenLocation";
+            this.miFileItemOpenLocation.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemOpenLocation.Text = "Open Location in File Explorer";
+            this.miFileItemOpenLocation.Click += new System.EventHandler(this.miFileItemOpenLocation_Click);
+            // 
+            // toolStripMenuItem4
+            // 
+            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
+            this.toolStripMenuItem4.Size = new System.Drawing.Size(228, 6);
+            // 
+            // miFileItemDelete
+            // 
+            this.miFileItemDelete.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemDelete.Image")));
+            this.miFileItemDelete.Name = "miFileItemDelete";
+            this.miFileItemDelete.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemDelete.Text = "Delete";
+            this.miFileItemDelete.Click += new System.EventHandler(this.miFileItemDelete_Click);
+            // 
+            // miFileItemRename
+            // 
+            this.miFileItemRename.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemRename.Image")));
+            this.miFileItemRename.Name = "miFileItemRename";
+            this.miFileItemRename.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemRename.Text = "Rename";
+            this.miFileItemRename.Click += new System.EventHandler(this.miFileItemRename_Click);
             // 
             // FrmMain
             // 
@@ -506,6 +644,8 @@
             this.cmsCommLine.ResumeLayout(false);
             this.cmsInstance.ResumeLayout(false);
             this.cmsProject.ResumeLayout(false);
+            this.cmsDirectory.ResumeLayout(false);
+            this.cmsFileItem.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -558,6 +698,21 @@
         private System.Windows.Forms.ContextMenuStrip cmsProject;
         private System.Windows.Forms.ToolStripMenuItem miProjectRename;
         private System.Windows.Forms.ToolStripMenuItem miProjectProperties;
+        private System.Windows.Forms.ContextMenuStrip cmsDirectory;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryNewFile;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryNewFolder;
+        private System.Windows.Forms.ToolStripSeparator miDirectorySep1;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryDelete;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryRename;
+        private System.Windows.Forms.ToolStripSeparator miDirectorySep2;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryOpenInExplorer;
+        private System.Windows.Forms.ContextMenuStrip cmsFileItem;
+        private System.Windows.Forms.ToolStripMenuItem miFileItemOpen;
+        private System.Windows.Forms.ToolStripMenuItem miFileItemOpenLocation;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripMenuItem miFileItemDelete;
+        private System.Windows.Forms.ToolStripMenuItem miFileItemRename;
+        private System.Windows.Forms.ToolStripMenuItem miDirectoryRefresh;
     }
 }
 
