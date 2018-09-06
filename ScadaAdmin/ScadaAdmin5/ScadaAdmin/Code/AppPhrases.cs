@@ -61,6 +61,8 @@ namespace Scada.Admin.App.Code
 
         // Scada.Admin.App.Forms.FrmMain
         public static string ProjectFileFilter { get; private set; }
+        public static string ConfirmDeleteDirectory { get; private set; }
+        public static string ConfirmDeleteFile { get; private set; }
         public static string ConfirmDeleteInstance { get; private set; }
         public static string ConfirmDeleteCommLine { get; private set; }
         public static string InstanceAlreadyExists { get; private set; }
@@ -104,6 +106,8 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
             ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
+            ConfirmDeleteDirectory = dict.GetPhrase("ConfirmDeleteDirectory");
+            ConfirmDeleteFile = dict.GetPhrase("ConfirmDeleteFile");
             ConfirmDeleteInstance = dict.GetPhrase("ConfirmDeleteInstance");
             ConfirmDeleteCommLine = dict.GetPhrase("ConfirmDeleteCommLine");
             InstanceAlreadyExists = dict.GetPhrase("InstanceAlreadyExists");

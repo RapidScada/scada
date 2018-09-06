@@ -186,6 +186,8 @@
     <Phrase key="miCommLineMoveDown">Move Line Down</Phrase>
     <Phrase key="miCommLineDelete">Delete Line</Phrase>
     <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
+    <Phrase key="ConfirmDeleteDirectory">Are you sure you want to delete the folder?</Phrase>
+    <Phrase key="ConfirmDeleteFile">Are you sure you want to delete the file?</Phrase>
     <Phrase key="ConfirmDeleteInstance">Are you sure you want to delete the instance?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Are you sure you want to delete the communication line?</Phrase>
     <Phrase key="InstanceAlreadyExists">An instance with the same name already exists.</Phrase>

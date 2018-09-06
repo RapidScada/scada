@@ -658,12 +658,66 @@ namespace Scada.Admin.App.Forms
 
         private void miDirectoryDelete_Click(object sender, EventArgs e)
         {
+            // delete the selected directory
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Directory) &&
+                TryGetFilePath(selectedNode, out string path) &&
+                MessageBox.Show(AppPhrases.ConfirmDeleteDirectory, CommonPhrases.QuestionCaption,
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                CloseChildForms(selectedNode);
+
+                try
+                {
+                    if (Directory.Exists(path))
+                        Directory.Delete(path, true);
+                    selectedNode.Remove();
+                }
+                catch (Exception ex)
+                {
+                    appData.ProcError(ex);
+                }
+            }
         }
 
         private void miDirectoryRename_Click(object sender, EventArgs e)
         {
+            // rename the selected directory
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode?.Tag is TreeNodeTag tag && tag.NodeType == AppNodeType.Directory)
+            {
+                FileItem fileItem = (FileItem)tag.RelatedObject;
+
+                if (Directory.Exists(fileItem.Path))
+                {
+                    DirectoryInfo directoryInfo = new DirectoryInfo(fileItem.Path);
+                    FrmRename frmRename = new FrmRename() { ItemName = directoryInfo.Name };
+
+                    if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                    {
+                        CloseChildForms(selectedNode);
+
+                        try
+                        {
+                            string newDirectory = Path.Combine(directoryInfo.Parent.FullName, frmRename.ItemName);
+                            directoryInfo.MoveTo(newDirectory);
+                            fileItem.Path = newDirectory;
+                            selectedNode.Text = frmRename.ItemName;
+                            explorerBuilder.FillFileNode(selectedNode, newDirectory);
+                        }
+                        catch (Exception ex)
+                        {
+                            appData.ProcError(ex);
+                        }
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(CommonPhrases.DirNotExists);
+                }
+            }
         }
 
         private void miDirectoryOpenInExplorer_Click(object sender, EventArgs e)
@@ -671,9 +725,8 @@ namespace Scada.Admin.App.Forms
             // open the selected directory in File Explorer
             if (TryGetFilePath(tvExplorer.SelectedNode, out string path))
             {
-                string directory = Path.GetDirectoryName(path);
-                if (Directory.Exists(directory))
-                    Process.Start(directory);
+                if (Directory.Exists(path))
+                    Process.Start(path);
                 else
                     ScadaUiUtils.ShowError(CommonPhrases.DirNotExists);
             }
@@ -681,7 +734,14 @@ namespace Scada.Admin.App.Forms
 
         private void miDirectoryRefresh_Click(object sender, EventArgs e)
         {
+            // refresh the tree nodes corresponding to the selected directory
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (TryGetFilePath(selectedNode, out string path))
+            {
+                CloseChildForms(selectedNode);
+                explorerBuilder.FillFileNode(selectedNode, path);
+            }
         }
 
 
@@ -697,7 +757,14 @@ namespace Scada.Admin.App.Forms
 
         private void miFileItemOpen_Click(object sender, EventArgs e)
         {
+            // open the selected file
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.File) &&
+                TryGetFilePath(selectedNode, out string path))
+            {
+                ScadaUiUtils.ShowWarning("Open file not implemented: " + path); // TODO: implement open file
+            }
         }
 
         private void miFileItemOpenLocation_Click(object sender, EventArgs e)
@@ -721,12 +788,65 @@ namespace Scada.Admin.App.Forms
 
         private void miFileItemDelete_Click(object sender, EventArgs e)
         {
+            // delete the selected file
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.File) &&
+                TryGetFilePath(selectedNode, out string path) &&
+                MessageBox.Show(AppPhrases.ConfirmDeleteFile, CommonPhrases.QuestionCaption,
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                CloseChildForms(selectedNode);
+
+                try
+                {
+                    if (File.Exists(path))
+                        File.Delete(path);
+                    selectedNode.Remove();
+                }
+                catch (Exception ex)
+                {
+                    appData.ProcError(ex);
+                }
+            }
         }
 
         private void miFileItemRename_Click(object sender, EventArgs e)
         {
+            // rename the selected file
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode?.Tag is TreeNodeTag tag && tag.NodeType == AppNodeType.File)
+            {
+                FileItem fileItem = (FileItem)tag.RelatedObject;
+
+                if (File.Exists(fileItem.Path))
+                {
+                    FileInfo fileInfo = new FileInfo(fileItem.Path);
+                    FrmRename frmRename = new FrmRename() { ItemName = fileInfo.Name };
+
+                    if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                    {
+                        CloseChildForms(selectedNode);
+
+                        try
+                        {
+                            string newFileName = Path.Combine(fileInfo.DirectoryName, frmRename.ItemName);
+                            fileInfo.MoveTo(newFileName);
+                            fileItem.Path = newFileName;
+                            selectedNode.Text = frmRename.ItemName;
+                        }
+                        catch (Exception ex)
+                        {
+                            appData.ProcError(ex);
+                        }
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(CommonPhrases.FileNotFound);
+                }
+            }
         }
 
 

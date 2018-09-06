@@ -186,6 +186,8 @@
     <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>
     <Phrase key="miCommLineDelete">Удалить линию</Phrase>
     <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
+    <Phrase key="ConfirmDeleteDirectory">Вы уверены, что хотите удалить папку?</Phrase>
+    <Phrase key="ConfirmDeleteFile">Вы уверены, что хотите удалить файл?</Phrase>
     <Phrase key="ConfirmDeleteInstance">Вы уверены, что хотите удалить экземпляр?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Вы уверены, что хотите удалить линию связи?</Phrase>
     <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>

@@ -237,17 +237,7 @@ namespace Scada.Admin.App.Code
         public void FillInterfaceNode(TreeNode interfaceNode)
         {
             Interface interfaceObj = (Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
-
-            try
-            {
-                treeView.BeginUpdate();
-                interfaceNode.Nodes.Clear();
-                FillFileNode(interfaceNode, new DirectoryInfo(interfaceObj.InterfaceDir));
-            }
-            finally
-            {
-                treeView.EndUpdate();
-            }
+            FillFileNode(interfaceNode, interfaceObj.InterfaceDir);
         }
 
         /// <summary>
@@ -329,12 +319,19 @@ namespace Scada.Admin.App.Code
         public void FillWebstationNode(TreeNode webNode)
         {
             WebApp webApp = (WebApp)((TreeNodeTag)webNode.Tag).RelatedObject;
+            FillFileNode(webNode, webApp.AppDir);
+        }
 
+        /// <summary>
+        /// Fills the tree node according to the file system.
+        /// </summary>
+        public void FillFileNode(TreeNode treeNode, string directory)
+        {
             try
             {
                 treeView.BeginUpdate();
-                webNode.Nodes.Clear();
-                FillFileNode(webNode, new DirectoryInfo(webApp.AppDir));
+                treeNode.Nodes.Clear();
+                FillFileNode(treeNode, new DirectoryInfo(directory));
             }
             finally
             {

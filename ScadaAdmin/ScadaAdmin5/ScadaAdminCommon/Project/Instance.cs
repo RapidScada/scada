@@ -234,9 +234,9 @@ namespace Scada.Admin.Project
                 if (!AdminUtils.NameIsValid(name))
                     throw new ArgumentException("The specified name is incorrect.");
 
-                DirectoryInfo directoryInfo = new DirectoryInfo(instnaceDir);                
+                DirectoryInfo directoryInfo = new DirectoryInfo(InstanceDir);                
                 string newInstanceDir = Path.Combine(directoryInfo.Parent.FullName, name);
-                Directory.Move(InstanceDir, newInstanceDir);
+                directoryInfo.MoveTo(newInstanceDir);
                 InstanceDir = newInstanceDir;
                 Name = name;
 
