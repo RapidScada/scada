@@ -653,7 +653,30 @@ namespace Scada.Admin.App.Forms
 
         private void miDirectoryNewFolder_Click(object sender, EventArgs e)
         {
+            // create a new subdirectory of the selected directory
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Directory) &&
+                TryGetFilePath(selectedNode, out string path))
+            {
+                FrmRename frmRename = new FrmRename();
+
+                if (frmRename.ShowDialog() == DialogResult.OK)
+                {
+                    string newDirectory = Path.Combine(path, frmRename.ItemName);
+
+                    try
+                    {
+                        Directory.CreateDirectory(newDirectory);
+                        //TreeNode directoryNode = explorerBuilder.CreateDirectoryNode(newDirectory);
+                        //explorerBuilder.InsertDirectoryNode(selectedNode, directoryNode);
+                    }
+                    catch (Exception ex)
+                    {
+                        appData.ProcError(ex); // TODO: may be add description
+                    }
+                }
+            }
         }
 
         private void miDirectoryDelete_Click(object sender, EventArgs e)
