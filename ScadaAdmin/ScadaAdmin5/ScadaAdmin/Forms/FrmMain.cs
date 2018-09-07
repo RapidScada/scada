@@ -476,8 +476,15 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
         {
+            // execute a node action on double click
             if (e.Button == MouseButtons.Left)
-                ExecNodeAction(e.Node);
+            {
+                TreeNode node = e.Node;
+                if (node.TagIs(AppNodeType.File))
+                    ExecOpenFileAction(node);
+                else
+                    ExecNodeAction(node);
+            }
         }
 
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)

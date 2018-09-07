@@ -581,6 +581,7 @@
             // 
             // miFileItemOpen
             // 
+            this.miFileItemOpen.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemOpen.Image")));
             this.miFileItemOpen.Name = "miFileItemOpen";
             this.miFileItemOpen.Size = new System.Drawing.Size(231, 22);
             this.miFileItemOpen.Text = "Open";
