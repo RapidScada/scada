@@ -85,7 +85,8 @@ namespace Scada.Admin.App.Forms
                 {
                     using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8))
                     {
-                        textBox.Text = reader.ReadToEnd();
+                        // RichTextBox faster than TextBox
+                        richTextBox.Text = reader.ReadToEnd();
                     }
                 }
             }
@@ -111,7 +112,7 @@ namespace Scada.Admin.App.Forms
                 {
                     using (StreamWriter writer = new StreamWriter(fileStream, Encoding.UTF8))
                     {
-                        writer.Write(textBox.Text);
+                        writer.Write(richTextBox.Text);
                     }
                 }
 
@@ -142,7 +143,7 @@ namespace Scada.Admin.App.Forms
             }
         }
 
-        private void textBox_TextChanged(object sender, EventArgs e)
+        private void richTextBox_TextChanged(object sender, EventArgs e)
         {
             if (!changing)
                 ChildFormTag.Modified = true;
