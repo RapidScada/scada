@@ -39,11 +39,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public FileItem(DirectoryInfo directoryInfo)
         {
-            if (directoryInfo == null)
-                throw new ArgumentNullException("directoryInfo");
-
-            Path = directoryInfo.FullName;
-            IsDirectory = true;
+            Update(directoryInfo);
         }
 
         /// <summary>
@@ -51,11 +47,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public FileItem(FileInfo fileInfo)
         {
-            if (fileInfo == null)
-                throw new ArgumentNullException("fileInfo");
-
-            Path = fileInfo.FullName;
-            IsDirectory = false;
+            Update(fileInfo);
         }
 
 
@@ -65,8 +57,40 @@ namespace Scada.Admin.App.Code
         public string Path { get; set; }
 
         /// <summary>
+        /// Gets or sets the short directory name or file name.
+        /// </summary>
+        public string Name { get; set; }
+
+        /// <summary>
         /// Gets or sets a value indicating whether the item is a directory.
         /// </summary>
         public bool IsDirectory { get; set; }
+
+
+        /// <summary>
+        /// Updates the properties according to the specified directory.
+        /// </summary>
+        public void Update(DirectoryInfo directoryInfo)
+        {
+            if (directoryInfo == null)
+                throw new ArgumentNullException("directoryInfo");
+
+            Path = directoryInfo.FullName;
+            Name = directoryInfo.Name;
+            IsDirectory = true;
+        }
+
+        /// <summary>
+        /// Updates the properties according to the specified file.
+        /// </summary>
+        public void Update(FileInfo fileInfo)
+        {
+            if (fileInfo == null)
+                throw new ArgumentNullException("fileInfo");
+
+            Path = fileInfo.FullName;
+            Name = fileInfo.Name;
+            IsDirectory = false;
+        }
     }
 }

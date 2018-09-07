@@ -16,25 +16,21 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : Specifies the file types supported by the application
+ * Summary  : Messages sent by the application forms
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
  * Modified : 2018
  */
 
-namespace Scada.Admin.App.Code
+namespace Scada.Comm.Shell.Code
 {
     /// <summary>
-    /// Specifies the file types supported by the application.
-    /// <para>Задает типы файлов, поддерживаемые приложением.</para>
+    /// Messages sent by the application forms.
+    /// <para>Сообщения, отправляемые формами приложения.</para>
     /// </summary>
-    public enum KnownFileType
+    internal static class AppMessage
     {
-        None,
-        SchemeView,
-        TableView,
-        TextFile,
-        XmlFile
+        public const string UpdateFileName = "Admin.UpdateFileName";
     }
 }

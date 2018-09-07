@@ -86,6 +86,7 @@
     <Compile Include="Code\AppPhrases.cs" />
     <Compile Include="Code\AppState.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
+    <Compile Include="Code\AppMessage.cs" />
     <Compile Include="Code\ContextMenus.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
     <Compile Include="Code\FileCreator.cs" />
@@ -141,6 +142,12 @@
     <Compile Include="Forms\FrmProjectNew.Designer.cs">
       <DependentUpon>FrmProjectNew.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmTextEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTextEditor.Designer.cs">
+      <DependentUpon>FrmTextEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
@@ -163,6 +170,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmProjectNew.resx">
       <DependentUpon>FrmProjectNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTextEditor.resx">
+      <DependentUpon>FrmTextEditor.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

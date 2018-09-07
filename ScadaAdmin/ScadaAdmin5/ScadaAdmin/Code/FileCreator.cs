@@ -78,5 +78,32 @@ namespace Scada.Admin.App.Code
                     return "";
             }
         }
+
+        /// <summary>
+        /// Gets a file type by the extension.
+        /// </summary>
+        public static KnownFileType GetFileType(string extension)
+        {
+            string ext = extension == null ? "" : extension.ToLowerInvariant();
+
+            if (ext == "sch")
+                return KnownFileType.SchemeView;
+            else if (ext == "tbl")
+                return KnownFileType.TableView;
+            else if (ext == "txt")
+                return KnownFileType.TextFile;
+            else if (ext == "xml")
+                return KnownFileType.XmlFile;
+            else
+                return KnownFileType.None;
+        }
+
+        /// <summary>
+        /// Checks whether the extension is known.
+        /// </summary>
+        public static bool ExtensionIsKnown(string extension)
+        {
+            return GetFileType(extension) != KnownFileType.None;
+        }
     }
 }

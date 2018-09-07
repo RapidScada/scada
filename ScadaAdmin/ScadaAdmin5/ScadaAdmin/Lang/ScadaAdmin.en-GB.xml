@@ -239,6 +239,10 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmTextEditor">
+    <Phrase key="OpenTextFileError">Error opening file</Phrase>
+    <Phrase key="SaveTextFileError">Error saving file</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Error creating Communicator project files</Phrase>
     <Phrase key="DeleteCommFilesError">Error deleting Communicator project files</Phrase>

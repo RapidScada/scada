@@ -66,11 +66,6 @@ namespace Scada.Admin.App.Forms
         /// The hyperlink to the support in Russian.
         /// </summary>
         private const string SupportRuUrl = "https://forum.rapidscada.ru/";
-        /// <summary>
-        /// The file extensions supported by the internal editor.
-        /// </summary>
-        private static readonly HashSet<string> KnownExtenstions = 
-            new HashSet<string> { ".sch", ".tbl", ".txt", ".xml" };
 
         private readonly AppData appData;                 // the common data of the application
         private readonly Log log;                         // the application log
@@ -217,6 +212,28 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Executes an action to open the file associated with the node.
+        /// </summary>
+        private void ExecOpenFileAction(TreeNode treeNode)
+        {
+            if (treeNode.Tag is TreeNodeTag tag && tag.RelatedObject is FileItem fileItem)
+            {
+                if (tag.ExistingForm == null)
+                {
+                    // create and display a new text editor form
+                    FrmTextEditor form = new FrmTextEditor(appData, fileItem.Path);
+                    tag.ExistingForm = form;
+                    wctrlMain.AddForm(form, treeNode.FullPath, ilExplorer.Images[treeNode.ImageKey], treeNode);
+                }
+                else
+                {
+                    // activate the existing form
+                    wctrlMain.ActivateForm(tag.ExistingForm);
+                }
+            }
+        }
+
+        /// <summary>
         /// Finds a tree node that relates to the specified child form.
         /// </summary>
         private TreeNode FindTreeNode(Form form)
@@ -247,6 +264,28 @@ namespace Scada.Admin.App.Forms
                 if (node.Tag is TreeNodeTag tag && tag.ExistingForm != null)
                 {
                     wctrlMain.UpdateHint(tag.ExistingForm, node.FullPath);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates file names of the opened text editors corresponding to the specified node and its children.
+        /// </summary>
+        private void UpdateTextEditorFileNames(TreeNode treeNode)
+        {
+            foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
+            {
+                if (node.Tag is TreeNodeTag tag && tag.RelatedObject is FileItem fileItem &&
+                    node.Parent.Tag is TreeNodeTag parentTag && parentTag.RelatedObject is FileItem parenFileItem)
+                {
+                    fileItem.Path = Path.Combine(parenFileItem.Path, fileItem.Name);
+
+                    if (tag.ExistingForm is FrmTextEditor form)
+                    {
+                        wctrlMain.UpdateHint(form, node.FullPath);
+                        form.ChildFormTag.SendMessage(this, AppMessage.UpdateFileName,
+                            new Dictionary<string, object> { { "FileName", fileItem.Path } });
+                    }
                 }
             }
         }
@@ -753,15 +792,13 @@ namespace Scada.Admin.App.Forms
 
                     if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                     {
-                        CloseChildForms(selectedNode);
-
                         try
                         {
                             string newDirectory = Path.Combine(directoryInfo.Parent.FullName, frmItemName.ItemName);
                             directoryInfo.MoveTo(newDirectory);
-                            fileItem.Path = newDirectory;
-                            selectedNode.Text = frmItemName.ItemName;
-                            explorerBuilder.FillFileNode(selectedNode, newDirectory);
+                            fileItem.Update(new DirectoryInfo(newDirectory));
+                            selectedNode.Text = fileItem.Name;
+                            UpdateTextEditorFileNames(selectedNode);
                         }
                         catch (Exception ex)
                         {
@@ -807,7 +844,7 @@ namespace Scada.Admin.App.Forms
             if (tvExplorer.SelectedNode.Tag is TreeNodeTag tag && tag.NodeType == AppNodeType.File)
             {
                 FileItem fileItem = (FileItem)tag.RelatedObject;
-                miFileItemOpen.Enabled = KnownExtenstions.Contains(Path.GetExtension(fileItem.Path));
+                miFileItemOpen.Enabled = FileCreator.ExtensionIsKnown(Path.GetExtension(fileItem.Path).TrimStart('.'));
             }
         }
 
@@ -816,11 +853,8 @@ namespace Scada.Admin.App.Forms
             // open the selected file
             TreeNode selectedNode = tvExplorer.SelectedNode;
 
-            if (selectedNode != null && selectedNode.TagIs(AppNodeType.File) &&
-                TryGetFilePath(selectedNode, out string path))
-            {
-                ScadaUiUtils.ShowWarning("Open file not implemented: " + path); // TODO: implement open file
-            }
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.File))
+                ExecOpenFileAction(selectedNode);
         }
 
         private void miFileItemOpenLocation_Click(object sender, EventArgs e)
@@ -883,14 +917,19 @@ namespace Scada.Admin.App.Forms
 
                     if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                     {
-                        CloseChildForms(selectedNode);
-
                         try
                         {
                             string newFileName = Path.Combine(fileInfo.DirectoryName, frmItemName.ItemName);
                             fileInfo.MoveTo(newFileName);
-                            fileItem.Path = newFileName;
-                            selectedNode.Text = frmItemName.ItemName;
+                            fileItem.Update(new FileInfo(newFileName));
+                            selectedNode.Text = fileItem.Name;
+
+                            if (tag.ExistingForm is FrmTextEditor form)
+                            {
+                                wctrlMain.UpdateHint(tag.ExistingForm, selectedNode.FullPath);
+                                form.ChildFormTag.SendMessage(this, AppMessage.UpdateFileName,
+                                    new Dictionary<string, object> { { "FileName", newFileName } });
+                            }
                         }
                         catch (Exception ex)
                         {
