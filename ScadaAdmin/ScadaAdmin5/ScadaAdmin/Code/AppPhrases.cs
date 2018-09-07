@@ -52,6 +52,10 @@ namespace Scada.Admin.App.Code
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
 
+        // Scada.Admin.App.Forms.FrmFileNew
+        public static string FileNameEmpty { get; private set; }
+        public static string FileNameInvalid { get; private set; }
+
         // Scada.Admin.App.Forms.FrmInstanceEdit
         public static string NewInstanceTitle { get; private set; }
         public static string EditInstanceTitle { get; private set; }
@@ -59,12 +63,19 @@ namespace Scada.Admin.App.Code
         public static string InstanceNameInvalid { get; private set; }
         public static string InstanceSelectApps { get; private set; }
 
+        // Scada.Admin.App.Forms.FrmItemName
+        public static string ItemNameEmpty { get; private set; }
+        public static string ItemNameInvalid { get; private set; }
+
         // Scada.Admin.App.Forms.FrmMain
         public static string ProjectFileFilter { get; private set; }
         public static string ConfirmDeleteDirectory { get; private set; }
         public static string ConfirmDeleteFile { get; private set; }
         public static string ConfirmDeleteInstance { get; private set; }
         public static string ConfirmDeleteCommLine { get; private set; }
+        public static string FileOperationError { get; private set; }
+        public static string DirectoryAlreadyExists { get; private set; }
+        public static string FileAlreadyExists { get; private set; }
         public static string InstanceAlreadyExists { get; private set; }
 
         // Scada.Admin.App.Forms.FrmProjectNew
@@ -75,10 +86,6 @@ namespace Scada.Admin.App.Code
         public static string ProjectAlreadyExists { get; private set; }
         public static string ProjectTemplateEmpty { get; private set; }
         public static string ProjectTemplateNotFound { get; private set; }
-
-        // Scada.Admin.App.Forms.FrmRename
-        public static string ItemNameEmpty { get; private set; }
-        public static string ItemNameInvalid { get; private set; }
 
         public static void Init()
         {
@@ -97,6 +104,10 @@ namespace Scada.Admin.App.Code
             GridViewError = dict.GetPhrase("GridViewError");
             ColumnLabel = dict.GetPhrase("ColumnLabel");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
+            FileNameEmpty = dict.GetPhrase("FileNameEmpty");
+            FileNameInvalid = dict.GetPhrase("FileNameInvalid");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmInstanceEdit");
             NewInstanceTitle = dict.GetPhrase("NewInstanceTitle");
             EditInstanceTitle = dict.GetPhrase("EditInstanceTitle");
@@ -104,12 +115,19 @@ namespace Scada.Admin.App.Code
             InstanceNameInvalid = dict.GetPhrase("InstanceNameInvalid");
             InstanceSelectApps = dict.GetPhrase("InstanceSelectApps");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmItemName");
+            ItemNameEmpty = dict.GetPhrase("ItemNameEmpty");
+            ItemNameInvalid = dict.GetPhrase("ItemNameInvalid");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
             ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
             ConfirmDeleteDirectory = dict.GetPhrase("ConfirmDeleteDirectory");
             ConfirmDeleteFile = dict.GetPhrase("ConfirmDeleteFile");
             ConfirmDeleteInstance = dict.GetPhrase("ConfirmDeleteInstance");
             ConfirmDeleteCommLine = dict.GetPhrase("ConfirmDeleteCommLine");
+            FileOperationError = dict.GetPhrase("FileOperationError");
+            DirectoryAlreadyExists = dict.GetPhrase("DirectoryAlreadyExists");
+            FileAlreadyExists = dict.GetPhrase("FileAlreadyExists");
             InstanceAlreadyExists = dict.GetPhrase("InstanceAlreadyExists");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmProjectNew");
@@ -120,10 +138,6 @@ namespace Scada.Admin.App.Code
             ProjectAlreadyExists = dict.GetPhrase("ProjectAlreadyExists");
             ProjectTemplateEmpty = dict.GetPhrase("ProjectTemplateEmpty");
             ProjectTemplateNotFound = dict.GetPhrase("ProjectTemplateNotFound");
-
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmRename");
-            ItemNameEmpty = dict.GetPhrase("ItemNameEmpty");
-            ItemNameInvalid = dict.GetPhrase("ItemNameInvalid");
         }
     }
 }

@@ -88,9 +88,12 @@
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\ContextMenus.cs" />
     <Compile Include="Code\ExplorerBuilder.cs" />
+    <Compile Include="Code\FileCreator.cs" />
     <Compile Include="Code\FileItem.cs" />
+    <Compile Include="Code\FormOperatingMode.cs" />
     <Compile Include="Code\FormState.cs" />
     <Compile Include="Code\CommDirs.cs" />
+    <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />
     <Compile Include="Code\ServerDirs.cs" />
     <Compile Include="Forms\FrmBaseTable.cs">
@@ -101,6 +104,12 @@
     </Compile>
     <Compile Include="Forms\FrmBaseTableGeneric.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmFileNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmFileNew.Designer.cs">
+      <DependentUpon>FrmFileNew.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmInstanceEdit.cs">
       <SubType>Form</SubType>
@@ -114,11 +123,11 @@
     <Compile Include="Forms\FrmProjectProps.Designer.cs">
       <DependentUpon>FrmProjectProps.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmRename.cs">
+    <Compile Include="Forms\FrmItemName.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmRename.Designer.cs">
-      <DependentUpon>FrmRename.cs</DependentUpon>
+    <Compile Include="Forms\FrmItemName.Designer.cs">
+      <DependentUpon>FrmItemName.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
@@ -137,14 +146,17 @@
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmFileNew.resx">
+      <DependentUpon>FrmFileNew.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmInstanceEdit.resx">
       <DependentUpon>FrmInstanceEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmProjectProps.resx">
       <DependentUpon>FrmProjectProps.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmRename.resx">
-      <DependentUpon>FrmRename.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\FrmItemName.resx">
+      <DependentUpon>FrmItemName.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>

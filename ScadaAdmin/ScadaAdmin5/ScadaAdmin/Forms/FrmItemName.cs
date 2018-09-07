@@ -34,12 +34,12 @@ namespace Scada.Admin.App.Forms
     /// Form for entering a name of a project item.
     /// <para>Форма ввода наименования элемента проекта.</para>
     /// </summary>
-    public partial class FrmRename : Form
+    public partial class FrmItemName : Form
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmRename()
+        public FrmItemName()
         {
             InitializeComponent();
         }
@@ -91,7 +91,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmInstanceName_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmRename");
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmItemName");
             Modified = false;
         }
 

@@ -148,6 +148,18 @@
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
+    <Phrase key="this">New File</Phrase>
+    <Phrase key="lbFileType.Items[0]">Scheme View</Phrase>
+    <Phrase key="lbFileType.Items[1]">Table View</Phrase>
+    <Phrase key="lbFileType.Items[2]">Text File</Phrase>
+    <Phrase key="lbFileType.Items[3]">XML File</Phrase>
+    <Phrase key="lblFileName">File name</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="FileNameEmpty">The file name can not be empty.</Phrase>
+    <Phrase key="FileNameInvalid">The file name contains invalid characters.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmInstanceEdit">
     <Phrase key="lblName">Instance name</Phrase>
     <Phrase key="gbApplications">Applications</Phrase>
@@ -161,6 +173,14 @@
     <Phrase key="InstanceNameEmpty">The instance name can not be empty.</Phrase>
     <Phrase key="InstanceNameInvalid">The instance name contains invalid characters.</Phrase>
     <Phrase key="InstanceSelectApps">Select at least one application.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmItemName">
+    <Phrase key="this">Item Name</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="ItemNameEmpty">The name can not be empty.</Phrase>
+    <Phrase key="ItemNameInvalid">The name contains invalid characters.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="miProjectRename">Rename Project</Phrase>
@@ -190,6 +210,9 @@
     <Phrase key="ConfirmDeleteFile">Are you sure you want to delete the file?</Phrase>
     <Phrase key="ConfirmDeleteInstance">Are you sure you want to delete the instance?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Are you sure you want to delete the communication line?</Phrase>
+    <Phrase key="FileOperationError">Error operating with file system</Phrase>
+    <Phrase key="DirectoryAlreadyExists">Directory already exists.</Phrase>
+    <Phrase key="FileAlreadyExists">File already exists.</Phrase>
     <Phrase key="InstanceAlreadyExists">An instance with the same name already exists.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
@@ -215,14 +238,6 @@
     <Phrase key="lblDescr">Description</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmRename">
-    <Phrase key="this">Rename</Phrase>
-    <Phrase key="lblName">Name</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="ItemNameEmpty">The name can not be empty.</Phrase>
-    <Phrase key="ItemNameInvalid">The name contains invalid characters.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Error creating Communicator project files</Phrase>

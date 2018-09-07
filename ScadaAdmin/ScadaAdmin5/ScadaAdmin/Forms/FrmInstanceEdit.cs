@@ -38,25 +38,19 @@ namespace Scada.Admin.App.Forms
     public partial class FrmInstanceEdit : Form
     {
         /// <summary>
-        /// Specifies the form operating mode.
-        /// </summary>
-        public enum OperatingMode { New, Edit }
-
-
-        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public FrmInstanceEdit()
         {
             InitializeComponent();
-            Mode = OperatingMode.New;
+            Mode = FormOperatingMode.New;
         }
 
 
         /// <summary>
         /// Gets or sets the form operating mode.
         /// </summary>
-        public OperatingMode Mode { get; set; }
+        public FormOperatingMode Mode { get; set; }
 
         /// <summary>
         /// Gets or sets the instance name.
@@ -125,7 +119,7 @@ namespace Scada.Admin.App.Forms
         private bool ValidateFields()
         {
             // validate the name
-            if (Mode == OperatingMode.New)
+            if (Mode == FormOperatingMode.New)
             {
                 string name = InstanceName;
 
@@ -186,7 +180,7 @@ namespace Scada.Admin.App.Forms
         {
             Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmInstanceEdit");
 
-            if (Mode == OperatingMode.New)
+            if (Mode == FormOperatingMode.New)
             {
                 Text = AppPhrases.NewInstanceTitle;
             }

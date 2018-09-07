@@ -119,6 +119,36 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
+        /// Creates a node that represents the specified directory.
+        /// </summary>
+        private TreeNode CreateDirectoryNode(DirectoryInfo directoryInfo)
+        {
+            TreeNode directoryNode = TreeViewUtils.CreateNode(directoryInfo.Name, "folder_closed.png");
+            directoryNode.ContextMenuStrip = contextMenus.DirectoryMenu;
+            directoryNode.Tag = new TreeNodeTag
+            {
+                RelatedObject = new FileItem(directoryInfo),
+                NodeType = AppNodeType.Directory
+            };
+            return directoryNode;
+        }
+
+        /// <summary>
+        /// Creates a node that represents the specified file.
+        /// </summary>
+        private TreeNode CreateFileNode(FileInfo fileInfo)
+        {
+            TreeNode fileNode = TreeViewUtils.CreateNode(fileInfo.Name, "file.png");
+            fileNode.ContextMenuStrip = contextMenus.FileItemMenu;
+            fileNode.Tag = new TreeNodeTag
+            {
+                RelatedObject = new FileItem(fileInfo),
+                NodeType = AppNodeType.File
+            };
+            return fileNode;
+        }
+
+        /// <summary>
         /// Fills the tree node according to the file system.
         /// </summary>
         private void FillFileNode(TreeNode treeNode, DirectoryInfo directoryInfo)
@@ -128,26 +158,14 @@ namespace Scada.Admin.App.Code
 
             foreach (DirectoryInfo subdirInfo in directoryInfo.GetDirectories())
             {
-                TreeNode subdirNode = TreeViewUtils.CreateNode(subdirInfo.Name, "folder_closed.png");
-                subdirNode.ContextMenuStrip = contextMenus.DirectoryMenu;
-                subdirNode.Tag = new TreeNodeTag
-                {
-                    RelatedObject = new FileItem(subdirInfo),
-                    NodeType = AppNodeType.Directory
-                };
+                TreeNode subdirNode = CreateDirectoryNode(subdirInfo);
                 FillFileNode(subdirNode, subdirInfo);
                 nodes.Add(subdirNode);
             }
 
             foreach (FileInfo fileInfo in directoryInfo.GetFiles())
             {
-                TreeNode fileNode = TreeViewUtils.CreateNode(fileInfo.Name, "file.png");
-                fileNode.ContextMenuStrip = contextMenus.FileItemMenu;
-                fileNode.Tag = new TreeNodeTag
-                {
-                    RelatedObject = new FileItem(fileInfo),
-                    NodeType = AppNodeType.File
-                };
+                TreeNode fileNode = CreateFileNode(fileInfo);
                 nodes.Add(fileNode);
             }
         }
@@ -332,6 +350,85 @@ namespace Scada.Admin.App.Code
                 treeView.BeginUpdate();
                 treeNode.Nodes.Clear();
                 FillFileNode(treeNode, new DirectoryInfo(directory));
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Inserts a newly created directory node.
+        /// </summary>
+        public void InsertDirectoryNode(TreeNode parentNode, string directory)
+        {
+            try
+            {
+                treeView.BeginUpdate();
+                DirectoryInfo directoryInfo = new DirectoryInfo(directory);
+                string name = directoryInfo.Name;
+                int index = 0;
+
+                foreach (TreeNode treeNode in parentNode.Nodes)
+                {
+                    if (treeNode.TagIs(AppNodeType.Directory))
+                    {
+                        if (string.Compare(name, treeNode.Text, StringComparison.Ordinal) < 0)
+                            break;
+                        else
+                            index = treeNode.Index + 1;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                TreeNode directoryNode = CreateDirectoryNode(directoryInfo);
+                parentNode.Nodes.Insert(index, directoryNode);
+                treeView.SelectedNode = directoryNode;
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Inserts a newly created file node.
+        /// </summary>
+        public void InsertFileNode(TreeNode parentNode, string fileName)
+        {
+            try
+            {
+                treeView.BeginUpdate();
+                FileInfo fileInfo = new FileInfo(fileName);
+                string name = fileInfo.Name;
+                int index = 0;
+
+                foreach (TreeNode treeNode in parentNode.Nodes)
+                {
+                    if (treeNode.TagIs(AppNodeType.Directory))
+                    {
+                        index = treeNode.Index + 1;
+                    }
+                    else if (treeNode.TagIs(AppNodeType.File))
+                    {
+                        if (string.Compare(name, treeNode.Text, StringComparison.Ordinal) < 0)
+                            break;
+                        else
+                            index = treeNode.Index + 1;
+                    }
+                    else
+                    {
+                        index = treeNode.Index;
+                        break;
+                    }
+                }
+
+                TreeNode fileNode = CreateFileNode(fileInfo);
+                parentNode.Nodes.Insert(index, fileNode);
+                treeView.SelectedNode = fileNode;
             }
             finally
             {

@@ -148,6 +148,18 @@
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
+    <Phrase key="this">Новый файл</Phrase>
+    <Phrase key="lbFileType.Items[0]">Схема</Phrase>
+    <Phrase key="lbFileType.Items[1]">Таблица</Phrase>
+    <Phrase key="lbFileType.Items[2]">Текстовый файл</Phrase>
+    <Phrase key="lbFileType.Items[3]">XML файл</Phrase>
+    <Phrase key="lblFileName">Имя файла</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="FileNameEmpty">Имя файла не может быть пустым.</Phrase>
+    <Phrase key="FileNameInvalid">Имя файла содержит недопустимые символы.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmInstanceEdit">
     <Phrase key="lblName">Наименование экземпляра</Phrase>
     <Phrase key="gbApplications">Приложения</Phrase>
@@ -161,6 +173,14 @@
     <Phrase key="InstanceNameEmpty">Наименование экземпляра не может быть пустым.</Phrase>
     <Phrase key="InstanceNameInvalid">Наименование экземпляра содержит недопустимые символы.</Phrase>
     <Phrase key="InstanceSelectApps">Выберите хотя бы одно приложение.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmItemName">
+    <Phrase key="this">Наименование элемента</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
+    <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="miProjectRename">Переименовать проект</Phrase>
@@ -190,6 +210,9 @@
     <Phrase key="ConfirmDeleteFile">Вы уверены, что хотите удалить файл?</Phrase>
     <Phrase key="ConfirmDeleteInstance">Вы уверены, что хотите удалить экземпляр?</Phrase>
     <Phrase key="ConfirmDeleteCommLine">Вы уверены, что хотите удалить линию связи?</Phrase>
+    <Phrase key="FileOperationError">Ошибка при работе с файловой системой</Phrase>
+    <Phrase key="DirectoryAlreadyExists">Директория уже существует.</Phrase>
+    <Phrase key="FileAlreadyExists">Файл уже существует.</Phrase>
     <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
@@ -215,14 +238,6 @@
     <Phrase key="lblDescr">Описание</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmRename">
-    <Phrase key="this">Переименование</Phrase>
-    <Phrase key="lblName">Наименование</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
-    <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Ошибка при создании проектных файлов Коммуникатора</Phrase>

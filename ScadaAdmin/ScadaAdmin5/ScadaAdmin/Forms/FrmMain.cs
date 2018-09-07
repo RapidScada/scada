@@ -601,11 +601,11 @@ namespace Scada.Admin.App.Forms
 
             if (selectedNode != null && selectedNode.TagIs(AppNodeType.Project))
             {
-                FrmRename frmRename = new FrmRename() { ItemName = project.Name };
+                FrmItemName frmItemName = new FrmItemName() { ItemName = project.Name };
 
-                if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                 {
-                    if (!project.Rename(frmRename.ItemName, out string errMsg))
+                    if (!project.Rename(frmItemName.ItemName, out string errMsg))
                         appData.ProcError(errMsg);
 
                     selectedNode.Text = project.Name;
@@ -648,7 +648,35 @@ namespace Scada.Admin.App.Forms
 
         private void miDirectoryNewFile_Click(object sender, EventArgs e)
         {
+            // create a new file in the selected directory
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (TryGetFilePath(selectedNode, out string path))
+            {
+                FrmFileNew frmFileNew = new FrmFileNew();
+
+                if (frmFileNew.ShowDialog() == DialogResult.OK)
+                {
+                    try
+                    {
+                        string fileName = Path.Combine(path, frmFileNew.FileName);
+
+                        if (File.Exists(fileName))
+                        {
+                            ScadaUiUtils.ShowError(AppPhrases.FileAlreadyExists);
+                        }
+                        else
+                        {
+                            FileCreator.CreateFile(fileName, frmFileNew.FileType);
+                            explorerBuilder.InsertFileNode(selectedNode, fileName);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        appData.ProcError(ex, AppPhrases.FileOperationError);
+                    }
+                }
+            }
         }
 
         private void miDirectoryNewFolder_Click(object sender, EventArgs e)
@@ -656,24 +684,29 @@ namespace Scada.Admin.App.Forms
             // create a new subdirectory of the selected directory
             TreeNode selectedNode = tvExplorer.SelectedNode;
 
-            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Directory) &&
-                TryGetFilePath(selectedNode, out string path))
+            if (TryGetFilePath(selectedNode, out string path))
             {
-                FrmRename frmRename = new FrmRename();
+                FrmItemName frmItemName = new FrmItemName();
 
-                if (frmRename.ShowDialog() == DialogResult.OK)
+                if (frmItemName.ShowDialog() == DialogResult.OK)
                 {
-                    string newDirectory = Path.Combine(path, frmRename.ItemName);
-
                     try
                     {
-                        Directory.CreateDirectory(newDirectory);
-                        //TreeNode directoryNode = explorerBuilder.CreateDirectoryNode(newDirectory);
-                        //explorerBuilder.InsertDirectoryNode(selectedNode, directoryNode);
+                        string newDirectory = Path.Combine(path, frmItemName.ItemName);
+
+                        if (Directory.Exists(newDirectory))
+                        {
+                            ScadaUiUtils.ShowError(AppPhrases.DirectoryAlreadyExists);
+                        }
+                        else
+                        {
+                            Directory.CreateDirectory(newDirectory);
+                            explorerBuilder.InsertDirectoryNode(selectedNode, newDirectory);
+                        }
                     }
                     catch (Exception ex)
                     {
-                        appData.ProcError(ex); // TODO: may be add description
+                        appData.ProcError(ex, AppPhrases.FileOperationError);
                     }
                 }
             }
@@ -699,7 +732,7 @@ namespace Scada.Admin.App.Forms
                 }
                 catch (Exception ex)
                 {
-                    appData.ProcError(ex);
+                    appData.ProcError(ex, AppPhrases.FileOperationError);
                 }
             }
         }
@@ -716,23 +749,23 @@ namespace Scada.Admin.App.Forms
                 if (Directory.Exists(fileItem.Path))
                 {
                     DirectoryInfo directoryInfo = new DirectoryInfo(fileItem.Path);
-                    FrmRename frmRename = new FrmRename() { ItemName = directoryInfo.Name };
+                    FrmItemName frmItemName = new FrmItemName() { ItemName = directoryInfo.Name };
 
-                    if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                    if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                     {
                         CloseChildForms(selectedNode);
 
                         try
                         {
-                            string newDirectory = Path.Combine(directoryInfo.Parent.FullName, frmRename.ItemName);
+                            string newDirectory = Path.Combine(directoryInfo.Parent.FullName, frmItemName.ItemName);
                             directoryInfo.MoveTo(newDirectory);
                             fileItem.Path = newDirectory;
-                            selectedNode.Text = frmRename.ItemName;
+                            selectedNode.Text = frmItemName.ItemName;
                             explorerBuilder.FillFileNode(selectedNode, newDirectory);
                         }
                         catch (Exception ex)
                         {
-                            appData.ProcError(ex);
+                            appData.ProcError(ex, AppPhrases.FileOperationError);
                         }
                     }
                 }
@@ -829,7 +862,7 @@ namespace Scada.Admin.App.Forms
                 }
                 catch (Exception ex)
                 {
-                    appData.ProcError(ex);
+                    appData.ProcError(ex, AppPhrases.FileOperationError);
                 }
             }
         }
@@ -846,22 +879,22 @@ namespace Scada.Admin.App.Forms
                 if (File.Exists(fileItem.Path))
                 {
                     FileInfo fileInfo = new FileInfo(fileItem.Path);
-                    FrmRename frmRename = new FrmRename() { ItemName = fileInfo.Name };
+                    FrmItemName frmItemName = new FrmItemName() { ItemName = fileInfo.Name };
 
-                    if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                    if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                     {
                         CloseChildForms(selectedNode);
 
                         try
                         {
-                            string newFileName = Path.Combine(fileInfo.DirectoryName, frmRename.ItemName);
+                            string newFileName = Path.Combine(fileInfo.DirectoryName, frmItemName.ItemName);
                             fileInfo.MoveTo(newFileName);
                             fileItem.Path = newFileName;
-                            selectedNode.Text = frmRename.ItemName;
+                            selectedNode.Text = frmItemName.ItemName;
                         }
                         catch (Exception ex)
                         {
-                            appData.ProcError(ex);
+                            appData.ProcError(ex, AppPhrases.FileOperationError);
                         }
                     }
                 }
@@ -971,17 +1004,17 @@ namespace Scada.Admin.App.Forms
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 Instance instance = liveInstance.Instance;
-                FrmRename frmRename = new FrmRename() { ItemName = instance.Name };
+                FrmItemName frmItemName = new FrmItemName() { ItemName = instance.Name };
 
-                if (frmRename.ShowDialog() == DialogResult.OK && frmRename.Modified)
+                if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                 {
-                    if (project.ContainsInstance(frmRename.ItemName))
+                    if (project.ContainsInstance(frmItemName.ItemName))
                     {
                         ScadaUiUtils.ShowError(AppPhrases.InstanceAlreadyExists);
                     }
                     else
                     {
-                        if (!instance.Rename(frmRename.ItemName, out string errMsg))
+                        if (!instance.Rename(frmItemName.ItemName, out string errMsg))
                             appData.ProcError(errMsg);
 
                         selectedNode.Text = instance.Name;
@@ -1000,7 +1033,7 @@ namespace Scada.Admin.App.Forms
             if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance) &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                FrmInstanceEdit frmInstanceEdit = new FrmInstanceEdit() { Mode = FrmInstanceEdit.OperatingMode.Edit };
+                FrmInstanceEdit frmInstanceEdit = new FrmInstanceEdit() { Mode = FormOperatingMode.Edit };
                 Instance instance = liveInstance.Instance;
                 frmInstanceEdit.Init(instance);
 
