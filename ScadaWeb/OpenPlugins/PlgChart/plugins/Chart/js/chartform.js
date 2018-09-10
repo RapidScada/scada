@@ -13,9 +13,11 @@ $(document).ready(function () {
     chart.timeRange = timeRange;
     chart.chartData = chartData;
 
-    updateLayout();
-    chart.draw();
-    chart.bindHintEvents();
+    setTimeout(function () {
+        updateLayout();
+        chart.draw();
+        chart.bindHintEvents();
+    }, 0); // timeout is needed to open chart in a popup window in Firefox
 
     $(window).resize(function () {
         updateLayout();
