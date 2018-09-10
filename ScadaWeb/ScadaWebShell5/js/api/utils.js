@@ -174,11 +174,16 @@ scada.utils = {
         }
     },        
 
-    // Check if browser is in fullscreen mode
+    // Check if browser is in fullscreen mode switched on programmatically
     // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
     isFullscreen: function() {
         return document.fullscreenElement || document.mozFullScreenElement ||
             document.webkitFullscreenElement || document.msFullscreenElement;
+    },
+
+    // Check if browser is in fullscreen mode
+    isRealFullscreen: function () {
+        return window.innerHeight === screen.height;
     },
 
     // Switch browser to fullscreen mode

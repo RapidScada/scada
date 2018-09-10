@@ -250,7 +250,7 @@ $(document).ready(function () {
     });
 
     // show menus if user exits fullscreen mode,
-    // in Chrome fires only if the mode is switched programmatically 
+    // in Chrome fires only if the mode is switched programmatically
     $(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange", function () {
         if (!scada.utils.isFullscreen()) {
             scada.masterMain.switchToNormalView();
