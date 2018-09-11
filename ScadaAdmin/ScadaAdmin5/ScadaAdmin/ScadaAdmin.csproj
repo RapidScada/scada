@@ -97,6 +97,12 @@
     <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />
     <Compile Include="Code\ServerDirs.cs" />
+    <Compile Include="Forms\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -150,6 +156,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
     </EmbeddedResource>

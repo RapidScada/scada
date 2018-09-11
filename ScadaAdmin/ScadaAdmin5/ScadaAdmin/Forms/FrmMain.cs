@@ -114,16 +114,9 @@ namespace Scada.Admin.App.Forms
                 log.WriteError(errMsg);
 
             // load Administrator dictionaries
-            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg))
-            {
-                Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null, 
-                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsCommLine);
-                ofdProject.Filter = AppPhrases.ProjectFileFilter;
-            }
-            else
-            {
+            bool adminDictLoaded = Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaAdmin", out errMsg);
+            if (!adminDictLoaded)
                 log.WriteError(errMsg);
-            }
 
             // load Server dictionaries
             if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaServer", out errMsg))
@@ -138,6 +131,15 @@ namespace Scada.Admin.App.Forms
 
             AdminPhrases.Init();
             AppPhrases.Init();
+
+            if (adminDictLoaded)
+            {
+                Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null,
+                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsCommLine);
+                Text = AppPhrases.EmptyTitle;
+                wctrlMain.MessageText = AppPhrases.WelcomeMessage;
+                ofdProject.Filter = AppPhrases.ProjectFileFilter;
+            }
 
             ModPhrases.InitFromDictionaries();
             ServerShellPhrases.Init();
@@ -176,6 +178,43 @@ namespace Scada.Admin.App.Forms
             foreach (KeyValuePair<string, Image> pair in commShell.GetTreeViewImages())
             {
                 ilExplorer.Images.Add(pair.Key, pair.Value);
+            }
+        }
+
+        /// <summary>
+        /// Sets the initial state of menu items and tool buttons.
+        /// </summary>
+        private void InitMenuItems()
+        {
+            miFileSave.Enabled = btnFileSave.Enabled = false;
+            miFileSaveAll.Enabled = btnFileSaveAll.Enabled = false;
+
+            miEditCut.Enabled = btnEditCut.Enabled = false;
+            miEditCopy.Enabled = btnEditCopy.Enabled = false;
+            miEditPaste.Enabled = btnEditPaste.Enabled = false;
+
+            miToolsOptions.Enabled = false;
+        }
+
+        /// <summary>
+        /// Disables the Save All menu item and the corresponding tool button if all the forms are saved.
+        /// </summary>
+        private void DisableSaveAll()
+        {
+            if (miFileSaveAll.Enabled)
+            {
+                bool saveAllEnabled = false;
+
+                foreach (Form form in wctrlMain.Forms)
+                {
+                    if (form is IChildForm childForm && childForm.ChildFormTag.Modified)
+                    {
+                        saveAllEnabled = true;
+                        break;
+                    }
+                }
+
+                miFileSaveAll.Enabled = btnFileSaveAll.Enabled = saveAllEnabled;
             }
         }
 
@@ -375,15 +414,6 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Creates and displays a new project.
-        /// </summary>
-        private void CreateProject()
-        {
-            project = new ScadaProject();
-            explorerBuilder.CreateNodes(project);
-        }
-
-        /// <summary>
         /// Creates a new Server environment for the specified instance.
         /// </summary>
         private ServerEnvironment CreateServerEnvironment(Instance instance)
@@ -453,7 +483,7 @@ namespace Scada.Admin.App.Forms
         {
             LocalizeForm();
             TakeExplorerImages();
-            CreateProject();
+            InitMenuItems();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -512,6 +542,14 @@ namespace Scada.Admin.App.Forms
 
         }
 
+
+        private void wctrlMain_ActiveFormChanged(object sender, EventArgs e)
+        {
+            // enable or disable the Save menu item
+            miFileSave.Enabled = btnFileSave.Enabled = 
+                wctrlMain.ActiveForm is IChildForm childForm && childForm.ChildFormTag.Modified;
+        }
+
         private void wctrlMain_ChildFormClosed(object sender, ChildFormClosedEventArgs e)
         {
             // clear the form pointer of the node
@@ -519,6 +557,10 @@ namespace Scada.Admin.App.Forms
 
             if (treeNode?.Tag is TreeNodeTag tag)
                 tag.ExistingForm = null;
+
+            // disable the Save All menu item if needed
+            if (e.ChildForm is IChildForm childForm && childForm.ChildFormTag.Modified)
+                DisableSaveAll();
         }
 
         private void wctrlMain_ChildFormMessage(object sender, FormMessageEventArgs e)
@@ -546,6 +588,28 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        private void wctrlMain_ChildFormModifiedChanged(object sender, ChildFormEventArgs e)
+        {
+            // enable or disable the Save menu items
+            miFileSave.Enabled = btnFileSave.Enabled =
+                wctrlMain.ActiveForm is IChildForm activeForm && activeForm.ChildFormTag.Modified;
+
+            if (e.ChildForm is IChildForm childForm)
+            {
+                if (childForm.ChildFormTag.Modified)
+                    miFileSaveAll.Enabled = btnFileSaveAll.Enabled = true;
+                else
+                    DisableSaveAll();
+            }
+        }
+
+
+        private void miFile_DropDownOpening(object sender, EventArgs e)
+        {
+            // enable or disable the menu items
+            miFileClose.Enabled = wctrlMain.ActiveForm != null;
+            miFileCloseProject.Enabled = project != null;
+        }
 
         private void miFileNewProject_Click(object sender, EventArgs e)
         {
@@ -558,6 +622,8 @@ namespace Scada.Admin.App.Forms
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
                 {
                     project = newProject;
+                    Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                    InitMenuItems();
                     explorerBuilder.CreateNodes(project);
                 }
                 else
@@ -580,21 +646,47 @@ namespace Scada.Admin.App.Forms
                 if (!project.Load(ofdProject.FileName, out string errMsg))
                     appData.ProcError(errMsg);
 
+                Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                InitMenuItems();
                 explorerBuilder.CreateNodes(project);
             }
         }
 
         private void miFileSave_Click(object sender, EventArgs e)
         {
+            // save the active form
             if (wctrlMain.ActiveForm is IChildForm childForm)
-            {
                 childForm.Save();
+        }
+
+        private void miFileSaveAll_Click(object sender, EventArgs e)
+        {
+            // save all open forms
+            foreach (Form form in wctrlMain.Forms)
+            {
+                if (form is IChildForm childForm)
+                    childForm.Save();
             }
         }
 
-        private void miFileSaveAs_Click(object sender, EventArgs e)
+        private void miFileClose_Click(object sender, EventArgs e)
         {
+            // close the active form
+            wctrlMain.CloseActiveForm(out bool cancel);
+        }
 
+        private void miFileCloseProject_Click(object sender, EventArgs e)
+        {
+            // close the project
+            wctrlMain.CloseAllForms(out bool cancel);
+
+            if (!cancel)
+            {
+                project = null;
+                Text = AppPhrases.EmptyTitle;
+                InitMenuItems();
+                tvExplorer.Nodes.Clear();
+            }
         }
 
         private void miFileExit_Click(object sender, EventArgs e)
@@ -636,7 +728,8 @@ namespace Scada.Admin.App.Forms
 
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
-
+            // show the about form
+            FrmAbout.ShowAbout(appData);
         }
 
 
@@ -654,6 +747,7 @@ namespace Scada.Admin.App.Forms
                     if (!project.Rename(frmItemName.ItemName, out string errMsg))
                         appData.ProcError(errMsg);
 
+                    Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                     selectedNode.Text = project.Name;
                     UpdateChildFormHints(selectedNode);
                     SaveProjectSettings();

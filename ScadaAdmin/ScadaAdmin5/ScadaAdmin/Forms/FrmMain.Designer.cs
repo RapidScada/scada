@@ -35,8 +35,11 @@
             this.miFileNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileOpenProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSaveAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileCloseProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditCut = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,7 +53,14 @@
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
             this.miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
-            this.btnFileNew = new System.Windows.Forms.ToolStripButton();
+            this.btnFileNewProject = new System.Windows.Forms.ToolStripButton();
+            this.btnFileOpenProject = new System.Windows.Forms.ToolStripButton();
+            this.btnFileSave = new System.Windows.Forms.ToolStripButton();
+            this.btnFileSaveAll = new System.Windows.Forms.ToolStripButton();
+            this.toolSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnEditCut = new System.Windows.Forms.ToolStripButton();
+            this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
+            this.btnEditPaste = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
@@ -119,12 +129,16 @@
             this.miFileNewProject,
             this.miFileOpenProject,
             this.miFileSave,
-            this.miFileSaveAs,
-            this.miFileSep,
+            this.miFileSaveAll,
+            this.miFileSep1,
+            this.miFileClose,
+            this.miFileCloseProject,
+            this.miFileSep2,
             this.miFileExit});
             this.miFile.Name = "miFile";
             this.miFile.Size = new System.Drawing.Size(37, 20);
             this.miFile.Text = "&File";
+            this.miFile.DropDownOpening += new System.EventHandler(this.miFile_DropDownOpening);
             // 
             // miFileNewProject
             // 
@@ -153,18 +167,37 @@
             this.miFileSave.Text = "Save";
             this.miFileSave.Click += new System.EventHandler(this.miFileSave_Click);
             // 
-            // miFileSaveAs
+            // miFileSaveAll
             // 
-            this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
-            this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(195, 22);
-            this.miFileSaveAs.Text = "Save As...";
-            this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
+            this.miFileSaveAll.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAll.Image")));
+            this.miFileSaveAll.Name = "miFileSaveAll";
+            this.miFileSaveAll.Size = new System.Drawing.Size(195, 22);
+            this.miFileSaveAll.Text = "Save All";
+            this.miFileSaveAll.Click += new System.EventHandler(this.miFileSaveAll_Click);
             // 
-            // miFileSep
+            // miFileSep1
             // 
-            this.miFileSep.Name = "miFileSep";
-            this.miFileSep.Size = new System.Drawing.Size(192, 6);
+            this.miFileSep1.Name = "miFileSep1";
+            this.miFileSep1.Size = new System.Drawing.Size(192, 6);
+            // 
+            // miFileClose
+            // 
+            this.miFileClose.Name = "miFileClose";
+            this.miFileClose.Size = new System.Drawing.Size(195, 22);
+            this.miFileClose.Text = "Close";
+            this.miFileClose.Click += new System.EventHandler(this.miFileClose_Click);
+            // 
+            // miFileCloseProject
+            // 
+            this.miFileCloseProject.Name = "miFileCloseProject";
+            this.miFileCloseProject.Size = new System.Drawing.Size(195, 22);
+            this.miFileCloseProject.Text = "Close Project";
+            this.miFileCloseProject.Click += new System.EventHandler(this.miFileCloseProject_Click);
+            // 
+            // miFileSep2
+            // 
+            this.miFileSep2.Name = "miFileSep2";
+            this.miFileSep2.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileExit
             // 
@@ -189,7 +222,7 @@
             this.miEditCut.Image = ((System.Drawing.Image)(resources.GetObject("miEditCut.Image")));
             this.miEditCut.Name = "miEditCut";
             this.miEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.miEditCut.Size = new System.Drawing.Size(144, 22);
+            this.miEditCut.Size = new System.Drawing.Size(180, 22);
             this.miEditCut.Text = "Cut";
             this.miEditCut.Click += new System.EventHandler(this.miEditCut_Click);
             // 
@@ -198,7 +231,7 @@
             this.miEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("miEditCopy.Image")));
             this.miEditCopy.Name = "miEditCopy";
             this.miEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.miEditCopy.Size = new System.Drawing.Size(144, 22);
+            this.miEditCopy.Size = new System.Drawing.Size(180, 22);
             this.miEditCopy.Text = "Copy";
             this.miEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
             // 
@@ -207,7 +240,7 @@
             this.miEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("miEditPaste.Image")));
             this.miEditPaste.Name = "miEditPaste";
             this.miEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.miEditPaste.Size = new System.Drawing.Size(144, 22);
+            this.miEditPaste.Size = new System.Drawing.Size(180, 22);
             this.miEditPaste.Text = "Paste";
             this.miEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
@@ -223,7 +256,7 @@
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
@@ -242,7 +275,7 @@
             // 
             this.miHelpDoc.Image = ((System.Drawing.Image)(resources.GetObject("miHelpDoc.Image")));
             this.miHelpDoc.Name = "miHelpDoc";
-            this.miHelpDoc.Size = new System.Drawing.Size(169, 22);
+            this.miHelpDoc.Size = new System.Drawing.Size(180, 22);
             this.miHelpDoc.Text = "Documentation";
             this.miHelpDoc.Click += new System.EventHandler(this.miHelpDoc_Click);
             // 
@@ -250,40 +283,113 @@
             // 
             this.miHelpSupport.Image = ((System.Drawing.Image)(resources.GetObject("miHelpSupport.Image")));
             this.miHelpSupport.Name = "miHelpSupport";
-            this.miHelpSupport.Size = new System.Drawing.Size(169, 22);
+            this.miHelpSupport.Size = new System.Drawing.Size(180, 22);
             this.miHelpSupport.Text = "Technical Support";
             this.miHelpSupport.Click += new System.EventHandler(this.miHelpSupport_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
             // 
             // miHelpAbout
             // 
             this.miHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("miHelpAbout.Image")));
             this.miHelpAbout.Name = "miHelpAbout";
-            this.miHelpAbout.Size = new System.Drawing.Size(169, 22);
+            this.miHelpAbout.Size = new System.Drawing.Size(180, 22);
             this.miHelpAbout.Text = "About";
             this.miHelpAbout.Click += new System.EventHandler(this.miHelpAbout_Click);
             // 
             // tsMain
             // 
             this.tsMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.btnFileNew});
+            this.btnFileNewProject,
+            this.btnFileOpenProject,
+            this.btnFileSave,
+            this.btnFileSaveAll,
+            this.toolSep1,
+            this.btnEditCut,
+            this.btnEditCopy,
+            this.btnEditPaste});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(684, 25);
             this.tsMain.TabIndex = 1;
             // 
-            // btnFileNew
+            // btnFileNewProject
             // 
-            this.btnFileNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnFileNew.Image = ((System.Drawing.Image)(resources.GetObject("btnFileNew.Image")));
-            this.btnFileNew.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnFileNew.Name = "btnFileNew";
-            this.btnFileNew.Size = new System.Drawing.Size(23, 22);
-            this.btnFileNew.ToolTipText = "Create new project (Ctrl+N)";
+            this.btnFileNewProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileNewProject.Image = ((System.Drawing.Image)(resources.GetObject("btnFileNewProject.Image")));
+            this.btnFileNewProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileNewProject.Name = "btnFileNewProject";
+            this.btnFileNewProject.Size = new System.Drawing.Size(23, 22);
+            this.btnFileNewProject.ToolTipText = "New Project (Ctrl+N)";
+            this.btnFileNewProject.Click += new System.EventHandler(this.miFileNewProject_Click);
+            // 
+            // btnFileOpenProject
+            // 
+            this.btnFileOpenProject.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileOpenProject.Image = ((System.Drawing.Image)(resources.GetObject("btnFileOpenProject.Image")));
+            this.btnFileOpenProject.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileOpenProject.Name = "btnFileOpenProject";
+            this.btnFileOpenProject.Size = new System.Drawing.Size(23, 22);
+            this.btnFileOpenProject.ToolTipText = "Open Project (Ctrl+O)";
+            this.btnFileOpenProject.Click += new System.EventHandler(this.miFileOpenProject_Click);
+            // 
+            // btnFileSave
+            // 
+            this.btnFileSave.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileSave.Image = ((System.Drawing.Image)(resources.GetObject("btnFileSave.Image")));
+            this.btnFileSave.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileSave.Name = "btnFileSave";
+            this.btnFileSave.Size = new System.Drawing.Size(23, 22);
+            this.btnFileSave.ToolTipText = "Save (Ctrl+S)";
+            this.btnFileSave.Click += new System.EventHandler(this.miFileSave_Click);
+            // 
+            // btnFileSaveAll
+            // 
+            this.btnFileSaveAll.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFileSaveAll.Image = ((System.Drawing.Image)(resources.GetObject("btnFileSaveAll.Image")));
+            this.btnFileSaveAll.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFileSaveAll.Name = "btnFileSaveAll";
+            this.btnFileSaveAll.Size = new System.Drawing.Size(23, 22);
+            this.btnFileSaveAll.ToolTipText = "Save All";
+            this.btnFileSaveAll.Click += new System.EventHandler(this.miFileSaveAll_Click);
+            // 
+            // toolSep1
+            // 
+            this.toolSep1.Name = "toolSep1";
+            this.toolSep1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnEditCut
+            // 
+            this.btnEditCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditCut.Image = ((System.Drawing.Image)(resources.GetObject("btnEditCut.Image")));
+            this.btnEditCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditCut.Name = "btnEditCut";
+            this.btnEditCut.Size = new System.Drawing.Size(23, 22);
+            this.btnEditCut.ToolTipText = "Cut (Ctrl+X)";
+            this.btnEditCut.Click += new System.EventHandler(this.miEditCut_Click);
+            // 
+            // btnEditCopy
+            // 
+            this.btnEditCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("btnEditCopy.Image")));
+            this.btnEditCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditCopy.Name = "btnEditCopy";
+            this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
+            this.btnEditCopy.ToolTipText = "Copy (Ctrl+C)";
+            this.btnEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
+            // 
+            // btnEditPaste
+            // 
+            this.btnEditPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("btnEditPaste.Image")));
+            this.btnEditPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditPaste.Name = "btnEditPaste";
+            this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
+            this.btnEditPaste.ToolTipText = "Paste (Ctrl+V)";
+            this.btnEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
             // ssMain
             // 
@@ -348,7 +454,7 @@
             this.wctrlMain.Dock = System.Windows.Forms.DockStyle.Fill;
             this.wctrlMain.Image = null;
             this.wctrlMain.Location = new System.Drawing.Point(0, 0);
-            this.wctrlMain.MessageFont = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.wctrlMain.MessageFont = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.wctrlMain.Name = "wctrlMain";
             this.wctrlMain.SaveReqCancel = "Cancel";
             this.wctrlMain.SaveReqCaption = "Save changes";
@@ -357,8 +463,10 @@
             this.wctrlMain.SaveReqYes = "&Yes";
             this.wctrlMain.Size = new System.Drawing.Size(431, 340);
             this.wctrlMain.TabIndex = 0;
+            this.wctrlMain.ActiveFormChanged += new System.EventHandler(this.wctrlMain_ActiveFormChanged);
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
             this.wctrlMain.ChildFormMessage += new System.EventHandler<WinControl.FormMessageEventArgs>(this.wctrlMain_ChildFormMessage);
+            this.wctrlMain.ChildFormModifiedChanged += new System.EventHandler<WinControl.ChildFormEventArgs>(this.wctrlMain_ChildFormModifiedChanged);
             // 
             // cmsCommLine
             // 
@@ -506,7 +614,7 @@
             this.miDirectoryOpenInExplorer,
             this.miDirectoryRefresh});
             this.cmsDirectory.Name = "cmsDirectory";
-            this.cmsDirectory.Size = new System.Drawing.Size(219, 170);
+            this.cmsDirectory.Size = new System.Drawing.Size(219, 148);
             this.cmsDirectory.Opening += new System.ComponentModel.CancelEventHandler(this.cmsDirectory_Opening);
             // 
             // miDirectoryNewFile
@@ -633,6 +741,7 @@
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administrator";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.Load += new System.EventHandler(this.FrmMain_Load);
@@ -665,8 +774,8 @@
         private System.Windows.Forms.ToolStripMenuItem miFileNewProject;
         private System.Windows.Forms.ToolStripMenuItem miFileOpenProject;
         private System.Windows.Forms.ToolStripMenuItem miFileSave;
-        private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
-        private System.Windows.Forms.ToolStripSeparator miFileSep;
+        private System.Windows.Forms.ToolStripMenuItem miFileSaveAll;
+        private System.Windows.Forms.ToolStripSeparator miFileSep1;
         private System.Windows.Forms.ToolStripMenuItem miFileExit;
         private System.Windows.Forms.ToolStripMenuItem miEditCut;
         private System.Windows.Forms.ToolStripMenuItem miEditCopy;
@@ -678,7 +787,7 @@
         private System.Windows.Forms.ToolStripMenuItem miHelpDoc;
         private System.Windows.Forms.ToolStripMenuItem miHelpSupport;
         private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
-        private System.Windows.Forms.ToolStripButton btnFileNew;
+        private System.Windows.Forms.ToolStripButton btnFileNewProject;
         private System.Windows.Forms.TreeView tvExplorer;
         private WinControl.WinControl wctrlMain;
         private System.Windows.Forms.ImageList ilExplorer;
@@ -714,6 +823,16 @@
         private System.Windows.Forms.ToolStripMenuItem miFileItemDelete;
         private System.Windows.Forms.ToolStripMenuItem miFileItemRename;
         private System.Windows.Forms.ToolStripMenuItem miDirectoryRefresh;
+        private System.Windows.Forms.ToolStripMenuItem miFileClose;
+        private System.Windows.Forms.ToolStripMenuItem miFileCloseProject;
+        private System.Windows.Forms.ToolStripSeparator miFileSep2;
+        private System.Windows.Forms.ToolStripButton btnFileOpenProject;
+        private System.Windows.Forms.ToolStripButton btnFileSave;
+        private System.Windows.Forms.ToolStripButton btnFileSaveAll;
+        private System.Windows.Forms.ToolStripSeparator toolSep1;
+        private System.Windows.Forms.ToolStripButton btnEditCut;
+        private System.Windows.Forms.ToolStripButton btnEditCopy;
+        private System.Windows.Forms.ToolStripButton btnEditPaste;
     }
 }
 
