@@ -222,7 +222,7 @@
             this.miEditCut.Image = ((System.Drawing.Image)(resources.GetObject("miEditCut.Image")));
             this.miEditCut.Name = "miEditCut";
             this.miEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.miEditCut.Size = new System.Drawing.Size(180, 22);
+            this.miEditCut.Size = new System.Drawing.Size(144, 22);
             this.miEditCut.Text = "Cut";
             this.miEditCut.Click += new System.EventHandler(this.miEditCut_Click);
             // 
@@ -231,7 +231,7 @@
             this.miEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("miEditCopy.Image")));
             this.miEditCopy.Name = "miEditCopy";
             this.miEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.miEditCopy.Size = new System.Drawing.Size(180, 22);
+            this.miEditCopy.Size = new System.Drawing.Size(144, 22);
             this.miEditCopy.Text = "Copy";
             this.miEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
             // 
@@ -240,7 +240,7 @@
             this.miEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("miEditPaste.Image")));
             this.miEditPaste.Name = "miEditPaste";
             this.miEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.miEditPaste.Size = new System.Drawing.Size(180, 22);
+            this.miEditPaste.Size = new System.Drawing.Size(144, 22);
             this.miEditPaste.Text = "Paste";
             this.miEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
@@ -256,7 +256,7 @@
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
@@ -275,7 +275,7 @@
             // 
             this.miHelpDoc.Image = ((System.Drawing.Image)(resources.GetObject("miHelpDoc.Image")));
             this.miHelpDoc.Name = "miHelpDoc";
-            this.miHelpDoc.Size = new System.Drawing.Size(180, 22);
+            this.miHelpDoc.Size = new System.Drawing.Size(169, 22);
             this.miHelpDoc.Text = "Documentation";
             this.miHelpDoc.Click += new System.EventHandler(this.miHelpDoc_Click);
             // 
@@ -283,20 +283,20 @@
             // 
             this.miHelpSupport.Image = ((System.Drawing.Image)(resources.GetObject("miHelpSupport.Image")));
             this.miHelpSupport.Name = "miHelpSupport";
-            this.miHelpSupport.Size = new System.Drawing.Size(180, 22);
+            this.miHelpSupport.Size = new System.Drawing.Size(169, 22);
             this.miHelpSupport.Text = "Technical Support";
             this.miHelpSupport.Click += new System.EventHandler(this.miHelpSupport_Click);
             // 
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(166, 6);
             // 
             // miHelpAbout
             // 
             this.miHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("miHelpAbout.Image")));
             this.miHelpAbout.Name = "miHelpAbout";
-            this.miHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.miHelpAbout.Size = new System.Drawing.Size(169, 22);
             this.miHelpAbout.Text = "About";
             this.miHelpAbout.Click += new System.EventHandler(this.miHelpAbout_Click);
             // 
@@ -419,8 +419,9 @@
             this.tvExplorer.ShowRootLines = false;
             this.tvExplorer.Size = new System.Drawing.Size(250, 340);
             this.tvExplorer.TabIndex = 0;
-            this.tvExplorer.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeCollapse);
+            this.tvExplorer.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterCollapse);
             this.tvExplorer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeExpand);
+            this.tvExplorer.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterExpand);
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
             this.tvExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseDoubleClick);
             // 

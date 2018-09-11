@@ -435,5 +435,14 @@ namespace Scada.Admin.App.Code
                 treeView.EndUpdate();
             }
         }
+
+        /// <summary>
+        /// Sets the node image as open or closed folder.
+        /// </summary>
+        public void SetFolderImage(TreeNode treeNode)
+        {
+            if (treeNode.ImageKey.StartsWith("folder_"))
+                treeNode.SetImageKey(treeNode.IsExpanded ? "folder_open.png" : "folder_closed.png");
+        }
     }
 }

@@ -537,9 +537,14 @@ namespace Scada.Admin.App.Forms
             }
         }
 
-        private void tvExplorer_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        private void tvExplorer_AfterExpand(object sender, TreeViewEventArgs e)
         {
+            explorerBuilder.SetFolderImage(e.Node);
+        }
 
+        private void tvExplorer_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            explorerBuilder.SetFolderImage(e.Node);
         }
 
 
