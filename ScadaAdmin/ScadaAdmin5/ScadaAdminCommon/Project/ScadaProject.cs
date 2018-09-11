@@ -153,6 +153,25 @@ namespace Scada.Admin.Project
             return Path.Combine(projectDir, projectName + AdminUtils.ProjectExt);
         }
 
+        /// <summary>
+        /// Copies the content of the directory.
+        /// </summary>
+        private static void CopyDirectory(DirectoryInfo source, DirectoryInfo dest)
+        {
+            Directory.CreateDirectory(dest.FullName);
+
+            foreach (DirectoryInfo sourceSubdir in source.GetDirectories())
+            {
+                DirectoryInfo destSubdir = dest.CreateSubdirectory(sourceSubdir.Name);
+                CopyDirectory(sourceSubdir, destSubdir);
+            }
+
+            foreach (FileInfo fileInfo in source.GetFiles())
+            {
+                fileInfo.CopyTo(Path.Combine(dest.FullName, fileInfo.Name), true);
+            }
+        }
+
 
         /// <summary>
         /// Loads the project from the specified file.
@@ -260,7 +279,7 @@ namespace Scada.Admin.Project
             try
             {
                 if (!AdminUtils.NameIsValid(name))
-                    throw new ArgumentException("The specified name is incorrect.");
+                    throw new ArgumentException(AdminPhrases.IncorrectProjectName);
 
                 string projectDir = Path.GetDirectoryName(FileName);
                 DirectoryInfo directoryInfo = new DirectoryInfo(projectDir);
@@ -319,23 +338,44 @@ namespace Scada.Admin.Project
         {
             try
             {
-                project = new ScadaProject { Name = name };
-
-                if (File.Exists(template))
-                    project.Load(template);
+                // validate argumants
+                if (!AdminUtils.NameIsValid(name))
+                    throw new ArgumentException(AdminPhrases.IncorrectProjectName);
 
                 string projectDir = Path.Combine(location, name);
-                project.FileName = GetProjectFileName(projectDir, name);
 
                 if (Directory.Exists(projectDir))
                     throw new ScadaException(AdminPhrases.ProjectDirectoryExists);
 
+                // copy template
+                FileInfo templateFileInfo = new FileInfo(template);
+                string projectFileName = GetProjectFileName(projectDir, name);
+
+                if (templateFileInfo.Exists)
+                {
+                    CopyDirectory(templateFileInfo.Directory, new DirectoryInfo(projectDir));
+                    File.Move(Path.Combine(projectDir, templateFileInfo.Name), projectFileName);
+                }
+
+                // create project
+                project = new ScadaProject { Name = name };
+
+                if (File.Exists(projectFileName))
+                {
+                    // template exists
+                    project.Load(projectFileName);
+                }
+                else
+                {
+                    // template doesn't exist
+                    project.Description = "";
+                    project.Save(project.FileName);
+                }
+
+                // create the necessary directories
                 Directory.CreateDirectory(projectDir);
                 Directory.CreateDirectory(project.ConfigBase.BaseDir);
                 Directory.CreateDirectory(project.Interface.InterfaceDir);
-
-                project.Description = "";
-                project.Save(project.FileName);
 
                 errMsg = "";
                 return true;

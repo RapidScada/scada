@@ -290,6 +290,7 @@
     <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
     <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}: {1}</Phrase>
     <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}: {1}</Phrase>
+    <Phrase key="IncorrectProjectName">Некорректное наименование проекта.</Phrase>
     <Phrase key="RenameProjectError">Ошибка при переименовании проекта</Phrase>
     <Phrase key="ProjectDirectoryExists">Директория проекта уже существует.</Phrase>
   </Dictionary>

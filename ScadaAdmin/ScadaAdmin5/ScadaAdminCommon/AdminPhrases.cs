@@ -52,6 +52,7 @@ namespace Scada.Admin
         public static string LoadProjectDescrError { get; private set; }
         public static string LoadBaseTableError { get; private set; }
         public static string SaveBaseTableError { get; private set; }
+        public static string IncorrectProjectName{ get; private set; }
         public static string RenameProjectError { get; private set; }
         public static string ProjectDirectoryExists { get; private set; }
 
@@ -84,6 +85,7 @@ namespace Scada.Admin
             LoadProjectDescrError = dict.GetPhrase("LoadProjectDescrError");
             LoadBaseTableError = dict.GetPhrase("LoadBaseTableError");
             SaveBaseTableError = dict.GetPhrase("SaveBaseTableError");
+            IncorrectProjectName = dict.GetPhrase("IncorrectProjectName");
             RenameProjectError = dict.GetPhrase("RenameProjectError");
             ProjectDirectoryExists = dict.GetPhrase("ProjectDirectoryExists");
 
