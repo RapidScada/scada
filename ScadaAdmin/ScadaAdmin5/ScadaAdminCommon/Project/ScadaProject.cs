@@ -362,15 +362,12 @@ namespace Scada.Admin.Project
 
                 if (File.Exists(projectFileName))
                 {
-                    // template exists
+                    // load from template
                     project.Load(projectFileName);
-                }
-                else
-                {
-                    // template doesn't exist
                     project.Description = "";
-                    project.Save(project.FileName);
                 }
+
+                project.Save(project.FileName);
 
                 // create the necessary directories
                 Directory.CreateDirectory(projectDir);
