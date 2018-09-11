@@ -2,4 +2,12 @@
 <ScadaProject>
   <Version>5.5.0.0</Version>
   <Description>An empty project containing dictionaries in English.</Description>
+  <Instances>
+    <Instance>
+      <Name>Default</Name>
+      <ServerApp enabled="true" />
+      <CommApp enabled="true" />
+      <WebApp enabled="true" />
+    </Instance>
+  </Instances>
 </ScadaProject>

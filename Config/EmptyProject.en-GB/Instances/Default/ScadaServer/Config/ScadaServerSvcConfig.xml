@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaServerSvcConfig>
+  <!--Общие параметры-->
+  <CommonParams>
+    <Param name="TcpPort" value="10000" descr="Номер TCP-порта" />
+    <Param name="UseAD" value="false" descr="Использовать Active Directory для аутентификации пользователей" />
+    <Param name="LdapPath" value="" descr="Путь к серверу контроллера домена" />
+    <Param name="DetailedLog" value="false" descr="Записывать в журнал приложения подробную информацию" />
+  </CommonParams>
+  <!--Директории-->
+  <Directories>
+    <Param name="BaseDATDir" value="C:\SCADA\BaseDAT\" descr="Директория базы конфигурации в формате DAT" />
+    <Param name="ItfDir" value="C:\SCADA\Interface\" descr="Директория интерфейса" />
+    <Param name="ArcDir" value="C:\SCADA\ArchiveDAT\" descr="Директория архива в формате DAT" />
+    <Param name="ArcCopyDir" value="C:\SCADA\ArchiveDATCopy\" descr="Директория копии архива в формате DAT" />
+  </Directories>
+  <!--Параметры записи-->
+  <SaveParams>
+    <Param name="WriteCurPer" value="5" descr="Период записи текущего среза, с" />
+    <Param name="InactUnrelTime" value="5" descr="Время установки недостоверности при неактивности, мин." />
+    <Param name="WriteCur" value="true" descr="Записывать текущий срез" />
+    <Param name="WriteCurCopy" value="true" descr="Записывать копию текущего среза" />
+    <Param name="WriteMinPer" value="60" descr="Период записи минутных срезов, с" />
+    <Param name="StoreMinPer" value="365" descr="Период хранения минутных срезов, дн." />
+    <Param name="WriteMin" value="true" descr="Записывать минутные срезы" />
+    <Param name="WriteMinCopy" value="true" descr="Записывать копии минутных срезов" />
+    <Param name="WriteHrPer" value="1" descr="Период записи часовых срезов, мин." />
+    <Param name="StoreHrPer" value="365" descr="Период хранения часовых срезов, дн." />
+    <Param name="WriteHr" value="true" descr="Записывать часовые срезы" />
+    <Param name="WriteHrCopy" value="true" descr="Записывать копии часовых срезов" />
+    <Param name="StoreEvPer" value="365" descr="Период хранения событий, дн." />
+    <Param name="WriteEv" value="true" descr="Записывать события" />
+    <Param name="WriteEvCopy" value="true" descr="Записывать копии событий" />
+  </SaveParams>
+  <!--Модули-->
+  <Modules />
+</ScadaServerSvcConfig>
