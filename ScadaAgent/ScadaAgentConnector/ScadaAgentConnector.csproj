@@ -4,14 +4,14 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C377283B-858B-4EFC-A560-E90FF2F26B03}</ProjectGuid>
+    <ProjectGuid>{1E1B3570-9512-4515-81DD-3778EA772B19}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Agent.Net</RootNamespace>
-    <AssemblyName>ScadaAgentNet</AssemblyName>
+    <RootNamespace>Scada.Agent.Connector</RootNamespace>
+    <AssemblyName>ScadaAgentConnector</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <Deterministic>true</Deterministic>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -29,34 +29,18 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\ScadaAgentNet.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Log.Std, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Log\Log.Std\bin\Release\netstandard2.0\Log.Std.dll</HintPath>
-    </Reference>
-    <Reference Include="ScadaData.Std, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaData\ScadaData.Std\bin\Release\netstandard2.0\ScadaData.Std.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ServiceModel" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AgentManager.cs" />
-    <Compile Include="AgentSvc.cs" />
-    <Compile Include="ConfigUploadMessage.cs" />
+    <Compile Include="AgentWcfClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
       <Project>{3c07180f-f066-4a37-91e6-579cb5e76d73}</Project>
       <Name>ScadaAgentCommon</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
-      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
-      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

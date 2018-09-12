@@ -10,6 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Log.Std">
       <HintPath>..\..\Log\Log.Std\bin\Release\netstandard2.0\Log.Std.dll</HintPath>
     </Reference>

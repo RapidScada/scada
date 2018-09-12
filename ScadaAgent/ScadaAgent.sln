@@ -11,7 +11,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentSvc", "ScadaAgent
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentTest", "ScadaAgentTest\ScadaAgentTest.csproj", "{C5B4F9FA-E4AE-418E-9CE8-8CB92C9CBFB8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentEngine", "ScadaAgentEngine\ScadaAgentEngine.csproj", "{F6408462-F893-4A24-8CB1-C331101F68D6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScadaAgentEngine", "ScadaAgentEngine\ScadaAgentEngine.csproj", "{F6408462-F893-4A24-8CB1-C331101F68D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentCommon", "ScadaAgentCommon\ScadaAgentCommon.csproj", "{3C07180F-F066-4A37-91E6-579CB5E76D73}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentConnector", "ScadaAgentConnector\ScadaAgentConnector.csproj", "{1E1B3570-9512-4515-81DD-3778EA772B19}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +43,14 @@ Global
 		{F6408462-F893-4A24-8CB1-C331101F68D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F6408462-F893-4A24-8CB1-C331101F68D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F6408462-F893-4A24-8CB1-C331101F68D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C07180F-F066-4A37-91E6-579CB5E76D73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C07180F-F066-4A37-91E6-579CB5E76D73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C07180F-F066-4A37-91E6-579CB5E76D73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C07180F-F066-4A37-91E6-579CB5E76D73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E1B3570-9512-4515-81DD-3778EA772B19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E1B3570-9512-4515-81DD-3778EA772B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E1B3570-9512-4515-81DD-3778EA772B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E1B3570-9512-4515-81DD-3778EA772B19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
