@@ -172,6 +172,7 @@ namespace Scada.Server.Engine
         private EventAdapter eventCopyAdapter;     // адаптер таблицы копий событий
         private SortedList<DateTime, SrezTableCache> minSrezTableCache; // кэш таблиц минутных срезов
         private SortedList<DateTime, SrezTableCache> hrSrezTableCache;  // кэш таблиц часовых срезов
+        private List<EventTableLight.Event> eventsToWrite;              // буфер событий, которые нужно записать
         private List<ModLogic> modules;            // список модулей
 
 
@@ -216,6 +217,7 @@ namespace Scada.Server.Engine
             eventCopyAdapter = null;
             minSrezTableCache = null;
             hrSrezTableCache = null;
+            eventsToWrite = new List<EventTableLight.Event>();
             modules = new List<ModLogic>();
         }
 
@@ -853,13 +855,11 @@ namespace Scada.Server.Engine
                     }
 
                     // запись событий и их обработка с помощью модулей без блокировки текущего среза
-                    if (events.Count > 0)
+                    WriteEvents(events);
+
+                    lock (eventsToWrite)
                     {
-                        foreach (EventTableLight.Event ev in events)
-                        {
-                            WriteEvent(ev);
-                        }
-                        events.Clear();
+                        WriteEvents(eventsToWrite);
                     }
 
                     // выполнение действий модулей без блокировки текущего среза
@@ -1422,6 +1422,21 @@ namespace Scada.Server.Engine
             RaiseOnEventCreated(ev);
 
             return writeOk1 && writeOk2;
+        }
+
+        /// <summary>
+        /// Записать события из заданного списка и очистить список
+        /// </summary>
+        private void WriteEvents(List<EventTableLight.Event> events)
+        {
+            if (events.Count > 0)
+            {
+                foreach (EventTableLight.Event ev in events)
+                {
+                    WriteEvent(ev);
+                }
+                events.Clear();
+            }
         }
 
         /// <summary>
@@ -2195,9 +2210,8 @@ namespace Scada.Server.Engine
                                 {
                                     int cnlNum = receivedSrez.CnlNums[i];
                                     int cnlInd = curSrez.GetCnlIndex(cnlNum);
-                                    InCnl inCnl;
 
-                                    if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                                    if (cnlInd >= 0 && inCnls.TryGetValue(cnlNum, out InCnl inCnl)) // канал существует
                                     {
                                         if (inCnl.CnlTypeID == BaseValues.CnlTypes.TS ||
                                             inCnl.CnlTypeID == BaseValues.CnlTypes.TI)
@@ -2380,8 +2394,31 @@ namespace Scada.Server.Engine
         {
             try
             {
-                if (procSrez != null)
+                if (procSrez == curSrez)
+                {
+                    // установка данных c генерацией событий для текущего среза
+                    int cnlInd = procSrez.GetCnlIndex(cnlNum);
+
+                    if (cnlInd >= 0 && inCnls.TryGetValue(cnlNum, out InCnl inCnl))
+                    {
+                        SrezTableLight.CnlData oldCnlData = procSrez.CnlData[cnlInd];
+                        procSrez.CnlData[cnlInd] = cnlData;
+                        EventTableLight.Event ev = GenEvent(inCnl, oldCnlData, cnlData);
+
+                        if (ev != null)
+                        {
+                            lock (eventsToWrite)
+                            {
+                                eventsToWrite.Add(ev);
+                            }
+                        }
+                    }
+                }
+                else if (procSrez != null)
+                {
+                    // установка данных без генерации событий
                     procSrez.SetCnlData(cnlNum, cnlData);
+                }
             }
             catch (Exception ex)
             {
