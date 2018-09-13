@@ -244,6 +244,15 @@ namespace Scada.Agent.Net
         }
 
         /// <summary>
+        /// Проверить, что пользователь авторизован
+        /// </summary>
+        [OperationContract]
+        public bool IsLoggedOn(long sessionID)
+        {
+            return TryGetSession(sessionID, out Session session) && session.LoggedOn;
+        }
+
+        /// <summary>
         /// Управлять службой
         /// </summary>
         [OperationContract]

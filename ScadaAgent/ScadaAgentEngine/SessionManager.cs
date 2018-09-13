@@ -86,7 +86,8 @@ namespace Scada.Agent
                     int attemptNum = 0;
                     bool duplicated;
 
-                    while (duplicated = sessions.ContainsKey(sessionID) && ++attemptNum <= MaxGetSessionIDAttempts)
+                    while (duplicated = sessionID == 0 || sessions.ContainsKey(sessionID) && 
+                        ++attemptNum <= MaxGetSessionIDAttempts)
                     {
                         sessionID = ScadaUtils.GetRandomLong();
                     }
