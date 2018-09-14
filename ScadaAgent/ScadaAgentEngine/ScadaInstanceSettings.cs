@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : Agent settings for the system instance
  * 
  * Author   : Mikhail Shiryaev
@@ -23,7 +23,7 @@
  * Modified : 2018
  */
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// Agent settings for the system instance

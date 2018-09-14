@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Engine;
 using Scada.Agent.Test.AgentSvcRef;
 using System;
 using System.IO;

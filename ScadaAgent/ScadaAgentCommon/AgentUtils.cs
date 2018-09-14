@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaServerCommon
+ * Module   : ScadaAgentCommon
  * Summary  : The class contains utility methods for Agent
  * 
  * Author   : Mikhail Shiryaev

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : Object for manipulating a system instance
  * 
  * Author   : Mikhail Shiryaev
@@ -34,7 +34,7 @@ using System.IO.Compression;
 using System.Text;
 using Utils;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// Object for manipulating a system instance

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : Common data of the agent
  * 
  * Author   : Mikhail Shiryaev
@@ -26,7 +26,7 @@
 using System.Text;
 using Utils;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// Common data of the agent

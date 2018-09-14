@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : Agent settings
  * 
  * Author   : Mikhail Shiryaev
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// Agent settings

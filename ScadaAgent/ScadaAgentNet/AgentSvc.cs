@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Engine;
 using System;
 using System.Collections.Generic;
 using System.IO;

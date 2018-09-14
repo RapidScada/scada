@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentCommon
  * Summary  : Parts of the configuration
  * 
  * Author   : Mikhail Shiryaev

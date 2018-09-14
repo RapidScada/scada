@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentCommon
  * Summary  : Service commands
  * 
  * Author   : Mikhail Shiryaev

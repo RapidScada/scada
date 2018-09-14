@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : Session manager
  * 
  * Author   : Mikhail Shiryaev
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 using System.Text;
 using Utils;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// Session manager

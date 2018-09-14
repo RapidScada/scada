@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : The class contains utility cryptographic methods
  * 
  * Author   : Mikhail Shiryaev
@@ -24,9 +24,8 @@
  */
 
 using System;
-using System.Text;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// The class contains utility cryptographic methods

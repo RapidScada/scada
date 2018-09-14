@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaAgentCore
+ * Module   : ScadaAgentEngine
  * Summary  : System instance manager
  * 
  * Author   : Mikhail Shiryaev
@@ -27,7 +27,7 @@ using System;
 using System.Collections.Concurrent;
 using Utils;
 
-namespace Scada.Agent
+namespace Scada.Agent.Engine
 {
     /// <summary>
     /// System instance manager

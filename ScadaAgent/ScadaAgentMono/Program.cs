@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Engine;
 using Scada.Agent.Net;
 using System;
 using System.Threading;

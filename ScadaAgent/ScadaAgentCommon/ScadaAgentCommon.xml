@@ -4,6 +4,22 @@
         <name>ScadaAgentCommon</name>
     </assembly>
     <members>
+        <member name="T:Scada.Agent.AgentUtils">
+            <summary>
+            The class contains utility methods for Agent
+            <para>Класс, содержащий вспомогательные методы для Агента</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentUtils.AppVersion">
+            <summary>
+            Версия Агента
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.AgentUtils.IsWindows">
+            <summary>
+            Проверить, что программное обеспечение работает под управлением Windows
+            </summary>
+        </member>
         <member name="T:Scada.Agent.AppFolder">
             <summary>
             Application folders
