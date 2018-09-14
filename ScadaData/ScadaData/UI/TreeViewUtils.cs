@@ -106,6 +106,34 @@ namespace Scada.UI
 
 
         /// <summary>
+        /// Найти первый узел дерева заданного типа среди всех дочерних узлов, включая заданный узел
+        /// </summary>
+        public static TreeNode FindFirst(this TreeNode treeNode, Type tagType)
+        {
+            foreach (TreeNode childNode in IterateNodes(treeNode))
+            {
+                if (tagType.IsInstanceOfType(childNode.Tag))
+                    return childNode;
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Найти первый узел дерева заданного типа среди всех дочерних узлов, включая заданный узел
+        /// </summary>
+        public static TreeNode FindFirst(this TreeNode treeNode, string nodeType)
+        {
+            foreach (TreeNode childNode in IterateNodes(treeNode))
+            {
+                if (childNode.Tag is TreeNodeTag tag && tag.NodeType == nodeType)
+                    return childNode;
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Найти ближайший узел дерева заданного типа по отношению к заданному узлу вверх по дереву
         /// </summary>
         public static TreeNode FindClosest(this TreeNode treeNode, Type tagType)

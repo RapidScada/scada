@@ -42,6 +42,10 @@ namespace Scada.Agent.Connector
         protected readonly TimeSpan CheckConnectionSpan = TimeSpan.FromSeconds(10);
 
         /// <summary>
+        /// The WCF service client.
+        /// </summary>
+        internal AgentSvcClient client;
+        /// <summary>
         /// The connection settings.
         /// </summary>
         protected ConnectionSettings connSettings;
@@ -49,10 +53,6 @@ namespace Scada.Agent.Connector
         /// Determines whether the connection is local.
         /// </summary>
         protected bool isLocal;
-        /// <summary>
-        /// The WCF service client.
-        /// </summary>
-        protected AgentSvcClient client;
         /// <summary>
         /// The ID of the communication session.
         /// </summary>

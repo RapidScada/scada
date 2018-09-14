@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.App.Properties;
 using Scada.Admin.Project;
 using Scada.Comm;
@@ -414,6 +415,29 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Finds an instance selected for deploy.
+        /// </summary>
+        private bool FindInstanceForDeploy(TreeNode treeNode, out LiveInstance liveInstance)
+        {
+            if (project != null)
+            {
+                if (project.Instances.Count == 1)
+                {
+                    TreeNode instanceNode = tvExplorer.Nodes[0].FindFirst(AppNodeType.Instance);
+                    liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
+                    return true;
+                }
+                else if (FindClosestInstance(treeNode, out liveInstance))
+                {
+                    return true;
+                }
+            }
+
+            liveInstance = null;
+            return false;
+        }
+
+        /// <summary>
         /// Creates a new Server environment for the specified instance.
         /// </summary>
         private ServerEnvironment CreateServerEnvironment(Instance instance)
@@ -714,19 +738,44 @@ namespace Scada.Admin.App.Forms
 
         }
 
+        private void miDeploy_DropDownOpening(object sender, EventArgs e)
+        {
+            // enable or disable the menu items
+            bool deployInstanceFound = project != null && (project.Instances.Count == 1 ||
+                tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance) != null);
+            miDeployDownloadConfig.Enabled = deployInstanceFound;
+            miDeployUploadConfig.Enabled = deployInstanceFound;
+            miDeployInstanceStatus.Enabled = deployInstanceFound;
+        }
+
         private void miDeployDownloadConfig_Click(object sender, EventArgs e)
         {
-
+            // open a download configuration form
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            {
+                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig();
+                frmDownloadConfig.ShowDialog();
+            }
         }
 
         private void miDeployUploadConfig_Click(object sender, EventArgs e)
         {
-
+            // open an upload configuration form
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            {
+                FrmUploadConfig frmUploadConfig = new FrmUploadConfig();
+                frmUploadConfig.ShowDialog();
+            }
         }
 
         private void miDeployInstanceStatus_Click(object sender, EventArgs e)
         {
-
+            // open an instance status form
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            {
+                FrmInstanceStatus frmInstanceStatus = new FrmInstanceStatus();
+                frmInstanceStatus.ShowDialog();
+            }
         }
 
         private void miToolsOptions_Click(object sender, EventArgs e)
@@ -1071,9 +1120,16 @@ namespace Scada.Admin.App.Forms
             // enable or disable the menu items
             TreeNode treeNode = tvExplorer.SelectedNode;
             bool isInstanceNode = treeNode != null && treeNode.TagIs(AppNodeType.Instance);
+
             miInstanceMoveUp.Enabled = isInstanceNode && treeNode.PrevNode != null;
             miInstanceMoveDown.Enabled = isInstanceNode && treeNode.NextNode != null;
             miInstanceDelete.Enabled = isInstanceNode;
+
+            bool deployInstanceFound = isInstanceNode || project != null && project.Instances.Count == 1;
+            miInstanceDownloadConfig.Enabled = deployInstanceFound;
+            miInstanceUploadConfig.Enabled = deployInstanceFound;
+            miInstanceStatus.Enabled = deployInstanceFound;
+
             miInstanceRename.Enabled = isInstanceNode;
             miInstanceProperties.Enabled = isInstanceNode;
         }

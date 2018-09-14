@@ -13,7 +13,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="AgentSvcRef.AgentSvc")]
-    public interface AgentSvc {
+    internal interface AgentSvc {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/CreateSession", ReplyAction="http://tempuri.org/AgentSvc/CreateSessionResponse")]
         Scada.Agent.Connector.AgentSvcRef.CreateSessionResponse CreateSession(Scada.Agent.Connector.AgentSvcRef.CreateSessionRequest request);
@@ -103,7 +103,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSession", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CreateSessionRequest {
+    internal partial class CreateSessionRequest {
         
         public CreateSessionRequest() {
         }
@@ -112,7 +112,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="CreateSessionResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class CreateSessionResponse {
+    internal partial class CreateSessionResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public bool CreateSessionResult;
@@ -132,7 +132,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="Login", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class LoginRequest {
+    internal partial class LoginRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public long sessionID;
@@ -160,7 +160,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="LoginResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class LoginResponse {
+    internal partial class LoginResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public bool LoginResult;
@@ -180,7 +180,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetServiceStatus", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetServiceStatusRequest {
+    internal partial class GetServiceStatusRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public long sessionID;
@@ -200,7 +200,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetServiceStatusResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetServiceStatusResponse {
+    internal partial class GetServiceStatusResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public bool GetServiceStatusResult;
@@ -220,7 +220,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAvailableConfig", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetAvailableConfigRequest {
+    internal partial class GetAvailableConfigRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public long sessionID;
@@ -236,7 +236,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="GetAvailableConfigResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class GetAvailableConfigResponse {
+    internal partial class GetAvailableConfigResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public bool GetAvailableConfigResult;
@@ -257,7 +257,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(WrapperName="ConfigUploadMessage", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class ConfigUploadMessage {
+    internal partial class ConfigUploadMessage {
         
         [System.ServiceModel.MessageHeaderAttribute(Namespace="http://tempuri.org/")]
         public Scada.Agent.ConfigOptions ConfigOptions;
@@ -282,7 +282,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
     [System.ServiceModel.MessageContractAttribute(IsWrapped=false)]
-    public partial class UploadConfigResponse {
+    internal partial class UploadConfigResponse {
         
         public UploadConfigResponse() {
         }
@@ -291,7 +291,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="Browse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class BrowseRequest {
+    internal partial class BrowseRequest {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public long sessionID;
@@ -311,7 +311,7 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.MessageContractAttribute(WrapperName="BrowseResponse", WrapperNamespace="http://tempuri.org/", IsWrapped=true)]
-    public partial class BrowseResponse {
+    internal partial class BrowseResponse {
         
         [System.ServiceModel.MessageBodyMemberAttribute(Namespace="http://tempuri.org/", Order=0)]
         public bool BrowseResult;
@@ -333,12 +333,12 @@ namespace Scada.Agent.Connector.AgentSvcRef {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public interface AgentSvcChannel : Scada.Agent.Connector.AgentSvcRef.AgentSvc, System.ServiceModel.IClientChannel {
+    internal interface AgentSvcChannel : Scada.Agent.Connector.AgentSvcRef.AgentSvc, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class AgentSvcClient : System.ServiceModel.ClientBase<Scada.Agent.Connector.AgentSvcRef.AgentSvc>, Scada.Agent.Connector.AgentSvcRef.AgentSvc {
+    internal partial class AgentSvcClient : System.ServiceModel.ClientBase<Scada.Agent.Connector.AgentSvcRef.AgentSvc>, Scada.Agent.Connector.AgentSvcRef.AgentSvc {
         
         public AgentSvcClient() {
         }
