@@ -29,6 +29,12 @@ namespace Scada.Agent.Connector.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Connector.AgentSvcRef.LoginResponse> LoginAsync(Scada.Agent.Connector.AgentSvcRef.LoginRequest request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/IsLoggedOn", ReplyAction="http://tempuri.org/AgentSvc/IsLoggedOnResponse")]
+        bool IsLoggedOn(long sessionID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/IsLoggedOn", ReplyAction="http://tempuri.org/AgentSvc/IsLoggedOnResponse")]
+        System.Threading.Tasks.Task<bool> IsLoggedOnAsync(long sessionID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
         bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
         
@@ -61,6 +67,18 @@ namespace Scada.Agent.Connector.AgentSvcRef {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Connector.AgentSvcRef.UploadConfigResponse> UploadConfigAsync(Scada.Agent.Connector.AgentSvcRef.ConfigUploadMessage request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/PackConfig", ReplyAction="http://tempuri.org/AgentSvc/PackConfigResponse")]
+        bool PackConfig(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/PackConfig", ReplyAction="http://tempuri.org/AgentSvc/PackConfigResponse")]
+        System.Threading.Tasks.Task<bool> PackConfigAsync(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UnpackConfig", ReplyAction="http://tempuri.org/AgentSvc/UnpackConfigResponse")]
+        bool UnpackConfig(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UnpackConfig", ReplyAction="http://tempuri.org/AgentSvc/UnpackConfigResponse")]
+        System.Threading.Tasks.Task<bool> UnpackConfigAsync(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         Scada.Agent.Connector.AgentSvcRef.BrowseResponse Browse(Scada.Agent.Connector.AgentSvcRef.BrowseRequest request);
@@ -377,6 +395,14 @@ namespace Scada.Agent.Connector.AgentSvcRef {
             return base.Channel.LoginAsync(request);
         }
         
+        public bool IsLoggedOn(long sessionID) {
+            return base.Channel.IsLoggedOn(sessionID);
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsLoggedOnAsync(long sessionID) {
+            return base.Channel.IsLoggedOnAsync(sessionID);
+        }
+        
         public bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command) {
             return base.Channel.ControlService(sessionID, serviceApp, command);
         }
@@ -452,6 +478,22 @@ namespace Scada.Agent.Connector.AgentSvcRef {
             inValue.SessionID = SessionID;
             inValue.Stream = Stream;
             return ((Scada.Agent.Connector.AgentSvcRef.AgentSvc)(this)).UploadConfigAsync(inValue);
+        }
+        
+        public bool PackConfig(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.PackConfig(sessionID, destFileName, configOptions);
+        }
+        
+        public System.Threading.Tasks.Task<bool> PackConfigAsync(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.PackConfigAsync(sessionID, destFileName, configOptions);
+        }
+        
+        public bool UnpackConfig(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.UnpackConfig(sessionID, srcFileName, configOptions);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UnpackConfigAsync(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.UnpackConfigAsync(sessionID, srcFileName, configOptions);
         }
         
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]

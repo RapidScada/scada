@@ -352,6 +352,46 @@ namespace Scada.Agent.Net
         }
 
         /// <summary>
+        /// Упаковать конфигурацию в архив
+        /// </summary>
+        /// <remarks>Метод для получения конфигурации локально</remarks>
+        [OperationContract]
+        public bool PackConfig(long sessionID, string destFileName, ConfigOptions configOptions)
+        {
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                lock (scadaInstance.SyncRoot)
+                {
+                    return scadaInstance.PackConfig(destFileName, configOptions);
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Распаковать архив конфигурации
+        /// </summary>
+        /// <remarks>Метод для передачи конфигурации локально</remarks>
+        [OperationContract]
+        public bool UnpackConfig(long sessionID, string srcFileName, ConfigOptions configOptions)
+        {
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                lock (scadaInstance.SyncRoot)
+                {
+                    return scadaInstance.UnpackConfig(srcFileName, configOptions);
+                }
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Обзор директории
         /// </summary>
         [OperationContract]

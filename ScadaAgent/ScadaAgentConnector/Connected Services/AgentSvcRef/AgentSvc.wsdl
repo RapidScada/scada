@@ -21,6 +21,12 @@
   <wsdl:message name="AgentSvc_Login_OutputMessage">
     <wsdl:part name="parameters" element="tns:LoginResponse" />
   </wsdl:message>
+  <wsdl:message name="AgentSvc_IsLoggedOn_InputMessage">
+    <wsdl:part name="parameters" element="tns:IsLoggedOn" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_IsLoggedOn_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IsLoggedOnResponse" />
+  </wsdl:message>
   <wsdl:message name="AgentSvc_ControlService_InputMessage">
     <wsdl:part name="parameters" element="tns:ControlService" />
   </wsdl:message>
@@ -53,6 +59,18 @@
     <wsdl:part name="SessionID" element="tns:SessionID" />
   </wsdl:message>
   <wsdl:message name="AgentSvc_UploadConfig_OutputMessage" />
+  <wsdl:message name="AgentSvc_PackConfig_InputMessage">
+    <wsdl:part name="parameters" element="tns:PackConfig" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_PackConfig_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PackConfigResponse" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_UnpackConfig_InputMessage">
+    <wsdl:part name="parameters" element="tns:UnpackConfig" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_UnpackConfig_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UnpackConfigResponse" />
+  </wsdl:message>
   <wsdl:message name="AgentSvc_Browse_InputMessage">
     <wsdl:part name="parameters" element="tns:Browse" />
   </wsdl:message>
@@ -80,6 +98,10 @@
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Login" message="tns:AgentSvc_Login_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/LoginResponse" message="tns:AgentSvc_Login_OutputMessage" />
     </wsdl:operation>
+    <wsdl:operation name="IsLoggedOn">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/IsLoggedOn" message="tns:AgentSvc_IsLoggedOn_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/IsLoggedOnResponse" message="tns:AgentSvc_IsLoggedOn_OutputMessage" />
+    </wsdl:operation>
     <wsdl:operation name="ControlService">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/ControlService" message="tns:AgentSvc_ControlService_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/ControlServiceResponse" message="tns:AgentSvc_ControlService_OutputMessage" />
@@ -99,6 +121,14 @@
     <wsdl:operation name="UploadConfig">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/UploadConfig" name="ConfigUploadMessage" message="tns:ConfigUploadMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/UploadConfigResponse" message="tns:AgentSvc_UploadConfig_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="PackConfig">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/PackConfig" message="tns:AgentSvc_PackConfig_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/PackConfigResponse" message="tns:AgentSvc_PackConfig_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="UnpackConfig">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/UnpackConfig" message="tns:AgentSvc_UnpackConfig_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/UnpackConfigResponse" message="tns:AgentSvc_UnpackConfig_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="Browse">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Browse" message="tns:AgentSvc_Browse_InputMessage" />
@@ -126,6 +156,15 @@
     </wsdl:operation>
     <wsdl:operation name="Login">
       <soap:operation soapAction="http://tempuri.org/AgentSvc/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="IsLoggedOn">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/IsLoggedOn" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -174,6 +213,24 @@
       <wsdl:input name="ConfigUploadMessage">
         <soap:header message="tns:ConfigUploadMessage_Headers" part="ConfigOptions" use="literal" />
         <soap:header message="tns:ConfigUploadMessage_Headers" part="SessionID" use="literal" />
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PackConfig">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/PackConfig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UnpackConfig">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/UnpackConfig" style="document" />
+      <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
       <wsdl:output>

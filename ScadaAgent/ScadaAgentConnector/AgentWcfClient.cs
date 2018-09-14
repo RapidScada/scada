@@ -37,9 +37,18 @@ namespace Scada.Agent.Connector
     public class AgentWcfClient
     {
         /// <summary>
+        /// The time span of checking connection.
+        /// </summary>
+        protected readonly TimeSpan CheckConnectionSpan = TimeSpan.FromSeconds(10);
+
+        /// <summary>
         /// The connection settings.
         /// </summary>
         protected ConnectionSettings connSettings;
+        /// <summary>
+        /// Determines whether the connection is local.
+        /// </summary>
+        protected bool isLocal;
         /// <summary>
         /// The WCF service client.
         /// </summary>
@@ -60,6 +69,7 @@ namespace Scada.Agent.Connector
         public AgentWcfClient(ConnectionSettings connSettings)
         {
             this.connSettings = connSettings ?? throw new ArgumentNullException("connSettings");
+            isLocal = string.Equals(connSettings.Host, "localhost", StringComparison.OrdinalIgnoreCase);
             sessionID = 0;
             activityDT = DateTime.MinValue;
             InitSvcClient();
@@ -105,17 +115,18 @@ namespace Scada.Agent.Connector
         /// </summary>
         protected void RestoreConnection()
         {
-            if (DateTime.UtcNow - activityDT > TimeSpan.FromSeconds(30) /*&& !client.IsLoggedOn()*/) // TODO: const
+            if (sessionID == 0 || 
+                DateTime.UtcNow - activityDT > CheckConnectionSpan && !client.IsLoggedOn(sessionID))
             {
                 Connect();
                 RegisterActivity();
             }
         }
-        
+
         /// <summary>
         /// Registers communication activity.
         /// </summary>
-        public void RegisterActivity()
+        protected void RegisterActivity()
         {
             activityDT = DateTime.UtcNow;
         }
@@ -162,43 +173,82 @@ namespace Scada.Agent.Connector
         /// </summary>
         public void DownloadConfig(string destFileName, ConfigOptions configOptions)
         {
+            if (string.IsNullOrEmpty(destFileName))
+                throw new ArgumentException("destFileName must not be empty.", "destFileName");
+            if (configOptions == null)
+                throw new ArgumentNullException("configOptions");
+
             RestoreConnection();
 
-            Stream downloadStream = client.DownloadConfig(sessionID, configOptions);
-
-            if (downloadStream == null)
+            if (isLocal)
             {
-                throw new ScadaException(Localization.UseRussian ?
-                    "Отсутствуют данные для скачивания." :
-                    "No data to download.");
-            }
-
-            try
-            {
-                using (FileStream destStream = 
-                    new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+                // copy the configuration locally
+                if (!client.PackConfig(sessionID, destFileName, configOptions))
                 {
-                    downloadStream.CopyTo(destStream);
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось упаковать конфигурацию в архив." :
+                        "Unable to pack the configuration in the archive.");
+                }
+            }
+            else
+            {
+                // transfer the configuration over the network
+                Stream downloadStream = client.DownloadConfig(sessionID, configOptions);
+
+                if (downloadStream == null)
+                {
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Отсутствуют данные для скачивания." :
+                        "No data to download.");
                 }
 
-                RegisterActivity();
+                try
+                {
+                    using (FileStream destStream =
+                        new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
+                    {
+                        downloadStream.CopyTo(destStream);
+                    }
+                }
+                finally
+                {
+                    downloadStream.Close();
+                }
             }
-            finally
-            {
-                downloadStream.Close();
-            }
+
+            RegisterActivity();
         }
 
         /// <summary>
         /// Uploads the configuration from the file.
         /// </summary>
-        public void UploadConfig(string sourceFileName, ConfigOptions configOptions)
+        public void UploadConfig(string srcFileName, ConfigOptions configOptions)
         {
+            if (string.IsNullOrEmpty(srcFileName))
+                throw new ArgumentException("srcFileName must not be empty.", "destFileName");
+            if (configOptions == null)
+                throw new ArgumentNullException("configOptions");
+
             RestoreConnection();
 
-            using (FileStream outStream = new FileStream(sourceFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            if (isLocal)
             {
-                client.UploadConfig(configOptions, sessionID, outStream);
+                // copy the configuration locally
+                if (!client.UnpackConfig(sessionID, srcFileName, configOptions))
+                {
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось распаковать архив конфигурации." :
+                        "Unable to unpack the configuration archive.");
+                }
+            }
+            else
+            {
+                // transfer the configuration over the network
+                using (FileStream outStream = 
+                    new FileStream(srcFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+                {
+                    client.UploadConfig(configOptions, sessionID, outStream);
+                }
             }
 
             RegisterActivity();
