@@ -195,6 +195,10 @@
     <Phrase key="miEditCut">Cut</Phrase>
     <Phrase key="miEditCopy">Copy</Phrase>
     <Phrase key="miEditPaste">Paste</Phrase>
+    <Phrase key="miDeploy">&amp;Deploy</Phrase>
+    <Phrase key="miDeployDownloadConfig">Download Configuration...</Phrase>
+    <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
+    <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
     <Phrase key="miHelp">&amp;Help</Phrase>
@@ -224,6 +228,9 @@
     <Phrase key="miInstanceMoveUp">Move Instance Up</Phrase>
     <Phrase key="miInstanceMoveDown">Move Instance Down</Phrase>
     <Phrase key="miInstanceDelete">Delete Instance</Phrase>
+    <Phrase key="miInstanceDownloadConfig">Download Configuration...</Phrase>
+    <Phrase key="miInstanceUploadConfig">Upload Configuration...</Phrase>
+    <Phrase key="miInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miInstanceRename">Rename Instance</Phrase>
     <Phrase key="miInstanceProperties">Properties</Phrase>
     <Phrase key="miCommLineAdd">Add Line</Phrase>

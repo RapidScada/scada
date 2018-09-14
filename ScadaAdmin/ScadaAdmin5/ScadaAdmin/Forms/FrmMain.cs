@@ -714,6 +714,21 @@ namespace Scada.Admin.App.Forms
 
         }
 
+        private void miDeployDownloadConfig_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDeployUploadConfig_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miDeployInstanceStatus_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void miToolsOptions_Click(object sender, EventArgs e)
         {
 

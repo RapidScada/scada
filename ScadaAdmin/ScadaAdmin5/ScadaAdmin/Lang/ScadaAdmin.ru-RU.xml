@@ -195,6 +195,10 @@
     <Phrase key="miEditCut">Вырезать</Phrase>
     <Phrase key="miEditCopy">Копировать</Phrase>
     <Phrase key="miEditPaste">Вставить</Phrase>
+    <Phrase key="miDeploy">&amp;Развертывание</Phrase>
+    <Phrase key="miDeployDownloadConfig">Скачать конфигурацию...</Phrase>
+    <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
+    <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miTools">&amp;Инструменты</Phrase>
     <Phrase key="miToolsOptions">Настройки...</Phrase>
     <Phrase key="miHelp">&amp;Справка</Phrase>
@@ -224,6 +228,9 @@
     <Phrase key="miInstanceMoveUp">Переместить экземпляр вверх</Phrase>
     <Phrase key="miInstanceMoveDown">Переместить экземпляр вниз</Phrase>
     <Phrase key="miInstanceDelete">Удалить экземпляр</Phrase>
+    <Phrase key="miInstanceDownloadConfig">Скачать конфигурацию...</Phrase>
+    <Phrase key="miInstanceUploadConfig">Передать конфигурацию...</Phrase>
+    <Phrase key="miInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miInstanceRename">Переименовать экземпляр</Phrase>
     <Phrase key="miInstanceProperties">Свойства</Phrase>
     <Phrase key="miCommLineAdd">Добавить линию</Phrase>
