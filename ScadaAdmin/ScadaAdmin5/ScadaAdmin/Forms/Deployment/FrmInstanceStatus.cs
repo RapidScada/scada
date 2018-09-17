@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Scada.Admin.Deployment;
+using Scada.Admin.Project;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,15 @@ namespace Scada.Admin.App.Forms.Deployment
 {
     public partial class FrmInstanceStatus : Form
     {
-        public FrmInstanceStatus()
+        private FrmInstanceStatus()
         {
             InitializeComponent();
+        }
+
+        public FrmInstanceStatus(DeploymentSettings deploymentSettings, Instance instance)
+            : this()
+        {
+
         }
     }
 }

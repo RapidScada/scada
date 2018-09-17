@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Scada.Admin.Deployment;
+using Scada.Admin.Project;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -12,9 +14,22 @@ namespace Scada.Admin.App.Forms.Deployment
 {
     public partial class FrmDownloadConfig : Form
     {
-        public FrmDownloadConfig()
+        private FrmDownloadConfig()
         {
             InitializeComponent();
         }
+
+        public FrmDownloadConfig(ScadaProject project, Instance instance)
+            : this()
+        {
+
+        }
+
+
+        public bool BaseModified { get; protected set; }
+
+        public bool InterfaceModified { get; protected set; }
+
+        public bool InstanceModified { get; protected set; }
     }
 }

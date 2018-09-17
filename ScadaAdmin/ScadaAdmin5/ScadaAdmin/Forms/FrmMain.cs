@@ -106,6 +106,18 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
+        /// Gets the root node of the explorer.
+        /// </summary>
+        private TreeNode RootNode
+        {
+            get
+            {
+                return tvExplorer.Nodes[0];
+            }
+        }
+
+
+        /// <summary>
         /// Applies localization to the form.
         /// </summary>
         private void LocalizeForm()
@@ -333,13 +345,31 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Closes the child forms corresponding to the specified node and its children.
         /// </summary>
-        private void CloseChildForms(TreeNode treeNode)
+        private void CloseChildForms(TreeNode treeNode, bool save = false)
         {
             foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
             {
                 if (node.Tag is TreeNodeTag tag && tag.ExistingForm != null)
                 {
+                    if (save && tag.ExistingForm is IChildForm childForm && childForm.ChildFormTag.Modified)
+                        childForm.Save();
+
                     wctrlMain.CloseForm(tag.ExistingForm);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves the child forms corresponding to the specified node and its children.
+        /// </summary>
+        private void SaveChildForms(TreeNode treeNode)
+        {
+            foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
+            {
+                if (node.Tag is TreeNodeTag tag && 
+                    tag.ExistingForm is IChildForm childForm && childForm.ChildFormTag.Modified)
+                {
+                    childForm.Save();
                 }
             }
         }
@@ -415,24 +445,37 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Refreshes the content of the instance node.
+        /// </summary>
+        private void RefreshInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
+        {
+            Instance instance = liveInstance.Instance;
+
+            if (instance.AppSettingsLoaded)
+                explorerBuilder.FillInstanceNode(instanceNode);
+            else
+                PrepareInstanceNode(instanceNode, liveInstance);
+        }
+
+        /// <summary>
         /// Finds an instance selected for deploy.
         /// </summary>
-        private bool FindInstanceForDeploy(TreeNode treeNode, out LiveInstance liveInstance)
+        private bool FindInstanceForDeploy(TreeNode treeNode, out TreeNode instanceNode, out LiveInstance liveInstance)
         {
             if (project != null)
             {
-                if (project.Instances.Count == 1)
+                instanceNode = project.Instances.Count == 1 ?
+                    RootNode.FindFirst(AppNodeType.Instance) :
+                    treeNode?.FindClosest(AppNodeType.Instance);
+
+                if (instanceNode != null)
                 {
-                    TreeNode instanceNode = tvExplorer.Nodes[0].FindFirst(AppNodeType.Instance);
                     liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
-                    return true;
-                }
-                else if (FindClosestInstance(treeNode, out liveInstance))
-                {
                     return true;
                 }
             }
 
+            instanceNode = null;
             liveInstance = null;
             return false;
         }
@@ -499,6 +542,18 @@ namespace Scada.Admin.App.Forms
             {
                 appData.ProcError(errMsg);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Save all open forms.
+        /// </summary>
+        private void SaveAll()
+        {
+            foreach (Form form in wctrlMain.Forms)
+            {
+                if (form is IChildForm childForm && childForm.ChildFormTag.Modified)
+                    childForm.Save();
             }
         }
 
@@ -669,6 +724,7 @@ namespace Scada.Admin.App.Forms
 
             if (ofdProject.ShowDialog() == DialogResult.OK)
             {
+                wctrlMain.CloseAllForms(out bool cancel);
                 ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
                 project = new ScadaProject();
 
@@ -690,12 +746,7 @@ namespace Scada.Admin.App.Forms
 
         private void miFileSaveAll_Click(object sender, EventArgs e)
         {
-            // save all open forms
-            foreach (Form form in wctrlMain.Forms)
-            {
-                if (form is IChildForm childForm)
-                    childForm.Save();
-            }
+            SaveAll();
         }
 
         private void miFileClose_Click(object sender, EventArgs e)
@@ -750,31 +801,84 @@ namespace Scada.Admin.App.Forms
 
         private void miDeployDownloadConfig_Click(object sender, EventArgs e)
         {
-            // open a download configuration form
-            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            // download configuration
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
+                out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig();
+                // save all forms
+                SaveAll();
+
+                // open a download configuration form
+                Instance instance = liveInstance.Instance;
+                string profileName = instance.DeploymentProfile;
+                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(project, instance);
                 frmDownloadConfig.ShowDialog();
+
+                // save project settings in case of the profile change
+                if (profileName != instance.DeploymentProfile)
+                    SaveProjectSettings();
+
+                // update user interface
+                if (frmDownloadConfig.BaseModified)
+                {
+                    TreeNode baseNode = RootNode.FindFirst(AppNodeType.Base);
+                    CloseChildForms(baseNode);
+                }
+
+                if (frmDownloadConfig.InterfaceModified)
+                {
+                    TreeNode interfaceNode = RootNode.FindFirst(AppNodeType.Interface);
+                    if (TryGetFilePath(interfaceNode, out string path))
+                    {
+                        CloseChildForms(interfaceNode);
+                        explorerBuilder.FillFileNode(interfaceNode, path);
+                    }
+                }
+
+                if (frmDownloadConfig.InstanceModified)
+                {
+                    CloseChildForms(instanceNode);
+                    RefreshInstanceNode(instanceNode, liveInstance);
+                }
             }
         }
 
         private void miDeployUploadConfig_Click(object sender, EventArgs e)
         {
-            // open an upload configuration form
-            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            // upload configuration
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
+                out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                FrmUploadConfig frmUploadConfig = new FrmUploadConfig();
+                // save all forms
+                SaveAll();
+
+                // open an upload configuration form
+                Instance instance = liveInstance.Instance;
+                string profileName = instance.DeploymentProfile;
+                FrmUploadConfig frmUploadConfig = new FrmUploadConfig(project.DeploymentSettings, instance);
                 frmUploadConfig.ShowDialog();
+
+                // save project settings in case of the profile change
+                if (profileName != instance.DeploymentProfile)
+                    SaveProjectSettings();
             }
         }
 
         private void miDeployInstanceStatus_Click(object sender, EventArgs e)
         {
-            // open an instance status form
-            if (FindInstanceForDeploy(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            // display instance status
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode,
+                out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                FrmInstanceStatus frmInstanceStatus = new FrmInstanceStatus();
+                // open an instance status form
+                Instance instance = liveInstance.Instance;
+                string profileName = instance.DeploymentProfile;
+                FrmInstanceStatus frmInstanceStatus = new FrmInstanceStatus(project.DeploymentSettings, instance);
                 frmInstanceStatus.ShowDialog();
+
+                // save project settings in case of the profile change
+                if (profileName != instance.DeploymentProfile)
+                    SaveProjectSettings();
             }
         }
 
@@ -1002,7 +1106,7 @@ namespace Scada.Admin.App.Forms
 
             if (TryGetFilePath(selectedNode, out string path))
             {
-                CloseChildForms(selectedNode);
+                CloseChildForms(selectedNode, true);
                 explorerBuilder.FillFileNode(selectedNode, path);
             }
         }
@@ -1255,6 +1359,9 @@ namespace Scada.Admin.App.Forms
 
                 if (frmInstanceEdit.ShowDialog() == DialogResult.OK)
                 {
+                    // save the forms corresponding to the instance
+                    SaveChildForms(selectedNode);
+
                     // enable or disable the applications
                     bool projectModified = false;
                     ScadaApp[] scadaApps = new ScadaApp[] { instance.ServerApp, instance.CommApp, instance.WebApp };
@@ -1281,6 +1388,7 @@ namespace Scada.Admin.App.Forms
                         {
                             if (scadaApp.DeleteAppFiles(out string errMsg))
                             {
+                                scadaApp.ClearSettings();
                                 scadaApp.Enabled = false;
                                 projectModified = true;
                             }
@@ -1295,7 +1403,7 @@ namespace Scada.Admin.App.Forms
                     if (projectModified)
                     {
                         CloseChildForms(selectedNode);
-                        PrepareInstanceNode(selectedNode, liveInstance);
+                        RefreshInstanceNode(selectedNode, liveInstance);
                         SaveProjectSettings();
                     }
                 }

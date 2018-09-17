@@ -62,6 +62,7 @@ namespace Scada.Admin.Project
             ServerApp = new ServerApp();
             CommApp = new CommApp();
             WebApp = new WebApp();
+            DeploymentProfile = "";
             InstanceDir = "";
             AppSettingsLoaded = false;
         }
@@ -86,6 +87,11 @@ namespace Scada.Admin.Project
         /// Gets the object represents the Webstation application.
         /// </summary>
         public WebApp WebApp { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the name of the deployment profile.
+        /// </summary>
+        public string DeploymentProfile { get; set; }
 
         /// <summary>
         /// Gets or sets the directory of the instance files.
@@ -139,6 +145,8 @@ namespace Scada.Admin.Project
 
             if (xmlNode.SelectSingleNode("WebApp") is XmlElement webAppElem)
                 WebApp.LoadFromXml(webAppElem);
+
+            DeploymentProfile = xmlNode.GetChildAsString("DeploymentProfile");
         }
 
         /// <summary>
@@ -153,6 +161,7 @@ namespace Scada.Admin.Project
             ServerApp.SaveToXml(xmlElem.AppendElem("ServerApp"));
             CommApp.SaveToXml(xmlElem.AppendElem("CommApp"));
             WebApp.SaveToXml(xmlElem.AppendElem("WebApp"));
+            xmlElem.AppendElem("DeploymentProfile", DeploymentProfile);
         }
 
         /// <summary>

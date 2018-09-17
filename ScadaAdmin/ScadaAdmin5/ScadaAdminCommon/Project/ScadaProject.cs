@@ -23,11 +23,10 @@
  * Modified : 2018
  */
 
+using Scada.Admin.Deployment;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
 
 namespace Scada.Admin.Project
@@ -82,12 +81,19 @@ namespace Scada.Admin.Project
                 {
                     ConfigBase.BaseDir = "";
                     Interface.InterfaceDir = "";
+                    DeploymentSettings.ProjectDir = "";
+
+                    foreach (Instance instance in Instances)
+                    {
+                        instance.InstanceDir = "";
+                    }
                 }
                 else
                 {
                     string projectDir = Path.GetDirectoryName(FileName);
                     ConfigBase.BaseDir = Path.Combine(projectDir, "BaseXML");
                     Interface.InterfaceDir = Path.Combine(projectDir, "Interface");
+                    DeploymentSettings.ProjectDir = projectDir;
 
                     foreach (Instance instance in Instances)
                     {
@@ -117,6 +123,11 @@ namespace Scada.Admin.Project
         /// </summary>
         public List<Instance> Instances { get; protected set; }
 
+        /// <summary>
+        /// Gets the deployment settings.
+        /// </summary>
+        public DeploymentSettings DeploymentSettings { get; protected set; }
+
 
         /// <summary>
         /// Sets the default values.
@@ -130,6 +141,7 @@ namespace Scada.Admin.Project
             ConfigBase = new ConfigBase();
             Interface = new Interface();
             Instances = new List<Instance>();
+            DeploymentSettings = new DeploymentSettings();
         }
 
         /// <summary>
@@ -137,12 +149,14 @@ namespace Scada.Admin.Project
         /// </summary>
         private void Clear()
         {
+            fileName = "";
+
             Name = "";
-            FileName = "";
             Description = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
             Instances.Clear();
+            DeploymentSettings = new DeploymentSettings();
         }
 
         /// <summary>

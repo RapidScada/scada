@@ -40,7 +40,7 @@ namespace Scada.Admin.Project
         public CommApp()
             : base()
         {
-            Settings = new Comm.Settings { CreateBakFile = false };
+            ClearSettings();
         }
 
 
@@ -115,6 +115,14 @@ namespace Scada.Admin.Project
                 errMsg = AdminPhrases.DeleteCommFilesError + ": " + ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Clears the application settings.
+        /// </summary>
+        public override void ClearSettings()
+        {
+            Settings = new Comm.Settings { CreateBakFile = false };
         }
 
         /// <summary>

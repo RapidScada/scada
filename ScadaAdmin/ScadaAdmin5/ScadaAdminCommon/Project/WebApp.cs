@@ -98,6 +98,14 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Clears the application settings.
+        /// </summary>
+        public override void ClearSettings()
+        {
+            // do nothing
+        }
+
+        /// <summary>
         /// Gets the directory of the application.
         /// </summary>
         public static string GetAppDir(string parentDir)

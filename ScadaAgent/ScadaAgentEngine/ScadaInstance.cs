@@ -293,7 +293,6 @@ namespace Scada.Agent.Engine
                 foreach (RelPath relPath in relPaths)
                 {
                     PathList pathList = pathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder);
-                    bool pathIsMask = relPath.IsMask;
                     string[] absPathArr;
 
                     if (relPath.IsMask)

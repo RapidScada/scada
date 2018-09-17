@@ -86,5 +86,10 @@ namespace Scada.Admin.Project
         /// Delete project files of the application.
         /// </summary>
         public abstract bool DeleteAppFiles(out string errMsg);
+
+        /// <summary>
+        /// Clears the application settings.
+        /// </summary>
+        public abstract void ClearSettings();
     }
 }
