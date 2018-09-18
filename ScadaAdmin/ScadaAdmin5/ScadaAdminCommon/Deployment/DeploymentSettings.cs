@@ -23,7 +23,10 @@
  * Modified : 2018
  */
 
+using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Xml;
 
 namespace Scada.Admin.Deployment
 {
@@ -46,6 +49,7 @@ namespace Scada.Admin.Deployment
         {
             Profiles = new SortedList<string, DeploymentProfile>();
             ProjectDir = "";
+            Loaded = false;
         }
 
 
@@ -58,5 +62,92 @@ namespace Scada.Admin.Deployment
         /// Gets or sets the project directory which contains the settings.
         /// </summary>
         public string ProjectDir { get; set; }
+
+        /// <summary>
+        /// Gets the settings file name.
+        /// </summary>
+        public string FileName
+        {
+            get
+            {
+                return Path.Combine(ProjectDir, DefFileName);
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the settings are loaded.
+        /// </summary>
+        public bool Loaded { get; protected set; }
+
+
+        /// <summary>
+        /// Loads the deployment settings from the project directory if needed.
+        /// </summary>
+        public bool Load(out string errMsg)
+        {
+            try
+            {
+                if (!Loaded)
+                {
+                    Profiles.Clear();
+                    string fileName = FileName;
+
+                    if (!File.Exists(fileName))
+                        throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                    XmlDocument xmlDoc = new XmlDocument();
+                    xmlDoc.Load(fileName);
+
+                    XmlNodeList profileNodeList = xmlDoc.DocumentElement.SelectNodes("DeploymentProfile");
+                    foreach (XmlNode profileNode in profileNodeList)
+                    {
+                        DeploymentProfile profile = new DeploymentProfile();
+                        profile.LoadFromXml(profileNode);
+                        Profiles[profile.Name] = profile;
+                    }
+
+                    Loaded = true;
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.LoadDeploymentSettingsError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves the deployment settings to the project directory.
+        /// </summary>
+        public bool Save(string fileName, out string errMsg)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("DeploymentSettings");
+                xmlDoc.AppendChild(rootElem);
+
+                foreach (DeploymentProfile profile in Profiles.Values)
+                {
+                    profile.SaveToXml(rootElem.AppendElem("DeploymentProfile"));
+                }
+
+                xmlDoc.Save(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.SaveDeploymentSettingsError + ": " + ex.Message;
+                return false;
+            }
+        }
     }
 }

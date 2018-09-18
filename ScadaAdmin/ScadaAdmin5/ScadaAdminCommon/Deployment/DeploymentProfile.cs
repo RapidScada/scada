@@ -24,6 +24,8 @@
  */
 
 using Scada.Agent.Connector;
+using System;
+using System.Xml;
 
 namespace Scada.Admin.Deployment
 {
@@ -40,8 +42,8 @@ namespace Scada.Admin.Deployment
         {
             Name = "";
             ConnectionSettings = new ConnectionSettings();
-            DownloadSettings = new DownloadSettings();
-            UploadSettings = new UploadSettings();
+            DownloadSettings = new TransferSettings();
+            UploadSettings = new TransferSettings();
         }
 
 
@@ -58,11 +60,49 @@ namespace Scada.Admin.Deployment
         /// <summary>
         /// Gets the download settings.
         /// </summary>
-        public DownloadSettings DownloadSettings { get; protected set; }
+        public TransferSettings DownloadSettings { get; protected set; }
 
         /// <summary>
         /// Gets the upload settings.
         /// </summary>
-        public UploadSettings UploadSettings { get; protected set; }
+        public TransferSettings UploadSettings { get; protected set; }
+        
+        
+        /// <summary>
+        /// Loads the settings from the XML node.
+        /// </summary>
+        public void LoadFromXml(XmlNode xmlNode)
+        {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+
+            Name = xmlNode.GetChildAsString("Name");
+
+            XmlNode connectionSettingsNode = xmlNode.SelectSingleNode("ConnectionSettings");
+            if (connectionSettingsNode != null)
+                ConnectionSettings.LoadFromXml(connectionSettingsNode);
+
+            XmlNode downloadSettingsNode = xmlNode.SelectSingleNode("DownloadSettings");
+            if (downloadSettingsNode != null)
+                DownloadSettings.LoadFromXml(downloadSettingsNode);
+
+            XmlNode uploadSettingsNode = xmlNode.SelectSingleNode("UploadSettings");
+            if (uploadSettingsNode != null)
+                UploadSettings.LoadFromXml(uploadSettingsNode);
+        }
+
+        /// <summary>
+        /// Saves the settings into the XML node.
+        /// </summary>
+        public void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            xmlElem.AppendElem("Name", Name);
+            ConnectionSettings.SaveToXml(xmlElem.AppendElem("ConnectionSettings"));
+            DownloadSettings.SaveToXml(xmlElem.AppendElem("DownloadSettings"));
+            UploadSettings.SaveToXml(xmlElem.AppendElem("UploadSettings"));
+        }
     }
 }

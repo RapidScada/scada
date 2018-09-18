@@ -278,6 +278,10 @@
     <Phrase key="OpenTextFileError">Error opening file</Phrase>
     <Phrase key="SaveTextFileError">Error saving file</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.Deployment.DeploymentSettings">
+    <Phrase key="LoadDeploymentSettingsError">Error loading deployment settings</Phrase>
+    <Phrase key="SaveDeploymentSettingsError">Error saving deployment settings</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Error creating Communicator project files</Phrase>
     <Phrase key="DeleteCommFilesError">Error deleting Communicator project files</Phrase>

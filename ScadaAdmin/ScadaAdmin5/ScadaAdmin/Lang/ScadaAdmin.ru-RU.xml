@@ -278,6 +278,10 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.Deployment.DeploymentSettings">
+    <Phrase key="LoadDeploymentSettingsError">Ошибка при загрузке настроек развёртывания</Phrase>
+    <Phrase key="SaveDeploymentSettingsError">Ошибка при сохранении настроек развёртывания</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Project.CommApp">
     <Phrase key="CreateCommFilesError">Ошибка при создании проектных файлов Коммуникатора</Phrase>
     <Phrase key="DeleteCommFilesError">Ошибка при удалении проектных файлов Коммуникатора</Phrase>

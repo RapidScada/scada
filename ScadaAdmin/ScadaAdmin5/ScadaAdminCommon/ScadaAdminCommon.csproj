@@ -64,8 +64,7 @@
     <Compile Include="AdminDirs.cs" />
     <Compile Include="Deployment\DeploymentProfile.cs" />
     <Compile Include="Deployment\DeploymentSettings.cs" />
-    <Compile Include="Deployment\DownloadSettings.cs" />
-    <Compile Include="Deployment\UploadSettings.cs" />
+    <Compile Include="Deployment\TransferSettings.cs" />
     <Compile Include="Project\BaseTable.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\IBaseTable.cs" />

@@ -42,7 +42,7 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmBaseTable()
+        private FrmBaseTable()
         {
             InitializeComponent();
         }
@@ -50,7 +50,7 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmBaseTable(AppData appData)
+        protected FrmBaseTable(AppData appData)
             : this()
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");

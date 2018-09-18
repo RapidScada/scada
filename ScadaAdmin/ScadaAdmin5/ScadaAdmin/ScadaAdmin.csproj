@@ -98,6 +98,24 @@
     <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />
     <Compile Include="Code\ServerDirs.cs" />
+    <Compile Include="Controls\Deployment\CtrlProfileSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlProfileSelector.Designer.cs">
+      <DependentUpon>CtrlProfileSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlTransferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlTransferSettings.Designer.cs">
+      <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmConnSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmConnSettings.Designer.cs">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Deployment\FrmDownloadConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -175,6 +193,12 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\Deployment\CtrlProfileSelector.resx">
+      <DependentUpon>CtrlProfileSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Deployment\CtrlTransferSettings.resx">
+      <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmDownloadConfig.resx">
       <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
     </EmbeddedResource>

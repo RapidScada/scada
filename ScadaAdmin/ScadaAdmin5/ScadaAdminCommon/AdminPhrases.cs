@@ -33,6 +33,10 @@ namespace Scada.Admin
     /// </summary>
     public static class AdminPhrases
     {
+        // Scada.Admin.Deployment.DeploymentSettings
+        public static string LoadDeploymentSettingsError { get; private set; }
+        public static string SaveDeploymentSettingsError { get; private set; }
+
         // Scada.Admin.Project.CommApp
         public static string CreateCommFilesError { get; private set; }
         public static string DeleteCommFilesError { get; private set; }
@@ -66,7 +70,11 @@ namespace Scada.Admin
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Project.CommApp");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Deployment.DeploymentSettings");
+            LoadDeploymentSettingsError = dict.GetPhrase("LoadDeploymentSettingsError");
+            SaveDeploymentSettingsError = dict.GetPhrase("SaveDeploymentSettingsError");
+
+            dict = Localization.GetDictionary("Scada.Admin.Project.CommApp");
             CreateCommFilesError = dict.GetPhrase("CreateCommFilesError");
             DeleteCommFilesError = dict.GetPhrase("DeleteCommFilesError");
 

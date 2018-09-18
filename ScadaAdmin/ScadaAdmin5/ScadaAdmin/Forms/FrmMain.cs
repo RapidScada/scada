@@ -811,7 +811,7 @@ namespace Scada.Admin.App.Forms
                 // open a download configuration form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;
-                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(project, instance);
+                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(appData, project, instance);
                 frmDownloadConfig.ShowDialog();
 
                 // save project settings in case of the profile change
