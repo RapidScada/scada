@@ -199,6 +199,9 @@
     <EmbeddedResource Include="Controls\Deployment\CtrlTransferSettings.resx">
       <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmDownloadConfig.resx">
       <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
     </EmbeddedResource>

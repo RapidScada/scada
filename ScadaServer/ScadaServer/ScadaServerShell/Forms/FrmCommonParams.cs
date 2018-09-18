@@ -92,7 +92,7 @@ namespace Scada.Server.Shell.Forms
         }
 
         /// <summary>
-        /// Set the settings according to the controls.
+        /// Sets the settings according to the controls.
         /// </summary>
         private void ControlsToSettings()
         {

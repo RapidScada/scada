@@ -308,7 +308,7 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
-        /// Set the settings according to the controls.
+        /// Sets the settings according to the controls.
         /// </summary>
         public void ControlsToSettings()
         {

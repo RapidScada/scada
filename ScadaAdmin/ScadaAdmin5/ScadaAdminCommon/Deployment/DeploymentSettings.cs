@@ -122,7 +122,7 @@ namespace Scada.Admin.Deployment
         /// <summary>
         /// Saves the deployment settings to the project directory.
         /// </summary>
-        public bool Save(string fileName, out string errMsg)
+        public bool Save(out string errMsg)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace Scada.Admin.Deployment
                     profile.SaveToXml(rootElem.AppendElem("DeploymentProfile"));
                 }
 
-                xmlDoc.Save(fileName);
+                xmlDoc.Save(FileName);
                 errMsg = "";
                 return true;
             }

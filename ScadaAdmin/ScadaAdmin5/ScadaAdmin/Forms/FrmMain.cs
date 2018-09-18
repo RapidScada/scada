@@ -507,6 +507,16 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Loads the deployments settings of the current project.
+        /// </summary>
+        private void LoadDeploymentSettings()
+        {
+            if (File.Exists(project.DeploymentSettings.FileName) && 
+                !project.DeploymentSettings.Load(out string errMsg))
+                appData.ProcError(errMsg);
+        }
+
+        /// <summary>
         /// Saves the current project settings.
         /// </summary>
         private void SaveProjectSettings()
@@ -808,6 +818,9 @@ namespace Scada.Admin.App.Forms
                 // save all forms
                 SaveAll();
 
+                // load deployment settings
+                LoadDeploymentSettings();
+
                 // open a download configuration form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;
@@ -852,6 +865,9 @@ namespace Scada.Admin.App.Forms
                 // save all forms
                 SaveAll();
 
+                // load deployment settings
+                LoadDeploymentSettings();
+
                 // open an upload configuration form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;
@@ -870,6 +886,9 @@ namespace Scada.Admin.App.Forms
             if (FindInstanceForDeploy(tvExplorer.SelectedNode,
                 out TreeNode instanceNode, out LiveInstance liveInstance))
             {
+                // load deployment settings
+                LoadDeploymentSettings();
+
                 // open an instance status form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;

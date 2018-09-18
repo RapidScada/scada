@@ -144,6 +144,9 @@
     <Phrase key="WebNode">Webstation</Phrase>
     <Phrase key="EmptyNode">Empty</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
+    <Phrase key="ConfirmDeleteProfile">Are you sure you want to delete the profile?</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>

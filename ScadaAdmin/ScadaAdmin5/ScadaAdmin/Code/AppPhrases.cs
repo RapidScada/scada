@@ -48,6 +48,9 @@ namespace Scada.Admin.App.Code
         public static string WebNode { get; private set; }
         public static string EmptyNode { get; private set; }
 
+        // Scada.Admin.App.Controls.Deployment.CtrlProfileSelector
+        public static string ConfirmDeleteProfile { get; private set; }
+
         // Scada.Admin.App.Forms.FrmBaseTable
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
@@ -106,6 +109,9 @@ namespace Scada.Admin.App.Code
             CommNode = dict.GetPhrase("CommNode");
             WebNode = dict.GetPhrase("WebNode");
             EmptyNode = dict.GetPhrase("EmptyNode");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
+            ConfirmDeleteProfile = dict.GetPhrase("ConfirmDeleteProfile");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
             GridViewError = dict.GetPhrase("GridViewError");

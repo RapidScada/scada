@@ -61,6 +61,7 @@
             this.btnEditProfile.TabIndex = 2;
             this.btnEditProfile.Text = "Edit";
             this.btnEditProfile.UseVisualStyleBackColor = true;
+            this.btnEditProfile.Click += new System.EventHandler(this.btnEditProfile_Click);
             // 
             // btnDeleteProfile
             // 
@@ -70,6 +71,7 @@
             this.btnDeleteProfile.TabIndex = 3;
             this.btnDeleteProfile.Text = "Delete";
             this.btnDeleteProfile.UseVisualStyleBackColor = true;
+            this.btnDeleteProfile.Click += new System.EventHandler(this.btnDeleteProfile_Click);
             // 
             // btnCreateProfile
             // 
@@ -79,6 +81,7 @@
             this.btnCreateProfile.TabIndex = 1;
             this.btnCreateProfile.Text = "Create";
             this.btnCreateProfile.UseVisualStyleBackColor = true;
+            this.btnCreateProfile.Click += new System.EventHandler(this.btnCreateProfile_Click);
             // 
             // cbProfile
             // 
@@ -88,6 +91,7 @@
             this.cbProfile.Name = "cbProfile";
             this.cbProfile.Size = new System.Drawing.Size(200, 21);
             this.cbProfile.TabIndex = 0;
+            this.cbProfile.SelectedIndexChanged += new System.EventHandler(this.cbProfile_SelectedIndexChanged);
             // 
             // gbInstance
             // 

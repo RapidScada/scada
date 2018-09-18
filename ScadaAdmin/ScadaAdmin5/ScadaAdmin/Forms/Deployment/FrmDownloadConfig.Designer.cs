@@ -84,6 +84,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Download Configuration";
+            this.Load += new System.EventHandler(this.FrmDownloadConfig_Load);
             this.ResumeLayout(false);
 
         }

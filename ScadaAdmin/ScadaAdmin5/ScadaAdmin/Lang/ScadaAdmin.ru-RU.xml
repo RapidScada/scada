@@ -144,6 +144,9 @@
     <Phrase key="WebNode">Вебстанция</Phrase>
     <Phrase key="EmptyNode">Пусто</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
+    <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>

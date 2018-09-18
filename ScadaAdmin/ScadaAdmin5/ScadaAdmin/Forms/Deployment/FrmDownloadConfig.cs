@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.UI;
 using System;
 using System.Windows.Forms;
 
@@ -61,10 +62,33 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
 
+        /// <summary>
+        /// Gets a value indicating whether the configuration database was modified
+        /// </summary>
         public bool BaseModified { get; protected set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the interface files were modified
+        /// </summary>
         public bool InterfaceModified { get; protected set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the instance was modified
+        /// </summary>
         public bool InstanceModified { get; protected set; }
+
+
+        private void FrmDownloadConfig_Load(object sender, EventArgs e)
+        {
+            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
+            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlTransferSettings");
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
+
+            BaseModified = false;
+            InterfaceModified = false;
+            InstanceModified = false;
+
+            ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
+        }
     }
 }
