@@ -73,10 +73,10 @@ namespace ScadaAdmin.AgentSvcRef {
         Server = 4,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Communicator = 8,
+        Comm = 8,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Webstation = 16,
+        Web = 16,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
         All = 31,

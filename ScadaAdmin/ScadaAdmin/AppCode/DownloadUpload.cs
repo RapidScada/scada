@@ -53,12 +53,12 @@ namespace ScadaAdmin
         {
             IgnoredPaths = new RelPath[]
             {
-                new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
-                new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
+                new RelPath() { ConfigPart = ConfigParts.Comm, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
+                new RelPath() { ConfigPart = ConfigParts.Comm, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
                 new RelPath() { ConfigPart = ConfigParts.Server, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
                 new RelPath() { ConfigPart = ConfigParts.Server, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
-                new RelPath() { ConfigPart = ConfigParts.Webstation, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
-                new RelPath() { ConfigPart = ConfigParts.Webstation, AppFolder = AppFolder.Storage, Path = "" },
+                new RelPath() { ConfigPart = ConfigParts.Web, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
+                new RelPath() { ConfigPart = ConfigParts.Web, AppFolder = AppFolder.Storage, Path = "" },
             };
         }
 
@@ -169,11 +169,11 @@ namespace ScadaAdmin
             else if (relPath.StartsWith("Interface", StringComparison.Ordinal))
                 return ConfigParts.Interface;
             else if (relPath.StartsWith("ScadaComm", StringComparison.Ordinal))
-                return ConfigParts.Communicator;
+                return ConfigParts.Comm;
             else if (relPath.StartsWith("ScadaServer", StringComparison.Ordinal))
                 return ConfigParts.Server;
             else if (relPath.StartsWith("ScadaWeb", StringComparison.Ordinal))
-                return ConfigParts.Webstation;
+                return ConfigParts.Web;
             else
                 return ConfigParts.None;
         }
@@ -382,7 +382,7 @@ namespace ScadaAdmin
                         writer.WriteLine(AppPhrases.UnableRestartServer);
                 }
 
-                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Communicator))
+                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Comm))
                 {
                     if (client.ControlService(sessionID, ServiceApp.Communicator, ServiceCommand.Restart))
                         writer.WriteLine(AppPhrases.CommRestarted);

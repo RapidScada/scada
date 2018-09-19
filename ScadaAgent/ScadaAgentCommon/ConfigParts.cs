@@ -57,16 +57,16 @@ namespace Scada.Agent
         /// <summary>
         /// Коммуникатор
         /// </summary>
-        Communicator = 8,
+        Comm = 8,
 
         /// <summary>
         /// Вебстанция
         /// </summary>
-        Webstation = 16,
+        Web = 16,
 
         /// <summary>
         /// Вся конфигурация
         /// </summary>
-        All = Base | Interface | Server | Communicator | Webstation
+        All = Base | Interface | Server | Comm | Web
     }
 }

@@ -93,12 +93,12 @@
             Сервер
             </summary>
         </member>
-        <member name="F:Scada.Agent.ConfigParts.Communicator">
+        <member name="F:Scada.Agent.ConfigParts.Comm">
             <summary>
             Коммуникатор
             </summary>
         </member>
-        <member name="F:Scada.Agent.ConfigParts.Webstation">
+        <member name="F:Scada.Agent.ConfigParts.Web">
             <summary>
             Вебстанция
             </summary>

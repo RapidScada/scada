@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
+using Scada.Agent;
 using Scada.Agent.Connector;
 using Scada.UI;
 using System;
@@ -133,9 +134,10 @@ namespace Scada.Admin.App.Forms.Deployment
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
                 string destFileName = GetTempFileName();
                 agentClient.DownloadConfig(destFileName, profile.DownloadSettings.ToConfigOpions());
-                ImportConfig(destFileName);
+                ImportConfig(destFileName, profile.DownloadSettings);
 
                 Cursor = Cursors.Default;
+                ScadaUiUtils.ShowInfo("Done.");
                 return true;
             }
             catch (Exception ex)
@@ -149,11 +151,61 @@ namespace Scada.Admin.App.Forms.Deployment
         /// <summary>
         /// Imports the configuration archive to the project.
         /// </summary>
-        private void ImportConfig(string arcFileName)
+        private void ImportConfig(string arcFileName, TransferSettings downloadSettings)
         {
+            // extract the configuration
             string arcDestDir = Path.Combine(Path.GetDirectoryName(arcFileName), 
                 Path.GetFileNameWithoutExtension(arcFileName));
             ExtractArchive(arcFileName, arcDestDir);
+            DirectoryInfo arcDestDirInfo = new DirectoryInfo(arcDestDir);
+
+            // import the configuration
+            foreach (DirectoryInfo subdirInfo in arcDestDirInfo.GetDirectories())
+            {
+                ConfigParts configPart = ConfigParts.Base;
+
+                switch (configPart)
+                {
+                    case ConfigParts.Base:
+                        if (downloadSettings.IncludeBase)
+                        {
+
+                        }
+                        break;
+
+                    case ConfigParts.Interface:
+                        if (downloadSettings.IncludeInterface)
+                        {
+                            subdirInfo.MoveTo(project.Interface.InterfaceDir); // TODO: move with overwrite
+                        }
+                        break;
+
+                    case ConfigParts.Server:
+                        if (downloadSettings.IncludeServer && instance.ServerApp.Enabled)
+                        {
+                            subdirInfo.MoveTo(instance.ServerApp.AppDir);
+                        }
+                        break;
+
+                    case ConfigParts.Comm:
+                        if (downloadSettings.IncludeComm && instance.CommApp.Enabled)
+                        {
+
+                        }
+                        break;
+
+                    case ConfigParts.Web:
+                        if (downloadSettings.IncludeWeb && instance.WebApp.Enabled)
+                        {
+
+                        }
+                        break;
+                }
+            }
+
+            // delete the archive and extracted files
+            //File.Delete(arcFileName);
+            //Directory.Delete(arcDestDir, true);
         }
 
         /// <summary>

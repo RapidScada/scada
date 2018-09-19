@@ -104,7 +104,7 @@ namespace Scada.Agent.Engine
         /// Все части конфигурации в виде массива
         /// </summary>
         private static ConfigParts[] AllConfigParts = { ConfigParts.Base, ConfigParts.Interface,
-            ConfigParts.Server, ConfigParts.Communicator, ConfigParts.Webstation };
+            ConfigParts.Server, ConfigParts.Comm, ConfigParts.Web };
 
         private ILog log; // журнал приложения
         private int validateUserAttemptNum; // номер попытки проверки пользователя
@@ -156,7 +156,7 @@ namespace Scada.Agent.Engine
                 case ServiceApp.Server:
                     return GetConfigPartDir(ConfigParts.Server, directorySeparator);
                 case ServiceApp.Communicator:
-                    return GetConfigPartDir(ConfigParts.Communicator, directorySeparator);
+                    return GetConfigPartDir(ConfigParts.Comm, directorySeparator);
                 default:
                     throw new ArgumentException("Unknown service.");
             }
@@ -212,13 +212,13 @@ namespace Scada.Agent.Engine
             if (configParts.HasFlag(ConfigParts.Server))
                 configPaths.Add(new RelPath(ConfigParts.Server, AppFolder.Config));
 
-            if (configParts.HasFlag(ConfigParts.Communicator))
-                configPaths.Add(new RelPath(ConfigParts.Communicator, AppFolder.Config));
+            if (configParts.HasFlag(ConfigParts.Comm))
+                configPaths.Add(new RelPath(ConfigParts.Comm, AppFolder.Config));
 
-            if (configParts.HasFlag(ConfigParts.Webstation))
+            if (configParts.HasFlag(ConfigParts.Web))
             {
-                configPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Config));
-                configPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Storage));
+                configPaths.Add(new RelPath(ConfigParts.Web, AppFolder.Config));
+                configPaths.Add(new RelPath(ConfigParts.Web, AppFolder.Storage));
             }
 
             return configPaths;
@@ -237,9 +237,9 @@ namespace Scada.Agent.Engine
                     return "Interface" + directorySeparator;
                 case ConfigParts.Server:
                     return "ScadaServer" + directorySeparator;
-                case ConfigParts.Communicator:
+                case ConfigParts.Comm:
                     return "ScadaComm" + directorySeparator;
-                case ConfigParts.Webstation:
+                case ConfigParts.Web:
                     return "ScadaWeb" + directorySeparator;
                 default:
                     throw new ArgumentException("Incorrect configuration part.");
@@ -278,7 +278,7 @@ namespace Scada.Agent.Engine
         private string GetAppFolderDir(ConfigParts configPart, AppFolder appFolder, char directorySeparator)
         {
             return GetConfigPartDir(configPart, directorySeparator) +
-                GetAppFolderDir(appFolder, directorySeparator, configPart == ConfigParts.Webstation);
+                GetAppFolderDir(appFolder, directorySeparator, configPart == ConfigParts.Web);
         }
 
         /// <summary>
@@ -600,7 +600,7 @@ namespace Scada.Agent.Engine
         {
             return Path.Combine(Settings.Directory,
                 GetConfigPartDir(configPart, Path.DirectorySeparatorChar),
-                GetAppFolderDir(appFolder, Path.DirectorySeparatorChar, configPart == ConfigParts.Webstation),
+                GetAppFolderDir(appFolder, Path.DirectorySeparatorChar, configPart == ConfigParts.Web),
                 path);
         }
 

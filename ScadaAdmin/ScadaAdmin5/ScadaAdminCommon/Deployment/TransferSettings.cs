@@ -137,21 +137,21 @@ namespace Scada.Admin.Deployment
             if (IncludeServer)
                 configParts |= ConfigParts.Server;
             if (IncludeComm)
-                configParts |= ConfigParts.Communicator;
+                configParts |= ConfigParts.Comm;
             if (IncludeWeb)
-                configParts |= ConfigParts.Webstation;
+                configParts |= ConfigParts.Web;
 
             if (IgnoreRegKeys)
             {
                 ignoredPaths.Add(new RelPath(ConfigParts.Server, AppFolder.Config, "*_Reg.xml"));
                 ignoredPaths.Add(new RelPath(ConfigParts.Server, AppFolder.Config, "CompCode.txt"));
-                ignoredPaths.Add(new RelPath(ConfigParts.Communicator, AppFolder.Config, "*_Reg.xml"));
-                ignoredPaths.Add(new RelPath(ConfigParts.Communicator, AppFolder.Config, "CompCode.txt"));
-                ignoredPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Config, "*_Reg.xml"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Comm, AppFolder.Config, "*_Reg.xml"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Comm, AppFolder.Config, "CompCode.txt"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Web, AppFolder.Config, "*_Reg.xml"));
             }
 
             if (IgnoreWebStorage)
-                ignoredPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Storage));
+                ignoredPaths.Add(new RelPath(ConfigParts.Web, AppFolder.Storage));
 
             return new ConfigOptions()
             {
