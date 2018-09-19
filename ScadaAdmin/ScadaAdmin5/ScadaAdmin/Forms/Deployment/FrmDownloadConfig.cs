@@ -30,6 +30,7 @@ using Scada.Agent.Connector;
 using Scada.UI;
 using System;
 using System.IO;
+using System.IO.Compression;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Deployment
@@ -132,6 +133,7 @@ namespace Scada.Admin.App.Forms.Deployment
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
                 string destFileName = GetTempFileName();
                 agentClient.DownloadConfig(destFileName, profile.DownloadSettings.ToConfigOpions());
+                ImportConfig(destFileName);
 
                 Cursor = Cursors.Default;
                 return true;
@@ -141,6 +143,36 @@ namespace Scada.Admin.App.Forms.Deployment
                 Cursor = Cursors.Default;
                 appData.ProcError(ex); // TODO: message
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Imports the configuration archive to the project.
+        /// </summary>
+        private void ImportConfig(string arcFileName)
+        {
+            string arcDestDir = Path.Combine(Path.GetDirectoryName(arcFileName), 
+                Path.GetFileNameWithoutExtension(arcFileName));
+            ExtractArchive(arcFileName, arcDestDir);
+        }
+
+        /// <summary>
+        /// Extracts the specified archive.
+        /// </summary>
+        private void ExtractArchive(string srcFileName, string destDir)
+        {
+            using (FileStream fileStream = 
+                new FileStream(srcFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
+            {
+                using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Read))
+                {
+                    foreach (ZipArchiveEntry zipEntry in zipArchive.Entries)
+                    {
+                        string destFileName = Path.Combine(destDir, zipEntry.FullName);
+                        Directory.CreateDirectory(Path.GetDirectoryName(destFileName));
+                        zipEntry.ExtractToFile(destFileName, true);
+                    }
+                }
             }
         }
 

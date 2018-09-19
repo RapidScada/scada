@@ -25,6 +25,7 @@
 
 using Scada.Agent;
 using System;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace Scada.Admin.Deployment
@@ -126,7 +127,37 @@ namespace Scada.Admin.Deployment
         /// </summary>
         public ConfigOptions ToConfigOpions()
         {
-            return new ConfigOptions() { ConfigParts = ConfigParts.All }; // TODO: implement
+            ConfigParts configParts = ConfigParts.None;
+            List<RelPath> ignoredPaths = new List<RelPath>();
+
+            if (IncludeBase)
+                configParts |= ConfigParts.Base;
+            if (IncludeInterface)
+                configParts |= ConfigParts.Interface;
+            if (IncludeServer)
+                configParts |= ConfigParts.Server;
+            if (IncludeComm)
+                configParts |= ConfigParts.Communicator;
+            if (IncludeWeb)
+                configParts |= ConfigParts.Webstation;
+
+            if (IgnoreRegKeys)
+            {
+                ignoredPaths.Add(new RelPath(ConfigParts.Server, AppFolder.Config, "*_Reg.xml"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Server, AppFolder.Config, "CompCode.txt"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Communicator, AppFolder.Config, "*_Reg.xml"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Communicator, AppFolder.Config, "CompCode.txt"));
+                ignoredPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Config, "*_Reg.xml"));
+            }
+
+            if (IgnoreWebStorage)
+                ignoredPaths.Add(new RelPath(ConfigParts.Webstation, AppFolder.Storage));
+
+            return new ConfigOptions()
+            {
+                ConfigParts = configParts,
+                IgnoredPaths = ignoredPaths
+            };
         }
     }
 }
