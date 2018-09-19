@@ -342,7 +342,7 @@ namespace Scada
         /// </summary>
         public static T DeepClone<T>(T obj, SerializationBinder binder = null)
         {
-            return (T)DeepClone(obj, binder);
+            return (T)DeepClone((object)obj, binder);
         }
 
         /// <summary>
