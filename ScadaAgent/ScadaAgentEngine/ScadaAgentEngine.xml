@@ -371,9 +371,9 @@
             Получить директорию папки приложения
             </summary>
         </member>
-        <member name="M:Scada.Agent.Engine.ScadaInstance.PrepareExcludedPaths(System.Collections.Generic.ICollection{Scada.Agent.RelPath})">
+        <member name="M:Scada.Agent.Engine.ScadaInstance.PrepareIgnoredPaths(System.Collections.Generic.ICollection{Scada.Agent.RelPath})">
             <summary>
-            Подготовить исключаемые пути: разделить по группам, применить поиск файлов по маске
+            Подготовить игнорируемые пути: разделить по группам, применить поиск файлов по маске
             </summary>
         </member>
         <member name="M:Scada.Agent.Engine.ScadaInstance.PackDir(System.IO.Compression.ZipArchive,System.String,System.String,Scada.Agent.Engine.ScadaInstance.PathList)">

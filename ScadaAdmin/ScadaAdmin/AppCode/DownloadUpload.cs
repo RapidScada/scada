@@ -41,9 +41,9 @@ namespace ScadaAdmin
     internal static class DownloadUpload
     {
         /// <summary>
-        /// Исключаемые пути файлов, специфичные для экземпляра системы
+        /// Игнорируемые пути файлов, специфичные для экземпляра системы
         /// </summary>
-        private static readonly RelPath[] ExcludedPaths;
+        private static readonly RelPath[] IgnoredPaths;
 
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace ScadaAdmin
         /// </summary>
         static DownloadUpload()
         {
-            ExcludedPaths = new RelPath[]
+            IgnoredPaths = new RelPath[]
             {
                 new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
                 new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
@@ -231,7 +231,7 @@ namespace ScadaAdmin
                 ConfigOptions configOptions = new ConfigOptions() { ConfigParts = ConfigParts.All };
 
                 if (!downloadSettings.IncludeSpecificFiles)
-                    configOptions.ExcludedPaths = ExcludedPaths;
+                    configOptions.IgnoredPaths = IgnoredPaths;
 
                 Stream downloadStream = client.DownloadConfig(sessionID, configOptions);
 
@@ -360,7 +360,7 @@ namespace ScadaAdmin
                     throw new ScadaException(AppPhrases.NoConfigInSrc);
 
                 if (!uploadSettings.ClearSpecificFiles)
-                    configOptions.ExcludedPaths = ExcludedPaths;
+                    configOptions.IgnoredPaths = IgnoredPaths;
 
                 // передача конфигурации
                 using (Stream outStream = File.Open(outFileName, FileMode.Open, FileAccess.Read, FileShare.Read))

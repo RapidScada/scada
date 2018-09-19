@@ -25,6 +25,7 @@
 
 using Scada.UI;
 using System;
+using System.IO;
 using System.Text;
 using Utils;
 
@@ -76,6 +77,36 @@ namespace Scada.Admin.App.Code
 
 
         /// <summary>
+        /// Clears the temporary directory.
+        /// </summary>
+        private void ClearTempDir()
+        {
+            try
+            {
+                DirectoryInfo directoryInfo = new DirectoryInfo(AppDirs.TempDir);
+
+                if (directoryInfo.Exists)
+                {
+                    foreach (DirectoryInfo subdirInfo in directoryInfo.GetDirectories())
+                    {
+                        subdirInfo.Delete(true);
+                    }
+
+                    foreach (FileInfo fileInfo in directoryInfo.GetFiles())
+                    {
+                        fileInfo.Delete();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при очистке директории временных файлов" :
+                    "Error cleaning the directory of temporary files");
+            }
+        }
+
+        /// <summary>
         /// Initializes the common data.
         /// </summary>
         public void Init(string exeDir)
@@ -91,6 +122,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public void FinalizeApp()
         {
+            ClearTempDir();
         }
 
         /// <summary>

@@ -48,23 +48,23 @@
         </member>
         <member name="T:Scada.Agent.ConfigOptions">
             <summary>
-            Configuration transfer parameters
-            <para>Параметры передачи конфигурации</para>
+            Configuration transfer options.
+            <para>Параметры передачи конфигурации.</para>
             </summary>
         </member>
         <member name="M:Scada.Agent.ConfigOptions.#ctor">
             <summary>
-            Конструктор
+            Initializes a new instance of the class.
             </summary>
         </member>
         <member name="P:Scada.Agent.ConfigOptions.ConfigParts">
             <summary>
-            Получить или установить части конфигурации
+            Gets or sets the configuration parts.
             </summary>
         </member>
-        <member name="P:Scada.Agent.ConfigOptions.ExcludedPaths">
+        <member name="P:Scada.Agent.ConfigOptions.IgnoredPaths">
             <summary>
-            Получить или установить исключаемые пути
+            Gets or sets the ignored paths.
             </summary>
         </member>
         <member name="T:Scada.Agent.ConfigParts">

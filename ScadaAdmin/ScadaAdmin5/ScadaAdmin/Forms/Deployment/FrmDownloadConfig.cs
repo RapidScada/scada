@@ -139,7 +139,7 @@ namespace Scada.Admin.App.Forms.Deployment
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
-                ScadaUiUtils.ShowError(ex.Message);
+                appData.ProcError(ex); // TODO: message
                 return false;
             }
         }

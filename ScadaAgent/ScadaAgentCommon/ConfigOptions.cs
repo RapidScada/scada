@@ -28,29 +28,29 @@ using System.Collections.Generic;
 namespace Scada.Agent
 {
     /// <summary>
-    /// Configuration transfer options
-    /// <para>Параметры передачи конфигурации</para>
+    /// Configuration transfer options.
+    /// <para>Параметры передачи конфигурации.</para>
     /// </summary>
     public class ConfigOptions
     {
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
         public ConfigOptions()
         {
             ConfigParts = ConfigParts.All;
-            ExcludedPaths = new List<RelPath>();
+            IgnoredPaths = new List<RelPath>();
         }
 
 
         /// <summary>
-        /// Получить или установить части конфигурации
+        /// Gets or sets the configuration parts.
         /// </summary>
         public ConfigParts ConfigParts { get; set; }
 
         /// <summary>
-        /// Получить или установить исключаемые пути
+        /// Gets or sets the ignored paths.
         /// </summary>
-        public ICollection<RelPath> ExcludedPaths { get; set; }
+        public ICollection<RelPath> IgnoredPaths { get; set; }
     }
 }

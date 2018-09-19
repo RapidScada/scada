@@ -95,7 +95,7 @@ namespace ScadaAdmin.AgentSvcRef {
         private ScadaAdmin.AgentSvcRef.ConfigParts ConfigPartsField;
         
         [System.Runtime.Serialization.OptionalFieldAttribute()]
-        private ScadaAdmin.AgentSvcRef.RelPath[] ExcludedPathsField;
+        private ScadaAdmin.AgentSvcRef.RelPath[] IgnoredPathsField;
         
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
@@ -121,14 +121,14 @@ namespace ScadaAdmin.AgentSvcRef {
         }
         
         [System.Runtime.Serialization.DataMemberAttribute()]
-        public ScadaAdmin.AgentSvcRef.RelPath[] ExcludedPaths {
+        public ScadaAdmin.AgentSvcRef.RelPath[] IgnoredPaths {
             get {
-                return this.ExcludedPathsField;
+                return this.IgnoredPathsField;
             }
             set {
-                if ((object.ReferenceEquals(this.ExcludedPathsField, value) != true)) {
-                    this.ExcludedPathsField = value;
-                    this.RaisePropertyChanged("ExcludedPaths");
+                if ((object.ReferenceEquals(this.IgnoredPathsField, value) != true)) {
+                    this.IgnoredPathsField = value;
+                    this.RaisePropertyChanged("IgnoredPaths");
                 }
             }
         }
@@ -247,6 +247,9 @@ namespace ScadaAdmin.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
         bool Login(out string errMsg, long sessionID, string username, string encryptedPassword, string scadaInstanceName);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/IsLoggedOn", ReplyAction="http://tempuri.org/AgentSvc/IsLoggedOnResponse")]
+        bool IsLoggedOn(long sessionID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
         bool ControlService(long sessionID, ScadaAdmin.AgentSvcRef.ServiceApp serviceApp, ScadaAdmin.AgentSvcRef.ServiceCommand command);
         
@@ -262,6 +265,12 @@ namespace ScadaAdmin.AgentSvcRef {
         // CODEGEN: Generating message contract since the operation UploadConfig is neither RPC nor document wrapped.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
         ScadaAdmin.AgentSvcRef.UploadConfigResponse UploadConfig(ScadaAdmin.AgentSvcRef.ConfigUploadMessage request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/PackConfig", ReplyAction="http://tempuri.org/AgentSvc/PackConfigResponse")]
+        bool PackConfig(long sessionID, string destFileName, ScadaAdmin.AgentSvcRef.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UnpackConfig", ReplyAction="http://tempuri.org/AgentSvc/UnpackConfigResponse")]
+        bool UnpackConfig(long sessionID, string srcFileName, ScadaAdmin.AgentSvcRef.ConfigOptions configOptions);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         bool Browse(out string[] directories, out string[] files, long sessionID, ScadaAdmin.AgentSvcRef.RelPath relPath);
@@ -343,6 +352,10 @@ namespace ScadaAdmin.AgentSvcRef {
             return base.Channel.Login(out errMsg, sessionID, username, encryptedPassword, scadaInstanceName);
         }
         
+        public bool IsLoggedOn(long sessionID) {
+            return base.Channel.IsLoggedOn(sessionID);
+        }
+        
         public bool ControlService(long sessionID, ScadaAdmin.AgentSvcRef.ServiceApp serviceApp, ScadaAdmin.AgentSvcRef.ServiceCommand command) {
             return base.Channel.ControlService(sessionID, serviceApp, command);
         }
@@ -370,6 +383,14 @@ namespace ScadaAdmin.AgentSvcRef {
             inValue.SessionID = SessionID;
             inValue.Stream = Stream;
             ScadaAdmin.AgentSvcRef.UploadConfigResponse retVal = ((ScadaAdmin.AgentSvcRef.AgentSvc)(this)).UploadConfig(inValue);
+        }
+        
+        public bool PackConfig(long sessionID, string destFileName, ScadaAdmin.AgentSvcRef.ConfigOptions configOptions) {
+            return base.Channel.PackConfig(sessionID, destFileName, configOptions);
+        }
+        
+        public bool UnpackConfig(long sessionID, string srcFileName, ScadaAdmin.AgentSvcRef.ConfigOptions configOptions) {
+            return base.Channel.UnpackConfig(sessionID, srcFileName, configOptions);
         }
         
         public bool Browse(out string[] directories, out string[] files, long sessionID, ScadaAdmin.AgentSvcRef.RelPath relPath) {

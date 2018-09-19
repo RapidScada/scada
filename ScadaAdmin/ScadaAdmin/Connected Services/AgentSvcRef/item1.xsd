@@ -86,7 +86,7 @@
   <xs:complexType name="ConfigOptions">
     <xs:sequence>
       <xs:element minOccurs="0" name="ConfigParts" type="tns:ConfigParts" />
-      <xs:element minOccurs="0" name="ExcludedPaths" nillable="true" type="tns:ArrayOfRelPath" />
+      <xs:element minOccurs="0" name="IgnoredPaths" nillable="true" type="tns:ArrayOfRelPath" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ConfigOptions" nillable="true" type="tns:ConfigOptions" />

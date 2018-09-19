@@ -282,9 +282,9 @@ namespace Scada.Agent.Engine
         }
 
         /// <summary>
-        /// Подготовить исключаемые пути: разделить по группам, применить поиск файлов по маске
+        /// Подготовить игнорируемые пути: разделить по группам, применить поиск файлов по маске
         /// </summary>
-        private PathDict PrepareExcludedPaths(ICollection<RelPath> relPaths)
+        private PathDict PrepareIgnoredPaths(ICollection<RelPath> relPaths)
         {
             PathDict pathDict = new PathDict();
 
@@ -324,11 +324,11 @@ namespace Scada.Agent.Engine
         /// <summary>
         /// Упаковать директорию
         /// </summary>
-        private void PackDir(ZipArchive zipArchive, string srcDir, string entryPrefix, PathList excludedPaths)
+        private void PackDir(ZipArchive zipArchive, string srcDir, string entryPrefix, PathList ignoredPaths)
         {
             srcDir = ScadaUtils.NormalDir(srcDir);
 
-            if (!excludedPaths.Dirs.Contains(srcDir) && Directory.Exists(srcDir))
+            if (!ignoredPaths.Dirs.Contains(srcDir) && Directory.Exists(srcDir))
             {
                 DirectoryInfo srcDirInfo = new DirectoryInfo(srcDir);
 
@@ -337,7 +337,7 @@ namespace Scada.Agent.Engine
 
                 foreach (DirectoryInfo dirInfo in dirInfoArr)
                 {
-                    PackDir(zipArchive, dirInfo.FullName, entryPrefix + dirInfo.Name + "/", excludedPaths);
+                    PackDir(zipArchive, dirInfo.FullName, entryPrefix + dirInfo.Name + "/", ignoredPaths);
                 }
 
                 // упаковка файлов
@@ -346,7 +346,7 @@ namespace Scada.Agent.Engine
 
                 foreach (FileInfo fileInfo in fileInfoArr)
                 {
-                    if (!excludedPaths.Files.Contains(fileInfo.FullName) &&
+                    if (!ignoredPaths.Files.Contains(fileInfo.FullName) &&
                         !fileInfo.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase))
                     {
                         string entryName = fileInfo.FullName.Substring(srcDirLen).Replace('\\', '/');
@@ -360,20 +360,20 @@ namespace Scada.Agent.Engine
         /// <summary>
         /// Упаковать директорию
         /// </summary>
-        private void PackDir(ZipArchive zipArchive, RelPath relPath, PathDict excludedPathDict)
+        private void PackDir(ZipArchive zipArchive, RelPath relPath, PathDict ignoredPathDict)
         {
             PackDir(zipArchive, 
                 GetAbsPath(relPath),
                 GetAppFolderDir(relPath.ConfigPart, relPath.AppFolder, '/'), 
-                excludedPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder));
+                ignoredPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder));
         }
 
         /// <summary>
         /// Очистить директорию
         /// </summary>
-        private void ClearDir(DirectoryInfo dirInfo, PathList excludedPaths, out bool dirEmpty)
+        private void ClearDir(DirectoryInfo dirInfo, PathList ignoredPaths, out bool dirEmpty)
         {
-            if (excludedPaths.Dirs.Contains(dirInfo.FullName))
+            if (ignoredPaths.Dirs.Contains(dirInfo.FullName))
             {
                 dirEmpty = false;
             }
@@ -384,7 +384,7 @@ namespace Scada.Agent.Engine
 
                 foreach (DirectoryInfo subdirInfo in subdirInfoArr)
                 {
-                    ClearDir(subdirInfo, excludedPaths, out bool subdirEmpty);
+                    ClearDir(subdirInfo, ignoredPaths, out bool subdirEmpty);
                     if (subdirEmpty)
                         subdirInfo.Delete();
                 }
@@ -395,7 +395,7 @@ namespace Scada.Agent.Engine
 
                 foreach (FileInfo fileInfo in fileInfoArr)
                 {
-                    if (excludedPaths.Files.Contains(fileInfo.FullName))
+                    if (ignoredPaths.Files.Contains(fileInfo.FullName))
                         dirEmpty = false;
                     else
                         fileInfo.Delete();
@@ -406,13 +406,13 @@ namespace Scada.Agent.Engine
         /// <summary>
         /// Очистить директорию
         /// </summary>
-        private void ClearDir(RelPath relPath, PathDict excludedPathDict)
+        private void ClearDir(RelPath relPath, PathDict ignoredPathDict)
         {
             DirectoryInfo dirInfo = new DirectoryInfo(GetAbsPath(relPath));
 
             if (dirInfo.Exists)
             {
-                ClearDir(dirInfo, excludedPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder),
+                ClearDir(dirInfo, ignoredPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder),
                     out bool dirEmpty);
             }
         }
@@ -642,7 +642,7 @@ namespace Scada.Agent.Engine
             try
             {
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
-                PathDict excludedPathDict = PrepareExcludedPaths(configOptions.ExcludedPaths);
+                PathDict ignoredPathDict = PrepareIgnoredPaths(configOptions.IgnoredPaths);
 
                 using (FileStream fileStream = 
                     new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read))
@@ -651,7 +651,7 @@ namespace Scada.Agent.Engine
                     {
                         foreach (RelPath relPath in configPaths)
                         {
-                            PackDir(zipArchive, relPath, excludedPathDict);
+                            PackDir(zipArchive, relPath, ignoredPathDict);
                         }
 
                         return true;
@@ -676,7 +676,7 @@ namespace Scada.Agent.Engine
             {
                 // удаление существующей конфигурации
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
-                PathDict pathDict = PrepareExcludedPaths(configOptions.ExcludedPaths);
+                PathDict pathDict = PrepareIgnoredPaths(configOptions.IgnoredPaths);
 
                 foreach (RelPath relPath in configPaths)
                 {
