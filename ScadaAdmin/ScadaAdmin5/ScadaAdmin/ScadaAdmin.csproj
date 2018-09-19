@@ -54,6 +54,14 @@
     <Reference Include="Log">
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaAgentCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaAgent\ScadaAgentCommon\bin\Release\netstandard2.0\ScadaAgentCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaAgentConnector, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaAgent\ScadaAgentConnector\bin\Release\ScadaAgentConnector.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaCommCommon, Version=5.1.0.3, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaComm\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>

@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent;
 using System;
 using System.Xml;
 
@@ -118,6 +119,14 @@ namespace Scada.Admin.Deployment
             xmlElem.AppendElem("IncludeWeb", IncludeWeb);
             xmlElem.AppendElem("IgnoreRegKeys", IgnoreRegKeys);
             xmlElem.AppendElem("IgnoreWebStorage", IgnoreWebStorage);
+        }
+
+        /// <summary>
+        /// Convert this transfer settings to Agent transfer options.
+        /// </summary>
+        public ConfigOptions ToConfigOpions()
+        {
+            return new ConfigOptions() { ConfigParts = ConfigParts.All }; // TODO: implement
         }
     }
 }

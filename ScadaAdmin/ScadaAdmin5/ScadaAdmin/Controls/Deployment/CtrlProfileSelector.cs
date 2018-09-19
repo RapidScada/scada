@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using System;
@@ -92,7 +93,24 @@ namespace Scada.Admin.App.Controls.Deployment
                 cbProfile.EndUpdate();
             }
         }
-        
+
+        /// <summary>
+        /// Adds the profile to the deployment settings and combo box.
+        /// </summary>
+        private void AddProfileToLists(DeploymentProfile profile)
+        {
+            // add to the deployment settings
+            deploymentSettings.Profiles.Add(profile.Name, profile);
+
+            // add to the combo box
+            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name);
+            if (index >= 0)
+            {
+                cbProfile.Items.Insert(index, profile);
+                cbProfile.SelectedIndex = index;
+            }
+        }
+
         /// <summary>
         /// Save the deployments settings.
         /// </summary>
@@ -140,12 +158,56 @@ namespace Scada.Admin.App.Controls.Deployment
 
         private void btnCreateProfile_Click(object sender, EventArgs e)
         {
+            // create a new profile
+            DeploymentProfile profile = new DeploymentProfile();
 
+            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            {
+                Profile = profile,
+                ExistingProfileNames = deploymentSettings.GetExistingProfileNames()
+            };
+
+            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            {
+                AddProfileToLists(profile);
+                SaveDeploymentSettings();
+            }
         }
 
         private void btnEditProfile_Click(object sender, EventArgs e)
         {
+            // edit the selected profile
+            DeploymentProfile profile = SelectedProfile;
+            string oldName = profile.Name;
 
+            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            {
+                Profile = profile,
+                ExistingProfileNames = deploymentSettings.GetExistingProfileNames(oldName)
+            };
+
+            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            {
+                // update the profile name if it changed
+                if (oldName != profile.Name)
+                {
+                    deploymentSettings.Profiles.Remove(oldName);
+
+                    try
+                    {
+                        cbProfile.BeginUpdate();
+                        cbProfile.Items.RemoveAt(cbProfile.SelectedIndex);
+                        AddProfileToLists(profile);
+                    }
+                    finally
+                    {
+                        cbProfile.EndUpdate();
+                    }
+                }
+
+                // save the deployment settings
+                SaveDeploymentSettings();
+            }
         }
 
         private void btnDeleteProfile_Click(object sender, EventArgs e)

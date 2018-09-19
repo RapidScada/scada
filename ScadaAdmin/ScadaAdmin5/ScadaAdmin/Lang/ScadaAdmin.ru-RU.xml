@@ -147,6 +147,22 @@
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
     <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
+    <Phrase key="this">Настройки соединения</Phrase>
+    <Phrase key="lblProfileName">Наименование профиля</Phrase>
+    <Phrase key="lblHost">Сервер</Phrase>
+    <Phrase key="lblPort">Порт</Phrase>
+    <Phrase key="lblUsername">Пользователь</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblSecretKey">Секретный ключ</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
+    <Phrase key="EmptyFieldsNotAllowed">Пустые значения полей не допускаются.</Phrase>
+    <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
+    <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
+    <Phrase key="NothingToDownload">Конфигурация для скачивания не выбрана.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>

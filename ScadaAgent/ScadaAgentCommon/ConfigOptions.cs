@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAgentCommon
- * Summary  : Configuration transfer parameters
+ * Summary  : Configuration transfer options
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -28,7 +28,7 @@ using System.Collections.Generic;
 namespace Scada.Agent
 {
     /// <summary>
-    /// Configuration transfer parameters
+    /// Configuration transfer options
     /// <para>Параметры передачи конфигурации</para>
     /// </summary>
     public class ConfigOptions

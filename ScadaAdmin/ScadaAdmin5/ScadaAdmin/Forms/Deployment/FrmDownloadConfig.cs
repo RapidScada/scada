@@ -24,9 +24,12 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Deployment;
 using Scada.Admin.Project;
+using Scada.Agent.Connector;
 using Scada.UI;
 using System;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Deployment
@@ -40,6 +43,7 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;      // the common data of the application
         private readonly ScadaProject project; // the project under development
         private readonly Instance instance;    // the affected instance
+        private bool downloadSettingsModified; // the selected download settings were modified
 
 
         /// <summary>
@@ -76,6 +80,69 @@ namespace Scada.Admin.App.Forms.Deployment
         /// Gets a value indicating whether the instance was modified
         /// </summary>
         public bool InstanceModified { get; protected set; }
+        
+        
+        /// <summary>
+        /// Validate the download configuration settings.
+        /// </summary>
+        private bool ValidateDownloadSettings()
+        {
+            if (ctrlTransferSettings.Empty)
+            {
+                ScadaUiUtils.ShowError(AppPhrases.NothingToDownload);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+        
+        /// <summary>
+        /// Save the deployments settings.
+        /// </summary>
+        private void SaveDeploymentSettings()
+        {
+            if (!project.DeploymentSettings.Save(out string errMsg))
+                appData.ProcError(errMsg);
+        }
+
+        /// <summary>
+        /// Gets a name for a temporary file.
+        /// </summary>
+        private string GetTempFileName()
+        {
+            return Path.Combine(appData.AppDirs.TempDir,
+                string.Format("download-config_{0}.zip", DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss")));
+        }
+
+        /// <summary>
+        /// Downloads the configuration.
+        /// </summary>
+        private bool DownloadConfig(DeploymentProfile profile, string scadaInstance)
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                DateTime t0 = DateTime.UtcNow;
+
+                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
+                connSettings.ScadaInstance = scadaInstance;
+
+                AgentWcfClient agentClient = new AgentWcfClient(connSettings);
+                string destFileName = GetTempFileName();
+                agentClient.DownloadConfig(destFileName, profile.DownloadSettings.ToConfigOpions());
+
+                Cursor = Cursors.Default;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Cursor = Cursors.Default;
+                ScadaUiUtils.ShowError(ex.Message);
+                return false;
+            }
+        }
 
 
         private void FrmDownloadConfig_Load(object sender, EventArgs e)
@@ -88,7 +155,54 @@ namespace Scada.Admin.App.Forms.Deployment
             InterfaceModified = false;
             InstanceModified = false;
 
+            downloadSettingsModified = false;
+            ctrlTransferSettings.Disable();
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
+        }
+
+        private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)
+        {
+            // display download settings of the selected profile
+            DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
+
+            if (profile == null)
+            {
+                ctrlTransferSettings.Disable();
+                btnDownload.Enabled = false;
+            }
+            else
+            {
+                ctrlTransferSettings.SettingsToControls(profile.DownloadSettings);
+                btnDownload.Enabled = true;
+            }
+
+            downloadSettingsModified = false;
+        }
+
+        private void ctrlTransferSettings_SettingsChanged(object sender, EventArgs e)
+        {
+            downloadSettingsModified = true;
+        }
+
+        private void btnDownload_Click(object sender, EventArgs e)
+        {
+            // validate settings and download
+            DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
+
+            if (profile != null && ValidateDownloadSettings())
+            {
+                // save the settings changes
+                if (downloadSettingsModified)
+                {
+                    ctrlTransferSettings.ControlsToSettings(profile.DownloadSettings);
+                    SaveDeploymentSettings();
+                }
+
+                // download
+                instance.DeploymentProfile = profile.Name;
+                if (DownloadConfig(profile, instance.Name))
+                    DialogResult = DialogResult.OK;
+            }
         }
     }
 }

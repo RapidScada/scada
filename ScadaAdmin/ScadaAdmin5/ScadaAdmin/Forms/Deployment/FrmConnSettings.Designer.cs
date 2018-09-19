@@ -43,7 +43,7 @@
             this.numPort = new System.Windows.Forms.NumericUpDown();
             this.txtHost = new System.Windows.Forms.TextBox();
             this.lblHost = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
+            this.txtProfileName = new System.Windows.Forms.TextBox();
             this.lblProfileName = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).BeginInit();
@@ -67,6 +67,7 @@
             this.btnOK.TabIndex = 13;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnGenSecretKey
             // 
@@ -78,6 +79,7 @@
             this.btnGenSecretKey.TabIndex = 11;
             this.toolTip.SetToolTip(this.btnGenSecretKey, "Generate secret key");
             this.btnGenSecretKey.UseVisualStyleBackColor = true;
+            this.btnGenSecretKey.Click += new System.EventHandler(this.btnGenSecretKey_Click);
             // 
             // txtSecretKey
             // 
@@ -171,12 +173,12 @@
             this.lblHost.TabIndex = 2;
             this.lblHost.Text = "Server";
             // 
-            // txtName
+            // txtProfileName
             // 
-            this.txtName.Location = new System.Drawing.Point(12, 25);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(250, 20);
-            this.txtName.TabIndex = 1;
+            this.txtProfileName.Location = new System.Drawing.Point(12, 25);
+            this.txtProfileName.Name = "txtProfileName";
+            this.txtProfileName.Size = new System.Drawing.Size(250, 20);
+            this.txtProfileName.TabIndex = 1;
             // 
             // lblProfileName
             // 
@@ -189,8 +191,10 @@
             // 
             // FrmConnSettings
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(274, 272);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
@@ -205,7 +209,7 @@
             this.Controls.Add(this.numPort);
             this.Controls.Add(this.txtHost);
             this.Controls.Add(this.lblHost);
-            this.Controls.Add(this.txtName);
+            this.Controls.Add(this.txtProfileName);
             this.Controls.Add(this.lblProfileName);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -214,6 +218,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Connection Settings";
+            this.Load += new System.EventHandler(this.FrmConnSettings_Load);
             ((System.ComponentModel.ISupportInitialize)(this.numPort)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -235,7 +240,7 @@
         private System.Windows.Forms.NumericUpDown numPort;
         private System.Windows.Forms.TextBox txtHost;
         private System.Windows.Forms.Label lblHost;
-        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.TextBox txtProfileName;
         private System.Windows.Forms.Label lblProfileName;
         private System.Windows.Forms.ToolTip toolTip;
     }

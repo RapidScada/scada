@@ -69,6 +69,7 @@
             this.chkIgnoreWebStorage.TabIndex = 8;
             this.chkIgnoreWebStorage.Text = "Webstation storage";
             this.chkIgnoreWebStorage.UseVisualStyleBackColor = true;
+            this.chkIgnoreWebStorage.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // chkIgnoreRegKeys
             // 
@@ -79,6 +80,7 @@
             this.chkIgnoreRegKeys.TabIndex = 7;
             this.chkIgnoreRegKeys.Text = "Registration keys";
             this.chkIgnoreRegKeys.UseVisualStyleBackColor = true;
+            this.chkIgnoreRegKeys.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // lblIgnore
             // 
@@ -107,6 +109,7 @@
             this.chkIncludeWeb.TabIndex = 5;
             this.chkIncludeWeb.Text = "Webstation";
             this.chkIncludeWeb.UseVisualStyleBackColor = true;
+            this.chkIncludeWeb.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // chkIncludeComm
             // 
@@ -117,6 +120,7 @@
             this.chkIncludeComm.TabIndex = 4;
             this.chkIncludeComm.Text = "Communicator";
             this.chkIncludeComm.UseVisualStyleBackColor = true;
+            this.chkIncludeComm.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // chkIncludeServer
             // 
@@ -127,6 +131,7 @@
             this.chkIncludeServer.TabIndex = 3;
             this.chkIncludeServer.Text = "Server";
             this.chkIncludeServer.UseVisualStyleBackColor = true;
+            this.chkIncludeServer.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // chkIncludeInterface
             // 
@@ -137,6 +142,7 @@
             this.chkIncludeInterface.TabIndex = 2;
             this.chkIncludeInterface.Text = "Interface";
             this.chkIncludeInterface.UseVisualStyleBackColor = true;
+            this.chkIncludeInterface.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // chkIncludeBase
             // 
@@ -147,6 +153,7 @@
             this.chkIncludeBase.TabIndex = 1;
             this.chkIncludeBase.Text = "Configuration database";
             this.chkIncludeBase.UseVisualStyleBackColor = true;
+            this.chkIncludeBase.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
             // 
             // CtrlTransferSettings
             // 

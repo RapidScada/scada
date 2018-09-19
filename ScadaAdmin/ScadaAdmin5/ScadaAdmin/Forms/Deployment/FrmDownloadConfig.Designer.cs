@@ -30,8 +30,8 @@
         {
             this.btnDownload = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
-            this.ctrlProfileSelector = new Scada.Admin.App.Controls.Deployment.CtrlProfileSelector();
             this.ctrlTransferSettings = new Scada.Admin.App.Controls.Deployment.CtrlTransferSettings();
+            this.ctrlProfileSelector = new Scada.Admin.App.Controls.Deployment.CtrlProfileSelector();
             this.SuspendLayout();
             // 
             // btnDownload
@@ -42,6 +42,7 @@
             this.btnDownload.TabIndex = 2;
             this.btnDownload.Text = "Download";
             this.btnDownload.UseVisualStyleBackColor = true;
+            this.btnDownload.Click += new System.EventHandler(this.btnDownload_Click);
             // 
             // btnClose
             // 
@@ -53,19 +54,21 @@
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
-            // ctrlProfileSelector
-            // 
-            this.ctrlProfileSelector.Location = new System.Drawing.Point(12, 12);
-            this.ctrlProfileSelector.Name = "ctrlProfileSelector";
-            this.ctrlProfileSelector.Size = new System.Drawing.Size(469, 113);
-            this.ctrlProfileSelector.TabIndex = 0;
-            // 
             // ctrlTransferSettings
             // 
             this.ctrlTransferSettings.Location = new System.Drawing.Point(12, 131);
             this.ctrlTransferSettings.Name = "ctrlTransferSettings";
             this.ctrlTransferSettings.Size = new System.Drawing.Size(469, 223);
             this.ctrlTransferSettings.TabIndex = 1;
+            this.ctrlTransferSettings.SettingsChanged += new System.EventHandler(this.ctrlTransferSettings_SettingsChanged);
+            // 
+            // ctrlProfileSelector
+            // 
+            this.ctrlProfileSelector.Location = new System.Drawing.Point(12, 12);
+            this.ctrlProfileSelector.Name = "ctrlProfileSelector";
+            this.ctrlProfileSelector.Size = new System.Drawing.Size(469, 113);
+            this.ctrlProfileSelector.TabIndex = 0;
+            this.ctrlProfileSelector.SelectedProfileChanged += new System.EventHandler(this.ctrlProfileSelector_SelectedProfileChanged);
             // 
             // FrmDownloadConfig
             // 

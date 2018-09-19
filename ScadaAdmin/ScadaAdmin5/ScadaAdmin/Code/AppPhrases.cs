@@ -51,6 +51,14 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Controls.Deployment.CtrlProfileSelector
         public static string ConfirmDeleteProfile { get; private set; }
 
+        // Scada.Admin.App.Forms.Deployment.FrmConnSettings
+        public static string EmptyFieldsNotAllowed { get; private set; }
+        public static string ProfileNameDuplicated { get; private set; }
+        public static string IncorrectSecretKey { get; private set; }
+
+        // Scada.Admin.App.Forms.Deployment.FrmDownloadConfig
+        public static string NothingToDownload { get; private set; }
+
         // Scada.Admin.App.Forms.FrmBaseTable
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
@@ -112,6 +120,14 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
             ConfirmDeleteProfile = dict.GetPhrase("ConfirmDeleteProfile");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmConnSettings");
+            EmptyFieldsNotAllowed = dict.GetPhrase("EmptyFieldsNotAllowed");
+            ProfileNameDuplicated = dict.GetPhrase("ProfileNameDuplicated");
+            IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
+            NothingToDownload = dict.GetPhrase("NothingToDownload");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
             GridViewError = dict.GetPhrase("GridViewError");

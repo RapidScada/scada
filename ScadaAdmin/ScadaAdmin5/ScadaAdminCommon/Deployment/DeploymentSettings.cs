@@ -149,5 +149,21 @@ namespace Scada.Admin.Deployment
                 return false;
             }
         }
+        
+        /// <summary>
+        /// Gets the existing profile names.
+        /// </summary>
+        public HashSet<string> GetExistingProfileNames(string exceptName = null)
+        {
+            HashSet<string> existingNames = new HashSet<string>();
+
+            foreach (DeploymentProfile profile in Profiles.Values)
+            {
+                if (exceptName == null || profile.Name != exceptName)
+                    existingNames.Add(profile.Name);
+            }
+
+            return existingNames;
+        }
     }
 }

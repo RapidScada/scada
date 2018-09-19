@@ -147,6 +147,22 @@
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
     <Phrase key="ConfirmDeleteProfile">Are you sure you want to delete the profile?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
+    <Phrase key="this">Connection Settings</Phrase>
+    <Phrase key="lblProfileName">Profile name</Phrase>
+    <Phrase key="lblHost">Server</Phrase>
+    <Phrase key="lblPort">Port</Phrase>
+    <Phrase key="lblUsername">Username</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblSecretKey">Secret key</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
+    <Phrase key="ProfileNameDuplicated">A profile with this name already exists.</Phrase>
+    <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
+    <Phrase key="NothingToDownload">Configuration for download is not selected.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>

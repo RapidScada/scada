@@ -32,6 +32,7 @@ namespace Scada.Agent.Connector
     /// Specifies all settings required to make a connection to the Agent service.
     /// <para>Задает все настройки, необходимые для подключения к службе Агента.</para>
     /// </summary>
+    [Serializable]
     public class ConnectionSettings
     {
         /// <summary>
@@ -118,6 +119,14 @@ namespace Scada.Agent.Connector
             xmlElem.AppendElem("Password", Password);
             xmlElem.AppendElem("ScadaInstance", ScadaInstance);
             xmlElem.AppendElem("SecretKey", ScadaUtils.BytesToHex(SecretKey));
+        }
+
+        /// <summary>
+        /// Clones the object.
+        /// </summary>
+        public ConnectionSettings Clone()
+        {
+            return ScadaUtils.DeepClone(this);
         }
     }
 }
