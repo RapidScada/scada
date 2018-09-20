@@ -58,6 +58,8 @@ namespace Scada.Admin.App.Code
 
         // Scada.Admin.App.Forms.Deployment.FrmDownloadConfig
         public static string NothingToDownload { get; private set; }
+        public static string DownloadConfigComplete { get; private set; }
+        public static string DownloadConfigError { get; private set; }
 
         // Scada.Admin.App.Forms.FrmBaseTable
         public static string GridViewError { get; private set; }
@@ -128,6 +130,8 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
             NothingToDownload = dict.GetPhrase("NothingToDownload");
+            DownloadConfigComplete = dict.GetPhrase("DownloadConfigComplete");
+            DownloadConfigError = dict.GetPhrase("DownloadConfigError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
             GridViewError = dict.GetPhrase("GridViewError");

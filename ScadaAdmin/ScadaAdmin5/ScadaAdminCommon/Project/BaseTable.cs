@@ -61,12 +61,12 @@ namespace Scada.Admin.Project
 
 
         /// <summary>
-        /// Gets or sets the table name.
+        /// Gets the table name.
         /// </summary>
-        public string Name { get; set; }
+        public string Name { get; protected set; }
 
         /// <summary>
-        /// Gets or sets the primary key of the table.
+        /// Gets the primary key of the table.
         /// </summary>
         public string PrimaryKey
         {
@@ -74,7 +74,7 @@ namespace Scada.Admin.Project
             {
                 return primaryKey;
             }
-            set
+            protected set
             {
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentException("The primary key can not be empty.");

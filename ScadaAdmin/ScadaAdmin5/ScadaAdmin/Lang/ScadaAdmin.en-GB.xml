@@ -162,6 +162,8 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
     <Phrase key="NothingToDownload">Configuration for download is not selected.</Phrase>
+    <Phrase key="DownloadConfigComplete">Download completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
+    <Phrase key="DownloadConfigError">Error downloading configuration</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
@@ -331,5 +333,9 @@
   <Dictionary key="Scada.Admin.Project.WebApp">
     <Phrase key="CreateWebFilesError">Error creating Webstation project files</Phrase>
     <Phrase key="DeleteWebFilesError">Error deleting Webstation project files</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.ImportExport">
+    <Phrase key="ImportBaseTableError">Error importing the &quot;{0}&quot; table</Phrase>
+    <Phrase key="ImportArchiveError">Error importing configuration archive</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

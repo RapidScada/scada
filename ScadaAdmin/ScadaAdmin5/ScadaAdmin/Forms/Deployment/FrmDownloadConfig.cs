@@ -132,99 +132,31 @@ namespace Scada.Admin.App.Forms.Deployment
                 connSettings.ScadaInstance = scadaInstance;
 
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
-                string destFileName = GetTempFileName();
-                agentClient.DownloadConfig(destFileName, profile.DownloadSettings.ToConfigOpions());
-                ImportConfig(destFileName, profile.DownloadSettings);
+                string configFileName = GetTempFileName();
+                agentClient.DownloadConfig(configFileName, profile.DownloadSettings.ToConfigOpions());
+
+                ImportExport importExport = new ImportExport();
+                importExport.ImportArchive(configFileName, project, instance, out ConfigParts foundConfigParts);
+                FileInfo configFileInfo = new FileInfo(configFileName);
+                long configFileSize = configFileInfo.Length;
+                // TODO: uncomment
+                //configFileInfo.Delete();
+
+                BaseModified = foundConfigParts.HasFlag(ConfigParts.Base);
+                InterfaceModified = foundConfigParts.HasFlag(ConfigParts.Interface);
+                InstanceModified = foundConfigParts.HasFlag(ConfigParts.Server) ||
+                    foundConfigParts.HasFlag(ConfigParts.Comm) || foundConfigParts.HasFlag(ConfigParts.Web);
 
                 Cursor = Cursors.Default;
-                ScadaUiUtils.ShowInfo("Done.");
+                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.DownloadConfigComplete,
+                    (int)(DateTime.UtcNow - t0).TotalSeconds, configFileSize));
                 return true;
             }
             catch (Exception ex)
             {
                 Cursor = Cursors.Default;
-                appData.ProcError(ex); // TODO: message
+                appData.ProcError(ex, AppPhrases.DownloadConfigError);
                 return false;
-            }
-        }
-
-        /// <summary>
-        /// Imports the configuration archive to the project.
-        /// </summary>
-        private void ImportConfig(string arcFileName, TransferSettings downloadSettings)
-        {
-            // extract the configuration
-            string arcDestDir = Path.Combine(Path.GetDirectoryName(arcFileName), 
-                Path.GetFileNameWithoutExtension(arcFileName));
-            ExtractArchive(arcFileName, arcDestDir);
-            DirectoryInfo arcDestDirInfo = new DirectoryInfo(arcDestDir);
-
-            // import the configuration
-            foreach (DirectoryInfo subdirInfo in arcDestDirInfo.GetDirectories())
-            {
-                ConfigParts configPart = ConfigParts.Base;
-
-                switch (configPart)
-                {
-                    case ConfigParts.Base:
-                        if (downloadSettings.IncludeBase)
-                        {
-
-                        }
-                        break;
-
-                    case ConfigParts.Interface:
-                        if (downloadSettings.IncludeInterface)
-                        {
-                            subdirInfo.MoveTo(project.Interface.InterfaceDir); // TODO: move with overwrite
-                        }
-                        break;
-
-                    case ConfigParts.Server:
-                        if (downloadSettings.IncludeServer && instance.ServerApp.Enabled)
-                        {
-                            subdirInfo.MoveTo(instance.ServerApp.AppDir);
-                        }
-                        break;
-
-                    case ConfigParts.Comm:
-                        if (downloadSettings.IncludeComm && instance.CommApp.Enabled)
-                        {
-
-                        }
-                        break;
-
-                    case ConfigParts.Web:
-                        if (downloadSettings.IncludeWeb && instance.WebApp.Enabled)
-                        {
-
-                        }
-                        break;
-                }
-            }
-
-            // delete the archive and extracted files
-            //File.Delete(arcFileName);
-            //Directory.Delete(arcDestDir, true);
-        }
-
-        /// <summary>
-        /// Extracts the specified archive.
-        /// </summary>
-        private void ExtractArchive(string srcFileName, string destDir)
-        {
-            using (FileStream fileStream = 
-                new FileStream(srcFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
-            {
-                using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Read))
-                {
-                    foreach (ZipArchiveEntry zipEntry in zipArchive.Entries)
-                    {
-                        string destFileName = Path.Combine(destDir, zipEntry.FullName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(destFileName));
-                        zipEntry.ExtractToFile(destFileName, true);
-                    }
-                }
             }
         }
 

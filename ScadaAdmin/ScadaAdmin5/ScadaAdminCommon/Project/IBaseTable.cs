@@ -34,9 +34,14 @@ namespace Scada.Admin.Project
     public interface IBaseTable
     {
         /// <summary>
-        /// Gets or sets the table name.
+        /// Gets the table name.
         /// </summary>
-        string Name { get; set; }
+        string Name { get; }
+
+        /// <summary>
+        /// Gets the primary key of the table.
+        /// </summary>
+        string PrimaryKey { get; }
 
         /// <summary>
         /// Gets the short file name of the table.

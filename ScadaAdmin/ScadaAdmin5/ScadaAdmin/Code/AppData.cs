@@ -140,7 +140,9 @@ namespace Scada.Admin.App.Code
         public void ProcError(Exception ex, string message = null)
         {
             ErrLog.WriteException(ex, message);
-            ScadaUiUtils.ShowError(message ?? ex.Message);
+            ScadaUiUtils.ShowError(string.IsNullOrEmpty(message) ? 
+                ex.Message : 
+                message + ":" + Environment.NewLine + ex.Message);
         }
     }
 }

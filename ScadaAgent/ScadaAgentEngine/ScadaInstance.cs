@@ -147,22 +147,6 @@ namespace Scada.Agent.Engine
 
 
         /// <summary>
-        /// Получить директорию сервиса
-        /// </summary>
-        private string GetServiceDir(ServiceApp serviceApp, char? directorySeparator)
-        {
-            switch (serviceApp)
-            {
-                case ServiceApp.Server:
-                    return GetConfigPartDir(ConfigParts.Server, directorySeparator);
-                case ServiceApp.Communicator:
-                    return GetConfigPartDir(ConfigParts.Comm, directorySeparator);
-                default:
-                    throw new ArgumentException("Unknown service.");
-            }
-        }
-
-        /// <summary>
         /// Получить имя файла статуса сервиса
         /// </summary>
         private string GetServiceStatusFile(ServiceApp serviceApp)
@@ -222,63 +206,6 @@ namespace Scada.Agent.Engine
             }
 
             return configPaths;
-        }
-
-        /// <summary>
-        /// Получить директорию части конфигурации
-        /// </summary>
-        private string GetConfigPartDir(ConfigParts configPart, char? directorySeparator)
-        {
-            switch (configPart)
-            {
-                case ConfigParts.Base:
-                    return "BaseDAT" + directorySeparator;
-                case ConfigParts.Interface:
-                    return "Interface" + directorySeparator;
-                case ConfigParts.Server:
-                    return "ScadaServer" + directorySeparator;
-                case ConfigParts.Comm:
-                    return "ScadaComm" + directorySeparator;
-                case ConfigParts.Web:
-                    return "ScadaWeb" + directorySeparator;
-                default:
-                    throw new ArgumentException("Incorrect configuration part.");
-            }
-        }
-
-        /// <summary>
-        /// Получить директорию папки приложения
-        /// </summary>
-        private string GetAppFolderDir(AppFolder appFolder, char? directorySeparator, bool lowerCase = false)
-        {
-            string dir;
-
-            switch (appFolder)
-            {
-                case AppFolder.Config:
-                    dir = "Config" + directorySeparator;
-                    break;
-                case AppFolder.Log:
-                    dir = "Log" + directorySeparator;
-                    break;
-                case AppFolder.Storage:
-                    dir = "Storage" + directorySeparator;
-                    break;
-                default:
-                    dir = "";
-                    break;
-            }
-
-            return lowerCase ? dir.ToLowerInvariant() : dir;
-        }
-
-        /// <summary>
-        /// Получить директорию папки приложения
-        /// </summary>
-        private string GetAppFolderDir(ConfigParts configPart, AppFolder appFolder, char directorySeparator)
-        {
-            return GetConfigPartDir(configPart, directorySeparator) +
-                GetAppFolderDir(appFolder, directorySeparator, configPart == ConfigParts.Web);
         }
 
         /// <summary>
@@ -364,7 +291,7 @@ namespace Scada.Agent.Engine
         {
             PackDir(zipArchive, 
                 GetAbsPath(relPath),
-                GetAppFolderDir(relPath.ConfigPart, relPath.AppFolder, '/'), 
+                DirectoryBuilder.GetDirectory(relPath.ConfigPart, relPath.AppFolder, '/'), 
                 ignoredPathDict.GetOrAdd(relPath.ConfigPart, relPath.AppFolder));
         }
 
@@ -455,7 +382,7 @@ namespace Scada.Agent.Engine
                     BaseAdapter baseAdapter = new BaseAdapter();
                     DataTable userTable = new DataTable();
                     baseAdapter.FileName = Path.Combine(Settings.Directory,
-                        GetConfigPartDir(ConfigParts.Base, null), "user.dat");
+                        DirectoryBuilder.GetDirectory(ConfigParts.Base), "user.dat");
                     baseAdapter.Fill(userTable, false);
 
                     // поиск и проверка информации о пользователе
@@ -498,7 +425,7 @@ namespace Scada.Agent.Engine
             try
             {
                 string batchFileName = Path.Combine(Settings.Directory,
-                    GetServiceDir(serviceApp, null), GetServiceBatchFile(command));
+                    DirectoryBuilder.GetDirectory(serviceApp), GetServiceBatchFile(command));
 
                 if (File.Exists(batchFileName))
                 {
@@ -535,7 +462,8 @@ namespace Scada.Agent.Engine
             {
                 status = ServiceStatus.Undefined;
                 string statusFileName = Path.Combine(Settings.Directory, 
-                    GetServiceDir(serviceApp, null), GetAppFolderDir(AppFolder.Log, null),
+                    DirectoryBuilder.GetDirectory(serviceApp), 
+                    DirectoryBuilder.GetDirectory(AppFolder.Log),
                     GetServiceStatusFile(serviceApp));
 
                 if (File.Exists(statusFileName))
@@ -598,10 +526,7 @@ namespace Scada.Agent.Engine
         /// </summary>
         public string GetAbsPath(ConfigParts configPart, AppFolder appFolder, string path)
         {
-            return Path.Combine(Settings.Directory,
-                GetConfigPartDir(configPart, Path.DirectorySeparatorChar),
-                GetAppFolderDir(appFolder, Path.DirectorySeparatorChar, configPart == ConfigParts.Web),
-                path);
+            return Path.Combine(Settings.Directory, DirectoryBuilder.GetDirectory(configPart, appFolder), path);
         }
 
         /// <summary>
@@ -615,10 +540,7 @@ namespace Scada.Agent.Engine
 
                 foreach (ConfigParts configPart in AllConfigParts)
                 {
-                    string configPartDir = Settings.Directory + 
-                        GetConfigPartDir(configPart, Path.DirectorySeparatorChar);
-
-                    if (Directory.Exists(configPartDir))
+                    if (Directory.Exists(Path.Combine(Settings.Directory, DirectoryBuilder.GetDirectory(configPart))))
                         configParts |= configPart;
                 }
 
@@ -690,7 +612,7 @@ namespace Scada.Agent.Engine
                 foreach (ConfigParts configPart in AllConfigParts)
                 {
                     if (configParts.HasFlag(configPart))
-                        allowedEntries.Add(GetConfigPartDir(configPart, '/'));
+                        allowedEntries.Add(DirectoryBuilder.GetDirectory(configPart, '/'));
                 }
 
                 // распаковка новой конфигурации

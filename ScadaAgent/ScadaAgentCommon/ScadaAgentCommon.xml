@@ -108,6 +108,47 @@
             Вся конфигурация
             </summary>
         </member>
+        <member name="T:Scada.Agent.DirectoryBuilder">
+            <summary>
+            Builds configuration directories.
+            <para>Строит директории конфигурации.</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts)">
+            <summary>
+            Gets a directory corresponding to the configuration part.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,System.Nullable{System.Char})">
+            <summary>
+            Gets a directory corresponding to the configuration part.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.AppFolder,System.Boolean)">
+            <summary>
+            Gets a directory corresponding to the application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.AppFolder,System.Nullable{System.Char},System.Boolean)">
+            <summary>
+            Gets a directory corresponding to the application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,Scada.Agent.AppFolder)">
+            <summary>
+            Gets a directory corresponding to the configuration part and application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.Char)">
+            <summary>
+            Gets a directory corresponding to the configuration part and application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ServiceApp)">
+            <summary>
+            Gets a directory corresponding to the service application.
+            </summary>
+        </member>
         <member name="T:Scada.Agent.RelPath">
             <summary>
             Relative path

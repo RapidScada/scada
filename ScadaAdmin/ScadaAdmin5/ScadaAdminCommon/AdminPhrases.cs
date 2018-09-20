@@ -68,6 +68,10 @@ namespace Scada.Admin
         public static string CreateWebFilesError { get; private set; }
         public static string DeleteWebFilesError { get; private set; }
 
+        // Scada.Admin.ImportExport
+        public static string ImportBaseTableError { get; private set; }
+        public static string ImportArchiveError { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Deployment.DeploymentSettings");
@@ -104,6 +108,10 @@ namespace Scada.Admin
             dict = Localization.GetDictionary("Scada.Admin.Project.WebApp");
             CreateWebFilesError = dict.GetPhrase("CreateWebFilesError");
             DeleteWebFilesError = dict.GetPhrase("DeleteWebFilesError");
+
+            dict = Localization.GetDictionary("Scada.Admin.ImportExport");
+            ImportBaseTableError = dict.GetPhrase("ImportBaseTableError");
+            ImportArchiveError = dict.GetPhrase("ImportArchiveError");
         }
     }
 }

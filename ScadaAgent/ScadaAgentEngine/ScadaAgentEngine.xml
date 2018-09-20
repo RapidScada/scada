@@ -336,11 +336,6 @@
             Получить или установить объект для синхронизации доступа к экземпляру системы
             </summary>
         </member>
-        <member name="M:Scada.Agent.Engine.ScadaInstance.GetServiceDir(Scada.Agent.ServiceApp,System.Nullable{System.Char})">
-            <summary>
-            Получить директорию сервиса
-            </summary>
-        </member>
         <member name="M:Scada.Agent.Engine.ScadaInstance.GetServiceStatusFile(Scada.Agent.ServiceApp)">
             <summary>
             Получить имя файла статуса сервиса
@@ -354,21 +349,6 @@
         <member name="M:Scada.Agent.Engine.ScadaInstance.GetConfigPaths(Scada.Agent.ConfigParts)">
             <summary>
             Получить относительные пути конфигурации, соответствующие заданным частям
-            </summary>
-        </member>
-        <member name="M:Scada.Agent.Engine.ScadaInstance.GetConfigPartDir(Scada.Agent.ConfigParts,System.Nullable{System.Char})">
-            <summary>
-            Получить директорию части конфигурации
-            </summary>
-        </member>
-        <member name="M:Scada.Agent.Engine.ScadaInstance.GetAppFolderDir(Scada.Agent.AppFolder,System.Nullable{System.Char},System.Boolean)">
-            <summary>
-            Получить директорию папки приложения
-            </summary>
-        </member>
-        <member name="M:Scada.Agent.Engine.ScadaInstance.GetAppFolderDir(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.Char)">
-            <summary>
-            Получить директорию папки приложения
             </summary>
         </member>
         <member name="M:Scada.Agent.Engine.ScadaInstance.PrepareIgnoredPaths(System.Collections.Generic.ICollection{Scada.Agent.RelPath})">
