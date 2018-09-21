@@ -556,6 +556,15 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Saves the configuration database.
+        /// </summary>
+        private void SaveConfigBase()
+        {
+            if (!project.ConfigBase.Save(out string errMsg))
+                appData.ProcError(errMsg);
+        }
+
+        /// <summary>
         /// Save all open forms.
         /// </summary>
         private void SaveAll()
@@ -565,6 +574,8 @@ namespace Scada.Admin.App.Forms
                 if (form is IChildForm childForm && childForm.ChildFormTag.Modified)
                     childForm.Save();
             }
+
+            SaveConfigBase();
         }
 
 
@@ -836,6 +847,7 @@ namespace Scada.Admin.App.Forms
                 {
                     TreeNode baseNode = RootNode.FindFirst(AppNodeType.Base);
                     CloseChildForms(baseNode);
+                    SaveConfigBase();
                 }
 
                 if (frmDownloadConfig.InterfaceModified)

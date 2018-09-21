@@ -57,6 +57,7 @@ namespace Scada.Admin.Project
             PrimaryKey = primaryKey;
             Title = title;
             Items = new SortedDictionary<int, T>();
+            Modified = false;
         }
 
 
@@ -124,6 +125,11 @@ namespace Scada.Admin.Project
         /// </summary>
         public SortedDictionary<int, T> Items { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether the table was modified.
+        /// </summary>
+        public bool Modified { get; set; }
+
 
         /// <summary>
         /// Gets the primary key value of the item.
@@ -159,6 +165,8 @@ namespace Scada.Admin.Project
             try
             {
                 Items.Clear();
+                Modified = false;
+
                 List<T> list;
                 XmlSerializer serializer = new XmlSerializer(typeof(List<T>));
 
@@ -174,7 +182,7 @@ namespace Scada.Admin.Project
             }
             catch (Exception ex)
             {
-                throw new ScadaException(string.Format(AdminPhrases.LoadBaseTableError, Title, ex.Message), ex);
+                throw new ScadaException(string.Format(AdminPhrases.LoadBaseTableError, Title), ex);
             }
         }
 
@@ -193,14 +201,9 @@ namespace Scada.Admin.Project
                 errMsg = "";
                 return true;
             }
-            catch (ScadaException ex)
-            {
-                errMsg = ex.Message;
-                return false;
-            }
             catch (Exception ex)
             {
-                errMsg = string.Format(AdminPhrases.LoadBaseTableError, Title, ex.Message);
+                errMsg = string.Format(AdminPhrases.LoadBaseTableError, Title) + ":" + ex.Message;
                 return false;
             }
         }
@@ -220,10 +223,12 @@ namespace Scada.Admin.Project
                 {
                     serializer.Serialize(writer, list);
                 }
+
+                Modified = false;
             }
             catch (Exception ex)
             {
-                throw new ScadaException(string.Format(AdminPhrases.SaveBaseTableError, Title, ex.Message), ex);
+                throw new ScadaException(string.Format(AdminPhrases.SaveBaseTableError, Title), ex);
             }
         }
 
@@ -240,14 +245,9 @@ namespace Scada.Admin.Project
                 errMsg = "";
                 return true;
             }
-            catch (ScadaException ex)
-            {
-                errMsg = ex.Message;
-                return false;
-            }
             catch (Exception ex)
             {
-                errMsg = string.Format(AdminPhrases.SaveBaseTableError, Title, ex.Message);
+                errMsg = string.Format(AdminPhrases.SaveBaseTableError, Title) + ":" + ex.Message;
                 return false;
             }
         }

@@ -204,5 +204,30 @@ namespace Scada.Admin.Project
                 return false;
             }
         }
+
+        /// <summary>
+        /// Saves all the modified tables of the configuration database.
+        /// </summary>
+        public bool Save(out string errMsg)
+        {
+            try
+            {
+                Directory.CreateDirectory(BaseDir);
+
+                foreach (IBaseTable baseTable in AllTables)
+                {
+                    string fileName = Path.Combine(BaseDir, baseTable.FileName);
+                    baseTable.Save(fileName);
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = AdminPhrases.SaveConfigBaseError + ": " + ex.Message;
+                return false;
+            }
+        }
     }
 }

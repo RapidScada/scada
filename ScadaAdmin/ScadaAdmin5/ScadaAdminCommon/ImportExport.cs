@@ -102,15 +102,30 @@ namespace Scada.Admin
         /// </summary>
         private void ImportBaseTable(DataTable srcTable, IBaseTable destTable)
         {
-            if (srcTable.Columns.Contains(destTable.PrimaryKey))
+            // add primary keys if needed
+            if (!srcTable.Columns.Contains(destTable.PrimaryKey))
             {
-                PropertyDescriptorCollection destProps = TypeDescriptor.GetProperties(destTable.ItemType);
+                srcTable.Columns.Add(destTable.PrimaryKey, typeof(int));
+                srcTable.BeginLoadData();
+                int colInd = srcTable.Columns.Count - 1;
+                int id = 1;
 
-                foreach (DataRowView srcRowView in srcTable.DefaultView)
+                foreach (DataRow row in srcTable.Rows)
                 {
-                    object destItem = TableConverter.CreateItem(destTable.ItemType, srcRowView.Row, destProps);
-                    destTable.AddObject(destItem);
+                    row[colInd] = id++;
                 }
+
+                srcTable.EndLoadData();
+                srcTable.AcceptChanges();
+            }
+
+            // merge data
+            PropertyDescriptorCollection destProps = TypeDescriptor.GetProperties(destTable.ItemType);
+
+            foreach (DataRowView srcRowView in srcTable.DefaultView)
+            {
+                object destItem = TableConverter.CreateItem(destTable.ItemType, srcRowView.Row, destProps);
+                destTable.AddObject(destItem);
             }
         }
 
@@ -217,10 +232,9 @@ namespace Scada.Admin
             }
             finally
             {
-                // TODO: uncomment
                 // delete the extracted files
-                //if (Directory.Exists(extractDir))
-                //    Directory.Delete(extractDir, true);
+                if (Directory.Exists(extractDir))
+                    Directory.Delete(extractDir, true);
             }
         }
     }

@@ -309,6 +309,7 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ConfigBase">
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+    <Phrase key="SaveConfigBaseError">Error saving the configuration database</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.Instance">
     <Phrase key="CreateInstanceFilesError">Error creating instance project files</Phrase>
@@ -320,8 +321,8 @@
     <Phrase key="LoadProjectError">Error loading project</Phrase>
     <Phrase key="SaveProjectError">Error saving project</Phrase>
     <Phrase key="LoadProjectDescrError">Error loading project description</Phrase>
-    <Phrase key="LoadBaseTableError">Error loading the {0} table: {1}</Phrase>
-    <Phrase key="SaveBaseTableError">Error saving the {0} table: {1}</Phrase>
+    <Phrase key="LoadBaseTableError">Error loading the {0} table</Phrase>
+    <Phrase key="SaveBaseTableError">Error saving the {0} table</Phrase>
     <Phrase key="IncorrectProjectName">Incorrect project name.</Phrase>
     <Phrase key="RenameProjectError">Error renaming project</Phrase>
     <Phrase key="ProjectDirectoryExists">The project directory already exists.</Phrase>

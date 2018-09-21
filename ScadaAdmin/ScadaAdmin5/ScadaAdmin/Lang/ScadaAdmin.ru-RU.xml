@@ -309,6 +309,7 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.ConfigBase">
     <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
+    <Phrase key="SaveConfigBaseError">Ошибка при сохранении базы конфигурации</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Project.Instance">
     <Phrase key="CreateInstanceFilesError">Ошибка при создании проектных файлов экземпляра</Phrase>
@@ -320,8 +321,8 @@
     <Phrase key="LoadProjectError">Ошибка при загрузке проекта</Phrase>
     <Phrase key="SaveProjectError">Ошибка при сохранении проекта</Phrase>
     <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
-    <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}: {1}</Phrase>
-    <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}: {1}</Phrase>
+    <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}</Phrase>
+    <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}</Phrase>
     <Phrase key="IncorrectProjectName">Некорректное наименование проекта.</Phrase>
     <Phrase key="RenameProjectError">Ошибка при переименовании проекта</Phrase>
     <Phrase key="ProjectDirectoryExists">Директория проекта уже существует.</Phrase>

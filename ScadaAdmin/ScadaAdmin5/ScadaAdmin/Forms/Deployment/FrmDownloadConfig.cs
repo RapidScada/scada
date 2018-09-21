@@ -139,8 +139,7 @@ namespace Scada.Admin.App.Forms.Deployment
                 importExport.ImportArchive(configFileName, project, instance, out ConfigParts foundConfigParts);
                 FileInfo configFileInfo = new FileInfo(configFileName);
                 long configFileSize = configFileInfo.Length;
-                // TODO: uncomment
-                //configFileInfo.Delete();
+                configFileInfo.Delete();
 
                 BaseModified = foundConfigParts.HasFlag(ConfigParts.Base);
                 InterfaceModified = foundConfigParts.HasFlag(ConfigParts.Interface);

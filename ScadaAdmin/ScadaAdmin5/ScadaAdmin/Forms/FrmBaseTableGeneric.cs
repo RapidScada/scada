@@ -79,6 +79,8 @@ namespace Scada.Admin.App.Forms
             ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
+
+            ChildFormTag.Modified = baseTable.Modified;
         }
 
         /// <summary>
@@ -87,6 +89,7 @@ namespace Scada.Admin.App.Forms
         private void RetrieveChanges()
         {
             baseTable.RetrieveChanges(dataTable);
+            baseTable.Modified = true;
             ChildFormTag.Modified = true;
         }
 
