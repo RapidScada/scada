@@ -540,6 +540,9 @@ namespace Scada.Data.Tables
 
             try
             {
+                stream = ioStream ?? new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                writer = new BinaryWriter(stream, Encoding.Default);
+
                 // запись заголовка
                 PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
                 byte fieldCnt = (byte)Math.Min(props.Count, byte.MaxValue);

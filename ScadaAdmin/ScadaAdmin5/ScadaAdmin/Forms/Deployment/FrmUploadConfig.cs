@@ -123,6 +123,8 @@ namespace Scada.Admin.App.Forms.Deployment
         /// </summary>
         private bool UploadConfig(DeploymentProfile profile)
         {
+            string configFileName = GetTempFileName();
+
             try
             {
                 Cursor = Cursors.WaitCursor;
@@ -132,18 +134,16 @@ namespace Scada.Admin.App.Forms.Deployment
                 connSettings.ScadaInstance = instance.Name;
 
                 ImportExport importExport = new ImportExport();
-                string configFileName = GetTempFileName();
                 importExport.ExportToArchive(configFileName, project, instance, profile.UploadSettings);
                 FileInfo configFileInfo = new FileInfo(configFileName);
                 long configFileSize = configFileInfo.Length;
 
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
                 agentClient.UploadConfig(configFileName, profile.UploadSettings.ToConfigOpions());
-                configFileInfo.Delete();
 
                 Cursor = Cursors.Default;
                 ScadaUiUtils.ShowInfo(string.Format(AppPhrases.UploadConfigComplete,
-                    (int)(DateTime.UtcNow - t0).TotalSeconds, configFileSize));
+                    Math.Round((DateTime.UtcNow - t0).TotalSeconds), configFileSize));
                 return true;
             }
             catch (Exception ex)
@@ -151,6 +151,12 @@ namespace Scada.Admin.App.Forms.Deployment
                 Cursor = Cursors.Default;
                 appData.ProcError(ex, AppPhrases.UploadConfigError);
                 return false;
+            }
+            finally
+            {
+                // delete temporary file
+                try { File.Delete(configFileName); }
+                catch { }
             }
         }
 

@@ -72,7 +72,7 @@ namespace Scada.Agent.Engine
         private class PathDict : Dictionary<ConfigParts, Dictionary<AppFolder, PathList>>
         {
             /// <summary>
-            /// Получить или создать список путей
+            /// Получить или добавить новый список путей
             /// </summary>
             public PathList GetOrAdd(ConfigParts configPart, AppFolder appFolder)
             {
@@ -103,8 +103,8 @@ namespace Scada.Agent.Engine
         /// <summary>
         /// Все части конфигурации в виде массива
         /// </summary>
-        private static ConfigParts[] AllConfigParts = { ConfigParts.Base, ConfigParts.Interface,
-            ConfigParts.Server, ConfigParts.Comm, ConfigParts.Web };
+        private static readonly ConfigParts[] AllConfigParts = { ConfigParts.Base,
+            ConfigParts.Interface, ConfigParts.Server, ConfigParts.Comm, ConfigParts.Web };
 
         private ILog log; // журнал приложения
         private int validateUserAttemptNum; // номер попытки проверки пользователя
@@ -276,9 +276,8 @@ namespace Scada.Agent.Engine
                     if (!ignoredPaths.Files.Contains(fileInfo.FullName) &&
                         !fileInfo.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase))
                     {
-                        string entryName = fileInfo.FullName.Substring(srcDirLen).Replace('\\', '/');
-                        zipArchive.CreateEntryFromFile(fileInfo.FullName, entryPrefix + entryName,
-                            CompressionLevel.Fastest);
+                        string entryName = entryPrefix + fileInfo.FullName.Substring(srcDirLen).Replace('\\', '/');
+                        zipArchive.CreateEntryFromFile(fileInfo.FullName, entryName, CompressionLevel.Fastest);
                     }
                 }
             }

@@ -298,7 +298,7 @@
         </member>
         <member name="M:Scada.Agent.Engine.ScadaInstance.PathDict.GetOrAdd(Scada.Agent.ConfigParts,Scada.Agent.AppFolder)">
             <summary>
-            Получить или создать список путей
+            Получить или добавить новый список путей
             </summary>
         </member>
         <member name="F:Scada.Agent.Engine.ScadaInstance.MaxValidateUserAttempts">

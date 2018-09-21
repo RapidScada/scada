@@ -123,6 +123,8 @@ namespace Scada.Admin.App.Forms.Deployment
         /// </summary>
         private bool DownloadConfig(DeploymentProfile profile)
         {
+            string configFileName = GetTempFileName();
+
             try
             {
                 Cursor = Cursors.WaitCursor;
@@ -132,14 +134,12 @@ namespace Scada.Admin.App.Forms.Deployment
                 connSettings.ScadaInstance = instance.Name;
 
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
-                string configFileName = GetTempFileName();
                 agentClient.DownloadConfig(configFileName, profile.DownloadSettings.ToConfigOpions());
 
                 ImportExport importExport = new ImportExport();
                 importExport.ImportArchive(configFileName, project, instance, out ConfigParts foundConfigParts);
                 FileInfo configFileInfo = new FileInfo(configFileName);
                 long configFileSize = configFileInfo.Length;
-                configFileInfo.Delete();
 
                 BaseModified = foundConfigParts.HasFlag(ConfigParts.Base);
                 InterfaceModified = foundConfigParts.HasFlag(ConfigParts.Interface);
@@ -148,7 +148,7 @@ namespace Scada.Admin.App.Forms.Deployment
 
                 Cursor = Cursors.Default;
                 ScadaUiUtils.ShowInfo(string.Format(AppPhrases.DownloadConfigComplete,
-                    (int)(DateTime.UtcNow - t0).TotalSeconds, configFileSize));
+                    Math.Round((DateTime.UtcNow - t0).TotalSeconds), configFileSize));
                 return true;
             }
             catch (Exception ex)
@@ -156,6 +156,12 @@ namespace Scada.Admin.App.Forms.Deployment
                 Cursor = Cursors.Default;
                 appData.ProcError(ex, AppPhrases.DownloadConfigError);
                 return false;
+            }
+            finally
+            {
+                // delete temporary file
+                try { File.Delete(configFileName); }
+                catch { }
             }
         }
 

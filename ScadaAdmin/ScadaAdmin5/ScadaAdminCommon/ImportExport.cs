@@ -130,6 +130,26 @@ namespace Scada.Admin
             }
         }
 
+        /// <summary>
+        /// Adds the directory content to the archive.
+        /// </summary>
+        private void PackDirectory(ZipArchive zipArchive, string srcDir, string entryPrefix, bool ignoreRegKeys)
+        {
+            DirectoryInfo srcDirInfo = new DirectoryInfo(srcDir);
+            int srcDirLen = srcDir.Length;
+
+            foreach (FileInfo fileInfo in srcDirInfo.GetFiles("*", SearchOption.AllDirectories))
+            {
+                if (!(fileInfo.Extension.Equals(".bak", StringComparison.OrdinalIgnoreCase) ||
+                    ignoreRegKeys && (fileInfo.Name.EndsWith("_Reg.xml", StringComparison.OrdinalIgnoreCase) ||
+                    fileInfo.Name.Equals("CompCode.txt", StringComparison.OrdinalIgnoreCase))))
+                {
+                    string entryName = entryPrefix + fileInfo.FullName.Substring(srcDirLen).Replace('\\', '/');
+                    zipArchive.CreateEntryFromFile(fileInfo.FullName, entryName, CompressionLevel.Fastest);
+                }
+            }
+        }
+
 
         /// <summary>
         /// Imports the configuration from the specified archive.
@@ -259,8 +279,9 @@ namespace Scada.Admin
             {
                 fileStream = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
                 zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
+                bool ignoreRegKeys = transferSettings.IgnoreRegKeys;
 
-                //
+                // add the configuration database to the archive
                 if (transferSettings.IncludeBase)
                 {
                     foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
@@ -277,16 +298,38 @@ namespace Scada.Admin
                     }
                 }
 
-                //
+                // add the interface files to the archive
                 if (transferSettings.IncludeInterface)
                 {
-
+                    PackDirectory(zipArchive, project.Interface.InterfaceDir, 
+                        DirectoryBuilder.GetDirectory(ConfigParts.Interface, '/'), ignoreRegKeys);
                 }
 
-                //
+                // add the Server settings to the archive
                 if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
+                    PackDirectory(zipArchive, instance.ServerApp.AppDir,
+                        DirectoryBuilder.GetDirectory(ConfigParts.Server, '/'), ignoreRegKeys);
+                }
 
+                // add the Communicator settings to the archive
+                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                {
+                    PackDirectory(zipArchive, instance.CommApp.AppDir,
+                        DirectoryBuilder.GetDirectory(ConfigParts.Comm, '/'), ignoreRegKeys);
+                }
+
+                // add the Webstation settings to the archive
+                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                {
+                    PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "config"),
+                        DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Config, '/'), ignoreRegKeys);
+
+                    if (!transferSettings.IgnoreWebStorage)
+                    {
+                        PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "storage"),
+                            DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Storage, '/'), ignoreRegKeys);
+                    }
                 }
             }
             catch (Exception ex)
