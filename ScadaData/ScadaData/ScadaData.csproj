@@ -91,6 +91,9 @@
     <Compile Include="Data\Models\EntityRights.cs" />
     <Compile Include="Data\Models\UiObjProps.cs" />
     <Compile Include="Data\Configuration\ConfDAO.cs" />
+    <Compile Include="Data\Tables\BaseTable.cs" />
+    <Compile Include="Data\Tables\IBaseTable.cs" />
+    <Compile Include="Data\Tables\BaseTableConverter.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Tables\BaseAdapter.cs" />
     <Compile Include="Data\Configuration\BaseValues.cs" />

@@ -374,5 +374,13 @@ namespace Scada
                 return DateTime.MinValue;
             }
         }
+
+        /// <summary>
+        /// Identifies a nullable type.
+        /// </summary>
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
     }
 }
