@@ -24,6 +24,7 @@
  */
 
 using Scada.Data.Entities;
+using Scada.Data.Tables;
 using System;
 using System.IO;
 
@@ -189,7 +190,17 @@ namespace Scada.Admin.Project
                         string fileName = Path.Combine(BaseDir, baseTable.FileName);
 
                         if (File.Exists(fileName))
-                            baseTable.Load(fileName);
+                        {
+                            try
+                            {
+                                baseTable.Load(fileName);
+                            }
+                            catch (Exception ex)
+                            {
+                                throw new ScadaException(string.Format(
+                                    AdminPhrases.LoadBaseTableError, baseTable.Title), ex);
+                            }
+                        }
                     }
 
                     Loaded = true;
@@ -216,8 +227,19 @@ namespace Scada.Admin.Project
 
                 foreach (IBaseTable baseTable in AllTables)
                 {
-                    string fileName = Path.Combine(BaseDir, baseTable.FileName);
-                    baseTable.Save(fileName);
+                    if (baseTable.Modified)
+                    {
+                        try
+                        {
+                            string fileName = Path.Combine(BaseDir, baseTable.FileName);
+                            baseTable.Save(fileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            throw new ScadaException(string.Format(
+                                AdminPhrases.SaveBaseTableError, baseTable.Title), ex);
+                        }
+                    }
                 }
 
                 errMsg = "";
@@ -226,6 +248,26 @@ namespace Scada.Admin.Project
             catch (Exception ex)
             {
                 errMsg = AdminPhrases.SaveConfigBaseError + ": " + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves the specified table of the configuration database.
+        /// </summary>
+        public bool SaveTable<T>(BaseTable<T> baseTable, out string errMsg)
+        {
+            try
+            {
+                Directory.CreateDirectory(BaseDir);
+                string fileName = Path.Combine(BaseDir, baseTable.FileName);
+                baseTable.Save(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = string.Format(AdminPhrases.SaveBaseTableError, baseTable.Title) + ":" + ex.Message;
                 return false;
             }
         }

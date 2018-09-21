@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Data.Tables;
 using System;
 using System.Data;
 using WinControl;
@@ -98,7 +99,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         public void Save()
         {
-            if (baseTable.Save(project.ConfigBase.BaseDir, out string errMsg))
+            if (project.ConfigBase.SaveTable(baseTable, out string errMsg))
                 ChildFormTag.Modified = false;
             else
                 appData.ProcError(errMsg);

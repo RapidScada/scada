@@ -67,14 +67,6 @@ namespace Scada.Admin
         }
 
         /// <summary>
-        /// Identifies a nullable type.
-        /// </summary>
-        public static bool IsNullable(this Type type)
-        {
-            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
-
-        /// <summary>
         /// Validates the name of a project item.
         /// </summary>
         public static bool NameIsValid(string name)

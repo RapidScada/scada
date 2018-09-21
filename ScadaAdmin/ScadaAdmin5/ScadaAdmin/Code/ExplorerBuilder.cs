@@ -26,6 +26,7 @@
 using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
 using Scada.Comm.Shell.Code;
+using Scada.Data.Tables;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;

@@ -25,6 +25,7 @@
 
 using Scada.Admin.Project;
 using Scada.Data.Entities;
+using Scada.Data.Tables;
 using System;
 using System.Data;
 using System.Windows.Forms;

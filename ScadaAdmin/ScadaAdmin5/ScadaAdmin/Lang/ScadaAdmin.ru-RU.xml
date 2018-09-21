@@ -165,6 +165,11 @@
     <Phrase key="DownloadConfigComplete">Скачивание завершено успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
+    <Phrase key="NothingToUpload">Конфигурация для скачивания не выбрана.</Phrase>
+    <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
+    <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
@@ -338,5 +343,6 @@
   <Dictionary key="Scada.Admin.ImportExport">
     <Phrase key="ImportBaseTableError">Ошибка при импорте таблицы &quot;{0}&quot;</Phrase>
     <Phrase key="ImportArchiveError">Ошибка при импорте архива конфигурации</Phrase>
+    <Phrase key="ExportToArchiveError">Ошибка при экспорте конфигурации из архива</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using Scada.Agent;
 using Scada.Data.Tables;
@@ -131,7 +132,7 @@ namespace Scada.Admin
 
 
         /// <summary>
-        /// Imports the instance configuration from the specified archive.
+        /// Imports the configuration from the specified archive.
         /// </summary>
         public void ImportArchive(string srcFileName, ScadaProject project, Instance instance, 
             out ConfigParts foundConfigParts)
@@ -235,6 +236,67 @@ namespace Scada.Admin
                 // delete the extracted files
                 if (Directory.Exists(extractDir))
                     Directory.Delete(extractDir, true);
+            }
+        }
+
+        /// <summary>
+        /// Exports the configuration to the specified archive.
+        /// </summary>
+        public void ExportToArchive(string destFileName, ScadaProject project, Instance instance, 
+            TransferSettings transferSettings)
+        {
+            if (destFileName == null)
+                throw new ArgumentNullException("destFileName");
+            if (project == null)
+                throw new ArgumentNullException("project");
+            if (instance == null)
+                throw new ArgumentNullException("instance");
+
+            FileStream fileStream = null;
+            ZipArchive zipArchive = null;
+
+            try
+            {
+                fileStream = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
+                zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
+
+                //
+                if (transferSettings.IncludeBase)
+                {
+                    foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
+                    {
+                        string entryName = "BaseDAT/" + srcTable.Name.ToLowerInvariant() + ".dat";
+                        ZipArchiveEntry tableEntry = zipArchive.CreateEntry(entryName, CompressionLevel.Fastest);
+
+                        using (Stream entryStream = tableEntry.Open())
+                        {
+                            // convert the table to DAT format
+                            BaseAdapter baseAdapter = new BaseAdapter() { Stream = entryStream };
+                            baseAdapter.Update(srcTable);
+                        }
+                    }
+                }
+
+                //
+                if (transferSettings.IncludeInterface)
+                {
+
+                }
+
+                //
+                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new ScadaException(AdminPhrases.ExportToArchiveError, ex);
+            }
+            finally
+            {
+                zipArchive?.Dispose();
+                fileStream?.Dispose();
             }
         }
     }

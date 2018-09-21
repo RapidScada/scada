@@ -121,7 +121,7 @@ namespace Scada.Admin.App.Forms.Deployment
         /// <summary>
         /// Downloads the configuration.
         /// </summary>
-        private bool DownloadConfig(DeploymentProfile profile, string scadaInstance)
+        private bool DownloadConfig(DeploymentProfile profile)
         {
             try
             {
@@ -129,7 +129,7 @@ namespace Scada.Admin.App.Forms.Deployment
                 DateTime t0 = DateTime.UtcNow;
 
                 ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
-                connSettings.ScadaInstance = scadaInstance;
+                connSettings.ScadaInstance = instance.Name;
 
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
                 string configFileName = GetTempFileName();
@@ -215,7 +215,7 @@ namespace Scada.Admin.App.Forms.Deployment
 
                 // download
                 instance.DeploymentProfile = profile.Name;
-                if (DownloadConfig(profile, instance.Name))
+                if (DownloadConfig(profile))
                     DialogResult = DialogResult.OK;
             }
         }

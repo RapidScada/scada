@@ -165,6 +165,11 @@
     <Phrase key="DownloadConfigComplete">Download completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="DownloadConfigError">Error downloading configuration</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
+    <Phrase key="NothingToUpload">Configuration for upload is not selected.</Phrase>
+    <Phrase key="UploadConfigComplete">Upload completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
+    <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
@@ -338,5 +343,6 @@
   <Dictionary key="Scada.Admin.ImportExport">
     <Phrase key="ImportBaseTableError">Error importing the &quot;{0}&quot; table</Phrase>
     <Phrase key="ImportArchiveError">Error importing configuration archive</Phrase>
+    <Phrase key="ExportToArchiveError">Error exporting configuration to archive</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 
 namespace Scada.Data.Tables
 {
@@ -42,6 +43,11 @@ namespace Scada.Data.Tables
         /// Gets the primary key of the table.
         /// </summary>
         string PrimaryKey { get; }
+        
+        /// <summary>
+        /// Gets or sets the table title.
+        /// </summary>
+        string Title { get; set; }
 
         /// <summary>
         /// Gets the short file name of the table.
@@ -52,12 +58,23 @@ namespace Scada.Data.Tables
         /// Gets the type of the table items.
         /// </summary>
         Type ItemType { get; }
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the table was modified.
+        /// </summary>
+        bool Modified { get; set; }
 
 
         /// <summary>
         /// Adds or updates an item in the table.
         /// </summary>
         void AddObject(object obj);
+
+        /// <summary>
+        /// Returns an enumerable collection of the table items.
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<object> EnumerateItems();
 
         /// <summary>
         /// Loads the table from the specified file.

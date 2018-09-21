@@ -530,7 +530,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Записать таблицу baseTable в файл или поток
         /// </summary>
-        public void Update<T>(BaseTable<T> baseTable)
+        public void Update(IBaseTable baseTable)
         {
             if (baseTable == null)
                 throw new ArgumentNullException("baseTable");
@@ -541,7 +541,7 @@ namespace Scada.Data.Tables
             try
             {
                 // запись заголовка
-                PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+                PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
                 byte fieldCnt = (byte)Math.Min(props.Count, byte.MaxValue);
                 writer.Write(fieldCnt);
                 writer.Write((ushort)0);
@@ -558,7 +558,7 @@ namespace Scada.Data.Tables
 
                         if (prop.PropertyType == typeof(string))
                         {
-                            foreach (T item in baseTable.Items.Values)
+                            foreach (object item in baseTable.EnumerateItems())
                             {
                                 object val = prop.GetValue(item);
                                 maxStrLenArr[i] = Math.Max(maxStrLenArr[i], val == null ? 0 : val.ToString().Length);
@@ -583,7 +583,7 @@ namespace Scada.Data.Tables
                     byte[] rowBuf = new byte[recSize];
                     rowBuf[0] = rowBuf[1] = 0;
 
-                    foreach (T item in baseTable.Items.Values)
+                    foreach (object item in baseTable.EnumerateItems())
                     {
                         int bufInd = 2;
 
@@ -604,6 +604,14 @@ namespace Scada.Data.Tables
                     stream?.Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Записать таблицу baseTable в файл или поток
+        /// </summary>
+        public void Update<T>(BaseTable<T> baseTable)
+        {
+            Update((IBaseTable)baseTable);
         }
     }
 }

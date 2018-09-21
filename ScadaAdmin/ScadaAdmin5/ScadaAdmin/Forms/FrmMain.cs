@@ -883,7 +883,7 @@ namespace Scada.Admin.App.Forms
                 // open an upload configuration form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;
-                FrmUploadConfig frmUploadConfig = new FrmUploadConfig(project.DeploymentSettings, instance);
+                FrmUploadConfig frmUploadConfig = new FrmUploadConfig(appData, project, instance);
                 frmUploadConfig.ShowDialog();
 
                 // save project settings in case of the profile change

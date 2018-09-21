@@ -158,6 +158,17 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Returns an enumerable collection of the table items.
+        /// </summary>
+        public IEnumerable<object> EnumerateItems()
+        {
+            foreach (T item in Items.Values)
+            {
+                yield return item;
+            }
+        }
+
+        /// <summary>
         /// Loads the table from the specified file.
         /// </summary>
         public void Load(string fileName)
