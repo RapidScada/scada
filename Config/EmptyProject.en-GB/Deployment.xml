@@ -17,7 +17,7 @@
       <IncludeComm>true</IncludeComm>
       <IncludeWeb>true</IncludeWeb>
       <IgnoreRegKeys>false</IgnoreRegKeys>
-      <IgnoreWebStorage>false</IgnoreWebStorage>
+      <IgnoreWebStorage>true</IgnoreWebStorage>
     </DownloadSettings>
     <UploadSettings>
       <IncludeBase>true</IncludeBase>
@@ -25,8 +25,8 @@
       <IncludeServer>true</IncludeServer>
       <IncludeComm>true</IncludeComm>
       <IncludeWeb>true</IncludeWeb>
-      <IgnoreRegKeys>true</IgnoreRegKeys>
-      <IgnoreWebStorage>false</IgnoreWebStorage>
+      <IgnoreRegKeys>false</IgnoreRegKeys>
+      <IgnoreWebStorage>true</IgnoreWebStorage>
     </UploadSettings>
   </DeploymentProfile>
 </DeploymentSettings>

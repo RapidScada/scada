@@ -186,7 +186,7 @@
     <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
-    <Phrase key="this">Состояние экземпляра</Phrase>
+    <Phrase key="this">Статус экземпляра</Phrase>
     <Phrase key="gbAction">Действия</Phrase>
     <Phrase key="btnConnect">Соединиться</Phrase>
     <Phrase key="btnDisconnect">Разъединиться</Phrase>
