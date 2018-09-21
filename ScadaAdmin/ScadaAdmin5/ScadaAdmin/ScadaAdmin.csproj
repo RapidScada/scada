@@ -210,6 +210,9 @@
     <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
       <DependentUpon>FrmConnSettings.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmInstanceStatus.resx">
+      <DependentUpon>FrmInstanceStatus.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmUploadConfig.resx">
       <DependentUpon>FrmUploadConfig.cs</DependentUpon>
     </EmbeddedResource>

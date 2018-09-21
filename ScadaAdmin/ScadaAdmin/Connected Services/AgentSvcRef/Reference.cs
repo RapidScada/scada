@@ -21,7 +21,7 @@ namespace ScadaAdmin.AgentSvcRef {
         Server = 0,
         
         [System.Runtime.Serialization.EnumMemberAttribute()]
-        Communicator = 1,
+        Comm = 1,
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]

@@ -126,7 +126,7 @@ namespace Scada.Agent
             {
                 case ServiceApp.Server:
                     return GetDirectory(ConfigParts.Server);
-                case ServiceApp.Communicator:
+                case ServiceApp.Comm:
                     return GetDirectory(ConfigParts.Comm);
                 default:
                     throw new ArgumentException("Unknown service application.");

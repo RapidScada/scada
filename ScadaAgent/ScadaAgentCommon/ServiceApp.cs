@@ -39,6 +39,6 @@ namespace Scada.Agent
         /// <summary>
         /// Коммуникатор
         /// </summary>
-        Communicator
+        Comm
     }
 }

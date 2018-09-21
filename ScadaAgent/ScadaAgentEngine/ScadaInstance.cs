@@ -155,7 +155,7 @@ namespace Scada.Agent.Engine
             {
                 case ServiceApp.Server:
                     return "ScadaServerSvc.txt";
-                case ServiceApp.Communicator:
+                case ServiceApp.Comm:
                     return "ScadaCommSvc.txt";
                 default:
                     throw new ArgumentException("Unknown service.");

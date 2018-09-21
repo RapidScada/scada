@@ -61,6 +61,15 @@ namespace Scada.Admin.App.Code
         public static string DownloadConfigComplete { get; private set; }
         public static string DownloadConfigError { get; private set; }
 
+        // Scada.Admin.App.Forms.Deployment.FrmInstanceStatus
+        public static string NormalSvcStatus { get; private set; }
+        public static string StoppedSvcStatus { get; private set; }
+        public static string ErrorSvcStatus { get; private set; }
+        public static string UndefinedSvcStatus { get; private set; }
+        public static string ServiceRestarted { get; private set; }
+        public static string UnableRestartService { get; private set; }
+        public static string ServiceRestartError { get; private set; }
+
         // Scada.Admin.App.Forms.Deployment.FrmUploadConfig
         public static string NothingToUpload { get; private set; }
         public static string UploadConfigComplete { get; private set; }
@@ -137,6 +146,15 @@ namespace Scada.Admin.App.Code
             NothingToDownload = dict.GetPhrase("NothingToDownload");
             DownloadConfigComplete = dict.GetPhrase("DownloadConfigComplete");
             DownloadConfigError = dict.GetPhrase("DownloadConfigError");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmInstanceStatus");
+            NormalSvcStatus = dict.GetPhrase("NormalSvcStatus");
+            StoppedSvcStatus = dict.GetPhrase("StoppedSvcStatus");
+            ErrorSvcStatus = dict.GetPhrase("ErrorSvcStatus");
+            UndefinedSvcStatus = dict.GetPhrase("UndefinedSvcStatus");
+            ServiceRestarted = dict.GetPhrase("ServiceRestarted");
+            UnableRestartService = dict.GetPhrase("UnableRestartService");
+            ServiceRestartError = dict.GetPhrase("ServiceRestartError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmUploadConfig");
             NothingToUpload = dict.GetPhrase("NothingToUpload");

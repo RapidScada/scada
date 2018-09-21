@@ -556,6 +556,15 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Loads the configuration database.
+        /// </summary>
+        private void LoadConfigBase()
+        {
+            if (!project.ConfigBase.Load(out string errMsg))
+                appData.ProcError(errMsg);
+        }
+
+        /// <summary>
         /// Saves the configuration database.
         /// </summary>
         private void SaveConfigBase()
@@ -826,10 +835,9 @@ namespace Scada.Admin.App.Forms
             if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
                 out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                // save all forms
+                // save and load the required data
                 SaveAll();
-
-                // load deployment settings
+                LoadConfigBase();
                 LoadDeploymentSettings();
 
                 // open a download configuration form
@@ -874,10 +882,9 @@ namespace Scada.Admin.App.Forms
             if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
                 out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                // save all forms
+                // save and load the required data
                 SaveAll();
-
-                // load deployment settings
+                LoadConfigBase();
                 LoadDeploymentSettings();
 
                 // open an upload configuration form
@@ -904,7 +911,8 @@ namespace Scada.Admin.App.Forms
                 // open an instance status form
                 Instance instance = liveInstance.Instance;
                 string profileName = instance.DeploymentProfile;
-                FrmInstanceStatus frmInstanceStatus = new FrmInstanceStatus(project.DeploymentSettings, instance);
+                FrmInstanceStatus frmInstanceStatus = 
+                    new FrmInstanceStatus(appData, project.DeploymentSettings, instance);
                 frmInstanceStatus.ShowDialog();
 
                 // save project settings in case of the profile change

@@ -100,7 +100,8 @@ namespace Scada.Agent.Connector
             Host = xmlNode.GetChildAsString("Host");
             Port = xmlNode.GetChildAsInt("Port", 10002);
             Username = xmlNode.GetChildAsString("Username", "admin");
-            Password = xmlNode.GetChildAsString("Password");
+            string encryptedPassword = xmlNode.GetChildAsString("Password");
+            Password = string.IsNullOrEmpty(encryptedPassword) ? "" : ScadaUtils.Decrypt(encryptedPassword);
             ScadaInstance = xmlNode.GetChildAsString("ScadaInstance");
             SecretKey = ScadaUtils.HexToBytes(xmlNode.GetChildAsString("SecretKey"));
         }
@@ -116,7 +117,7 @@ namespace Scada.Agent.Connector
             xmlElem.AppendElem("Host", Host);
             xmlElem.AppendElem("Port", Port);
             xmlElem.AppendElem("Username", Username);
-            xmlElem.AppendElem("Password", Password);
+            xmlElem.AppendElem("Password", ScadaUtils.Encrypt(Password));
             xmlElem.AppendElem("ScadaInstance", ScadaInstance);
             xmlElem.AppendElem("SecretKey", ScadaUtils.BytesToHex(SecretKey));
         }

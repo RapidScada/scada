@@ -384,7 +384,7 @@ namespace ScadaAdmin
 
                 if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Comm))
                 {
-                    if (client.ControlService(sessionID, ServiceApp.Communicator, ServiceCommand.Restart))
+                    if (client.ControlService(sessionID, ServiceApp.Comm, ServiceCommand.Restart))
                         writer.WriteLine(AppPhrases.CommRestarted);
                     else
                         writer.WriteLine(AppPhrases.UnableRestartComm);

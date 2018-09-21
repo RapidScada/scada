@@ -150,22 +150,36 @@ namespace Scada.Agent.Connector
 
 
         /// <summary>
-        /// Gets available parts of the configuration.
+        /// Sends the command to the service.
         /// </summary>
-        public ConfigParts GetAvailableConfig()
+        public bool ControlService(ServiceApp serviceApp, ServiceCommand command)
         {
             RestoreConnection();
-
-            if (!client.GetAvailableConfig(sessionID, out ConfigParts configParts))
-            {
-                throw new ScadaException(Localization.UseRussian ?
-                    "Не удалось получить доступные части конфигурации." :
-                    "Unable to get available parts of the configuration.");
-            }
-
+            bool result = client.ControlService(sessionID, serviceApp, command);
             RegisterActivity();
+            return result;
+        }
 
-            return configParts;
+        /// <summary>
+        /// Gets the current status of the specified service.
+        /// </summary>
+        public bool GetServiceStatus(ServiceApp serviceApp, out ServiceStatus serviceStatus)
+        {
+            RestoreConnection();
+            bool result = client.GetServiceStatus(sessionID, serviceApp, out serviceStatus);
+            RegisterActivity();
+            return result;
+        }
+
+        /// <summary>
+        /// Gets available parts of the configuration.
+        /// </summary>
+        public bool GetAvailableConfig(out ConfigParts configParts)
+        {
+            RestoreConnection();
+            bool result = client.GetAvailableConfig(sessionID, out configParts);
+            RegisterActivity();
+            return result;
         }
 
         /// <summary>

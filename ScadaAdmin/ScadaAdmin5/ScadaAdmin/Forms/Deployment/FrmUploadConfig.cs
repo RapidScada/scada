@@ -31,7 +31,6 @@ using Scada.Agent.Connector;
 using Scada.UI;
 using System;
 using System.IO;
-using System.IO.Compression;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Deployment
@@ -130,17 +129,26 @@ namespace Scada.Admin.App.Forms.Deployment
                 Cursor = Cursors.WaitCursor;
                 DateTime t0 = DateTime.UtcNow;
 
-                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
-                connSettings.ScadaInstance = instance.Name;
-
+                // prepare an archive
                 ImportExport importExport = new ImportExport();
                 importExport.ExportToArchive(configFileName, project, instance, profile.UploadSettings);
                 FileInfo configFileInfo = new FileInfo(configFileName);
                 long configFileSize = configFileInfo.Length;
 
+                // upload the configuration
+                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
+                connSettings.ScadaInstance = instance.Name;
                 AgentWcfClient agentClient = new AgentWcfClient(connSettings);
                 agentClient.UploadConfig(configFileName, profile.UploadSettings.ToConfigOpions());
 
+                // restart the services
+                if (profile.UploadSettings.IncludeServer)
+                    agentClient.ControlService(ServiceApp.Server, ServiceCommand.Restart);
+
+                if (profile.UploadSettings.IncludeComm)
+                    agentClient.ControlService(ServiceApp.Comm, ServiceCommand.Restart);
+
+                // show result
                 Cursor = Cursors.Default;
                 ScadaUiUtils.ShowInfo(string.Format(AppPhrases.UploadConfigComplete,
                     Math.Round((DateTime.UtcNow - t0).TotalSeconds), configFileSize));

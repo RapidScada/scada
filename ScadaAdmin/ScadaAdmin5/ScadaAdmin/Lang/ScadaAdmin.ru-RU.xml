@@ -145,7 +145,24 @@
     <Phrase key="EmptyNode">Пусто</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
+    <Phrase key="gbInstance">Экземпляр</Phrase>
+    <Phrase key="gbProfile">Профиль</Phrase>
+    <Phrase key="btnCreateProfile">Создать</Phrase>
+    <Phrase key="btnEditProfile">Изменить</Phrase>
+    <Phrase key="btnDeleteProfile">Удалить</Phrase>
     <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlTransferSettings">
+    <Phrase key="gbOptions">Параметры</Phrase>
+    <Phrase key="lblInclude">Включить:</Phrase>
+    <Phrase key="chkIncludeBase">База конфигурации</Phrase>
+    <Phrase key="chkIncludeInterface">Интерфейс</Phrase>
+    <Phrase key="chkIncludeServer">Сервер</Phrase>
+    <Phrase key="chkIncludeComm">Коммуникатор</Phrase>
+    <Phrase key="chkIncludeWeb">Вебстанция</Phrase>
+    <Phrase key="lblIgnore">Исключить:</Phrase>
+    <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>
+    <Phrase key="chkIgnoreWebStorage">Хранилище Вебстанции</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
     <Phrase key="this">Настройки соединения</Phrase>
@@ -161,11 +178,37 @@
     <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
+    <Phrase key="this">Скачивание конфигурации</Phrase>
+    <Phrase key="btnDownload">Скачать</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="NothingToDownload">Конфигурация для скачивания не выбрана.</Phrase>
     <Phrase key="DownloadConfigComplete">Скачивание завершено успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
+    <Phrase key="this">Состояние экземпляра</Phrase>
+    <Phrase key="gbAction">Действия</Phrase>
+    <Phrase key="btnConnect">Соединиться</Phrase>
+    <Phrase key="btnDisconnect">Разъединиться</Phrase>
+    <Phrase key="gbStatus">Статус</Phrase>
+    <Phrase key="lblServerStatus">Служба Сервера</Phrase>
+    <Phrase key="btnRestartServer">Перезапустить</Phrase>
+    <Phrase key="lblCommStatus">Служба Коммуникатора</Phrase>
+    <Phrase key="btnRestartComm">Перезапустить</Phrase>
+    <Phrase key="lblUpdateTime">Время обновления</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NormalSvcStatus">Норма</Phrase>
+    <Phrase key="StoppedSvcStatus">Остановлен</Phrase>
+    <Phrase key="ErrorSvcStatus">Ошибка</Phrase>
+    <Phrase key="UndefinedSvcStatus">Не определён</Phrase>
+    <Phrase key="ServiceRestarted">Служба перезапущена успешно.</Phrase>
+    <Phrase key="UnableRestartService">Не удалось перезапустить службу.</Phrase>
+    <Phrase key="ServiceRestartError">Ошибка при перезапуске службы</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
+    <Phrase key="this">Передача конфигурации</Phrase>
+    <Phrase key="btnUpload">Передать</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="NothingToUpload">Конфигурация для скачивания не выбрана.</Phrase>
     <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>

@@ -196,7 +196,7 @@
             Сервер
             </summary>
         </member>
-        <member name="F:Scada.Agent.ServiceApp.Communicator">
+        <member name="F:Scada.Agent.ServiceApp.Comm">
             <summary>
             Коммуникатор
             </summary>
