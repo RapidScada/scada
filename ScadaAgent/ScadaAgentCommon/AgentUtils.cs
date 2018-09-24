@@ -36,7 +36,7 @@ namespace Scada.Agent
         /// <summary>
         /// Версия Агента
         /// </summary>
-        public const string AppVersion = "5.0.0.0";
+        public const string AppVersion = "5.0.1.0";
 
         /// <summary>
         /// Проверить, что программное обеспечение работает под управлением Windows

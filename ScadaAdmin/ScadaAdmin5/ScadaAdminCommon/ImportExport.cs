@@ -121,6 +121,7 @@ namespace Scada.Admin
             }
 
             // merge data
+            destTable.Modified = true;
             PropertyDescriptorCollection destProps = TypeDescriptor.GetProperties(destTable.ItemType);
 
             foreach (DataRowView srcRowView in srcTable.DefaultView)

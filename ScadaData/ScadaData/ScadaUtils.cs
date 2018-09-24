@@ -93,13 +93,19 @@ namespace Scada
 
 
         /// <summary>
-        /// Добавить "\" к имени директории, если необходимо
+        /// Добавить слэш к имени директории, если необходимо
         /// </summary>
         public static string NormalDir(string dir)
         {
             dir = dir == null ? "" : dir.Trim();
-            if (dir.Length > 0 && !dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
+            int lastIndex = dir.Length - 1;
+
+            if (lastIndex >= 0 && !(dir[lastIndex] == Path.DirectorySeparatorChar ||
+                dir[lastIndex] == Path.AltDirectorySeparatorChar))
+            {
                 dir += Path.DirectorySeparatorChar;
+            }
+
             return dir;
         }
 
