@@ -101,8 +101,8 @@ namespace Scada.Agent.Connector
             string encryptedPassword = ScadaUtils.Encrypt(connSettings.Password, 
                 connSettings.SecretKey, CreateIV(sessionID));
 
-            if (!client.Login(sessionID, connSettings.Username, encryptedPassword, connSettings.ScadaInstance,
-                out string errMsg))
+            if (!client.Login(out string errMsg, sessionID, connSettings.Username, encryptedPassword, 
+                connSettings.ScadaInstance))
             {
                 throw new ScadaException(string.Format(Localization.UseRussian ?
                     "Не удалось войти в систему - {0}." :
@@ -166,7 +166,7 @@ namespace Scada.Agent.Connector
         public bool GetServiceStatus(ServiceApp serviceApp, out ServiceStatus serviceStatus)
         {
             RestoreConnection();
-            bool result = client.GetServiceStatus(sessionID, serviceApp, out serviceStatus);
+            bool result = client.GetServiceStatus(out serviceStatus, sessionID, serviceApp);
             RegisterActivity();
             return result;
         }
@@ -177,7 +177,7 @@ namespace Scada.Agent.Connector
         public bool GetAvailableConfig(out ConfigParts configParts)
         {
             RestoreConnection();
-            bool result = client.GetAvailableConfig(sessionID, out configParts);
+            bool result = client.GetAvailableConfig(out configParts, sessionID);
             RegisterActivity();
             return result;
         }

@@ -80,24 +80,6 @@
     <None Include="Connected Services\AgentSvcRef\item4.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.BrowseResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.CreateSessionResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.GetAvailableConfigResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.GetServiceStatusResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.LoginResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
-    <None Include="Connected Services\AgentSvcRef\Scada.Agent.Connector.AgentSvcRef.UploadConfigResponse.datasource">
-      <DependentUpon>Reference.svcmap</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Connected Services\AgentSvcRef\" />
