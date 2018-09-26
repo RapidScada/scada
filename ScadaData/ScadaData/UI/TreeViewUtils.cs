@@ -247,8 +247,10 @@ namespace Scada.UI
         /// <summary>
         /// Вставить узел в список дочерних узлов заданного родительского узла или самого дерева 
         /// после выбранного узла дерева
-        /// <remarks>Метод рекомендуется использовать, если объекты не поддерживают ITreeNode</remarks>
         /// </summary>
+        /// <remarks>
+        /// Метод рекомендуется использовать, если parentNode равен null или объекты не поддерживают ITreeNode
+        /// </remarks>
         public static void Insert(this TreeView treeView, TreeNode parentNode, TreeNode nodeToInsert, 
             IList destList, object objToInsert)
         {
