@@ -221,6 +221,9 @@ namespace Scada.Admin
                     {
                         foundConfigParts |= ConfigParts.Server;
                         MergeDirectory(srcServerDir, instance.ServerApp.AppDir);
+
+                        if (!instance.ServerApp.LoadSettings(out string errMsg))
+                            throw new ScadaException(errMsg);
                     }
                 }
 
@@ -233,6 +236,9 @@ namespace Scada.Admin
                     {
                         foundConfigParts |= ConfigParts.Comm;
                         MergeDirectory(srcCommDir, instance.CommApp.AppDir);
+
+                        if (!instance.CommApp.LoadSettings(out string errMsg))
+                            throw new ScadaException(errMsg);
                     }
                 }
 
