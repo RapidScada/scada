@@ -511,9 +511,11 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private void LoadDeploymentSettings()
         {
-            if (File.Exists(project.DeploymentSettings.FileName) && 
+            if (File.Exists(project.DeploymentSettings.FileName) &&
                 !project.DeploymentSettings.Load(out string errMsg))
+            {
                 appData.ProcError(errMsg);
+            }
         }
 
         /// <summary>
