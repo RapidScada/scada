@@ -250,6 +250,7 @@
     <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
     <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
+    <Phrase key="ItemNameDuplicated">Наименование уже используется.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="miFile">&amp;Файл</Phrase>

@@ -93,6 +93,7 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Forms.FrmItemName
         public static string ItemNameEmpty { get; private set; }
         public static string ItemNameInvalid { get; private set; }
+        public static string ItemNameDuplicated { get; private set; }
 
         // Scada.Admin.App.Forms.FrmMain
         public static string EmptyTitle { get; private set; }
@@ -179,6 +180,7 @@ namespace Scada.Admin.App.Code
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmItemName");
             ItemNameEmpty = dict.GetPhrase("ItemNameEmpty");
             ItemNameInvalid = dict.GetPhrase("ItemNameInvalid");
+            ItemNameDuplicated = dict.GetPhrase("ItemNameDuplicated");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmMain");
             EmptyTitle = dict.GetPhrase("EmptyTitle");

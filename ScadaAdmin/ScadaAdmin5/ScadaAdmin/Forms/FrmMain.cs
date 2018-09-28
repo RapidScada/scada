@@ -1291,22 +1291,29 @@ namespace Scada.Admin.App.Forms
 
                 if (frmInstanceEdit.ShowDialog() == DialogResult.OK)
                 {
-                    Instance instance = project.CreateInstance(frmInstanceEdit.InstanceName);
-                    instance.ServerApp.Enabled = frmInstanceEdit.ServerAppEnabled;
-                    instance.CommApp.Enabled = frmInstanceEdit.CommAppEnabled;
-                    instance.WebApp.Enabled = frmInstanceEdit.WebAppEnabled;
-
-                    if (instance.CreateInstanceFiles(out string errMsg))
+                    if (project.ContainsInstance(frmInstanceEdit.InstanceName))
                     {
-                        TreeNode instancesNode = selectedNode.FindClosest(AppNodeType.Instances);
-                        TreeNode instanceNode = explorerBuilder.CreateInstanceNode(instance);
-                        instanceNode.Expand();
-                        tvExplorer.Insert(instancesNode, instanceNode, project.Instances, instance);
-                        SaveProjectSettings();
+                        ScadaUiUtils.ShowError(AppPhrases.InstanceAlreadyExists);
                     }
                     else
                     {
-                        appData.ProcError(errMsg);
+                        Instance instance = project.CreateInstance(frmInstanceEdit.InstanceName);
+                        instance.ServerApp.Enabled = frmInstanceEdit.ServerAppEnabled;
+                        instance.CommApp.Enabled = frmInstanceEdit.CommAppEnabled;
+                        instance.WebApp.Enabled = frmInstanceEdit.WebAppEnabled;
+
+                        if (instance.CreateInstanceFiles(out string errMsg))
+                        {
+                            TreeNode instancesNode = selectedNode.FindClosest(AppNodeType.Instances);
+                            TreeNode instanceNode = explorerBuilder.CreateInstanceNode(instance);
+                            instanceNode.Expand();
+                            tvExplorer.Insert(instancesNode, instanceNode, project.Instances, instance);
+                            SaveProjectSettings();
+                        }
+                        else
+                        {
+                            appData.ProcError(errMsg);
+                        }
                     }
                 }
             }
@@ -1365,23 +1372,20 @@ namespace Scada.Admin.App.Forms
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 Instance instance = liveInstance.Instance;
-                FrmItemName frmItemName = new FrmItemName() { ItemName = instance.Name };
+                FrmItemName frmItemName = new FrmItemName()
+                {
+                    ItemName = instance.Name,
+                    ExistingNames = project.GetInstanceNames(true, instance.Name)
+                };
 
                 if (frmItemName.ShowDialog() == DialogResult.OK && frmItemName.Modified)
                 {
-                    if (project.ContainsInstance(frmItemName.ItemName))
-                    {
-                        ScadaUiUtils.ShowError(AppPhrases.InstanceAlreadyExists);
-                    }
-                    else
-                    {
-                        if (!instance.Rename(frmItemName.ItemName, out string errMsg))
-                            appData.ProcError(errMsg);
+                    if (!instance.Rename(frmItemName.ItemName, out string errMsg))
+                        appData.ProcError(errMsg);
 
-                        selectedNode.Text = instance.Name;
-                        UpdateChildFormHints(selectedNode);
-                        SaveProjectSettings();
-                    }
+                    selectedNode.Text = instance.Name;
+                    UpdateChildFormHints(selectedNode);
+                    SaveProjectSettings();
                 }
             }
         }

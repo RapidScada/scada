@@ -45,6 +45,8 @@ namespace Scada.Admin.App.Forms.Deployment
         public FrmConnSettings()
         {
             InitializeComponent();
+            Profile = null;
+            ExistingProfileNames = null;
         }
 
 

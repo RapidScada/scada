@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms
@@ -42,6 +43,10 @@ namespace Scada.Admin.App.Forms
         public FrmItemName()
         {
             InitializeComponent();
+
+            ItemName = "";
+            ExistingNames = null;
+            Modified = false;
         }
 
 
@@ -59,6 +64,11 @@ namespace Scada.Admin.App.Forms
                 txtName.Text = value;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the names of the existing items in lower case for uniqueness checking.
+        /// </summary>
+        public HashSet<string> ExistingNames { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the name was modified.
@@ -82,6 +92,12 @@ namespace Scada.Admin.App.Forms
             if (!AdminUtils.NameIsValid(name))
             {
                 ScadaUiUtils.ShowError(AppPhrases.ItemNameInvalid);
+                return false;
+            }
+
+            if (ExistingNames != null && ExistingNames.Contains(name.ToLowerInvariant()))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ItemNameDuplicated);
                 return false;
             }
 

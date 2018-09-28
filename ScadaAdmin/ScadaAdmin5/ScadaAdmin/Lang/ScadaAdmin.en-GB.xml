@@ -250,6 +250,7 @@
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ItemNameEmpty">The name can not be empty.</Phrase>
     <Phrase key="ItemNameInvalid">The name contains invalid characters.</Phrase>
+    <Phrase key="ItemNameDuplicated">The name is already in use.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmMain">
     <Phrase key="miFile">&amp;File</Phrase>

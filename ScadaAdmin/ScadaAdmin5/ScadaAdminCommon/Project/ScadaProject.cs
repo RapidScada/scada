@@ -343,6 +343,24 @@ namespace Scada.Admin.Project
             return false;
         }
 
+        /// <summary>
+        /// Gets the existing instance names.
+        /// </summary>
+        public HashSet<string> GetInstanceNames(bool lowerCase, string exceptName = null)
+        {
+            HashSet<string> instanceNames = new HashSet<string>();
+            exceptName = exceptName == null ? null : (lowerCase ? exceptName.ToLowerInvariant() : exceptName);
+
+            foreach (Instance instance in Instances)
+            {
+                string instanceName = lowerCase ? instance.Name.ToLowerInvariant() : instance.Name;
+                if (exceptName == null || instanceName != exceptName)
+                    instanceNames.Add(instanceName);
+            }
+
+            return instanceNames;
+        }
+
 
         /// <summary>
         /// Creates a new project with the specified parameters.
