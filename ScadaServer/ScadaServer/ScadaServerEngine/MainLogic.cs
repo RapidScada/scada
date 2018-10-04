@@ -2039,12 +2039,61 @@ namespace Scada.Server.Engine
         /// <summary>
         /// Получить пользователя по имени
         /// </summary>
+        [Obsolete]
         public User GetUser(string userName)
         {
             lock (users)
             {
                 User user;
                 return users.TryGetValue(userName.Trim().ToLowerInvariant(), out user) ? user.Clone() : null;
+            }
+        }
+
+        /// <summary>
+        /// Проверить имя и пароль пользователя, получить его роль
+        /// </summary>
+        /// <remarks>Если пароль пустой, то он не проверяется</remarks>
+        public bool CheckUser(string username, string password, out int roleID)
+        {
+            // проверка пользователя с помощью модулей
+            lock (modules)
+            {
+                foreach (ModLogic modLogic in modules)
+                {
+                    try
+                    {
+                        bool isValid = modLogic.ValidateUser(username, password, out int modRoleID, out bool handled);
+
+                        if (handled)
+                        {
+                            roleID = modRoleID;
+                            return isValid;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при при проверке имени и пароля пользователя в модуле {0}: {1}" :
+                            "Error validating user name and password in module {0}: {1}",
+                            modLogic.Name, ex.Message), Log.ActTypes.Exception);
+                    }
+                }
+            }
+
+            // проверка пользователя по базе конфигурации
+            lock (users)
+            {
+                if (users.TryGetValue(username.Trim().ToLowerInvariant(), out User user) &&
+                    (string.IsNullOrEmpty(password) || password == user.Password))
+                {
+                    roleID = user.RoleID;
+                    return true;
+                }
+                else
+                {
+                    roleID = BaseValues.Roles.Err;
+                    return false;
+                }
             }
         }
 

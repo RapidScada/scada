@@ -310,22 +310,17 @@ namespace Scada.Server.Engine
         /// </summary>
         public Comm(MainLogic mainLogic)
         {
-            if (mainLogic == null)
-                throw new ArgumentNullException("mainLogic");
-            if (mainLogic.AppLog == null)
-                throw new ArgumentNullException("mainLogic.AppLog");
-            if (mainLogic.Settings == null)
-                throw new ArgumentNullException("mainLogic.Settings");
-
             // заполнение массива описаний команд
             CmdDescrs = new string[byte.MaxValue];
             for (byte code = 0; code < byte.MaxValue; code++)
+            {
                 CmdDescrs[code] = GetCmdDescr(code);
+            }
 
             // инициализация полей
-            this.mainLogic = mainLogic;
-            appLog = mainLogic.AppLog;
-            settings = mainLogic.Settings;
+            this.mainLogic = mainLogic ?? throw new ArgumentNullException("mainLogic");
+            appLog = mainLogic.AppLog ?? throw new ArgumentNullException("mainLogic.AppLog");
+            settings = mainLogic.Settings ?? throw new ArgumentNullException("mainLogic.Settings");
             thread = null;
             terminated = false;
             tcpListener = null;
@@ -641,7 +636,7 @@ namespace Scada.Server.Engine
                     string password = Encoding.Default.GetString(inBuf, 5 + userNameLen, inBuf[4 + userNameLen]);
                     bool pwdIsEmpty = string.IsNullOrEmpty(password);
                     int roleID;
-                    bool checkOk = CheckUser(userName, password, out roleID);
+                    bool checkOk = mainLogic.CheckUser(userName, password, out roleID);
 
                     if (client.Authenticated)
                     {
@@ -1140,6 +1135,7 @@ namespace Scada.Server.Engine
         /// Проверить правильность имени и пароля пользователя, получить его роль
         /// </summary>
         /// <remarks>Если пароль пустой, то он не проверяется</remarks>
+        [Obsolete]
         private bool CheckUser(string userName, string password, out int roleID)
         {
             roleID = BaseValues.Roles.Err;
@@ -1204,13 +1200,13 @@ namespace Scada.Server.Engine
                 }
                 catch (Exception ex)
                 {
-                    appLog.WriteAction((Localization.UseRussian ? "Ошибка при работе с Active Directory: " : 
+                    appLog.WriteAction((Localization.UseRussian ? 
+                        "Ошибка при работе с Active Directory: " : 
                         "Error working with Active Directory: ") + ex.Message, Log.ActTypes.Exception);
                 }
                 finally
                 {
-                    if (entry != null)
-                        entry.Close();
+                    entry?.Close();
                 }
             }
 

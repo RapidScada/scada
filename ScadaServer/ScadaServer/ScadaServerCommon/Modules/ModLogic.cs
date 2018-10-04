@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2017
+ * Modified : 2018
  */
 
+using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
@@ -179,6 +180,17 @@ namespace Scada.Server.Modules
         /// не вызывается после передачи команды ТУ серверными модулями</remarks>
         public virtual void OnCommandReceived(int ctrlCnlNum, Command cmd, int userID, ref bool passToClients)
         {
+        }
+
+        /// <summary>
+        /// Проверить имя и пароль пользователя, получить его роль
+        /// </summary>
+        /// <remarks>Если пароль пустой, то он не проверяется</remarks>
+        public virtual bool ValidateUser(string username, string password, out int roleID, out bool handled)
+        {
+            roleID = BaseValues.Roles.Err;
+            handled = false;
+            return false;
         }
     }
 }
