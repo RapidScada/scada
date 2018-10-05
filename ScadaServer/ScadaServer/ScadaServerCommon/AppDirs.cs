@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2018
  */
 
 using System.IO;
@@ -70,6 +70,25 @@ namespace Scada.Server
         /// Получить директорию подключаемых модулей
         /// </summary>
         public string ModDir { get; protected set; }
+        
+        /// <summary>
+        /// Проверить существование директорий
+        /// </summary>
+        public bool Exist
+        {
+            get
+            {
+                string[] dirs = GetRequiredDirs();
+
+                foreach (string dir in dirs)
+                {
+                    if (!Directory.Exists(dir))
+                        return false;
+                }
+
+                return true;
+            }
+        }
 
 
         /// <summary>
@@ -82,6 +101,14 @@ namespace Scada.Server
             LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
             ModDir = ExeDir + "Mod" + Path.DirectorySeparatorChar;
+        }
+
+        /// <summary>
+        /// Получить необходимые директории
+        /// </summary>
+        public string[] GetRequiredDirs()
+        {
+            return new string[] { ConfigDir, LangDir, LogDir, ModDir };
         }
     }
 }

@@ -29,7 +29,6 @@ using Scada.Data.Tables;
 using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
-using System.DirectoryServices;
 using System.IO;
 using System.Net;
 using System.Net.Sockets;

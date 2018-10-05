@@ -182,8 +182,7 @@ namespace Scada.Server.Engine
         public MainLogic()
         {
             AppDirs = new AppDirs();
-            AppLog = new Log(Log.Formats.Full);
-            AppLog.Encoding = Encoding.UTF8;
+            AppLog = new Log(Log.Formats.Full) { Encoding = Encoding.UTF8 };
             Settings = new Settings();
 
             infoFileName = "";
@@ -1915,21 +1914,17 @@ namespace Scada.Server.Engine
 
 
         /// <summary>
-        /// Инициализировать директории приложения
+        /// Инициализировать объект
         /// </summary>
-        public void InitAppDirs(out bool dirsExist, out bool logDirExists)
+        public void Init(string exeDir)
         {
-            AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
-
+            AppDirs.Init(exeDir);
             AppLog.FileName = AppDirs.LogDir + LogFileName;
             infoFileName = AppDirs.LogDir + InfoFileName;
-            logDirExists = Directory.Exists(AppDirs.LogDir);
-            dirsExist = Directory.Exists(AppDirs.ConfigDir) && Directory.Exists(AppDirs.LangDir) &&
-                logDirExists && Directory.Exists(AppDirs.ModDir);
         }
 
         /// <summary>
-        /// Запустить работу сервера
+        /// Запустить работу Сервера
         /// </summary>
         public bool Start()
         {
@@ -1981,7 +1976,7 @@ namespace Scada.Server.Engine
         }
 
         /// <summary>
-        /// Остановить работу сервера
+        /// Остановить работу Сервера
         /// </summary>
         public void Stop()
         {

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,8 @@
 
 using Scada.Server.Modules;
 using System;
-using System.Diagnostics;
+using System.IO;
+using System.Reflection;
 using Utils;
 
 namespace Scada.Server.Engine
@@ -57,9 +58,9 @@ namespace Scada.Server.Engine
         private void OnUnhandledException(object sender, UnhandledExceptionEventArgs args)
         {
             Exception ex = args.ExceptionObject as Exception;
-            appLog.WriteAction(string.Format(Localization.UseRussian ? "Необработанное исключение{0}" :
-                "Unhandled exception{0}", ex == null ? "" : ": " + ex.ToString()), Log.ActTypes.Exception);
-            appLog.WriteBreak();
+            appLog.WriteException(ex, string.Format(Localization.UseRussian ?
+                "Необработанное исключение" :
+                "Unhandled exception"));
         }
         
         
@@ -68,60 +69,43 @@ namespace Scada.Server.Engine
         /// </summary>
         public void StartService()
         {
-            // инициализация необходимых директорий
-            bool dirsExist;    // необходимые директории существуют
-            bool logDirExists; // директория log-файлов существует
-            mainLogic.InitAppDirs(out dirsExist, out logDirExists);
+            // инициализация объекта логики
+            string exeDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            mainLogic.Init(exeDir);
 
-            if (logDirExists)
-            {
-                appLog.WriteBreak();
-                appLog.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Служба ScadaServerService {0} запущена" :
-                    "ScadaServerService {0} is started", ServerUtils.AppVersion), Log.ActTypes.Action);
-            }
+            appLog.WriteBreak();
+            appLog.WriteAction(string.Format(Localization.UseRussian ? 
+                "Служба ScadaServerService {0} запущена" :
+                "ScadaServerService {0} is started", ServerUtils.AppVersion), Log.ActTypes.Action);
 
-            if (dirsExist)
+            if (mainLogic.AppDirs.Exist)
             {
-                // локализация приложения
-                string errMsg;
-                if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaData", out errMsg))
+                // локализация
+                if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaData", out string errMsg))
                     CommonPhrases.Init();
                 else
-                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                    appLog.WriteError(errMsg);
 
                 if (Localization.LoadDictionaries(mainLogic.AppDirs.LangDir, "ScadaServer", out errMsg))
                     ModPhrases.InitFromDictionaries();
                 else
-                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                    appLog.WriteError(errMsg);
 
-                // запуск работы SCADA-Сервера
-                if (!mainLogic.Start())
-                    appLog.WriteAction(Localization.UseRussian ? 
-                        "Нормальная работа программы невозможна." :
-                        "Normal program execution is impossible.", Log.ActTypes.Error);
+                // запуск
+                if (mainLogic.Start())
+                    return;
             }
             else
             {
-                string errMsg = string.Format(Localization.UseRussian ?
-                    "Не существуют необходимые директории:{0}{1}{0}{2}{0}{3}{0}{4}{0}" +
-                    "Нормальная работа программы невозможна." :
-                    "Required directories are not exist:{0}{1}{0}{2}{0}{3}{0}{4}{0}" +
-                    "Normal program execution is impossible.",
-                    Environment.NewLine, mainLogic.AppDirs.ConfigDir, mainLogic.AppDirs.LangDir, 
-                    mainLogic.AppDirs.LogDir, mainLogic.AppDirs.ModDir);
-
-                try
-                {
-                    if (EventLog.SourceExists("ScadaServerService"))
-                        EventLog.WriteEvent("ScadaServerService",
-                            new EventInstance(0, 0, EventLogEntryType.Error), errMsg);
-                }
-                catch { }
-
-                if (logDirExists)
-                    appLog.WriteAction(errMsg, Log.ActTypes.Error);
+                appLog.WriteError(string.Format(Localization.UseRussian ?
+                    "Необходимые директории не существуют:{0}{1}" :
+                    "The required directories do not exist:{0}{1}",
+                    Environment.NewLine, string.Join(Environment.NewLine, mainLogic.AppDirs.GetRequiredDirs())));
             }
+
+            appLog.WriteError(Localization.UseRussian ?
+                "Нормальная работа программы невозможна" :
+                "Normal program execution is impossible");
         }
 
         /// <summary>
@@ -132,7 +116,7 @@ namespace Scada.Server.Engine
             mainLogic.Stop();
             appLog.WriteAction(Localization.UseRussian ? 
                 "Служба ScadaServerService остановлена" :
-                "ScadaServerService is stopped", Log.ActTypes.Action);
+                "ScadaServerService is stopped");
             appLog.WriteBreak();
         }
 
@@ -144,7 +128,7 @@ namespace Scada.Server.Engine
             mainLogic.Stop();
             appLog.WriteAction(Localization.UseRussian ? 
                 "Служба ScadaServerService отключена" :
-                "ScadaServerService is shutdown", Log.ActTypes.Action);
+                "ScadaServerService is shutdown");
             appLog.WriteBreak();
         }
     }
