@@ -7,7 +7,7 @@
     <ProjectGuid>{CD5B2061-B57F-4FEB-9596-779DDCFAC2C7}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Scada.Server.Modules.DBExport</RootNamespace>
+    <RootNamespace>Scada.Server.Modules</RootNamespace>
     <AssemblyName>ModDBExport</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -62,31 +62,31 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
-    <Compile Include="CtrlExportQuery.cs">
+    <Compile Include="DBExport\Config.cs" />
+    <Compile Include="DBExport\UI\CtrlExportQuery.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="CtrlExportQuery.Designer.cs">
+    <Compile Include="DBExport\UI\CtrlExportQuery.Designer.cs">
       <DependentUpon>CtrlExportQuery.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataSources\DataSource.cs" />
-    <Compile Include="DataSources\DBTypes.cs" />
-    <Compile Include="DataSources\PgSqlDataSource.cs" />
-    <Compile Include="DataSources\MySqlDataSource.cs" />
-    <Compile Include="DataSources\OraDataSource.cs" />
-    <Compile Include="DataSources\OleDbDataSource.cs" />
-    <Compile Include="DataSources\SqlDataSource.cs" />
-    <Compile Include="Exporter.cs" />
-    <Compile Include="FrmDBExportConfig.cs">
+    <Compile Include="DBExport\DataSources\DataSource.cs" />
+    <Compile Include="DBExport\DataSources\DBTypes.cs" />
+    <Compile Include="DBExport\DataSources\PgSqlDataSource.cs" />
+    <Compile Include="DBExport\DataSources\MySqlDataSource.cs" />
+    <Compile Include="DBExport\DataSources\OraDataSource.cs" />
+    <Compile Include="DBExport\DataSources\OleDbDataSource.cs" />
+    <Compile Include="DBExport\DataSources\SqlDataSource.cs" />
+    <Compile Include="DBExport\Exporter.cs" />
+    <Compile Include="DBExport\UI\FrmDBExportConfig.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmDBExportConfig.Designer.cs">
+    <Compile Include="DBExport\UI\FrmDBExportConfig.Designer.cs">
       <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmManualExport.cs">
+    <Compile Include="DBExport\UI\FrmManualExport.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="FrmManualExport.Designer.cs">
+    <Compile Include="DBExport\UI\FrmManualExport.Designer.cs">
       <DependentUpon>FrmManualExport.cs</DependentUpon>
     </Compile>
     <Compile Include="ModDBExportLogic.cs" />
@@ -102,13 +102,13 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CtrlExportQuery.resx">
+    <EmbeddedResource Include="DBExport\UI\CtrlExportQuery.resx">
       <DependentUpon>CtrlExportQuery.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmDBExportConfig.resx">
+    <EmbeddedResource Include="DBExport\UI\FrmDBExportConfig.resx">
       <DependentUpon>FrmDBExportConfig.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="FrmManualExport.resx">
+    <EmbeddedResource Include="DBExport\UI\FrmManualExport.resx">
       <DependentUpon>FrmManualExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
