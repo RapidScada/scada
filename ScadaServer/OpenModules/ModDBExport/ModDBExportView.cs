@@ -59,7 +59,7 @@ namespace Scada.Server.Modules
         }
 
         /// <summary>
-        /// Получить версию плагина
+        /// Получить версию модуля
         /// </summary>
         public override string Version
         {

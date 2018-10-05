@@ -54,7 +54,7 @@ namespace Scada.Server.Modules
         public abstract string Descr { get; }
 
         /// <summary>
-        /// Получить версию плагина
+        /// Получить версию модуля
         /// </summary>
         /// <remarks>В будущем сделать данное свойство abstract</remarks>
         public virtual string Version
