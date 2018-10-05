@@ -169,9 +169,7 @@ namespace Scada.Server.Modules
                 }
             }
 
-            roleID = BaseValues.Roles.Err;
-            handled = false;
-            return false;
+            return base.ValidateUser(username, password, out roleID, out handled);
         }
     }
 }

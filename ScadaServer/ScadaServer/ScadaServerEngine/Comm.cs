@@ -622,7 +622,7 @@ namespace Scada.Server.Engine
                                 (Localization.UseRussian ? "неверно" : "failed");
                             appLog.WriteAction(string.Format(Localization.UseRussian ?
                                 "Проверка имени и пароля пользователя {0}. Результат: {1}" : 
-                                "Check user {0} name and password. Result: {1}", userName, checkOkStr));
+                                "Check username and password for {0}. Result: {1}", userName, checkOkStr));
                         }
                     }
                     else
