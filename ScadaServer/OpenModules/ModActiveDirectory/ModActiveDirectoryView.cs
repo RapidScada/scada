@@ -45,6 +45,7 @@ namespace Scada.Server.Modules
             CanShowProps = true;
         }
 
+
         /// <summary>
         /// Gets the module description.
         /// </summary>
