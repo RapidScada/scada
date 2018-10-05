@@ -2037,19 +2037,6 @@ namespace Scada.Server.Engine
         }
 
         /// <summary>
-        /// Получить пользователя по имени
-        /// </summary>
-        [Obsolete]
-        public User GetUser(string userName)
-        {
-            lock (users)
-            {
-                User user;
-                return users.TryGetValue(userName.Trim().ToLowerInvariant(), out user) ? user.Clone() : null;
-            }
-        }
-
-        /// <summary>
         /// Проверить имя и пароль пользователя, получить его роль
         /// </summary>
         /// <remarks>Если пароль пустой, то он не проверяется</remarks>
