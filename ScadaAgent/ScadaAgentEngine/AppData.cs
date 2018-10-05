@@ -64,7 +64,7 @@ namespace Scada.Agent.Engine
 
             AppDirs = new AppDirs();
             Settings = new Settings();
-            Log = new Log(Log.Formats.Full);
+            Log = new Log(Log.Formats.Full) { Encoding = Encoding.UTF8 };
             SessionManager = new SessionManager(Log);
             InstanceManager = new InstanceManager(Settings, Log);
         }
@@ -101,12 +101,8 @@ namespace Scada.Agent.Engine
         /// </summary>
         public void Init(string exeDir)
         {
-            // инициализация директорий приложения
             AppDirs.Init(exeDir);
-
-            // настройка журнала приложения
             Log.FileName = AppDirs.LogDir + LogFileName;
-            Log.Encoding = Encoding.UTF8;
         }
 
         /// <summary>
