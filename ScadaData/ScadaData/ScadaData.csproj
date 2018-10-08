@@ -113,6 +113,7 @@
     <Compile Include="Data\Tables\Trend.cs" />
     <Compile Include="ITreeNode.cs" />
     <Compile Include="SerializationBinder.cs" />
+    <Compile Include="UI\LogBox.cs" />
     <Compile Include="UI\ObjectChangedEventArgs.cs" />
     <Compile Include="UI\ObjectChangedEventHandler.cs" />
     <Compile Include="UI\ScadaUiUtils.cs" />
