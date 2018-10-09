@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : AgentWcfClient
+ * Module   : ScadaAgentConnector
  * Summary  : Represents a client of the Agent service
  * 
  * Author   : Mikhail Shiryaev
@@ -32,9 +32,9 @@ namespace Scada.Agent.Connector
 {
     /// <summary>
     /// Represents a client of the Agent service.
-    /// <para>Представляет клиент службы Агента.</para>
+    /// <para>Представляет клиента службы Агента.</para>
     /// </summary>
-    public class AgentWcfClient
+    public class AgentWcfClient : IAgentClient
     {
         /// <summary>
         /// The time span of checking connection.

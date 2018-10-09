@@ -168,8 +168,8 @@ namespace Scada.Server.Shell.Code
                     SelectedImageKey = "server_stats.png",
                     Tag = new TreeNodeTag()
                     {
-                        FormType = null,
-                        FormArgs = null
+                        FormType = typeof(FrmStats),
+                        FormArgs = new object[] { environment }
                     }
                 },
             };

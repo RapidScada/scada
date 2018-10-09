@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Connector;
 using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,11 @@ namespace Scada.Server.Shell.Code
         /// Gets or sets the user interface of the modules accessed by full file name.
         /// </summary>
         public Dictionary<string, ModView> ModuleViews { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client of the Agent service.
+        /// </summary>
+        public IAgentClient AgentClient { get; set; }
 
         /// <summary>
         /// Gets the application error log.

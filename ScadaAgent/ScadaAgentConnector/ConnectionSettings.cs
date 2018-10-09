@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : AgentWcfClient
+ * Module   : ScadaAgentConnector
  * Summary  : Specifies all settings required to make a connection to the Agent service
  * 
  * Author   : Mikhail Shiryaev
