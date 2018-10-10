@@ -55,6 +55,7 @@
             this.rtbState.BackColor = System.Drawing.SystemColors.Window;
             this.rtbState.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbState.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbState.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtbState.Location = new System.Drawing.Point(0, 0);
             this.rtbState.Name = "rtbState";
             this.rtbState.ReadOnly = true;
@@ -89,6 +90,7 @@
             this.rtbLog.BackColor = System.Drawing.SystemColors.Window;
             this.rtbLog.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.rtbLog.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rtbLog.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;

@@ -25,6 +25,7 @@
 
 using Scada.Agent.Connector.AgentSvcRef;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
 
@@ -268,6 +269,24 @@ namespace Scada.Agent.Connector
             }
 
             RegisterActivity();
+        }
+
+        /// <summary>
+        /// Reads the log file.
+        /// </summary>
+        public bool ReadLog(RelPath relPath, ref DateTime fileAge, out ICollection<string> lines)
+        {
+            lines = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Reads the rest of the log file.
+        /// </summary>
+        public bool ReadLog(RelPath relPath, long offsetFromEnd, ref DateTime fileAge, out ICollection<string> lines)
+        {
+            lines = null;
+            return false;
         }
     }
 }

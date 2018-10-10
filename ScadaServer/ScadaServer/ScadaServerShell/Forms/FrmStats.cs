@@ -23,10 +23,12 @@
  * Modified : 2018
  */
 
+using Scada.Agent;
 using Scada.Agent.Connector;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -48,11 +50,14 @@ namespace Scada.Server.Shell.Forms
         private const int RemoteRefreshInterval = 1000;
 
         private readonly ServerEnvironment environment; // the application environment
-        private LogBox stateBox;      // object to refresh state
-        private LogBox logBox;        // object to refresh log
-        private bool localMode;       // read logs from files directly
-        private string stateFileName; // local file name of the state
-        private string logFileName;   // local file name of the log
+        private LogBox stateBox;          // object to refresh state
+        private LogBox logBox;            // object to refresh log
+        private IAgentClient agentClient; // the cuurent Agent client
+        private bool localMode;           // read logs from files directly
+        private RelPath statePath;        // path of the remote state file
+        private RelPath logPath;          // path of the remote log file
+        private DateTime stateFileAge;
+        private DateTime logFileAge;
 
 
         /// <summary>
@@ -70,54 +75,98 @@ namespace Scada.Server.Shell.Forms
             : this()
         {
             this.environment = environment ?? throw new ArgumentNullException("environment");
-            stateBox = new LogBox(rtbState);
+            stateBox = new LogBox(rtbState) { FullLogView = true };
             logBox = new LogBox(rtbLog);
+            agentClient = null;
+            localMode = false;
+            statePath = null;
+            logPath = null;
+            stateFileAge = DateTime.MinValue;
+            logFileAge = DateTime.MinValue;
+        }
+
+
+        /// <summary>
+        /// Initializes the log refresh process.
+        /// </summary>
+        private void InitRefresh()
+        {
+            agentClient = environment.AgentClient;
+
+            if (agentClient == null)
+            {
+                rtbState.Text = rtbLog.Text = "Connection is not specified."; // TODO: phrase
+                tmrRefresh.Interval = RemoteRefreshInterval;
+            }
+            else
+            {
+                rtbState.Text = "";
+                rtbLog.Text = "";
+
+                if (agentClient.IsLocal)
+                {
+                    localMode = true;
+                    tmrRefresh.Interval = LocalRefreshInterval;
+                    stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppStateFileName);
+                    logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppLogFileName);
+                }
+                else
+                {
+                    localMode = false;
+                    tmrRefresh.Interval = RemoteRefreshInterval;
+                    statePath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppStateFileName);
+                    logPath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppLogFileName);
+                    stateFileAge = DateTime.MinValue;
+                    logFileAge = DateTime.MinValue;
+                }
+            }
         }
 
 
         private void FrmStats_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmStats");
-
-            if (environment.AgentClient.IsLocal)
-            {
-                localMode = true;
-                tmrRefresh.Interval = LocalRefreshInterval;
-                stateFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppStateFileName);
-                logFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppLogFileName);
-            }
-            else
-            {
-                localMode = false;
-                tmrRefresh.Interval = RemoteRefreshInterval;
-            }
-
+            InitRefresh();
             tmrRefresh.Start();
         }
 
         private void tmrRefresh_Tick(object sender, EventArgs e)
         {
+            // TODO: exit if the form is not active
             tmrRefresh.Stop();
 
-            if (environment.AgentClient == null)
+            if (agentClient == environment.AgentClient)
             {
-                rtbState.Text = rtbLog.Text = "Connection is not specified."; // TODO: phrase
+                if (agentClient != null)
+                {
+                    // refresh logs
+                    if (localMode)
+                    {
+                        stateBox.RefreshFromFile();
+
+                        if (!chkPause.Checked)
+                            logBox.RefreshFromFile();
+                    }
+                    else
+                    {
+                        // TODO: async
+                        if (agentClient.ReadLog(statePath, ref stateFileAge, out ICollection<string> lines))
+                            stateBox.SetLines(lines);
+
+                        if (!chkPause.Checked &&
+                            agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out lines))
+                        {
+                            logBox.SetLines(lines);
+                        }
+                    }
+                }
             }
             else
             {
-                // refresh logs
-                if (localMode)
-                {
-                    stateBox.RefreshFromFile();
-                    logBox.RefreshFromFile();
-                }
-                else
-                {
-
-                }
-
-                tmrRefresh.Start();
+                InitRefresh();
             }
+
+            tmrRefresh.Start();
         }
     }
 }

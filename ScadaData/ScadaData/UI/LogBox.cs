@@ -25,6 +25,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.UI
@@ -44,6 +46,14 @@ namespace Scada.UI
         /// The control to display a log.
         /// </summary>
         protected RichTextBox richTextBox;
+        /// <summary>
+        /// The local file name of the log.
+        /// </summary>
+        protected string logFileName;
+        /// <summary>
+        /// The last write time of the local log file (UTC).
+        /// </summary>
+        protected DateTime logFileAge;
 
 
         /// <summary>
@@ -52,10 +62,55 @@ namespace Scada.UI
         public LogBox(RichTextBox richTextBox)
         {
             this.richTextBox = richTextBox ?? throw new ArgumentNullException("richTextBox");
+            logFileName = "";
+            logFileAge = DateTime.MinValue;
+
+            FullLogView = false;
             LogViewSize = DefaultLogViewSize;
             Colorize = false;
         }
 
+
+        /// <summary>
+        /// Reads lines from the log file.
+        /// </summary>
+        private List<string> ReadLines()
+        {
+            using (FileStream fileStream =
+                new FileStream(LogFileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                List<string> lines = new List<string>();
+                long offset = FullLogView ? 0 : Math.Max(0, fileStream.Length - LogViewSize);
+
+                if (fileStream.Seek(offset, SeekOrigin.Begin) == offset)
+                {
+                    using (StreamReader reader = new StreamReader(fileStream, Encoding.UTF8))
+                    {
+                        // add or skip the first line
+                        if (!reader.EndOfStream)
+                        {
+                            string s = reader.ReadLine();
+                            if (offset == 0)
+                                lines.Add(s);
+                        }
+
+                        // read the rest lines
+                        while (!reader.EndOfStream)
+                        {
+                            lines.Add(reader.ReadLine());
+                        }
+                    }
+                }
+
+                return lines;
+            }
+        }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to load a full log.
+        /// </summary>
+        public bool FullLogView { get; set; }
 
         /// <summary>
         /// Gets or sets the size of displayed part of a log in bytes.
@@ -67,13 +122,29 @@ namespace Scada.UI
         /// </summary>
         public bool Colorize { get; set; }
 
+        /// <summary>
+        /// Gets or sets the local file name of the log.
+        /// </summary>
+        public string LogFileName
+        {
+            get
+            {
+                return logFileName;
+            }
+            set
+            {
+                logFileName = value;
+                logFileAge = DateTime.MinValue;
+            }
+        }
+
 
         /// <summary>
-        /// Appends lines to the text box and removes the beginning if necessary.
+        /// Sets the text box lines.
         /// </summary>
-        public void AppendLines(ICollection<string> lines)
+        public void SetLines(ICollection<string> lines)
         {
-
+            richTextBox.Text = string.Join(Environment.NewLine, lines);
         }
 
         /// <summary>
@@ -81,7 +152,27 @@ namespace Scada.UI
         /// </summary>
         public void RefreshFromFile()
         {
+            try
+            {
+                if (File.Exists(LogFileName))
+                {
+                    DateTime newLogFileAge = File.GetLastWriteTimeUtc(LogFileName);
 
+                    if (logFileAge != newLogFileAge)
+                    {
+                        logFileAge = newLogFileAge;
+                        SetLines(ReadLines());
+                    }
+                }
+                else
+                {
+                    richTextBox.Text = CommonPhrases.NoData;
+                }
+            }
+            catch (Exception ex)
+            {
+                richTextBox.Text = ex.Message;
+            }
         }
     }
 }

@@ -670,6 +670,7 @@ namespace Scada.Admin.App.Forms
             else if (treeNode.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
+                LoadDeploymentSettings();
                 PrepareInstanceNode(treeNode, liveInstance);
             }
             else if (treeNode.TagIs(AppNodeType.WebApp))

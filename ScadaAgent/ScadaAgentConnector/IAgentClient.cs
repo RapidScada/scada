@@ -23,6 +23,9 @@
  * Modified : 2018
  */
 
+using System;
+using System.Collections.Generic;
+
 namespace Scada.Agent.Connector
 {
     /// <summary>
@@ -35,5 +38,15 @@ namespace Scada.Agent.Connector
         /// Gets a value indicating whether the connection is local.
         /// </summary>
         bool IsLocal { get; }
+
+        /// <summary>
+        /// Reads the log file.
+        /// </summary>
+        bool ReadLog(RelPath relPath, ref DateTime fileAge, out ICollection<string> lines);
+
+        /// <summary>
+        /// Reads the rest of the log file.
+        /// </summary>
+        bool ReadLog(RelPath relPath, long offsetFromEnd, ref DateTime fileAge, out ICollection<string> lines);
     }
 }
