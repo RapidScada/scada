@@ -26,7 +26,9 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.App.Properties;
+using Scada.Admin.Deployment;
 using Scada.Admin.Project;
+using Scada.Agent.Connector;
 using Scada.Comm;
 using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
@@ -489,6 +491,7 @@ namespace Scada.Admin.App.Forms
             {
                 AppDirs = new ServerDirs(appData.AppSettings.ServerDir, instance),
                 ModuleViews = moduleViews,
+                AgentClient = CreateAgentClient(instance),
                 ErrLog = log
             };
         }
@@ -504,6 +507,33 @@ namespace Scada.Admin.App.Forms
                 KPViews = kpViews,
                 ErrLog = log
             };
+        }
+
+        /// <summary>
+        /// Creates a new Agent client.
+        /// </summary>
+        private IAgentClient CreateAgentClient(Instance instance)
+        {
+            if (!string.IsNullOrEmpty(instance.DeploymentProfile) && 
+                project.DeploymentSettings.Profiles.TryGetValue(instance.DeploymentProfile, out DeploymentProfile profile))
+            {
+                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
+                connSettings.ScadaInstance = instance.Name;
+                return new AgentWcfClient(connSettings);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Updates the Agent client of the instance.
+        /// </summary>
+        private void UpdateAgentClient(LiveInstance liveInstance)
+        {
+            if (liveInstance.ServerEnvironment != null)
+                liveInstance.ServerEnvironment.AgentClient = CreateAgentClient(liveInstance.Instance);
         }
 
         /// <summary>
@@ -848,11 +878,13 @@ namespace Scada.Admin.App.Forms
                 FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(appData, project, instance);
                 frmDownloadConfig.ShowDialog();
 
-                // save project settings in case of the profile change
+                // take the changes into account
                 if (profileName != instance.DeploymentProfile)
+                {
+                    UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
 
-                // update user interface
                 if (frmDownloadConfig.BaseModified)
                 {
                     TreeNode baseNode = RootNode.FindFirst(AppNodeType.Base);
@@ -895,9 +927,12 @@ namespace Scada.Admin.App.Forms
                 FrmUploadConfig frmUploadConfig = new FrmUploadConfig(appData, project, instance);
                 frmUploadConfig.ShowDialog();
 
-                // save project settings in case of the profile change
+                // take the changes into account
                 if (profileName != instance.DeploymentProfile)
+                {
+                    UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
             }
         }
 
@@ -917,9 +952,12 @@ namespace Scada.Admin.App.Forms
                     new FrmInstanceStatus(appData, project.DeploymentSettings, instance);
                 frmInstanceStatus.ShowDialog();
 
-                // save project settings in case of the profile change
+                // take the changes into account
                 if (profileName != instance.DeploymentProfile)
+                {
+                    UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
             }
         }
 

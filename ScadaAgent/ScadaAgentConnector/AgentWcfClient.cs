@@ -50,10 +50,6 @@ namespace Scada.Agent.Connector
         /// </summary>
         protected ConnectionSettings connSettings;
         /// <summary>
-        /// Determines whether the connection is local.
-        /// </summary>
-        protected bool isLocal;
-        /// <summary>
         /// The ID of the communication session.
         /// </summary>
         protected long sessionID;
@@ -69,11 +65,17 @@ namespace Scada.Agent.Connector
         public AgentWcfClient(ConnectionSettings connSettings)
         {
             this.connSettings = connSettings ?? throw new ArgumentNullException("connSettings");
-            isLocal = string.Equals(connSettings.Host, "localhost", StringComparison.OrdinalIgnoreCase);
             sessionID = 0;
             activityDT = DateTime.MinValue;
+            IsLocal = string.Equals(connSettings.Host, "localhost", StringComparison.OrdinalIgnoreCase);
             InitSvcClient();
         }
+
+
+        /// <summary>
+        /// Gets a value indicating whether the connection is local.
+        /// </summary>
+        public bool IsLocal { get; protected set; }
 
 
         /// <summary>
@@ -194,7 +196,7 @@ namespace Scada.Agent.Connector
 
             RestoreConnection();
 
-            if (isLocal)
+            if (IsLocal)
             {
                 // copy the configuration locally
                 if (!client.PackConfig(sessionID, destFileName, configOptions))
@@ -245,7 +247,7 @@ namespace Scada.Agent.Connector
 
             RestoreConnection();
 
-            if (isLocal)
+            if (IsLocal)
             {
                 // copy the configuration locally
                 if (!client.UnpackConfig(sessionID, srcFileName, configOptions))

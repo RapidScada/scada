@@ -75,5 +75,13 @@ namespace Scada.UI
         {
 
         }
+
+        /// <summary>
+        /// Refresh log content from file.
+        /// </summary>
+        public void RefreshFromFile()
+        {
+
+        }
     }
 }

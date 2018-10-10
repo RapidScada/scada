@@ -50,6 +50,7 @@ namespace Scada.Server.Shell.Code
         /// <summary>
         /// Gets or sets the client of the Agent service.
         /// </summary>
+        /// <remarks>Null allowed.</remarks>
         public IAgentClient AgentClient { get; set; }
 
         /// <summary>

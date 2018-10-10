@@ -48,6 +48,14 @@ namespace Scada.Server
         /// Младший байт номера версии Сервера
         /// </summary>
         public const byte AppVersionLo = 1;
+        /// <summary>
+        /// Имя файла журнала приложения
+        /// </summary>
+        public const string AppLogFileName = "ScadaServerSvc.log";
+        /// <summary>
+        /// Имя файла состояния приложения
+        /// </summary>
+        public const string AppStateFileName = "ScadaServerSvc.txt";
 
 
         /// <summary>

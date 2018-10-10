@@ -41,7 +41,7 @@ namespace Scada.Admin.Deployment
         public DeploymentProfile()
         {
             Name = "";
-            ConnectionSettings = new ConnectionSettings();
+            ConnectionSettings = new ConnectionSettings() { ScadaInstance = "" } ;
             DownloadSettings = new TransferSettings();
             UploadSettings = new TransferSettings();
         }

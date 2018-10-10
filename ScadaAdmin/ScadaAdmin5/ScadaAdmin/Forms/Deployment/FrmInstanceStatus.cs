@@ -232,7 +232,9 @@ namespace Scada.Admin.App.Forms.Deployment
             {
                 await GetServerStatus();
                 await GetCommStatus();
-                timer.Start();
+
+                if (agentClient != null)
+                    timer.Start();
             }
         }
     }

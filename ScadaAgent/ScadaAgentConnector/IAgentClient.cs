@@ -23,8 +23,6 @@
  * Modified : 2018
  */
 
-using System;
-
 namespace Scada.Agent.Connector
 {
     /// <summary>
@@ -33,5 +31,9 @@ namespace Scada.Agent.Connector
     /// </summary>
     public interface IAgentClient
     {
+        /// <summary>
+        /// Gets a value indicating whether the connection is local.
+        /// </summary>
+        bool IsLocal { get; }
     }
 }

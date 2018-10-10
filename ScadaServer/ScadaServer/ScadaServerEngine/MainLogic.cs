@@ -83,14 +83,6 @@ namespace Scada.Server.Engine
         }
 
         /// <summary>
-        /// Имя файла журнала приложения
-        /// </summary>
-        private const string LogFileName = "ScadaServerSvc.log";
-        /// <summary>
-        /// Имя файла информации о работе приложения
-        /// </summary>
-        private const string InfoFileName = "ScadaServerSvc.txt";
-        /// <summary>
         /// Время ожидания остановки потока, мс
         /// </summary>
         private const int WaitForStop = 10000;
@@ -1919,8 +1911,8 @@ namespace Scada.Server.Engine
         public void Init(string exeDir)
         {
             AppDirs.Init(exeDir);
-            AppLog.FileName = AppDirs.LogDir + LogFileName;
-            infoFileName = AppDirs.LogDir + InfoFileName;
+            AppLog.FileName = AppDirs.LogDir + ServerUtils.AppLogFileName;
+            infoFileName = AppDirs.LogDir + ServerUtils.AppStateFileName;
         }
 
         /// <summary>
