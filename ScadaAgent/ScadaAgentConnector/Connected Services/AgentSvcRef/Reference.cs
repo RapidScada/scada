@@ -49,11 +49,14 @@ namespace Scada.Agent.Connector.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         bool Browse(out string[] directories, out string[] files, long sessionID, Scada.Agent.RelPath relPath);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetFileAgeUtc", ReplyAction="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse")]
+        System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
         System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position);
+        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -171,12 +174,16 @@ namespace Scada.Agent.Connector.AgentSvcRef {
             return base.Channel.Browse(out directories, out files, sessionID, relPath);
         }
         
+        public System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.GetFileAgeUtc(sessionID, relPath);
+        }
+        
         public System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath) {
             return base.Channel.DownloadFile(sessionID, relPath);
         }
         
-        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position) {
-            return base.Channel.DownloadFileRest(sessionID, relPath, position);
+        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd) {
+            return base.Channel.DownloadFileRest(sessionID, relPath, offsetFromEnd);
         }
     }
 }

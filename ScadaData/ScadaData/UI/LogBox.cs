@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -140,11 +141,51 @@ namespace Scada.UI
 
 
         /// <summary>
+        /// Apply colors to the text box.
+        /// </summary>
+        private void ApplyColors(ICollection<string> lines)
+        {
+            int index = 0;
+
+            foreach (string line in lines)
+            {
+                if (line.StartsWith("send", StringComparison.OrdinalIgnoreCase) ||
+                    line.StartsWith("отправка", StringComparison.OrdinalIgnoreCase))
+                {
+                    richTextBox.Select(index, line.Length);
+                    richTextBox.SelectionColor = Color.Blue;
+                }
+                else if (line.StartsWith("receive", StringComparison.OrdinalIgnoreCase) ||
+                    line.StartsWith("приём", StringComparison.OrdinalIgnoreCase))
+                {
+                    richTextBox.Select(index, line.Length);
+                    richTextBox.SelectionColor = Color.Purple;
+                }
+                else if (line.StartsWith("ok", StringComparison.OrdinalIgnoreCase))
+                {
+                    richTextBox.Select(index, line.Length);
+                    richTextBox.SelectionColor = Color.Green;
+                }
+                else if (line.StartsWith("error", StringComparison.OrdinalIgnoreCase) ||
+                    line.StartsWith("ошибка", StringComparison.OrdinalIgnoreCase))
+                {
+                    richTextBox.Select(index, line.Length);
+                    richTextBox.SelectionColor = Color.Red;
+                }
+
+                index += line.Length + 1 /*new line*/;
+            }
+        }
+
+        /// <summary>
         /// Sets the text box lines.
         /// </summary>
         public void SetLines(ICollection<string> lines)
         {
             richTextBox.Text = string.Join(Environment.NewLine, lines);
+
+            //if (Colorize)
+                ApplyColors(lines);
         }
 
         /// <summary>
@@ -160,13 +201,18 @@ namespace Scada.UI
 
                     if (logFileAge != newLogFileAge)
                     {
+                        List<string> lines = ReadLines();
+
+                        if (lines.Count == 0)
+                            lines.Add(CommonPhrases.NoData);
+
+                        SetLines(lines);
                         logFileAge = newLogFileAge;
-                        SetLines(ReadLines());
                     }
                 }
                 else
                 {
-                    richTextBox.Text = CommonPhrases.NoData;
+                    richTextBox.Text = CommonPhrases.FileNotFound;
                 }
             }
             catch (Exception ex)

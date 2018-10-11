@@ -412,19 +412,37 @@ namespace Scada.Agent.Net
         }
 
         /// <summary>
+        /// Получить дату и время изменения файла (UTC)
+        /// </summary>
+        [OperationContract]
+        public DateTime GetFileAgeUtc(long sessionID, RelPath relPath)
+        {
+            if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
+            {
+                string path = scadaInstance.GetAbsPath(relPath);
+                try { return File.Exists(path) ? File.GetLastWriteTimeUtc(path) : DateTime.MinValue; }
+                catch { return DateTime.MinValue; }
+            }
+            else
+            {
+                return DateTime.MinValue;
+            }
+        }
+
+        /// <summary>
         /// Скачать файл
         /// </summary>
         [OperationContract]
         public Stream DownloadFile(long sessionID, RelPath relPath)
         {
-            return DownloadFileRest(sessionID, relPath, 0);
+            return DownloadFileRest(sessionID, relPath, -1);
         }
 
         /// <summary>
         /// Скачать часть файла с заданной позиции
         /// </summary>
         [OperationContract]
-        public Stream DownloadFileRest(long sessionID, RelPath relPath, long position)
+        public Stream DownloadFileRest(long sessionID, RelPath relPath, long offsetFromEnd)
         {
             if (TryGetScadaInstance(sessionID, out ScadaInstance scadaInstance))
             {
@@ -433,8 +451,11 @@ namespace Scada.Agent.Net
                     string path = scadaInstance.GetAbsPath(relPath);
                     Stream stream = File.Open(path, FileMode.Open, FileAccess.Read, FileShare.Read);
 
-                    if (position > 0)
-                        stream.Position = position;
+                    if (offsetFromEnd >= 0)
+                    {
+                        long offset = -Math.Min(offsetFromEnd, stream.Length);
+                        stream.Seek(offset, SeekOrigin.End);
+                    }
 
                     return stream;
                 }

@@ -132,7 +132,7 @@ namespace Scada.Admin.App.Forms.Deployment
                 // download the configuration
                 ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
                 connSettings.ScadaInstance = instance.Name;
-                AgentWcfClient agentClient = new AgentWcfClient(connSettings);
+                IAgentClient agentClient = new AgentWcfClient(connSettings);
                 agentClient.DownloadConfig(configFileName, profile.DownloadSettings.ToConfigOpions());
 
                 // import the configuration

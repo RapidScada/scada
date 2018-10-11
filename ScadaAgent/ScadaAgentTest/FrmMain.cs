@@ -100,7 +100,7 @@ namespace Scada.Agent.Test
                         stream.CopyTo(fileStream);
                     }
 
-                    stream.Close();
+                    stream.Dispose();
                     MessageBox.Show("Done in " + (int)(DateTime.UtcNow - t0).TotalMilliseconds + " ms");
                 }
             }

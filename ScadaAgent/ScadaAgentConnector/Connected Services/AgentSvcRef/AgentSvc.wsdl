@@ -77,6 +77,12 @@
   <wsdl:message name="AgentSvc_Browse_OutputMessage">
     <wsdl:part name="parameters" element="tns:BrowseResponse" />
   </wsdl:message>
+  <wsdl:message name="AgentSvc_GetFileAgeUtc_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileAgeUtc" />
+  </wsdl:message>
+  <wsdl:message name="AgentSvc_GetFileAgeUtc_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetFileAgeUtcResponse" />
+  </wsdl:message>
   <wsdl:message name="AgentSvc_DownloadFile_InputMessage">
     <wsdl:part name="parameters" element="tns:DownloadFile" />
   </wsdl:message>
@@ -133,6 +139,10 @@
     <wsdl:operation name="Browse">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/Browse" message="tns:AgentSvc_Browse_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/BrowseResponse" message="tns:AgentSvc_Browse_OutputMessage" />
+    </wsdl:operation>
+    <wsdl:operation name="GetFileAgeUtc">
+      <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/GetFileAgeUtc" message="tns:AgentSvc_GetFileAgeUtc_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse" message="tns:AgentSvc_GetFileAgeUtc_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="DownloadFile">
       <wsdl:input wsaw:Action="http://tempuri.org/AgentSvc/DownloadFile" message="tns:AgentSvc_DownloadFile_InputMessage" />
@@ -239,6 +249,15 @@
     </wsdl:operation>
     <wsdl:operation name="Browse">
       <soap:operation soapAction="http://tempuri.org/AgentSvc/Browse" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetFileAgeUtc">
+      <soap:operation soapAction="http://tempuri.org/AgentSvc/GetFileAgeUtc" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>

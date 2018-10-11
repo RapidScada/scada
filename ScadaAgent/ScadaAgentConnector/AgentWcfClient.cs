@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.ServiceModel;
+using System.Text;
 
 namespace Scada.Agent.Connector
 {
@@ -229,7 +230,7 @@ namespace Scada.Agent.Connector
                 }
                 finally
                 {
-                    downloadStream.Close();
+                    downloadStream.Dispose();
                 }
             }
 
@@ -276,8 +277,7 @@ namespace Scada.Agent.Connector
         /// </summary>
         public bool ReadLog(RelPath relPath, ref DateTime fileAge, out ICollection<string> lines)
         {
-            lines = null;
-            return false;
+            return ReadLog(relPath, -1, ref fileAge, out lines);
         }
 
         /// <summary>
@@ -285,8 +285,69 @@ namespace Scada.Agent.Connector
         /// </summary>
         public bool ReadLog(RelPath relPath, long offsetFromEnd, ref DateTime fileAge, out ICollection<string> lines)
         {
-            lines = null;
-            return false;
+            if (relPath == null)
+                throw new ArgumentNullException("relPath");
+
+            RestoreConnection();
+            DateTime newFileAge = client.GetFileAgeUtc(sessionID, relPath);
+
+            if (newFileAge == DateTime.MinValue) // log doesn't exist
+            {
+                fileAge = newFileAge;
+                lines = new string[] { CommonPhrases.FileNotFound };
+                return true;
+            }
+            else if (fileAge != newFileAge)
+            {
+                Stream downloadStream = client.DownloadFileRest(sessionID, relPath, offsetFromEnd);
+
+                if (downloadStream == null) // error opening the log
+                {
+                    lines = new string[] { CommonPhrases.Error };
+                    return true;
+                }
+                else
+                {
+                    List<string> lineList = new List<string>();
+
+                    try
+                    {
+                        using (StreamReader reader = new StreamReader(downloadStream, Encoding.UTF8))
+                        {
+                            // add or skip the first line
+                            if (!reader.EndOfStream)
+                            {
+                                string s = reader.ReadLine();
+                                if (offsetFromEnd < 0)
+                                    lineList.Add(s);
+                            }
+
+                            // read the rest lines
+                            while (!reader.EndOfStream)
+                            {
+                                lineList.Add(reader.ReadLine());
+                            }
+                        }
+                    }
+                    finally
+                    {
+                        downloadStream.Dispose();
+                    }
+
+                    if (lineList.Count == 0)
+                        lineList.Add(CommonPhrases.NoData);
+
+                    RegisterActivity();
+                    fileAge = newFileAge;
+                    lines = lineList;
+                    return true;
+                }
+            }
+            else
+            {
+                lines = null;
+                return false;
+            }
         }
     }
 }

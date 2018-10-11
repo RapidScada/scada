@@ -5,6 +5,7 @@
     <Phrase key="QuestionCaption">Question</Phrase>
     <Phrase key="ErrorCaption">Error</Phrase>
     <Phrase key="WarningCaption">Warning</Phrase>
+    <Phrase key="Error">Error</Phrase>
     <Phrase key="ErrorWithColon">Error:</Phrase>
     <Phrase key="UnhandledException">Unhandled exception</Phrase>
     <Phrase key="SaveSettingsConfirm">Settings have been modified. Save the changes?</Phrase>

@@ -168,7 +168,7 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
-  <xs:element name="DownloadFile">
+  <xs:element name="GetFileAgeUtc">
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
@@ -176,10 +176,25 @@
       </xs:sequence>
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetFileAgeUtcResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="GetFileAgeUtcResult" type="xs:dateTime" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="DownloadFile">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element minOccurs="0" name="sessionID" type="xs:long" />
+        <xs:element xmlns:q16="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q16:RelPath" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="DownloadFileResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q16="http://schemas.microsoft.com/Message" name="DownloadFileResult" type="q16:StreamBody" />
+        <xs:element xmlns:q17="http://schemas.microsoft.com/Message" name="DownloadFileResult" type="q17:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -187,15 +202,15 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="sessionID" type="xs:long" />
-        <xs:element xmlns:q17="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q17:RelPath" />
-        <xs:element minOccurs="0" name="position" type="xs:long" />
+        <xs:element xmlns:q18="http://schemas.datacontract.org/2004/07/Scada.Agent" minOccurs="0" name="relPath" nillable="true" type="q18:RelPath" />
+        <xs:element minOccurs="0" name="offsetFromEnd" type="xs:long" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="DownloadFileRestResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q18="http://schemas.microsoft.com/Message" name="DownloadFileRestResult" type="q18:StreamBody" />
+        <xs:element xmlns:q19="http://schemas.microsoft.com/Message" name="DownloadFileRestResult" type="q19:StreamBody" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

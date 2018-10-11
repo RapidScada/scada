@@ -21,7 +21,7 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;   // the common data of the application
         private readonly DeploymentSettings deploymentSettings; // the deployment settings
         private readonly Instance instance; // the affected instance
-        private AgentWcfClient agentClient; // the Agent client
+        private IAgentClient agentClient;   // the Agent client
 
 
         /// <summary>

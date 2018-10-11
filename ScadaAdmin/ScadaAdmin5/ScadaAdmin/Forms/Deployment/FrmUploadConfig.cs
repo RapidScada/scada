@@ -138,7 +138,7 @@ namespace Scada.Admin.App.Forms.Deployment
                 // upload the configuration
                 ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
                 connSettings.ScadaInstance = instance.Name;
-                AgentWcfClient agentClient = new AgentWcfClient(connSettings);
+                IAgentClient agentClient = new AgentWcfClient(connSettings);
                 agentClient.UploadConfig(configFileName, profile.UploadSettings.ToConfigOpions());
 
                 // restart the services

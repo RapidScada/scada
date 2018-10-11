@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2018
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -114,6 +114,7 @@ namespace Scada.Comm
 
         private static void InitOnLocalization()
         {
+            // начало строки определяет её цвет при отображении журнала
             if (Localization.UseRussian)
             {
                 SendNotation = "Отправка";
@@ -125,17 +126,17 @@ namespace Scada.Comm
                 WriteDataError = "Ошибка при записи данных";
                 WriteLineError = "Ошибка при записи строки";
                 ClearDataStreamError = "Ошибка при очистке потока данных";
-                NormalKpExecImpossible = "Нормальная работа КП невозможна";
-                IllegalCommand = "Недопустимая команда";
-                IncorrectCmdData = "Некорректные данные команды";
-                NoCmdData = "Отсутствуют данные команды";
+                NormalKpExecImpossible = "Ошибка: нормальная работа КП невозможна";
+                IllegalCommand = "Ошибка: недопустимая команда";
+                IncorrectCmdData = "Ошибка: некорректные данные команды";
+                NoCmdData = "Ошибка: отсутствуют данные команды";
                 RetryDelay = "Задержка перед повторной попыткой";
                 ResponseOK = "OK!";
                 ResponseError = "Ошибка связи!";
                 ResponseCsError = "Ошибка КС!";
                 ResponseCrcError = "Ошибка CRC!";
-                IncorrectResponseLength = "Некорректная длина ответа!";
-                IncorrectResponseFormat = "Некорректный формат ответа!";
+                IncorrectResponseLength = "Ошибка: некорректная длина ответа!";
+                IncorrectResponseFormat = "Ошибка: некорректный формат ответа!";
                 On = "Вкл";
                 Off = "Откл";
             }
@@ -150,17 +151,17 @@ namespace Scada.Comm
                 WriteDataError = "Error writing data";
                 WriteLineError = "Error writing line";
                 ClearDataStreamError = "Error clearing data stream";
-                NormalKpExecImpossible = "Normal device execution is impossible";
-                IllegalCommand = "Illegal command";
-                IncorrectCmdData = "Incorrect command data";
-                NoCmdData = "No command data";
+                NormalKpExecImpossible = "Error: normal device execution is impossible";
+                IllegalCommand = "Error: illegal command";
+                IncorrectCmdData = "Error: incorrect command data";
+                NoCmdData = "Error: no command data";
                 RetryDelay = "Delay before trying again";
                 ResponseOK = "OK!";
-                ResponseError = "Communication error!";
-                ResponseCsError = "CS error!";
-                ResponseCrcError = "CRC error!";
-                IncorrectResponseLength = "Incorrect response length!";
-                IncorrectResponseFormat = "Incorrect response format!";
+                ResponseError = "Error: communication failed!";
+                ResponseCsError = "Error: invalid checksum!";
+                ResponseCrcError = "Error: invalid CRC!";
+                IncorrectResponseLength = "Error: incorrect response length!";
+                IncorrectResponseFormat = "Error: incorrect response format!";
                 On = "On";
                 Off = "Off";
             }

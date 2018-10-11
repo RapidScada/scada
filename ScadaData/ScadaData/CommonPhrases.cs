@@ -42,6 +42,7 @@ namespace Scada
         public static string QuestionCaption { get; private set; }
         public static string ErrorCaption { get; private set; }
         public static string WarningCaption { get; private set; }
+        public static string Error { get; private set; }
         public static string ErrorWithColon { get; private set; }
         public static string UnhandledException { get; private set; }
         public static string SaveSettingsConfirm { get; private set; }
@@ -115,6 +116,7 @@ namespace Scada
             QuestionCaption = Localization.Dict.GetEmptyPhrase("QuestionCaption");
             ErrorCaption = Localization.Dict.GetEmptyPhrase("ErrorCaption");
             WarningCaption = Localization.Dict.GetEmptyPhrase("WarningCaption");
+            Error = Localization.Dict.GetEmptyPhrase("Error");
             ErrorWithColon = Localization.Dict.GetEmptyPhrase("ErrorWithColon");
             UnhandledException = Localization.Dict.GetEmptyPhrase("UnhandledException");
             SaveSettingsConfirm = Localization.Dict.GetEmptyPhrase("SaveSettingsConfirm");
@@ -192,6 +194,7 @@ namespace Scada
                 QuestionCaption = dict.GetPhrase("QuestionCaption", QuestionCaption);
                 ErrorCaption = dict.GetPhrase("ErrorCaption", ErrorCaption);
                 WarningCaption = dict.GetPhrase("WarningCaption", WarningCaption);
+                Error = dict.GetPhrase("Error", Error);
                 ErrorWithColon = dict.GetPhrase("ErrorWithColon", ErrorWithColon);
                 UnhandledException = dict.GetPhrase("UnhandledException", UnhandledException);
                 SaveSettingsConfirm = dict.GetPhrase("SaveSettingsConfirm", SaveSettingsConfirm);

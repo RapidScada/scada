@@ -87,6 +87,12 @@ namespace Scada.Agent.Test.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.BrowseResponse> BrowseAsync(Scada.Agent.Test.AgentSvcRef.BrowseRequest request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetFileAgeUtc", ReplyAction="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse")]
+        System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetFileAgeUtc", ReplyAction="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse")]
+        System.Threading.Tasks.Task<System.DateTime> GetFileAgeUtcAsync(long sessionID, Scada.Agent.RelPath relPath);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
         System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath);
         
@@ -94,10 +100,10 @@ namespace Scada.Agent.Test.AgentSvcRef {
         System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position);
+        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position);
+        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -515,6 +521,14 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return base.Channel.BrowseAsync(request);
         }
         
+        public System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.GetFileAgeUtc(sessionID, relPath);
+        }
+        
+        public System.Threading.Tasks.Task<System.DateTime> GetFileAgeUtcAsync(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.GetFileAgeUtcAsync(sessionID, relPath);
+        }
+        
         public System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath) {
             return base.Channel.DownloadFile(sessionID, relPath);
         }
@@ -523,12 +537,12 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return base.Channel.DownloadFileAsync(sessionID, relPath);
         }
         
-        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position) {
-            return base.Channel.DownloadFileRest(sessionID, relPath, position);
+        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd) {
+            return base.Channel.DownloadFileRest(sessionID, relPath, offsetFromEnd);
         }
         
-        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position) {
-            return base.Channel.DownloadFileRestAsync(sessionID, relPath, position);
+        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd) {
+            return base.Channel.DownloadFileRestAsync(sessionID, relPath, offsetFromEnd);
         }
     }
 }

@@ -39,6 +39,32 @@ namespace Scada.Agent.Connector
         /// </summary>
         bool IsLocal { get; }
 
+
+        /// <summary>
+        /// Sends the command to the service.
+        /// </summary>
+        bool ControlService(ServiceApp serviceApp, ServiceCommand command);
+
+        /// <summary>
+        /// Gets the current status of the specified service.
+        /// </summary>
+        bool GetServiceStatus(ServiceApp serviceApp, out ServiceStatus serviceStatus);
+
+        /// <summary>
+        /// Gets available parts of the configuration.
+        /// </summary>
+        bool GetAvailableConfig(out ConfigParts configParts);
+
+        /// <summary>
+        /// Downloads the configuration to the file.
+        /// </summary>
+        void DownloadConfig(string destFileName, ConfigOptions configOptions);
+
+        /// <summary>
+        /// Uploads the configuration from the file.
+        /// </summary>
+        void UploadConfig(string srcFileName, ConfigOptions configOptions);
+
         /// <summary>
         /// Reads the log file.
         /// </summary>
