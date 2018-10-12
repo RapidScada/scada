@@ -34,6 +34,7 @@
             this.pnlLog = new System.Windows.Forms.Panel();
             this.rtbLog = new System.Windows.Forms.RichTextBox();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
+            this.lbLog = new System.Windows.Forms.ListBox();
             this.pnlLog.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -69,15 +70,14 @@
             // 
             // pnlLog
             // 
-            this.pnlLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this.pnlLog.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlLog.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlLog.Controls.Add(this.rtbLog);
             this.pnlLog.Location = new System.Drawing.Point(162, 35);
             this.pnlLog.Margin = new System.Windows.Forms.Padding(9, 3, 3, 3);
             this.pnlLog.Name = "pnlLog";
-            this.pnlLog.Size = new System.Drawing.Size(510, 364);
+            this.pnlLog.Size = new System.Drawing.Size(510, 150);
             this.pnlLog.TabIndex = 2;
             // 
             // rtbLog
@@ -89,7 +89,7 @@
             this.rtbLog.Location = new System.Drawing.Point(0, 0);
             this.rtbLog.Name = "rtbLog";
             this.rtbLog.ReadOnly = true;
-            this.rtbLog.Size = new System.Drawing.Size(508, 362);
+            this.rtbLog.Size = new System.Drawing.Size(508, 148);
             this.rtbLog.TabIndex = 0;
             this.rtbLog.Text = "";
             this.rtbLog.WordWrap = false;
@@ -99,11 +99,28 @@
             this.tmrRefresh.Interval = 500;
             this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
             // 
+            // lbLog
+            // 
+            this.lbLog.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lbLog.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lbLog.FormattingEnabled = true;
+            this.lbLog.HorizontalScrollbar = true;
+            this.lbLog.IntegralHeight = false;
+            this.lbLog.Location = new System.Drawing.Point(162, 191);
+            this.lbLog.Margin = new System.Windows.Forms.Padding(9, 3, 3, 3);
+            this.lbLog.Name = "lbLog";
+            this.lbLog.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.lbLog.Size = new System.Drawing.Size(510, 208);
+            this.lbLog.TabIndex = 3;
+            // 
             // FrmLineStats
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 411);
+            this.Controls.Add(this.lbLog);
             this.Controls.Add(this.pnlLog);
             this.Controls.Add(this.chkPause);
             this.Controls.Add(this.lbTabs);
@@ -124,5 +141,6 @@
         private System.Windows.Forms.Panel pnlLog;
         private System.Windows.Forms.RichTextBox rtbLog;
         private System.Windows.Forms.Timer tmrRefresh;
+        private System.Windows.Forms.ListBox lbLog;
     }
 }

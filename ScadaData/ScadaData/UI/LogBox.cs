@@ -42,11 +42,31 @@ namespace Scada.UI
         /// The default size of displayed part of a log in bytes.
         /// </summary>
         protected const int DefaultLogViewSize = 10240;
+        /// <summary>
+        /// The brush for sent data.
+        /// </summary>
+        protected static readonly Brush SentDataBrush = new SolidBrush(Color.Blue);
+        /// <summary>
+        /// The brush for received data.
+        /// </summary>
+        protected static readonly Brush ReceivedDataBrush = new SolidBrush(Color.Purple);
+        /// <summary>
+        /// The brush for acknowledgement.
+        /// </summary>
+        protected static readonly Brush AckBrush = new SolidBrush(Color.Green);
+        /// <summary>
+        /// The brush for error.
+        /// </summary>
+        protected static readonly Brush ErrorBrush = new SolidBrush(Color.Red);
 
         /// <summary>
         /// The control to display a log.
         /// </summary>
-        protected RichTextBox richTextBox;
+        protected readonly RichTextBox richTextBox;
+        /// <summary>
+        /// The control to display a log.
+        /// </summary>
+        protected readonly ListBox listBox;
         /// <summary>
         /// The local file name of the log.
         /// </summary>
@@ -71,6 +91,27 @@ namespace Scada.UI
             LogViewSize = DefaultLogViewSize;
             AutoScroll = false;
             Colorize = false;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public LogBox(ListBox listBox, bool colorize = false)
+        {
+            this.listBox = listBox ?? throw new ArgumentNullException("listBox");
+            logFileName = "";
+            logFileAge = DateTime.MinValue;
+
+            if (colorize)
+            {
+                listBox.DrawMode = DrawMode.OwnerDrawFixed;
+                listBox.DrawItem += ListBox_DrawItem;
+            }
+
+            FullLogView = false;
+            LogViewSize = DefaultLogViewSize;
+            AutoScroll = false;
+            Colorize = colorize;
         }
 
 
@@ -184,12 +225,49 @@ namespace Scada.UI
             }
         }
 
+        /// <summary>
+        /// Chooses the appropriate brush depending on the line prefix.
+        /// </summary>
+        private Brush ChooseBrush(string line, bool itemSelected)
+        {
+            if (itemSelected)
+            {
+                return SystemBrushes.HighlightText;
+            }
+            else if (line.StartsWith("send", StringComparison.OrdinalIgnoreCase) ||
+                line.StartsWith("отправка", StringComparison.OrdinalIgnoreCase))
+            {
+                return SentDataBrush;
+            }
+            else if (line.StartsWith("receive", StringComparison.OrdinalIgnoreCase) ||
+                line.StartsWith("приём", StringComparison.OrdinalIgnoreCase))
+            {
+                return ReceivedDataBrush;
+            }
+            else if (line.StartsWith("ok", StringComparison.OrdinalIgnoreCase))
+            {
+                return AckBrush;
+            }
+            else if (line.StartsWith("error", StringComparison.OrdinalIgnoreCase) ||
+                line.StartsWith("ошибка", StringComparison.OrdinalIgnoreCase))
+            {
+                return ErrorBrush;
+            }
+            else
+            {
+                return SystemBrushes.WindowText;
+            }
+        }
+
 
         /// <summary>
         /// Sets the text box lines.
         /// </summary>
         public void SetLines(ICollection<string> lines)
         {
+            if (richTextBox == null)
+                return;
+
             int selectionStart = richTextBox.SelectionStart;
             int selectionLength = richTextBox.SelectionLength;
             richTextBox.Text = string.Join(Environment.NewLine, lines);
@@ -203,6 +281,57 @@ namespace Scada.UI
                 richTextBox.Select(selectionStart, selectionLength);
 
             richTextBox.ScrollToCaret();
+        }
+
+        /// <summary>
+        /// Sets the list box lines.
+        /// </summary>
+        public void SetLines2(ICollection<string> lines)
+        {
+            if (listBox == null)
+                return;
+
+            try
+            {
+                listBox.BeginUpdate();
+                int oldLineCnt = listBox.Items.Count;
+                int newLineCnt = lines.Count;
+                int selectedIndex = listBox.SelectedIndex;
+                int topIndex = listBox.TopIndex;
+                int lineIndex = 0;
+
+                foreach (string line in lines)
+                {
+                    if (lineIndex < oldLineCnt)
+                        listBox.Items[lineIndex] = line;
+                    else
+                        listBox.Items.Add(line);
+
+                    lineIndex++;
+                }
+
+                for (int i = oldLineCnt - 1; i >= newLineCnt; i--)
+                {
+                    listBox.Items.RemoveAt(i);
+                }
+
+                if (newLineCnt > 0)
+                {
+                    if (AutoScroll)
+                    {
+                        listBox.SelectedIndex = -1;
+                        listBox.TopIndex = newLineCnt - 1;
+                    }
+                    else
+                    {
+                        listBox.TopIndex = Math.Min(topIndex, newLineCnt - 1);
+                    }
+                }
+            }
+            finally
+            {
+                listBox.EndUpdate();
+            }
         }
 
         /// <summary>
@@ -224,6 +353,7 @@ namespace Scada.UI
                             lines.Add(CommonPhrases.NoData);
 
                         SetLines(lines);
+                        SetLines2(lines);
                         logFileAge = newLogFileAge;
                     }
                 }
@@ -236,6 +366,19 @@ namespace Scada.UI
             {
                 richTextBox.Text = ex.Message;
             }
+        }
+
+
+        private void ListBox_DrawItem(object sender, DrawItemEventArgs e)
+        {
+            string line = (string)listBox.Items[e.Index];
+            int lineHeight = (int)e.Graphics.MeasureString("0", listBox.Font).Height;
+            Brush brush = ChooseBrush(line, e.State.HasFlag(DrawItemState.Selected));
+
+            e.DrawBackground();
+            e.Graphics.DrawString(line, listBox.Font, brush, 
+                e.Bounds.Left, e.Bounds.Top + (listBox.ItemHeight - lineHeight) / 2);
+            e.DrawFocusRectangle();
         }
     }
 }

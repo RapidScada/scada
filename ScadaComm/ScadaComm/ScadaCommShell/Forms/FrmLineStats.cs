@@ -45,6 +45,7 @@ namespace Scada.Comm.Shell.Forms
         private readonly CommEnvironment environment; // the application environment
         private LogBox stateBox;          // object to refresh state
         private LogBox logBox;            // object to refresh log
+        private LogBox logBox2;           // object to refresh log
         private IAgentClient agentClient; // the cuurent Agent client
         private bool localMode;           // read logs from files directly
         private RelPath statePath;        // path of the remote state file
@@ -71,6 +72,7 @@ namespace Scada.Comm.Shell.Forms
             this.environment = environment ?? throw new ArgumentNullException("environment");
             stateBox = new LogBox(rtbLog) { FullLogView = true };
             logBox = new LogBox(rtbLog) { AutoScroll = true };//, Colorize = true };
+            logBox2 = new LogBox(lbLog, true) { AutoScroll = true };
             agentClient = null;
             localMode = false;
             statePath = null;
@@ -103,7 +105,7 @@ namespace Scada.Comm.Shell.Forms
                     localMode = true;
                     tmrRefresh.Interval = CommShellUtils.LogLocalRefreshInterval;
                     stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, stateFileName);
-                    logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, logFileName);
+                    logBox.LogFileName = logBox2.LogFileName = Path.Combine(environment.AppDirs.LogDir, logFileName);
                 }
                 else
                 {
@@ -127,7 +129,10 @@ namespace Scada.Comm.Shell.Forms
                 try
                 {
                     if (agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out ICollection<string> lines))
+                    {
                         logBox.SetLines(lines);
+                        logBox2.SetLines(lines);
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -186,7 +191,10 @@ namespace Scada.Comm.Shell.Forms
                             //stateBox.RefreshFromFile();
 
                             if (!chkPause.Checked)
+                            {
                                 logBox.RefreshFromFile();
+                                logBox2.RefreshFromFile();
+                            }
                         }
                         else
                         {
