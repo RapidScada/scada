@@ -63,11 +63,13 @@ namespace Scada.UI
         public LogBox(RichTextBox richTextBox)
         {
             this.richTextBox = richTextBox ?? throw new ArgumentNullException("richTextBox");
+            richTextBox.HideSelection = false;
             logFileName = "";
             logFileAge = DateTime.MinValue;
 
             FullLogView = false;
             LogViewSize = DefaultLogViewSize;
+            AutoScroll = false;
             Colorize = false;
         }
 
@@ -117,6 +119,11 @@ namespace Scada.UI
         /// Gets or sets the size of displayed part of a log in bytes.
         /// </summary>
         public int LogViewSize { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to automatically scroll down the content of the text box.
+        /// </summary>
+        public bool AutoScroll { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether lines should be colorized depending on key words.
@@ -177,14 +184,24 @@ namespace Scada.UI
             }
         }
 
+
         /// <summary>
         /// Sets the text box lines.
         /// </summary>
         public void SetLines(ICollection<string> lines)
         {
+            int selectionStart = richTextBox.SelectionStart;
+            int selectionLength = richTextBox.SelectionLength;
             richTextBox.Text = string.Join(Environment.NewLine, lines);
 
-            //if (Colorize)
+            if (AutoScroll)
+                richTextBox.Select(richTextBox.TextLength, 0);
+            else
+                richTextBox.Select(selectionStart, selectionLength);
+
+            richTextBox.ScrollToCaret();
+
+            if (Colorize)
                 ApplyColors(lines);
         }
 

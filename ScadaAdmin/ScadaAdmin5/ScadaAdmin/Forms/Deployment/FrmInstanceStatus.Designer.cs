@@ -189,7 +189,7 @@
             // timer
             // 
             this.timer.Interval = 1000;
-            this.timer.Tick += new System.EventHandler(this.timer_TickAsync);
+            this.timer.Tick += new System.EventHandler(this.timer_Tick);
             // 
             // FrmInstanceStatus
             // 

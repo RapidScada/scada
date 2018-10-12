@@ -140,6 +140,7 @@
             this.Name = "FrmStats";
             this.Text = "Stats";
             this.Load += new System.EventHandler(this.FrmStats_Load);
+            this.VisibleChanged += new System.EventHandler(this.FrmStats_VisibleChanged);
             this.pnlState.ResumeLayout(false);
             this.pnlLog.ResumeLayout(false);
             this.ResumeLayout(false);

@@ -95,7 +95,7 @@ namespace Scada.Admin.App.Forms.Deployment
         /// <summary>
         /// Gets the Server status asynchronously.
         /// </summary>
-        private async Task GetServerStatus()
+        private async Task GetServerStatusAsync()
         {
             await Task.Run(() =>
             {
@@ -115,7 +115,7 @@ namespace Scada.Admin.App.Forms.Deployment
         /// <summary>
         /// Gets the Communicator status asynchronously.
         /// </summary>
-        private async Task GetCommStatus()
+        private async Task GetCommStatusAsync()
         {
             await Task.Run(() =>
             {
@@ -211,7 +211,7 @@ namespace Scada.Admin.App.Forms.Deployment
             }
         }
 
-        private async void timer_TickAsync(object sender, EventArgs e)
+        private async void timer_Tick(object sender, EventArgs e)
         {
             timer.Stop();
 
@@ -230,8 +230,8 @@ namespace Scada.Admin.App.Forms.Deployment
             // request status
             if (agentClient != null)
             {
-                await GetServerStatus();
-                await GetCommStatus();
+                await GetServerStatusAsync();
+                await GetCommStatusAsync();
 
                 if (agentClient != null)
                     timer.Start();

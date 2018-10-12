@@ -30,6 +30,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Server.Shell.Forms
@@ -48,6 +49,10 @@ namespace Scada.Server.Shell.Forms
         /// Log refresh interval on remote connection, ms.
         /// </summary>
         private const int RemoteRefreshInterval = 1000;
+        /// <summary>
+        /// The timer interval when the form is hidden, ms.
+        /// </summary>
+        private const int InactiveTimerInterval = 10000;
 
         private readonly ServerEnvironment environment; // the application environment
         private LogBox stateBox;          // object to refresh state
@@ -76,7 +81,7 @@ namespace Scada.Server.Shell.Forms
         {
             this.environment = environment ?? throw new ArgumentNullException("environment");
             stateBox = new LogBox(rtbState) { FullLogView = true };
-            logBox = new LogBox(rtbLog);
+            logBox = new LogBox(rtbLog) { AutoScroll = true };
             agentClient = null;
             localMode = false;
             statePath = null;
@@ -95,7 +100,7 @@ namespace Scada.Server.Shell.Forms
 
             if (agentClient == null)
             {
-                rtbState.Text = rtbLog.Text = "Connection is not specified."; // TODO: phrase
+                rtbState.Text = rtbLog.Text = ServerShellPhrases.ConnectionUndefined;
                 tmrRefresh.Interval = RemoteRefreshInterval;
             }
             else
@@ -121,6 +126,46 @@ namespace Scada.Server.Shell.Forms
                 }
             }
         }
+        
+        /// <summary>
+        /// Refresh the server state asynchronously.
+        /// </summary>
+        private async Task RefreshStateAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (agentClient.ReadLog(statePath, ref stateFileAge, out ICollection<string> lines))
+                        stateBox.SetLines(lines);
+                }
+                catch (Exception ex)
+                {
+                    rtbState.Text = ex.Message;
+                    stateFileAge = DateTime.MinValue;
+                }
+            });
+        }
+
+        /// <summary>
+        /// Refresh the server log asynchronously.
+        /// </summary>
+        private async Task RefreshLogAsync()
+        {
+            await Task.Run(() =>
+            {
+                try
+                {
+                    if (agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out ICollection<string> lines))
+                        logBox.SetLines(lines);
+                }
+                catch (Exception ex)
+                {
+                    rtbLog.Text = ex.Message;
+                    logFileAge = DateTime.MinValue;
+                }
+            });
+        }
 
 
         private void FrmStats_Load(object sender, EventArgs e)
@@ -130,43 +175,48 @@ namespace Scada.Server.Shell.Forms
             tmrRefresh.Start();
         }
 
-        private void tmrRefresh_Tick(object sender, EventArgs e)
+        private void FrmStats_VisibleChanged(object sender, EventArgs e)
         {
-            // TODO: exit if the form is not active
-            tmrRefresh.Stop();
+            if (Visible)
+                tmrRefresh.Interval = localMode ? LocalRefreshInterval : RemoteRefreshInterval;
+            else
+                tmrRefresh.Interval = InactiveTimerInterval;
+        }
 
-            if (agentClient == environment.AgentClient)
+        private async void tmrRefresh_Tick(object sender, EventArgs e)
+        {
+            if (Visible)
             {
-                if (agentClient != null)
+                tmrRefresh.Stop();
+
+                if (agentClient == environment.AgentClient)
                 {
-                    // refresh logs
-                    if (localMode)
+                    if (agentClient != null)
                     {
-                        stateBox.RefreshFromFile();
-
-                        if (!chkPause.Checked)
-                            logBox.RefreshFromFile();
-                    }
-                    else
-                    {
-                        // TODO: async
-                        if (agentClient.ReadLog(statePath, ref stateFileAge, out ICollection<string> lines))
-                            stateBox.SetLines(lines);
-
-                        if (!chkPause.Checked &&
-                            agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out lines))
+                        // refresh logs
+                        if (localMode)
                         {
-                            logBox.SetLines(lines);
+                            stateBox.RefreshFromFile();
+
+                            if (!chkPause.Checked)
+                                logBox.RefreshFromFile();
+                        }
+                        else
+                        {
+                            await RefreshStateAsync();
+
+                            if (!chkPause.Checked)
+                                await RefreshLogAsync();
                         }
                     }
                 }
-            }
-            else
-            {
-                InitRefresh();
-            }
+                else
+                {
+                    InitRefresh();
+                }
 
-            tmrRefresh.Start();
+                tmrRefresh.Start();
+            }
         }
     }
 }

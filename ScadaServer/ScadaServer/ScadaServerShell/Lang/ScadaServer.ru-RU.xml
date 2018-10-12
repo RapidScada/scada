@@ -106,4 +106,7 @@
     <Phrase key="chkWriteEv">Запись данных</Phrase>
     <Phrase key="chkWriteEvCopy">Запись копии данных</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
+    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+  </Dictionary>
 </ScadaServerDictionaries>

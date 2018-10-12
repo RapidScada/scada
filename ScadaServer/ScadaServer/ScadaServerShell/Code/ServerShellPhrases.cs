@@ -53,6 +53,9 @@ namespace Scada.Server.Shell.Code
         // Scada.Server.Shell.Forms.FrmModules
         public static string ModuleNotFound { get; private set; }
 
+        // Scada.Server.Shell.Forms.FrmStats
+        public static string ConnectionUndefined { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Server.Shell.Code.ServerShell");
@@ -74,6 +77,9 @@ namespace Scada.Server.Shell.Code
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmModules");
             ModuleNotFound = dict.GetPhrase("ModuleNotFound");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmStats");
+            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
         }
     }
 }
