@@ -61,8 +61,8 @@ namespace Scada.Server.Shell.Forms
         private bool localMode;           // read logs from files directly
         private RelPath statePath;        // path of the remote state file
         private RelPath logPath;          // path of the remote log file
-        private DateTime stateFileAge;
-        private DateTime logFileAge;
+        private DateTime stateFileAge;    // last write time of the remote state file
+        private DateTime logFileAge;      // last write time of the remote log file
 
 
         /// <summary>
