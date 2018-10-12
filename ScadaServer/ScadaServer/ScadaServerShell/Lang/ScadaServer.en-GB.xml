@@ -106,6 +106,9 @@
     <Phrase key="chkWriteEvCopy">Write data copy</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
+    <Phrase key="lblState">Server state</Phrase>
+    <Phrase key="lblLog">Server log</Phrase>
+    <Phrase key="chkPause">Pause</Phrase>
     <Phrase key="ConnectionUndefined">Connection is not defined.</Phrase>
   </Dictionary>
 </ScadaServerDictionaries>

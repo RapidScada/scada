@@ -419,5 +419,39 @@ namespace Scada.Comm
 
             return SaveCmd(cmdDir, sender, BaseValues.CmdTypes.GetCmdTypeCode(cmd.CmdTypeID), cmdParams, out msg);
         }
+
+        /// <summary>
+        /// Получить короткое имя файла журнала линии связи
+        /// </summary>
+        public static string GetLineLogFileName(int lineNum)
+        {
+            string prefix;
+
+            if (lineNum < 10)
+                prefix = "line00";
+            else if (lineNum < 100)
+                prefix = "line0";
+            else
+                prefix = "line";
+
+            return prefix + lineNum + ".log";
+        }
+
+        /// <summary>
+        /// Получить короткое имя файла состояния линии связи
+        /// </summary>
+        public static string GetLineStateFileName(int lineNum)
+        {
+            string prefix;
+
+            if (lineNum < 10)
+                prefix = "line00";
+            else if (lineNum < 100)
+                prefix = "line0";
+            else
+                prefix = "line";
+
+            return prefix + lineNum + ".txt";
+        }
     }
 }

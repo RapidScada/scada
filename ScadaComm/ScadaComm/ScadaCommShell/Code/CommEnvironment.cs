@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Connector;
 using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
@@ -45,6 +46,12 @@ namespace Scada.Comm.Shell.Code
         /// Gets or sets the user interface of the drivers accessed by full file name.
         /// </summary>
         public Dictionary<string, KPView> KPViews { get; set; }
+
+        /// <summary>
+        /// Gets or sets the client of the Agent service.
+        /// </summary>
+        /// <remarks>Null allowed.</remarks>
+        public IAgentClient AgentClient { get; set; }
 
         /// <summary>
         /// Gets the application error log.

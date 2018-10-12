@@ -435,8 +435,9 @@ namespace Scada.Admin.App.Forms
             {
                 if (instance.LoadAppSettings(out string errMsg))
                 {
-                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance);
-                    liveInstance.CommEnvironment = CreateCommEnvironment(instance);
+                    IAgentClient agentClient = CreateAgentClient(instance);
+                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance, agentClient);
+                    liveInstance.CommEnvironment = CreateCommEnvironment(instance, agentClient);
                     explorerBuilder.FillInstanceNode(instanceNode);
                 }
                 else
@@ -485,13 +486,13 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Creates a new Server environment for the specified instance.
         /// </summary>
-        private ServerEnvironment CreateServerEnvironment(Instance instance)
+        private ServerEnvironment CreateServerEnvironment(Instance instance, IAgentClient agentClient)
         {
             return new ServerEnvironment()
             {
                 AppDirs = new ServerDirs(appData.AppSettings.ServerDir, instance),
                 ModuleViews = moduleViews,
-                AgentClient = CreateAgentClient(instance),
+                AgentClient = agentClient,
                 ErrLog = log
             };
         }
@@ -499,12 +500,13 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Creates a new Communicator environment for the specified instance.
         /// </summary>
-        private CommEnvironment CreateCommEnvironment(Instance instance)
+        private CommEnvironment CreateCommEnvironment(Instance instance, IAgentClient agentClient)
         {
             return new CommEnvironment()
             {
                 AppDirs = new CommDirs(appData.AppSettings.CommDir, instance),
                 KPViews = kpViews,
+                AgentClient = agentClient,
                 ErrLog = log
             };
         }
@@ -532,8 +534,16 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private void UpdateAgentClient(LiveInstance liveInstance)
         {
-            if (liveInstance.ServerEnvironment != null)
-                liveInstance.ServerEnvironment.AgentClient = CreateAgentClient(liveInstance.Instance);
+            if (liveInstance.ServerEnvironment != null || liveInstance.CommEnvironment != null)
+            {
+                IAgentClient agentClient = CreateAgentClient(liveInstance.Instance);
+
+                if (liveInstance.ServerEnvironment != null)
+                    liveInstance.ServerEnvironment.AgentClient = agentClient;
+
+                if (liveInstance.CommEnvironment != null)
+                    liveInstance.CommEnvironment.AgentClient = agentClient;
+            }
         }
 
         /// <summary>

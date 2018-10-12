@@ -78,8 +78,8 @@ namespace Scada.Comm.Shell.Code
                 SelectedImageKey = "comm_stats.png",
                 Tag = new TreeNodeTag()
                 {
-                    FormType = null,
-                    FormArgs = new object[] { commLine },
+                    FormType = typeof(FrmLineStats),
+                    FormArgs = new object[] { commLine, environment },
                     RelatedObject = commLine,
                     NodeType = CommNodeType.LineStats
                 }

@@ -194,15 +194,15 @@ namespace Scada.UI
             int selectionLength = richTextBox.SelectionLength;
             richTextBox.Text = string.Join(Environment.NewLine, lines);
 
+            if (Colorize)
+                ApplyColors(lines);
+
             if (AutoScroll)
                 richTextBox.Select(richTextBox.TextLength, 0);
             else
                 richTextBox.Select(selectionStart, selectionLength);
 
             richTextBox.ScrollToCaret();
-
-            if (Colorize)
-                ApplyColors(lines);
         }
 
         /// <summary>

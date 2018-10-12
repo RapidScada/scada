@@ -126,17 +126,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void lbTabs_DrawItem(object sender, DrawItemEventArgs e)
         {
-            // draw the list box item
-            const int PaddingLeft = 5;
-            string text = (string)lbTabs.Items[e.Index];
-            SizeF textSize = e.Graphics.MeasureString(text, lbTabs.Font);
-            Brush brush = e.State.HasFlag(DrawItemState.Selected) ? 
-                SystemBrushes.HighlightText : SystemBrushes.WindowText;
-
-            e.DrawBackground();
-            e.Graphics.DrawString(text, lbTabs.Font, brush, 
-                e.Bounds.Left + PaddingLeft, e.Bounds.Top + (lbTabs.ItemHeight - textSize.Height) / 2);
-            e.DrawFocusRectangle();
+            lbTabs.DrawTabItem(e);
         }
 
         private void lbTabs_SelectedIndexChanged(object sender, EventArgs e)
