@@ -75,6 +75,10 @@ namespace Scada.UI
         /// The last write time of the local log file (UTC).
         /// </summary>
         protected DateTime logFileAge;
+        /// <summary>
+        /// 
+        /// </summary>
+        protected int itemPaddingTop;
 
 
         /// <summary>
@@ -101,6 +105,7 @@ namespace Scada.UI
             this.listBox = listBox ?? throw new ArgumentNullException("listBox");
             logFileName = "";
             logFileAge = DateTime.MinValue;
+            itemPaddingTop = 0;
 
             if (colorize)
             {
@@ -291,12 +296,21 @@ namespace Scada.UI
             if (listBox == null)
                 return;
 
+            Graphics graphics = null;
+            listBox.BeginUpdate();
+
             try
             {
-                listBox.BeginUpdate();
+                if (Colorize)
+                {
+                    graphics = listBox.CreateGraphics();
+                    int lineHeight = (int)graphics.MeasureString("0", listBox.Font).Height;
+                    itemPaddingTop = (listBox.ItemHeight - lineHeight) / 2;
+                    listBox.HorizontalExtent = 0; // needed for horizontal scroll bar
+                }
+
                 int oldLineCnt = listBox.Items.Count;
                 int newLineCnt = lines.Count;
-                int selectedIndex = listBox.SelectedIndex;
                 int topIndex = listBox.TopIndex;
                 int lineIndex = 0;
 
@@ -306,6 +320,12 @@ namespace Scada.UI
                         listBox.Items[lineIndex] = line;
                     else
                         listBox.Items.Add(line);
+
+                    if (graphics != null)
+                    {
+                        int lineWidth = (int)graphics.MeasureString(line, listBox.Font).Width;
+                        listBox.HorizontalExtent = Math.Max(listBox.HorizontalExtent, lineWidth);
+                    }
 
                     lineIndex++;
                 }
@@ -331,6 +351,7 @@ namespace Scada.UI
             finally
             {
                 listBox.EndUpdate();
+                graphics?.Dispose();
             }
         }
 
@@ -372,12 +393,10 @@ namespace Scada.UI
         private void ListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
             string line = (string)listBox.Items[e.Index];
-            int lineHeight = (int)e.Graphics.MeasureString("0", listBox.Font).Height;
             Brush brush = ChooseBrush(line, e.State.HasFlag(DrawItemState.Selected));
 
             e.DrawBackground();
-            e.Graphics.DrawString(line, listBox.Font, brush, 
-                e.Bounds.Left, e.Bounds.Top + (listBox.ItemHeight - lineHeight) / 2);
+            e.Graphics.DrawString(line, listBox.Font, brush, e.Bounds.Left, e.Bounds.Top + itemPaddingTop);
             e.DrawFocusRectangle();
         }
     }
