@@ -13,9 +13,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentTest", "ScadaAgen
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScadaAgentEngine", "ScadaAgentEngine\ScadaAgentEngine.csproj", "{F6408462-F893-4A24-8CB1-C331101F68D6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentCommon", "ScadaAgentCommon\ScadaAgentCommon.csproj", "{3C07180F-F066-4A37-91E6-579CB5E76D73}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ScadaAgentCommon", "ScadaAgentCommon\ScadaAgentCommon.csproj", "{3C07180F-F066-4A37-91E6-579CB5E76D73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentConnector", "ScadaAgentConnector\ScadaAgentConnector.csproj", "{1E1B3570-9512-4515-81DD-3778EA772B19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAgentCommon.UI", "ScadaAgentCommon.UI\ScadaAgentCommon.UI.csproj", "{BB116EF0-EAAF-4EBF-A3A1-0870B7C4CA2B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{1E1B3570-9512-4515-81DD-3778EA772B19}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1E1B3570-9512-4515-81DD-3778EA772B19}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1E1B3570-9512-4515-81DD-3778EA772B19}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB116EF0-EAAF-4EBF-A3A1-0870B7C4CA2B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB116EF0-EAAF-4EBF-A3A1-0870B7C4CA2B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB116EF0-EAAF-4EBF-A3A1-0870B7C4CA2B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB116EF0-EAAF-4EBF-A3A1-0870B7C4CA2B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

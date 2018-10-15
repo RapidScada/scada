@@ -80,8 +80,8 @@ namespace Scada.Server.Shell.Forms
             : this()
         {
             this.environment = environment ?? throw new ArgumentNullException("environment");
-            stateBox = new LogBox(rtbState) { FullLogView = true };
-            logBox = new LogBox(rtbLog) { AutoScroll = true };
+            stateBox = new LogBox(lbState) { FullLogView = true };
+            logBox = new LogBox(lbLog) { AutoScroll = true };
             agentClient = null;
             localMode = false;
             statePath = null;
@@ -100,13 +100,14 @@ namespace Scada.Server.Shell.Forms
 
             if (agentClient == null)
             {
-                rtbState.Text = rtbLog.Text = ServerShellPhrases.ConnectionUndefined;
+                stateBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
+                logBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
                 tmrRefresh.Interval = RemoteRefreshInterval;
             }
             else
             {
-                rtbState.Text = "";
-                rtbLog.Text = "";
+                stateBox.SetFirstLine("Loading..."); // TODO: phrase
+                logBox.SetFirstLine("Loading...");
 
                 if (agentClient.IsLocal)
                 {
@@ -141,7 +142,7 @@ namespace Scada.Server.Shell.Forms
                 }
                 catch (Exception ex)
                 {
-                    rtbState.Text = ex.Message;
+                    stateBox.SetFirstLine(ex.Message);
                     stateFileAge = DateTime.MinValue;
                 }
             });
@@ -161,7 +162,7 @@ namespace Scada.Server.Shell.Forms
                 }
                 catch (Exception ex)
                 {
-                    rtbLog.Text = ex.Message;
+                    logBox.SetFirstLine(ex.Message);
                     logFileAge = DateTime.MinValue;
                 }
             });

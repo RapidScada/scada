@@ -62,10 +62,6 @@ namespace Scada.UI
         /// <summary>
         /// The control to display a log.
         /// </summary>
-        protected readonly RichTextBox richTextBox;
-        /// <summary>
-        /// The control to display a log.
-        /// </summary>
         protected readonly ListBox listBox;
         /// <summary>
         /// The local file name of the log.
@@ -76,7 +72,7 @@ namespace Scada.UI
         /// </summary>
         protected DateTime logFileAge;
         /// <summary>
-        /// 
+        /// Top padding of line text if the list box is drawn manually.
         /// </summary>
         protected int itemPaddingTop;
 
@@ -84,25 +80,10 @@ namespace Scada.UI
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public LogBox(RichTextBox richTextBox)
-        {
-            this.richTextBox = richTextBox ?? throw new ArgumentNullException("richTextBox");
-            richTextBox.HideSelection = false;
-            logFileName = "";
-            logFileAge = DateTime.MinValue;
-
-            FullLogView = false;
-            LogViewSize = DefaultLogViewSize;
-            AutoScroll = false;
-            Colorize = false;
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
         public LogBox(ListBox listBox, bool colorize = false)
         {
             this.listBox = listBox ?? throw new ArgumentNullException("listBox");
+            listBox.KeyDown += ListBox_KeyDown;
             logFileName = "";
             logFileAge = DateTime.MinValue;
             itemPaddingTop = 0;
@@ -172,9 +153,9 @@ namespace Scada.UI
         public bool AutoScroll { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether lines should be colorized depending on key words.
+        /// Gets a value indicating whether lines should be colorized depending on key words.
         /// </summary>
-        public bool Colorize { get; set; }
+        public bool Colorize { get; protected set; }
 
         /// <summary>
         /// Gets or sets the local file name of the log.
@@ -192,43 +173,6 @@ namespace Scada.UI
             }
         }
 
-
-        /// <summary>
-        /// Apply colors to the text box.
-        /// </summary>
-        private void ApplyColors(ICollection<string> lines)
-        {
-            int index = 0;
-
-            foreach (string line in lines)
-            {
-                if (line.StartsWith("send", StringComparison.OrdinalIgnoreCase) ||
-                    line.StartsWith("отправка", StringComparison.OrdinalIgnoreCase))
-                {
-                    richTextBox.Select(index, line.Length);
-                    richTextBox.SelectionColor = Color.Blue;
-                }
-                else if (line.StartsWith("receive", StringComparison.OrdinalIgnoreCase) ||
-                    line.StartsWith("приём", StringComparison.OrdinalIgnoreCase))
-                {
-                    richTextBox.Select(index, line.Length);
-                    richTextBox.SelectionColor = Color.Purple;
-                }
-                else if (line.StartsWith("ok", StringComparison.OrdinalIgnoreCase))
-                {
-                    richTextBox.Select(index, line.Length);
-                    richTextBox.SelectionColor = Color.Green;
-                }
-                else if (line.StartsWith("error", StringComparison.OrdinalIgnoreCase) ||
-                    line.StartsWith("ошибка", StringComparison.OrdinalIgnoreCase))
-                {
-                    richTextBox.Select(index, line.Length);
-                    richTextBox.SelectionColor = Color.Red;
-                }
-
-                index += line.Length + 1 /*new line*/;
-            }
-        }
 
         /// <summary>
         /// Chooses the appropriate brush depending on the line prefix.
@@ -266,32 +210,26 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Sets the text box lines.
+        /// Sets the first line of the list box.
         /// </summary>
-        public void SetLines(ICollection<string> lines)
+        public void SetFirstLine(string s)
         {
-            if (richTextBox == null)
-                return;
-
-            int selectionStart = richTextBox.SelectionStart;
-            int selectionLength = richTextBox.SelectionLength;
-            richTextBox.Text = string.Join(Environment.NewLine, lines);
-
-            if (Colorize)
-                ApplyColors(lines);
-
-            if (AutoScroll)
-                richTextBox.Select(richTextBox.TextLength, 0);
-            else
-                richTextBox.Select(selectionStart, selectionLength);
-
-            richTextBox.ScrollToCaret();
+            try
+            {
+                listBox.BeginUpdate();
+                listBox.Items.Clear();
+                listBox.Items.Add(s);
+            }
+            finally
+            {
+                listBox.EndUpdate();
+            }
         }
 
         /// <summary>
         /// Sets the list box lines.
         /// </summary>
-        public void SetLines2(ICollection<string> lines)
+        public void SetLines(ICollection<string> lines)
         {
             if (listBox == null)
                 return;
@@ -369,21 +307,37 @@ namespace Scada.UI
                             lines.Add(CommonPhrases.NoData);
 
                         SetLines(lines);
-                        SetLines2(lines);
                         logFileAge = newLogFileAge;
                     }
                 }
                 else
                 {
-                    richTextBox.Text = CommonPhrases.FileNotFound;
+                    SetFirstLine(CommonPhrases.FileNotFound);
                 }
             }
             catch (Exception ex)
             {
-                richTextBox.Text = ex.Message;
+                SetFirstLine(ex.Message);
             }
         }
 
+
+        private void ListBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            // copy the selected lines
+            if (e.Modifiers == Keys.Control && e.KeyCode == Keys.C)
+            {
+                StringBuilder selectedText = new StringBuilder();
+
+                foreach (object item in listBox.SelectedItems)
+                {
+                    selectedText.AppendLine(item.ToString());
+                }
+
+                if (selectedText.Length > 0)
+                    Clipboard.SetText(selectedText.ToString());
+            }
+        }
 
         private void ListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
