@@ -41,19 +41,6 @@ namespace Scada.Server.Shell.Forms
     /// </summary>
     public partial class FrmStats : Form
     {
-        /// <summary>
-        /// Log refresh interval on local connection, ms.
-        /// </summary>
-        private const int LocalRefreshInterval = 500;
-        /// <summary>
-        /// Log refresh interval on remote connection, ms.
-        /// </summary>
-        private const int RemoteRefreshInterval = 1000;
-        /// <summary>
-        /// The timer interval when the form is hidden, ms.
-        /// </summary>
-        private const int InactiveTimerInterval = 10000;
-
         private readonly ServerEnvironment environment; // the application environment
         private LogBox stateBox;          // object to refresh state
         private LogBox logBox;            // object to refresh log
@@ -102,7 +89,7 @@ namespace Scada.Server.Shell.Forms
             {
                 stateBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
                 logBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
-                tmrRefresh.Interval = RemoteRefreshInterval;
+                tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else
             {
@@ -112,14 +99,14 @@ namespace Scada.Server.Shell.Forms
                 if (agentClient.IsLocal)
                 {
                     localMode = true;
-                    tmrRefresh.Interval = LocalRefreshInterval;
+                    tmrRefresh.Interval = ScadaUiUtils.LogLocalRefreshInterval;
                     stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppStateFileName);
                     logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppLogFileName);
                 }
                 else
                 {
                     localMode = false;
-                    tmrRefresh.Interval = RemoteRefreshInterval;
+                    tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
                     statePath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppStateFileName);
                     logPath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppLogFileName);
                     stateFileAge = DateTime.MinValue;
@@ -179,9 +166,15 @@ namespace Scada.Server.Shell.Forms
         private void FrmStats_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)
-                tmrRefresh.Interval = localMode ? LocalRefreshInterval : RemoteRefreshInterval;
+            {
+                tmrRefresh.Interval = localMode ?
+                    ScadaUiUtils.LogLocalRefreshInterval :
+                    ScadaUiUtils.LogRemoteRefreshInterval;
+            }
             else
-                tmrRefresh.Interval = InactiveTimerInterval;
+            {
+                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
+            }
         }
 
         private async void tmrRefresh_Tick(object sender, EventArgs e)

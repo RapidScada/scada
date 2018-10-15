@@ -54,6 +54,19 @@ namespace Scada.UI
         /// Адрес англоязычного сайта проекта
         /// </summary>
         private const string WebsiteEn = "http://rapidscada.org";
+        
+        /// <summary>
+        /// Log refresh interval on local connection, ms.
+        /// </summary>
+        public const int LogLocalRefreshInterval = 500;
+        /// <summary>
+        /// Log refresh interval on remote connection, ms.
+        /// </summary>
+        public const int LogRemoteRefreshInterval = 1000;
+        /// <summary>
+        /// The log refresh timer interval when the form is hidden, ms.
+        /// </summary>
+        public const int LogInactiveTimerInterval = 10000;
 
 
         /// <summary>
@@ -202,6 +215,7 @@ namespace Scada.UI
         /// <summary>
         /// Загрузить новые данные в элемент списка из файла
         /// </summary>
+        [Obsolete("Use LogBox")]
         public static void ReloadItems(this ListBox listBox, string fileName, bool fullLoad,
             ref DateTime fileAge)
         {

@@ -35,20 +35,6 @@ namespace Scada.Comm.Shell.Code
     public static class CommShellUtils
     {
         /// <summary>
-        /// Log refresh interval on local connection, ms.
-        /// </summary>
-        public const int LogLocalRefreshInterval = 500;
-        /// <summary>
-        /// Log refresh interval on remote connection, ms.
-        /// </summary>
-        public const int LogRemoteRefreshInterval = 1000;
-        /// <summary>
-        /// The log refresh timer interval when the form is hidden, ms.
-        /// </summary>
-        public const int LogInactiveTimerInterval = 10000;
-
-
-        /// <summary>
         /// Draws a list box item representing a tab.
         /// </summary>
         public static void DrawTabItem(this ListBox listBox, DrawItemEventArgs e)

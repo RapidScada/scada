@@ -43,6 +43,10 @@ namespace Scada.Comm.Shell.Code
         public static string DeviceNode { get; private set; }
         public static string StatsNode { get; private set; }
 
+        // Scada.Comm.Shell.Forms
+        public static string ConnectionUndefined { get; private set; }
+        public static string Loading { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Comm.Shell.Code.CommShell");
@@ -54,6 +58,10 @@ namespace Scada.Comm.Shell.Code
             LineStatsNode = dict.GetPhrase("LineStatsNode");
             DeviceNode = dict.GetPhrase("DeviceNode");
             StatsNode = dict.GetPhrase("StatsNode");
+
+            dict = Localization.GetDictionary("Scada.Comm.Shell.Forms");
+            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
+            Loading = dict.GetPhrase("Loading");
         }
     }
 }

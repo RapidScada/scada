@@ -80,24 +80,24 @@ namespace Scada.Comm.Shell.Forms
 
             if (agentClient == null)
             {
-                logBox.SetFirstLine("Connection undefined"); // TODO: phrase
-                tmrRefresh.Interval = CommShellUtils.LogRemoteRefreshInterval;
+                logBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
+                tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else
             {
-                logBox.SetFirstLine("Loading..."); // TODO: phrase
+                logBox.SetFirstLine(CommShellPhrases.Loading);
                 string stateFileName = CommUtils.GetLineStateFileName(commLine.Number);
                 string logFileName = CommUtils.GetLineLogFileName(commLine.Number);
 
                 if (agentClient.IsLocal)
                 {
-                    tmrRefresh.Interval = CommShellUtils.LogLocalRefreshInterval;
+                    tmrRefresh.Interval = ScadaUiUtils.LogLocalRefreshInterval;
                     stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, stateFileName);
                     logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, logFileName);
                 }
                 else
                 {
-                    tmrRefresh.Interval = CommShellUtils.LogRemoteRefreshInterval;
+                    tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
                     stateBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, stateFileName);
                     logBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, logFileName);
                 }
@@ -128,12 +128,12 @@ namespace Scada.Comm.Shell.Forms
             if (Visible)
             {
                 tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
-                    CommShellUtils.LogLocalRefreshInterval :
-                    CommShellUtils.LogRemoteRefreshInterval;
+                    ScadaUiUtils.LogLocalRefreshInterval :
+                    ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else
             {
-                tmrRefresh.Interval = CommShellUtils.LogInactiveTimerInterval;
+                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
             }
         }
 

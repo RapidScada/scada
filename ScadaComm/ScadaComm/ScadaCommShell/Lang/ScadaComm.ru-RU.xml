@@ -113,6 +113,10 @@
     <Phrase key="DeviceNode">[{0}] {1}</Phrase>
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms">
+    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+    <Phrase key="Loading">Загрузка...</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Общие параметры</Phrase>
     <Phrase key="gbServerConn">Связь с Сервером</Phrase>
