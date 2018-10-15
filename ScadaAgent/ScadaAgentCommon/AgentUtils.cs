@@ -23,8 +23,6 @@
  * Modified : 2018
  */
 
-using System.Runtime.InteropServices;
-
 namespace Scada.Agent
 {
     /// <summary>
@@ -37,16 +35,5 @@ namespace Scada.Agent
         /// Версия Агента
         /// </summary>
         public const string AppVersion = "5.0.1.0";
-
-        /// <summary>
-        /// Проверить, что программное обеспечение работает под управлением Windows
-        /// </summary>
-        public static bool IsWindows
-        {
-            get
-            {
-                return RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
-            }
-        }
     }
 }

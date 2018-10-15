@@ -174,7 +174,7 @@ namespace Scada.Admin.App.Forms.Deployment
             Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlTransferSettings");
             Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
 
-            if (AdminUtils.IsRunningOnMono)
+            if (ScadaUtils.IsRunningOnMono)
             {
                 int ctrlWidth = btnClose.Right - ctrlProfileSelector.Left;
                 ctrlProfileSelector.Width = ctrlWidth;

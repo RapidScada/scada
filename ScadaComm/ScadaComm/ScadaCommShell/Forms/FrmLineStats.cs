@@ -130,8 +130,10 @@ namespace Scada.Comm.Shell.Forms
                 {
                     if (agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out ICollection<string> lines))
                     {
-                        logBox.SetLines(lines);
-                        logBox2.SetLines(lines);
+                        //logBox.SetLines(lines);
+                        DateTime t0 = DateTime.UtcNow;
+                        logBox2.SetLines2(lines);
+                        rtbLog.Text = (DateTime.UtcNow - t0).TotalMilliseconds.ToString("N0");
                     }
                 }
                 catch (Exception ex)
@@ -192,7 +194,7 @@ namespace Scada.Comm.Shell.Forms
 
                             if (!chkPause.Checked)
                             {
-                                logBox.RefreshFromFile();
+                                //logBox.RefreshFromFile();
                                 logBox2.RefreshFromFile();
                             }
                         }

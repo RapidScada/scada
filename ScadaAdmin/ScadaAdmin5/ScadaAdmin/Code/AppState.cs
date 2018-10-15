@@ -57,7 +57,7 @@ namespace Scada.Admin.App.Code
         private void SetToDefault()
         {
             MainFormState = new FormState();
-            ProjectDir = AdminUtils.IsRunningOnWin ? @"C:\SCADA\Projects\" : "";
+            ProjectDir = ScadaUtils.IsRunningOnWin ? @"C:\SCADA\Projects\" : "";
         }
     }
 }

@@ -84,7 +84,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            if (AdminUtils.IsRunningOnMono)
+            if (ScadaUtils.IsRunningOnMono)
             {
                 // because of the bug in Mono 5.12.0.301
                 dataGridView.AllowUserToAddRows = false;

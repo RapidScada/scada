@@ -1228,7 +1228,7 @@ namespace Scada.Admin.App.Forms
             {
                 if (File.Exists(path))
                 {
-                    if (AdminUtils.IsRunningOnWin)
+                    if (ScadaUtils.IsRunningOnWin)
                         Process.Start("explorer.exe", "/select, \"" + path + "\"");
                     else
                         Process.Start(Path.GetDirectoryName(path));

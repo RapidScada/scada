@@ -167,7 +167,7 @@ namespace Scada.Agent.Engine
         /// </summary>
         private string GetServiceBatchFile(ServiceCommand command)
         {
-            string ext = AgentUtils.IsWindows ? ".bat" : ".sh";
+            string ext = ScadaUtils.IsRunningOnWin ? ".bat" : ".sh";
 
             switch (command)
             {

@@ -32,8 +32,8 @@ using System.Text;
 namespace Scada
 {
     /// <summary>
-    /// The class contains utility methods for the whole system
-    /// <para>Класс, содержащий вспомогательные методы для всей системы</para>
+    /// The class contains utility methods for the whole system.
+    /// <para>Класс, содержащий вспомогательные методы для всей системы.</para>
     /// </summary>
     public static partial class ScadaUtils
     {
@@ -59,6 +59,14 @@ namespace Scada
         /// </summary>
         /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
         public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
+        /// <summary>
+        /// Determines that the application is running on Windows.
+        /// </summary>
+        public static readonly bool IsRunningOnWin = IsWindows(Environment.OSVersion);
+        /// <summary>
+        /// Determines that the application is running on Mono Framework.
+        /// </summary>
+        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
 
 
         /// <summary>
@@ -89,6 +97,17 @@ namespace Scada
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Check whether the application is running on Windows.
+        /// </summary>
+        private static bool IsWindows(OperatingSystem os)
+        {
+            // since .NET 4.7.1 change to RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            PlatformID pid = os.Platform;
+            return pid == PlatformID.Win32NT || pid == PlatformID.Win32S ||
+                pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
         }
 
 

@@ -37,7 +37,7 @@ namespace Scada.Admin
         public AdminSettings()
         {
             // TODO: load settings from file
-            if (AdminUtils.IsRunningOnWin)
+            if (ScadaUtils.IsRunningOnWin)
             {
                 ServerDir = @"C:\SCADA\ScadaServer\";
                 CommDir = @"C:\SCADA\ScadaComm\";

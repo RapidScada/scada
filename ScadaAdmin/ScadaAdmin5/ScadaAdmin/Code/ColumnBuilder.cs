@@ -84,7 +84,7 @@ namespace Scada.Admin.App.Code
         private DataGridViewColumn NewComboBoxColumn(
             string dataPropertyName, string valueMember, string displayMember, object dataSource)
         {
-            return AdminUtils.IsRunningOnMono ?
+            return ScadaUtils.IsRunningOnMono ?
                 NewTextBoxColumn(dataPropertyName) /*because of the bugs in Mono*/ :
                 new DataGridViewComboBoxColumn
                 {

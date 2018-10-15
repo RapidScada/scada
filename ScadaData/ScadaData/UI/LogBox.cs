@@ -301,41 +301,32 @@ namespace Scada.UI
 
             try
             {
-                if (Colorize)
+                if (listBox.DrawMode == DrawMode.OwnerDrawFixed)
                 {
                     graphics = listBox.CreateGraphics();
                     int lineHeight = (int)graphics.MeasureString("0", listBox.Font).Height;
                     itemPaddingTop = (listBox.ItemHeight - lineHeight) / 2;
-                    listBox.HorizontalExtent = 0; // needed for horizontal scroll bar
                 }
 
-                int oldLineCnt = listBox.Items.Count;
                 int newLineCnt = lines.Count;
+                int selIndex = listBox.SelectedIndex;
                 int topIndex = listBox.TopIndex;
-                int lineIndex = 0;
+                int maxLineWidth = 0;
+
+                listBox.Items.Clear();
 
                 foreach (string line in lines)
                 {
-                    if (lineIndex < oldLineCnt)
-                        listBox.Items[lineIndex] = line;
-                    else
-                        listBox.Items.Add(line);
+                    listBox.Items.Add(line);
 
                     if (graphics != null)
                     {
                         int lineWidth = (int)graphics.MeasureString(line, listBox.Font).Width;
-                        listBox.HorizontalExtent = Math.Max(listBox.HorizontalExtent, lineWidth);
+                        maxLineWidth = Math.Max(maxLineWidth, lineWidth);
                     }
-
-                    lineIndex++;
                 }
 
-                for (int i = oldLineCnt - 1; i >= newLineCnt; i--)
-                {
-                    listBox.Items.RemoveAt(i);
-                }
-
-                if (newLineCnt > 0)
+                if (newLineCnt > 0 && !ScadaUtils.IsRunningOnMono)
                 {
                     if (AutoScroll)
                     {
@@ -344,9 +335,13 @@ namespace Scada.UI
                     }
                     else
                     {
+                        listBox.SelectedIndex = Math.Min(selIndex, newLineCnt - 1);
                         listBox.TopIndex = Math.Min(topIndex, newLineCnt - 1);
                     }
                 }
+
+                if (graphics != null)
+                    listBox.HorizontalExtent = maxLineWidth;
             }
             finally
             {
@@ -392,12 +387,15 @@ namespace Scada.UI
 
         private void ListBox_DrawItem(object sender, DrawItemEventArgs e)
         {
-            string line = (string)listBox.Items[e.Index];
-            Brush brush = ChooseBrush(line, e.State.HasFlag(DrawItemState.Selected));
+            if (e.Index >= 0)
+            {
+                string line = (string)listBox.Items[e.Index];
+                Brush brush = ChooseBrush(line, e.State.HasFlag(DrawItemState.Selected));
 
-            e.DrawBackground();
-            e.Graphics.DrawString(line, listBox.Font, brush, e.Bounds.Left, e.Bounds.Top + itemPaddingTop);
-            e.DrawFocusRectangle();
+                e.DrawBackground();
+                e.Graphics.DrawString(line, listBox.Font, brush, e.Bounds.Left, e.Bounds.Top + itemPaddingTop);
+                e.DrawFocusRectangle();
+            }
         }
     }
 }

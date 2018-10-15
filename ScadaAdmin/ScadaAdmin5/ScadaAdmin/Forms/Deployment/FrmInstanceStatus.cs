@@ -138,7 +138,7 @@ namespace Scada.Admin.App.Forms.Deployment
             Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
             Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmInstanceStatus");
 
-            if (AdminUtils.IsRunningOnMono)
+            if (ScadaUtils.IsRunningOnMono)
                 ctrlProfileSelector.Width = gbStatus.Width;
 
             ctrlProfileSelector.Init(appData, deploymentSettings, instance);
