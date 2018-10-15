@@ -44,5 +44,15 @@
     <Compile Include="RemoteLogBox.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
+      <Project>{3C07180F-F066-4A37-91E6-579CB5E76D73}</Project>
+      <Name>ScadaAgentCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaAgentConnector\ScadaAgentConnector.csproj">
+      <Project>{1e1b3570-9512-4515-81dd-3778ea772b19}</Project>
+      <Name>ScadaAgentConnector</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

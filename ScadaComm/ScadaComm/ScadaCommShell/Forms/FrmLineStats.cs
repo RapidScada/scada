@@ -25,6 +25,7 @@
 
 using Scada.Agent;
 using Scada.Agent.Connector;
+using Scada.Agent.UI;
 using Scada.Comm.Shell.Code;
 using Scada.UI;
 using System;
@@ -43,14 +44,8 @@ namespace Scada.Comm.Shell.Forms
     {
         private readonly Settings.CommLine commLine;  // the communication line settings to edit
         private readonly CommEnvironment environment; // the application environment
-        private LogBox stateBox;          // object to refresh state
-        private LogBox logBox;            // object to refresh log
-        private IAgentClient agentClient; // the cuurent Agent client
-        private bool localMode;           // read logs from files directly
-        private RelPath statePath;        // path of the remote state file
-        private RelPath logPath;          // path of the remote log file
-        private DateTime stateFileAge;    // last write time of the remote state file
-        private DateTime logFileAge;      // last write time of the remote log file
+        private RemoteLogBox stateBox;    // object to refresh state
+        private RemoteLogBox logBox;      // object to refresh log
 
 
         /// <summary>
@@ -69,14 +64,8 @@ namespace Scada.Comm.Shell.Forms
         {
             this.commLine = commLine ?? throw new ArgumentNullException("commLine");
             this.environment = environment ?? throw new ArgumentNullException("environment");
-            stateBox = new LogBox(lbLog) { FullLogView = true };
-            logBox = new LogBox(lbLog, true) { AutoScroll = true };
-            agentClient = null;
-            localMode = false;
-            statePath = null;
-            logPath = null;
-            stateFileAge = DateTime.MinValue;
-            logFileAge = DateTime.MinValue;
+            stateBox = new RemoteLogBox(lbLog) { FullLogView = true };
+            logBox = new RemoteLogBox(lbLog, true) { AutoScroll = true };
         }
 
 
@@ -85,7 +74,9 @@ namespace Scada.Comm.Shell.Forms
         /// </summary>
         private void InitRefresh()
         {
-            agentClient = environment.AgentClient;
+            IAgentClient agentClient = environment.AgentClient;
+            stateBox.AgentClient = agentClient;
+            logBox.AgentClient = agentClient;
 
             if (agentClient == null)
             {
@@ -100,43 +91,17 @@ namespace Scada.Comm.Shell.Forms
 
                 if (agentClient.IsLocal)
                 {
-                    localMode = true;
                     tmrRefresh.Interval = CommShellUtils.LogLocalRefreshInterval;
                     stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, stateFileName);
                     logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, logFileName);
                 }
                 else
                 {
-                    localMode = false;
                     tmrRefresh.Interval = CommShellUtils.LogRemoteRefreshInterval;
-                    statePath = new RelPath(ConfigParts.Comm, AppFolder.Log, stateFileName);
-                    logPath = new RelPath(ConfigParts.Comm, AppFolder.Log, logFileName);
-                    stateFileAge = DateTime.MinValue;
-                    logFileAge = DateTime.MinValue;
+                    stateBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, stateFileName);
+                    logBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, logFileName);
                 }
             }
-        }
-
-        /// <summary>
-        /// Refresh the communication line log asynchronously.
-        /// </summary>
-        private async Task RefreshLogAsync()
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    if (agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out ICollection<string> lines))
-                    {
-                        logBox.SetLines(lines);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    logBox.SetFirstLine(ex.Message);
-                    logFileAge = DateTime.MinValue;
-                }
-            });
         }
 
 
@@ -162,7 +127,7 @@ namespace Scada.Comm.Shell.Forms
         {
             if (Visible)
             {
-                tmrRefresh.Interval = localMode ?
+                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
                     CommShellUtils.LogLocalRefreshInterval :
                     CommShellUtils.LogRemoteRefreshInterval;
             }
@@ -178,26 +143,12 @@ namespace Scada.Comm.Shell.Forms
             {
                 tmrRefresh.Stop();
 
-                if (agentClient == environment.AgentClient)
+                if (stateBox.AgentClient == environment.AgentClient)
                 {
-                    if (agentClient != null)
-                    {
-                        // refresh logs
-                        if (localMode)
-                        {
-                            //stateBox.RefreshFromFile();
+                    //await Task.Run(() => stateBox.Refresh());
 
-                            if (!chkPause.Checked)
-                                logBox.RefreshFromFile();
-                        }
-                        else
-                        {
-                            //await RefreshStateAsync();
-
-                            if (!chkPause.Checked)
-                                await RefreshLogAsync();
-                        }
-                    }
+                    if (!chkPause.Checked)
+                        await Task.Run(() => logBox.Refresh());
                 }
                 else
                 {
