@@ -41,6 +41,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaAgent\ScadaAgentCommon\bin\Release\netstandard2.0\ScadaAgentCommon.dll</HintPath>
     </Reference>
+    <Reference Include="ScadaAgentCommon.UI">
+      <HintPath>..\..\..\ScadaAgent\ScadaAgentCommon.UI\bin\Release\ScadaAgentCommon.UI.dll</HintPath>
+    </Reference>
     <Reference Include="ScadaAgentConnector">
       <HintPath>..\..\..\ScadaAgent\ScadaAgentConnector\bin\Release\ScadaAgentConnector.dll</HintPath>
     </Reference>

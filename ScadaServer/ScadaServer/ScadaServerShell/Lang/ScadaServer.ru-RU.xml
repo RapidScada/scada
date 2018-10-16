@@ -22,6 +22,10 @@
     <Phrase key="GeneratorNode">Генератор</Phrase>
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms">
+    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+    <Phrase key="Loading">Загрузка...</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Общие параметры</Phrase>
     <Phrase key="gbConn">Соединение</Phrase>

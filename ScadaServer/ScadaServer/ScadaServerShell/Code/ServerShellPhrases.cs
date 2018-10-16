@@ -45,6 +45,10 @@ namespace Scada.Server.Shell.Code
         public static string GeneratorNode { get; private set; }
         public static string StatsNode { get; private set; }
 
+        // Scada.Server.Shell.Forms
+        public static string ConnectionUndefined { get; private set; }
+        public static string Loading { get; private set; }
+
         // Scada.Server.Shell.Forms.FrmCommonParams
         public static string ChooseItfDir { get; private set; }
         public static string ChooseArcDir { get; private set; }
@@ -52,9 +56,6 @@ namespace Scada.Server.Shell.Code
 
         // Scada.Server.Shell.Forms.FrmModules
         public static string ModuleNotFound { get; private set; }
-
-        // Scada.Server.Shell.Forms.FrmStats
-        public static string ConnectionUndefined { get; private set; }
 
         public static void Init()
         {
@@ -70,6 +71,10 @@ namespace Scada.Server.Shell.Code
             GeneratorNode = dict.GetPhrase("GeneratorNode");
             StatsNode = dict.GetPhrase("StatsNode");
 
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms");
+            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
+            Loading = dict.GetPhrase("Loading");
+
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmCommonParams");
             ChooseItfDir = dict.GetPhrase("ChooseItfDir");
             ChooseArcDir = dict.GetPhrase("ChooseArcDir");
@@ -77,9 +82,6 @@ namespace Scada.Server.Shell.Code
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmModules");
             ModuleNotFound = dict.GetPhrase("ModuleNotFound");
-
-            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmStats");
-            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
         }
     }
 }

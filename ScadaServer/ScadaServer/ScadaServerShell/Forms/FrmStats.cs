@@ -25,10 +25,10 @@
 
 using Scada.Agent;
 using Scada.Agent.Connector;
+using Scada.Agent.UI;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -42,14 +42,8 @@ namespace Scada.Server.Shell.Forms
     public partial class FrmStats : Form
     {
         private readonly ServerEnvironment environment; // the application environment
-        private LogBox stateBox;          // object to refresh state
-        private LogBox logBox;            // object to refresh log
-        private IAgentClient agentClient; // the cuurent Agent client
-        private bool localMode;           // read logs from files directly
-        private RelPath statePath;        // path of the remote state file
-        private RelPath logPath;          // path of the remote log file
-        private DateTime stateFileAge;    // last write time of the remote state file
-        private DateTime logFileAge;      // last write time of the remote log file
+        private RemoteLogBox stateBox; // object to refresh state
+        private RemoteLogBox logBox;   // object to refresh log
 
 
         /// <summary>
@@ -67,14 +61,8 @@ namespace Scada.Server.Shell.Forms
             : this()
         {
             this.environment = environment ?? throw new ArgumentNullException("environment");
-            stateBox = new LogBox(lbState) { FullLogView = true };
-            logBox = new LogBox(lbLog) { AutoScroll = true };
-            agentClient = null;
-            localMode = false;
-            statePath = null;
-            logPath = null;
-            stateFileAge = DateTime.MinValue;
-            logFileAge = DateTime.MinValue;
+            stateBox = new RemoteLogBox(lbState) { FullLogView = true };
+            logBox = new RemoteLogBox(lbLog) { AutoScroll = true };
         }
 
 
@@ -83,7 +71,9 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         private void InitRefresh()
         {
-            agentClient = environment.AgentClient;
+            IAgentClient agentClient = environment.AgentClient;
+            stateBox.AgentClient = agentClient;
+            logBox.AgentClient = agentClient;
 
             if (agentClient == null)
             {
@@ -93,66 +83,22 @@ namespace Scada.Server.Shell.Forms
             }
             else
             {
-                stateBox.SetFirstLine("Loading..."); // TODO: phrase
-                logBox.SetFirstLine("Loading...");
+                stateBox.SetFirstLine(ServerShellPhrases.Loading);
+                logBox.SetFirstLine(ServerShellPhrases.Loading);
 
                 if (agentClient.IsLocal)
                 {
-                    localMode = true;
                     tmrRefresh.Interval = ScadaUiUtils.LogLocalRefreshInterval;
                     stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppStateFileName);
                     logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, ServerUtils.AppLogFileName);
                 }
                 else
                 {
-                    localMode = false;
                     tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
-                    statePath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppStateFileName);
-                    logPath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppLogFileName);
-                    stateFileAge = DateTime.MinValue;
-                    logFileAge = DateTime.MinValue;
+                    stateBox.LogPath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppStateFileName);
+                    logBox.LogPath = new RelPath(ConfigParts.Server, AppFolder.Log, ServerUtils.AppLogFileName);
                 }
             }
-        }
-        
-        /// <summary>
-        /// Refresh the server state asynchronously.
-        /// </summary>
-        private async Task RefreshStateAsync()
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    if (agentClient.ReadLog(statePath, ref stateFileAge, out ICollection<string> lines))
-                        stateBox.SetLines(lines);
-                }
-                catch (Exception ex)
-                {
-                    stateBox.SetFirstLine(ex.Message);
-                    stateFileAge = DateTime.MinValue;
-                }
-            });
-        }
-
-        /// <summary>
-        /// Refresh the server log asynchronously.
-        /// </summary>
-        private async Task RefreshLogAsync()
-        {
-            await Task.Run(() =>
-            {
-                try
-                {
-                    if (agentClient.ReadLog(logPath, logBox.LogViewSize, ref logFileAge, out ICollection<string> lines))
-                        logBox.SetLines(lines);
-                }
-                catch (Exception ex)
-                {
-                    logBox.SetFirstLine(ex.Message);
-                    logFileAge = DateTime.MinValue;
-                }
-            });
         }
 
 
@@ -167,7 +113,7 @@ namespace Scada.Server.Shell.Forms
         {
             if (Visible)
             {
-                tmrRefresh.Interval = localMode ?
+                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
                     ScadaUiUtils.LogLocalRefreshInterval :
                     ScadaUiUtils.LogRemoteRefreshInterval;
             }
@@ -183,26 +129,12 @@ namespace Scada.Server.Shell.Forms
             {
                 tmrRefresh.Stop();
 
-                if (agentClient == environment.AgentClient)
+                if (stateBox.AgentClient == environment.AgentClient)
                 {
-                    if (agentClient != null)
-                    {
-                        // refresh logs
-                        if (localMode)
-                        {
-                            stateBox.RefreshFromFile();
+                    await Task.Run(() => stateBox.Refresh());
 
-                            if (!chkPause.Checked)
-                                logBox.RefreshFromFile();
-                        }
-                        else
-                        {
-                            await RefreshStateAsync();
-
-                            if (!chkPause.Checked)
-                                await RefreshLogAsync();
-                        }
-                    }
+                    if (!chkPause.Checked)
+                        await Task.Run(() => logBox.Refresh());
                 }
                 else
                 {
