@@ -570,16 +570,16 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Saves the Communicator settings and optionally updates the explorer.
         /// </summary>
-        private bool SaveCommSettigns(Instance instance, TreeNode commLineNode)
+        private bool SaveCommSettigns(LiveInstance liveInstance, TreeNode commLineNode)
         {
-            if (instance.CommApp.SaveSettings(out string errMsg))
+            if (liveInstance.Instance.CommApp.SaveSettings(out string errMsg))
             {
                 if (commLineNode != null)
                 {
                     try
                     {
                         tvExplorer.BeginUpdate();
-                        commShell.UpdateCommLineNode(commLineNode);
+                        commShell.UpdateCommLineNode(commLineNode, liveInstance.CommEnvironment);
                         UpdateChildFormHints(commLineNode);
                     }
                     finally
@@ -739,7 +739,7 @@ namespace Scada.Admin.App.Forms
                 {
                     // save the Communicator settings
                     TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
-                    if (!SaveCommSettigns(liveInstance.Instance, commLineNode))
+                    if (!SaveCommSettigns(liveInstance, commLineNode))
                         e.Cancel = true;
                 }
             }
@@ -1529,7 +1529,7 @@ namespace Scada.Admin.App.Forms
                 commLineNode.ContextMenuStrip = cmsCommLine;
                 commLineNode.Expand();
                 tvExplorer.Insert(commLinesNode, commLineNode);
-                SaveCommSettigns(liveInstance.Instance, null);
+                SaveCommSettigns(liveInstance, null);
             }
         }
 
@@ -1542,7 +1542,7 @@ namespace Scada.Admin.App.Forms
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 tvExplorer.MoveUpSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
-                SaveCommSettigns(liveInstance.Instance, null);
+                SaveCommSettigns(liveInstance, null);
             }
         }
 
@@ -1555,7 +1555,7 @@ namespace Scada.Admin.App.Forms
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
                 tvExplorer.MoveDownSelectedNode(TreeViewUtils.MoveBehavior.WithinParent);
-                SaveCommSettigns(liveInstance.Instance, null);
+                SaveCommSettigns(liveInstance, null);
             }
         }
 
@@ -1571,7 +1571,7 @@ namespace Scada.Admin.App.Forms
             {
                 CloseChildForms(selectedNode);
                 tvExplorer.RemoveSelectedNode();
-                SaveCommSettigns(liveInstance.Instance, null);
+                SaveCommSettigns(liveInstance, null);
             }
         }
     }

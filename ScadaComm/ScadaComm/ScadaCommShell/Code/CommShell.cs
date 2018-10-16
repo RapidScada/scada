@@ -87,7 +87,7 @@ namespace Scada.Comm.Shell.Code
 
             foreach (Settings.KP kp in commLine.ReqSequence)
             {
-                lineSubNodes.Add(CreateDeviceNode(kp));
+                lineSubNodes.Add(CreateDeviceNode(kp, environment));
             }
 
             return commLineNode;
@@ -96,7 +96,7 @@ namespace Scada.Comm.Shell.Code
         /// <summary>
         /// Creates a node that represents the device.
         /// </summary>
-        private TreeNode CreateDeviceNode(Settings.KP kp)
+        private TreeNode CreateDeviceNode(Settings.KP kp, CommEnvironment environment)
         {
             return new TreeNode(string.Format(CommShellPhrases.DeviceNode, kp.Number, kp.Name))
             {
@@ -104,8 +104,8 @@ namespace Scada.Comm.Shell.Code
                 SelectedImageKey = "comm_device.png",
                 Tag = new TreeNodeTag()
                 {
-                    FormType = null,
-                    FormArgs = new object[] { kp },
+                    FormType = typeof(FrmDeviceData),
+                    FormArgs = new object[] { kp, environment },
                     RelatedObject = kp,
                     NodeType = CommNodeType.Device
                 }
@@ -215,7 +215,7 @@ namespace Scada.Comm.Shell.Code
         /// <summary>
         /// Updates labels of the nodes that represent a communication line.
         /// </summary>
-        public void UpdateCommLineNode(TreeNode commLineNode)
+        public void UpdateCommLineNode(TreeNode commLineNode, CommEnvironment environment)
         {
             if (commLineNode == null)
                 throw new ArgumentNullException("commLineNode");
@@ -234,7 +234,7 @@ namespace Scada.Comm.Shell.Code
             // add new device nodes
             foreach (Settings.KP kp in commLine.ReqSequence)
             {
-                commLineNode.Nodes.Add(CreateDeviceNode(kp));
+                commLineNode.Nodes.Add(CreateDeviceNode(kp, environment));
             }
         }
     }

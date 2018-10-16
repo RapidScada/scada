@@ -89,6 +89,12 @@
     <Compile Include="Forms\FrmCommonParams.Designer.cs">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmDeviceData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmDeviceData.Designer.cs">
+      <DependentUpon>FrmDeviceData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmDrivers.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -155,6 +161,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmCommonParams.resx">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmDeviceData.resx">
+      <DependentUpon>FrmDeviceData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmDrivers.resx">
       <DependentUpon>FrmDrivers.cs</DependentUpon>
