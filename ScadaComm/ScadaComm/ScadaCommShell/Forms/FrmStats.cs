@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Communicator Shell
- * Summary  : Form for displaying communication line stats
+ * Summary  : Form for displaying Communicator stats
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -29,7 +29,6 @@ using Scada.Agent.UI;
 using Scada.Comm.Shell.Code;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -37,37 +36,33 @@ using System.Windows.Forms;
 namespace Scada.Comm.Shell.Forms
 {
     /// <summary>
-    /// Form for displaying communication line stats.
-    /// <para>Форма для отображения статистики линии связи.</para>
+    /// Form for displaying Communicator stats.
+    /// <para>Форма для отображения статистики Коммуникатора.</para>
     /// </summary>
-    public partial class FrmLineStats : Form
+    public partial class FrmStats : Form
     {
-        private readonly Settings.CommLine commLine;  // the communication line settings to edit
         private readonly CommEnvironment environment; // the application environment
         private RemoteLogBox stateBox; // object to refresh state
         private RemoteLogBox logBox;   // object to refresh log
-        private bool stateTabActive;   // the State tab is currently active
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private FrmLineStats()
+        private FrmStats()
         {
             InitializeComponent();
         }
-
+        
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmLineStats(Settings.CommLine commLine, CommEnvironment environment)
+        public FrmStats(CommEnvironment environment)
             : this()
         {
-            this.commLine = commLine ?? throw new ArgumentNullException("commLine");
             this.environment = environment ?? throw new ArgumentNullException("environment");
             stateBox = new RemoteLogBox(lbState) { FullLogView = true };
-            logBox = new RemoteLogBox(lbLog, true) { AutoScroll = true };
-            stateTabActive = true;
+            logBox = new RemoteLogBox(lbLog) { AutoScroll = true };
         }
 
 
@@ -90,58 +85,31 @@ namespace Scada.Comm.Shell.Forms
             {
                 stateBox.SetFirstLine(CommShellPhrases.Loading);
                 logBox.SetFirstLine(CommShellPhrases.Loading);
-                string stateFileName = CommUtils.GetLineStateFileName(commLine.Number);
-                string logFileName = CommUtils.GetLineLogFileName(commLine.Number);
 
                 if (agentClient.IsLocal)
                 {
                     tmrRefresh.Interval = ScadaUiUtils.LogLocalRefreshInterval;
-                    stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, stateFileName);
-                    logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, logFileName);
+                    stateBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, CommUtils.AppStateFileName);
+                    logBox.LogFileName = Path.Combine(environment.AppDirs.LogDir, CommUtils.AppLogFileName);
                 }
                 else
                 {
                     tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
-                    stateBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, stateFileName);
-                    logBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, logFileName);
+                    stateBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, CommUtils.AppStateFileName);
+                    logBox.LogPath = new RelPath(ConfigParts.Comm, AppFolder.Log, CommUtils.AppLogFileName);
                 }
             }
         }
 
 
-        private void FrmLineStats_Load(object sender, EventArgs e)
+        private void FrmStats_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineStats");
-            lbTabs.SelectedIndex = 0;
+            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmStats");
             InitRefresh();
             tmrRefresh.Start();
         }
 
-        private void lbTabs_DrawItem(object sender, DrawItemEventArgs e)
-        {
-            lbTabs.DrawTabItem(e);
-        }
-
-        private void lbTabs_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (lbTabs.SelectedIndex == 0)
-            {
-                stateTabActive = true;
-                chkPause.Enabled = false;
-                chkPause.Checked = false;
-                lbState.Visible = true;
-                lbLog.Visible = false;
-            }
-            else
-            {
-                stateTabActive = false;
-                chkPause.Enabled = true;
-                lbState.Visible = false;
-                lbLog.Visible = true;
-            }
-        }
-
-        private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
+        private void FrmStats_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)
             {
@@ -163,9 +131,9 @@ namespace Scada.Comm.Shell.Forms
 
                 if (stateBox.AgentClient == environment.AgentClient)
                 {
-                    if (stateTabActive)
-                        await Task.Run(() => stateBox.Refresh());
-                    else if (!chkPause.Checked)
+                    await Task.Run(() => stateBox.Refresh());
+
+                    if (!chkPause.Checked)
                         await Task.Run(() => logBox.Refresh());
                 }
                 else

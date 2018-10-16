@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Client;
@@ -127,14 +127,6 @@ namespace Scada.Comm.Ctrl
         }
 
 
-        /// <summary>
-        /// Имя файла состояния
-        /// </summary>
-        private const string StateFileName = "ScadaCommSvc.txt";
-        /// <summary>
-        /// Имя файла журнала
-        /// </summary>
-        private const string LogFileName = "ScadaCommSvc.log";
         /// <summary>
         /// Имя файла ошибок
         /// </summary>
@@ -1698,8 +1690,8 @@ namespace Scada.Comm.Ctrl
                     lbLog1 = lbAppState;
                     lbLog2 = lbAppLog;
                     lbLog2.SelectedIndex = -1; // для последующей прокрутки в конец списка
-                    logFileName1 = appDirs.LogDir + StateFileName;
-                    logFileName2 = appDirs.LogDir + LogFileName;
+                    logFileName1 = appDirs.LogDir + CommUtils.AppStateFileName;
+                    logFileName2 = appDirs.LogDir + CommUtils.AppLogFileName;
                     fullLoad1 = true;
                 }
             }

@@ -56,27 +56,33 @@ namespace Scada.Comm
         }
 
         /// <summary>
-        /// Версия Коммуникатора
-        /// </summary>
-        public const string AppVersion = "5.1.1.0";
-
-        /// <summary>
-        /// Формат даты и времени для вывода в журнал линии связи
-        /// </summary>
-        public const string CommLineDTFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
-        
-        /// <summary>
         /// Время актуальности команды управления, с
         /// </summary>
         private const int CmdLifeTime = 60;
-
         /// <summary>
         /// Максимальный номер имени файла команды управления
         /// </summary>
         private const int MaxCmdFileNum = 999;
 
-        private static int cmdFileNum = 1;            // текущий номер имени файла команды управления
-        private static object cmdLock = new object(); // объект для синхронизации записи команд управления
+        /// <summary>
+        /// Версия Коммуникатора
+        /// </summary>
+        public const string AppVersion = "5.1.1.0";
+        /// <summary>
+        /// Формат даты и времени для вывода в журнал линии связи
+        /// </summary>
+        public const string CommLineDTFormat = "yyyy'-'MM'-'dd' 'HH':'mm':'ss";
+        /// <summary>
+        /// Имя файла журнала приложения
+        /// </summary>
+        public const string AppLogFileName = "ScadaCommSvc.log";
+        /// <summary>
+        /// Имя файла состояния приложения
+        /// </summary>
+        public const string AppStateFileName = "ScadaCommSvc.txt";
+
+        private static readonly object cmdLock = new object(); // объект для синхронизации записи команд управления
+        private static int cmdFileNum = 1; // текущий номер имени файла команды управления
 
 
         /// <summary>

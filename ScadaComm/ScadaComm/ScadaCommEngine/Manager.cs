@@ -81,14 +81,6 @@ namespace Scada.Comm.Engine
         }
 
         /// <summary>
-        /// Имя основного Log-файла программы
-        /// </summary>
-        private const string LogFileName = "ScadaCommSvc.log";
-        /// <summary>
-        /// Имя файла информации о работе программы
-        /// </summary>
-        private const string InfoFileName = "ScadaCommSvc.txt";
-        /// <summary>
         /// Задержка потока записи информации о работе приложения, мс
         /// </summary>
         private const int WriteInfoDelay = 1000;
@@ -197,8 +189,8 @@ namespace Scada.Comm.Engine
         {
             AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
-            AppLog.FileName = AppDirs.LogDir + LogFileName;
-            infoFileName = AppDirs.LogDir + InfoFileName;
+            AppLog.FileName = AppDirs.LogDir + CommUtils.AppLogFileName;
+            infoFileName = AppDirs.LogDir + CommUtils.AppStateFileName;
             logDirExists = Directory.Exists(AppDirs.LogDir);
 
             dirsExist = Directory.Exists(AppDirs.ConfigDir) && Directory.Exists(AppDirs.LangDir) && logDirExists &&

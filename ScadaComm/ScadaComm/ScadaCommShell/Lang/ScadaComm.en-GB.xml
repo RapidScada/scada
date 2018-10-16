@@ -201,4 +201,16 @@
     <Phrase key="btnResetReqParams.ToolTip">Set the device request parameters to default</Phrase>
     <Phrase key="btnDeviceProps">Properies</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
+    <Phrase key="this">Line Stats</Phrase>
+    <Phrase key="lbTabs.Items[0]">Line State</Phrase>
+    <Phrase key="lbTabs.Items[1]">Line Log</Phrase>
+    <Phrase key="chkPause">Pause</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmStats">
+    <Phrase key="this">Stats</Phrase>
+    <Phrase key="lblState">Communicator state</Phrase>
+    <Phrase key="lblLog">Communicator log</Phrase>
+    <Phrase key="chkPause">Pause</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>

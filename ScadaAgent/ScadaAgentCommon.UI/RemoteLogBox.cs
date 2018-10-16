@@ -83,8 +83,11 @@ namespace Scada.Agent.UI
         {
             try
             {
-                if (AgentClient.ReadLog(logPath, LogViewSize, ref logFileAge, out ICollection<string> lines))
+                if (FullLogView && AgentClient.ReadLog(logPath, ref logFileAge, out ICollection<string> lines) ||
+                    !FullLogView && AgentClient.ReadLog(logPath, LogViewSize, ref logFileAge, out lines))
+                {
                     SetLines(lines);
+                }
             }
             catch (Exception ex)
             {

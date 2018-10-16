@@ -110,6 +110,7 @@
     <Phrase key="chkWriteEvCopy">Write data copy</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
+    <Phrase key="this">Stats</Phrase>
     <Phrase key="lblState">Server state</Phrase>
     <Phrase key="lblLog">Server log</Phrase>
     <Phrase key="chkPause">Pause</Phrase>

@@ -201,4 +201,16 @@
     <Phrase key="btnResetReqParams.ToolTip">Установить параметры опроса КП по умолчанию</Phrase>
     <Phrase key="btnDeviceProps">Свойства</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
+    <Phrase key="this">Статистика линии</Phrase>
+    <Phrase key="lbTabs.Items[0]">Состояние линии</Phrase>
+    <Phrase key="lbTabs.Items[1]">Журнал линии</Phrase>
+    <Phrase key="chkPause">Пауза</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmStats">
+    <Phrase key="this">Статистика</Phrase>
+    <Phrase key="lblState">Состояние Коммуникатора</Phrase>
+    <Phrase key="lblLog">Журнал Коммуникатора</Phrase>
+    <Phrase key="chkPause">Пауза</Phrase>
+  </Dictionary>
 </ScadaCommDictionaries>
