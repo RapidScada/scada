@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.UI;
@@ -139,7 +139,7 @@ namespace Scada.Server.Ctrl
 
         private void lblLink_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(linkUrl))
+            if (ScadaUtils.IsValidUrl(linkUrl))
             {
                 Process.Start(linkUrl);
                 Close();

@@ -128,7 +128,7 @@ namespace ScadaAdmin
 
         private void lblLink_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(linkUrl))
+            if (ScadaUtils.IsValidUrl(linkUrl))
             {
                 Process.Start(linkUrl);
                 Close();
