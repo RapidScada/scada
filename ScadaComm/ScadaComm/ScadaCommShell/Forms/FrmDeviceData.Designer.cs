@@ -28,9 +28,11 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lbDeviceData = new System.Windows.Forms.ListBox();
             this.btnSendCommand = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.lblCommandInfo = new System.Windows.Forms.Label();
+            this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // lbDeviceData
@@ -58,26 +60,33 @@
             this.btnSendCommand.Text = "Command";
             this.btnSendCommand.UseVisualStyleBackColor = true;
             // 
-            // label1
+            // lblCommandInfo
             // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.label1.Location = new System.Drawing.Point(93, 17);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(323, 13);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Sending direct commands to Communicator is available locally only.";
+            this.lblCommandInfo.AutoSize = true;
+            this.lblCommandInfo.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblCommandInfo.Location = new System.Drawing.Point(93, 17);
+            this.lblCommandInfo.Name = "lblCommandInfo";
+            this.lblCommandInfo.Size = new System.Drawing.Size(323, 13);
+            this.lblCommandInfo.TabIndex = 1;
+            this.lblCommandInfo.Text = "Sending direct commands to Communicator is available locally only.";
+            // 
+            // tmrRefresh
+            // 
+            this.tmrRefresh.Interval = 500;
+            this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
             // 
             // FrmDeviceData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 411);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.lblCommandInfo);
             this.Controls.Add(this.btnSendCommand);
             this.Controls.Add(this.lbDeviceData);
             this.Name = "FrmDeviceData";
             this.Text = "Device Data";
+            this.Load += new System.EventHandler(this.FrmDeviceData_Load);
+            this.VisibleChanged += new System.EventHandler(this.FrmDeviceData_VisibleChanged);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -87,6 +96,7 @@
 
         private System.Windows.Forms.ListBox lbDeviceData;
         private System.Windows.Forms.Button btnSendCommand;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblCommandInfo;
+        private System.Windows.Forms.Timer tmrRefresh;
     }
 }

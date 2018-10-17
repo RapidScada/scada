@@ -459,5 +459,22 @@ namespace Scada.Comm
 
             return prefix + lineNum + ".txt";
         }
+
+        /// <summary>
+        /// Получить короткое имя файла данных КП
+        /// </summary>
+        public static string GetDeviceDataFileName(int kpNum)
+        {
+            string prefix;
+
+            if (kpNum < 10)
+                prefix = "kp00";
+            else if (kpNum < 100)
+                prefix = "kp0";
+            else
+                prefix = "kp";
+
+            return prefix + kpNum + ".txt";
+        }
     }
 }
