@@ -407,5 +407,15 @@ namespace Scada
         {
             return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
         }
+
+        /// <summary>
+        /// Indicates whether the string is correct URL.
+        /// </summary>
+        public static bool IsValidUrl(string s)
+        {
+            return !string.IsNullOrEmpty(s) && 
+                Uri.TryCreate(s, UriKind.Absolute, out Uri uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }
     }
 }
