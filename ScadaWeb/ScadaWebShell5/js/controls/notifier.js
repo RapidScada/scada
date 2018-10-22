@@ -16,7 +16,7 @@ var scada = scada || {};
 // Notification types enumeration
 scada.NotifTypes = {
     INFO: 0,
-    ERROR: 1,
+    ERROR: 1
 };
 
 // Notifier type
@@ -34,7 +34,7 @@ scada.Notifier = function (selector) {
     this.CLEAR_RATE = 1000;
 };
 
-// Add notification to the notification area
+// Add a notification to the notification area
 scada.Notifier.prototype.addNotification = function (messageHtml, notifType, lifetime) {
     // remove the previous message if it is equal the new
     var divPrevMessage = this._notifier.children(".message:last");

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
+using System.Collections.Generic;
 using System.Text;
 using System.Web;
 
@@ -58,6 +59,11 @@ namespace Scada.Web.Shell
         /// </summary>
         public string EventAckScriptPath { get; set; }
 
+        /// <summary>
+        /// Получить пути к дополнительным скриптам
+        /// </summary>
+        public List<string> ExtraScripts { get; protected set; }
+
         
         /// <summary>
         /// Установить значения по умолчанию
@@ -67,6 +73,7 @@ namespace Scada.Web.Shell
             ChartScriptPath = "";
             CmdScriptPath = "";
             EventAckScriptPath = "";
+            ExtraScripts = new List<string>();
         }
 
         /// <summary>
