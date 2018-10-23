@@ -60,9 +60,9 @@ namespace Scada.Web.Shell
         public string EventAckScriptPath { get; set; }
 
         /// <summary>
-        /// Получить пути к дополнительным скриптам
+        /// Получить или установить пути к дополнительным скриптам
         /// </summary>
-        public List<string> ExtraScripts { get; protected set; }
+        public ICollection<string> ExtraScripts { get; set; }
 
         
         /// <summary>
@@ -73,7 +73,7 @@ namespace Scada.Web.Shell
             ChartScriptPath = "";
             CmdScriptPath = "";
             EventAckScriptPath = "";
-            ExtraScripts = new List<string>();
+            ExtraScripts = null;
         }
 
         /// <summary>
@@ -91,6 +91,14 @@ namespace Scada.Web.Shell
 
             if (!string.IsNullOrEmpty(EventAckScriptPath))
                 sbHtml.AppendLine(string.Format(WebUtils.ScriptTemplate, VirtualPathUtility.ToAbsolute(EventAckScriptPath)));
+
+            if (ExtraScripts != null)
+            {
+                foreach (string s in ExtraScripts)
+                {
+                    sbHtml.AppendLine(string.Format(WebUtils.ScriptTemplate, VirtualPathUtility.ToAbsolute(s)));
+                }
+            }
 
             return sbHtml.ToString();
         }
