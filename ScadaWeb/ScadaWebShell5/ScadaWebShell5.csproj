@@ -90,6 +90,12 @@
     <Content Include="css\common\modalform.min.css">
       <DependentUpon>modalform.css</DependentUpon>
     </Content>
+    <Content Include="css\controls\notifpanel.css">
+      <DependentUpon>notifpanel.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\notifpanel.min.css">
+      <DependentUpon>notifpanel.css</DependentUpon>
+    </Content>
     <Content Include="css\dialogs\confirm.css">
       <DependentUpon>confirm.less</DependentUpon>
     </Content>
@@ -347,6 +353,7 @@
     <Content Include="css\common\modalform.less" />
     <Content Include="css\dialogs\confirm.less" />
     <Content Include="css\common\plainform.less" />
+    <Content Include="css\controls\notifpanel.less" />
     <None Include="css\mastermain.less" />
     <None Include="compilerconfig.json" />
     <None Include="compilerconfig.json.defaults">

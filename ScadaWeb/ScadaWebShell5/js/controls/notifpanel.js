@@ -32,17 +32,26 @@ scada.NotifPanel = function () {
 
 // Initialize the panel based on the given element
 scada.NotifPanel.prototype.init = function (elemID) {
-    _panel = $("#" + elemID);
+    this._panel = $("#" + elemID);
+
+    if (scada.utils.isSmallScreen()) {
+        this._panel.addClass("mobile");
+    }
 };
 
 // Show the panel
-scada.NotifPanel.prototype.show = function () {
-    console.warn("NotifPanel.show");
+scada.NotifPanel.prototype.show = function (opt_animate) {
+    this._panel.removeClass("hidden");
+
+    if (opt_animate) {
+        this._panel.css("right", -this._panel.outerWidth());
+        this._panel.animate({ right: 0 }, "fast");
+    }
 };
 
 // Hide the panel
 scada.NotifPanel.prototype.hide = function () {
-    console.warn("NotifPanel.hide");
+    this._panel.addClass("hidden");
 };
 
 // Add a notification to the panel. Returns the notification ID

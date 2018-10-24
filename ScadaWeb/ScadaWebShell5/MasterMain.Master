@@ -13,6 +13,7 @@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/controls/notifpanel.min.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/popup.min.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/treeview.min.css" rel="stylesheet" type="text/css" />
     <link href="~/css/mastermain.min.css" rel="stylesheet" type="text/css" />
@@ -70,7 +71,7 @@
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
-        <div id="divNotifPanel" class="main-shell"></div>
+        <div id="divNotifPanel" class="main-shell notif-panel hidden"></div>
         <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
         <%= GenStatsHtml() %>
     </form>

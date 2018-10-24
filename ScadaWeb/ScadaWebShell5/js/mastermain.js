@@ -65,14 +65,12 @@ scada.masterMain = {
     // Update layout of the master page
     updateLayout: function () {
         var divMainHeader = $("#divMainHeader");
-        var divMainLeftPane = $("#divMainLeftPane");
-        var divMainTabs = $("#divMainTabs");
-
         var headerH = divMainHeader.css("display") === "none" ? 0 : divMainHeader.outerHeight();
         var paneH = $(window).height() - headerH;
-        divMainLeftPane.outerHeight(paneH);
-        divMainTabs.outerWidth(paneH);
+        $("#divMainLeftPane").outerHeight(paneH);
+        $("#divMainTabs").outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
+        $("#divNotifPanel").outerHeight(paneH);
         $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 

@@ -1,0 +1,17 @@
+﻿@panel-width: 50%;
+@panel-width-mobile: 75%;
+@panel-back-color: black;
+@panel-opacity: 0.9;
+
+.notif-panel {
+    background-color: @panel-back-color;
+    bottom: 0;
+    opacity: @panel-opacity;
+    position: fixed;
+    right: 0;
+    width: @panel-width;
+}
+
+.notif-panel.mobile {
+    width: @panel-width-mobile;
+}
