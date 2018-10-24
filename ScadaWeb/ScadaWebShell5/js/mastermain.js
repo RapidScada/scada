@@ -1,4 +1,5 @@
 ﻿var scada = scada || {};
+var notifPanel = new scada.NotifPanel();
 var popup = new scada.Popup();
 var ajaxQueue = new scada.AjaxQueue(scada.env.rootPath);
 scada.view = scada.view || {}; // defined if the current page is View.aspx
@@ -67,7 +68,7 @@ scada.masterMain = {
         var divMainLeftPane = $("#divMainLeftPane");
         var divMainTabs = $("#divMainTabs");
 
-        var headerH = divMainHeader.css("display") == "none" ? 0 : divMainHeader.outerHeight();
+        var headerH = divMainHeader.css("display") === "none" ? 0 : divMainHeader.outerHeight();
         var paneH = $(window).height() - headerH;
         divMainLeftPane.outerHeight(paneH);
         divMainTabs.outerWidth(paneH);
@@ -77,7 +78,7 @@ scada.masterMain = {
 
     // Choose a tool window according to the current URL and activate it
     chooseToolWindow: function () {
-        var explorerVisible = scada.env.rootPath + "View.aspx" == window.location.pathname;
+        var explorerVisible = scada.env.rootPath + "View.aspx" === window.location.pathname;
 
         if (explorerVisible) {
             this.activateToolWindow($("#divMainExplorerTab"));
@@ -101,10 +102,10 @@ scada.masterMain = {
         var clickedTabId = divClickedTab.attr('id');
         var toolWindow;
 
-        if (clickedTabId == "divMainMenuTab") {
-            toolWindow = $("#divMainMenu")
-        } else if (clickedTabId == "divMainExplorerTab") {
-            toolWindow = $("#divMainExplorer")
+        if (clickedTabId === "divMainMenuTab") {
+            toolWindow = $("#divMainMenu");
+        } else if (clickedTabId === "divMainExplorerTab") {
+            toolWindow = $("#divMainExplorer");
         } else {
             toolWindow = null;
         }
@@ -167,7 +168,7 @@ scada.masterMain = {
     // Load page visual state from the local storage
     loadVisualState: function () {
         var leftPaneVisible = localStorage.getItem("Shell.LeftPaneVisible");
-        if (leftPaneVisible == "false" || leftPaneVisible == null && scada.utils.isSmallScreen()) {
+        if (leftPaneVisible === "false" || leftPaneVisible === null && scada.utils.isSmallScreen()) {
             this.collapseLeftPane();
         }
     },
@@ -203,6 +204,7 @@ $(document).ready(function () {
     scada.clientAPI.rootPath = scada.env.rootPath;
     scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
+    notifPanel.init("divNotifPanel");
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();

@@ -22,6 +22,7 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/ajaxqueue.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/clientapi.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/eventtypes.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/notifpanel.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/popup.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/treeview.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/dialogs/dialogs.js") %>"></script>
@@ -32,8 +33,8 @@
         };
         scada.modalButtonCaptions = <%= Scada.Web.WebUtils.DictionaryToJs("Scada.Web.ModalButtons.Js") %>;
     </script>
-    <%= GenScriptPathsHtml() %>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermain.js") %>"></script>
+    <%= GenScriptPathsHtml() %>
     <asp:ContentPlaceHolder ID="cphMainHead" runat="server">
     </asp:ContentPlaceHolder>
 </head>
@@ -69,6 +70,7 @@
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
+        <div id="divNotifPanel" class="main-shell"></div>
         <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
         <%= GenStatsHtml() %>
     </form>
