@@ -48,7 +48,7 @@
                 id="spanMainAppName">Rapid SCADA</span>
             <div id="divMainUserMenu">
                 <asp:Label 
-                    ID="lblNotifBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 
+                    ID="lblMainNotifBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell-o"></i><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 
                     ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
                     ID="lbtnMainLogout" runat="server" CssClass="hdr-btn txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
                     ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
@@ -73,7 +73,7 @@
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
-        <div id="divNotifPanel" class="main-shell notif-panel hidden"></div>
+        <div id="divMainNotifPanel" class="main-shell notif-panel hidden"></div>
         <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
         <%= GenStatsHtml() %>
     </form>

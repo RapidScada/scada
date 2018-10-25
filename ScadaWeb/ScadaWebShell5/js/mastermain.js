@@ -70,7 +70,7 @@ scada.masterMain = {
         $("#divMainLeftPane").outerHeight(paneH);
         $("#divMainTabs").outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
-        $("#divNotifPanel").outerHeight(paneH);
+        $("#divMainNotifPanel").outerHeight(paneH);
         $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 
@@ -202,7 +202,7 @@ $(document).ready(function () {
     scada.clientAPI.rootPath = scada.env.rootPath;
     scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
-    notifPanel.init("divNotifPanel", "lblNotifBtn");
+    notifPanel.init("divMainNotifPanel", "lblMainNotifBtn");
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();

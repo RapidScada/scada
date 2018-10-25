@@ -17,6 +17,7 @@ var scada = scada || {};
 
 // Notification type
 scada.Notification = function (dateTime, messageHtml, notifType) {
+    this.id = 0;
     this.dateTime = dateTime;
     this.messageHtml = messageHtml;
     this.notifType = notifType;
@@ -30,6 +31,10 @@ scada.NotifPanel = function () {
     this._panel = null;
     // jQuery object of the notification bell
     this._bell = null;
+    // Highest notification type of the existing notifications
+    this.notifType = null;
+    // Counter of notification IDs
+    this.lastNotifID = 0;
 };
 
 // Initialize the panel based on the given element
@@ -73,20 +78,22 @@ scada.NotifPanel.prototype.isVisible = function () {
 
 // Add a notification to the panel. Returns the notification ID
 scada.NotifPanel.prototype.addNotification = function (notification) {
+    notification.id = this.lastNotifID++;
+    var notifElem = $("<div id='notif" + notification.id + "' class='notif'>" + notification.messageHtml + "<div>");
+    this._panel.append(notifElem);
+    return notification.id;
 };
 
 // Remove the notification with the specified ID from the panel
 scada.NotifPanel.prototype.removeNotification = function (notifID) {
+    this._panel.children("#notif" + notifID).remove();
 };
 
 // Show the bell
-scada.NotifPanel.prototype.showBell = function (opt_notifType) {
-    this._bell.removeClass("hidden");
-    this._bell.removeClass("info");
-    this._bell.removeClass("warning");
-    this._bell.removeClass("error");
+scada.NotifPanel.prototype.showBell = function () {
+    this._bell.removeClass("hidden empty info warning error");
 
-    switch (opt_notifType) {
+    switch (this.notifType) {
         case scada.NotifTypes.INFO:
             this._bell.addClass("info");
             break;
@@ -95,6 +102,9 @@ scada.NotifPanel.prototype.showBell = function (opt_notifType) {
             break;
         case scada.NotifTypes.ERROR:
             this._bell.addClass("error");
+            break;
+        default:
+            this._bell.addClass("empty");
             break;
     }
 };
