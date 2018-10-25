@@ -23,6 +23,7 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/ajaxqueue.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/clientapi.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/eventtypes.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/notiftypes.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/notifpanel.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/popup.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/treeview.js") %>"></script>
@@ -46,7 +47,8 @@
                 id="spanMainShowMenuBtn" class="hdr-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
                 id="spanMainAppName">Rapid SCADA</span>
             <div id="divMainUserMenu">
-                <asp:HyperLink 
+                <asp:Label 
+                    ID="lblNotifBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 
                     ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
                     ID="lbtnMainLogout" runat="server" CssClass="hdr-btn txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
                     ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>

@@ -67,9 +67,11 @@
   white-space: nowrap;
 }
 #divMainUserMenu {
-  float: right;
+  background-color: #23282d;
   height: 30px;
   display: inline-block;
+  position: absolute;
+  right: 0;
 }
 #lblMainNormalViewBtn {
   position: fixed;

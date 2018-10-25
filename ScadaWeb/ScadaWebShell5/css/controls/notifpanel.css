@@ -9,3 +9,15 @@
 .notif-panel.mobile {
   width: 75%;
 }
+.notif-bell {
+  color: #9ca1a6;
+}
+.notif-bell.info {
+  color: #eee;
+}
+.notif-bell.warning {
+  color: #eeee00;
+}
+.notif-bell.error {
+  color: #ee0000;
+}

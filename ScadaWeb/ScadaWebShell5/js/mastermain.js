@@ -202,7 +202,7 @@ $(document).ready(function () {
     scada.clientAPI.rootPath = scada.env.rootPath;
     scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
-    notifPanel.init("divNotifPanel");
+    notifPanel.init("divNotifPanel", "lblNotifBtn");
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();

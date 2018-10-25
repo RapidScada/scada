@@ -14,6 +14,7 @@
     <Phrase key="lblConfirm">Вы уверены?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lblNotifBtn.ToolTip">Уведомления</Phrase>
     <Phrase key="lbtnMainLogout">Выйти</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">На весь экран</Phrase>
     <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальный вид</Phrase>
