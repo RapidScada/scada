@@ -22,3 +22,12 @@
 .notif-bell.error {
   color: #ee0000;
 }
+.light-back .notif-bell.info {
+  color: #9ca1a6;
+}
+.light-back .notif-bell.warning {
+  color: #d39e00;
+}
+.light-back .notif-bell.error {
+  color: #dc3545;
+}

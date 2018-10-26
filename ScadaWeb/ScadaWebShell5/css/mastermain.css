@@ -16,6 +16,31 @@
   text-decoration: none;
 }
 /* Header */
+.main-hdr-btn {
+  height: 30px;
+  margin: 0 0 0 5px;
+  padding: 0 10px;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.main-hdr-btn:hover {
+  background-color: #32373c;
+  color: #00b9eb;
+  text-decoration: none;
+}
+.main-txt-btn {
+  color: #eee;
+}
+.main-img-btn {
+  color: #9ca1a6;
+}
+.main-img-btn .glyphicon {
+  position: relative;
+  top: 2px;
+}
 #divMainHeader {
   position: fixed;
   left: 0;
@@ -29,36 +54,9 @@
   color: #eee;
   line-height: 30px;
 }
-#divMainHeader .hdr-btn {
-  height: 30px;
-  margin: 0 0 0 5px;
-  padding: 0 10px;
-  cursor: pointer;
-  display: inline-block;
-  font-size: 13px;
-  text-decoration: none;
-  white-space: nowrap;
-}
-#divMainHeader .hdr-btn:hover {
-  background-color: #32373c;
-  color: #00b9eb;
-  text-decoration: none;
-}
-#divMainHeader .txt-btn {
-  color: #eee;
-}
-#divMainHeader .img-btn {
-  color: #9ca1a6;
-}
-#divMainHeader .img-btn .glyphicon {
-  position: relative;
-  top: 2px;
-}
-#divMainHeader #spanMainShowMenuBtn {
+#spanMainShowMenuBtn {
   margin: 0 5px 0 -10px;
   font-size: 15px;
-  display: none;
-  /*inline-block*/
 }
 #spanMainAppName {
   display: inline-block;
@@ -68,10 +66,11 @@
 }
 #divMainUserMenu {
   background-color: #23282d;
-  height: 30px;
   display: inline-block;
+  height: 30px;
   position: absolute;
   right: 0;
+  top: 0;
 }
 #lblMainNotifBtn.notif-bell.empty .fa-bell {
   display: none;
@@ -79,24 +78,21 @@
 #lblMainNotifBtn.notif-bell:not(.empty) .fa-bell-o {
   display: none;
 }
-#lblMainNormalViewBtn {
-  position: fixed;
-  top: 0;
-  right: 0;
-  height: 30px;
-  padding: 0 10px;
+#divMainFullscreenMenu {
   background-color: white;
-  display: none;
-  /*inline-block*/
+  height: 30px;
   line-height: 30px;
   opacity: 0.5;
-  cursor: pointer;
-  color: #9ca1a6;
-  font-size: 13px;
+  position: absolute;
+  right: 0;
+  top: 0;
 }
-#lblMainNormalViewBtn:hover {
-  color: #00b9eb;
+#divMainFullscreenMenu:hover {
   opacity: 1;
+}
+#divMainFullscreenMenu .main-hdr-btn:hover {
+  background-color: white;
+  color: #00b9eb;
 }
 /* Left Pane */
 #divMainLeftPane {
@@ -114,8 +110,6 @@
   height: calc(100% -  30px);
   margin: 0 0 0 30px;
   padding: 5px 0 0 0;
-  display: none;
-  /*block*/
   overflow-x: hidden;
   overflow-y: auto;
 }

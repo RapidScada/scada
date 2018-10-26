@@ -44,14 +44,14 @@
     <form runat="server">
         <div id="divMainHeader" class="main-shell">
             <span 
-                id="spanMainShowMenuBtn" class="hdr-btn img-btn"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
+                id="spanMainShowMenuBtn" class="main-hdr-btn main-img-btn hidden"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
                 id="spanMainAppName">Rapid SCADA</span>
             <div id="divMainUserMenu">
                 <asp:Label 
-                    ID="lblMainNotifBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell-o"></i><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 
-                    ID="hlMainUser" runat="server" CssClass="hdr-btn txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
-                    ID="lbtnMainLogout" runat="server" CssClass="hdr-btn txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
-                    ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="hdr-btn img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
+                    ID="lblMainNotifBtn" ClientIDMode="Static" runat="server" CssClass="main-hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell-o"></i><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 
+                    ID="hlMainUser" runat="server" CssClass="main-hdr-btn main-txt-btn" NavigateUrl="#">Admin</asp:HyperLink><asp:LinkButton 
+                    ID="lbtnMainLogout" runat="server" CssClass="main-hdr-btn main-txt-btn" OnClick="lbtnMainLogout_Click">Logout</asp:LinkButton><asp:Label 
+                    ID="lblMainFullscreenBtn" ClientIDMode="Static" runat="server" CssClass="main-hdr-btn main-img-btn" ToolTip="Full Screen"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
             </div>
         </div>
         <div id="divMainLeftPane" class="main-shell">
@@ -59,10 +59,10 @@
                 <div id="divMainMenuTab" class="tab selected"><asp:Label ID="lblMainMenuTab" runat="server" Text="Main Menu"></asp:Label></div>
                 <div id="divMainExplorerTab" class="tab"><asp:Label ID="lblMainExplorerTab" runat="server" Text="Views"></asp:Label></div>
             </div>
-            <div id="divMainMenu" class="tool-window">
+            <div id="divMainMenu" class="tool-window hidden">
                 <%= GenMainMenuHtml() %>
             </div>
-            <div id="divMainExplorer" class="tool-window">
+            <div id="divMainExplorer" class="tool-window hidden">
                 <%= GenExplorerHtml() %>
             </div>
             <div id="divMainCollapseLeftPaneBtn">
@@ -74,7 +74,8 @@
             </asp:ContentPlaceHolder>
         </div>
         <div id="divMainNotifPanel" class="main-shell notif-panel hidden"></div>
-        <asp:Label ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label>
+        <div id="divMainFullscreenMenu" class="light-back hidden"><asp:Label 
+            ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" CssClass="main-hdr-btn main-img-btn" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label></div>
         <%= GenStatsHtml() %>
     </form>
 </body>
