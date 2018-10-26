@@ -45,7 +45,7 @@ scada.chart.TimeRange = function () {
     this.startTime = 0;
     // Right edge of the range
     this.endTime = 1;
-}
+};
 
 /********** Extended Trend **********/
 
@@ -58,7 +58,7 @@ scada.chart.TrendExt = function () {
     this.cnlName = "";
     // Trend points where each point is array [value, "text", "text with unit", "color"]
     this.trendPoints = [];
-}
+};
 
 /********** Trend Point Indexes **********/
 
@@ -80,7 +80,7 @@ scada.chart.ChartData = function () {
     this.trends = [];
     // Name of input channel quantity (and unit)
     this.quantityName = "";
-}
+};
 
 /********** Chart Layout **********/
 
@@ -169,7 +169,7 @@ scada.chart.ChartLayout = function () {
     this.absPlotAreaTop = 0;
     // Absolute bottom coordinate of the drawing area relative to the document
     this.absPlotAreaBottom = 0;
-}
+};
 
 // Calculate grid parameters for the x-axis
 scada.chart.ChartLayout.prototype._calcGridX = function (minX, maxX) {
@@ -229,7 +229,7 @@ scada.chart.ChartLayout.prototype._calcGridY = function (context, minY, maxY) {
             maxWidth = w;
     }
     this.maxYLblWidth = maxWidth;
-}
+};
 
 // Calculate coordinates of the drawing area
 scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCnt, showDates) {
@@ -238,14 +238,14 @@ scada.chart.ChartLayout.prototype._calcPlotArea = function (canvasJqObj, trendCn
     this.plotAreaRight = this.width - this.RIGHT_PADDING;
     this.plotAreaTop = this.TOP_PADDING;
     this.plotAreaBottom = this.height - this.BOTTOM_PADDING - this.LBL_TB_MARGIN - this.LINE_HEIGHT /*time labels*/ -
-         (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
+        (showDates ? this.LINE_HEIGHT : 0) - this.LBL_TB_MARGIN - trendCnt * this.LINE_HEIGHT;
     this.plotAreaWidth = this.plotAreaRight - this.plotAreaLeft + 1;
     this.plotAreaHeight = this.plotAreaBottom - this.plotAreaTop + 1;
 
     this.canvasLeftBorder = parseInt(canvasJqObj.css("border-left-width"));
     this.canvasTopBorder = parseInt(canvasJqObj.css("border-top-width"));
     this.updateAbsCoordinates(canvasJqObj);
-}
+};
 
 // Calculate chart layout
 scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
@@ -257,7 +257,7 @@ scada.chart.ChartLayout.prototype.calculate = function (canvasJqObj, context,
     this._calcGridX(minX, maxX);
     this._calcGridY(context, minY, maxY);
     this._calcPlotArea(canvasJqObj, trendCnt, showDates);
-}
+};
 
 // Update absolute coordinates those depends on canvas offset
 scada.chart.ChartLayout.prototype.updateAbsCoordinates = function (canvasJqObj) {
@@ -268,13 +268,13 @@ scada.chart.ChartLayout.prototype.updateAbsCoordinates = function (canvasJqObj) 
     this.absPlotAreaRight = this.absCanvasLeft + this.canvasLeftBorder + this.plotAreaRight;
     this.absPlotAreaTop = this.absCanvasTop + this.canvasTopBorder + this.plotAreaTop;
     this.absPlotAreaBottom = this.absCanvasTop + this.canvasTopBorder + this.plotAreaBottom;
-}
+};
 
 // Check if the specified point is located within the chart area
 scada.chart.ChartLayout.prototype.pointInPlotArea = function (pageX, pageY) {
     return this.absPlotAreaLeft <= pageX && pageX <= this.absPlotAreaRight &&
         this.absPlotAreaTop <= pageY && pageY <= this.absPlotAreaBottom;
-}
+};
 
 /********** Chart Control **********/
 
@@ -342,7 +342,7 @@ scada.chart.Chart.prototype._initRange = function (opt_reinit) {
         this._calcYRange();
         this._showDates = this._maxX - this._minX > 1;
     }
-}
+};
 
 // Claculate top and bottom edges of the displayed range
 scada.chart.Chart.prototype._calcYRange = function (opt_startPtInd) {
@@ -421,7 +421,7 @@ scada.chart.Chart.prototype._yRangeIsOutdated = function (startPtInd) {
     this._maxY = oldMaxY;
 
     return outdated;
-}
+};
 
 // Convert trend x-coordinate to the chart x-coordinate
 scada.chart.Chart.prototype._trendXToChartX = function (x) {
@@ -441,12 +441,12 @@ scada.chart.Chart.prototype._trendXToPageX = function (x) {
 // Convert chart x-coordinate to the trend x-coordinate
 scada.chart.Chart.prototype._pageXToTrendX = function (pageX) {
     return (pageX - this._chartLayout.absPlotAreaLeft) / this._coefX + this._minX;
-},
+};
 
 // Convert trend x-coordinate to the date object
 scada.chart.Chart.prototype._trendXToDate = function (x) {
     return new Date(this.timeRange.startDate + Math.round(x * scada.chart.const.MS_PER_DAY));
-}
+};
 
 // Get index of the point nearest to the specified page x-coordinate
 scada.chart.Chart.prototype._getPointIndex = function (pageX) {
@@ -493,7 +493,7 @@ scada.chart.Chart.prototype._alignToGridX = function () {
     var gridXStep = this._chartLayout.gridXStep;
     this._minX = Math.floor(this._minX / gridXStep) * gridXStep;
     this._maxX = Math.ceil(this._maxX / gridXStep) * gridXStep;
-}
+};
 
 // Convert x-coordinate that means time into a date and time string
 scada.chart.Chart.prototype._dateTimeToStr = function (t) {
@@ -519,7 +519,7 @@ scada.chart.Chart.prototype._simpleTimeToStr = function (time, opt_showSeconds) 
     }
 
     return timeStr;
-}
+};
 
 // Convert x-coordinate that means time into a time string
 scada.chart.Chart.prototype._timeToStr = function (t) {
@@ -542,7 +542,7 @@ scada.chart.Chart.prototype._drawPixel = function (x, y, opt_checkBounds) {
         // just draw a pixel
         this._context.fillRect(x, y, 1, 1);
     }
-},
+};
 
 // Draw line on the chart
 scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBounds) {
@@ -602,18 +602,18 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBound
 scada.chart.Chart.prototype._clearRect = function (x, y, width, height) {
     this._setColor(this._chartLayout.BACK_COLOR);
     this._context.fillRect(x, y, width, height);
-}
+};
 
 // Set current drawing color
 scada.chart.Chart.prototype._setColor = function (color) {
-    this._context.fillStyle = this._context.strokeStyle = 
+    this._context.fillStyle = this._context.strokeStyle =
         color ? color : this._chartLayout.DEF_COLOR;
-}
+};
 
 // Get color of the trend with the specified index
 scada.chart.Chart.prototype._getColorByTrend = function (trendInd) {
     return this._TREND_COLORS[trendInd % this._TREND_COLORS.length];
-}
+};
 
 // Draw the chart frame
 scada.chart.Chart.prototype._drawFrame = function () {
@@ -628,7 +628,7 @@ scada.chart.Chart.prototype._drawFrame = function () {
     this._drawLine(frameR, frameT, frameR, frameB);
     this._drawLine(frameL, frameT, frameR, frameT);
     this._drawLine(frameL, frameB, frameR, frameB);
-}
+};
 
 // Draw chart grid of the x-axis
 scada.chart.Chart.prototype._drawGridX = function () {
@@ -749,7 +749,7 @@ scada.chart.Chart.prototype._drawLegend = function () {
         lblY += layout.LINE_HEIGHT;
         rectY += layout.LINE_HEIGHT;
     }
-}
+};
 
 // Draw all the trends
 scada.chart.Chart.prototype._drawTrends = function (opt_startPtInd) {
@@ -758,7 +758,7 @@ scada.chart.Chart.prototype._drawTrends = function (opt_startPtInd) {
         this._drawTrend(this.chartData.timePoints, this.chartData.trends[trendInd],
             this._getColorByTrend(trendInd), opt_startPtInd);
     }
-}
+};
 
 // Draw the specified trend
 scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color, opt_startPtInd) {
@@ -800,7 +800,7 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color, opt
 
     if (!isNaN(prevPtX))
         this._drawPixel(prevPtX, prevPtY, true);
-}
+};
 
 // Create a time mark if it doesn't exist
 scada.chart.Chart.prototype._initTimeMark = function () {
@@ -810,7 +810,7 @@ scada.chart.Chart.prototype._initTimeMark = function () {
         this._timeMark = $("<div class='chart-time-mark hidden'></div>");
         this._canvasJqObj.after(this._timeMark);
     }
-}
+};
 
 // Create a trend hint if it doesn't exist
 scada.chart.Chart.prototype._initTrendHint = function () {
@@ -836,7 +836,7 @@ scada.chart.Chart.prototype._initTrendHint = function () {
             this._trendHint = $();
         }
     }
-}
+};
 
 // Show hint with the values nearest to the pointer
 scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
@@ -954,10 +954,10 @@ scada.chart.Chart.prototype.resume = function (pointInd) {
             this._drawTrends(pointInd ? pointInd - 1 : 0);
         }
     }
-}
+};
 
 // Set displayed time range
-scada.chart.Chart.prototype.setRange = function (startX, endX) {    
+scada.chart.Chart.prototype.setRange = function (startX, endX) {
     // swap the range if needed
     if (startX > endX) {
         var xbuf = startX;
@@ -977,13 +977,13 @@ scada.chart.Chart.prototype.setRange = function (startX, endX) {
         this._calcYRange();
         this.draw();
     }
-}
+};
 
 // Reset displayed time range according to the chart time range
 scada.chart.Chart.prototype.resetRange = function () {
     this._initRange(true);
     this.draw();
-}
+};
 
 // Convert x-coordinate that means time into a date string
 scada.chart.Chart.prototype.dateToStr = function (t) {
@@ -998,7 +998,7 @@ scada.chart.Chart.prototype.dateToStr = function (t) {
 scada.chart.Chart.prototype.fastTimeToStr = function (t, opt_showSeconds) {
     var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
     return this._simpleTimeToStr(time, opt_showSeconds);
-}
+};
 
 // Bind events to allow hints
 scada.chart.Chart.prototype.bindHintEvents = function () {
@@ -1006,24 +1006,24 @@ scada.chart.Chart.prototype.bindHintEvents = function () {
         var thisObj = this;
 
         $(this._canvasJqObj.parent())
-        .off(".scada.chart.hint")
-        .on("mousemove.scada.chart.hint touchstart.scada.chart.hint touchmove.scada.chart.hint", function (event) {
-            var touch = false;
-            var stopEvent = false;
+            .off(".scada.chart.hint")
+            .on("mousemove.scada.chart.hint touchstart.scada.chart.hint touchmove.scada.chart.hint", function (event) {
+                var touch = false;
+                var stopEvent = false;
 
-            if (event.type == "touchstart") {
-                event = event.originalEvent.touches[0];
-                touch = true;
-            }
-            else if (event.type == "touchmove") {
-                $(this).off("mousemove");
-                event = event.originalEvent.touches[0];
-                touch = true;
-                stopEvent = true;
-            }
+                if (event.type == "touchstart") {
+                    event = event.originalEvent.touches[0];
+                    touch = true;
+                }
+                else if (event.type == "touchmove") {
+                    $(this).off("mousemove");
+                    event = event.originalEvent.touches[0];
+                    touch = true;
+                    stopEvent = true;
+                }
 
-            thisObj._showHint(event.pageX, event.pageY, touch);
-            return !stopEvent;
-        });
+                thisObj._showHint(event.pageX, event.pageY, touch);
+                return !stopEvent;
+            });
     }
-}
+};
