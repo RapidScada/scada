@@ -2,8 +2,8 @@
 
 @panel-width: 50%;
 @panel-width-mobile: 75%;
-@panel-back-color: black;
-@panel-opacity: 0.9;
+@panel-back-color: #111;
+@panel-opacity: 0.97;
 @info-color-ligth: #eee;
 @info-color-dark: @menu-fore-color-dark;
 @warning-color-ligth: #eeee00;
@@ -23,6 +23,7 @@
     position: fixed;
     right: 0;
     width: @panel-width;
+    z-index: @zindex-notif;
 }
 
 .notif-panel.mobile {

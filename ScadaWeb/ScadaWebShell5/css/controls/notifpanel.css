@@ -1,15 +1,16 @@
 ﻿.notif-panel {
-  background-color: black;
+  background-color: #111;
   bottom: 0;
   color: #eee;
   font-size: 12px;
-  opacity: 0.9;
+  opacity: 0.97;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 10px 15px;
   position: fixed;
   right: 0;
   width: 50%;
+  z-index: 1010;
 }
 .notif-panel.mobile {
   width: 75%;

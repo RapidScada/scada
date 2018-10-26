@@ -86,6 +86,7 @@
   position: absolute;
   right: 0;
   top: 0;
+  z-index: 1010;
 }
 #divMainFullscreenMenu:hover {
   opacity: 1;

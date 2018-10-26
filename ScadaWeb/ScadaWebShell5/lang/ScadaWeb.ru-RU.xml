@@ -14,13 +14,14 @@
     <Phrase key="lblConfirm">Вы уверены?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
-    <Phrase key="lblNotifBtn.ToolTip">Уведомления</Phrase>
+    <Phrase key="lblMainNotifBtn.ToolTip">Уведомления</Phrase>
     <Phrase key="lbtnMainLogout">Выйти</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">На весь экран</Phrase>
-    <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальный вид</Phrase>
     <Phrase key="lblMainMenuTab">Главное меню</Phrase>
     <Phrase key="lblMainExplorerTab">Представления</Phrase>
     <Phrase key="lblMainCollapseMenu">Свернуть меню</Phrase>
+    <Phrase key="lblEmptyNotif">Уведомлений нет</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальный вид</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ModalButtons.Js">
     <Phrase key="ok">OK</Phrase>

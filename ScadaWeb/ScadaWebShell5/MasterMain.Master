@@ -74,7 +74,8 @@
             <asp:ContentPlaceHolder ID="cphMainContent" runat="server">
             </asp:ContentPlaceHolder>
         </div>
-        <div id="divMainNotifPanel" class="main-shell notif-panel hidden"></div>
+        <div id="divMainNotifPanel" class="main-shell notif-panel hidden"><div class="notif empty"><asp:Label 
+            ID="lblEmptyNotif" runat="server" Text="No notifications"></asp:Label></div></div>
         <div id="divMainFullscreenMenu" class="light-back hidden"><asp:Label 
             ID="lblMainNormalViewBtn" ClientIDMode="Static" runat="server" CssClass="main-hdr-btn main-img-btn" ToolTip="Normal View"><span class="glyphicon glyphicon-fullscreen"></span></asp:Label></div>
         <%= GenStatsHtml() %>
