@@ -31,10 +31,26 @@ scada.NotifPanel = function () {
     this._panel = null;
     // jQuery object of the notification bell
     this._bell = null;
+    // jQuery object of an empty notification
+    this._emptyNotif = null;
     // Highest notification type of the existing notifications
     this.notifType = null;
     // Counter of notification IDs
     this.lastNotifID = 0;
+};
+
+// Get HTML of an icon appropriate to the notification type
+scada.NotifPanel.prototype._getNotifTypeIcon = function (notifType) {
+    switch (notifType) {
+        case scada.NotifTypes.INFO:
+            return "<i class='fa fa-info-circle info'></i>";
+        case scada.NotifTypes.WARNING:
+            return "<i class='fa fa-exclamation-triangle warning'></i>";
+        case scada.NotifTypes.ERROR:
+            return "<i class='fa fa-exclamation-circle error'></i>";
+        default:
+            return "";
+    }
 };
 
 // Initialize the panel based on the given element
@@ -42,6 +58,7 @@ scada.NotifPanel.prototype.init = function (panelID, bellID) {
     var thisObj = this;
     this._panel = $("#" + panelID);
     this._bell = $("#" + bellID);
+    this._emptyNotif = $("<div class='notif empty'>No notifications</div>").appendTo(this._panel);
 
     if (scada.utils.isSmallScreen()) {
         this._panel.addClass("mobile");
@@ -78,8 +95,12 @@ scada.NotifPanel.prototype.isVisible = function () {
 
 // Add a notification to the panel. Returns the notification ID
 scada.NotifPanel.prototype.addNotification = function (notification) {
-    notification.id = this.lastNotifID++;
-    var notifElem = $("<div id='notif" + notification.id + "' class='notif'>" + notification.messageHtml + "<div>");
+    notification.id = ++this.lastNotifID;
+    this._emptyNotif.detach();
+    var notifElem = $("<div id='notif" + notification.id + "' class='notif'>" +
+        "<div class='notif-type'>" + this._getNotifTypeIcon(notification.notifType) + "</div>" +
+        "<div class='notif-time'>" + notification.dateTime + "</div>" +
+        "<div class='notif-msg'>" + notification.messageHtml + "</div></div>");
     this._panel.append(notifElem);
     return notification.id;
 };
@@ -87,6 +108,10 @@ scada.NotifPanel.prototype.addNotification = function (notification) {
 // Remove the notification with the specified ID from the panel
 scada.NotifPanel.prototype.removeNotification = function (notifID) {
     this._panel.children("#notif" + notifID).remove();
+
+    if (this._panel.children(".notif:first").length === 0) {
+        this._emptyNotif.prependTo(this._panel);
+    }
 };
 
 // Show the bell

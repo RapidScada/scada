@@ -4,12 +4,22 @@
 @panel-width-mobile: 75%;
 @panel-back-color: black;
 @panel-opacity: 0.9;
+@info-color-ligth: #eee;
+@info-color-dark: @menu-fore-color-dark;
+@warning-color-ligth: #eeee00;
+@warning-color-dark: #d39e00;
+@error-color-ligth: #ee0000;
+@error-color-dark: #dc3545;
 
 .notif-panel {
     background-color: @panel-back-color;
     bottom: 0;
+    color: @menu-fore-color;
+    font-size: @data-font-size;
     opacity: @panel-opacity;
-    padding: 10px;
+    overflow-x: hidden;
+    overflow-y: auto;
+    padding: 10px 15px;
     position: fixed;
     right: 0;
     width: @panel-width;
@@ -19,20 +29,53 @@
     width: @panel-width-mobile;
 }
 
+.notif-panel .notif {
+    margin-bottom: 5px;
+}
+
+.notif-panel .notif.empty {
+    font-size: 16px;
+}
+
+.notif-panel .notif-type {
+    float: left;
+    font-size: @form-font-size;
+}
+
+.notif-panel .notif-type .info {
+    color: @info-color-ligth;
+}
+
+.notif-panel .notif-type .warning {
+    color: @warning-color-ligth;
+}
+
+.notif-panel .notif-type .error {
+    color: @error-color-ligth;
+}
+
+.notif-panel .notif-time {
+    margin-left: 20px;
+}
+
+.notif-panel .notif-msg {
+    margin-left: 20px;
+}
+
 .notif-bell {
     color: @menu-fore-color-dark;
 }
 
 .notif-bell.info {
-    color: #eee;
+    color: @info-color-ligth;
 }
 
 .notif-bell.warning {
-    color: #eeee00;
+    color: @warning-color-ligth;
 }
 
 .notif-bell.error {
-    color: #ee0000;
+    color: @error-color-ligth;
 }
 
 .light-back .notif-bell.info {
@@ -40,9 +83,9 @@
 }
 
 .light-back .notif-bell.warning {
-    color: #d39e00;
+    color: @warning-color-dark;
 }
 
 .light-back .notif-bell.error {
-    color: #dc3545;
+    color: @error-color-dark;
 }

@@ -31,7 +31,8 @@
     <script type="text/javascript">
         var scada = scada || {};
         scada.env = {
-            rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>"
+            rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>",
+            locale: "<%= Scada.Localization.Culture.Name %>"
         };
         scada.modalButtonCaptions = <%= Scada.Web.WebUtils.DictionaryToJs("Scada.Web.ModalButtons.Js") %>;
     </script>

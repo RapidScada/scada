@@ -1,14 +1,43 @@
 ﻿.notif-panel {
   background-color: black;
   bottom: 0;
+  color: #eee;
+  font-size: 12px;
   opacity: 0.9;
-  padding: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 10px 15px;
   position: fixed;
   right: 0;
   width: 50%;
 }
 .notif-panel.mobile {
   width: 75%;
+}
+.notif-panel .notif {
+  margin-bottom: 5px;
+}
+.notif-panel .notif.empty {
+  font-size: 16px;
+}
+.notif-panel .notif-type {
+  float: left;
+  font-size: 13px;
+}
+.notif-panel .notif-type .info {
+  color: #eee;
+}
+.notif-panel .notif-type .warning {
+  color: #eeee00;
+}
+.notif-panel .notif-type .error {
+  color: #ee0000;
+}
+.notif-panel .notif-time {
+  margin-left: 20px;
+}
+.notif-panel .notif-msg {
+  margin-left: 20px;
 }
 .notif-bell {
   color: #9ca1a6;
