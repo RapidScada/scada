@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2016
+ * Modified : 2018
  */
 
 using System;
@@ -137,13 +137,17 @@ namespace Scada.Data.Tables
             /// </summary>
             KP = 2,
             /// <summary>
-            /// Фильтр по параметру
+            /// Фильтр по одному или нескольким параметрам
             /// </summary>
             Param = 4,
             /// <summary>
             /// Фильтр по каналам
             /// </summary>
-            Cnls = 8
+            Cnls = 8,
+            /// <summary>
+            /// Фильтр по статусам
+            /// </summary>
+            Stat = 16
         }
 
         /// <summary>
@@ -167,7 +171,9 @@ namespace Scada.Data.Tables
                 ObjNum = 0;
                 KPNum = 0;
                 ParamID = 0;
+                ParamIDs = null;
                 CnlNums = null;
+                Statuses = null;
             }
 
             /// <summary>
@@ -187,9 +193,17 @@ namespace Scada.Data.Tables
             /// </summary>
             public int ParamID { get; set; }
             /// <summary>
-            /// Получить или установить номера входны каналов для фильтрации
+            /// Получить или установить ид. параметров для фильтрации
+            /// </summary>
+            public ISet<int> ParamIDs { get; set; }
+            /// <summary>
+            /// Получить или установить номера входных каналов для фильтрации
             /// </summary>
             public ISet<int> CnlNums { get; set; }
+            /// <summary>
+            /// Получить или установить статусы для фильтрации
+            /// </summary>
+            public ISet<int> Statuses { get; set; }
 
             /// <summary>
             /// Проверить корректность фильтра
@@ -213,10 +227,10 @@ namespace Scada.Data.Tables
             /// </summary>
             public bool Satisfied(Event ev)
             {
-                // если используется фильтр по номерам каналов, CnlNums должно быть не равно null
+                // если используется фильтр только по номерам каналов, CnlNums должно быть не равно null
                 if (Filters == EventFilters.Cnls)
                 {
-                    // быстрая проверка фильтра только по номерам каналов
+                    // быстрая проверка только по номерам каналов
                     return CnlNums.Contains(ev.CnlNum);
                 }
                 else
@@ -225,8 +239,10 @@ namespace Scada.Data.Tables
                     return
                         (!Filters.HasFlag(EventFilters.Obj) || ObjNum == ev.ObjNum) &&
                         (!Filters.HasFlag(EventFilters.KP) || KPNum == ev.KPNum) &&
-                        (!Filters.HasFlag(EventFilters.Param) || ParamID == ev.ParamID) &&
-                        (!Filters.HasFlag(EventFilters.Cnls) || CnlNums.Contains(ev.CnlNum));
+                        (!Filters.HasFlag(EventFilters.Param) || ParamID > 0 && ParamID == ev.ParamID ||
+                            ParamIDs != null && ParamIDs.Contains(ev.ParamID)) &&
+                        (!Filters.HasFlag(EventFilters.Cnls) || CnlNums != null && CnlNums.Contains(ev.CnlNum)) &&
+                        (!Filters.HasFlag(EventFilters.Stat) || Statuses != null && Statuses.Contains(ev.NewCnlStat));
                 }
             }
         }
