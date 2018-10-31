@@ -40,8 +40,8 @@ namespace Scada.Web
         private const string DocumentImageUrl = "~/images/treeview/document.png";
         private static readonly TreeViewRenderer treeViewRenderer = new TreeViewRenderer();
 
-        private AppData appData;           // общие данные веб-приложения
-        private UserData userData;         // данные пользователя приложения
+        private AppData appData;     // общие данные веб-приложения
+        protected UserData userData; // данные пользователя приложения
 
 
         /// <summary>

@@ -32,7 +32,9 @@
         var scada = scada || {};
         scada.env = {
             rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>",
-            locale: "<%= Scada.Localization.Culture.Name %>"
+            locale: "<%= Scada.Localization.Culture.Name %>",
+            dataRefrRate: <%= userData.WebSettings.DataRefrRate %>,
+            arcRefrRate: <%= userData.WebSettings.ArcRefrRate %>
         };
         scada.modalButtonCaptions = <%= Scada.Web.WebUtils.DictionaryToJs("Scada.Web.ModalButtons.Js") %>;
     </script>
