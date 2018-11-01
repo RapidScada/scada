@@ -16,8 +16,9 @@ var scada = scada || {};
 /********** Notification **********/
 
 // Notification type
-scada.Notification = function (dateTime, messageHtml, notifType) {
+scada.Notification = function (key, dateTime, messageHtml, notifType) {
     this.id = 0;
+    this.key = key;
     this.dateTime = dateTime;
     this.messageHtml = messageHtml;
     this.notifType = notifType;
@@ -81,6 +82,24 @@ scada.NotifPanel.prototype._decNotifCounter = function (notifType) {
     }
 };
 
+// Reset the notification counters
+scada.NotifPanel.prototype._resetNotifCounters = function () {
+    this._notifCounters[scada.NotifTypes.INFO] = 0;
+    this._notifCounters[scada.NotifTypes.WARNING] = 0;
+    this._notifCounters[scada.NotifTypes.ERROR] = 0;
+    this._notifType = null;
+};
+
+// Create jQuery element for the notification
+scada.NotifPanel.prototype._createNotifElem = function (notification) {
+    var notifElem = $("<div id='notif" + notification.id + "' class='notif'>" +
+        "<div class='notif-type'>" + this._getNotifTypeIcon(notification.notifType) + "</div>" +
+        "<div class='notif-time'>" + notification.dateTime + "</div>" +
+        "<div class='notif-msg'>" + notification.messageHtml + "</div></div>");
+    notifElem.data("notif", notification);
+    return notifElem;
+};
+
 // Initialize the panel based on the given element
 scada.NotifPanel.prototype.init = function (panelID, bellID) {
     var thisObj = this;
@@ -104,9 +123,7 @@ scada.NotifPanel.prototype.init = function (panelID, bellID) {
         }
     });
 
-    this._notifCounters[scada.NotifTypes.INFO] = 0;
-    this._notifCounters[scada.NotifTypes.WARNING] = 0;
-    this._notifCounters[scada.NotifTypes.ERROR] = 0;
+    this._resetNotifCounters();
 };
 
 // Show the panel
@@ -132,18 +149,10 @@ scada.NotifPanel.prototype.isVisible = function () {
 // Add a notification to the panel. Returns the notification ID
 scada.NotifPanel.prototype.addNotification = function (notification) {
     notification.id = ++this._lastNotifID;
-
-    var notifElem = $("<div id='notif" + notification.id + "' class='notif'>" +
-        "<div class='notif-type'>" + this._getNotifTypeIcon(notification.notifType) + "</div>" +
-        "<div class='notif-time'>" + notification.dateTime + "</div>" +
-        "<div class='notif-msg'>" + notification.messageHtml + "</div></div>");
-    notifElem.data("notif", notification);
     this._emptyNotif.detach();
-    this._panel.append(notifElem);
-
+    this._panel.prepend(this._createNotifElem(notification));
     this._incNotifCounter(notification.notifType);
     this.showBell();
-
     return notification.id;
 };
 
@@ -159,6 +168,38 @@ scada.NotifPanel.prototype.removeNotification = function (notifID) {
 
     if (notification) {
         this._decNotifCounter(notification.notifType);
+        this.showBell();
+    }
+};
+
+// Clear all notifications from the panel
+scada.NotifPanel.prototype.clearNotifications = function () {
+    this._panel.children(".notif").remove();
+    this._resetNotifCounters();
+    this.showBell();
+};
+
+// Merge the notifications with the existing on the panel
+scada.NotifPanel.prototype.mergeNotifications = function (notifications) {
+
+};
+
+// Append the notifications to the existing on the panel
+scada.NotifPanel.prototype.appendNotifications = function (notifications) {
+    if (notifications.length > 0) {
+        this._emptyNotif.detach();
+
+        var lastNotif = this._panel.children(".notif:first");
+        var lastNotifKey = lastNotif.length > 0 ? lastNotif.data("notif").key : "";
+
+        for (var notif of notifications) {
+            if (notif.key > lastNotifKey) {
+                notif.id = ++this._lastNotifID;
+                this._panel.prepend(this._createNotifElem(notif));
+                this._incNotifCounter(notif.notifType);
+            }
+        }
+
         this.showBell();
     }
 };
