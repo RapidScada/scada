@@ -179,9 +179,60 @@ scada.NotifPanel.prototype.clearNotifications = function () {
     this.showBell();
 };
 
-// Merge the notifications with the existing on the panel
-scada.NotifPanel.prototype.mergeNotifications = function (notifications) {
+// Gently replace the existing notifications by the specified
+scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
+    var newNotifCnt = notifications.length;
 
+    if (newNotifCnt > 0) {
+        var existingNotifElems = this._panel.children(".notif");
+        var existingNotifCnt = notifElems.length;
+
+        if (existingNotifCnt > 0) {
+            var i = 0;
+            var j = 0;
+
+            while (i < existingNotifCnt || j < newNotifCnt) {
+                var newNotif = j < newNotifCnt ? notifications[j] : null;
+                var existingNotifElem = null;
+                var existingNotif = null;
+
+                if (i < existingNotifCnt) {
+                    existingNotifElem = existingNotifElems.eq(existingNotifCnt - i - 1);
+                    existingNotif = existingNotifElem.data("notif");
+                }
+
+                if (existingNotif !== null && (newNotif === null || existingNotif.key < newNotif.key)) {
+                    // remove the existing notification
+                    existingNotifElem.remove();
+                    this._decNotifCounter(existingNotif.notifType);
+                    i++;
+                } else if (newNotif !== null && (existingNotif === null || existingNotif.key > newNotif.key)) {
+                    // insert the new notification
+                    newNotif.id = ++this._lastNotifID;
+                    var notifElem = this._createNotifElem(newNotif);
+
+                    if (existingNotif === null) {
+                        this._panel.prepend(notifElem);
+                    } else {
+                        existingNotifElem.after(notifElem);
+                    }
+
+                    this._incNotifCounter(newNotif.notifType);
+                    j++;
+                    continue;
+                } else {
+                    i++;
+                    j++;
+                }
+            }
+
+            this.showBell();
+        } else {
+            this.appendNotifications(notifications);
+        }
+    } else {
+        this.clearNotifications();
+    }
 };
 
 // Append the notifications to the existing on the panel
@@ -189,8 +240,8 @@ scada.NotifPanel.prototype.appendNotifications = function (notifications) {
     if (notifications.length > 0) {
         this._emptyNotif.detach();
 
-        var lastNotif = this._panel.children(".notif:first");
-        var lastNotifKey = lastNotif.length > 0 ? lastNotif.data("notif").key : "";
+        var lastNotifElem = this._panel.children(".notif:first");
+        var lastNotifKey = lastNotifElem.length > 0 ? lastNotifElem.data("notif").key : "";
 
         for (var notif of notifications) {
             if (notif.key > lastNotifKey) {
