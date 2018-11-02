@@ -147,7 +147,11 @@ namespace Scada.Data.Tables
             /// <summary>
             /// Фильтр по статусам
             /// </summary>
-            Stat = 16
+            Stat = 16,
+            /// <summary>
+            /// Фильтр по квитированию
+            /// </summary>
+            Ack = 32
         }
 
         /// <summary>
@@ -174,6 +178,7 @@ namespace Scada.Data.Tables
                 ParamIDs = null;
                 CnlNums = null;
                 Statuses = null;
+                Checked = false;
             }
 
             /// <summary>
@@ -204,6 +209,10 @@ namespace Scada.Data.Tables
             /// Получить или установить статусы для фильтрации
             /// </summary>
             public ISet<int> Statuses { get; set; }
+            /// <summary>
+            /// Получить или установить признак квитирования для фильтрации
+            /// </summary>
+            public bool Checked { get; set; }
 
             /// <summary>
             /// Проверить корректность фильтра
@@ -242,7 +251,8 @@ namespace Scada.Data.Tables
                         (!Filters.HasFlag(EventFilters.Param) || ParamID > 0 && ParamID == ev.ParamID ||
                             ParamIDs != null && ParamIDs.Contains(ev.ParamID)) &&
                         (!Filters.HasFlag(EventFilters.Cnls) || CnlNums != null && CnlNums.Contains(ev.CnlNum)) &&
-                        (!Filters.HasFlag(EventFilters.Stat) || Statuses != null && Statuses.Contains(ev.NewCnlStat));
+                        (!Filters.HasFlag(EventFilters.Stat) || Statuses != null && Statuses.Contains(ev.NewCnlStat)) &&
+                        (!Filters.HasFlag(EventFilters.Ack) || Checked == ev.Checked);
                 }
             }
         }
