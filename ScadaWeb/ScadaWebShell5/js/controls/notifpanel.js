@@ -28,10 +28,6 @@ scada.Notification = function (key, dateTime, messageHtml, notifType) {
 
 // Notification panel type
 scada.NotifPanel = function () {
-    // jQuery object of the notification panel
-    this._panel = null;
-    // jQuery object of the notification bell
-    this._bell = null;
     // jQuery object of an empty notification
     this._emptyNotif = null;
     // Highest notification type of the existing notifications
@@ -40,6 +36,11 @@ scada.NotifPanel = function () {
     this._lastNotifID = 0;
     // Counters of notifications by type
     this._notifCounters = [];
+
+    // jQuery object of the notification panel
+    this.panelElem = null;
+    // jQuery object of the notification bell
+    this.bellElem = null;
 };
 
 // Get HTML of an icon appropriate to the notification type
@@ -103,23 +104,23 @@ scada.NotifPanel.prototype._createNotifElem = function (notification) {
 // Initialize the panel based on the given element
 scada.NotifPanel.prototype.init = function (panelID, bellID) {
     var thisObj = this;
-    this._panel = $("#" + panelID);
-    this._bell = $("#" + bellID);
-    this._emptyNotif = this._panel.children(".notif.empty");
+    this.panelElem = $("#" + panelID);
+    this.bellElem = $("#" + bellID);
+    this._emptyNotif = this.panelElem.children(".notif.empty");
 
     if (this._emptyNotif.length === 0) {
-        this._emptyNotif = $("<div class='notif empty'>No notifications</div>").appendTo(this._panel);
+        this._emptyNotif = $("<div class='notif empty'>No notifications</div>").appendTo(this.panelElem);
     }
 
     if (scada.utils.isSmallScreen()) {
-        this._panel.addClass("mobile");
+        this.panelElem.addClass("mobile");
     }
 
-    this._bell.click(function () {
+    this.bellElem.click(function () {
         if (thisObj.isVisible()) {
-            thisObj.show();
-        } else {
             thisObj.hide();
+        } else {
+            thisObj.show();
         }
     });
 
@@ -128,29 +129,36 @@ scada.NotifPanel.prototype.init = function (panelID, bellID) {
 
 // Show the panel
 scada.NotifPanel.prototype.show = function (opt_animate) {
-    this._panel.removeClass("hidden");
+    if (!this.isVisible()) {
+        this.panelElem.removeClass("hidden");
 
-    if (opt_animate) {
-        this._panel.css("right", -this._panel.outerWidth());
-        this._panel.animate({ right: 0 }, "fast");
+        if (opt_animate) {
+            this.panelElem.css("right", -this.panelElem.outerWidth());
+            this.panelElem.animate({ right: 0 }, "fast");
+        }
     }
 };
 
 // Hide the panel
 scada.NotifPanel.prototype.hide = function () {
-    this._panel.addClass("hidden");
+    this.panelElem.addClass("hidden");
 };
 
 // Determine whether the panel is visible
 scada.NotifPanel.prototype.isVisible = function () {
-    return this._panel.hasClass("hidden");
+    return !this.panelElem.hasClass("hidden");
+};
+
+// Determine whether the panel contains notifications
+scada.NotifPanel.prototype.isEmpty = function () {
+    return this.panelElem.children(".notif:not(.empty):first").length === 0;
 };
 
 // Add a notification to the panel. Returns the notification ID
 scada.NotifPanel.prototype.addNotification = function (notification) {
     notification.id = ++this._lastNotifID;
     this._emptyNotif.detach();
-    this._panel.prepend(this._createNotifElem(notification));
+    this.panelElem.prepend(this._createNotifElem(notification));
     this._incNotifCounter(notification.notifType);
     this.showBell();
     return notification.id;
@@ -158,12 +166,12 @@ scada.NotifPanel.prototype.addNotification = function (notification) {
 
 // Remove the notification with the specified ID from the panel
 scada.NotifPanel.prototype.removeNotification = function (notifID) {
-    var notifElem = this._panel.children("#notif" + notifID);
+    var notifElem = this.panelElem.children("#notif" + notifID);
     var notification = notifElem.data("notif");
     notifElem.remove();
 
-    if (this._panel.children(".notif:first").length === 0) {
-        this._emptyNotif.prependTo(this._panel);
+    if (this.isEmpty()) {
+        this._emptyNotif.prependTo(this.panelElem);
     }
 
     if (notification) {
@@ -174,7 +182,7 @@ scada.NotifPanel.prototype.removeNotification = function (notifID) {
 
 // Clear all notifications from the panel
 scada.NotifPanel.prototype.clearNotifications = function () {
-    this._panel.children(".notif").remove();
+    this.panelElem.children(".notif:not(.empty)").remove();
     this._resetNotifCounters();
     this.showBell();
 };
@@ -184,8 +192,9 @@ scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
     var newNotifCnt = notifications.length;
 
     if (newNotifCnt > 0) {
-        var existingNotifElems = this._panel.children(".notif");
-        var existingNotifCnt = notifElems.length;
+        this._emptyNotif.detach();
+        var existingNotifElems = this.panelElem.children(".notif");
+        var existingNotifCnt = existingNotifElems.length;
 
         if (existingNotifCnt > 0) {
             var i = 0;
@@ -212,7 +221,7 @@ scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
                     var notifElem = this._createNotifElem(newNotif);
 
                     if (existingNotif === null) {
-                        this._panel.prepend(notifElem);
+                        this.panelElem.prepend(notifElem);
                     } else {
                         existingNotifElem.after(notifElem);
                     }
@@ -240,13 +249,13 @@ scada.NotifPanel.prototype.appendNotifications = function (notifications) {
     if (notifications.length > 0) {
         this._emptyNotif.detach();
 
-        var lastNotifElem = this._panel.children(".notif:first");
+        var lastNotifElem = this.panelElem.children(".notif:first");
         var lastNotifKey = lastNotifElem.length > 0 ? lastNotifElem.data("notif").key : "";
 
         for (var notif of notifications) {
             if (notif.key > lastNotifKey) {
                 notif.id = ++this._lastNotifID;
-                this._panel.prepend(this._createNotifElem(notif));
+                this.panelElem.prepend(this._createNotifElem(notif));
                 this._incNotifCounter(notif.notifType);
             }
         }
@@ -257,27 +266,27 @@ scada.NotifPanel.prototype.appendNotifications = function (notifications) {
 
 // Show the bell
 scada.NotifPanel.prototype.showBell = function () {
-    this._bell.removeClass("hidden empty info warning error");
+    this.bellElem.removeClass("hidden empty info warning error");
 
     switch (this._notifType) {
         case scada.NotifTypes.INFO:
-            this._bell.addClass("info");
+            this.bellElem.addClass("info");
             break;
         case scada.NotifTypes.WARNING:
-            this._bell.addClass("warning");
+            this.bellElem.addClass("warning");
             break;
         case scada.NotifTypes.ERROR:
-            this._bell.addClass("error");
+            this.bellElem.addClass("error");
             break;
         default:
-            this._bell.addClass("empty");
+            this.bellElem.addClass("empty");
             break;
     }
 };
 
 // Hide the bell
 scada.NotifPanel.prototype.hideBell = function () {
-    this._bell.addClass("hidden");
+    this.bellElem.addClass("hidden");
 };
 
 /********** Notification Panel Locator **********/
