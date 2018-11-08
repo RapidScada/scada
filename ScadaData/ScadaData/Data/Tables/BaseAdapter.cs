@@ -214,6 +214,55 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Считать определения полей
+        /// </summary>
+        protected FieldDef[] ReadFieldDefs(Stream stream, BinaryReader reader, out int recSize)
+        {
+            // считывание заголовка
+            byte fieldCnt = reader.ReadByte(); // количество полей
+            stream.Seek(2, SeekOrigin.Current);
+
+            FieldDef[] fieldDefs = new FieldDef[fieldCnt];
+            recSize = 2; // размер строки в файле
+
+            if (fieldCnt > 0)
+            {
+                // считывание определений полей
+                byte[] fieldDefBuf = new byte[FieldDefSize];
+
+                for (int i = 0; i < fieldCnt; i++)
+                {
+                    // загрузка данных определения поля в буфер для увеличения скорости работы
+                    int readSize = reader.Read(fieldDefBuf, 0, FieldDefSize);
+
+                    // заполение определения поля из буфера
+                    if (readSize == FieldDefSize)
+                    {
+                        FieldDef fieldDef = new FieldDef
+                        {
+                            DataType = fieldDefBuf[0],
+                            DataSize = BitConverter.ToUInt16(fieldDefBuf, 1),
+                            MaxStrLen = BitConverter.ToUInt16(fieldDefBuf, 3),
+                            AllowNull = fieldDefBuf[5] > 0,
+                            Name = (string)BytesToObj(fieldDefBuf, 6, DataTypes.String)
+                        };
+
+                        if (string.IsNullOrEmpty(fieldDef.Name))
+                            throw new ScadaException("Field name must not be empty.");
+
+                        fieldDefs[i] = fieldDef;
+                        recSize += fieldDef.DataSize;
+
+                        if (fieldDef.AllowNull)
+                            recSize++;
+                    }
+                }
+            }
+
+            return fieldDefs;
+        }
+
+        /// <summary>
         /// Создать определение поля
         /// </summary>
         protected FieldDef CreateFieldDef(string name, Type type, int maxLength, bool allowNull, ref int recSize)
@@ -326,47 +375,16 @@ namespace Scada.Data.Tables
 
             Stream stream = null;
             BinaryReader reader = null;
+            dataTable.Rows.Clear();
 
             try
             {
                 stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new BinaryReader(stream);
+                FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
 
-                // считывание заголовка
-                byte fieldCnt = reader.ReadByte(); // количество полей
-                stream.Seek(2, SeekOrigin.Current);
-
-                if (fieldCnt > 0)
+                if (fieldDefs.Length > 0)
                 {
-                    // считывание определений полей
-                    FieldDef[] fieldDefs = new FieldDef[fieldCnt];
-                    int recSize = 2; // размер строки в файле
-                    byte[] fieldDefBuf = new byte[FieldDefSize];
-
-                    for (int i = 0; i < fieldCnt; i++)
-                    {
-                        // загрузка данных определения поля в буфер для увеличения скорости работы
-                        int readSize = reader.Read(fieldDefBuf, 0, FieldDefSize);
-
-                        // заполение определения поля из буфера
-                        if (readSize == FieldDefSize)
-                        {
-                            FieldDef fieldDef = new FieldDef();
-                            fieldDef.DataType = fieldDefBuf[0];
-                            fieldDef.DataSize = BitConverter.ToUInt16(fieldDefBuf, 1);
-                            fieldDef.MaxStrLen = BitConverter.ToUInt16(fieldDefBuf, 3);
-                            fieldDef.AllowNull = fieldDefBuf[5] > 0;
-                            fieldDef.Name = (string)BytesToObj(fieldDefBuf, 6, DataTypes.String);
-                            if (string.IsNullOrEmpty(fieldDef.Name))
-                                throw new ScadaException("Field name must not be empty.");
-                            fieldDefs[i] = fieldDef;
-
-                            recSize += fieldDef.DataSize;
-                            if (fieldDef.AllowNull)
-                                recSize++;
-                        }
-                    }
-
                     // формирование структуры таблицы
                     dataTable.BeginLoadData();
                     dataTable.DefaultView.Sort = "";
@@ -405,10 +423,6 @@ namespace Scada.Data.Tables
                         dataTable.DefaultView.AllowEdit = false;
                         dataTable.DefaultView.AllowDelete = false;
                     }
-                    else
-                    {
-                        dataTable.Rows.Clear();
-                    }
 
                     // считывание строк
                     byte[] rowBuf = new byte[recSize];
@@ -426,9 +440,13 @@ namespace Scada.Data.Tables
                             {
                                 bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
                                 int colInd = dataTable.Columns.IndexOf(fieldDef.Name);
+
                                 if (colInd >= 0)
+                                {
                                     row[colInd] = allowNulls && isNull ?
                                         DBNull.Value : BytesToObj(rowBuf, bufInd, fieldDef.DataType);
+                                }
+
                                 bufInd += fieldDef.DataSize;
                             }
                             dataTable.Rows.Add(row);
@@ -461,7 +479,69 @@ namespace Scada.Data.Tables
         /// </summary>
         public void Fill<T>(BaseTable<T> baseTable, bool allowNulls)
         {
-            throw new NotImplementedException();
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            Stream stream = null;
+            BinaryReader reader = null;
+
+            baseTable.Items.Clear();
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+
+            try
+            {
+                stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                reader = new BinaryReader(stream);
+                FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
+
+                if (fieldDefs.Length > 0)
+                {
+                    // считывание строк
+                    byte[] rowBuf = new byte[recSize];
+
+                    while (stream.Position < stream.Length)
+                    {
+                        // загрузка данных строки таблицы в буфер для увеличения скорости работы
+                        int readSize = reader.Read(rowBuf, 0, recSize);
+
+                        // заполение строки таблицы из буфера
+                        if (readSize == recSize)
+                        {
+                            T item = Activator.CreateInstance<T>();
+                            int bufInd = 2;
+
+                            foreach (FieldDef fieldDef in fieldDefs)
+                            {
+                                bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
+                                PropertyDescriptor prop = props[fieldDef.Name];
+
+                                if (prop != null)
+                                {
+                                    object val = allowNulls && isNull ?
+                                        null : BytesToObj(rowBuf, bufInd, fieldDef.DataType);
+                                    prop.SetValue(item, val);
+                                }
+
+                                bufInd += fieldDef.DataSize;
+                            }
+
+                            baseTable.AddItem(item);
+                        }
+                    }
+                }
+            }
+            catch (EndOfStreamException)
+            {
+                // нормальная ситуация окончания файла
+            }
+            finally
+            {
+                if (fileMode)
+                {
+                    reader?.Close();
+                    stream?.Close();
+                }
+            }
         }
 
         /// <summary>
