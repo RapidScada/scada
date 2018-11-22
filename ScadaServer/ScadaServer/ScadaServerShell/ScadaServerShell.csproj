@@ -37,8 +37,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaAgentCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="ScadaAgentCommon">
       <HintPath>..\..\..\ScadaAgent\ScadaAgentCommon\bin\Release\netstandard2.0\ScadaAgentCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaAgentCommon.UI">
