@@ -23,13 +23,15 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.DbImport.UI;
+
 namespace Scada.Comm.Devices
 {
     /// <summary>
     /// Device library user interface.
     /// <para>Пользовательский интерфейс библиотеки КП.</para>
     /// </summary>
-    public class KpDBImportView : KPView
+    public class KpDbImportView : KPView
     {
         /// <summary>
         /// The driver version.
@@ -40,7 +42,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
-        public KpDBImportView()
+        public KpDbImportView()
             : this(0)
         {
         }
@@ -48,10 +50,10 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Initializes a new instance of the class. Designed for configuring a particular device.
         /// </summary>
-        public KpDBImportView(int number)
+        public KpDbImportView(int number)
             : base(number)
         {
-            CanShowProps = true;
+            CanShowProps = number > 0;
         }
 
 
@@ -77,6 +79,16 @@ namespace Scada.Comm.Devices
             {
                 return KpVersion;
             }
+        }
+
+
+        /// <summary>
+        /// Shows the driver properties.
+        /// </summary>
+        public override void ShowProps()
+        {
+            FrmConfig frmConfig = new FrmConfig();
+            frmConfig.ShowDialog();
         }
     }
 }

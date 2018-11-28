@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpEmail", "KpEmail\KpEmail.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpHttpNotif", "KpHttpNotif\KpHttpNotif.csproj", "{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpDBImport", "KpDBImport\KpDBImport.csproj", "{E536C888-ED86-4248-BA38-48E882241559}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpDbImport", "KpDbImport\KpDbImport.csproj", "{E536C888-ED86-4248-BA38-48E882241559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

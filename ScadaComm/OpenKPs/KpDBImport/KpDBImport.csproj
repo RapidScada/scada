@@ -8,7 +8,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scada.Comm.Devices</RootNamespace>
-    <AssemblyName>KpDBImport</AssemblyName>
+    <AssemblyName>KpDbImport</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
@@ -42,15 +42,28 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="KpDBImportLogic.cs" />
-    <Compile Include="KpDBImportView.cs" />
+    <Compile Include="DbImport\Config\Config.cs" />
+    <Compile Include="DbImport\Config\DbConnSettings.cs" />
+    <Compile Include="DbImport\Config\DbType.cs" />
+    <Compile Include="DbImport\UI\FrmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DbImport\UI\FrmConfig.Designer.cs">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="KpDbImportLogic.cs" />
+    <Compile Include="KpDbImportView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DBImport\" />
+    <EmbeddedResource Include="DbImport\UI\FrmConfig.resx">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

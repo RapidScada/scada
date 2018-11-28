@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Scada.Comm.Devices
 {
-    public class KpDBImportLogic
+    public class KpDbImportLogic
     {
     }
 }
