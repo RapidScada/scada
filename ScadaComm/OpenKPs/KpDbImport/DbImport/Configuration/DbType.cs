@@ -23,7 +23,7 @@
  * Modified : 2018
  */
 
-namespace Scada.Comm.Devices.DbImport.Config
+namespace Scada.Comm.Devices.DbImport.Configuration
 {
     /// <summary>
     /// Supported database types.

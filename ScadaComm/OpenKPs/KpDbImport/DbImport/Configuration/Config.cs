@@ -1,0 +1,159 @@
+﻿/*
+ * Copyright 2018 Mikhail Shiryaev
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * 
+ * 
+ * Product  : Rapid SCADA
+ * Module   : KpDBImport
+ * Summary  : Driver configuration.
+ * 
+ * Author   : Mikhail Shiryaev
+ * Created  : 2018
+ * Modified : 2018
+ */
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml;
+
+namespace Scada.Comm.Devices.DbImport.Configuration
+{
+    /// <summary>
+    /// Driver configuration.
+    /// <para>Конфигурация драйвера.</para>
+    /// </summary>
+    internal class Config
+    {
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public Config()
+        {
+            SetToDefault();
+        }
+
+
+        /// <summary>
+        /// Gets or sets the database type.
+        /// </summary>
+        public DbType DbType { get; set; }
+
+        /// <summary>
+        /// Gets the DB connection settings.
+        /// </summary>
+        public DbConnSettings DbConnSettings { get; private set; }
+
+        /// <summary>
+        /// Gets or sets the SQL-query to retrieve data.
+        /// </summary>
+        public string SelectQuery { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to calculate tag count automatically by parsing the query.
+        /// </summary>
+        public bool AutoTagCount { get; set; }
+
+        /// <summary>
+        /// Gets or sets the exact number of tags.
+        /// </summary>
+        public int TagCount { get; set; }
+
+
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        private void SetToDefault()
+        {
+            DbType = DbType.Undefined;
+            DbConnSettings = new DbConnSettings();
+            SelectQuery = "";
+            AutoTagCount = true;
+            TagCount = 0;
+        }
+
+
+        /// <summary>
+        /// Loads the configuration from the specified file.
+        /// </summary>
+        public bool Load(string fileName, out string errMsg)
+        {
+            SetToDefault();
+
+            try
+            {
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+                XmlElement rootElem = xmlDoc.DocumentElement;
+
+                DbType = rootElem.GetChildAsEnum<DbType>("DbType");
+                DbConnSettings.LoadFromXml(rootElem.SelectSingleNode("DbConnSettings"));
+                SelectQuery = rootElem.GetChildAsString("SelectQuery");
+                AutoTagCount = rootElem.GetChildAsBool("AutoTagCount");
+                TagCount = rootElem.GetChildAsInt("TagCount");
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommPhrases.LoadKpSettingsError + ":" + Environment.NewLine + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves the configuration to the specified file.
+        /// </summary>
+        public bool Save(string fileName, out string errMsg)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("KpDbImportConfig");
+                xmlDoc.AppendChild(rootElem);
+
+                rootElem.AppendElem("DbType", DbType);
+                DbConnSettings.SaveToXml(rootElem.AppendElem("DbConnSettings"));
+                rootElem.AppendElem("SelectQuery", SelectQuery);
+                rootElem.AppendElem("AutoTagCount", AutoTagCount);
+                rootElem.AppendElem("TagCount", TagCount);
+
+                xmlDoc.Save(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommPhrases.SaveKpSettingsError + ":" + Environment.NewLine + ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets the configuration file name.
+        /// </summary>
+        public static string GetFileName(string configDir, int kpNum)
+        {
+            return Path.Combine(configDir, "KpDbImport_" + CommUtils.AddZeros(kpNum, 3) + ".xml");
+        }
+    }
+}

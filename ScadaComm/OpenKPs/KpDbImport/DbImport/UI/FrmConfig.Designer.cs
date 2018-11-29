@@ -51,8 +51,7 @@
             this.lblSelectQuery = new System.Windows.Forms.Label();
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.btnClose = new System.Windows.Forms.Button();
-            this.btnSave = new System.Windows.Forms.Button();
+            this.btnOK = new System.Windows.Forms.Button();
             this.gbConnection.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageDatabase.SuspendLayout();
@@ -238,6 +237,7 @@
             this.chkAutoTagCount.TabIndex = 4;
             this.chkAutoTagCount.Text = "Auto";
             this.chkAutoTagCount.UseVisualStyleBackColor = true;
+            this.chkAutoTagCount.CheckedChanged += new System.EventHandler(this.chkAutoTagCount_CheckedChanged);
             // 
             // numTagCount
             // 
@@ -257,6 +257,7 @@
             // 
             // txtSelectQuery
             // 
+            this.txtSelectQuery.AcceptsReturn = true;
             this.txtSelectQuery.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.txtSelectQuery.Location = new System.Drawing.Point(6, 19);
             this.txtSelectQuery.Multiline = true;
@@ -278,8 +279,7 @@
             // pnlBottom
             // 
             this.pnlBottom.Controls.Add(this.btnCancel);
-            this.pnlBottom.Controls.Add(this.btnClose);
-            this.pnlBottom.Controls.Add(this.btnSave);
+            this.pnlBottom.Controls.Add(this.btnOK);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 309);
             this.pnlBottom.Name = "pnlBottom";
@@ -289,41 +289,31 @@
             // btnCancel
             // 
             this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.Enabled = false;
-            this.btnCancel.Location = new System.Drawing.Point(266, 6);
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(347, 6);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 1;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // btnClose
+            // btnOK
             // 
-            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnClose.Location = new System.Drawing.Point(347, 6);
-            this.btnClose.Name = "btnClose";
-            this.btnClose.Size = new System.Drawing.Size(75, 23);
-            this.btnClose.TabIndex = 2;
-            this.btnClose.Text = "Close";
-            this.btnClose.UseVisualStyleBackColor = true;
-            // 
-            // btnSave
-            // 
-            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnSave.Enabled = false;
-            this.btnSave.Location = new System.Drawing.Point(185, 6);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(75, 23);
-            this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnOK.Location = new System.Drawing.Point(266, 6);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 0;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // FrmConfig
             // 
+            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnClose;
+            this.CancelButton = this.btnCancel;
             this.ClientSize = new System.Drawing.Size(434, 350);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.pnlBottom);
@@ -334,6 +324,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "DB Import - Device {0} Properties";
+            this.Load += new System.EventHandler(this.FrmConfig_Load);
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
             this.tabControl.ResumeLayout(false);
@@ -365,8 +356,7 @@
         private System.Windows.Forms.TabPage pageQuery;
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnClose;
-        private System.Windows.Forms.Button btnSave;
+        private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.GroupBox gbDbType;
         private System.Windows.Forms.TextBox txtSelectQuery;
         private System.Windows.Forms.Label lblSelectQuery;

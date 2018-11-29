@@ -47,9 +47,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbImport\Config\Config.cs" />
-    <Compile Include="DbImport\Config\DbConnSettings.cs" />
-    <Compile Include="DbImport\Config\DbType.cs" />
+    <Compile Include="DbImport\Configuration\Config.cs" />
+    <Compile Include="DbImport\Configuration\DbConnSettings.cs" />
+    <Compile Include="DbImport\Configuration\DbType.cs" />
     <Compile Include="DbImport\UI\FrmConfig.cs">
       <SubType>Form</SubType>
     </Compile>

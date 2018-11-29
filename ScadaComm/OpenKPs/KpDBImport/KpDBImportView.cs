@@ -87,8 +87,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void ShowProps()
         {
-            FrmConfig frmConfig = new FrmConfig();
-            frmConfig.ShowDialog();
+            new FrmConfig(AppDirs, Number).ShowDialog();
         }
     }
 }

@@ -23,7 +23,10 @@
  * Modified : 2018
  */
 
-namespace Scada.Comm.Devices.DbImport.Config
+using System;
+using System.Xml;
+
+namespace Scada.Comm.Devices.DbImport.Configuration
 {
     /// <summary>
     /// DB connection settings.
@@ -68,5 +71,36 @@ namespace Scada.Comm.Devices.DbImport.Config
         /// Gets or sets the connection string.
         /// </summary>
         public string ConnectionString { get; set; }
+
+
+        /// <summary>
+        /// Loads the settings from the XML node.
+        /// </summary>
+        public void LoadFromXml(XmlNode xmlNode)
+        {
+            if (xmlNode == null)
+                throw new ArgumentNullException("xmlNode");
+
+            Server = xmlNode.GetChildAsString("Server");
+            Database = xmlNode.GetChildAsString("Database");
+            User = xmlNode.GetChildAsString("User");
+            Password = xmlNode.GetChildAsString("Password");
+            ConnectionString = xmlNode.GetChildAsString("ConnectionString");
+        }
+
+        /// <summary>
+        /// Saves the settings into the XML node.
+        /// </summary>
+        public void SaveToXml(XmlElement xmlElem)
+        {
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
+
+            xmlElem.AppendElem("Server", Server);
+            xmlElem.AppendElem("Database", Database);
+            xmlElem.AppendElem("User", User);
+            xmlElem.AppendElem("Password", Password);
+            xmlElem.AppendElem("ConnectionString", ConnectionString);
+        }
     }
 }
