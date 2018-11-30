@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpDBImport
- * Summary  : Supported database types
+ * Summary  : Supported data source types
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -26,10 +26,10 @@
 namespace Scada.Comm.Devices.DbImport.Configuration
 {
     /// <summary>
-    /// Supported database types.
-    /// <para>Поддерживаемые типы БД.</para>
+    /// Supported data source types.
+    /// <para>Поддерживаемые типы источников данных.</para>
     /// </summary>
-    internal enum DbType
+    internal enum DataSourceType
     {
         Undefined,
         MSSQL,

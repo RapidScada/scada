@@ -24,9 +24,7 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Xml;
 
 namespace Scada.Comm.Devices.DbImport.Configuration
@@ -47,9 +45,9 @@ namespace Scada.Comm.Devices.DbImport.Configuration
 
 
         /// <summary>
-        /// Gets or sets the database type.
+        /// Gets or sets the data source type.
         /// </summary>
-        public DbType DbType { get; set; }
+        public DataSourceType DataSourceType { get; set; }
 
         /// <summary>
         /// Gets the DB connection settings.
@@ -77,7 +75,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
         /// </summary>
         private void SetToDefault()
         {
-            DbType = DbType.Undefined;
+            DataSourceType = DataSourceType.Undefined;
             DbConnSettings = new DbConnSettings();
             SelectQuery = "";
             AutoTagCount = true;
@@ -101,7 +99,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 xmlDoc.Load(fileName);
                 XmlElement rootElem = xmlDoc.DocumentElement;
 
-                DbType = rootElem.GetChildAsEnum<DbType>("DbType");
+                DataSourceType = rootElem.GetChildAsEnum<DataSourceType>("DataSourceType");
                 DbConnSettings.LoadFromXml(rootElem.SelectSingleNode("DbConnSettings"));
                 SelectQuery = rootElem.GetChildAsString("SelectQuery");
                 AutoTagCount = rootElem.GetChildAsBool("AutoTagCount");
@@ -131,7 +129,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 XmlElement rootElem = xmlDoc.CreateElement("KpDbImportConfig");
                 xmlDoc.AppendChild(rootElem);
 
-                rootElem.AppendElem("DbType", DbType);
+                rootElem.AppendElem("DataSourceType", DataSourceType);
                 DbConnSettings.SaveToXml(rootElem.AppendElem("DbConnSettings"));
                 rootElem.AppendElem("SelectQuery", SelectQuery);
                 rootElem.AppendElem("AutoTagCount", AutoTagCount);

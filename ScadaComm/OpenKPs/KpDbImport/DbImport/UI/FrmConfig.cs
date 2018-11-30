@@ -24,6 +24,7 @@
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
+using Scada.Comm.Devices.DbImport.Data;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -47,6 +48,8 @@ namespace Scada.Comm.Devices.DbImport.UI
         private int kpNum;             // the device number
         private string configFileName; // the configuration file name
         private Config config;         // the device configuration
+        private bool connChanging;     // connection settings are changing
+
 
 
         /// <summary>
@@ -67,6 +70,7 @@ namespace Scada.Comm.Devices.DbImport.UI
             this.kpNum = kpNum;
             configFileName = "";
             config = new Config();
+            connChanging = false;
         }
 
 
@@ -75,7 +79,10 @@ namespace Scada.Comm.Devices.DbImport.UI
         /// </summary>
         private void ConfigToControls()
         {
-            cbDbType.SelectedIndex = (int)config.DbType;
+            connChanging = true;
+
+            // set the control values
+            cbDataSourceType.SelectedIndex = (int)config.DataSourceType;
             txtServer.Text = config.DbConnSettings.Server;
             txtDatabase.Text = config.DbConnSettings.Database;
             txtUser.Text = config.DbConnSettings.User;
@@ -94,6 +101,31 @@ namespace Scada.Comm.Devices.DbImport.UI
                 numTagCount.Enabled = true;
                 chkAutoTagCount.Checked = false;
             }
+
+            // tune the controls represent the connection properties
+            if (config.DataSourceType == DataSourceType.Undefined)
+            {
+                gbConnection.Enabled = false;
+                txtConnectionString.Text = "";
+            }
+            else
+            {
+                gbConnection.Enabled = true;
+                string connStr = BuildConnectionsString();
+
+                if (string.IsNullOrEmpty(connStr) || !string.IsNullOrEmpty(config.DbConnSettings.ConnectionString))
+                {
+                    txtConnectionString.Text = config.DbConnSettings.ConnectionString;
+                    EnableConnString();
+                }
+                else
+                {
+                    txtConnectionString.Text = connStr;
+                    EnableConnProps();
+                }
+            }
+
+            connChanging = false;
         }
 
         /// <summary>
@@ -101,11 +133,13 @@ namespace Scada.Comm.Devices.DbImport.UI
         /// </summary>
         private void ControlsToConfig()
         {
-            config.DbType = (Configuration.DbType)cbDbType.SelectedIndex;
+            config.DataSourceType = (DataSourceType)cbDataSourceType.SelectedIndex;
             config.DbConnSettings.Server = txtServer.Text;
             config.DbConnSettings.Database = txtDatabase.Text;
             config.DbConnSettings.User = txtUser.Text;
             config.DbConnSettings.Password = txtPassword.Text;
+            config.DbConnSettings.ConnectionString = 
+                txtConnectionString.Text == BuildConnectionsString() ? "" : txtConnectionString.Text;
             config.SelectQuery = txtSelectQuery.Text;
 
             if (chkAutoTagCount.Checked)
@@ -118,6 +152,58 @@ namespace Scada.Comm.Devices.DbImport.UI
                 config.AutoTagCount = false;
                 config.TagCount = Convert.ToInt32(numTagCount.Value);
             }
+        }
+
+        /// <summary>
+        /// Builds a connection string based on the connection settings.
+        /// </summary>
+        private string BuildConnectionsString()
+        {
+            DataSourceType dataSourceType = (DataSourceType)cbDataSourceType.SelectedIndex;
+
+            DbConnSettings connSettings = new DbConnSettings()
+            {
+                Server = txtServer.Text,
+                Database = txtDatabase.Text,
+                User = txtUser.Text,
+                Password = txtPassword.Text
+            };
+            
+            switch (dataSourceType)
+            {
+                case DataSourceType.MSSQL:
+                    return SqlDataSource.BuildConnectionString(connSettings);
+                case DataSourceType.Oracle:
+                    return OraDataSource.BuildConnectionString(connSettings);
+                case DataSourceType.PostgreSQL:
+                    return PgSqlDataSource.BuildConnectionString(connSettings);
+                case DataSourceType.MySQL:
+                    return MySqlDataSource.BuildConnectionString(connSettings);
+                case DataSourceType.OLEDB:
+                    return OleDbDataSource.BuildConnectionString(connSettings);
+                default:
+                    return "";
+            }
+        }
+
+        /// <summary>
+        /// Display the connection controls like enabled.
+        /// </summary>
+        private void EnableConnProps()
+        {
+            txtServer.BackColor = txtDatabase.BackColor = txtUser.BackColor = txtPassword.BackColor =
+                Color.FromKnownColor(KnownColor.Window);
+            txtConnectionString.BackColor = Color.FromKnownColor(KnownColor.Control);
+        }
+
+        /// <summary>
+        /// Display the connection string like enabled.
+        /// </summary>
+        private void EnableConnString()
+        {
+            txtServer.BackColor = txtDatabase.BackColor = txtUser.BackColor = txtPassword.BackColor =
+                Color.FromKnownColor(KnownColor.Control);
+            txtConnectionString.BackColor = Color.FromKnownColor(KnownColor.Window);
         }
 
 
@@ -139,6 +225,57 @@ namespace Scada.Comm.Devices.DbImport.UI
 
             // display the configuration
             ConfigToControls();
+        }
+
+        private void cbDataSourceType_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!connChanging)
+            {
+                connChanging = true;
+
+                if (cbDataSourceType.SelectedIndex == 0)
+                {
+                    gbConnection.Enabled = false;
+                    txtConnectionString.Text = "";
+                }
+                else
+                {
+                    gbConnection.Enabled = true;
+                    string connStr = BuildConnectionsString();
+                    txtConnectionString.Text = connStr;
+
+                    if (string.IsNullOrEmpty(connStr))
+                        EnableConnString();
+                    else
+                        EnableConnProps();
+                }
+
+                connChanging = false;
+            }
+        }
+
+        private void txtConnProp_TextChanged(object sender, EventArgs e)
+        {
+            if (!connChanging)
+            {
+                string connStr = BuildConnectionsString();
+
+                if (!string.IsNullOrEmpty(connStr))
+                {
+                    connChanging = true;
+                    txtConnectionString.Text = connStr;
+                    EnableConnProps();
+                    connChanging = false;
+                }
+            }
+        }
+
+        private void txtConnectionString_TextChanged(object sender, EventArgs e)
+        {
+            if (!connChanging)
+            {
+                EnableConnString();
+            }
         }
 
         private void chkAutoTagCount_CheckedChanged(object sender, EventArgs e)

@@ -81,6 +81,17 @@ namespace Scada.Comm.Devices
             }
         }
 
+        /// <summary>
+        /// Gets the default device request parameters.
+        /// </summary>
+        public override KPReqParams DefaultReqParams
+        {
+            get
+            {
+                return new KPReqParams(0, 500);
+            }
+        }
+
 
         /// <summary>
         /// Shows the driver properties.

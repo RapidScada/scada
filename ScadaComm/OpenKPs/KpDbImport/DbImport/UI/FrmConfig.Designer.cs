@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.cbDbType = new System.Windows.Forms.ComboBox();
+            this.cbDataSourceType = new System.Windows.Forms.ComboBox();
             this.gbConnection = new System.Windows.Forms.GroupBox();
             this.txtConnectionString = new System.Windows.Forms.TextBox();
             this.lblConnectionString = new System.Windows.Forms.Label();
@@ -42,7 +42,7 @@
             this.lblServer = new System.Windows.Forms.Label();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageDatabase = new System.Windows.Forms.TabPage();
-            this.gbDbType = new System.Windows.Forms.GroupBox();
+            this.gbDataSourceType = new System.Windows.Forms.GroupBox();
             this.pageQuery = new System.Windows.Forms.TabPage();
             this.chkAutoTagCount = new System.Windows.Forms.CheckBox();
             this.numTagCount = new System.Windows.Forms.NumericUpDown();
@@ -55,27 +55,28 @@
             this.gbConnection.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageDatabase.SuspendLayout();
-            this.gbDbType.SuspendLayout();
+            this.gbDataSourceType.SuspendLayout();
             this.pageQuery.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTagCount)).BeginInit();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
-            // cbDbType
+            // cbDataSourceType
             // 
-            this.cbDbType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbDbType.FormattingEnabled = true;
-            this.cbDbType.Items.AddRange(new object[] {
+            this.cbDataSourceType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbDataSourceType.FormattingEnabled = true;
+            this.cbDataSourceType.Items.AddRange(new object[] {
             "<Choose database type>",
             "Microsoft SQL Server",
             "Oracle",
             "PostgreSQL",
             "MySQL",
             "OLE DB"});
-            this.cbDbType.Location = new System.Drawing.Point(13, 19);
-            this.cbDbType.Name = "cbDbType";
-            this.cbDbType.Size = new System.Drawing.Size(388, 21);
-            this.cbDbType.TabIndex = 0;
+            this.cbDataSourceType.Location = new System.Drawing.Point(13, 19);
+            this.cbDataSourceType.Name = "cbDataSourceType";
+            this.cbDataSourceType.Size = new System.Drawing.Size(388, 21);
+            this.cbDataSourceType.TabIndex = 0;
+            this.cbDataSourceType.SelectedIndexChanged += new System.EventHandler(this.cbDataSourceType_SelectedIndexChanged);
             // 
             // gbConnection
             // 
@@ -104,6 +105,7 @@
             this.txtConnectionString.Name = "txtConnectionString";
             this.txtConnectionString.Size = new System.Drawing.Size(388, 50);
             this.txtConnectionString.TabIndex = 9;
+            this.txtConnectionString.TextChanged += new System.EventHandler(this.txtConnectionString_TextChanged);
             // 
             // lblConnectionString
             // 
@@ -121,6 +123,7 @@
             this.txtPassword.Size = new System.Drawing.Size(191, 20);
             this.txtPassword.TabIndex = 7;
             this.txtPassword.UseSystemPasswordChar = true;
+            this.txtPassword.TextChanged += new System.EventHandler(this.txtConnProp_TextChanged);
             // 
             // lblPassword
             // 
@@ -137,6 +140,7 @@
             this.txtUser.Name = "txtUser";
             this.txtUser.Size = new System.Drawing.Size(191, 20);
             this.txtUser.TabIndex = 5;
+            this.txtUser.TextChanged += new System.EventHandler(this.txtConnProp_TextChanged);
             // 
             // lblUser
             // 
@@ -153,6 +157,7 @@
             this.txtDatabase.Name = "txtDatabase";
             this.txtDatabase.Size = new System.Drawing.Size(388, 20);
             this.txtDatabase.TabIndex = 3;
+            this.txtDatabase.TextChanged += new System.EventHandler(this.txtConnProp_TextChanged);
             // 
             // lblDatabase
             // 
@@ -169,6 +174,7 @@
             this.txtServer.Name = "txtServer";
             this.txtServer.Size = new System.Drawing.Size(388, 20);
             this.txtServer.TabIndex = 1;
+            this.txtServer.TextChanged += new System.EventHandler(this.txtConnProp_TextChanged);
             // 
             // lblServer
             // 
@@ -192,7 +198,7 @@
             // 
             // pageDatabase
             // 
-            this.pageDatabase.Controls.Add(this.gbDbType);
+            this.pageDatabase.Controls.Add(this.gbDataSourceType);
             this.pageDatabase.Controls.Add(this.gbConnection);
             this.pageDatabase.Location = new System.Drawing.Point(4, 22);
             this.pageDatabase.Name = "pageDatabase";
@@ -202,16 +208,16 @@
             this.pageDatabase.Text = "Database";
             this.pageDatabase.UseVisualStyleBackColor = true;
             // 
-            // gbDbType
+            // gbDataSourceType
             // 
-            this.gbDbType.Controls.Add(this.cbDbType);
-            this.gbDbType.Location = new System.Drawing.Point(6, 6);
-            this.gbDbType.Name = "gbDbType";
-            this.gbDbType.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbDbType.Size = new System.Drawing.Size(414, 53);
-            this.gbDbType.TabIndex = 0;
-            this.gbDbType.TabStop = false;
-            this.gbDbType.Text = "Database Type";
+            this.gbDataSourceType.Controls.Add(this.cbDataSourceType);
+            this.gbDataSourceType.Location = new System.Drawing.Point(6, 6);
+            this.gbDataSourceType.Name = "gbDataSourceType";
+            this.gbDataSourceType.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbDataSourceType.Size = new System.Drawing.Size(414, 53);
+            this.gbDataSourceType.TabIndex = 0;
+            this.gbDataSourceType.TabStop = false;
+            this.gbDataSourceType.Text = "Data Source Type";
             // 
             // pageQuery
             // 
@@ -329,7 +335,7 @@
             this.gbConnection.PerformLayout();
             this.tabControl.ResumeLayout(false);
             this.pageDatabase.ResumeLayout(false);
-            this.gbDbType.ResumeLayout(false);
+            this.gbDataSourceType.ResumeLayout(false);
             this.pageQuery.ResumeLayout(false);
             this.pageQuery.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTagCount)).EndInit();
@@ -339,7 +345,7 @@
         }
 
         #endregion
-        private System.Windows.Forms.ComboBox cbDbType;
+        private System.Windows.Forms.ComboBox cbDataSourceType;
         private System.Windows.Forms.GroupBox gbConnection;
         private System.Windows.Forms.TextBox txtDatabase;
         private System.Windows.Forms.Label lblDatabase;
@@ -357,7 +363,7 @@
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
-        private System.Windows.Forms.GroupBox gbDbType;
+        private System.Windows.Forms.GroupBox gbDataSourceType;
         private System.Windows.Forms.TextBox txtSelectQuery;
         private System.Windows.Forms.Label lblSelectQuery;
         private System.Windows.Forms.NumericUpDown numTagCount;
