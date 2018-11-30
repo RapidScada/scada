@@ -41,6 +41,23 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
+        /// Initializes the data source.
+        /// </summary>
+        private void InitDataSource(Config config)
+        {
+
+        }
+
+        /// <summary>
+        /// Initializes the device tags.
+        /// </summary>
+        private void InitDeviceTags(Config config)
+        {
+
+        }
+
+
+        /// <summary>
         /// Performs a communication session with the device.
         /// </summary>
         public override void Session()
@@ -72,20 +89,14 @@ namespace Scada.Comm.Devices
 
             if (config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out string errMsg))
             {
-
+                InitDataSource(config);
+                InitDeviceTags(config);
             }
             else
             {
                 dataSource = null;
                 WriteToLog(errMsg);
             }
-        }
-
-        /// <summary>
-        /// Performs actions on communication line start.
-        /// </summary>
-        public override void OnCommLineStart()
-        {
         }
     }
 }
