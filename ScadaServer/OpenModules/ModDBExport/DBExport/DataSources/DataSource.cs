@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2018
  */
 
 using System;
-using System.Collections.Generic;
 using System.Data.Common;
-using System.Linq;
-using System.Text;
 
 namespace Scada.Server.Modules.DBExport
 {
@@ -145,17 +142,17 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         protected void ExtractHostAndPort(string server, int defaultPort, out string host, out int port)
         {
-            int ind = Server.IndexOf(':');
+            int ind = server.IndexOf(':');
 
             if (ind >= 0)
             {
-                host = Server.Substring(0, ind);
-                try { port = int.Parse(Server.Substring(ind + 1)); }
+                host = server.Substring(0, ind);
+                try { port = int.Parse(server.Substring(ind + 1)); }
                 catch { port = defaultPort; }
             }
             else
             {
-                host = Server;
+                host = server;
                 port = defaultPort;
             }
         }
