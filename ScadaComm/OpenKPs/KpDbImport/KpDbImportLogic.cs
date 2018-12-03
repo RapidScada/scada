@@ -52,6 +52,19 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public KpDbImportLogic(int number)
+            : base(number)
+        {
+            ConnRequired = false;
+
+            dataSource = null;
+            tagTypes = null;
+        }
+
+
+        /// <summary>
         /// Initializes the data source.
         /// </summary>
         private void InitDataSource(Config config)
@@ -260,6 +273,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void Session()
         {
+            base.Session();
             lastCommSucc = false;
 
             if (dataSource == null)
