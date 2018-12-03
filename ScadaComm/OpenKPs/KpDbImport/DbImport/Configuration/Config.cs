@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpDBImport
- * Summary  : Driver configuration.
+ * Summary  : Driver configuration
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -144,6 +144,37 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 errMsg = CommPhrases.SaveKpSettingsError + ":" + Environment.NewLine + ex.Message;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Calculates tag count based on the SQL-query.
+        /// </summary>
+        public int CalcTagCount()
+        {
+            int tagCount = 0;
+
+            if (!string.IsNullOrEmpty(SelectQuery))
+            {
+                // count the number of words between select and from separated by commas
+                int selectInd = SelectQuery.IndexOf("select ", StringComparison.OrdinalIgnoreCase);
+                int fromInd = SelectQuery.IndexOf(" from ", StringComparison.OrdinalIgnoreCase);
+
+                if (selectInd >= 0)
+                {
+                    if (fromInd < 0)
+                        fromInd = SelectQuery.Length - 1;
+
+                    for (int i = selectInd + "select ".Length; i < fromInd; i++)
+                    {
+                        if (SelectQuery[i] == ',')
+                            tagCount++;
+                    }
+
+                    tagCount++;
+                }
+            }
+
+            return tagCount;
         }
 
         /// <summary>

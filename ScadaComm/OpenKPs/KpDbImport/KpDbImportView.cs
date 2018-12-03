@@ -23,7 +23,10 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.DbImport.Configuration;
 using Scada.Comm.Devices.DbImport.UI;
+using Scada.Data.Configuration;
+using System.IO;
 
 namespace Scada.Comm.Devices
 {
@@ -89,6 +92,36 @@ namespace Scada.Comm.Devices
             get
             {
                 return new KPReqParams(0, 500);
+            }
+        }
+
+        /// <summary>
+        /// Gets the prototypes of default device channels.
+        /// </summary>
+        public override KPCnlPrototypes DefaultCnls
+        {
+            get
+            {
+                // load configuration
+                Config config = new Config();
+                string fileName = Config.GetFileName(AppDirs.ConfigDir, Number);
+
+                if (!File.Exists(fileName))
+                    return null;
+                else if (!config.Load(fileName, out string errMsg))
+                    throw new ScadaException(errMsg);
+
+                // create channel prototypes
+                KPCnlPrototypes prototypes = new KPCnlPrototypes();
+                string[] tagNames = KpDbImportLogic.GetTagNames(config);
+                int signal = 1;
+
+                foreach (string tagName in tagNames)
+                {
+                    prototypes.InCnls.Add(new InCnlPrototype(tagName, BaseValues.CnlTypes.TI) { Signal = signal++ });
+                }
+
+                return prototypes;
             }
         }
 

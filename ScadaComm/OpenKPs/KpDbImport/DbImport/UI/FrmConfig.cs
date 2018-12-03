@@ -172,15 +172,15 @@ namespace Scada.Comm.Devices.DbImport.UI
             switch (dataSourceType)
             {
                 case DataSourceType.MSSQL:
-                    return SqlDataSource.BuildConnectionString(connSettings);
+                    return SqlDataSource.BuildSqlConnectionString(connSettings);
                 case DataSourceType.Oracle:
-                    return OraDataSource.BuildConnectionString(connSettings);
+                    return OraDataSource.BuildOraConnectionString(connSettings);
                 case DataSourceType.PostgreSQL:
-                    return PgSqlDataSource.BuildConnectionString(connSettings);
+                    return PgSqlDataSource.BuildPgSqlConnectionString(connSettings);
                 case DataSourceType.MySQL:
-                    return MySqlDataSource.BuildConnectionString(connSettings);
+                    return MySqlDataSource.BuildMySqlConnectionString(connSettings);
                 case DataSourceType.OLEDB:
-                    return OleDbDataSource.BuildConnectionString(connSettings);
+                    return OleDbDataSource.BuildOleDbConnectionString(connSettings);
                 default:
                     return "";
             }
