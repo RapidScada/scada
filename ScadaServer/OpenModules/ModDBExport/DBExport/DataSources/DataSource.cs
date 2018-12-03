@@ -123,7 +123,7 @@ namespace Scada.Server.Modules.DBExport
         protected abstract DbConnection CreateConnection();
 
         /// <summary>
-        /// Очистить пул приложений
+        /// Очистить пул соединений
         /// </summary>
         protected abstract void ClearPool();
 
@@ -180,7 +180,7 @@ namespace Scada.Server.Modules.DBExport
         public void Connect()
         {
             if (Connection == null)
-                throw new InvalidOperationException("Connection is not inited.");
+                throw new InvalidOperationException("Connection is not initialized.");
 
             try
             {
