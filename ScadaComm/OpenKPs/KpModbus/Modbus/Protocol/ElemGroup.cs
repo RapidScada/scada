@@ -128,7 +128,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             ReqPDU[3] = (byte)(TotalElemLength / 256);
             ReqPDU[4] = (byte)(TotalElemLength % 256);
 
-            // рассчёт длины ответа
+            // расчёт длины ответа
             if (TableType == TableTypes.DiscreteInputs || TableType == TableTypes.Coils)
             {
                 int n = TotalElemLength / 8;
