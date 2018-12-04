@@ -134,32 +134,37 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Decode the specified object to a tag value of the double type.
+        /// Decodes the specified object and converts it to a tag data.
         /// </summary>
-        private double DecodeTag(object val, out TagType tagType)
+        private SrezTableLight.CnlData DecodeTag(object val, out TagType tagType)
         {
             try
             {
-                if (val is string)
+                if (val == DBNull.Value)
+                {
+                    tagType = TagType.Number;
+                    return SrezTableLight.CnlData.Empty;
+                }
+                else if (val is string)
                 {
                     tagType = TagType.String;
-                    return ScadaUtils.EncodeAscii((string)val);
+                    return new SrezTableLight.CnlData(ScadaUtils.EncodeAscii((string)val), BaseValues.CnlStatuses.Defined);
                 }
                 else if (val is DateTime)
                 {
                     tagType = TagType.DateTime;
-                    return ScadaUtils.EncodeDateTime((DateTime)val);
+                    return new SrezTableLight.CnlData(ScadaUtils.EncodeDateTime((DateTime)val), BaseValues.CnlStatuses.Defined);
                 }
                 else
                 {
                     tagType = TagType.Number;
-                    return Convert.ToDouble(val);
+                    return new SrezTableLight.CnlData(Convert.ToDouble(val), BaseValues.CnlStatuses.Defined);
                 }
             }
             catch
             {
                 tagType = TagType.Number;
-                return 0.0;
+                return SrezTableLight.CnlData.Empty;
             }
         }
 
@@ -222,7 +227,7 @@ namespace Scada.Comm.Devices
                         for (int i = 0, cnt = Math.Min(tagCnt, fieldCnt); i < cnt; i++)
                         {
                             KPTags[i].Name = reader.GetName(i);
-                            SetCurData(i, DecodeTag(reader[i], out TagType tagType), BaseValues.CnlStatuses.Defined);
+                            SetCurData(i, DecodeTag(reader[i], out TagType tagType));
                             tagTypes[i] = tagType;
                         }
 
