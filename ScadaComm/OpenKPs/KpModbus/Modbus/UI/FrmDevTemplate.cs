@@ -554,7 +554,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // создание элемента и добавление в шаблон устройства
             ElemGroup elemGroup = selElemGroup == null ? selElemInfo.ElemGroup : selElemGroup;
-            int maxElemCnt = DataUnit.GetMaxElemCnt(elemGroup.TableType);
+            int maxElemCnt = elemGroup.MaxElemCnt;
 
             if (elemGroup.Elems.Count >= maxElemCnt)
             {

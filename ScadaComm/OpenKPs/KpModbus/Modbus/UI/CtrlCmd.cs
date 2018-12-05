@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -151,7 +151,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.ElemType;
                 numCmdElemCnt.Value = 1;
-                numCmdElemCnt.Maximum = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
+                numCmdElemCnt.Maximum = modbusCmd.MaxElemCnt;
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
@@ -236,7 +236,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
 
                 // ограничение макс. количества элементов в команде
-                int maxElemCnt = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
+                int maxElemCnt = modbusCmd.MaxElemCnt;
                 if (numCmdElemCnt.Value > maxElemCnt)
                     numCmdElemCnt.Value = maxElemCnt;
                 numCmdElemCnt.Maximum = maxElemCnt;

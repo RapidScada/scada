@@ -147,7 +147,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 numGrAddress.Value = elemGroup.Address + AddrShift;
                 lblGrAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 numGrElemCnt.Value = 1;
-                numGrElemCnt.Maximum = DataUnit.GetMaxElemCnt(elemGroup.TableType);
+                numGrElemCnt.Maximum = elemGroup.MaxElemCnt;
                 numGrElemCnt.Value = elemGroup.Elems.Count;
                 gbElemGroup.Enabled = true;
             }

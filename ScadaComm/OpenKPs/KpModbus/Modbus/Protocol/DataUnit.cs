@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System.Text;
@@ -120,6 +120,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить количество байт, которое указывается в ответе
         /// </summary>
         public byte RespByteCnt { get; protected set; }
+
+        /// <summary>
+        /// Получить максимально допустимое количество элементов
+        /// </summary>
+        public int MaxElemCnt
+        {
+            get
+            {
+                return GetMaxElemCnt(TableType);
+            }
+        }
 
         /// <summary>
         /// Получить тип элементов по умолчанию
@@ -242,7 +253,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
 
         /// <summary>
-        /// Получить максимально допустимое количество элементов
+        /// Получить максимально допустимое количество элементов в зависимости от типа таблицы данных
         /// </summary>
         public static int GetMaxElemCnt(TableTypes tableType)
         {

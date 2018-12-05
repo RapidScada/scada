@@ -97,15 +97,15 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 if (settingsElem == null)
                     throw new ArgumentNullException("settingsElem");
 
+                defByteOrder2 = null;
+                defByteOrder4 = null;
+                defByteOrder8 = null;
+
                 ZeroAddr = settingsElem.GetChildAsBool("ZeroAddr", false);
                 DecAddr = settingsElem.GetChildAsBool("DecAddr", true);
                 DefByteOrder2 = settingsElem.GetChildAsString("DefByteOrder2");
                 DefByteOrder4 = settingsElem.GetChildAsString("DefByteOrder4");
                 DefByteOrder8 = settingsElem.GetChildAsString("DefByteOrder8");
-
-                defByteOrder2 = ModbusUtils.ParseByteOrder(DefByteOrder2);
-                defByteOrder4 = ModbusUtils.ParseByteOrder(DefByteOrder4);
-                defByteOrder8 = ModbusUtils.ParseByteOrder(DefByteOrder8);
             }
             /// <summary>
             /// Сохранить настройки шаблона в XML-узле
@@ -122,6 +122,24 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 settingsElem.AppendElem("DefByteOrder8", DefByteOrder8);
             }
             /// <summary>
+            /// Копировать настройки из заданных
+            /// </summary>
+            public void CopyFrom(Settings srcSettings)
+            {
+                if (srcSettings == null)
+                    throw new ArgumentNullException("srcSettings");
+
+                defByteOrder2 = null;
+                defByteOrder4 = null;
+                defByteOrder8 = null;
+
+                ZeroAddr = srcSettings.ZeroAddr;
+                DecAddr = srcSettings.DecAddr;
+                DefByteOrder2 = srcSettings.DefByteOrder2;
+                DefByteOrder4 = srcSettings.DefByteOrder4;
+                DefByteOrder8 = srcSettings.DefByteOrder8;
+            }
+            /// <summary>
             /// Получить подходящий порядок байт по умолчанию
             /// </summary>
             public int[] GetDefByteOrder(int elemCnt)
@@ -129,11 +147,20 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 switch (elemCnt)
                 {
                     case 1:
+                        if (defByteOrder2 == null)
+                            defByteOrder2 = ModbusUtils.ParseByteOrder(DefByteOrder2);
                         return defByteOrder2;
+
                     case 2:
+                        if (defByteOrder4 == null)
+                            defByteOrder4 = ModbusUtils.ParseByteOrder(DefByteOrder4);
                         return defByteOrder4;
+
                     case 4:
+                        if (defByteOrder8 == null)
+                            defByteOrder8 = ModbusUtils.ParseByteOrder(DefByteOrder8);
                         return defByteOrder8;
+
                     default:
                         return null;
                 }
@@ -169,14 +196,164 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
 
         /// <summary>
-        /// Установить свойства шаблона по умолчанию
+        /// Sets the default values.
         /// </summary>
-        private void SetToDefault()
+        protected virtual void SetToDefault()
         {
             Sett.SetToDefault();
             ElemGroups.Clear();
             Cmds.Clear();
         }
+
+        /// <summary>
+        /// Loads the template from the XML node.
+        /// </summary>
+        protected virtual void LoadFromXml(XmlNode rootNode)
+        {
+            // загрузка настроек шаблона
+            XmlNode settingsNode = rootNode.SelectSingleNode("Settings");
+            if (settingsNode != null)
+                Sett.LoadFromXml((XmlElement)settingsNode);
+
+            // загрузка групп элементов
+            XmlNode elemGroupsNode = rootNode.SelectSingleNode("ElemGroups");
+            if (elemGroupsNode != null)
+            {
+                XmlNodeList elemGroupNodes = elemGroupsNode.SelectNodes("ElemGroup");
+                int kpTagInd = 0;
+
+                foreach (XmlElement elemGroupElem in elemGroupNodes)
+                {
+                    TableTypes tableType = elemGroupElem.GetAttrAsEnum<TableTypes>("tableType");
+                    ElemGroup elemGroup = new ElemGroup(tableType)
+                    {
+                        Name = elemGroupElem.GetAttribute("name"),
+                        Address = (ushort)elemGroupElem.GetAttrAsInt("address"),
+                        Active = elemGroupElem.GetAttrAsBool("active", true),
+                        StartKPTagInd = kpTagInd,
+                        StartSignal = kpTagInd + 1
+                    };
+
+                    XmlNodeList elemNodes = elemGroupElem.SelectNodes("Elem");
+                    ElemTypes defElemType = elemGroup.DefElemType;
+
+                    foreach (XmlElement elemElem in elemNodes)
+                    {
+                        Elem elem = new Elem()
+                        {
+                            Name = elemElem.GetAttribute("name"),
+                            ElemType = elemElem.GetAttrAsEnum("type", defElemType)
+                        };
+
+                        if (elemGroup.ByteOrderEnabled)
+                        {
+                            elem.ByteOrderStr = elemElem.GetAttribute("byteOrder");
+                            elem.ByteOrder = ModbusUtils.ParseByteOrder(elem.ByteOrderStr);
+                            if (elem.ByteOrder == null)
+                                elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
+                        }
+
+                        elemGroup.Elems.Add(elem);
+                    }
+
+                    if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= elemGroup.MaxElemCnt)
+                    {
+                        ElemGroups.Add(elemGroup);
+                        kpTagInd += elemGroup.Elems.Count;
+                    }
+                }
+            }
+
+            // загрузка команд
+            XmlNode cmdsNode = rootNode.SelectSingleNode("Cmds");
+            if (cmdsNode != null)
+            {
+                XmlNodeList cmdNodes = cmdsNode.SelectNodes("Cmd");
+
+                foreach (XmlElement cmdElem in cmdNodes)
+                {
+                    ModbusCmd cmd = new ModbusCmd(
+                        cmdElem.GetAttrAsEnum<TableTypes>("tableType"),
+                        cmdElem.GetAttrAsBool("multiple"),
+                        cmdElem.GetAttrAsInt("elemCnt", 1))
+                    {
+                        Address = (ushort)cmdElem.GetAttrAsInt("address"),
+                        Name = cmdElem.GetAttribute("name"),
+                        CmdNum = cmdElem.GetAttrAsInt("cmdNum")
+                    };
+
+                    cmd.ElemType = cmdElem.GetAttrAsEnum("elemType", cmd.DefElemType);
+
+                    if (cmd.ByteOrderEnabled)
+                    {
+                        cmd.ByteOrderStr = cmdElem.GetAttribute("byteOrder");
+                        cmd.ByteOrder = ModbusUtils.ParseByteOrder(cmd.ByteOrderStr);
+                        if (cmd.ByteOrder == null)
+                            cmd.ByteOrder = Sett.GetDefByteOrder(cmd.ElemCnt);
+                    }
+
+                    if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
+                        Cmds.Add(cmd);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Saves the template into the XML node.
+        /// </summary>
+        protected virtual void SaveToXml(XmlElement rootElem)
+        {
+            // сохранение настроек шаблона
+            Sett.SaveToXml(rootElem.AppendElem("Settings"));
+
+            // сохранение групп элементов
+            XmlElement elemGroupsElem = rootElem.AppendElem("ElemGroups");
+
+            foreach (ElemGroup elemGroup in ElemGroups)
+            {
+                XmlElement elemGroupElem = elemGroupsElem.AppendElem("ElemGroup");
+                elemGroupElem.SetAttribute("active", elemGroup.Active);
+                elemGroupElem.SetAttribute("tableType", elemGroup.TableType);
+                elemGroupElem.SetAttribute("address", elemGroup.Address);
+                elemGroupElem.SetAttribute("name", elemGroup.Name);
+
+                foreach (Elem elem in elemGroup.Elems)
+                {
+                    XmlElement elemElem = elemGroupElem.AppendElem("Elem");
+                    elemElem.SetAttribute("name", elem.Name);
+
+                    if (elemGroup.ElemTypeEnabled)
+                        elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
+
+                    if (elemGroup.ByteOrderEnabled)
+                        elemElem.SetAttribute("byteOrder", elem.ByteOrderStr);
+                }
+            }
+
+            // сохранение команд
+            XmlElement cmdsElem = rootElem.AppendElem("Cmds");
+
+            foreach (ModbusCmd cmd in Cmds)
+            {
+                XmlElement cmdElem = cmdsElem.AppendElem("Cmd");
+                cmdElem.SetAttribute("tableType", cmd.TableType);
+                cmdElem.SetAttribute("multiple", cmd.Multiple);
+                cmdElem.SetAttribute("address", cmd.Address);
+
+                if (cmd.ElemTypeEnabled)
+                    cmdElem.SetAttribute("elemType", cmd.ElemType.ToString().ToLowerInvariant());
+
+                if (cmd.Multiple)
+                    cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
+
+                if (cmd.ByteOrderEnabled)
+                    cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
+
+                cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
+                cmdElem.SetAttribute("name", cmd.Name);
+            }
+        }
+
 
         /// <summary>
         /// Найти команду по номеру
@@ -217,87 +394,9 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             try
             {
-                // загрузка шаблона устройства
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileName);
-
-                // загрузка настроек шаблона
-                XmlNode settingsNode = xmlDoc.DocumentElement.SelectSingleNode("Settings");
-                if (settingsNode != null)
-                    Sett.LoadFromXml((XmlElement)settingsNode);
-
-                // загрузка групп элементов
-                XmlNode elemGroupsNode = xmlDoc.DocumentElement.SelectSingleNode("ElemGroups");
-                if (elemGroupsNode != null)
-                {
-                    int kpTagInd = 0;
-
-                    foreach (XmlElement elemGroupElem in elemGroupsNode.ChildNodes)
-                    {
-                        TableTypes tableType = elemGroupElem.GetAttrAsEnum<TableTypes>("tableType");
-                        ElemGroup elemGroup = new ElemGroup(tableType);
-                        elemGroup.Name = elemGroupElem.GetAttribute("name");
-                        elemGroup.Address = (ushort)elemGroupElem.GetAttrAsInt("address");
-                        elemGroup.Active = elemGroupElem.GetAttrAsBool("active", true);
-                        elemGroup.StartKPTagInd = kpTagInd;
-                        elemGroup.StartSignal = kpTagInd + 1;
-
-                        XmlNodeList elemNodes = elemGroupElem.SelectNodes("Elem");
-                        ElemTypes defElemType = elemGroup.DefElemType;
-
-                        foreach (XmlElement elemElem in elemNodes)
-                        {
-                            Elem elem = new Elem();
-                            elem.Name = elemElem.GetAttribute("name");
-                            elem.ElemType = elemElem.GetAttrAsEnum("type", defElemType);
-
-                            if (elemGroup.ByteOrderEnabled)
-                            {
-                                elem.ByteOrderStr = elemElem.GetAttribute("byteOrder");
-                                elem.ByteOrder = ModbusUtils.ParseByteOrder(elem.ByteOrderStr);
-                                if (elem.ByteOrder == null)
-                                    elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
-                            }
-
-                            elemGroup.Elems.Add(elem);
-                        }
-
-                        if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= DataUnit.GetMaxElemCnt(tableType))
-                        {
-                            ElemGroups.Add(elemGroup);
-                            kpTagInd += elemGroup.Elems.Count;
-                        }
-                    }
-                }
-
-                // загрузка команд
-                XmlNode cmdsNode = xmlDoc.DocumentElement.SelectSingleNode("Cmds");
-                if (cmdsNode != null)
-                {
-                    foreach (XmlElement cmdElem in cmdsNode.ChildNodes)
-                    {
-                        ModbusCmd cmd = new ModbusCmd(
-                            cmdElem.GetAttrAsEnum<TableTypes>("tableType"), 
-                            cmdElem.GetAttrAsBool("multiple"), 
-                            cmdElem.GetAttrAsInt("elemCnt", 1));
-                        cmd.ElemType = cmdElem.GetAttrAsEnum("elemType", cmd.DefElemType);
-                        cmd.Address = (ushort)cmdElem.GetAttrAsInt("address");
-                        cmd.Name = cmdElem.GetAttribute("name");
-                        cmd.CmdNum = cmdElem.GetAttrAsInt("cmdNum");
-
-                        if (cmd.ByteOrderEnabled)
-                        {
-                            cmd.ByteOrderStr = cmdElem.GetAttribute("byteOrder");
-                            cmd.ByteOrder = ModbusUtils.ParseByteOrder(cmd.ByteOrderStr);
-                            if (cmd.ByteOrder == null)
-                                cmd.ByteOrder = Sett.GetDefByteOrder(cmd.ElemCnt);
-                        }
-
-                        if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
-                            Cmds.Add(cmd);
-                    }
-                }
-
+                LoadFromXml(xmlDoc.DocumentElement);
                 errMsg = "";
                 return true;
             }
@@ -316,69 +415,12 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-
                 XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
                 xmlDoc.AppendChild(xmlDecl);
 
                 XmlElement rootElem = xmlDoc.CreateElement("DevTemplate");
                 xmlDoc.AppendChild(rootElem);
-
-                // сохранение настроек шаблона
-                Sett.SaveToXml(rootElem.AppendElem("Settings"));
-
-                // сохранение групп элементов
-                XmlElement elemGroupsElem = xmlDoc.CreateElement("ElemGroups");
-                rootElem.AppendChild(elemGroupsElem);
-
-                foreach (ElemGroup elemGroup in ElemGroups)
-                {
-                    XmlElement elemGroupElem = xmlDoc.CreateElement("ElemGroup");
-                    elemGroupElem.SetAttribute("active", elemGroup.Active);
-                    elemGroupElem.SetAttribute("tableType", elemGroup.TableType);
-                    elemGroupElem.SetAttribute("address", elemGroup.Address);
-                    elemGroupElem.SetAttribute("name", elemGroup.Name);
-                    elemGroupsElem.AppendChild(elemGroupElem);
-
-                    foreach (Elem elem in elemGroup.Elems)
-                    {
-                        XmlElement elemElem = xmlDoc.CreateElement("Elem");
-                        elemElem.SetAttribute("name", elem.Name);
-
-                        if (elemGroup.ElemTypeEnabled)
-                            elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
-
-                        if (elemGroup.ByteOrderEnabled)
-                            elemElem.SetAttribute("byteOrder", elem.ByteOrderStr);
-
-                        elemGroupElem.AppendChild(elemElem);
-                    }
-                }
-
-                // сохранение команд
-                XmlElement cmdsElem = xmlDoc.CreateElement("Cmds");
-                rootElem.AppendChild(cmdsElem);
-
-                foreach (ModbusCmd cmd in Cmds)
-                {
-                    XmlElement cmdElem = xmlDoc.CreateElement("Cmd");
-                    cmdsElem.AppendChild(cmdElem);
-
-                    cmdElem.SetAttribute("tableType", cmd.TableType);
-                    cmdElem.SetAttribute("multiple", cmd.Multiple);
-                    cmdElem.SetAttribute("address", cmd.Address);
-
-                    if (cmd.ElemTypeEnabled)
-                        cmdElem.SetAttribute("elemType", cmd.ElemType.ToString().ToLowerInvariant());
-
-                    if (cmd.Multiple)
-                        cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
-
-                    if (cmd.ByteOrderEnabled)
-                        cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
-
-                    cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
-                    cmdElem.SetAttribute("name", cmd.Name);
-                }
+                SaveToXml(rootElem);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";
@@ -392,18 +434,19 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Копировать модель устройства из заданной
+        /// Copies the template properties from the specified template.
         /// </summary>
-        public void CopyFrom(DeviceTemplate srcTemplate)
+        public virtual void CopyFrom(DeviceTemplate srcTemplate)
         {
             if (srcTemplate == null)
                 throw new ArgumentNullException("srcTemplate");
 
-            // очистка списков групп элементов и команд
-            ElemGroups.Clear();
-            Cmds.Clear();
+            // копирование настроек шаблона
+            Sett.CopyFrom(srcTemplate.Sett);
 
             // копирование групп элементов
+            ElemGroups.Clear();
+
             foreach (ElemGroup srcGroup in srcTemplate.ElemGroups)
             {
                 ElemGroup elemGroup = new ElemGroup(srcGroup.TableType)
@@ -430,6 +473,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             }
 
             // копирование команд
+            Cmds.Clear();
+
             foreach (ModbusCmd srcCmd in srcTemplate.Cmds)
             {
                 Cmds.Add(new ModbusCmd(srcCmd.TableType)

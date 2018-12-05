@@ -23,11 +23,11 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
 using Scada.UI;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -42,7 +42,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.1.0.3";
+        internal const string KpVersion = "5.1.1.0";
 
 
         /// <summary>
@@ -107,68 +107,84 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                // получение имени файла шаблона устройства
-                string templateName = KPProps == null ? "" : KPProps.CmdLine.Trim();
-                string fileName = AppDirs.ConfigDir + templateName;
-                if (!File.Exists(fileName))
+                // загрузка шаблона устройства
+                string fileName = KPProps == null ? "" : KPProps.CmdLine.Trim();
+                string filePath = Path.IsPathRooted(fileName) ?
+                    fileName : Path.Combine(AppDirs.ConfigDir, fileName);
+
+                if (!File.Exists(filePath))
                     return null;
 
-                // загрузка шаблона устройства
-                DeviceTemplate template = new DeviceTemplate();
-                string errMsg;
-                if (!template.Load(fileName, out errMsg))
-                    throw new Exception(errMsg);
+                DeviceTemplate deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
+                if (!deviceTemplate.Load(filePath, out string errMsg))
+                    throw new ScadaException(errMsg);
 
                 // создание прототипов каналов КП
-                KPCnlPrototypes prototypes = new KPCnlPrototypes();
-                List<InCnlPrototype> inCnls = prototypes.InCnls;
-                List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
-
-                // создание прототипов входных каналов
-                int signal = 1;
-                foreach (ElemGroup elemGroup in template.ElemGroups)
-                {
-                    bool isTS = 
-                        elemGroup.TableType == TableTypes.DiscreteInputs || 
-                        elemGroup.TableType == TableTypes.Coils;
-
-                    foreach (Elem elem in elemGroup.Elems)
-                    {
-                        InCnlPrototype inCnl = isTS ?
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
-                        inCnl.Signal = signal++;
-
-                        if (isTS)
-                        {
-                            inCnl.ShowNumber = false;
-                            inCnl.UnitName = BaseValues.UnitNames.OffOn;
-                            inCnl.EvEnabled = true;
-                            inCnl.EvOnChange = true;
-                        }
-
-                        inCnls.Add(inCnl);
-                    }
-                }
-
-                // создание прототипов каналов управления
-                foreach (ModbusCmd modbusCmd in template.Cmds)
-                {
-                    CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
-                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
-                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
-                    ctrlCnl.CmdNum = modbusCmd.CmdNum;
-
-                    if (modbusCmd.TableType == TableTypes.Coils && !modbusCmd.Multiple)
-                        ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
-
-                    ctrlCnls.Add(ctrlCnl);
-                }
-
-                return prototypes;
+                return CreateCnlPrototypes(deviceTemplate);
             }
         }
 
+
+        /// <summary>
+        /// Gets a device template factory.
+        /// </summary>
+        protected virtual DeviceTemplateFactory GetTemplateFactory()
+        {
+            return KpUtils.TemplateFactory;
+        }
+
+        /// <summary>
+        /// Creates channel prototypes based on the device template.
+        /// </summary>
+        protected virtual KPCnlPrototypes CreateCnlPrototypes(DeviceTemplate deviceTemplate)
+        {
+            KPCnlPrototypes prototypes = new KPCnlPrototypes();
+            List<InCnlPrototype> inCnls = prototypes.InCnls;
+            List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
+
+            // создание прототипов входных каналов
+            int signal = 1;
+            foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+            {
+                bool isTS =
+                    elemGroup.TableType == TableTypes.DiscreteInputs ||
+                    elemGroup.TableType == TableTypes.Coils;
+
+                foreach (Elem elem in elemGroup.Elems)
+                {
+                    InCnlPrototype inCnl = isTS ?
+                        new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
+                        new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
+                    inCnl.Signal = signal++;
+
+                    if (isTS)
+                    {
+                        inCnl.ShowNumber = false;
+                        inCnl.UnitName = BaseValues.UnitNames.OffOn;
+                        inCnl.EvEnabled = true;
+                        inCnl.EvOnChange = true;
+                    }
+
+                    inCnls.Add(inCnl);
+                }
+            }
+
+            // создание прототипов каналов управления
+            foreach (ModbusCmd modbusCmd in deviceTemplate.Cmds)
+            {
+                CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
+                    new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
+                    new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
+                ctrlCnl.CmdNum = modbusCmd.CmdNum;
+
+                if (modbusCmd.TableType == TableTypes.Coils && !modbusCmd.Multiple)
+                    ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
+
+                ctrlCnls.Add(ctrlCnl);
+            }
+
+            return prototypes;
+        }
 
         /// <summary>
         /// Отобразить свойства КП
@@ -176,8 +192,7 @@ namespace Scada.Comm.Devices
         public override void ShowProps()
         {
             // загрузка словарей
-            string errMsg;
-            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
                 KpPhrases.Init();
             else
                 ScadaUiUtils.ShowError(errMsg);
