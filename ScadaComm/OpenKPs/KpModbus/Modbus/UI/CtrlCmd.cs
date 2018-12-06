@@ -225,15 +225,14 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа таблицы данных команды
             if (modbusCmd != null)
             {
-                modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
-                    TableType.Coils :
-                    TableType.HoldingRegisters;
+                modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ? TableType.Coils : TableType.HoldingRegisters;
                 modbusCmd.UpdateFuncCode();
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                // установка типа элементов команды по умолчанию
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
+                cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
 
                 // ограничение макс. количества элементов в команде
                 int maxElemCnt = modbusCmd.MaxElemCnt;
@@ -255,7 +254,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType; // тип по умолчанию
+                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
 
