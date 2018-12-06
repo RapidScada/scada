@@ -145,7 +145,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             else
             {
                 txtCmdName.Text = modbusCmd.Name;
-                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
+                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableType.Coils ? 0 : 1;
                 chkCmdMultiple.Checked = modbusCmd.Multiple;
                 numCmdAddress.Value = modbusCmd.Address + AddrShift;
                 lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
@@ -226,8 +226,8 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (modbusCmd != null)
             {
                 modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
-                    TableTypes.Coils :
-                    TableTypes.HoldingRegisters;
+                    TableType.Coils :
+                    TableType.HoldingRegisters;
                 modbusCmd.UpdateFuncCode();
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
@@ -281,9 +281,9 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа элементов
             if (modbusCmd != null)
             {
-                ElemTypes newElemType = (ElemTypes)cbCmdElemType.SelectedIndex;
+                ElemType newElemType = (ElemType)cbCmdElemType.SelectedIndex;
 
-                if (modbusCmd.TableType == TableTypes.HoldingRegisters && newElemType == ElemTypes.Bool)
+                if (modbusCmd.TableType == TableType.HoldingRegisters && newElemType == ElemType.Bool)
                 {
                     // отмена выбора типа Bool для регистров хранения
                     cbCmdElemType.SelectedIndexChanged -= cbCmdElemType_SelectedIndexChanged;

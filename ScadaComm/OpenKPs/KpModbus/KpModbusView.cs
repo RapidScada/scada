@@ -40,13 +40,18 @@ namespace Scada.Comm.Devices
     public class KpModbusView : KPView
     {
         /// <summary>
-        /// Версия библиотеки КП
+        /// The driver version.
         /// </summary>
         internal const string KpVersion = "5.1.1.0";
 
+        /// <summary>
+        /// The UI customization object.
+        /// </summary>
+        private static readonly UiCustomization UiCustomization = new UiCustomization();
+
 
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
         public KpModbusView()
             : this(0)
@@ -54,7 +59,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Конструктор для настройки конкретного КП
+        /// Initializes a new instance of the class. Designed for configuring a particular device.
         /// </summary>
         public KpModbusView(int number)
             : base(number)
@@ -64,7 +69,7 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// Gets the driver description.
         /// </summary>
         public override string KPDescr
         {
@@ -90,7 +95,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить версию библиотеки КП
+        /// Gets the driver version.
         /// </summary>
         public override string Version
         {
@@ -101,7 +106,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить прототипы каналов КП по умолчанию
+        /// Gets the default device request parameters.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
@@ -115,7 +120,7 @@ namespace Scada.Comm.Devices
                 if (!File.Exists(filePath))
                     return null;
 
-                DeviceTemplate deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
+                DeviceTemplate deviceTemplate = GetUiCustomization().TemplateFactory.CreateDeviceTemplate();
                 if (!deviceTemplate.Load(filePath, out string errMsg))
                     throw new ScadaException(errMsg);
 
@@ -124,14 +129,6 @@ namespace Scada.Comm.Devices
             }
         }
 
-
-        /// <summary>
-        /// Gets a device template factory.
-        /// </summary>
-        protected virtual DeviceTemplateFactory GetTemplateFactory()
-        {
-            return KpUtils.TemplateFactory;
-        }
 
         /// <summary>
         /// Creates channel prototypes based on the device template.
@@ -147,8 +144,8 @@ namespace Scada.Comm.Devices
             foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
             {
                 bool isTS =
-                    elemGroup.TableType == TableTypes.DiscreteInputs ||
-                    elemGroup.TableType == TableTypes.Coils;
+                    elemGroup.TableType == TableType.DiscreteInputs ||
+                    elemGroup.TableType == TableType.Coils;
 
                 foreach (Elem elem in elemGroup.Elems)
                 {
@@ -172,12 +169,12 @@ namespace Scada.Comm.Devices
             // создание прототипов каналов управления
             foreach (ModbusCmd modbusCmd in deviceTemplate.Cmds)
             {
-                CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
+                CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableType.Coils && modbusCmd.Multiple ?
                     new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
                     new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
                 ctrlCnl.CmdNum = modbusCmd.CmdNum;
 
-                if (modbusCmd.TableType == TableTypes.Coils && !modbusCmd.Multiple)
+                if (modbusCmd.TableType == TableType.Coils && !modbusCmd.Multiple)
                     ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
 
                 ctrlCnls.Add(ctrlCnl);
@@ -187,22 +184,42 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Отобразить свойства КП
+        /// Localizes the driver UI.
         /// </summary>
-        public override void ShowProps()
+        protected virtual void Localize()
         {
-            // загрузка словарей
             if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
                 KpPhrases.Init();
             else
                 ScadaUiUtils.ShowError(errMsg);
+        }
+
+        /// <summary>
+        /// Gets a UI customization object.
+        /// </summary>
+        protected virtual UiCustomization GetUiCustomization()
+        {
+            return UiCustomization;
+        }
+
+
+        /// <summary>
+        /// Shows the driver properties.
+        /// </summary>
+        public override void ShowProps()
+        {
+            Localize();
 
             if (Number > 0)
-                // отображение свойств КП
-                FrmDevProps.ShowDialog(Number, KPProps, AppDirs);
+            {
+                // show properties of the particular device
+                FrmDevProps.ShowDialog(Number, KPProps, AppDirs, GetUiCustomization());
+            }
             else
-                // отображение редактора шаблонов устройств
-                FrmDevTemplate.ShowDialog(AppDirs);
+            {
+                // show the device template editor
+                FrmDevTemplate.ShowDialog(AppDirs, GetUiCustomization());
+            }
         }
     }
 }

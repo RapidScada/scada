@@ -37,7 +37,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public Elem()
         {
             Name = "";
-            ElemType = ElemTypes.Bool;
+            ElemType = ElemType.Bool;
             ByteOrder = null;
             ByteOrderStr = "";
         }
@@ -51,7 +51,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Получить или установить тип
         /// </summary>
-        public ElemTypes ElemType { get; set; }
+        public ElemType ElemType { get; set; }
 
         /// <summary>
         /// Получить длину элемента (количество адресов)

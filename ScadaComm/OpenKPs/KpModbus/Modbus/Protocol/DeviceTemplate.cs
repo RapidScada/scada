@@ -224,40 +224,22 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
                 foreach (XmlElement elemGroupElem in elemGroupNodes)
                 {
-                    TableTypes tableType = elemGroupElem.GetAttrAsEnum<TableTypes>("tableType");
-                    ElemGroup elemGroup = new ElemGroup(tableType)
+                    ElemGroup elemGroup = CreateElemGroup(elemGroupElem.GetAttrAsEnum<TableType>("tableType"));
+                    elemGroup.StartKPTagInd = kpTagInd;
+                    elemGroup.StartSignal = kpTagInd + 1;
+                    elemGroup.LoadFromXml(elemGroupElem);
+
+                    if (elemGroup.Elems.Count > 0)
                     {
-                        Name = elemGroupElem.GetAttribute("name"),
-                        Address = (ushort)elemGroupElem.GetAttrAsInt("address"),
-                        Active = elemGroupElem.GetAttrAsBool("active", true),
-                        StartKPTagInd = kpTagInd,
-                        StartSignal = kpTagInd + 1
-                    };
-
-                    XmlNodeList elemNodes = elemGroupElem.SelectNodes("Elem");
-                    ElemTypes defElemType = elemGroup.DefElemType;
-
-                    foreach (XmlElement elemElem in elemNodes)
-                    {
-                        Elem elem = new Elem()
-                        {
-                            Name = elemElem.GetAttribute("name"),
-                            ElemType = elemElem.GetAttrAsEnum("type", defElemType)
-                        };
-
                         if (elemGroup.ByteOrderEnabled)
                         {
-                            elem.ByteOrderStr = elemElem.GetAttribute("byteOrder");
-                            elem.ByteOrder = ModbusUtils.ParseByteOrder(elem.ByteOrderStr);
-                            if (elem.ByteOrder == null)
-                                elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
+                            foreach (Elem elem in elemGroup.Elems)
+                            {
+                                if (elem.ByteOrder == null)
+                                    elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
+                            }
                         }
 
-                        elemGroup.Elems.Add(elem);
-                    }
-
-                    if (0 < elemGroup.Elems.Count && elemGroup.Elems.Count <= elemGroup.MaxElemCnt)
-                    {
                         ElemGroups.Add(elemGroup);
                         kpTagInd += elemGroup.Elems.Count;
                     }
@@ -272,27 +254,15 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
                 foreach (XmlElement cmdElem in cmdNodes)
                 {
-                    ModbusCmd cmd = new ModbusCmd(
-                        cmdElem.GetAttrAsEnum<TableTypes>("tableType"),
-                        cmdElem.GetAttrAsBool("multiple"),
-                        cmdElem.GetAttrAsInt("elemCnt", 1))
-                    {
-                        Address = (ushort)cmdElem.GetAttrAsInt("address"),
-                        Name = cmdElem.GetAttribute("name"),
-                        CmdNum = cmdElem.GetAttrAsInt("cmdNum")
-                    };
+                    ModbusCmd cmd = CreateModbusCmd(
+                        cmdElem.GetAttrAsEnum<TableType>("tableType"),
+                        cmdElem.GetAttrAsBool("multiple"));
+                    cmd.LoadFromXml(cmdElem);
 
-                    cmd.ElemType = cmdElem.GetAttrAsEnum("elemType", cmd.DefElemType);
+                    if (cmd.ByteOrderEnabled && cmd.ByteOrder == null)
+                        cmd.ByteOrder = Sett.GetDefByteOrder(cmd.ElemCnt);
 
-                    if (cmd.ByteOrderEnabled)
-                    {
-                        cmd.ByteOrderStr = cmdElem.GetAttribute("byteOrder");
-                        cmd.ByteOrder = ModbusUtils.ParseByteOrder(cmd.ByteOrderStr);
-                        if (cmd.ByteOrder == null)
-                            cmd.ByteOrder = Sett.GetDefByteOrder(cmd.ElemCnt);
-                    }
-
-                    if (0 < cmd.CmdNum && cmd.CmdNum <= ushort.MaxValue)
+                    if (cmd.CmdNum > 0)
                         Cmds.Add(cmd);
                 }
             }
@@ -308,49 +278,16 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             // сохранение групп элементов
             XmlElement elemGroupsElem = rootElem.AppendElem("ElemGroups");
-
             foreach (ElemGroup elemGroup in ElemGroups)
             {
-                XmlElement elemGroupElem = elemGroupsElem.AppendElem("ElemGroup");
-                elemGroupElem.SetAttribute("active", elemGroup.Active);
-                elemGroupElem.SetAttribute("tableType", elemGroup.TableType);
-                elemGroupElem.SetAttribute("address", elemGroup.Address);
-                elemGroupElem.SetAttribute("name", elemGroup.Name);
-
-                foreach (Elem elem in elemGroup.Elems)
-                {
-                    XmlElement elemElem = elemGroupElem.AppendElem("Elem");
-                    elemElem.SetAttribute("name", elem.Name);
-
-                    if (elemGroup.ElemTypeEnabled)
-                        elemElem.SetAttribute("type", elem.ElemType.ToString().ToLowerInvariant());
-
-                    if (elemGroup.ByteOrderEnabled)
-                        elemElem.SetAttribute("byteOrder", elem.ByteOrderStr);
-                }
+                elemGroup.SaveToXml(elemGroupsElem.AppendElem("ElemGroup"));
             }
 
             // сохранение команд
             XmlElement cmdsElem = rootElem.AppendElem("Cmds");
-
             foreach (ModbusCmd cmd in Cmds)
             {
-                XmlElement cmdElem = cmdsElem.AppendElem("Cmd");
-                cmdElem.SetAttribute("tableType", cmd.TableType);
-                cmdElem.SetAttribute("multiple", cmd.Multiple);
-                cmdElem.SetAttribute("address", cmd.Address);
-
-                if (cmd.ElemTypeEnabled)
-                    cmdElem.SetAttribute("elemType", cmd.ElemType.ToString().ToLowerInvariant());
-
-                if (cmd.Multiple)
-                    cmdElem.SetAttribute("elemCnt", cmd.ElemCnt);
-
-                if (cmd.ByteOrderEnabled)
-                    cmdElem.SetAttribute("byteOrder", cmd.ByteOrderStr);
-
-                cmdElem.SetAttribute("cmdNum", cmd.CmdNum);
-                cmdElem.SetAttribute("name", cmd.Name);
+                cmd.SaveToXml(cmdsElem.AppendElem("Cmd"));
             }
         }
 
@@ -434,7 +371,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Copies the template properties from the specified template.
+        /// Copies the template properties from the source template.
         /// </summary>
         public virtual void CopyFrom(DeviceTemplate srcTemplate)
         {
@@ -446,46 +383,37 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             // копирование групп элементов
             ElemGroups.Clear();
-
             foreach (ElemGroup srcGroup in srcTemplate.ElemGroups)
             {
-                ElemGroup elemGroup = new ElemGroup(srcGroup.TableType)
-                {
-                    Name = srcGroup.Name,
-                    Address = srcGroup.Address,
-                    Active = srcGroup.Active,
-                    StartKPTagInd = srcGroup.StartKPTagInd,
-                    StartSignal = srcGroup.StartSignal,
-                };
-
-                foreach (Elem srcElem in srcGroup.Elems)
-                {
-                    elemGroup.Elems.Add(new Elem()
-                    {
-                        Name = srcElem.Name,
-                        ElemType = srcElem.ElemType,
-                        ByteOrder = srcElem.ByteOrder, // копируется ссылка на массив
-                        ByteOrderStr = srcElem.ByteOrderStr
-                    });
-                }
-
-                ElemGroups.Add(elemGroup);
+                ElemGroup destGroup = CreateElemGroup(srcGroup.TableType);
+                destGroup.CopyFrom(srcGroup);
+                ElemGroups.Add(destGroup);
             }
 
             // копирование команд
             Cmds.Clear();
-
             foreach (ModbusCmd srcCmd in srcTemplate.Cmds)
             {
-                Cmds.Add(new ModbusCmd(srcCmd.TableType)
-                {
-                    Multiple = srcCmd.Multiple,
-                    ElemCnt = srcCmd.ElemCnt,
-                    Address = srcCmd.Address,
-                    Name = srcCmd.Name,
-                    CmdNum = srcCmd.CmdNum
-                });
+                ModbusCmd destCmd = CreateModbusCmd(srcCmd.TableType, srcCmd.Multiple);
+                destCmd.CopyFrom(destCmd);
+                Cmds.Add(destCmd);
             }
+        }
+
+        /// <summary>
+        /// Creates a new group of Modbus elements.
+        /// </summary>
+        public virtual ElemGroup CreateElemGroup(TableType tableType)
+        {
+            return new ElemGroup(tableType);
+        }
+
+        /// <summary>
+        /// Creates a new Modbus command.
+        /// </summary>
+        public virtual ModbusCmd CreateModbusCmd(TableType tableType, bool multiple)
+        {
+            return new ModbusCmd(tableType, multiple);
         }
     }
 }

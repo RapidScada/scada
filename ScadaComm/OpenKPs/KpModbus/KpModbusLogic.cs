@@ -61,7 +61,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private const int TcpConnectPer = 5;
 
-        private TransModes transMode;            // режим передачи данных
+        private TransMode transMode;            // режим передачи данных
         private ModbusPoll modbusPoll;           // объект для опроса устройств по протоколу Modbus
         private RequestDelegate request;         // метод выполнения запроса
         private byte devAddr;                    // адрес устройства
@@ -156,7 +156,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void SetNewLine()
         {
-            if (Connection != null && transMode == TransModes.ASCII)
+            if (Connection != null && transMode == TransMode.ASCII)
                 Connection.NewLine = ModbusUtils.CRLF;
         }
 
@@ -199,7 +199,7 @@ namespace Scada.Comm.Devices
                         int signal = ++tagInd;
                         tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
 
-                        if (elem.ElemType == ElemTypes.Float)
+                        if (elem.ElemType == ElemType.Float)
                             floatSignals.Add(signal);
                     }
                 }
@@ -314,7 +314,7 @@ namespace Scada.Comm.Devices
                     }
                     else
                     {
-                        modbusCmd.Value = modbusCmd.TableType == TableTypes.HoldingRegisters ?
+                        modbusCmd.Value = modbusCmd.TableType == TableType.HoldingRegisters ?
                             (ushort)cmd.CmdVal :
                             cmd.CmdVal > 0 ? (ushort)1 : (ushort)0;
                     }
@@ -385,15 +385,15 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             // получение режима передачи данных
-            transMode = CustomParams.GetEnumParam("TransMode", false, TransModes.RTU);
+            transMode = CustomParams.GetEnumParam("TransMode", false, TransMode.RTU);
 
             // настройка библиотеки в зависимости от режима передачи данных
             switch (transMode)
             {
-                case TransModes.RTU:
+                case TransMode.RTU:
                     request += modbusPoll.RtuRequest;
                     break;
-                case TransModes.ASCII:
+                case TransMode.ASCII:
                     request += modbusPoll.AsciiRequest;
                     break;
                 default: // TransModes.TCP

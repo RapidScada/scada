@@ -57,12 +57,12 @@
     <Compile Include="Modbus\Protocol\DeviceTemplate.cs" />
     <Compile Include="Modbus\Protocol\Elem.cs" />
     <Compile Include="Modbus\Protocol\ElemGroup.cs" />
-    <Compile Include="Modbus\Protocol\ElemTypes.cs" />
+    <Compile Include="Modbus\Protocol\ElemType.cs" />
     <Compile Include="Modbus\Protocol\FuncCodes.cs" />
     <Compile Include="Modbus\Protocol\ModbusPhrases.cs" />
     <Compile Include="Modbus\Protocol\ModbusUtils.cs" />
-    <Compile Include="Modbus\Protocol\TableTypes.cs" />
-    <Compile Include="Modbus\Protocol\TransModes.cs" />
+    <Compile Include="Modbus\Protocol\TableType.cs" />
+    <Compile Include="Modbus\Protocol\TransMode.cs" />
     <Compile Include="Modbus\UI\CtrlCmd.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -105,6 +105,7 @@
       <DependentUpon>FrmTemplateSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Modbus\UI\TreeUpdateTypes.cs" />
+    <Compile Include="Modbus\UI\UiCustomization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -211,8 +211,8 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа таблицы данных группы элементов
             if (elemGroup != null)
             {
-                TableTypes tableType = (TableTypes)cbGrTableType.SelectedIndex;
-                int maxElemCnt = DataUnit.GetMaxElemCnt(tableType);
+                TableType tableType = (TableType)cbGrTableType.SelectedIndex;
+                int maxElemCnt = elemGroup.GetMaxElemCnt(tableType);
 
                 bool cancel = elemGroup.Elems.Count > maxElemCnt &&
                     MessageBox.Show(string.Format(KpPhrases.ElemRemoveWarning, maxElemCnt), 
@@ -238,7 +238,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     ShowFuncCode(elemGroup);
 
                     // установка типа элементов группы по умолчанию
-                    ElemTypes elemType = elemGroup.DefElemType;
+                    ElemType elemType = elemGroup.DefElemType;
                     foreach (Elem elem in elemGroup.Elems)
                     {
                         elem.ElemType = elemType;
@@ -270,10 +270,12 @@ namespace Scada.Comm.Devices.Modbus.UI
                 if (oldElemCnt < newElemCnt)
                 {
                     // добавление новых элементов
-                    ElemTypes elemType = elemGroup.DefElemType;
+                    ElemType elemType = elemGroup.DefElemType;
                     for (int elemInd = oldElemCnt; elemInd < newElemCnt; elemInd++)
                     {
-                        elemGroup.Elems.Add(new Elem() { ElemType = elemType });
+                        Elem elem = elemGroup.CreateElem();
+                        elem.ElemType = elemType;
+                        elemGroup.Elems.Add(elem);
                     }
                 }
                 else if (oldElemCnt > newElemCnt)

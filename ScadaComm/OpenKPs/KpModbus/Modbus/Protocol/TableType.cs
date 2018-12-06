@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 namespace Scada.Comm.Devices.Modbus.Protocol
@@ -29,7 +29,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
     /// Types of Modbus data tables
     /// <para>Типы таблиц данных Modbus</para>
     /// </summary>
-    public enum TableTypes
+    public enum TableType
     {
         /// <summary>
         /// Дискретные входы (1 бит, только чтение, 1X-обращения)

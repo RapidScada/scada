@@ -37,9 +37,10 @@ namespace Scada.Comm.Devices.Modbus.UI
     /// </summary>
     public partial class FrmDevProps : Form
     {
-        private int kpNum;                   // номер КП
-        private KPView.KPProperties kpProps; // свойства КП, сохраняемые SCADA-Коммуникатором
-        private AppDirs appDirs;             // директории приложения
+        private int kpNum;                       // номер КП
+        private KPView.KPProperties kpProps;     // свойства КП, сохраняемые SCADA-Коммуникатором
+        private AppDirs appDirs;                 // директории приложения
+        private UiCustomization uiCustomization; // the customization object
 
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void EditDevTemplate(string fileName)
         {
-            FrmDevTemplate.ShowDialog(appDirs, true, ref fileName);
+            FrmDevTemplate.ShowDialog(appDirs, uiCustomization, true, ref fileName);
 
             if (!string.IsNullOrEmpty(fileName))
                 txtDevTemplate.Text = MakeRelative(fileName);
@@ -81,20 +82,19 @@ namespace Scada.Comm.Devices.Modbus.UI
                 fileName.Substring(appDirs.ConfigDir.Length) : fileName;
         }
 
+
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
-        public static void ShowDialog(int kpNum, KPView.KPProperties kpProps, AppDirs appDirs)
+        public static void ShowDialog(int kpNum, KPView.KPProperties kpProps, AppDirs appDirs, UiCustomization uiCustomization)
         {
-            if (kpProps == null)
-                throw new ArgumentNullException("kpProps");
-            if (appDirs == null)
-                throw new ArgumentNullException("appDirs");
-
-            FrmDevProps frmDevProps = new FrmDevProps();
-            frmDevProps.kpNum = kpNum;
-            frmDevProps.kpProps = kpProps;
-            frmDevProps.appDirs = appDirs;
+            FrmDevProps frmDevProps = new FrmDevProps
+            {
+                kpNum = kpNum,
+                kpProps = kpProps ?? throw new ArgumentNullException("kpProps"),
+                appDirs = appDirs ?? throw new ArgumentNullException("appDirs"),
+                uiCustomization = uiCustomization ?? throw new ArgumentNullException("uiCustomization")
+            };
             frmDevProps.ShowDialog();
         }
 

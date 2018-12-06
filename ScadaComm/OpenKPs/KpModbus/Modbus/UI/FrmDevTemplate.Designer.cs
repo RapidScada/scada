@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Element groups");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Commands");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Element groups");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Commands");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmDevTemplate));
             this.treeView = new System.Windows.Forms.TreeView();
             this.imageList = new System.Windows.Forms.ImageList(this.components);
@@ -68,17 +68,17 @@
             this.treeView.ImageList = this.imageList;
             this.treeView.Location = new System.Drawing.Point(13, 19);
             this.treeView.Name = "treeView";
-            treeNode3.ImageKey = "group.png";
-            treeNode3.Name = "grsNode";
-            treeNode3.SelectedImageKey = "group.png";
-            treeNode3.Text = "Element groups";
-            treeNode4.ImageIndex = 2;
-            treeNode4.Name = "cmdsNode";
-            treeNode4.SelectedImageKey = "cmds.png";
-            treeNode4.Text = "Commands";
+            treeNode1.ImageKey = "group.png";
+            treeNode1.Name = "grsNode";
+            treeNode1.SelectedImageKey = "group.png";
+            treeNode1.Text = "Element groups";
+            treeNode2.ImageIndex = 2;
+            treeNode2.Name = "cmdsNode";
+            treeNode2.SelectedImageKey = "cmds.png";
+            treeNode2.Text = "Commands";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode3,
-            treeNode4});
+            treeNode1,
+            treeNode2});
             this.treeView.SelectedImageIndex = 0;
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(254, 469);
@@ -312,7 +312,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "MODBUS. Редактор шаблонов устройств";
+            this.Text = "MODBUS. Device Template Editor";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmDevTemplate_FormClosing);
             this.Load += new System.EventHandler(this.FrmDevTemplate_Load);
             this.toolStrip.ResumeLayout(false);

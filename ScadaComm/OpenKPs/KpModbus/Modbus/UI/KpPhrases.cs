@@ -71,8 +71,7 @@ namespace Scada.Comm.Devices.Modbus.UI
 
         public static void Init()
         {
-            Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevTemplate", out dict))
+            if (Localization.Dictionaries.TryGetValue("Scada.Comm.Devices.Modbus.UI.FrmDevTemplate", out Localization.Dict dict))
             {
                 TemplFormTitle = dict.GetPhrase("this", TemplFormTitle);
                 GrsNode = dict.GetPhrase("GrsNode", GrsNode);

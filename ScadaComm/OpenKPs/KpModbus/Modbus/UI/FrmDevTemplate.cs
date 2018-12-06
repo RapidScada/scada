@@ -42,10 +42,11 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private const string NewFileName = "KpModbus_NewTemplate.xml";
 
-        private AppDirs appDirs;         // директории приложения
-        private string initialFileName;  // имя файла шаблона для открытия при запуске формы
-        private string fileName;         // имя файла шаблона устройства
-        private bool saveOnly;           // разрешена только команда сохранения при работе с файлами
+        private AppDirs appDirs;                 // директории приложения
+        private UiCustomization uiCustomization; // the customization object
+        private string initialFileName;          // имя файла шаблона для открытия при запуске формы
+        private string fileName;                 // имя файла шаблона устройства
+        private bool saveOnly;                   // разрешена только команда сохранения при работе с файлами
 
         private DeviceTemplate template; // редактируемый шаблон устройства
         private bool modified;           // признак изменения шаблона устройства
@@ -113,7 +114,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// </summary>
         private void LoadTemplate(string fname)
         {
-            template = new DeviceTemplate();
+            template = uiCustomization.TemplateFactory.CreateDeviceTemplate();
             fileName = fname;
             SetFormTitle();
             string errMsg;
@@ -257,9 +258,8 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (grNode == null)
                 grNode = selNode;
 
-            if (grNode.Tag is ElemGroup)
+            if (grNode.Tag is ElemGroup elemGroup)
             {
-                ElemGroup elemGroup = (ElemGroup)grNode.Tag;
                 ushort elemAddr = elemGroup.Address;
                 int elemSig = elemGroup.StartKPTagInd + 1;
 
@@ -434,24 +434,26 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
-        public static void ShowDialog(AppDirs appDirs)
+        public static void ShowDialog(AppDirs appDirs, UiCustomization uiCustomization)
         {
             string fileName = "";
-            ShowDialog(appDirs, false, ref fileName);
+            ShowDialog(appDirs, uiCustomization, false, ref fileName);
         }
 
         /// <summary>
         /// Отобразить форму модально, открыв заданный файл
         /// </summary>
-        public static void ShowDialog(AppDirs appDirs, bool saveOnly, ref string fileName)
+        public static void ShowDialog(AppDirs appDirs, UiCustomization uiCustomization, 
+            bool saveOnly, ref string fileName)
         {
-            if (appDirs == null)
-                throw new ArgumentNullException("appDirs");
+            FrmDevTemplate frmDevTemplate = new FrmDevTemplate
+            {
+                appDirs = appDirs ?? throw new ArgumentNullException("appDirs"),
+                uiCustomization = uiCustomization ?? throw new ArgumentNullException("uiCustomization"),
+                initialFileName = fileName,
+                saveOnly = saveOnly
+            };
 
-            FrmDevTemplate frmDevTemplate = new FrmDevTemplate();
-            frmDevTemplate.appDirs = appDirs;
-            frmDevTemplate.initialFileName = fileName;
-            frmDevTemplate.saveOnly = saveOnly;
             frmDevTemplate.ShowDialog();
             fileName = frmDevTemplate.fileName;
         }
@@ -478,7 +480,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (string.IsNullOrEmpty(initialFileName))
             {
                 saveFileDialog.FileName = NewFileName;
-                template = new DeviceTemplate();
+                template = uiCustomization.TemplateFactory.CreateDeviceTemplate();
                 FillTree();
             }
             else
@@ -500,7 +502,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             if (CheckChanges())
             {
                 saveFileDialog.FileName = NewFileName;
-                template = new DeviceTemplate();
+                template = uiCustomization.TemplateFactory.CreateDeviceTemplate();
                 fileName = "";
                 SetFormTitle();
                 FillTree();
@@ -532,10 +534,9 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void btnAddElemGroup_Click(object sender, EventArgs e)
         {
             // создание группы элементов и добавление в шаблон устройства
-            ElemGroup elemGroup = new ElemGroup(TableTypes.DiscreteInputs);
-            elemGroup.Elems.Add(new Elem());
-            int ind = selNode != null && selNode.Tag is ElemGroup ? 
-                selNode.Index + 1 : template.ElemGroups.Count;
+            ElemGroup elemGroup = template.CreateElemGroup(TableType.DiscreteInputs);
+            elemGroup.Elems.Add(elemGroup.CreateElem());
+            int ind = selNode != null && selNode.Tag is ElemGroup ? selNode.Index + 1 : template.ElemGroups.Count;
             template.ElemGroups.Insert(ind, elemGroup);
 
             // создание узла дерева группы элементов
@@ -564,7 +565,8 @@ namespace Scada.Comm.Devices.Modbus.UI
             }
 
             ElemInfo elemInfo = new ElemInfo();
-            elemInfo.Elem = new Elem() { ElemType = elemGroup.DefElemType };
+            elemInfo.Elem = elemGroup.CreateElem();
+            elemInfo.Elem.ElemType = elemGroup.DefElemType;
             elemInfo.ElemGroup = elemGroup;
             elemInfo.Settings = template.Sett;
             int ind = selNode.Tag is ElemInfo ? selNode.Index + 1 : elemGroup.Elems.Count;
@@ -586,7 +588,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         private void btnAddCmd_Click(object sender, EventArgs e)
         {
             // создание команды и добавление в шаблон устройства
-            ModbusCmd modbusCmd = new ModbusCmd(TableTypes.Coils);
+            ModbusCmd modbusCmd = template.CreateModbusCmd(TableType.Coils, false);
             int ind = selNode != null && selNode.Tag is ModbusCmd ? selNode.Index + 1 : template.Cmds.Count;
             template.Cmds.Insert(ind, modbusCmd);
 

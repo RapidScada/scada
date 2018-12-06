@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,24 +20,25 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
+using System.Xml;
 
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
-    /// Modbus command
-    /// <para>Команда Modbus</para>
+    /// Modbus command.
+    /// <para>Команда Modbus.</para>
     /// </summary>
     public class ModbusCmd : DataUnit
     {
-        private string reqDescr; // описание команды
+        private string reqDescr; // the command description
 
 
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
         private ModbusCmd()
             : base()
@@ -45,18 +46,18 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
-        public ModbusCmd(TableTypes tableType, bool multiple = false, int elemCnt = 1)
+        public ModbusCmd(TableType tableType, bool multiple)
             : base(tableType)
         {
-            if (!(tableType == TableTypes.Coils || tableType == TableTypes.HoldingRegisters))
+            if (!(tableType == TableType.Coils || tableType == TableType.HoldingRegisters))
                 throw new InvalidOperationException(ModbusPhrases.IllegalDataTable);
 
             reqDescr = "";
             Multiple = multiple;
             ElemType = DefElemType;
-            ElemCnt = elemCnt;
+            ElemCnt = 1;
             ByteOrder = null;
             ByteOrderStr = "";
             CmdNum = 1;
@@ -87,11 +88,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить или установить признак множественной команды
         /// </summary>
         public bool Multiple { get; set; }
-        
+
         /// <summary>
         /// Получить или установить тип элементов команды
         /// </summary>
-        public ElemTypes ElemType { get; set; }
+        public ElemType ElemType { get; set; }
 
         /// <summary>
         /// Получить признак, что команды разрешено использование типов
@@ -100,7 +101,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             get
             {
-                return TableType == TableTypes.HoldingRegisters && Multiple;
+                return TableType == TableType.HoldingRegisters && Multiple;
             }
         }
 
@@ -143,8 +144,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             if (Multiple)
             {
                 // формирование PDU для команды WriteMultipleCoils или WriteMultipleRegisters
-                int byteCnt = TableType == TableTypes.Coils ?
-                    ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) : 
+                int byteCnt = TableType == TableType.Coils ?
+                    ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) :
                     ElemCnt * 2;
 
                 ReqPDU = new byte[6 + byteCnt];
@@ -165,14 +166,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 ReqPDU[1] = (byte)(Address / 256);
                 ReqPDU[2] = (byte)(Address % 256);
 
-                if (TableType == TableTypes.Coils)
+                if (TableType == TableType.Coils)
                 {
                     ReqPDU[3] = Value > 0 ? (byte)0xFF : (byte)0x00;
                     ReqPDU[4] = 0x00;
                 }
                 else
                 {
-                    byte[] data = new byte[] 
+                    byte[] data = new byte[]
                     {
                         (byte)(Value / 256),
                         (byte)(Value % 256)
@@ -210,11 +211,71 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
+        /// Loads the command from the XML node.
+        /// </summary>
+        public virtual void LoadFromXml(XmlElement cmdElem)
+        {
+            if (cmdElem == null)
+                throw new ArgumentNullException("cmdElem");
+
+            Address = (ushort)cmdElem.GetAttrAsInt("address");
+            ElemType = cmdElem.GetAttrAsEnum("elemType", DefElemType);
+            ElemCnt = cmdElem.GetAttrAsInt("elemCnt", 1);
+            Name = cmdElem.GetAttribute("name");
+            CmdNum = cmdElem.GetAttrAsInt("cmdNum");
+
+            if (ByteOrderEnabled)
+            {
+                ByteOrderStr = cmdElem.GetAttribute("byteOrder");
+                ByteOrder = ModbusUtils.ParseByteOrder(ByteOrderStr);
+            }
+        }
+
+        /// <summary>
+        /// Saves the command into the XML node.
+        /// </summary>
+        public virtual void SaveToXml(XmlElement cmdElem)
+        {
+            if (cmdElem == null)
+                throw new ArgumentNullException("cmdElem");
+
+            cmdElem.SetAttribute("tableType", TableType);
+            cmdElem.SetAttribute("multiple", Multiple);
+            cmdElem.SetAttribute("address", Address);
+
+            if (ElemTypeEnabled)
+                cmdElem.SetAttribute("elemType", ElemType.ToString().ToLowerInvariant());
+
+            if (Multiple)
+                cmdElem.SetAttribute("elemCnt", ElemCnt);
+
+            if (ByteOrderEnabled)
+                cmdElem.SetAttribute("byteOrder", ByteOrderStr);
+
+            cmdElem.SetAttribute("cmdNum", CmdNum);
+            cmdElem.SetAttribute("name", Name);
+        }
+
+        /// <summary>
+        /// Copies the command properties from the source command.
+        /// </summary>
+        public virtual void CopyFrom(ModbusCmd srcCmd)
+        {
+            if (srcCmd == null)
+                throw new ArgumentNullException("srcCmd");
+
+            ElemCnt = srcCmd.ElemCnt;
+            Address = srcCmd.Address;
+            Name = srcCmd.Name;
+            CmdNum = srcCmd.CmdNum;
+        }
+
+        /// <summary>
         /// Обновить код функции в соответствии с типом таблицы данных
         /// </summary>
         public void UpdateFuncCode()
         {
-            if (TableType == TableTypes.Coils)
+            if (TableType == TableType.Coils)
                 FuncCode = Multiple ? FuncCodes.WriteMultipleCoils : FuncCodes.WriteSingleCoil;
             else
                 FuncCode = Multiple ? FuncCodes.WriteMultipleRegisters : FuncCodes.WriteSingleRegister;
@@ -229,28 +290,28 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             switch (ElemType)
             {
-                case ElemTypes.UShort:
+                case ElemType.UShort:
                     Data = BitConverter.GetBytes((ushort)cmdVal);
                     break;
-                case ElemTypes.Short:
+                case ElemType.Short:
                     Data = BitConverter.GetBytes((short)cmdVal);
                     break;
-                case ElemTypes.UInt:
+                case ElemType.UInt:
                     Data = BitConverter.GetBytes((uint)cmdVal);
                     break;
-                case ElemTypes.Int:
+                case ElemType.Int:
                     Data = BitConverter.GetBytes((int)cmdVal);
                     break;
-                case ElemTypes.ULong:
+                case ElemType.ULong:
                     Data = BitConverter.GetBytes((ulong)cmdVal);
                     break;
-                case ElemTypes.Long:
+                case ElemType.Long:
                     Data = BitConverter.GetBytes((long)cmdVal);
                     break;
-                case ElemTypes.Float:
+                case ElemType.Float:
                     Data = BitConverter.GetBytes((float)cmdVal);
                     break;
-                case ElemTypes.Double:
+                case ElemType.Double:
                     Data = BitConverter.GetBytes(cmdVal);
                     break;
                 default:
