@@ -48,6 +48,7 @@
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnEditSettings = new System.Windows.Forms.ToolStripButton();
+            this.btnEditSettingsExt = new System.Windows.Forms.ToolStripButton();
             this.gbDevTemplate = new System.Windows.Forms.GroupBox();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
@@ -110,7 +111,8 @@
             this.btnMoveDown,
             this.btnDelete,
             this.toolStripSeparator2,
-            this.btnEditSettings});
+            this.btnEditSettings,
+            this.btnEditSettingsExt});
             this.toolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolStrip.Name = "toolStrip";
             this.toolStrip.Size = new System.Drawing.Size(590, 25);
@@ -237,6 +239,16 @@
             this.btnEditSettings.ToolTipText = "Edit template settings";
             this.btnEditSettings.Click += new System.EventHandler(this.btnEditSettings_Click);
             // 
+            // btnEditSettingsExt
+            // 
+            this.btnEditSettingsExt.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnEditSettingsExt.Image = ((System.Drawing.Image)(resources.GetObject("btnEditSettingsExt.Image")));
+            this.btnEditSettingsExt.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnEditSettingsExt.Name = "btnEditSettingsExt";
+            this.btnEditSettingsExt.Size = new System.Drawing.Size(23, 22);
+            this.btnEditSettingsExt.ToolTipText = "Edit extended settings";
+            this.btnEditSettingsExt.Click += new System.EventHandler(this.btnEditSettingsExt_Click);
+            // 
             // gbDevTemplate
             // 
             this.gbDevTemplate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
@@ -347,5 +359,6 @@
         private CtrlElemGroup ctrlElemGroup;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripButton btnEditSettings;
+        private System.Windows.Forms.ToolStripButton btnEditSettingsExt;
     }
 }

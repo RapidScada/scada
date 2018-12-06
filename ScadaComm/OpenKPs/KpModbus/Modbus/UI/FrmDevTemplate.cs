@@ -469,6 +469,7 @@ namespace Scada.Comm.Devices.Modbus.UI
             // настройка элементов управления
             openFileDialog.InitialDirectory = appDirs.ConfigDir;
             saveFileDialog.InitialDirectory = appDirs.ConfigDir;
+            btnEditSettingsExt.Visible = uiCustomization.ExtendedSettingsAvailable;
             ctrlElem.Top = ctrlCmd.Top = ctrlElemGroup.Top;
 
             if (saveOnly)
@@ -749,6 +750,16 @@ namespace Scada.Comm.Devices.Modbus.UI
                 // полное обновление дерева
                 FillTree();
                 // установка признака изменения
+                Modified = true;
+            }
+        }
+
+        private void btnEditSettingsExt_Click(object sender, EventArgs e)
+        {
+            // редактирование расширенных настроек
+            if (uiCustomization.ShowExtendedSettings(template))
+            {
+                FillTree();
                 Modified = true;
             }
         }

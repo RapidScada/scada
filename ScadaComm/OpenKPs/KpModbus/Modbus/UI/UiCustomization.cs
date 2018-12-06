@@ -23,6 +23,8 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.Modbus.Protocol;
+
 namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
@@ -57,9 +59,10 @@ namespace Scada.Comm.Devices.Modbus.UI
         /// <summary>
         /// Shows the extended settings form as a modal dialog box.
         /// </summary>
-        public void ShowExtendedSettings(AppDirs appDirs)
+        /// <returns>Returns true if the settings changed.</returns>
+        public virtual bool ShowExtendedSettings(DeviceTemplate deviceTemplate)
         {
-            // do nothing
+            return false;
         }
     }
 }

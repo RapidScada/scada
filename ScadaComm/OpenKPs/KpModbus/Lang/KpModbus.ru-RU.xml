@@ -13,6 +13,7 @@
     <Phrase key="btnMoveDown.ToolTip">Переместить вниз</Phrase>
     <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
     <Phrase key="btnEditSettings.ToolTip">Редактировать настройки шаблона</Phrase>
+    <Phrase key="btnEditSettingsExt.ToolTip">Редактировать расширенные настройки</Phrase>
     <Phrase key="gbDevTemplate">Шаблон устройства</Phrase>
     <Phrase key="gbElemGroup">Параметры группы элементов</Phrase>
     <Phrase key="chkGrActive">Активность</Phrase>
