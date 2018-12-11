@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Channels;
@@ -30,23 +30,36 @@ using Utils;
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
-    /// Polls devices using Modbus protocol
-    /// <para>Отпрос устройств по протоколу Modbus</para>
+    /// Polls devices using Modbus protocol.
+    /// <para>Опрос устройств по протоколу Modbus.</para>
     /// </summary>
     public class ModbusPoll
     {
         /// <summary>
-        /// Размер буфера входных данных, байт
+        /// Делегат выполнения запроса
         /// </summary>
-        public const int InBufSize = 300;
+        public delegate bool RequestDelegate(DataUnit dataUnit);
+
+        /// <summary>
+        /// Размер буфера входных данных по умолчанию, байт
+        /// </summary>
+        private const int DefInBufSize = 300;
 
 
         /// <summary>
         /// Конструктор
         /// </summary>
         public ModbusPoll()
+            : this(DefInBufSize)
         {
-            InBuf = new byte[InBufSize];
+        }
+
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        public ModbusPoll(int inBufSize)
+        {
+            InBuf = new byte[inBufSize];
             Timeout = 0;
             Connection = null;
             WriteToLog = null;
@@ -108,12 +121,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 return false;
 
             bool result = false;
-            string logText;
 
             // отправка запроса
             ExecWriteToLog(dataUnit.ReqDescr);
-            Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length, 
-                CommUtils.ProtocolLogFormats.Hex, out logText);
+            Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length,
+                CommUtils.ProtocolLogFormats.Hex, out string logText);
             ExecWriteToLog(logText);
 
             // приём ответа
@@ -142,7 +154,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         pduLen = dataUnit.RespPduLen;
                         count = dataUnit.RespAduLen - 5;
 
-                        readCnt = Connection.Read(InBuf, 5, count, Timeout, 
+                        readCnt = Connection.Read(InBuf, 5, count, Timeout,
                             CommUtils.ProtocolLogFormats.Hex, out logText);
                         ExecWriteToLog(logText);
                     }
@@ -198,11 +210,10 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 return false;
 
             bool result = false;
-            string logText;
 
             // отправка запроса
             ExecWriteToLog(dataUnit.ReqDescr);
-            Connection.WriteLine(dataUnit.ReqStr, out logText);
+            Connection.WriteLine(dataUnit.ReqStr, out string logText);
             ExecWriteToLog(logText);
 
             // приём ответа
@@ -278,12 +289,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 return false;
 
             bool result = false;
-            string logText;
 
             // отправка запроса
             WriteToLog(dataUnit.ReqDescr);
             Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length,
-                CommUtils.ProtocolLogFormats.Hex, out logText);
+                CommUtils.ProtocolLogFormats.Hex, out string logText);
             ExecWriteToLog(logText);
 
             // приём ответа
@@ -299,7 +309,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     InBuf[6] == dataUnit.ReqADU[6])
                 {
                     // считывание PDU
-                    readCnt = Connection.Read(InBuf, 7, pduLen, Timeout, 
+                    readCnt = Connection.Read(InBuf, 7, pduLen, Timeout,
                         CommUtils.ProtocolLogFormats.Hex, out logText);
                     ExecWriteToLog(logText);
 
@@ -334,6 +344,22 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             }
 
             return result;
+        }
+
+        /// <summary>
+        /// Получить метод запроса, соответствующий режиму передачи данных.
+        /// </summary>
+        public RequestDelegate GetRequestMethod(TransMode transMode)
+        {
+            switch (transMode)
+            {
+                case TransMode.RTU:
+                    return RtuRequest;
+                case TransMode.ASCII:
+                    return AsciiRequest;
+                default: // TransMode.TCP
+                    return TcpRequest;
+            }
         }
     }
 }

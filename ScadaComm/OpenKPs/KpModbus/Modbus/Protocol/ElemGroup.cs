@@ -119,7 +119,9 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             // определение суммарной длины запрашиваемых элементов
             TotalElemLength = 0;
             foreach (Elem elem in Elems)
+            {
                 TotalElemLength += elem.Length;
+            }
 
             // формирование PDU
             ReqPDU = new byte[5];

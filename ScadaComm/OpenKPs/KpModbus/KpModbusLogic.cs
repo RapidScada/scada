@@ -50,25 +50,20 @@ namespace Scada.Comm.Devices
                 return "Dictionary of " + Count + " templates";
             }
         }
-
-        /// <summary>
-        /// Делегат выполнения запроса
-        /// </summary>
-        private delegate bool RequestDelegate(DataUnit dataUnit);
         
         /// <summary>
         /// Периодичность попыток установки TCP-соединения, с
         /// </summary>
         private const int TcpConnectPer = 5;
 
-        private TransMode transMode;            // режим передачи данных
-        private ModbusPoll modbusPoll;           // объект для опроса устройств по протоколу Modbus
-        private RequestDelegate request;         // метод выполнения запроса
-        private byte devAddr;                    // адрес устройства
-        private List<ElemGroup> elemGroups;      // активные запрашиваемые группы элементов
-        private int elemGroupCnt;                // количество активных групп элементов
-        private HashSet<int> floatSignals;       // множество сигналов, форматируемых как вещественное число
-        protected DeviceTemplate deviceTemplate; // шаблон устройства, используемый данным КП
+        private TransMode transMode;                // режим передачи данных
+        private ModbusPoll modbusPoll;              // объект для опроса КП
+        private ModbusPoll.RequestDelegate request; // метод выполнения запроса
+        private byte devAddr;                       // адрес устройства
+        private List<ElemGroup> elemGroups;         // активные запрашиваемые группы элементов
+        private int elemGroupCnt;                   // количество активных групп элементов
+        private HashSet<int> floatSignals;          // множество сигналов, форматируемых как вещественное число
+        protected DeviceTemplate deviceTemplate;    // шаблон устройства, используемый данным КП
 
 
         /// <summary>
@@ -77,7 +72,6 @@ namespace Scada.Comm.Devices
         public KpModbusLogic(int number)
             : base(number)
         {
-            modbusPoll = new ModbusPoll();
         }
 
 
@@ -148,6 +142,37 @@ namespace Scada.Comm.Devices
 
                     templates.Add(fileName, deviceTemplate);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Initializes an object for polling data.
+        /// </summary>
+        private void InitModbusPoll()
+        {
+            if (deviceTemplate != null)
+            {
+                // find the required size of the input buffer
+                int inBufSize = 0;
+                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+                {
+                    if (elemGroup.Active && inBufSize < elemGroup.RespAduLen)
+                        inBufSize = elemGroup.RespAduLen;
+                }
+
+                foreach (ModbusCmd cmd in deviceTemplate.Cmds)
+                {
+                    if (inBufSize < cmd.RespAduLen)
+                        inBufSize = cmd.RespAduLen;
+                }
+
+                // create an object for polling data
+                modbusPoll = new ModbusPoll(inBufSize)
+                {
+                    Timeout = ReqParams.Timeout,
+                    Connection = Connection,
+                    WriteToLog = WriteToLog
+                };
             }
         }
 
@@ -363,16 +388,33 @@ namespace Scada.Comm.Devices
             List<TagGroup> tagGroups = CreateTagGroups(deviceTemplate, ref tagInd);
             InitKPTags(tagGroups);
 
-            // получение активных групп элементов
-            if (deviceTemplate != null)
-            {
-                elemGroups = deviceTemplate.GetActiveElemGroups();
-                elemGroupCnt = elemGroups.Count;
-            }
-            else
+            // определение режима передачи данных
+            transMode = CustomParams.GetEnumParam("TransMode", false, TransMode.RTU);
+
+            if (deviceTemplate == null)
             {
                 elemGroups = null;
                 elemGroupCnt = 0;
+            }
+            else
+            {
+                // получение активных групп элементов
+                elemGroups = deviceTemplate.GetActiveElemGroups();
+                elemGroupCnt = elemGroups.Count;
+
+                // формирование PDU и ADU
+                devAddr = (byte)Address;
+                foreach (ElemGroup elemGroup in elemGroups)
+                {
+                    elemGroup.InitReqPDU();
+                    elemGroup.InitReqADU(devAddr, transMode);
+                }
+
+                foreach (ModbusCmd cmd in deviceTemplate.Cmds)
+                {
+                    cmd.InitReqPDU();
+                    cmd.InitReqADU(devAddr, transMode);
+                }
             }
 
             // определение возможности отправки команд
@@ -384,40 +426,11 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void OnCommLineStart()
         {
-            // получение режима передачи данных
-            transMode = CustomParams.GetEnumParam("TransMode", false, TransMode.RTU);
+            // инициализация объекта для опроса КП
+            InitModbusPoll();
 
-            // настройка библиотеки в зависимости от режима передачи данных
-            switch (transMode)
-            {
-                case TransMode.RTU:
-                    request += modbusPoll.RtuRequest;
-                    break;
-                case TransMode.ASCII:
-                    request += modbusPoll.AsciiRequest;
-                    break;
-                default: // TransModes.TCP
-                    request += modbusPoll.TcpRequest;
-                    break;
-            }
-
-            SetNewLine();
-
-            // настройка объекта, реализующего протокол Modbus
-            modbusPoll.Timeout = ReqParams.Timeout;
-            modbusPoll.WriteToLog = WriteToLog;
-
-            // формирование PDU и ADU
-            if (deviceTemplate != null)
-            {
-                devAddr = (byte)Address;
-
-                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
-                {
-                    elemGroup.InitReqPDU();
-                    elemGroup.InitReqADU(devAddr, transMode);
-                }
-            }
+            // выбор метода запроса
+            request = modbusPoll.GetRequestMethod(transMode);
         }
 
         /// <summary>
@@ -426,7 +439,9 @@ namespace Scada.Comm.Devices
         public override void OnConnectionSet()
         {
             SetNewLine();
-            modbusPoll.Connection = Connection;
+
+            if (modbusPoll != null)
+                modbusPoll.Connection = Connection;
         }
     }
 }
