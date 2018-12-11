@@ -154,9 +154,9 @@ namespace Scada.Comm.Devices
             {
                 // find the required size of the input buffer
                 int inBufSize = 0;
-                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+                foreach (ElemGroup elemGroup in elemGroups)
                 {
-                    if (elemGroup.Active && inBufSize < elemGroup.RespAduLen)
+                    if (inBufSize < elemGroup.RespAduLen)
                         inBufSize = elemGroup.RespAduLen;
                 }
 
