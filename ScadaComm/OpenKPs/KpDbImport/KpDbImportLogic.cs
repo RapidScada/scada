@@ -319,7 +319,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Performs actions after adding the device to communication line.
+        /// Performs actions after adding the device to a communication line.
         /// </summary>
         public override void OnAddedToCommLine()
         {
