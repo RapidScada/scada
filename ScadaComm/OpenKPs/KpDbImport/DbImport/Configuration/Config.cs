@@ -156,15 +156,15 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             if (!string.IsNullOrEmpty(SelectQuery))
             {
                 // count the number of words between select and from separated by commas
-                int selectInd = SelectQuery.IndexOf("select ", StringComparison.OrdinalIgnoreCase);
-                int fromInd = SelectQuery.IndexOf(" from ", StringComparison.OrdinalIgnoreCase);
+                int selectInd = SelectQuery.IndexOf("select", StringComparison.OrdinalIgnoreCase);
+                int fromInd = SelectQuery.IndexOf("from", StringComparison.OrdinalIgnoreCase);
 
                 if (selectInd >= 0)
                 {
                     if (fromInd < 0)
                         fromInd = SelectQuery.Length - 1;
 
-                    for (int i = selectInd + "select ".Length; i < fromInd; i++)
+                    for (int i = selectInd + "select".Length; i < fromInd; i++)
                     {
                         if (SelectQuery[i] == ',')
                             tagCount++;
