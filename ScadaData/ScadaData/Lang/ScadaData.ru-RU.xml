@@ -5,6 +5,7 @@
     <Phrase key="QuestionCaption">Вопрос</Phrase>
     <Phrase key="ErrorCaption">Ошибка</Phrase>
     <Phrase key="WarningCaption">Предупреждение</Phrase>
+    <Phrase key="Error">Ошибка</Phrase>
     <Phrase key="ErrorWithColon">Ошибка:</Phrase>
     <Phrase key="UnhandledException">Необработанное исключение</Phrase>
     <Phrase key="SaveSettingsConfirm">Настройки были изменены. Сохранить изменения?</Phrase>

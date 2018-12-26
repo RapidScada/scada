@@ -4,7 +4,7 @@
   <xs:simpleType name="ServiceApp">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Server" />
-      <xs:enumeration value="Communicator" />
+      <xs:enumeration value="Comm" />
     </xs:restriction>
   </xs:simpleType>
   <xs:element name="ServiceApp" nillable="true" type="tns:ServiceApp" />
@@ -57,14 +57,14 @@
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="Communicator">
+          <xs:enumeration value="Comm">
             <xs:annotation>
               <xs:appinfo>
                 <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">8</EnumerationValue>
               </xs:appinfo>
             </xs:annotation>
           </xs:enumeration>
-          <xs:enumeration value="Webstation">
+          <xs:enumeration value="Web">
             <xs:annotation>
               <xs:appinfo>
                 <EnumerationValue xmlns="http://schemas.microsoft.com/2003/10/Serialization/">16</EnumerationValue>
@@ -86,7 +86,7 @@
   <xs:complexType name="ConfigOptions">
     <xs:sequence>
       <xs:element minOccurs="0" name="ConfigParts" type="tns:ConfigParts" />
-      <xs:element minOccurs="0" name="ExcludedPaths" nillable="true" type="tns:ArrayOfRelPath" />
+      <xs:element minOccurs="0" name="IgnoredPaths" nillable="true" type="tns:ArrayOfRelPath" />
     </xs:sequence>
   </xs:complexType>
   <xs:element name="ConfigOptions" nillable="true" type="tns:ConfigOptions" />

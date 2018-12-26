@@ -87,9 +87,9 @@ namespace Scada.Comm.Devices.Modbus.UI
                 txtElemName.Text = elemInfo.Elem.Name;
                 txtElemAddress.Text = elemInfo.AddressRange;
                 txtElemSignal.Text = elemInfo.Signal.ToString();
-                ElemTypes elemType = elemInfo.Elem.ElemType;
+                ElemType elemType = elemInfo.Elem.ElemType;
 
-                if (elemType == ElemTypes.Bool)
+                if (elemType == ElemType.Bool)
                 {
                     rbUShort.Enabled = rbShort.Enabled = rbUInt.Enabled = rbInt.Enabled =
                         rbULong.Enabled = rbLong.Enabled = rbFloat.Enabled = rbDouble.Enabled = false;
@@ -108,28 +108,28 @@ namespace Scada.Comm.Devices.Modbus.UI
 
                 switch (elemType)
                 {
-                    case ElemTypes.UShort:
+                    case ElemType.UShort:
                         rbUShort.Checked = true;
                         break;
-                    case ElemTypes.Short:
+                    case ElemType.Short:
                         rbShort.Checked = true;
                         break;
-                    case ElemTypes.UInt:
+                    case ElemType.UInt:
                         rbUInt.Checked = true;
                         break;
-                    case ElemTypes.Int:
+                    case ElemType.Int:
                         rbInt.Checked = true;
                         break;
-                    case ElemTypes.ULong:
+                    case ElemType.ULong:
                         rbULong.Checked = true;
                         break;
-                    case ElemTypes.Long:
+                    case ElemType.Long:
                         rbLong.Checked = true;
                         break;
-                    case ElemTypes.Float:
+                    case ElemType.Float:
                         rbFloat.Checked = true;
                         break;
-                    case ElemTypes.Double:
+                    case ElemType.Double:
                         rbDouble.Checked = true;
                         break;
                     default:
@@ -183,23 +183,23 @@ namespace Scada.Comm.Devices.Modbus.UI
                 Elem elem = elemInfo.Elem;
 
                 if (rbUShort.Checked)
-                    elem.ElemType = ElemTypes.UShort;
+                    elem.ElemType = ElemType.UShort;
                 else if (rbShort.Checked)
-                    elem.ElemType = ElemTypes.Short;
+                    elem.ElemType = ElemType.Short;
                 else if (rbUInt.Checked)
-                    elem.ElemType = ElemTypes.UInt;
+                    elem.ElemType = ElemType.UInt;
                 else if (rbInt.Checked)
-                    elem.ElemType = ElemTypes.Int;
+                    elem.ElemType = ElemType.Int;
                 else if (rbULong.Checked)
-                    elem.ElemType = ElemTypes.ULong;
+                    elem.ElemType = ElemType.ULong;
                 else if (rbLong.Checked)
-                    elem.ElemType = ElemTypes.Long;
+                    elem.ElemType = ElemType.Long;
                 else if (rbFloat.Checked)
-                    elem.ElemType = ElemTypes.Float;
+                    elem.ElemType = ElemType.Float;
                 else if (rbDouble.Checked)
-                    elem.ElemType = ElemTypes.Double;
+                    elem.ElemType = ElemType.Double;
                 else
-                    elem.ElemType = ElemTypes.Bool;
+                    elem.ElemType = ElemType.Bool;
 
                 txtElemAddress.Text = elemInfo.AddressRange;
                 OnObjectChanged(TreeUpdateTypes.CurrentNode | TreeUpdateTypes.NextSiblings);

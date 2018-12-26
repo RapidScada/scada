@@ -13,6 +13,7 @@
     <Phrase key="btnMoveDown.ToolTip">Move down</Phrase>
     <Phrase key="btnDelete.ToolTip">Delete</Phrase>
     <Phrase key="btnEditSettings.ToolTip">Edit template settings</Phrase>
+    <Phrase key="btnEditSettingsExt.ToolTip">Edit extended settings</Phrase>
     <Phrase key="gbDevTemplate">Device template</Phrase>
     <Phrase key="gbElemGroup">Element group parameters</Phrase>
     <Phrase key="chkGrActive">Active</Phrase>

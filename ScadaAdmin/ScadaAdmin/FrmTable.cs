@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2016
+ * Modified : 2018
  */
 
 using Scada;
@@ -39,7 +39,7 @@ namespace ScadaAdmin
     /// Editing configuration table form
     /// <para>Форма редактирования таблицы конфигурации</para>
     /// </summary>
-    public partial class FrmTable : Form, IWinControllable
+    public partial class FrmTable : Form, IChildForm
     {
         /// <summary>
         /// Макс. отображаемая длина текста в ячейке исходного кода
@@ -68,18 +68,18 @@ namespace ScadaAdmin
             srcColExists = false;
             modDTColExists = false;
 
-            WinInfo = null;
+            ChildFormTag = null;
             Table = null;
             GridContextMenu = null;
         }
 
 
-        #region IWinControllable Members
+        #region IChildForm Members
 
         /// <summary>
-        /// Получить или установить информацию о контролируемом окне
+        /// Получить или установить информацию о дочерней форме
         /// </summary>
-        public WinInfo WinInfo { get; set; }
+        public ChildFormTag ChildFormTag { get; set; }
 
         /// <summary>
         /// Сохранить изменения в БД
@@ -108,8 +108,8 @@ namespace ScadaAdmin
         /// </summary>
         private void SetModified(bool value)
         {
-            if (WinInfo != null)
-                WinInfo.Modified = value;
+            if (ChildFormTag != null)
+                ChildFormTag.Modified = value;
 
             bindingNavigatorUpdateItem.Enabled = bindingNavigatorCancelItem.Enabled = value;
             bindingNavigatorDeleteItem.Enabled = bindingNavigatorClearItem.Enabled =
@@ -652,7 +652,7 @@ namespace ScadaAdmin
                 bindingSource.DataSource = Table;
                 bindingSource.ResetBindings(false);
 
-                SetModified(WinInfo.Modified); // установка доступности кнопок
+                SetModified(ChildFormTag.Modified); // установка доступности кнопок
             }
         }
 

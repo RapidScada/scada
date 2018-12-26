@@ -1,0 +1,247 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>ScadaAgentCommon</name>
+    </assembly>
+    <members>
+        <member name="T:Scada.Agent.AgentUtils">
+            <summary>
+            The class contains utility methods for Agent
+            <para>Класс, содержащий вспомогательные методы для Агента</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AgentUtils.AppVersion">
+            <summary>
+            Версия Агента
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.AppFolder">
+            <summary>
+            Application folders
+            <para>Папки приложения</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Root">
+            <summary>
+            Корневая
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Config">
+            <summary>
+            Конфигурация
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Log">
+            <summary>
+            Журналы
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.AppFolder.Storage">
+            <summary>
+            Хранилище
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ConfigOptions">
+            <summary>
+            Configuration transfer options.
+            <para>Параметры передачи конфигурации.</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.ConfigOptions.#ctor">
+            <summary>
+            Initializes a new instance of the class.
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ConfigOptions.ConfigParts">
+            <summary>
+            Gets or sets the configuration parts.
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.ConfigOptions.IgnoredPaths">
+            <summary>
+            Gets or sets the ignored paths.
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ConfigParts">
+            <summary>
+            Parts of the configuration
+            <para>Части конфигурации</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.None">
+            <summary>
+            Не задано
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Base">
+            <summary>
+            База конфигурации
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Interface">
+            <summary>
+            Интерфейс
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Server">
+            <summary>
+            Сервер
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Comm">
+            <summary>
+            Коммуникатор
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.Web">
+            <summary>
+            Вебстанция
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ConfigParts.All">
+            <summary>
+            Вся конфигурация
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.DirectoryBuilder">
+            <summary>
+            Builds configuration directories.
+            <para>Строит директории конфигурации.</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts)">
+            <summary>
+            Gets a directory corresponding to the configuration part.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,System.Nullable{System.Char})">
+            <summary>
+            Gets a directory corresponding to the configuration part.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.AppFolder,System.Boolean)">
+            <summary>
+            Gets a directory corresponding to the application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.AppFolder,System.Nullable{System.Char},System.Boolean)">
+            <summary>
+            Gets a directory corresponding to the application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,Scada.Agent.AppFolder)">
+            <summary>
+            Gets a directory corresponding to the configuration part and application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.Char)">
+            <summary>
+            Gets a directory corresponding to the configuration part and application folder.
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.DirectoryBuilder.GetDirectory(Scada.Agent.ServiceApp)">
+            <summary>
+            Gets a directory corresponding to the service application.
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.RelPath">
+            <summary>
+            Relative path
+            <para>Относительный путь</para>
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.RelPath.#ctor">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="M:Scada.Agent.RelPath.#ctor(Scada.Agent.ConfigParts,Scada.Agent.AppFolder,System.String)">
+            <summary>
+            Конструктор
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.ConfigPart">
+            <summary>
+            Получить или установить часть конфигурации
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.AppFolder">
+            <summary>
+            Получить или установить папку приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.Path">
+            <summary>
+            Получить или установить путь относительно папки приложения
+            </summary>
+        </member>
+        <member name="P:Scada.Agent.RelPath.IsMask">
+            <summary>
+            Получить признак, что путь является маской для поиска файлов
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceApp">
+            <summary>
+            Service applications
+            <para>Приложения-службы</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceApp.Server">
+            <summary>
+            Сервер
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceApp.Comm">
+            <summary>
+            Коммуникатор
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceCommand">
+            <summary>
+            Service commands
+            <para>Команды сервиса</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Start">
+            <summary>
+            Запустить
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Stop">
+            <summary>
+            Остановить
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceCommand.Restart">
+            <summary>
+            Перезапустить
+            </summary>
+        </member>
+        <member name="T:Scada.Agent.ServiceStatus">
+            <summary>
+            Service statuses
+            <para>Статусы службы</para>
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Undefined">
+            <summary>
+            Не определён
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Normal">
+            <summary>
+            Норма
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Stopped">
+            <summary>
+            Остановлен
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.ServiceStatus.Error">
+            <summary>
+            Ошибка
+            </summary>
+        </member>
+    </members>
+</doc>

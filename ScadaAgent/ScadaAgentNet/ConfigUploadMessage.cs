@@ -62,7 +62,7 @@ namespace Scada.Agent.Net
         {
             if (Stream != null)
             {
-                Stream.Close();
+                Stream.Dispose();
                 Stream = null;
             }
         }

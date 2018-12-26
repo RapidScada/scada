@@ -14,12 +14,14 @@
     <Phrase key="lblConfirm">Are you sure?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lblMainNotifBtn.ToolTip">Notifications</Phrase>
     <Phrase key="lbtnMainLogout">Logout</Phrase>
     <Phrase key="lblMainFullscreenBtn.ToolTip">Full Screen</Phrase>
-    <Phrase key="lblMainNormalViewBtn.ToolTip">Normal View</Phrase>
     <Phrase key="lblMainMenuTab">Main Menu</Phrase>
     <Phrase key="lblMainExplorerTab">Views</Phrase>
     <Phrase key="lblMainCollapseMenu">Collapse menu</Phrase>
+    <Phrase key="lblEmptyNotif">No notifications</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Normal View</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ModalButtons.Js">
     <Phrase key="ok">OK</Phrase>

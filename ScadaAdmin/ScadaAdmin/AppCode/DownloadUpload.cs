@@ -41,9 +41,9 @@ namespace ScadaAdmin
     internal static class DownloadUpload
     {
         /// <summary>
-        /// Исключаемые пути файлов, специфичные для экземпляра системы
+        /// Игнорируемые пути файлов, специфичные для экземпляра системы
         /// </summary>
-        private static readonly RelPath[] ExcludedPaths;
+        private static readonly RelPath[] IgnoredPaths;
 
 
         /// <summary>
@@ -51,14 +51,14 @@ namespace ScadaAdmin
         /// </summary>
         static DownloadUpload()
         {
-            ExcludedPaths = new RelPath[]
+            IgnoredPaths = new RelPath[]
             {
-                new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
-                new RelPath() { ConfigPart = ConfigParts.Communicator, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
+                new RelPath() { ConfigPart = ConfigParts.Comm, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
+                new RelPath() { ConfigPart = ConfigParts.Comm, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
                 new RelPath() { ConfigPart = ConfigParts.Server, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
                 new RelPath() { ConfigPart = ConfigParts.Server, AppFolder = AppFolder.Config, Path = "CompCode.txt" },
-                new RelPath() { ConfigPart = ConfigParts.Webstation, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
-                new RelPath() { ConfigPart = ConfigParts.Webstation, AppFolder = AppFolder.Storage, Path = "" },
+                new RelPath() { ConfigPart = ConfigParts.Web, AppFolder = AppFolder.Config, Path = "*_Reg.xml" },
+                new RelPath() { ConfigPart = ConfigParts.Web, AppFolder = AppFolder.Storage, Path = "" },
             };
         }
 
@@ -169,11 +169,11 @@ namespace ScadaAdmin
             else if (relPath.StartsWith("Interface", StringComparison.Ordinal))
                 return ConfigParts.Interface;
             else if (relPath.StartsWith("ScadaComm", StringComparison.Ordinal))
-                return ConfigParts.Communicator;
+                return ConfigParts.Comm;
             else if (relPath.StartsWith("ScadaServer", StringComparison.Ordinal))
                 return ConfigParts.Server;
             else if (relPath.StartsWith("ScadaWeb", StringComparison.Ordinal))
-                return ConfigParts.Webstation;
+                return ConfigParts.Web;
             else
                 return ConfigParts.None;
         }
@@ -231,7 +231,7 @@ namespace ScadaAdmin
                 ConfigOptions configOptions = new ConfigOptions() { ConfigParts = ConfigParts.All };
 
                 if (!downloadSettings.IncludeSpecificFiles)
-                    configOptions.ExcludedPaths = ExcludedPaths;
+                    configOptions.IgnoredPaths = IgnoredPaths;
 
                 Stream downloadStream = client.DownloadConfig(sessionID, configOptions);
 
@@ -360,7 +360,7 @@ namespace ScadaAdmin
                     throw new ScadaException(AppPhrases.NoConfigInSrc);
 
                 if (!uploadSettings.ClearSpecificFiles)
-                    configOptions.ExcludedPaths = ExcludedPaths;
+                    configOptions.IgnoredPaths = IgnoredPaths;
 
                 // передача конфигурации
                 using (Stream outStream = File.Open(outFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
@@ -382,9 +382,9 @@ namespace ScadaAdmin
                         writer.WriteLine(AppPhrases.UnableRestartServer);
                 }
 
-                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Communicator))
+                if (configParts.HasFlag(ConfigParts.Base) || configParts.HasFlag(ConfigParts.Comm))
                 {
-                    if (client.ControlService(sessionID, ServiceApp.Communicator, ServiceCommand.Restart))
+                    if (client.ControlService(sessionID, ServiceApp.Comm, ServiceCommand.Restart))
                         writer.WriteLine(AppPhrases.CommRestarted);
                     else
                         writer.WriteLine(AppPhrases.UnableRestartComm);

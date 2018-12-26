@@ -66,5 +66,9 @@
   {
     "outputFile": "css/common/modalform.css",
     "inputFile": "css/common/modalform.less"
+  },
+  {
+    "outputFile": "css/controls/notifpanel.css",
+    "inputFile": "css/controls/notifpanel.less"
   }
 ]

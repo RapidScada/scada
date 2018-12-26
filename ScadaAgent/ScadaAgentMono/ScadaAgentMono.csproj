@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Scada.Agent.Mono</RootNamespace>
     <AssemblyName>ScadaAgentMono</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -50,9 +51,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
-      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
-      <Name>ScadaAgentCore</Name>
+    <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
+      <Project>{3c07180f-f066-4a37-91e6-579cb5e76d73}</Project>
+      <Name>ScadaAgentCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
+      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
+      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScadaAgentNet\ScadaAgentNet.csproj">
       <Project>{c377283b-858b-4efc-a560-e90ff2f26b03}</Project>

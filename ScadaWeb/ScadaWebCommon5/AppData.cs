@@ -348,7 +348,7 @@ namespace Scada.Web
                 try
                 {
                     // функция добавления спецификации с сохранением уникальности по коду типа объекта
-                    Action<UiObjSpec> addSpecFunc = delegate (UiObjSpec spec)
+                    void addSpecFunc(UiObjSpec spec)
                     {
                         if (UiObjSpecs.ContainsKey(spec.TypeCode))
                         {
@@ -361,27 +361,33 @@ namespace Scada.Web
                         {
                             UiObjSpecs.Add(spec.TypeCode, spec);
                         }
-                    };
+                    }
 
                     // добавление спецификаций представлений
                     if (pluginSpec.ViewSpecs != null)
                     {
                         foreach (ViewSpec viewSpec in pluginSpec.ViewSpecs)
+                        {
                             addSpecFunc(viewSpec);
+                        }
                     }
 
                     // добавление спецификаций отчётов
                     if (pluginSpec.ReportSpecs != null)
                     {
                         foreach (ReportSpec reportSpec in pluginSpec.ReportSpecs)
+                        {
                             addSpecFunc(reportSpec);
+                        }
                     }
 
                     // добавление спецификаций окон данных
                     if (pluginSpec.DataWndSpecs != null)
                     {
                         foreach (DataWndSpec dataWndSpec in pluginSpec.DataWndSpecs)
+                        {
                             addSpecFunc(dataWndSpec);
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -392,6 +398,31 @@ namespace Scada.Web
                         pluginSpec.Name);
                 }
             }
+        }
+
+        /// <summary>
+        /// Добавить дополнительные скрипты к настройкам веб-приложения
+        /// </summary>
+        private void AppendExtraScripts()
+        {
+            List<string> extraScripts = new List<string>();
+
+            foreach (PluginSpec pluginSpec in PluginSpecs)
+            {
+                try
+                {
+                    if (pluginSpec.ScriptPaths != null && pluginSpec.ScriptPaths.ExtraScripts != null)
+                        extraScripts.AddRange(pluginSpec.ScriptPaths.ExtraScripts);
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteException(ex, Localization.UseRussian ?
+                        "Ошибка при получении скриптов плагина \"{0}\"" :
+                        "Error getting scripts of the plugin \"{0}\"", pluginSpec.Name);
+                }
+            }
+
+            WebSettings.ScriptPaths.ExtraScripts = extraScripts;
         }
 
 
@@ -440,10 +471,7 @@ namespace Scada.Web
                 if (inited)
                 {
                     RefreshDictionaries();
-
-                    bool webSettingsChanged;
-                    bool commSettingsChanged;
-                    RefreshWebSettings(out webSettingsChanged, out commSettingsChanged);
+                    RefreshWebSettings(out bool webSettingsChanged, out bool commSettingsChanged);
 
                     if (commSettingsChanged)
                         CreateDataObjects();
@@ -454,6 +482,7 @@ namespace Scada.Web
                         LoadPlugins();
                         InitPlugins();
                         FillUiObjSpecs();
+                        AppendExtraScripts();
                     }
 
                     RefreshViewSettings();
@@ -512,8 +541,7 @@ namespace Scada.Web
         /// <remarks>Метод используется, если сессия не доступна</remarks>
         public bool CheckLoggedOn(bool throwOnFail = true)
         {
-            UserRights userRights;
-            return CheckLoggedOn(out userRights, throwOnFail);
+            return CheckLoggedOn(out UserRights userRights, throwOnFail);
         }
 
         /// <summary>

@@ -31,8 +31,11 @@
     <Compile Include="..\ScadaData\Data\Models\UserProps.cs" Link="Data\Models\UserProps.cs" />
     <Compile Include="..\ScadaData\Data\Tables\Adapter.cs" Link="Data\Tables\Adapter.cs" />
     <Compile Include="..\ScadaData\Data\Tables\BaseAdapter.cs" Link="Data\Tables\BaseAdapter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\BaseTable.cs" Link="Data\Tables\BaseTable.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\BaseTableConverter.cs" Link="Data\Tables\BaseTableConverter.cs" />
     <Compile Include="..\ScadaData\Data\Tables\EventAdapter.cs" Link="Data\Tables\EventAdapter.cs" />
     <Compile Include="..\ScadaData\Data\Tables\EventTableLight.cs" Link="Data\Tables\EventTableLight.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\IBaseTable.cs" Link="Data\Tables\IBaseTable.cs" />
     <Compile Include="..\ScadaData\Data\Tables\SrezAdapter.cs" Link="Data\Tables\SrezAdapter.cs" />
     <Compile Include="..\ScadaData\Data\Tables\SrezTable.cs" Link="Data\Tables\SrezTable.cs" />
     <Compile Include="..\ScadaData\Data\Tables\SrezTableLight.cs" Link="Data\Tables\SrezTableLight.cs" />

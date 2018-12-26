@@ -47,7 +47,6 @@ namespace Scada
             /// </summary>
             private Dict()
             {
-
             }
             /// <summary>
             /// Конструктор
@@ -74,6 +73,13 @@ namespace Scada
             {
                 return ScadaUtils.NormalDir(directory) + 
                     fileNamePrefix + (string.IsNullOrEmpty(cultureName) ? "" : "." + cultureName) +  ".xml";
+            }
+            /// <summary>
+            /// Получить фразу из словаря по ключу или пустую фразу при её отсутствии
+            /// </summary>
+            public string GetPhrase(string key)
+            {
+                return Phrases.ContainsKey(key) ? Phrases[key] : GetEmptyPhrase(key);
             }
             /// <summary>
             /// Получить фразу из словаря по ключу или значение по умолчанию при её отсутствии
@@ -342,6 +348,14 @@ namespace Scada
                     "Dictionary file not found: ") + fileName;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Получить словарь по ключу или пустой словарь при его отсутствии
+        /// </summary>
+        public static Dict GetDictionary(string key)
+        {
+            return Dictionaries.TryGetValue(key, out Dict dict) ? dict : new Dict(key);
         }
 
 

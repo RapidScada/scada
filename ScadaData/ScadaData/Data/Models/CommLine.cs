@@ -23,12 +23,15 @@
  * Modified : 2018
  */
 
+using System;
+
 namespace Scada.Data.Models
 {
     /// <summary>
     /// Communication line properties
     /// <para>Свойства линии связи</para>
     /// </summary>
+    [Obsolete("Use Scada.Data.Entities.*")]
     public class CommLine
     {
         /// <summary>

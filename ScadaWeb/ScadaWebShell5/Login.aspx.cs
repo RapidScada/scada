@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.UI;
@@ -90,10 +90,9 @@ namespace Scada.Web
         private void GoToStartPage()
         {
             string returnUrl = Request.QueryString["return"];
-            if (string.IsNullOrEmpty(returnUrl))
-                Response.Redirect(GetStartPageUrl(userData.WebSettings.StartPage));
-            else
-                Response.Redirect(returnUrl);
+            Response.Redirect(string.IsNullOrEmpty(returnUrl) ?
+                GetStartPageUrl(userData.WebSettings.StartPage) :
+                returnUrl);
         }
 
 
@@ -112,32 +111,33 @@ namespace Scada.Web
                 Translator.TranslatePage(this, "Scada.Web.WFrmLogin");
                 ViewState["Title"] = Title;
 
-                Localization.Dict dict;
-                Localization.Dictionaries.TryGetValue("Scada.Web.WFrmLogin.Js", out dict);
+                Localization.Dictionaries.TryGetValue("Scada.Web.WFrmLogin.Js", out Localization.Dict dict);
                 phrases = WebUtils.DictionaryToJs(dict);
 
-                // вывод сообщения, заданного в параметрах запроса
+                // вход в систему по умолчанию
                 string alert = Request.QueryString["alert"];
-                bool alertIsEmpty = string.IsNullOrEmpty(alert);
-                if (!alertIsEmpty)
-                    AddShowAlertScript(alert);
 
-                // переход на стартовую страницу, если вход выполнен
-                if (alertIsEmpty)
+                if (!string.IsNullOrEmpty(alert))
                 {
-                    if (userData.LoggedOn)
+                    // вывод сообщения, заданного в параметрах запроса
+                    AddShowAlertScript(alert);
+                }
+                else if (userData.LoggedOn)
+                {
+                    // переход на стартовую страницу, если вход выполнен
+                    GoToStartPage();
+                }
+                else if (userData.WebSettings.RemEnabled)
+                {
+                    // обработка сохранённого входа в систему
+                    if (appData.RememberMe.ValidateUser(Context, out string username, out alert) &&
+                        userData.Login(username, out alert))
                     {
                         GoToStartPage();
                     }
-                    else if (userData.WebSettings.RemEnabled)
+                    else if (alert != "")
                     {
-                        // обработка сохранённого входа в систему
-                        string username;
-                        if (appData.RememberMe.ValidateUser(Context, out username, out alert) &&
-                            userData.Login(username, out alert))
-                            GoToStartPage();
-                        else if (alert != "")
-                            AddShowAlertScript(alert);
+                        AddShowAlertScript(alert);
                     }
                 }
 
@@ -154,9 +154,7 @@ namespace Scada.Web
 
         protected void btnLogin_Click(object sender, EventArgs e)
         {
-            string errMsg;
-
-            if (userData.Login(txtUsername.Text, txtPassword.Text, out errMsg))
+            if (userData.Login(txtUsername.Text, txtPassword.Text, out string errMsg))
             {
                 // сохранение информации о входе пользователя
                 if (chkRememberMe.Checked)

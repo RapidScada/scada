@@ -23,7 +23,6 @@
  * Modified : 2018
  */
 
-using Scada;
 using Scada.Comm.Devices;
 using Scada.UI;
 using System;
@@ -99,7 +98,7 @@ namespace ScadaAdmin
                         if (!fileInfo.Name.Equals("kp.dll", StringComparison.OrdinalIgnoreCase))
                         {
                             Type kpViewType;
-                            try { kpViewType = KPFactory.GetKPViewType(commDirs.KPDir, fileInfo.Name); }
+                            try { kpViewType = KPFactory.GetKPViewType(fileInfo.FullName); }
                             catch { kpViewType = null; }
 
                             kpViewTypes.Add(fileInfo.Name, kpViewType);

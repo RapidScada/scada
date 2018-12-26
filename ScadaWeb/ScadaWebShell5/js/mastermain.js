@@ -1,4 +1,5 @@
 ﻿var scada = scada || {};
+var notifPanel = new scada.NotifPanel();
 var popup = new scada.Popup();
 var ajaxQueue = new scada.AjaxQueue(scada.env.rootPath);
 scada.view = scada.view || {}; // defined if the current page is View.aspx
@@ -17,26 +18,14 @@ scada.masterMain = {
 
     // Hide the left pane
     _hideLeftPane: function () {
-        $("#divMainLeftPane").css("display", "none");
+        $("#divMainLeftPane").addClass("hidden");
         $("body").css("padding-left", "0");
     },
 
     // Show the left pane
     _showLeftPane: function () {
         $("body").css("padding-left", "");
-        $("#divMainLeftPane").css("display", "");
-    },
-
-    // Hide the page header
-    _hideHeader: function () {
-        $("#divMainHeader").css("display", "none");
-        $("body").css("padding-top", "0");
-    },
-
-    // Show the page header
-    _showHeader: function () {
-        $("#divMainHeader").css("display", "");
-        $("body").css("padding-top", "");
+        $("#divMainLeftPane").removeClass("hidden");
     },
 
     // Save the left pane visibility in the local storage
@@ -64,20 +53,18 @@ scada.masterMain = {
     // Update layout of the master page
     updateLayout: function () {
         var divMainHeader = $("#divMainHeader");
-        var divMainLeftPane = $("#divMainLeftPane");
-        var divMainTabs = $("#divMainTabs");
-
-        var headerH = divMainHeader.css("display") == "none" ? 0 : divMainHeader.outerHeight();
+        var headerH = divMainHeader.css("display") === "none" ? 0 : divMainHeader.outerHeight();
         var paneH = $(window).height() - headerH;
-        divMainLeftPane.outerHeight(paneH);
-        divMainTabs.outerWidth(paneH);
+        $("#divMainLeftPane").outerHeight(paneH);
+        $("#divMainTabs").outerWidth(paneH);
         $("#divMainContent").outerHeight(paneH);
+        $("#divMainNotifPanel").outerHeight(paneH);
         $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
     },
 
     // Choose a tool window according to the current URL and activate it
     chooseToolWindow: function () {
-        var explorerVisible = scada.env.rootPath + "View.aspx" == window.location.pathname;
+        var explorerVisible = scada.env.rootPath + "View.aspx" === window.location.pathname;
 
         if (explorerVisible) {
             this.activateToolWindow($("#divMainExplorerTab"));
@@ -95,28 +82,28 @@ scada.masterMain = {
 
         // deactivate all the tool windows
         var toolWindows = $("#divMainLeftPane .tool-window");
-        toolWindows.css("display", "none");
+        toolWindows.addClass("hidden");
 
         // activate the appropriate tool window
         var clickedTabId = divClickedTab.attr('id');
         var toolWindow;
 
-        if (clickedTabId == "divMainMenuTab") {
-            toolWindow = $("#divMainMenu")
-        } else if (clickedTabId == "divMainExplorerTab") {
-            toolWindow = $("#divMainExplorer")
+        if (clickedTabId === "divMainMenuTab") {
+            toolWindow = $("#divMainMenu");
+        } else if (clickedTabId === "divMainExplorerTab") {
+            toolWindow = $("#divMainExplorer");
         } else {
             toolWindow = null;
         }
 
         if (toolWindow) {
-            toolWindow.css("display", "block");
+            toolWindow.removeClass("hidden");
         }
     },
 
     // Collapse the left pane and show the menu button
     collapseLeftPane: function () {
-        $("#spanMainShowMenuBtn").css("display", "inline-block");
+        $("#spanMainShowMenuBtn").removeClass("hidden");
         this._hideLeftPane();
         this.leftPaneExpanded = false;
         this._saveLeftPaneVisible();
@@ -126,7 +113,7 @@ scada.masterMain = {
     // Expand the left pane and hide the menu button
     expandLeftPane: function () {
         this._showLeftPane();
-        $("#spanMainShowMenuBtn").css("display", "none");
+        $("#spanMainShowMenuBtn").addClass("hidden");
         this.leftPaneExpanded = true;
         this._saveLeftPaneVisible();
         $(window).trigger(scada.EventTypes.UPDATE_LAYOUT);
@@ -140,8 +127,11 @@ scada.masterMain = {
             if (this.leftPaneExpanded) {
                 this._hideLeftPane();
             }
-            this._hideHeader();
-            $("#lblMainNormalViewBtn").css("display", "inline-block");
+
+            $("#divMainHeader").addClass("hidden");
+            $("#lblMainNotifBtn").detach().prependTo("#divMainFullscreenMenu");
+            $("#divMainFullscreenMenu").removeClass("hidden");
+            $("body").css("padding-top", "0");
 
             scada.utils.requestFullscreen();
             scada.masterMain.updateLayout();
@@ -153,8 +143,11 @@ scada.masterMain = {
         if (this.isFullscreen) {
             this.isFullscreen = false;
 
-            $("#lblMainNormalViewBtn").css("display", "none");
-            this._showHeader();
+            $("#divMainFullscreenMenu").addClass("hidden");
+            $("#lblMainNotifBtn").detach().prependTo("#divMainUserMenu");
+            $("#divMainHeader").removeClass("hidden");
+            $("body").css("padding-top", "");
+
             if (this.leftPaneExpanded) {
                 this._showLeftPane();
             }
@@ -167,7 +160,7 @@ scada.masterMain = {
     // Load page visual state from the local storage
     loadVisualState: function () {
         var leftPaneVisible = localStorage.getItem("Shell.LeftPaneVisible");
-        if (leftPaneVisible == "false" || leftPaneVisible == null && scada.utils.isSmallScreen()) {
+        if (leftPaneVisible === "false" || leftPaneVisible === null && scada.utils.isSmallScreen()) {
             this.collapseLeftPane();
         }
     },
@@ -203,6 +196,7 @@ $(document).ready(function () {
     scada.clientAPI.rootPath = scada.env.rootPath;
     scada.clientAPI.ajaxQueue = ajaxQueue;
     scada.dialogs.rootPath = scada.env.rootPath;
+    notifPanel.init("divMainNotifPanel", "lblMainNotifBtn");
     scada.masterMain.updateLayout();
     scada.masterMain.chooseToolWindow();
     scada.masterMain.loadVisualState();
@@ -242,7 +236,7 @@ $(document).ready(function () {
         scada.masterMain.switchToFullscreen();
     });
 
-    // switch to normal view mode on the button click
+    // switch to normal screen mode on the button click
     $("#lblMainNormalViewBtn")
     .off()
     .click(function () {
@@ -250,7 +244,7 @@ $(document).ready(function () {
     });
 
     // show menus if user exits fullscreen mode,
-    // in Chrome fires only if the mode is switched programmatically 
+    // in Chrome fires only if the mode is switched programmatically
     $(document).on("webkitfullscreenchange mozfullscreenchange fullscreenchange MSFullscreenChange", function () {
         if (!scada.utils.isFullscreen()) {
             scada.masterMain.switchToNormalView();

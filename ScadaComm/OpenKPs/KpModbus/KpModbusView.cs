@@ -23,11 +23,11 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
 using Scada.UI;
-using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -40,13 +40,18 @@ namespace Scada.Comm.Devices
     public class KpModbusView : KPView
     {
         /// <summary>
-        /// Версия библиотеки КП
+        /// The driver version.
         /// </summary>
-        internal const string KpVersion = "5.1.0.3";
+        internal const string KpVersion = "5.1.1.0";
+
+        /// <summary>
+        /// The UI customization object.
+        /// </summary>
+        private static readonly UiCustomization UiCustomization = new UiCustomization();
 
 
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
         public KpModbusView()
             : this(0)
@@ -54,7 +59,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Конструктор для настройки конкретного КП
+        /// Initializes a new instance of the class. Designed for configuring a particular device.
         /// </summary>
         public KpModbusView(int number)
             : base(number)
@@ -64,7 +69,7 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// Gets the driver description.
         /// </summary>
         public override string KPDescr
         {
@@ -90,7 +95,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить версию библиотеки КП
+        /// Gets the driver version.
         /// </summary>
         public override string Version
         {
@@ -101,93 +106,120 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить прототипы каналов КП по умолчанию
+        /// Gets the default device request parameters.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
             get
             {
-                // получение имени файла шаблона устройства
-                string templateName = KPProps == null ? "" : KPProps.CmdLine.Trim();
-                string fileName = AppDirs.ConfigDir + templateName;
-                if (!File.Exists(fileName))
+                // загрузка шаблона устройства
+                string fileName = KPProps == null ? "" : KPProps.CmdLine.Trim();
+                string filePath = Path.IsPathRooted(fileName) ?
+                    fileName : Path.Combine(AppDirs.ConfigDir, fileName);
+
+                if (!File.Exists(filePath))
                     return null;
 
-                // загрузка шаблона устройства
-                DeviceTemplate template = new DeviceTemplate();
-                string errMsg;
-                if (!template.Load(fileName, out errMsg))
-                    throw new Exception(errMsg);
+                DeviceTemplate deviceTemplate = GetUiCustomization().TemplateFactory.CreateDeviceTemplate();
+                if (!deviceTemplate.Load(filePath, out string errMsg))
+                    throw new ScadaException(errMsg);
 
                 // создание прототипов каналов КП
-                KPCnlPrototypes prototypes = new KPCnlPrototypes();
-                List<InCnlPrototype> inCnls = prototypes.InCnls;
-                List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
-
-                // создание прототипов входных каналов
-                int signal = 1;
-                foreach (ElemGroup elemGroup in template.ElemGroups)
-                {
-                    bool isTS = 
-                        elemGroup.TableType == TableTypes.DiscreteInputs || 
-                        elemGroup.TableType == TableTypes.Coils;
-
-                    foreach (Elem elem in elemGroup.Elems)
-                    {
-                        InCnlPrototype inCnl = isTS ?
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
-                            new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
-                        inCnl.Signal = signal++;
-
-                        if (isTS)
-                        {
-                            inCnl.ShowNumber = false;
-                            inCnl.UnitName = BaseValues.UnitNames.OffOn;
-                            inCnl.EvEnabled = true;
-                            inCnl.EvOnChange = true;
-                        }
-
-                        inCnls.Add(inCnl);
-                    }
-                }
-
-                // создание прототипов каналов управления
-                foreach (ModbusCmd modbusCmd in template.Cmds)
-                {
-                    CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableTypes.Coils && modbusCmd.Multiple ?
-                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
-                        new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
-                    ctrlCnl.CmdNum = modbusCmd.CmdNum;
-
-                    if (modbusCmd.TableType == TableTypes.Coils && !modbusCmd.Multiple)
-                        ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
-
-                    ctrlCnls.Add(ctrlCnl);
-                }
-
-                return prototypes;
+                return CreateCnlPrototypes(deviceTemplate);
             }
         }
 
 
         /// <summary>
-        /// Отобразить свойства КП
+        /// Creates channel prototypes based on the device template.
         /// </summary>
-        public override void ShowProps()
+        protected virtual KPCnlPrototypes CreateCnlPrototypes(DeviceTemplate deviceTemplate)
         {
-            // загрузка словарей
-            string errMsg;
-            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out errMsg))
+            KPCnlPrototypes prototypes = new KPCnlPrototypes();
+            List<InCnlPrototype> inCnls = prototypes.InCnls;
+            List<CtrlCnlPrototype> ctrlCnls = prototypes.CtrlCnls;
+
+            // создание прототипов входных каналов
+            int signal = 1;
+            foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+            {
+                bool isTS =
+                    elemGroup.TableType == TableType.DiscreteInputs ||
+                    elemGroup.TableType == TableType.Coils;
+
+                foreach (Elem elem in elemGroup.Elems)
+                {
+                    InCnlPrototype inCnl = isTS ?
+                        new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TS) :
+                        new InCnlPrototype(elem.Name, BaseValues.CnlTypes.TI);
+                    inCnl.Signal = signal++;
+
+                    if (isTS)
+                    {
+                        inCnl.ShowNumber = false;
+                        inCnl.UnitName = BaseValues.UnitNames.OffOn;
+                        inCnl.EvEnabled = true;
+                        inCnl.EvOnChange = true;
+                    }
+
+                    inCnls.Add(inCnl);
+                }
+            }
+
+            // создание прототипов каналов управления
+            foreach (ModbusCmd modbusCmd in deviceTemplate.Cmds)
+            {
+                CtrlCnlPrototype ctrlCnl = modbusCmd.TableType == TableType.Coils && modbusCmd.Multiple ?
+                    new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Binary) :
+                    new CtrlCnlPrototype(modbusCmd.Name, BaseValues.CmdTypes.Standard);
+                ctrlCnl.CmdNum = modbusCmd.CmdNum;
+
+                if (modbusCmd.TableType == TableType.Coils && !modbusCmd.Multiple)
+                    ctrlCnl.CmdValName = BaseValues.CmdValNames.OffOn;
+
+                ctrlCnls.Add(ctrlCnl);
+            }
+
+            return prototypes;
+        }
+
+        /// <summary>
+        /// Localizes the driver UI.
+        /// </summary>
+        protected virtual void Localize()
+        {
+            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
                 KpPhrases.Init();
             else
                 ScadaUiUtils.ShowError(errMsg);
+        }
+
+        /// <summary>
+        /// Gets a UI customization object.
+        /// </summary>
+        protected virtual UiCustomization GetUiCustomization()
+        {
+            return UiCustomization;
+        }
+
+
+        /// <summary>
+        /// Shows the driver properties.
+        /// </summary>
+        public override void ShowProps()
+        {
+            Localize();
 
             if (Number > 0)
-                // отображение свойств КП
-                FrmDevProps.ShowDialog(Number, KPProps, AppDirs);
+            {
+                // show properties of the particular device
+                FrmDevProps.ShowDialog(Number, KPProps, AppDirs, GetUiCustomization());
+            }
             else
-                // отображение редактора шаблонов устройств
-                FrmDevTemplate.ShowDialog(AppDirs);
+            {
+                // show the device template editor
+                FrmDevTemplate.ShowDialog(AppDirs, GetUiCustomization());
+            }
         }
     }
 }

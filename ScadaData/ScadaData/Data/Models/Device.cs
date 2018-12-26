@@ -23,12 +23,15 @@
  * Modified : 2018
  */
 
+using System;
+
 namespace Scada.Data.Models
 {
     /// <summary>
     /// Device properties
     /// <para>Свойства КП</para>
     /// </summary>
+    [Obsolete("Use Scada.Data.Entities.*")]
     public class Device
     {
         /// <summary>

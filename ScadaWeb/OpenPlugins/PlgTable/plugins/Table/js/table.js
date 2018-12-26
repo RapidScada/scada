@@ -10,7 +10,7 @@ var hourPeriod = null;
 // First possible hour of the hour period
 var firstHour = null;
 // Last possible hour of the hour period
-var lastHour = null
+var lastHour = null;
 
 // jQuery cells those display current data
 var curDataCells = null;

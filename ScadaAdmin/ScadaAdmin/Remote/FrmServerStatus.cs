@@ -146,7 +146,7 @@ namespace ScadaAdmin.Remote
             // перезапуск службы Коммуникатора на удалённом сервере
             if (client != null)
             {
-                if (client.ControlService(sessionID, ServiceApp.Communicator, ServiceCommand.Restart))
+                if (client.ControlService(sessionID, ServiceApp.Comm, ServiceCommand.Restart))
                     ScadaUiUtils.ShowInfo(AppPhrases.CommRestarted);
                 else
                     ScadaUiUtils.ShowError(AppPhrases.UnableRestartComm);
@@ -185,7 +185,7 @@ namespace ScadaAdmin.Remote
 
                 try
                 {
-                    txtCommStatus.Text = client.GetServiceStatus(out status, sessionID, ServiceApp.Communicator) ?
+                    txtCommStatus.Text = client.GetServiceStatus(out status, sessionID, ServiceApp.Comm) ?
                         StatusToString(status) : "---";
                 }
                 catch (Exception ex)

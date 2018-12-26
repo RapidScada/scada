@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.106
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpModbus", "KpModbus\KpModbus.csproj", "{7CBF4A4B-E1A2-428E-8F68-EDD2FCE3088B}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpEmail", "KpEmail\KpEmail.csproj", "{1529A2A2-53FC-446B-AE13-FF564C4DEC32}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpHttpNotif", "KpHttpNotif\KpHttpNotif.csproj", "{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpDbImport", "KpDbImport\KpDbImport.csproj", "{E536C888-ED86-4248-BA38-48E882241559}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,8 +53,15 @@ Global
 		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{866BA66F-804A-4C6B-B0D2-8D8064AE1EEC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E536C888-ED86-4248-BA38-48E882241559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E536C888-ED86-4248-BA38-48E882241559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E536C888-ED86-4248-BA38-48E882241559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E536C888-ED86-4248-BA38-48E882241559}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {342245E6-51FF-4042-B298-F1F14BA38392}
 	EndGlobalSection
 EndGlobal

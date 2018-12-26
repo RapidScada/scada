@@ -29,6 +29,12 @@ namespace Scada.Agent.Test.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Login", ReplyAction="http://tempuri.org/AgentSvc/LoginResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.LoginResponse> LoginAsync(Scada.Agent.Test.AgentSvcRef.LoginRequest request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/IsLoggedOn", ReplyAction="http://tempuri.org/AgentSvc/IsLoggedOnResponse")]
+        bool IsLoggedOn(long sessionID);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/IsLoggedOn", ReplyAction="http://tempuri.org/AgentSvc/IsLoggedOnResponse")]
+        System.Threading.Tasks.Task<bool> IsLoggedOnAsync(long sessionID);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/ControlService", ReplyAction="http://tempuri.org/AgentSvc/ControlServiceResponse")]
         bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command);
         
@@ -62,12 +68,30 @@ namespace Scada.Agent.Test.AgentSvcRef {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UploadConfig", ReplyAction="http://tempuri.org/AgentSvc/UploadConfigResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.UploadConfigResponse> UploadConfigAsync(Scada.Agent.Test.AgentSvcRef.ConfigUploadMessage request);
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/PackConfig", ReplyAction="http://tempuri.org/AgentSvc/PackConfigResponse")]
+        bool PackConfig(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/PackConfig", ReplyAction="http://tempuri.org/AgentSvc/PackConfigResponse")]
+        System.Threading.Tasks.Task<bool> PackConfigAsync(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UnpackConfig", ReplyAction="http://tempuri.org/AgentSvc/UnpackConfigResponse")]
+        bool UnpackConfig(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/UnpackConfig", ReplyAction="http://tempuri.org/AgentSvc/UnpackConfigResponse")]
+        System.Threading.Tasks.Task<bool> UnpackConfigAsync(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions);
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         Scada.Agent.Test.AgentSvcRef.BrowseResponse Browse(Scada.Agent.Test.AgentSvcRef.BrowseRequest request);
         
         // CODEGEN: Generating message contract since the operation has multiple return values.
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/Browse", ReplyAction="http://tempuri.org/AgentSvc/BrowseResponse")]
         System.Threading.Tasks.Task<Scada.Agent.Test.AgentSvcRef.BrowseResponse> BrowseAsync(Scada.Agent.Test.AgentSvcRef.BrowseRequest request);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetFileAgeUtc", ReplyAction="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse")]
+        System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/GetFileAgeUtc", ReplyAction="http://tempuri.org/AgentSvc/GetFileAgeUtcResponse")]
+        System.Threading.Tasks.Task<System.DateTime> GetFileAgeUtcAsync(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFile", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileResponse")]
         System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath);
@@ -76,10 +100,10 @@ namespace Scada.Agent.Test.AgentSvcRef {
         System.Threading.Tasks.Task<System.IO.Stream> DownloadFileAsync(long sessionID, Scada.Agent.RelPath relPath);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position);
+        System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/AgentSvc/DownloadFileRest", ReplyAction="http://tempuri.org/AgentSvc/DownloadFileRestResponse")]
-        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position);
+        System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd);
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
@@ -377,6 +401,14 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return base.Channel.LoginAsync(request);
         }
         
+        public bool IsLoggedOn(long sessionID) {
+            return base.Channel.IsLoggedOn(sessionID);
+        }
+        
+        public System.Threading.Tasks.Task<bool> IsLoggedOnAsync(long sessionID) {
+            return base.Channel.IsLoggedOnAsync(sessionID);
+        }
+        
         public bool ControlService(long sessionID, Scada.Agent.ServiceApp serviceApp, Scada.Agent.ServiceCommand command) {
             return base.Channel.ControlService(sessionID, serviceApp, command);
         }
@@ -454,6 +486,22 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return ((Scada.Agent.Test.AgentSvcRef.AgentSvc)(this)).UploadConfigAsync(inValue);
         }
         
+        public bool PackConfig(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.PackConfig(sessionID, destFileName, configOptions);
+        }
+        
+        public System.Threading.Tasks.Task<bool> PackConfigAsync(long sessionID, string destFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.PackConfigAsync(sessionID, destFileName, configOptions);
+        }
+        
+        public bool UnpackConfig(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.UnpackConfig(sessionID, srcFileName, configOptions);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UnpackConfigAsync(long sessionID, string srcFileName, Scada.Agent.ConfigOptions configOptions) {
+            return base.Channel.UnpackConfigAsync(sessionID, srcFileName, configOptions);
+        }
+        
         [System.ComponentModel.EditorBrowsableAttribute(System.ComponentModel.EditorBrowsableState.Advanced)]
         Scada.Agent.Test.AgentSvcRef.BrowseResponse Scada.Agent.Test.AgentSvcRef.AgentSvc.Browse(Scada.Agent.Test.AgentSvcRef.BrowseRequest request) {
             return base.Channel.Browse(request);
@@ -473,6 +521,14 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return base.Channel.BrowseAsync(request);
         }
         
+        public System.DateTime GetFileAgeUtc(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.GetFileAgeUtc(sessionID, relPath);
+        }
+        
+        public System.Threading.Tasks.Task<System.DateTime> GetFileAgeUtcAsync(long sessionID, Scada.Agent.RelPath relPath) {
+            return base.Channel.GetFileAgeUtcAsync(sessionID, relPath);
+        }
+        
         public System.IO.Stream DownloadFile(long sessionID, Scada.Agent.RelPath relPath) {
             return base.Channel.DownloadFile(sessionID, relPath);
         }
@@ -481,12 +537,12 @@ namespace Scada.Agent.Test.AgentSvcRef {
             return base.Channel.DownloadFileAsync(sessionID, relPath);
         }
         
-        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long position) {
-            return base.Channel.DownloadFileRest(sessionID, relPath, position);
+        public System.IO.Stream DownloadFileRest(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd) {
+            return base.Channel.DownloadFileRest(sessionID, relPath, offsetFromEnd);
         }
         
-        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long position) {
-            return base.Channel.DownloadFileRestAsync(sessionID, relPath, position);
+        public System.Threading.Tasks.Task<System.IO.Stream> DownloadFileRestAsync(long sessionID, Scada.Agent.RelPath relPath, long offsetFromEnd) {
+            return base.Channel.DownloadFileRestAsync(sessionID, relPath, offsetFromEnd);
         }
     }
 }

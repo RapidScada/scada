@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaCommSvcConfig>
+  <!--Common Parameters-->
+  <CommonParams>
+    <Param name="ServerUse" value="false" descr="Use SCADA-Server" />
+    <Param name="ServerHost" value="localhost" descr="SCADA-Server host or IP address" />
+    <Param name="ServerPort" value="10000" descr="SCADA-Server TCP port number" />
+    <Param name="ServerUser" value="ScadaComm" descr="User name for the connection to SCADA-Server" />
+    <Param name="ServerPwd" value="12345" descr="User password for the connection to SCADA-Server" />
+    <Param name="ServerTimeout" value="10000" descr="SCADA-Server response timeout, ms" />
+    <Param name="WaitForStop" value="1000" descr="Waiting for the communication lines temrination, ms" />
+    <Param name="SendAllDataPer" value="60" descr="Sending all device data period, sec" />
+  </CommonParams>
+  <!--Communication Lines-->
+  <CommLines />
+</ScadaCommSvcConfig>

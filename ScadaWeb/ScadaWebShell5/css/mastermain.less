@@ -26,6 +26,36 @@ body {
 
 /* Header */
 
+.main-hdr-btn {
+    height: @header-heigth;
+    margin: 0 0 0 5px;
+    padding: 0 10px;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.main-hdr-btn:hover {
+    background-color: @menu-item-hover-back-color;
+    color: @menu-item-hover-fore-color;
+    text-decoration: none;
+}
+
+.main-txt-btn {
+    color: @menu-fore-color;
+}
+
+.main-img-btn {
+    color: @menu-fore-color-dark;
+}
+
+.main-img-btn .glyphicon {
+    position: relative;
+    top: 2px;
+}
+
 #divMainHeader {
     position: fixed;
     left: 0;
@@ -40,40 +70,9 @@ body {
     line-height: @header-heigth;
 }
 
-#divMainHeader .hdr-btn {
-    height: @header-heigth;
-    margin: 0 0 0 5px;
-    padding: 0 10px;
-    cursor: pointer;
-    display: inline-block;
-    font-size: 13px;
-    text-decoration: none;
-    white-space: nowrap;
-}
-
-#divMainHeader .hdr-btn:hover {
-    background-color: @menu-item-hover-back-color;
-    color: @menu-item-hover-fore-color;
-    text-decoration: none;
-}
-
-#divMainHeader .txt-btn {
-    color: @menu-fore-color;
-}
-
-#divMainHeader .img-btn {
-    color: @menu-fore-color-dark;
-}
-
-#divMainHeader .img-btn .glyphicon {
-    position: relative;
-    top: 2px;
-}
-
-#divMainHeader #spanMainShowMenuBtn {
+#spanMainShowMenuBtn {
     margin: 0 5px 0 -10px;
     font-size: 15px;
-    display: none; /*inline-block*/
 }
 
 #spanMainAppName {
@@ -84,33 +83,43 @@ body {
 }
 
 #divMainUserMenu {
-    float: right;
-    height: @header-heigth;
+    background-color: @menu-back-color;
     display: inline-block;
+    height: @header-heigth;
+    position: absolute;
+    right: 0;
+    top: 0;
 }
 
-#lblMainNormalViewBtn {
-    position: fixed;
-    top: 0;
-    right: 0;
-    height: @header-heigth;
-    padding: 0 10px;
+#lblMainNotifBtn.notif-bell.empty .fa-bell {
+    display: none;
+}
+
+#lblMainNotifBtn.notif-bell:not(.empty) .fa-bell-o {
+    display: none;
+}
+
+#divMainFullscreenMenu {
     background-color: @menu-back-color-air;
-    display: none; /*inline-block*/
+    height: @header-heigth;
     line-height: @header-heigth;
     opacity: 0.5;
-    cursor: pointer;
-    color: @menu-fore-color-dark;
-    font-size: 13px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: @zindex-notif;
 }
 
-#lblMainNormalViewBtn:hover {
-    color: @menu-item-hover-fore-color;
+#divMainFullscreenMenu:hover {
     opacity: 1;
 }
 
-/* Left Pane */
+#divMainFullscreenMenu .main-hdr-btn:hover {
+    background-color: @menu-back-color-air;
+    color: @menu-item-hover-fore-color;
+}
 
+/* Left Pane */
 #divMainLeftPane {
     position: fixed;
     left: 0;
@@ -127,7 +136,6 @@ body {
     height: calc(~"100% - "@collapse-btn-heigth);
     margin: 0 0 0 @left-tabs-heigth;
     padding: 5px 0 0 0;
-    display: none; /*block*/
     overflow-x: hidden;
     overflow-y: auto;
 }

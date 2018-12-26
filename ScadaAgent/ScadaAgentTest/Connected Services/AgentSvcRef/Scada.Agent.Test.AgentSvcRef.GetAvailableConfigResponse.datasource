@@ -6,5 +6,5 @@
     cause the file to be unrecognizable by the program.
 -->
 <GenericObjectDataSource DisplayName="GetAvailableConfigResponse" Version="1.0" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
-   <TypeInfo>Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse</TypeInfo>
+   <TypeInfo>Scada.Agent.Test.AgentSvcRef.GetAvailableConfigResponse, ScadaAgentTest, Version=5.0.1.0, Culture=neutral, PublicKeyToken=null</TypeInfo>
 </GenericObjectDataSource>

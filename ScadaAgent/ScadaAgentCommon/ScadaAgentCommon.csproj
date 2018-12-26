@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>Scada.Agent</RootNamespace>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>C:\GIT\rapidscada\scada\ScadaAgent\ScadaAgentCommon\ScadaAgentCommon.xml</DocumentationFile>
+  </PropertyGroup>
+
+</Project>

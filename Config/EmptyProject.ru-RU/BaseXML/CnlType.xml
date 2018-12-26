@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCnlType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CnlType>
+    <CnlTypeID>1</CnlTypeID>
+    <Name>Телесигнал</Name>
+    <ShtName>ТС</ShtName>
+    <Descr>Канал принимает дискретные значения</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>2</CnlTypeID>
+    <Name>Телеизмерение</Name>
+    <ShtName>ТИ</ShtName>
+    <Descr>Канал принимает вещественные значения</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>3</CnlTypeID>
+    <Name>Дорасчётный ТИ</Name>
+    <ShtName>ТИДР</ShtName>
+    <Descr>Вещественное значение канала расчитывается по формуле на основе ТС и ТИ</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>4</CnlTypeID>
+    <Name>Минутный ТИ</Name>
+    <ShtName>ТИДРМ</ShtName>
+    <Descr>Вещественное значение канала расчитывается по формуле один раз в минуту</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>5</CnlTypeID>
+    <Name>Часовой ТИ</Name>
+    <ShtName>ТИДРЧ</ShtName>
+    <Descr>Вещественное значение канала расчитывается по формуле один раз в час</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>6</CnlTypeID>
+    <Name>Кол-во переключений</Name>
+    <ShtName>КОЛПЕР</ShtName>
+    <Descr>Счётчик количества переключений (переходов через 0) значения, которое определёно формулой</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>7</CnlTypeID>
+    <Name>Дорасчетный ТС</Name>
+    <ShtName>ТСДР</ShtName>
+    <Descr>Дискретное значение канала расчитывается по формуле на основе ТС и ТИ</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>8</CnlTypeID>
+    <Name>Минутный ТС</Name>
+    <ShtName>ТСДРМ</ShtName>
+    <Descr>Дискретное значение канала расчитывается по формуле один раз в минуту</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>9</CnlTypeID>
+    <Name>Часовой ТС</Name>
+    <ShtName>ТСДРЧ</ShtName>
+    <Descr>Дискретное значение канала расчитывается по формуле один раз в час</Descr>
+  </CnlType>
+</ArrayOfCnlType>

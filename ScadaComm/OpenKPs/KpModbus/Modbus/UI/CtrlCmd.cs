@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -145,13 +145,13 @@ namespace Scada.Comm.Devices.Modbus.UI
             else
             {
                 txtCmdName.Text = modbusCmd.Name;
-                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableTypes.Coils ? 0 : 1;
+                cbCmdTableType.SelectedIndex = modbusCmd.TableType == TableType.Coils ? 0 : 1;
                 chkCmdMultiple.Checked = modbusCmd.Multiple;
                 numCmdAddress.Value = modbusCmd.Address + AddrShift;
                 lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.ElemType;
                 numCmdElemCnt.Value = 1;
-                numCmdElemCnt.Maximum = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
+                numCmdElemCnt.Maximum = modbusCmd.MaxElemCnt;
                 numCmdElemCnt.Value = modbusCmd.ElemCnt;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
@@ -225,18 +225,17 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа таблицы данных команды
             if (modbusCmd != null)
             {
-                modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ?
-                    TableTypes.Coils :
-                    TableTypes.HoldingRegisters;
+                modbusCmd.TableType = cbCmdTableType.SelectedIndex == 0 ? TableType.Coils : TableType.HoldingRegisters;
                 modbusCmd.UpdateFuncCode();
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                // установка типа элементов команды по умолчанию
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
+                cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Enabled = modbusCmd.Multiple;
 
                 // ограничение макс. количества элементов в команде
-                int maxElemCnt = DataUnit.GetMaxElemCnt(modbusCmd.TableType);
+                int maxElemCnt = modbusCmd.MaxElemCnt;
                 if (numCmdElemCnt.Value > maxElemCnt)
                     numCmdElemCnt.Value = maxElemCnt;
                 numCmdElemCnt.Maximum = maxElemCnt;
@@ -255,7 +254,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 ShowFuncCode(modbusCmd);
                 ShowByteOrder(modbusCmd);
 
-                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType; // тип по умолчанию
+                cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
 
@@ -281,9 +280,9 @@ namespace Scada.Comm.Devices.Modbus.UI
             // изменение типа элементов
             if (modbusCmd != null)
             {
-                ElemTypes newElemType = (ElemTypes)cbCmdElemType.SelectedIndex;
+                ElemType newElemType = (ElemType)cbCmdElemType.SelectedIndex;
 
-                if (modbusCmd.TableType == TableTypes.HoldingRegisters && newElemType == ElemTypes.Bool)
+                if (modbusCmd.TableType == TableType.HoldingRegisters && newElemType == ElemType.Bool)
                 {
                     // отмена выбора типа Bool для регистров хранения
                     cbCmdElemType.SelectedIndexChanged -= cbCmdElemType_SelectedIndexChanged;

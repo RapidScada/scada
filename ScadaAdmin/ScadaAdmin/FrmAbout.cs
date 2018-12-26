@@ -37,7 +37,7 @@ namespace ScadaAdmin
     /// </summary>
     public partial class FrmAbout : Form
     {
-        private const string Version = "5.1.0.0"; // версия приложения
+        private const string Version = "5.1.1.0"; // версия приложения
         private static FrmAbout frmAbout = null;  // экземпляр формы о программе
         
         private bool inited;    // форма инициализирована
@@ -128,7 +128,7 @@ namespace ScadaAdmin
 
         private void lblLink_Click(object sender, EventArgs e)
         {
-            if (!string.IsNullOrEmpty(linkUrl))
+            if (ScadaUtils.IsValidUrl(linkUrl))
             {
                 Process.Start(linkUrl);
                 Close();

@@ -36,8 +36,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    <Reference Include="ScadaCommCommon, Version=5.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
@@ -49,17 +50,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Modbus\DeviceTemplateFactory.cs" />
+    <Compile Include="Modbus\KpUtils.cs" />
     <Compile Include="Modbus\Protocol\ModbusCmd.cs" />
     <Compile Include="Modbus\Protocol\DataUnit.cs" />
     <Compile Include="Modbus\Protocol\DeviceTemplate.cs" />
     <Compile Include="Modbus\Protocol\Elem.cs" />
     <Compile Include="Modbus\Protocol\ElemGroup.cs" />
-    <Compile Include="Modbus\Protocol\ElemTypes.cs" />
+    <Compile Include="Modbus\Protocol\ElemType.cs" />
     <Compile Include="Modbus\Protocol\FuncCodes.cs" />
     <Compile Include="Modbus\Protocol\ModbusPhrases.cs" />
     <Compile Include="Modbus\Protocol\ModbusUtils.cs" />
-    <Compile Include="Modbus\Protocol\TableTypes.cs" />
-    <Compile Include="Modbus\Protocol\TransModes.cs" />
+    <Compile Include="Modbus\Protocol\TableType.cs" />
+    <Compile Include="Modbus\Protocol\TransMode.cs" />
     <Compile Include="Modbus\UI\CtrlCmd.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -102,6 +105,7 @@
       <DependentUpon>FrmTemplateSettings.cs</DependentUpon>
     </Compile>
     <Compile Include="Modbus\UI\TreeUpdateTypes.cs" />
+    <Compile Include="Modbus\UI\UiCustomization.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -142,22 +146,6 @@
       <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Res\blank.png" />
-    <Content Include="Res\blank_shift.png" />
-    <Content Include="Res\cmd.png" />
-    <Content Include="Res\cmds.png" />
-    <Content Include="Res\delete.png" />
-    <Content Include="Res\down.png" />
-    <Content Include="Res\edit.png" />
-    <Content Include="Res\elem.png" />
-    <Content Include="Res\group.png" />
-    <Content Include="Res\group_inactive.png" />
-    <Content Include="Res\open.png" />
-    <Content Include="Res\open_shift.png" />
-    <Content Include="Res\save.png" />
-    <Content Include="Res\save_as.png" />
-    <Content Include="Res\settings.png" />
-    <Content Include="Res\up.png" />
     <Content Include="Templates\KpModbus_Adam6015.xml" />
     <Content Include="Templates\KpModbus_Bolid_S2000-T.xml" />
     <Content Include="Templates\KpModbus_OWEN_MDDV.xml" />

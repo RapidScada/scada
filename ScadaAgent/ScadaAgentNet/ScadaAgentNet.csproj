@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scada.Agent.Net</RootNamespace>
     <AssemblyName>ScadaAgentNet</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -49,9 +50,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
-      <Project>{5163526d-91e4-414d-97fe-090e1e7fda6b}</Project>
-      <Name>ScadaAgentCore</Name>
+    <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
+      <Project>{3c07180f-f066-4a37-91e6-579cb5e76d73}</Project>
+      <Name>ScadaAgentCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
+      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
+      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

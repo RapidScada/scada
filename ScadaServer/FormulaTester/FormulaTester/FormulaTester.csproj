@@ -40,7 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\..\ScadaServerSvc\CalcEngine.cs">
+    <Compile Include="..\..\ScadaServer\ScadaServerEngine\CalcEngine.cs">
       <Link>CalcEngine.cs</Link>
     </Compile>
     <Compile Include="CustomFormulas.cs" />

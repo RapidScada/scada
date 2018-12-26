@@ -8,9 +8,10 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>Scada.Agent.Svc</RootNamespace>
     <AssemblyName>ScadaAgentSvc</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -63,17 +64,21 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="svc_install.bat">
+    <None Include="Script\svc_install.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="svc_uninstall.bat">
+    <None Include="Script\svc_uninstall.bat">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ScadaAgentCore\ScadaAgentCore.csproj">
-      <Project>{5163526D-91E4-414D-97FE-090E1E7FDA6B}</Project>
-      <Name>ScadaAgentCore</Name>
+    <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
+      <Project>{3c07180f-f066-4a37-91e6-579cb5e76d73}</Project>
+      <Name>ScadaAgentCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ScadaAgentEngine\ScadaAgentEngine.csproj">
+      <Project>{f6408462-f893-4a24-8cb1-c331101f68d6}</Project>
+      <Name>ScadaAgentEngine</Name>
     </ProjectReference>
     <ProjectReference Include="..\ScadaAgentNet\ScadaAgentNet.csproj">
       <Project>{c377283b-858b-4efc-a560-e90ff2f26b03}</Project>

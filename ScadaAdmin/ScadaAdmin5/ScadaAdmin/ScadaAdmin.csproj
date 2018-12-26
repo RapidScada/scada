@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{00056F30-E0DA-4505-A441-A153EB59C234}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>Scada.Admin.App</RootNamespace>
+    <AssemblyName>ScadaAdmin</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>lamp.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaAgentCommon, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaAgent\ScadaAgentCommon\bin\Release\netstandard2.0\ScadaAgentCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaAgentConnector, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaAgent\ScadaAgentConnector\bin\Release\ScadaAgentConnector.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaCommCommon, Version=5.1.0.3, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaComm\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaCommShell">
+      <HintPath>..\..\..\ScadaComm\ScadaComm\ScadaCommShell\bin\Release\ScadaCommShell.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData, Version=5.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaServerCommon, Version=5.1.0.4, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaServerShell">
+      <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerShell\bin\Release\ScadaServerShell.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+    <Reference Include="WinControl">
+      <HintPath>..\..\..\..\dll\WinControl.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Code\AppData.cs" />
+    <Compile Include="Code\AppNodeType.cs" />
+    <Compile Include="Code\AppPhrases.cs" />
+    <Compile Include="Code\AppState.cs" />
+    <Compile Include="Code\ColumnBuilder.cs" />
+    <Compile Include="Code\AppMessage.cs" />
+    <Compile Include="Code\ContextMenus.cs" />
+    <Compile Include="Code\ExplorerBuilder.cs" />
+    <Compile Include="Code\FileCreator.cs" />
+    <Compile Include="Code\FileItem.cs" />
+    <Compile Include="Code\FormOperatingMode.cs" />
+    <Compile Include="Code\FormState.cs" />
+    <Compile Include="Code\CommDirs.cs" />
+    <Compile Include="Code\KnownFileType.cs" />
+    <Compile Include="Code\LiveInstance.cs" />
+    <Compile Include="Code\ServerDirs.cs" />
+    <Compile Include="Controls\Deployment\CtrlProfileSelector.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlProfileSelector.Designer.cs">
+      <DependentUpon>CtrlProfileSelector.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlTransferSettings.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Deployment\CtrlTransferSettings.Designer.cs">
+      <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmConnSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmConnSettings.Designer.cs">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmUploadConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmUploadConfig.Designer.cs">
+      <DependentUpon>FrmUploadConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmDownloadConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmDownloadConfig.Designer.cs">
+      <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmInstanceStatus.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmInstanceStatus.Designer.cs">
+      <DependentUpon>FrmInstanceStatus.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmBaseTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmBaseTable.Designer.cs">
+      <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmBaseTableGeneric.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmFileNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmFileNew.Designer.cs">
+      <DependentUpon>FrmFileNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmInstanceEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmInstanceEdit.Designer.cs">
+      <DependentUpon>FrmInstanceEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmProjectProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmProjectProps.Designer.cs">
+      <DependentUpon>FrmProjectProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmItemName.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmItemName.Designer.cs">
+      <DependentUpon>FrmItemName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmMain.Designer.cs">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmProjectNew.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmProjectNew.Designer.cs">
+      <DependentUpon>FrmProjectNew.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmTextEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTextEditor.Designer.cs">
+      <DependentUpon>FrmTextEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Controls\Deployment\CtrlProfileSelector.resx">
+      <DependentUpon>CtrlProfileSelector.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Deployment\CtrlTransferSettings.resx">
+      <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
+      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmInstanceStatus.resx">
+      <DependentUpon>FrmInstanceStatus.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmUploadConfig.resx">
+      <DependentUpon>FrmUploadConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmDownloadConfig.resx">
+      <DependentUpon>FrmDownloadConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmBaseTable.resx">
+      <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmFileNew.resx">
+      <DependentUpon>FrmFileNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmInstanceEdit.resx">
+      <DependentUpon>FrmInstanceEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmProjectProps.resx">
+      <DependentUpon>FrmProjectProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmItemName.resx">
+      <DependentUpon>FrmItemName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmMain.resx">
+      <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmProjectNew.resx">
+      <DependentUpon>FrmProjectNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTextEditor.resx">
+      <DependentUpon>FrmTextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.6.1">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.6.1 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ScadaAdminCommon\ScadaAdminCommon.csproj">
+      <Project>{A44976DE-7907-45F3-BBA3-137C2F5E120F}</Project>
+      <Name>ScadaAdminCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\..\..\ScadaComm\ScadaComm\ScadaCommShell\Lang\ScadaComm.en-GB.xml">
+      <Link>Lang\ScadaComm.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaComm\ScadaComm\ScadaCommShell\Lang\ScadaComm.ru-RU.xml">
+      <Link>Lang\ScadaComm.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
+      <Link>Lang\ScadaData.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
+      <Link>Lang\ScadaData.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.en-GB.xml">
+      <Link>Lang\ScadaServer.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.ru-RU.xml">
+      <Link>Lang\ScadaServer.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="lamp.ico" />
+    <Content Include="Lang\ScadaAdmin.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\ScadaAdmin.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="Resources\file.png" />
+    <None Include="Resources\chrome.png" />
+    <None Include="Resources\ui.png" />
+    <None Include="Resources\table.png" />
+    <None Include="Resources\server.png" />
+    <None Include="Resources\project.png" />
+    <None Include="Resources\instances.png" />
+    <None Include="Resources\instance.png" />
+    <None Include="Resources\folder_open.png" />
+    <None Include="Resources\folder_closed.png" />
+    <None Include="Resources\empty.png" />
+    <None Include="Resources\database.png" />
+    <None Include="Resources\comm.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

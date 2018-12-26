@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2018
  */
 
 using System;
@@ -54,6 +54,19 @@ namespace Scada.UI
         /// Адрес англоязычного сайта проекта
         /// </summary>
         private const string WebsiteEn = "http://rapidscada.org";
+        
+        /// <summary>
+        /// Log refresh interval on local connection, ms.
+        /// </summary>
+        public const int LogLocalRefreshInterval = 500;
+        /// <summary>
+        /// Log refresh interval on remote connection, ms.
+        /// </summary>
+        public const int LogRemoteRefreshInterval = 1000;
+        /// <summary>
+        /// The log refresh timer interval when the form is hidden, ms.
+        /// </summary>
+        public const int LogInactiveTimerInterval = 10000;
 
 
         /// <summary>
@@ -132,6 +145,24 @@ namespace Scada.UI
         }
 
         /// <summary>
+        /// Установить время элемента управления типа DateTimePicker
+        /// </summary>
+        public static void SetTime(this DateTimePicker picker, DateTime time)
+        {
+            DateTime date = picker.MinDate;
+            picker.Value = new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+        }
+
+        /// <summary>
+        /// Установить время элемента управления типа DateTimePicker
+        /// </summary>
+        public static void SetTime(this DateTimePicker picker, TimeSpan timeSpan)
+        {
+            DateTime date = picker.MinDate;
+            picker.Value = (new DateTime(date.Year, date.Month, date.Day)).Add(timeSpan);
+        }
+
+        /// <summary>
         /// Установить выбранный элемент выпадающего списка, 
         /// используя карту соответствия значений и индексов элементов списка
         /// </summary>
@@ -184,6 +215,7 @@ namespace Scada.UI
         /// <summary>
         /// Загрузить новые данные в элемент списка из файла
         /// </summary>
+        [Obsolete("Use LogBox")]
         public static void ReloadItems(this ListBox listBox, string fileName, bool fullLoad,
             ref DateTime fileAge)
         {

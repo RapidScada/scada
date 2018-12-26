@@ -1,0 +1,392 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
+    <Phrase key="CmdTypeID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdValTable">
+    <Phrase key="CmdValID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Val">Значение</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CnlTypeTable">
+    <Phrase key="CnlTypeID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="ShtName">Сокращение</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CommLineTable">
+    <Phrase key="CommLineNum">Number</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CtrlCnlTable">
+    <Phrase key="CtrlCnlNum">Номер</Phrase>
+    <Phrase key="Active">Активный</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="CmdTypeID">Тип команды</Phrase>
+    <Phrase key="ObjNum">Объект</Phrase>
+    <Phrase key="KPNum">КП</Phrase>
+    <Phrase key="CmdNum">Номер команды</Phrase>
+    <Phrase key="CmdValID">Значения команды</Phrase>
+    <Phrase key="FormulaUsed">Исп. формулу</Phrase>
+    <Phrase key="Formula">Формула</Phrase>
+    <Phrase key="EvEnabled">Запись событий</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.EvTypeTable">
+    <Phrase key="CnlStatus">Статус</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Color">Цвет</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.FormatTable">
+    <Phrase key="FormatID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="ShowNumber">Числовой</Phrase>
+    <Phrase key="DecDigits">Кол-во знаков</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.FormulaTable">
+    <Phrase key="FormulaID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Source">Исходный код</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InCnlTable">
+    <Phrase key="CnlNum">Номер</Phrase>
+    <Phrase key="Active">Активный</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="CnlTypeID">Тип канала</Phrase>
+    <Phrase key="ObjNum">Объект</Phrase>
+    <Phrase key="KPNum">КП</Phrase>
+    <Phrase key="Signal">Сигнал</Phrase>
+    <Phrase key="FormulaUsed">Исп. формулу</Phrase>
+    <Phrase key="Formula">Формула</Phrase>
+    <Phrase key="Averaging">Усреднение</Phrase>
+    <Phrase key="ParamID">Величина</Phrase>
+    <Phrase key="FormatID">Формат</Phrase>
+    <Phrase key="UnitID">Размерность</Phrase>
+    <Phrase key="CtrlCnlNum">Номер канала упр.</Phrase>
+    <Phrase key="EvEnabled">Запись событий</Phrase>
+    <Phrase key="EvSound">Звук события</Phrase>
+    <Phrase key="EvOnChange">Соб. по изм.</Phrase>
+    <Phrase key="EvOnUndef">Соб. по неопр. сост.</Phrase>
+    <Phrase key="LimLowCrash">Ниж. авар. гр.</Phrase>
+    <Phrase key="LimLow">Ниж. гр.</Phrase>
+    <Phrase key="LimHigh">Верх. гр.</Phrase>
+    <Phrase key="LimHighCrash">Верх. авар. гр.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InterfaceTable">
+    <Phrase key="ItfID">Идент.</Phrase>
+    <Phrase key="Name">Путь</Phrase>
+    <Phrase key="Descr">Заголовок</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
+    <Phrase key="KPNum">Номер</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="KPTypeID">Тип КП</Phrase>
+    <Phrase key="Address">Адрес</Phrase>
+    <Phrase key="CallNum">Позывной</Phrase>
+    <Phrase key="CommLineNum">Линия связи</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTypeTable">
+    <Phrase key="KPTypeID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="DllFileName">Имя файла DLL</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ObjTable">
+    <Phrase key="ObjNum">Номер</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.ParamTable">
+    <Phrase key="ParamID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Sign">Обозначение</Phrase>
+    <Phrase key="IconFileName">Имя файла значка</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RightTable">
+    <Phrase key="RightID">Идент.</Phrase>
+    <Phrase key="ItfID">Объект интерфейса</Phrase>
+    <Phrase key="RoleID">Роль</Phrase>
+    <Phrase key="ViewRight">Просмотр</Phrase>
+    <Phrase key="CtrlRight">Управление</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RoleTable">
+    <Phrase key="RoleID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UnitTable">
+    <Phrase key="UnitID">Идент.</Phrase>
+    <Phrase key="Name">Наименование</Phrase>
+    <Phrase key="Sign">Обозначение</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UserTable">
+    <Phrase key="UserID">Идент.</Phrase>
+    <Phrase key="Name">Имя</Phrase>
+    <Phrase key="Password">Пароль</Phrase>
+    <Phrase key="RoleID">Роль</Phrase>
+    <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ExplorerBuilder">
+    <Phrase key="BaseNode">База конфигурации</Phrase>
+    <Phrase key="SysTableNode">Система</Phrase>
+    <Phrase key="DictTableNode">Справочники</Phrase>
+    <Phrase key="InterfaceNode">Интерфейс</Phrase>
+    <Phrase key="InstancesNode">Экземпляры</Phrase>
+    <Phrase key="ServerNode">Сервер</Phrase>
+    <Phrase key="CommNode">Коммуникатор</Phrase>
+    <Phrase key="WebNode">Вебстанция</Phrase>
+    <Phrase key="EmptyNode">Пусто</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
+    <Phrase key="gbInstance">Экземпляр</Phrase>
+    <Phrase key="gbProfile">Профиль</Phrase>
+    <Phrase key="btnCreateProfile">Создать</Phrase>
+    <Phrase key="btnEditProfile">Изменить</Phrase>
+    <Phrase key="btnDeleteProfile">Удалить</Phrase>
+    <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlTransferSettings">
+    <Phrase key="gbOptions">Параметры</Phrase>
+    <Phrase key="lblInclude">Включить:</Phrase>
+    <Phrase key="chkIncludeBase">База конфигурации</Phrase>
+    <Phrase key="chkIncludeInterface">Интерфейс</Phrase>
+    <Phrase key="chkIncludeServer">Сервер</Phrase>
+    <Phrase key="chkIncludeComm">Коммуникатор</Phrase>
+    <Phrase key="chkIncludeWeb">Вебстанция</Phrase>
+    <Phrase key="lblIgnore">Исключить:</Phrase>
+    <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>
+    <Phrase key="chkIgnoreWebStorage">Хранилище Вебстанции</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
+    <Phrase key="this">Настройки соединения</Phrase>
+    <Phrase key="lblProfileName">Наименование профиля</Phrase>
+    <Phrase key="lblHost">Сервер</Phrase>
+    <Phrase key="lblPort">Порт</Phrase>
+    <Phrase key="lblUsername">Пользователь</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblSecretKey">Секретный ключ</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
+    <Phrase key="EmptyFieldsNotAllowed">Пустые значения полей не допускаются.</Phrase>
+    <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
+    <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
+    <Phrase key="this">Скачивание конфигурации</Phrase>
+    <Phrase key="btnDownload">Скачать</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NothingToDownload">Конфигурация для скачивания не выбрана.</Phrase>
+    <Phrase key="DownloadConfigComplete">Скачивание завершено успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
+    <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
+    <Phrase key="this">Статус экземпляра</Phrase>
+    <Phrase key="gbAction">Действия</Phrase>
+    <Phrase key="btnConnect">Соединиться</Phrase>
+    <Phrase key="btnDisconnect">Разъединиться</Phrase>
+    <Phrase key="gbStatus">Статус</Phrase>
+    <Phrase key="lblServerStatus">Служба Сервера</Phrase>
+    <Phrase key="btnRestartServer">Перезапустить</Phrase>
+    <Phrase key="lblCommStatus">Служба Коммуникатора</Phrase>
+    <Phrase key="btnRestartComm">Перезапустить</Phrase>
+    <Phrase key="lblUpdateTime">Время обновления</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NormalSvcStatus">Норма</Phrase>
+    <Phrase key="StoppedSvcStatus">Остановлен</Phrase>
+    <Phrase key="ErrorSvcStatus">Ошибка</Phrase>
+    <Phrase key="UndefinedSvcStatus">Не определён</Phrase>
+    <Phrase key="ServiceRestarted">Служба перезапущена успешно.</Phrase>
+    <Phrase key="UnableRestartService">Не удалось перезапустить службу.</Phrase>
+    <Phrase key="ServiceRestartError">Ошибка при перезапуске службы</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
+    <Phrase key="this">Передача конфигурации</Phrase>
+    <Phrase key="btnUpload">Передать</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NothingToUpload">Конфигурация для скачивания не выбрана.</Phrase>
+    <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
+    <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
+    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
+    <Phrase key="ColumnLabel">Столбец: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
+    <Phrase key="this">Новый файл</Phrase>
+    <Phrase key="lbFileType.Items[0]">Схема</Phrase>
+    <Phrase key="lbFileType.Items[1]">Таблица</Phrase>
+    <Phrase key="lbFileType.Items[2]">Текстовый файл</Phrase>
+    <Phrase key="lbFileType.Items[3]">XML файл</Phrase>
+    <Phrase key="lblFileName">Имя файла</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="FileNameEmpty">Имя файла не может быть пустым.</Phrase>
+    <Phrase key="FileNameInvalid">Имя файла содержит недопустимые символы.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmInstanceEdit">
+    <Phrase key="lblName">Наименование экземпляра</Phrase>
+    <Phrase key="gbApplications">Приложения</Phrase>
+    <Phrase key="chkServerApp">Сервер</Phrase>
+    <Phrase key="chkCommApp">Коммуникатор</Phrase>
+    <Phrase key="chkWebApp">Вебстанция</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="NewInstanceTitle">Новый экземпляр</Phrase>
+    <Phrase key="EditInstanceTitle">Редактирование экземпляра</Phrase>
+    <Phrase key="InstanceNameEmpty">Наименование экземпляра не может быть пустым.</Phrase>
+    <Phrase key="InstanceNameInvalid">Наименование экземпляра содержит недопустимые символы.</Phrase>
+    <Phrase key="InstanceSelectApps">Выберите хотя бы одно приложение.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmItemName">
+    <Phrase key="this">Наименование элемента</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ItemNameEmpty">Наименование не может быть пустым.</Phrase>
+    <Phrase key="ItemNameInvalid">Наименование содержит недопустимые символы.</Phrase>
+    <Phrase key="ItemNameDuplicated">Наименование уже используется.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmMain">
+    <Phrase key="miFile">&amp;Файл</Phrase>
+    <Phrase key="miFileNewProject">Новый проект...</Phrase>
+    <Phrase key="miFileOpenProject">Открыть проект...</Phrase>
+    <Phrase key="miFileSave">Сохранить</Phrase>
+    <Phrase key="miFileSaveAll">Сохранить все</Phrase>
+    <Phrase key="miFileClose">Закрыть</Phrase>
+    <Phrase key="miFileCloseProject">Закрыть проект</Phrase>
+    <Phrase key="miFileExit">Выход</Phrase>
+    <Phrase key="miEdit">&amp;Правка</Phrase>
+    <Phrase key="miEditCut">Вырезать</Phrase>
+    <Phrase key="miEditCopy">Копировать</Phrase>
+    <Phrase key="miEditPaste">Вставить</Phrase>
+    <Phrase key="miDeploy">&amp;Развертывание</Phrase>
+    <Phrase key="miDeployDownloadConfig">Скачать конфигурацию...</Phrase>
+    <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
+    <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
+    <Phrase key="miTools">&amp;Инструменты</Phrase>
+    <Phrase key="miToolsOptions">Настройки...</Phrase>
+    <Phrase key="miHelp">&amp;Справка</Phrase>
+    <Phrase key="miHelpDoc">Документация</Phrase>
+    <Phrase key="miHelpSupport">Техническая поддержка</Phrase>
+    <Phrase key="miHelpAbout">О программе</Phrase>
+    <Phrase key="btnFileNewProject.ToolTip">Новый проект (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpenProject.ToolTip">Открыть проект (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Сохранить (Ctrl+S)</Phrase>
+    <Phrase key="btnFileSaveAll.ToolTip">Сохранить все</Phrase>
+    <Phrase key="btnEditCut.ToolTip">Вырезать (Ctrl+X)</Phrase>
+    <Phrase key="btnEditCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
+    <Phrase key="btnEditPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
+    <Phrase key="miProjectRename">Переименовать проект</Phrase>
+    <Phrase key="miProjectProperties">Свойства</Phrase>
+    <Phrase key="miDirectoryNewFile">Создать файл...</Phrase>
+    <Phrase key="miDirectoryNewFolder">Создать папку...</Phrase>
+    <Phrase key="miDirectoryDelete">Удалить</Phrase>
+    <Phrase key="miDirectoryRename">Переименовать</Phrase>
+    <Phrase key="miDirectoryOpenInExplorer">Открыть папку в проводнике</Phrase>
+    <Phrase key="miDirectoryRefresh">Обновить</Phrase>
+    <Phrase key="miFileItemOpen">Открыть</Phrase>
+    <Phrase key="miFileItemOpenLocation">Открыть расположение в проводнике</Phrase>
+    <Phrase key="miFileItemDelete">Удалить</Phrase>
+    <Phrase key="miFileItemRename">Переименовать</Phrase>
+    <Phrase key="miInstanceAdd">Добавить экземпляр...</Phrase>
+    <Phrase key="miInstanceMoveUp">Переместить экземпляр вверх</Phrase>
+    <Phrase key="miInstanceMoveDown">Переместить экземпляр вниз</Phrase>
+    <Phrase key="miInstanceDelete">Удалить экземпляр</Phrase>
+    <Phrase key="miInstanceDownloadConfig">Скачать конфигурацию...</Phrase>
+    <Phrase key="miInstanceUploadConfig">Передать конфигурацию...</Phrase>
+    <Phrase key="miInstanceStatus">Статус экземпляра...</Phrase>
+    <Phrase key="miInstanceRename">Переименовать экземпляр</Phrase>
+    <Phrase key="miInstanceProperties">Свойства</Phrase>
+    <Phrase key="miCommLineAdd">Добавить линию</Phrase>
+    <Phrase key="miCommLineMoveUp">Переместить линию вверх</Phrase>
+    <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>
+    <Phrase key="miCommLineDelete">Удалить линию</Phrase>
+    <Phrase key="EmptyTitle">Администратор</Phrase>
+    <Phrase key="ProjectTitle">{0} - Администратор</Phrase>
+    <Phrase key="WelcomeMessage">Создайте новый проект или&#13;&#10;откройте существующий проект.</Phrase>
+    <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
+    <Phrase key="ConfirmDeleteDirectory">Вы уверены, что хотите удалить папку?</Phrase>
+    <Phrase key="ConfirmDeleteFile">Вы уверены, что хотите удалить файл?</Phrase>
+    <Phrase key="ConfirmDeleteInstance">Вы уверены, что хотите удалить экземпляр?</Phrase>
+    <Phrase key="ConfirmDeleteCommLine">Вы уверены, что хотите удалить линию связи?</Phrase>
+    <Phrase key="FileOperationError">Ошибка при работе с файловой системой</Phrase>
+    <Phrase key="DirectoryAlreadyExists">Директория уже существует.</Phrase>
+    <Phrase key="FileAlreadyExists">Файл уже существует.</Phrase>
+    <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
+    <Phrase key="this">Новый проект</Phrase>
+    <Phrase key="lblName">Наименование проекта</Phrase>
+    <Phrase key="lblLocation">Расположение</Phrase>
+    <Phrase key="btnBrowseLocation">Обзор...</Phrase>
+    <Phrase key="lblTemplate">Шаблон</Phrase>
+    <Phrase key="btnBrowseTemplate">Обзор...</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ChooseProjectLocation">Выберите расположение проекта.</Phrase>
+    <Phrase key="ProjectNameEmpty">Наименование проекта не может быть пустым.</Phrase>
+    <Phrase key="ProjectNameInvalid">Наименование проекта содержит недопустимые символы.</Phrase>
+    <Phrase key="ProjectLocationNotExists">Расположение проекта не существует.</Phrase>
+    <Phrase key="ProjectAlreadyExists">Проект с таким наименованием уже существует.</Phrase>
+    <Phrase key="ProjectTemplateEmpty">Создание проекта без шаблона не рекомендуется. Продолжить?</Phrase>
+    <Phrase key="ProjectTemplateNotFound">Шаблон проекта не найден.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmTextEditor">
+    <Phrase key="OpenTextFileError">Ошибка при открытии файла</Phrase>
+    <Phrase key="SaveTextFileError">Ошибка при сохранении файла</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
+    <Phrase key="this">Свойства проекта</Phrase>
+    <Phrase key="lblName">Наименование проекта</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Deployment.DeploymentSettings">
+    <Phrase key="LoadDeploymentSettingsError">Ошибка при загрузке настроек развёртывания</Phrase>
+    <Phrase key="SaveDeploymentSettingsError">Ошибка при сохранении настроек развёртывания</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.CommApp">
+    <Phrase key="CreateCommFilesError">Ошибка при создании проектных файлов Коммуникатора</Phrase>
+    <Phrase key="DeleteCommFilesError">Ошибка при удалении проектных файлов Коммуникатора</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ConfigBase">
+    <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
+    <Phrase key="SaveConfigBaseError">Ошибка при сохранении базы конфигурации</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.Instance">
+    <Phrase key="CreateInstanceFilesError">Ошибка при создании проектных файлов экземпляра</Phrase>
+    <Phrase key="DeleteInstanceFilesError">Ошибка при удалении проектных файлов экземпляра</Phrase>
+    <Phrase key="RenameInstanceError">Ошибка при переименовании экземпляра</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ScadaProject">
+    <Phrase key="CreateProjectError">Ошибка при создании проекта</Phrase>
+    <Phrase key="LoadProjectError">Ошибка при загрузке проекта</Phrase>
+    <Phrase key="SaveProjectError">Ошибка при сохранении проекта</Phrase>
+    <Phrase key="LoadProjectDescrError">Ошибка при загрузке описания проекта</Phrase>
+    <Phrase key="LoadBaseTableError">Ошибка при загрузке таблицы {0}</Phrase>
+    <Phrase key="SaveBaseTableError">Ошибка при сохранении таблицы {0}</Phrase>
+    <Phrase key="IncorrectProjectName">Некорректное наименование проекта.</Phrase>
+    <Phrase key="RenameProjectError">Ошибка при переименовании проекта</Phrase>
+    <Phrase key="ProjectDirectoryExists">Директория проекта уже существует.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.ServerApp">
+    <Phrase key="CreateServerFilesError">Ошибка при создании проектных файлов Сервера</Phrase>
+    <Phrase key="DeleteServerFilesError">Ошибка при удалении проектных файлов Сервера</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.Project.WebApp">
+    <Phrase key="CreateWebFilesError">Ошибка при создании проектных файлов Вебстанции</Phrase>
+    <Phrase key="DeleteWebFilesError">Ошибка при удалении проектных файлов Вебстанции</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.ImportExport">
+    <Phrase key="ImportBaseTableError">Ошибка при импорте таблицы &quot;{0}&quot;</Phrase>
+    <Phrase key="ImportArchiveError">Ошибка при импорте архива конфигурации</Phrase>
+    <Phrase key="ExportToArchiveError">Ошибка при экспорте конфигурации из архива</Phrase>
+  </Dictionary>
+</ScadaAdminDictionaries>

@@ -31,31 +31,31 @@ using System.Text;
 namespace Scada.Dao
 {
     /// <summary>
-    /// The class to simplify work with parameters of an SQL command
-    /// <para>Класс для упрощения работы с параметрами SQL-команды</para>
+    /// The class to simplify work with parameters of an SQL command.
+    /// <para>Класс для упрощения работы с параметрами SQL-команды.</para>
     /// </summary>
     public class RequestParams
     {
         /// <summary>
-        /// Parameter of SQL command
+        /// Parameter of SQL command.
         /// </summary>
         protected class Param
         {
             /// <summary>
-            /// Gets or sets the statement to insert into an SQL clause
+            /// Gets or sets the statement to insert into an SQL clause.
             /// </summary>
             public string SqlStatement { get; set; }
             /// <summary>
-            /// Gets or sets the parameter name of used by a command
+            /// Gets or sets the parameter name of used by a command.
             /// </summary>
             public string ParameterName { get; set; }
             /// <summary>
-            /// Gets or sets the parameter value
+            /// Gets or sets the parameter value.
             /// </summary>
             public object Value { get; set; }
 
             /// <summary>
-            /// Adds the parameter to the command
+            /// Adds the parameter to the command.
             /// </summary>
             public virtual void AddToCommand(DbCommand command)
             {
@@ -68,7 +68,7 @@ namespace Scada.Dao
 
 
         /// <summary>
-        /// Initializes a new instance of the class
+        /// Initializes a new instance of the class.
         /// </summary>
         public RequestParams()
         {
@@ -77,13 +77,13 @@ namespace Scada.Dao
 
 
         /// <summary>
-        /// Gets or sets the list of the request parameters
+        /// Gets or sets the list of the request parameters.
         /// </summary>
         protected List<Param> ParamList { get; set; }
 
 
         /// <summary>
-        /// Adds a new parameter with the specified properties
+        /// Adds a new parameter with the specified properties.
         /// </summary>
         public void Add(string sqlStatement, string parameterName, object value, bool condition = true)
         {
@@ -99,7 +99,7 @@ namespace Scada.Dao
         }
 
         /// <summary>
-        /// Builds a string contains WHERE clause that includes the parameters
+        /// Builds a string contains WHERE clause that includes the parameters.
         /// </summary>
         public string BuildWhereClause()
         {
@@ -127,7 +127,7 @@ namespace Scada.Dao
         }
 
         /// <summary>
-        /// Adds the parameters to the command
+        /// Adds the parameters to the command.
         /// </summary>
         public void AddToCommand(DbCommand command)
         {

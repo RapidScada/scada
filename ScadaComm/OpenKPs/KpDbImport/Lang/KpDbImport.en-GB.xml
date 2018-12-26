@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpDbImportDictionaries>
+  <Dictionary key="Scada.Comm.Devices.DbImport.UI.FrmConfig">
+    <Phrase key="this">DB Import - Device {0} Properties</Phrase>
+    <Phrase key="pageDatabase">Database</Phrase>
+    <Phrase key="gbDataSourceType">Data Source Type</Phrase>
+    <Phrase key="gbConnection">Connection</Phrase>
+    <Phrase key="lblServer">Server</Phrase>
+    <Phrase key="lblDatabase">Database</Phrase>
+    <Phrase key="lblUser">User</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblConnectionString">Connection string</Phrase>
+    <Phrase key="pageQuery">Query</Phrase>
+    <Phrase key="lblSelectQuery">SQL</Phrase>
+    <Phrase key="lblTagCount">Tag count</Phrase>
+    <Phrase key="chkAutoTagCount">Auto</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+</KpDbImportDictionaries>

@@ -128,15 +128,15 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Получить наименование типа таблицы данных
         /// </summary>
-        public static string GetTableTypeName(TableTypes tableType)
+        public static string GetTableTypeName(TableType tableType)
         {
             switch (tableType)
             {
-                case TableTypes.DiscreteInputs:
+                case TableType.DiscreteInputs:
                     return "Discrete Inputs";
-                case TableTypes.Coils:
+                case TableType.Coils:
                     return "Coils";
-                case TableTypes.InputRegisters:
+                case TableType.InputRegisters:
                     return "Input Registers";
                 default: // TableTypes.HoldingRegisters
                     return "Holding Registers";
@@ -265,17 +265,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Получить количество элементов (количество адресов) в зависимости от типа элемента
         /// </summary>
-        public static int GetElemCount(ElemTypes elemType)
+        public static int GetElemCount(ElemType elemType)
         {
             switch (elemType)
             {
-                case ElemTypes.ULong:
-                case ElemTypes.Long:
-                case ElemTypes.Double:
+                case ElemType.ULong:
+                case ElemType.Long:
+                case ElemType.Double:
                     return 4;
-                case ElemTypes.UInt:
-                case ElemTypes.Int:
-                case ElemTypes.Float:
+                case ElemType.UInt:
+                case ElemType.Int:
+                case ElemType.Float:
                     return 2;
                 default:
                     return 1;

@@ -153,10 +153,9 @@ namespace Scada.Web
         public bool Login(string username, string password, out string errMsg)
         {
             username = username == null ? "" : username.Trim();
-            int roleID;
             AppData.Refresh();
 
-            if (AppData.CheckUser(username, password, password != null, out roleID, out errMsg))
+            if (AppData.CheckUser(username, password, password != null, out int roleID, out errMsg))
             {
                 LoggedOn = true;
                 LogonDT = DateTime.Now;
@@ -279,13 +278,14 @@ namespace Scada.Web
                     WebUtils.CheckHttpContext(httpContext);
 
                     // попытка входа с использованием cookies
-                    string username;
-                    string alert = "";
-
                     if (WebSettings.RemEnabled &&
-                        AppData.RememberMe.ValidateUser(httpContext, out username, out alert))
+                        AppData.RememberMe.ValidateUser(httpContext, out string username, out string alert))
                     {
                         Login(username, out alert);
+                    }
+                    else
+                    {
+                        alert = "";
                     }
 
                     // переход на страницу входа

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System;
@@ -32,15 +32,15 @@ using System.Text;
 namespace Scada
 {
     /// <summary>
-    /// The class contains utility methods for the whole system
-    /// <para>Класс, содержащий вспомогательные методы для всей системы</para>
+    /// The class contains utility methods for the whole system.
+    /// <para>Класс, содержащий вспомогательные методы для всей системы.</para>
     /// </summary>
     public static partial class ScadaUtils
     {
         /// <summary>
         /// Версия данной библиотеки
         /// </summary>
-        internal const string LibVersion = "5.1.1.0";
+        internal const string LibVersion = "5.1.2.0";
         /// <summary>
         /// Формат вещественных чисел с разделителем точкой
         /// </summary>
@@ -59,6 +59,14 @@ namespace Scada
         /// </summary>
         /// <remarks>Совпадает с началом отсчёта времени в OLE Automation и Delphi</remarks>
         public static readonly DateTime ScadaEpoch = new DateTime(1899, 12, 30, 0, 0, 0, DateTimeKind.Utc);
+        /// <summary>
+        /// Determines that the application is running on Windows.
+        /// </summary>
+        public static readonly bool IsRunningOnWin = IsWindows(Environment.OSVersion);
+        /// <summary>
+        /// Determines that the application is running on Mono Framework.
+        /// </summary>
+        public static readonly bool IsRunningOnMono = Type.GetType("Mono.Runtime") != null;
 
 
         /// <summary>
@@ -91,15 +99,32 @@ namespace Scada
             return sb.ToString();
         }
 
+        /// <summary>
+        /// Check whether the application is running on Windows.
+        /// </summary>
+        private static bool IsWindows(OperatingSystem os)
+        {
+            // since .NET 4.7.1 change to RuntimeInformation.IsOSPlatform(OSPlatform.Windows)
+            PlatformID pid = os.Platform;
+            return pid == PlatformID.Win32NT || pid == PlatformID.Win32S ||
+                pid == PlatformID.Win32Windows || pid == PlatformID.WinCE;
+        }
+
 
         /// <summary>
-        /// Добавить "\" к имени директории, если необходимо
+        /// Добавить слэш к имени директории, если необходимо
         /// </summary>
         public static string NormalDir(string dir)
         {
             dir = dir == null ? "" : dir.Trim();
-            if (dir.Length > 0 && !dir.EndsWith(Path.DirectorySeparatorChar.ToString())) 
+            int lastIndex = dir.Length - 1;
+
+            if (lastIndex >= 0 && !(dir[lastIndex] == Path.DirectorySeparatorChar ||
+                dir[lastIndex] == Path.AltDirectorySeparatorChar))
+            {
                 dir += Path.DirectorySeparatorChar;
+            }
+
             return dir;
         }
 
@@ -336,6 +361,14 @@ namespace Scada
                 return bf.Deserialize(ms);
             }
         }
+        
+        /// <summary>
+        /// Глубокое (полное) клонирование объекта
+        /// </summary>
+        public static T DeepClone<T>(T obj, SerializationBinder binder = null)
+        {
+            return (T)DeepClone((object)obj, binder);
+        }
 
         /// <summary>
         /// Скорректировать имя типа для работы DeepClone
@@ -365,6 +398,24 @@ namespace Scada
             {
                 return DateTime.MinValue;
             }
+        }
+
+        /// <summary>
+        /// Identifies a nullable type.
+        /// </summary>
+        public static bool IsNullable(this Type type)
+        {
+            return type.IsGenericType && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        /// <summary>
+        /// Indicates whether the string is correct URL.
+        /// </summary>
+        public static bool IsValidUrl(string s)
+        {
+            return !string.IsNullOrEmpty(s) && 
+                Uri.TryCreate(s, UriKind.Absolute, out Uri uri) &&
+                (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
         }
     }
 }

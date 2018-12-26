@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2016
+ * Modified : 2018
  * 
  * --------------------------------
  * Table file structure (version 3)
@@ -61,6 +61,7 @@ using System;
 using System.IO;
 using System.Data;
 using System.Text;
+using System.ComponentModel;
 
 namespace Scada.Data.Tables
 {
@@ -212,6 +213,157 @@ namespace Scada.Data.Tables
             Array.Clear(buffer, index + totalStrDataSize, maxDataSize - totalStrDataSize);
         }
 
+        /// <summary>
+        /// Считать определения полей
+        /// </summary>
+        protected FieldDef[] ReadFieldDefs(Stream stream, BinaryReader reader, out int recSize)
+        {
+            // считывание заголовка
+            byte fieldCnt = reader.ReadByte(); // количество полей
+            stream.Seek(2, SeekOrigin.Current);
+
+            FieldDef[] fieldDefs = new FieldDef[fieldCnt];
+            recSize = 2; // размер строки в файле
+
+            if (fieldCnt > 0)
+            {
+                // считывание определений полей
+                byte[] fieldDefBuf = new byte[FieldDefSize];
+
+                for (int i = 0; i < fieldCnt; i++)
+                {
+                    // загрузка данных определения поля в буфер для увеличения скорости работы
+                    int readSize = reader.Read(fieldDefBuf, 0, FieldDefSize);
+
+                    // заполение определения поля из буфера
+                    if (readSize == FieldDefSize)
+                    {
+                        FieldDef fieldDef = new FieldDef
+                        {
+                            DataType = fieldDefBuf[0],
+                            DataSize = BitConverter.ToUInt16(fieldDefBuf, 1),
+                            MaxStrLen = BitConverter.ToUInt16(fieldDefBuf, 3),
+                            AllowNull = fieldDefBuf[5] > 0,
+                            Name = (string)BytesToObj(fieldDefBuf, 6, DataTypes.String)
+                        };
+
+                        if (string.IsNullOrEmpty(fieldDef.Name))
+                            throw new ScadaException("Field name must not be empty.");
+
+                        fieldDefs[i] = fieldDef;
+                        recSize += fieldDef.DataSize;
+
+                        if (fieldDef.AllowNull)
+                            recSize++;
+                    }
+                }
+            }
+
+            return fieldDefs;
+        }
+
+        /// <summary>
+        /// Создать определение поля
+        /// </summary>
+        protected FieldDef CreateFieldDef(string name, Type type, int maxLength, bool allowNull, ref int recSize)
+        {
+            FieldDef fieldDef = new FieldDef();
+
+            if (type == typeof(int))
+            {
+                fieldDef.DataType = DataTypes.Integer;
+                fieldDef.DataSize = sizeof(int);
+                fieldDef.MaxStrLen = 0;
+            }
+            else if (type == typeof(double))
+            {
+                fieldDef.DataType = DataTypes.Double;
+                fieldDef.DataSize = sizeof(double);
+                fieldDef.MaxStrLen = 0;
+            }
+            else if (type == typeof(bool))
+            {
+                fieldDef.DataType = DataTypes.Boolean;
+                fieldDef.DataSize = 1;
+                fieldDef.MaxStrLen = 0;
+            }
+            else if (type == typeof(DateTime))
+            {
+                fieldDef.DataType = DataTypes.DateTime;
+                fieldDef.DataSize = sizeof(double);
+                fieldDef.MaxStrLen = 0;
+            }
+            else // String
+            {
+                fieldDef.DataType = DataTypes.String;
+                int maxLen = Math.Min(maxLength, MaxStringLen);
+                fieldDef.DataSize = 2 /*запись длины*/ + Encoding.UTF8.GetMaxByteCount(maxLen);
+                fieldDef.MaxStrLen = maxLen;
+            }
+
+            fieldDef.Name = name;
+            fieldDef.AllowNull = allowNull;
+
+            recSize += fieldDef.DataSize;
+            if (fieldDef.AllowNull)
+                recSize++;
+
+            return fieldDef;
+        }
+
+        /// <summary>
+        /// Записать определение поля
+        /// </summary>
+        protected void WriteFieldDef(FieldDef fieldDef, BinaryWriter writer)
+        {
+            byte[] fieldDefBuf = new byte[FieldDefSize];
+            fieldDefBuf[0] = (byte)fieldDef.DataType;
+            Array.Copy(BitConverter.GetBytes((ushort)fieldDef.DataSize), 0, fieldDefBuf, 1, 2);
+            Array.Copy(BitConverter.GetBytes((ushort)fieldDef.MaxStrLen), 0, fieldDefBuf, 3, 2);
+            fieldDefBuf[5] = fieldDef.AllowNull ? (byte)1 : (byte)0;
+            ConvertStr(fieldDef.Name, MaxFieldNameLen, MaxFieldNameDataSize, fieldDefBuf, 6, Encoding.ASCII);
+            fieldDefBuf[FieldDefSize - 2] = fieldDefBuf[FieldDefSize - 1] = 0; // резерв
+
+            writer.Write(fieldDefBuf);
+        }
+
+        /// <summary>
+        /// Записать значение в буффер строки таблицы
+        /// </summary>
+        protected void WriteValueToRowBuffer(FieldDef fieldDef, object val, byte[] rowBuf, ref int bufInd)
+        {
+            bool isNull = val == null || val == DBNull.Value;
+
+            if (fieldDef.AllowNull)
+                rowBuf[bufInd++] = isNull ? (byte)1 : (byte)0;
+
+            switch (fieldDef.DataType)
+            {
+                case DataTypes.Integer:
+                    int intVal = isNull ? 0 : (int)val;
+                    Array.Copy(BitConverter.GetBytes(intVal), 0, rowBuf, bufInd, fieldDef.DataSize);
+                    break;
+                case DataTypes.Double:
+                    double dblVal = isNull ? 0.0 : (double)val;
+                    Array.Copy(BitConverter.GetBytes(dblVal), 0, rowBuf, bufInd, fieldDef.DataSize);
+                    break;
+                case DataTypes.Boolean:
+                    rowBuf[bufInd] = (byte)(isNull ? 0 : (bool)val ? 1 : 0);
+                    break;
+                case DataTypes.DateTime:
+                    double dtVal = isNull ? 0.0 : ScadaUtils.EncodeDateTime((DateTime)val);
+                    Array.Copy(BitConverter.GetBytes(dtVal), 0, rowBuf, bufInd, fieldDef.DataSize);
+                    break;
+                default:
+                    string strVal = isNull ? "" : val.ToString();
+                    ConvertStr(strVal, fieldDef.MaxStrLen, fieldDef.DataSize,
+                        rowBuf, bufInd, Encoding.UTF8);
+                    break;
+            }
+
+            bufInd += fieldDef.DataSize;
+        }
+
 
         /// <summary>
         /// Заполнить таблицу dataTable из файла или потока
@@ -223,49 +375,16 @@ namespace Scada.Data.Tables
 
             Stream stream = null;
             BinaryReader reader = null;
+            dataTable.Rows.Clear();
 
             try
             {
-                stream = ioStream == null ?
-                    new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) :
-                    ioStream;
+                stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new BinaryReader(stream);
+                FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
 
-                // считывание заголовка
-                byte fieldCnt = reader.ReadByte(); // количество полей
-                stream.Seek(2, SeekOrigin.Current);
-
-                if (fieldCnt > 0)
+                if (fieldDefs.Length > 0)
                 {
-                    // считывание определений полей
-                    FieldDef[] fieldDefs = new FieldDef[fieldCnt];
-                    int recSize = 2; // размер строки в файле
-                    byte[] fieldDefBuf = new byte[FieldDefSize];
-
-                    for (int i = 0; i < fieldCnt; i++)
-                    {
-                        // загрузка данных определения поля в буфер для увеличения скорости работы
-                        int readSize = reader.Read(fieldDefBuf, 0, FieldDefSize);
-
-                        // заполение определения поля из буфера
-                        if (readSize == FieldDefSize)
-                        {
-                            FieldDef fieldDef = new FieldDef();
-                            fieldDef.DataType = fieldDefBuf[0];
-                            fieldDef.DataSize = BitConverter.ToUInt16(fieldDefBuf, 1);
-                            fieldDef.MaxStrLen = BitConverter.ToUInt16(fieldDefBuf, 3);
-                            fieldDef.AllowNull = fieldDefBuf[5] > 0;
-                            fieldDef.Name = (string)BytesToObj(fieldDefBuf, 6, DataTypes.String);
-                            if (string.IsNullOrEmpty(fieldDef.Name))
-                                throw new ScadaException("Field name must not be empty.");
-                            fieldDefs[i] = fieldDef;
-
-                            recSize += fieldDef.DataSize;
-                            if (fieldDef.AllowNull)
-                                recSize++;
-                        }
-                    }
-
                     // формирование структуры таблицы
                     dataTable.BeginLoadData();
                     dataTable.DefaultView.Sort = "";
@@ -304,10 +423,6 @@ namespace Scada.Data.Tables
                         dataTable.DefaultView.AllowEdit = false;
                         dataTable.DefaultView.AllowDelete = false;
                     }
-                    else
-                    {
-                        dataTable.Rows.Clear();
-                    }
 
                     // считывание строк
                     byte[] rowBuf = new byte[recSize];
@@ -325,9 +440,13 @@ namespace Scada.Data.Tables
                             {
                                 bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
                                 int colInd = dataTable.Columns.IndexOf(fieldDef.Name);
+
                                 if (colInd >= 0)
+                                {
                                     row[colInd] = allowNulls && isNull ?
                                         DBNull.Value : BytesToObj(rowBuf, bufInd, fieldDef.DataType);
+                                }
+
                                 bufInd += fieldDef.DataSize;
                             }
                             dataTable.Rows.Add(row);
@@ -343,10 +462,8 @@ namespace Scada.Data.Tables
             {
                 if (fileMode)
                 {
-                    if (reader != null)
-                        reader.Close();
-                    if (stream != null)
-                        stream.Close();
+                    reader?.Close();
+                    stream?.Close();
                 }
 
                 dataTable.EndLoadData();
@@ -354,6 +471,76 @@ namespace Scada.Data.Tables
 
                 if (dataTable.Columns.Count > 0)
                     dataTable.DefaultView.Sort = dataTable.Columns[0].ColumnName;
+            }
+        }
+
+        /// <summary>
+        /// Заполнить таблицу baseTable из файла или потока
+        /// </summary>
+        public void Fill<T>(BaseTable<T> baseTable, bool allowNulls)
+        {
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            Stream stream = null;
+            BinaryReader reader = null;
+
+            baseTable.Items.Clear();
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+
+            try
+            {
+                stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
+                reader = new BinaryReader(stream);
+                FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
+
+                if (fieldDefs.Length > 0)
+                {
+                    // считывание строк
+                    byte[] rowBuf = new byte[recSize];
+
+                    while (stream.Position < stream.Length)
+                    {
+                        // загрузка данных строки таблицы в буфер для увеличения скорости работы
+                        int readSize = reader.Read(rowBuf, 0, recSize);
+
+                        // заполение строки таблицы из буфера
+                        if (readSize == recSize)
+                        {
+                            T item = Activator.CreateInstance<T>();
+                            int bufInd = 2;
+
+                            foreach (FieldDef fieldDef in fieldDefs)
+                            {
+                                bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
+                                PropertyDescriptor prop = props[fieldDef.Name];
+
+                                if (prop != null)
+                                {
+                                    object val = allowNulls && isNull ?
+                                        null : BytesToObj(rowBuf, bufInd, fieldDef.DataType);
+                                    prop.SetValue(item, val);
+                                }
+
+                                bufInd += fieldDef.DataSize;
+                            }
+
+                            baseTable.AddItem(item);
+                        }
+                    }
+                }
+            }
+            catch (EndOfStreamException)
+            {
+                // нормальная ситуация окончания файла
+            }
+            finally
+            {
+                if (fileMode)
+                {
+                    reader?.Close();
+                    stream?.Close();
+                }
             }
         }
 
@@ -370,14 +557,11 @@ namespace Scada.Data.Tables
 
             try
             {
-                stream = ioStream == null ?
-                    new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite) :
-                    ioStream;
+                stream = ioStream ?? new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
                 writer = new BinaryWriter(stream, Encoding.Default);
 
                 // запись заголовка
-                byte fieldCnt = dataTable.Columns.Count > byte.MaxValue ? 
-                    byte.MaxValue : (byte)dataTable.Columns.Count;
+                byte fieldCnt = (byte)Math.Min(dataTable.Columns.Count, byte.MaxValue);
                 writer.Write(fieldCnt);
                 writer.Write((ushort)0); // резерв
 
@@ -386,107 +570,27 @@ namespace Scada.Data.Tables
                     // формирование и запись определений полей
                     FieldDef[] fieldDefs = new FieldDef[fieldCnt];
                     int recSize = 2; // размер строки в файле
-                    byte[] fieldDefBuf = new byte[FieldDefSize];
-                    fieldDefBuf[FieldDefSize - 1] = fieldDefBuf[FieldDefSize - 2] = 0; // резерв
 
                     for (int i = 0; i < fieldCnt; i++)
                     {
-                        FieldDef fieldDef = new FieldDef();
                         DataColumn col = dataTable.Columns[i];
-                        Type type = col.DataType;
-
-                        if (type == typeof(int))
-                        {
-                            fieldDef.DataType = DataTypes.Integer;
-                            fieldDef.DataSize = sizeof(int);
-                            fieldDef.MaxStrLen = 0;
-                        }
-                        else if (type == typeof(double))
-                        {
-                            fieldDef.DataType = DataTypes.Double;
-                            fieldDef.DataSize = sizeof(double);
-                            fieldDef.MaxStrLen = 0;
-                        }
-                        else if (type == typeof(bool))
-                        {
-                            fieldDef.DataType = DataTypes.Boolean;
-                            fieldDef.DataSize = 1;
-                            fieldDef.MaxStrLen = 0;
-                        }
-                        else if (type == typeof(DateTime))
-                        {
-                            fieldDef.DataType = DataTypes.DateTime;
-                            fieldDef.DataSize = sizeof(double);
-                            fieldDef.MaxStrLen = 0;
-                        }
-                        else // String
-                        {
-                            fieldDef.DataType = DataTypes.String;
-                            int maxLen = Math.Min(col.MaxLength, MaxStringLen);
-                            fieldDef.DataSize = 2 /*запись длины*/ + Encoding.UTF8.GetMaxByteCount(maxLen);
-                            fieldDef.MaxStrLen = maxLen;
-                        }
-
-                        fieldDef.Name = col.ColumnName;
-                        fieldDef.AllowNull = col.AllowDBNull;
-
-                        recSize += fieldDef.DataSize;
-                        if (fieldDef.AllowNull)
-                            recSize++;
+                        FieldDef fieldDef = CreateFieldDef(col.ColumnName, col.DataType, 
+                            col.MaxLength, col.AllowDBNull, ref recSize);
                         fieldDefs[i] = fieldDef;
-
-                        fieldDefBuf[0] = (byte)fieldDef.DataType;
-                        Array.Copy(BitConverter.GetBytes((ushort)fieldDef.DataSize), 0, fieldDefBuf, 1, 2);
-                        Array.Copy(BitConverter.GetBytes((ushort)fieldDef.MaxStrLen), 0, fieldDefBuf, 3, 2);
-                        fieldDefBuf[5] = fieldDef.AllowNull ? (byte)1 : (byte)0;
-                        ConvertStr(fieldDef.Name, MaxFieldNameLen, MaxFieldNameDataSize, 
-                            fieldDefBuf, 6, Encoding.ASCII);
-
-                        writer.Write(fieldDefBuf);
+                        WriteFieldDef(fieldDef, writer);
                     }
 
                     // запись строк
                     byte[] rowBuf = new byte[recSize];
                     rowBuf[0] = rowBuf[1] = 0; // резерв
+
                     foreach (DataRowView rowView in dataTable.DefaultView)
                     {
-                        DataRow row = rowView.Row;
                         int bufInd = 2;
 
-                        foreach (FieldDef fieldDef in fieldDefs)
+                        for (int i = 0; i < fieldCnt; i++)
                         {
-                            int colInd = dataTable.Columns.IndexOf(fieldDef.Name);
-                            object val = colInd >= 0 ? row[colInd] : null;
-                            bool isNull = val == null || val == DBNull.Value;
-
-                            if (fieldDef.AllowNull)
-                                rowBuf[bufInd++] = isNull ? (byte)1 : (byte)0;
-
-                            switch (fieldDef.DataType)
-                            {
-                                case DataTypes.Integer:
-                                    int intVal = isNull ? 0 : (int)val;
-                                    Array.Copy(BitConverter.GetBytes(intVal), 0, rowBuf, bufInd, fieldDef.DataSize);
-                                    break;
-                                case DataTypes.Double:
-                                    double dblVal = isNull ? 0.0 : (double)val;
-                                    Array.Copy(BitConverter.GetBytes(dblVal), 0, rowBuf, bufInd, fieldDef.DataSize);
-                                    break;
-                                case DataTypes.Boolean:
-                                    rowBuf[bufInd] = (byte)(isNull ? 0 : (bool)val ? 1 : 0);
-                                    break;
-                                case DataTypes.DateTime:
-                                    double dtVal = isNull ? 0.0 : ScadaUtils.EncodeDateTime((DateTime)val);
-                                    Array.Copy(BitConverter.GetBytes(dtVal), 0, rowBuf, bufInd, fieldDef.DataSize);
-                                    break;
-                                default:
-                                    string strVal = isNull ? "" : val.ToString();
-                                    ConvertStr(strVal, fieldDef.MaxStrLen, fieldDef.DataSize, 
-                                        rowBuf, bufInd, Encoding.UTF8);
-                                    break;
-                            }
-
-                            bufInd += fieldDef.DataSize;
+                            WriteValueToRowBuffer(fieldDefs[i], rowView[i], rowBuf, ref bufInd);
                         }
 
                         writer.Write(rowBuf);
@@ -497,12 +601,100 @@ namespace Scada.Data.Tables
             {
                 if (fileMode)
                 {
-                    if (writer != null)
-                        writer.Close();
-                    if (stream != null)
-                        stream.Close();
+                    writer?.Close();
+                    stream?.Close();
                 }
             }
+        }
+
+        /// <summary>
+        /// Записать таблицу baseTable в файл или поток
+        /// </summary>
+        public void Update(IBaseTable baseTable)
+        {
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            Stream stream = null;
+            BinaryWriter writer = null;
+
+            try
+            {
+                stream = ioStream ?? new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.ReadWrite);
+                writer = new BinaryWriter(stream, Encoding.Default);
+
+                // запись заголовка
+                PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
+                byte fieldCnt = (byte)Math.Min(props.Count, byte.MaxValue);
+                writer.Write(fieldCnt);
+                writer.Write((ushort)0);
+
+                if (fieldCnt > 0)
+                {
+                    // получение макс. длин строковых полей
+                    int[] maxStrLenArr = new int[fieldCnt];
+
+                    for (int i = 0; i < fieldCnt; i++)
+                    {
+                        maxStrLenArr[i] = 0;
+                        PropertyDescriptor prop = props[i];
+
+                        if (prop.PropertyType == typeof(string))
+                        {
+                            foreach (object item in baseTable.EnumerateItems())
+                            {
+                                object val = prop.GetValue(item);
+                                maxStrLenArr[i] = Math.Max(maxStrLenArr[i], val == null ? 0 : val.ToString().Length);
+                            }
+                        }
+                    }
+
+                    // формирование и запись определений полей
+                    FieldDef[] fieldDefs = new FieldDef[fieldCnt];
+                    int recSize = 2; // размер строки в файле
+
+                    for (int i = 0; i < fieldCnt; i++)
+                    {
+                        PropertyDescriptor prop = props[i];
+                        FieldDef fieldDef = CreateFieldDef(prop.Name, prop.PropertyType,
+                            maxStrLenArr[i], prop.PropertyType.IsNullable(), ref recSize);
+                        fieldDefs[i] = fieldDef;
+                        WriteFieldDef(fieldDef, writer);
+                    }
+
+                    // запись строк
+                    byte[] rowBuf = new byte[recSize];
+                    rowBuf[0] = rowBuf[1] = 0;
+
+                    foreach (object item in baseTable.EnumerateItems())
+                    {
+                        int bufInd = 2;
+
+                        for (int i = 0; i < fieldCnt; i++)
+                        {
+                            WriteValueToRowBuffer(fieldDefs[i], props[i].GetValue(item), rowBuf, ref bufInd);
+                        }
+
+                        writer.Write(rowBuf);
+                    }
+                }
+            }
+            finally
+            {
+                if (fileMode)
+                {
+                    writer?.Close();
+                    stream?.Close();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Записать таблицу baseTable в файл или поток
+        /// </summary>
+        public void Update<T>(BaseTable<T> baseTable)
+        {
+            Update((IBaseTable)baseTable);
         }
     }
 }

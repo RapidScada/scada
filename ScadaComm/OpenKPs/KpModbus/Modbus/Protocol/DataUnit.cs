@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2018 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2018
  */
 
 using System.Text;
@@ -37,14 +37,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
         protected DataUnit()
-            : this(TableTypes.DiscreteInputs)
+            : this(TableType.DiscreteInputs)
         {
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public DataUnit(TableTypes tableType)
+        public DataUnit(TableType tableType)
         {
             Name = "";
             TableType = tableType;
@@ -68,7 +68,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Получить или установить тип таблицы даных
         /// </summary>
-        public TableTypes TableType { get; set; }
+        public TableType TableType { get; set; }
 
         /// <summary>
         /// Получить или установить адрес начального элемента
@@ -122,9 +122,20 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public byte RespByteCnt { get; protected set; }
 
         /// <summary>
-        /// Получить тип элементов по умолчанию
+        /// Gets the maximum number of elements.
         /// </summary>
-        public ElemTypes DefElemType
+        public int MaxElemCnt
+        {
+            get
+            {
+                return GetMaxElemCnt(TableType);
+            }
+        }
+
+        /// <summary>
+        /// Gets the default element type.
+        /// </summary>
+        public ElemType DefElemType
         {
             get
             {
@@ -139,7 +150,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             get
             {
-                return TableType == TableTypes.InputRegisters || TableType == TableTypes.HoldingRegisters;
+                return TableType == TableType.InputRegisters || TableType == TableType.HoldingRegisters;
             }
         }
 
@@ -150,7 +161,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             get
             {
-                return TableType == TableTypes.InputRegisters || TableType == TableTypes.HoldingRegisters;
+                return TableType == TableType.InputRegisters || TableType == TableType.HoldingRegisters;
             }
         }
 
@@ -163,7 +174,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// <summary>
         /// Инициализировать ADU запроса и рассчитать длину ответа
         /// </summary>
-        public virtual void InitReqADU(byte devAddr, TransModes transMode)
+        public virtual void InitReqADU(byte devAddr, TransMode transMode)
         {
             if (ReqPDU != null)
             {
@@ -171,7 +182,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
                 switch (transMode)
                 {
-                    case TransModes.RTU:
+                    case TransMode.RTU:
                         ReqADU = new byte[pduLen + 3];
                         ReqADU[0] = devAddr;
                         ReqPDU.CopyTo(ReqADU, 1);
@@ -180,7 +191,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         ReqADU[pduLen + 2] = (byte)(crc / 256);
                         RespAduLen = RespPduLen + 3;
                         break;
-                    case TransModes.ASCII:
+                    case TransMode.ASCII:
                         byte[] aduBuf = new byte[pduLen + 2];
                         aduBuf[0] = devAddr;
                         ReqPDU.CopyTo(aduBuf, 1);
@@ -240,22 +251,21 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             return result;
         }
 
-
         /// <summary>
-        /// Получить максимально допустимое количество элементов
+        /// Gets the maximum number of elements depending on the data table type.
         /// </summary>
-        public static int GetMaxElemCnt(TableTypes tableType)
+        public virtual int GetMaxElemCnt(TableType tableType)
         {
-            return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ? 2000 : 125;
+            return tableType == TableType.DiscreteInputs || tableType == TableType.Coils ? 2000 : 125;
         }
 
         /// <summary>
-        /// Получить тип элементов по умолчанию в зависимости от типа таблицы данных
+        /// Gets the element type depending on the data table type.
         /// </summary>
-        public static ElemTypes GetDefElemType(TableTypes tableType)
+        public virtual ElemType GetDefElemType(TableType tableType)
         {
-            return tableType == TableTypes.DiscreteInputs || tableType == TableTypes.Coils ?
-                ElemTypes.Bool : ElemTypes.UShort;
+            return tableType == TableType.DiscreteInputs || tableType == TableType.Coils ?
+                ElemType.Bool : ElemType.UShort;
         }
     }
 }

@@ -23,11 +23,11 @@
  * Modified : 2018
  */
 
+using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;
@@ -50,25 +50,20 @@ namespace Scada.Comm.Devices
                 return "Dictionary of " + Count + " templates";
             }
         }
-
-        /// <summary>
-        /// Делегат выполнения запроса
-        /// </summary>
-        private delegate bool RequestDelegate(DataUnit dataUnit);
         
         /// <summary>
         /// Периодичность попыток установки TCP-соединения, с
         /// </summary>
         private const int TcpConnectPer = 5;
 
-        private DeviceTemplate deviceTemplate; // шаблон устройства, используемый данным КП
-        private TransModes transMode;          // режим передачи данных
-        private ModbusPoll modbusPoll;         // объект для опроса устройств по протоколу Modbus
-        private RequestDelegate request;       // метод выполнения запроса
-        private byte devAddr;                  // адрес устройства
-        private List<ElemGroup> elemGroups;    // активные запрашиваемые группы элементов
-        private int elemGroupCnt;              // количество активных групп элементов
-        private HashSet<int> floatSignals;     // множество сигналов, форматируемых как вещественное число
+        private TransMode transMode;                // режим передачи данных
+        private ModbusPoll modbusPoll;              // объект для опроса КП
+        private ModbusPoll.RequestDelegate request; // метод выполнения запроса
+        private byte devAddr;                       // адрес устройства
+        private List<ElemGroup> elemGroups;         // активные запрашиваемые группы элементов
+        private int elemGroupCnt;                   // количество активных групп элементов
+        private HashSet<int> floatSignals;          // множество сигналов, форматируемых как вещественное число
+        protected DeviceTemplate deviceTemplate;    // шаблон устройства, используемый данным КП
 
 
         /// <summary>
@@ -77,25 +72,108 @@ namespace Scada.Comm.Devices
         public KpModbusLogic(int number)
             : base(number)
         {
-            modbusPoll = new ModbusPoll();
         }
 
 
         /// <summary>
-        /// Получить из общих свойств линии связи или создать словарь шаблонов устройств
+        /// Gets the key of the template dictionary.
         /// </summary>
-        private Dictionary<string, DeviceTemplate> GetTemplates()
+        protected virtual string TemplateDictKey
         {
-            Dictionary<string, DeviceTemplate> templates = CommonProps.ContainsKey("Templates") ?
-                CommonProps["Templates"] as Dictionary<string, DeviceTemplate> : null;
-
-            if (templates == null)
+            get
             {
-                templates = new TemplateDict();
-                CommonProps.Add("Templates", templates);
+                return "ModbusTemplates";
+            }
+        }
+
+
+        /// <summary>
+        /// Gets the template dictionary from the common properties or creates it.
+        /// </summary>
+        private Dictionary<string, DeviceTemplate> GetTemplateDictionary()
+        {
+            Dictionary<string, DeviceTemplate> templateDict = CommonProps.ContainsKey(TemplateDictKey) ?
+                CommonProps[TemplateDictKey] as Dictionary<string, DeviceTemplate> : null;
+
+            if (templateDict == null)
+            {
+                templateDict = new TemplateDict();
+                CommonProps.Add(TemplateDictKey, templateDict);
             }
 
-            return templates;
+            return templateDict;
+        }
+
+        /// <summary>
+        /// Gets existing or create a new device template.
+        /// </summary>
+        private void PrepareTemplate(string fileName)
+        {
+            if (fileName == "")
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0} Ошибка: Не задан шаблон устройства для {1}" :
+                    "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
+                deviceTemplate = null;
+            }
+            else
+            {
+                deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
+                Dictionary<string, DeviceTemplate> templates = GetTemplateDictionary();
+
+                if (templates.ContainsKey(fileName))
+                {
+                    // копирование свойств шаблона, загруженного ранее
+                    deviceTemplate.CopyFrom(templates[fileName]);
+                }
+                else
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "{0} Загрузка шаблона устройства из файла {1}" :
+                        "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
+                    string filePath = Path.IsPathRooted(fileName) ?
+                        fileName : Path.Combine(AppDirs.ConfigDir, fileName);
+
+                    if (!deviceTemplate.Load(filePath, out string errMsg))
+                    {
+                        WriteToLog(errMsg);
+                        deviceTemplate = null;
+                    }
+
+                    templates.Add(fileName, deviceTemplate);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Initializes an object for polling data.
+        /// </summary>
+        private void InitModbusPoll()
+        {
+            if (deviceTemplate != null)
+            {
+                // find the required size of the input buffer
+                int inBufSize = 0;
+                foreach (ElemGroup elemGroup in elemGroups)
+                {
+                    if (inBufSize < elemGroup.RespAduLen)
+                        inBufSize = elemGroup.RespAduLen;
+                }
+
+                foreach (ModbusCmd cmd in deviceTemplate.Cmds)
+                {
+                    if (inBufSize < cmd.RespAduLen)
+                        inBufSize = cmd.RespAduLen;
+                }
+
+                // create an object for polling data
+                modbusPoll = new ModbusPoll(inBufSize)
+                {
+                    Timeout = ReqParams.Timeout,
+                    Connection = Connection,
+                    WriteToLog = WriteToLog
+                };
+            }
         }
 
         /// <summary>
@@ -103,7 +181,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void SetNewLine()
         {
-            if (Connection != null && transMode == TransModes.ASCII)
+            if (Connection != null && transMode == TransMode.ASCII)
                 Connection.NewLine = ModbusUtils.CRLF;
         }
 
@@ -117,13 +195,51 @@ namespace Scada.Comm.Devices
                 SetCurData(j, elemGroup.GetElemVal(i), BaseValues.CnlStatuses.Defined);
         }
 
+
+        /// <summary>
+        /// Gets a device template factory.
+        /// </summary>
+        protected virtual DeviceTemplateFactory GetTemplateFactory()
+        {
+            return KpUtils.TemplateFactory;
+        }
+
+        /// <summary>
+        /// Creates tag groups according to the specified template.
+        /// </summary>
+        protected virtual List<TagGroup> CreateTagGroups(DeviceTemplate deviceTemplate, ref int tagInd)
+        {
+            List<TagGroup> tagGroups = new List<TagGroup>();
+
+            if (deviceTemplate != null)
+            {
+                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+                {
+                    TagGroup tagGroup = new TagGroup(elemGroup.Name);
+                    tagGroups.Add(tagGroup);
+                    elemGroup.StartKPTagInd = tagInd;
+
+                    foreach (Elem elem in elemGroup.Elems)
+                    {
+                        int signal = ++tagInd;
+                        tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
+
+                        if (elem.ElemType == ElemType.Float)
+                            floatSignals.Add(signal);
+                    }
+                }
+            }
+
+            return tagGroups;
+        }
+
         /// <summary>
         /// Преобразовать данные тега КП в строку
         /// </summary>
         protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
             if (tagData.Stat > 0 && !floatSignals.Contains(signal))
-                return curData[signal - 1].Val.ToString("F0");
+                return tagData.Val.ToString("F0");
             else
                 return base.ConvertTagDataToStr(signal, tagData);
         }
@@ -223,7 +339,7 @@ namespace Scada.Comm.Devices
                     }
                     else
                     {
-                        modbusCmd.Value = modbusCmd.TableType == TableTypes.HoldingRegisters ?
+                        modbusCmd.Value = modbusCmd.TableType == TableType.HoldingRegisters ?
                             (ushort)cmd.CmdVal :
                             cmd.CmdVal > 0 ? (ushort)1 : (ushort)0;
                     }
@@ -262,84 +378,47 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void OnAddedToCommLine()
         {
-            // загрузка шаблона устройства
-            deviceTemplate = null;
-            elemGroups = null;
-            elemGroupCnt = 0;
-            floatSignals = new HashSet<int>();
+            // получение или загрузка шаблона устройства
             string fileName = ReqParams.CmdLine.Trim();
+            PrepareTemplate(fileName);
 
-            if (fileName == "")
+            // инициализация тегов КП на основе шаблона устройства
+            floatSignals = new HashSet<int>();
+            int tagInd = 0;
+            List<TagGroup> tagGroups = CreateTagGroups(deviceTemplate, ref tagInd);
+            InitKPTags(tagGroups);
+
+            // определение режима передачи данных
+            transMode = CustomParams.GetEnumParam("TransMode", false, TransMode.RTU);
+
+            if (deviceTemplate == null)
             {
-                WriteToLog(string.Format(Localization.UseRussian ? 
-                    "{0} Ошибка: Не задан шаблон устройства для {1}" : 
-                    "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
+                elemGroups = null;
+                elemGroupCnt = 0;
             }
             else
             {
-                Dictionary<string, DeviceTemplate> templates = GetTemplates();
-                if (templates.ContainsKey(fileName))
-                {
-                    // создание шаблона устройства на основе шаблона, загруженного ранее
-                    DeviceTemplate template = templates[fileName];
-                    if (template != null)
-                    {
-                        deviceTemplate = new DeviceTemplate();
-                        deviceTemplate.CopyFrom(template);
-                    }
-                }
-                else
-                {
-                    WriteToLog(string.Format(Localization.UseRussian ? 
-                        "{0} Загрузка шаблона устройства из файла {1}" :
-                        "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
-                    DeviceTemplate template = new DeviceTemplate();
-                    string filePath = Path.IsPathRooted(fileName) ? 
-                        fileName : Path.Combine(AppDirs.ConfigDir, fileName);
-
-                    if (template.Load(filePath, out string errMsg))
-                    {
-                        deviceTemplate = template;
-                        templates.Add(fileName, template);
-                    }
-                    else
-                    {
-                        WriteToLog(errMsg);
-                        templates.Add(fileName, null);
-                    }
-                }
-            }
-
-            if (deviceTemplate != null)
-            {
+                // получение активных групп элементов
                 elemGroups = deviceTemplate.GetActiveElemGroups();
                 elemGroupCnt = elemGroups.Count;
-            }
 
-            // инициализация тегов КП на основе модели устройства
-            if (deviceTemplate.ElemGroups.Count > 0)
-            {
-                List<TagGroup> tagGroups = new List<TagGroup>();
-                int tagInd = 0;
-
-                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
+                // формирование PDU и ADU
+                devAddr = (byte)Address;
+                foreach (ElemGroup elemGroup in elemGroups)
                 {
-                    TagGroup tagGroup = new TagGroup(elemGroup.Name);
-                    tagGroups.Add(tagGroup);
-                    elemGroup.StartKPTagInd = tagInd;
-
-                    foreach (Elem elem in elemGroup.Elems)
-                    {
-                        int signal = ++tagInd;
-                        tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
-                        if (elem.ElemType == ElemTypes.Float)
-                            floatSignals.Add(signal);
-                    }
+                    elemGroup.InitReqPDU();
+                    elemGroup.InitReqADU(devAddr, transMode);
                 }
 
-                InitKPTags(tagGroups);
-                CanSendCmd = deviceTemplate.Cmds.Count > 0;
+                foreach (ModbusCmd cmd in deviceTemplate.Cmds)
+                {
+                    cmd.InitReqPDU();
+                    cmd.InitReqADU(devAddr, transMode);
+                }
             }
+
+            // определение возможности отправки команд
+            CanSendCmd = deviceTemplate != null && deviceTemplate.Cmds.Count > 0;
         }
 
         /// <summary>
@@ -347,40 +426,11 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void OnCommLineStart()
         {
-            // получение режима передачи данных
-            transMode = CustomParams.GetEnumParam("TransMode", false, TransModes.RTU);
+            // инициализация объекта для опроса КП
+            InitModbusPoll();
 
-            // настройка библиотеки в зависимости от режима передачи данных
-            switch (transMode)
-            {
-                case TransModes.RTU:
-                    request += modbusPoll.RtuRequest;
-                    break;
-                case TransModes.ASCII:
-                    request += modbusPoll.AsciiRequest;
-                    break;
-                default: // TransModes.TCP
-                    request += modbusPoll.TcpRequest;
-                    break;
-            }
-
-            SetNewLine();
-
-            // настройка объекта, реализующего протокол Modbus
-            modbusPoll.Timeout = ReqParams.Timeout;
-            modbusPoll.WriteToLog = WriteToLog;
-
-            // формирование PDU и ADU
-            if (deviceTemplate != null)
-            {
-                devAddr = (byte)Address;
-
-                foreach (ElemGroup elemGroup in deviceTemplate.ElemGroups)
-                {
-                    elemGroup.InitReqPDU();
-                    elemGroup.InitReqADU(devAddr, transMode);
-                }
-            }
+            // выбор метода запроса
+            request = modbusPoll.GetRequestMethod(transMode);
         }
 
         /// <summary>
@@ -389,7 +439,9 @@ namespace Scada.Comm.Devices
         public override void OnConnectionSet()
         {
             SetNewLine();
-            modbusPoll.Connection = Connection;
+
+            if (modbusPoll != null)
+                modbusPoll.Connection = Connection;
         }
     }
 }

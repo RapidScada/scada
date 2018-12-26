@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2042
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAdminCommon", "ScadaAdminCommon\ScadaAdminCommon.csproj", "{A44976DE-7907-45F3-BBA3-137C2F5E120F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaAdmin", "ScadaAdmin\ScadaAdmin.csproj", "{00056F30-E0DA-4505-A441-A153EB59C234}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A44976DE-7907-45F3-BBA3-137C2F5E120F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A44976DE-7907-45F3-BBA3-137C2F5E120F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A44976DE-7907-45F3-BBA3-137C2F5E120F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A44976DE-7907-45F3-BBA3-137C2F5E120F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00056F30-E0DA-4505-A441-A153EB59C234}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00056F30-E0DA-4505-A441-A153EB59C234}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00056F30-E0DA-4505-A441-A153EB59C234}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00056F30-E0DA-4505-A441-A153EB59C234}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {95215B30-D05A-4323-89F2-430BFDFF11A6}
+	EndGlobalSection
+EndGlobal

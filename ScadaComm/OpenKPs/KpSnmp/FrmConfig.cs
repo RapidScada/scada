@@ -271,7 +271,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnAddVariable_Click(object sender, EventArgs e)
         {
             // добавление переменной
-            TreeNode closestGroupNode = treeView.FindClosest(typeof(Config.VarGroup));
+            TreeNode closestGroupNode = treeView.SelectedNode?.FindClosest(typeof(Config.VarGroup));
             if (closestGroupNode != null)
             {
                 Config.Variable newVariable = FrmVariable.CreateVariable();

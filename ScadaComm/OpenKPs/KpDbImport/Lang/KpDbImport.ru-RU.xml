@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpDbImportDictionaries>
+  <Dictionary key="Scada.Comm.Devices.DbImport.UI.FrmConfig">
+    <Phrase key="this">Импорт из БД - Свойства КП {0}</Phrase>
+    <Phrase key="pageDatabase">База данных</Phrase>
+    <Phrase key="gbDataSourceType">Тип источника данных</Phrase>
+    <Phrase key="gbConnection">Соединение</Phrase>
+    <Phrase key="lblServer">Сервер</Phrase>
+    <Phrase key="lblDatabase">База данных</Phrase>
+    <Phrase key="lblUser">Пользователь</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblConnectionString">Строка соединения</Phrase>
+    <Phrase key="pageQuery">Запрос</Phrase>
+    <Phrase key="lblSelectQuery">SQL</Phrase>
+    <Phrase key="lblTagCount">Количество тегов</Phrase>
+    <Phrase key="chkAutoTagCount">Авто</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+</KpDbImportDictionaries>

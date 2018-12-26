@@ -37,6 +37,17 @@ namespace Scada
         /// Генератор криптографически защищённых случайных чисел
         /// </summary>
         private static readonly RNGCryptoServiceProvider Rng = new RNGCryptoServiceProvider();
+        /// <summary>
+        /// Секретный ключ для использования по умолчанию
+        /// </summary>
+        private static readonly byte[] DefaultSecretKey = new byte[SecretKeySize] {
+            0x0A, 0xBA, 0x06, 0xBC, 0x1A, 0x5D, 0x44, 0x3E, 0x5A, 0xE8, 0x46, 0x7F, 0xB8, 0x85, 0x49, 0xF6,
+            0xE9, 0xCC, 0x90, 0xF0, 0x80, 0x45, 0x33, 0xFC, 0x2A, 0x67, 0xD9, 0xBA, 0x00, 0xCE, 0xC7, 0x8A };
+        /// <summary>
+        /// Вектор инициализации для использования по умолчанию
+        /// </summary>
+        private static readonly byte[] DefaultIV = new byte[IVSize] {
+            0xA5, 0x5C, 0x5A, 0x7B, 0x40, 0xD4, 0x2D, 0x33, 0xA4, 0x6F, 0xF7, 0x84, 0x94, 0x1C, 0x47, 0x85 };
 
         /// <summary>
         /// Размер секретного ключа, байт
@@ -104,6 +115,14 @@ namespace Scada
         {
             return BytesToHex(EncryptBytes(Encoding.UTF8.GetBytes(s), secretKey, iv));
         }
+        
+        /// <summary>
+        /// Зашифровать строку
+        /// </summary>
+        public static string Encrypt(string s)
+        {
+            return Encrypt(s, DefaultSecretKey, DefaultIV);
+        }
 
         /// <summary>
         /// Зашифровать массив байт
@@ -134,11 +153,19 @@ namespace Scada
         }
 
         /// <summary>
-        /// Дешифровать строку
+        /// Дешифровать строку, используя ключ по умолчанию
         /// </summary>
         public static string Decrypt(string s, byte[] secretKey, byte[] iv)
         {
             return Encoding.UTF8.GetString(DecryptBytes(HexToBytes(s), secretKey, iv));
+        }
+
+        /// <summary>
+        /// Дешифровать строку, используя ключ по умолчанию
+        /// </summary>
+        public static string Decrypt(string s)
+        {
+            return Decrypt(s, DefaultSecretKey, DefaultIV);
         }
 
         /// <summary>

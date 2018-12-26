@@ -175,7 +175,7 @@ scada.view = {
         // write history manually
         var state = null;
         if (!opt_from_history && viewHub.curViewID > 0) {
-            state = { viewID: viewID, viewUrl: "" };
+            state = { viewID: viewID, viewUrl: viewUrl };
             history.pushState(state, "", scada.utils.getViewUrl(viewID));
         }
 
@@ -187,25 +187,22 @@ scada.view = {
         frameView
         .off("load")
         .on("load", function () {
-            var wnd = frameView[0].contentWindow;
+            var frameWnd = frameView[0].contentWindow;
 
             // add the view to the view hub
-            viewHub.addView(wnd);
+            viewHub.addView(frameWnd);
 
-            // update document title
-            try {
+            if (scada.utils.checkAccessToFrame(frameWnd)) {
                 // set the page title the same as the frame title
-                document.title = wnd.document.title;
-            }
-            catch (ex) {
-                // security error if the frame has the different origin
-                document.title = phrases.ExternalLinkTitle;
-            }
+                document.title = frameWnd.document.title;
 
-            // update view URL in the history
-            if (state != null) {
-                state.viewUrl = wnd.location.href;
-                history.replaceState(state, "", scada.utils.getViewUrl(viewID));
+                // update view URL in the history
+                if (state !== null) {
+                    state.viewUrl = frameWnd.location.href;
+                    history.replaceState(state, "", scada.utils.getViewUrl(viewID));
+                }
+            } else {
+                document.title = phrases.ExternalLinkTitle;
             }
         });
 

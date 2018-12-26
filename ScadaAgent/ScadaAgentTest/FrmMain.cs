@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Agent.Engine;
 using Scada.Agent.Test.AgentSvcRef;
 using System;
 using System.IO;
@@ -99,7 +100,7 @@ namespace Scada.Agent.Test
                         stream.CopyTo(fileStream);
                     }
 
-                    stream.Close();
+                    stream.Dispose();
                     MessageBox.Show("Done in " + (int)(DateTime.UtcNow - t0).TotalMilliseconds + " ms");
                 }
             }
