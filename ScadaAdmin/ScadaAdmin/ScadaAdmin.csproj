@@ -68,7 +68,7 @@
       <HintPath>..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
     <Reference Include="ScadaCommCommon">
-      <HintPath>..\..\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+      <HintPath>..\..\ScadaComm\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
     </Reference>
     <Reference Include="ScadaData, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
