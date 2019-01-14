@@ -59,6 +59,7 @@
             this.btnSendCommand.TabIndex = 0;
             this.btnSendCommand.Text = "Command";
             this.btnSendCommand.UseVisualStyleBackColor = true;
+            this.btnSendCommand.Click += new System.EventHandler(this.btnSendCommand_Click);
             // 
             // lblCommandInfo
             // 

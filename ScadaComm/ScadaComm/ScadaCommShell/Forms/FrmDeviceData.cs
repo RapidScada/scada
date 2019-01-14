@@ -43,6 +43,7 @@ namespace Scada.Comm.Shell.Forms
         private readonly Settings.KP kp;              // the device to control
         private readonly CommEnvironment environment; // the application environment
         private RemoteLogBox dataBox;                 // object to refresh device data
+        private FrmDeviceCommand frmDeviceCommand;    // the form to send commands
 
 
         /// <summary>
@@ -62,6 +63,7 @@ namespace Scada.Comm.Shell.Forms
             this.kp = kp ?? throw new ArgumentNullException("kp");
             this.environment = environment ?? throw new ArgumentNullException("environment");
             dataBox = new RemoteLogBox(lbDeviceData) { FullLogView = true };
+            frmDeviceCommand = null;
         }
 
 
@@ -134,6 +136,15 @@ namespace Scada.Comm.Shell.Forms
 
                 tmrRefresh.Start();
             }
+        }
+
+        private void btnSendCommand_Click(object sender, EventArgs e)
+        {
+            // show the command form
+            if (frmDeviceCommand == null)
+                frmDeviceCommand = new FrmDeviceCommand(kp, environment);
+
+            frmDeviceCommand.ShowDialog();
         }
     }
 }
