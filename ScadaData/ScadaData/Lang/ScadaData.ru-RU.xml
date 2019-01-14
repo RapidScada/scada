@@ -40,6 +40,8 @@
     <Phrase key="XmlNodeNotFound">XML-узел &quot;{0}&quot; не найден внутри узла &quot;{1}&quot;.</Phrase>
     <Phrase key="EventAck">Да</Phrase>
     <Phrase key="EventNotAck">Нет</Phrase>
+    <Phrase key="IncorrectCmdVal">Некорректное значение команды.</Phrase>
+    <Phrase key="IncorrectCmdData">Некорректные данные команды.</Phrase>
     <Phrase key="CmdTypeTable">Типы команд</Phrase>
     <Phrase key="CmdValTable">Значения команд</Phrase>
     <Phrase key="CnlTypeTable">Типы каналов</Phrase>

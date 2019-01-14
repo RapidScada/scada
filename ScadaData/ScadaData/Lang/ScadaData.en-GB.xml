@@ -40,6 +40,8 @@
     <Phrase key="XmlNodeNotFound">XML node &quot;{0}&quot; not found within the node &quot;{1}&quot;.</Phrase>
     <Phrase key="EventAck">Yes</Phrase>
     <Phrase key="EventNotAck">No</Phrase>
+    <Phrase key="IncorrectCmdVal">Incorrect command value.</Phrase>
+    <Phrase key="IncorrectCmdData">Incorrect command data.</Phrase>
     <Phrase key="CmdTypeTable">Command types</Phrase>
     <Phrase key="CmdValTable">Command values</Phrase>
     <Phrase key="CnlTypeTable">Channel types</Phrase>
