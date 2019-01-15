@@ -266,6 +266,7 @@
     <Phrase key="miEditCopy">Copy</Phrase>
     <Phrase key="miEditPaste">Paste</Phrase>
     <Phrase key="miDeploy">&amp;Deploy</Phrase>
+    <Phrase key="miDeployInstanceProfile">Deployment Profile...</Phrase>
     <Phrase key="miDeployDownloadConfig">Download Configuration...</Phrase>
     <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
@@ -298,6 +299,7 @@
     <Phrase key="miInstanceMoveUp">Move Instance Up</Phrase>
     <Phrase key="miInstanceMoveDown">Move Instance Down</Phrase>
     <Phrase key="miInstanceDelete">Delete Instance</Phrase>
+    <Phrase key="miInstanceProfile">Deployment Profile...</Phrase>
     <Phrase key="miInstanceDownloadConfig">Download Configuration...</Phrase>
     <Phrase key="miInstanceUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miInstanceStatus">Instance Status...</Phrase>

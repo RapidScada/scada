@@ -46,6 +46,7 @@
             this.miEditCopy = new System.Windows.Forms.ToolStripMenuItem();
             this.miEditPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeploy = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeployInstanceProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployDownloadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployUploadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
@@ -84,6 +85,7 @@
             this.miInstanceMoveDown = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miInstanceProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceDownloadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceUploadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
@@ -256,6 +258,7 @@
             // miDeploy
             // 
             this.miDeploy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miDeployInstanceProfile,
             this.miDeployDownloadConfig,
             this.miDeployUploadConfig,
             this.miDeployInstanceStatus});
@@ -263,6 +266,14 @@
             this.miDeploy.Size = new System.Drawing.Size(56, 20);
             this.miDeploy.Text = "&Deploy";
             this.miDeploy.DropDownOpening += new System.EventHandler(this.miDeploy_DropDownOpening);
+            // 
+            // miDeployInstanceProfile
+            // 
+            this.miDeployInstanceProfile.Image = ((System.Drawing.Image)(resources.GetObject("miDeployInstanceProfile.Image")));
+            this.miDeployInstanceProfile.Name = "miDeployInstanceProfile";
+            this.miDeployInstanceProfile.Size = new System.Drawing.Size(214, 22);
+            this.miDeployInstanceProfile.Text = "Deployment Profile...";
+            this.miDeployInstanceProfile.Click += new System.EventHandler(this.miDeployInstanceProfile_Click);
             // 
             // miDeployDownloadConfig
             // 
@@ -300,7 +311,7 @@
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
@@ -564,6 +575,7 @@
             this.miInstanceMoveDown,
             this.miInstanceDelete,
             this.miInstanceSep1,
+            this.miInstanceProfile,
             this.miInstanceDownloadConfig,
             this.miInstanceUploadConfig,
             this.miInstanceStatus,
@@ -571,7 +583,7 @@
             this.miInstanceRename,
             this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
-            this.cmsInstance.Size = new System.Drawing.Size(215, 214);
+            this.cmsInstance.Size = new System.Drawing.Size(215, 236);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
             // 
             // miInstanceAdd
@@ -610,6 +622,14 @@
             // 
             this.miInstanceSep1.Name = "miInstanceSep1";
             this.miInstanceSep1.Size = new System.Drawing.Size(211, 6);
+            // 
+            // miInstanceProfile
+            // 
+            this.miInstanceProfile.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProfile.Image")));
+            this.miInstanceProfile.Name = "miInstanceProfile";
+            this.miInstanceProfile.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceProfile.Text = "Deployment Profile...";
+            this.miInstanceProfile.Click += new System.EventHandler(this.miDeployInstanceProfile_Click);
             // 
             // miInstanceDownloadConfig
             // 
@@ -919,6 +939,8 @@
         private System.Windows.Forms.ToolStripMenuItem miInstanceDownloadConfig;
         private System.Windows.Forms.ToolStripMenuItem miInstanceUploadConfig;
         private System.Windows.Forms.ToolStripMenuItem miInstanceStatus;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceProfile;
+        private System.Windows.Forms.ToolStripMenuItem miDeployInstanceProfile;
     }
 }
 

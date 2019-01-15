@@ -45,6 +45,20 @@
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
+    <Phrase key="this">Генератор</Phrase>
+    <Phrase key="gbServerConn">Связь с Сервером</Phrase>
+    <Phrase key="lblServerHost">Сервер</Phrase>
+    <Phrase key="lblServerPort">Порт</Phrase>
+    <Phrase key="lblServerTimeout">Таймаут</Phrase>
+    <Phrase key="lblServerUser">Пользователь</Phrase>
+    <Phrase key="lblServerPwd">Пароль</Phrase>
+    <Phrase key="gbGenerator">Генератор</Phrase>
+    <Phrase key="btnGenerateData">Данные</Phrase>
+    <Phrase key="btnGenerateEvent">Событие</Phrase>
+    <Phrase key="btnGenerateCmd">Команда</Phrase>
+    <Phrase key="lblProfileWarn">Установите профиль развертывания экземпляра.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Модули</Phrase>
     <Phrase key="lblUnusedModules">Неиспользуемые модули:</Phrase>

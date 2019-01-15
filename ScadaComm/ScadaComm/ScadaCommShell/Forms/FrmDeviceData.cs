@@ -78,6 +78,8 @@ namespace Scada.Comm.Shell.Forms
             {
                 dataBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
+                btnSendCommand.Enabled = false;
+                lblCommandInfo.Visible = false;
             }
             else
             {

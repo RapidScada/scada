@@ -867,9 +867,15 @@ namespace Scada.Admin.App.Forms
             // enable or disable the menu items
             bool deployInstanceFound = project != null && (project.Instances.Count == 1 ||
                 tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance) != null);
+            miDeployInstanceProfile.Enabled = deployInstanceFound;
             miDeployDownloadConfig.Enabled = deployInstanceFound;
             miDeployUploadConfig.Enabled = deployInstanceFound;
             miDeployInstanceStatus.Enabled = deployInstanceFound;
+        }
+
+        private void miDeployInstanceProfile_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void miDeployDownloadConfig_Click(object sender, EventArgs e)
@@ -1320,6 +1326,7 @@ namespace Scada.Admin.App.Forms
             miInstanceDelete.Enabled = isInstanceNode;
 
             bool deployInstanceFound = isInstanceNode || project != null && project.Instances.Count == 1;
+            miInstanceProfile.Enabled = deployInstanceFound;
             miInstanceDownloadConfig.Enabled = deployInstanceFound;
             miInstanceUploadConfig.Enabled = deployInstanceFound;
             miInstanceStatus.Enabled = deployInstanceFound;

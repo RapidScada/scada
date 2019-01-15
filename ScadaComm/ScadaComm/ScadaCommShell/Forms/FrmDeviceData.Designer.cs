@@ -52,7 +52,6 @@
             // 
             // btnSendCommand
             // 
-            this.btnSendCommand.Enabled = false;
             this.btnSendCommand.Location = new System.Drawing.Point(12, 12);
             this.btnSendCommand.Name = "btnSendCommand";
             this.btnSendCommand.Size = new System.Drawing.Size(75, 23);

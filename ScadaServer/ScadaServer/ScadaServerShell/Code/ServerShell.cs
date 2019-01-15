@@ -158,8 +158,8 @@ namespace Scada.Server.Shell.Code
                     SelectedImageKey = "server_generator.png",
                     Tag = new TreeNodeTag()
                     {
-                        FormType = null,
-                        FormArgs = null
+                        FormType = typeof(FrmGenerator),
+                        FormArgs = new object[] { settings, environment }
                     }
                 },
                 new TreeNode(ServerShellPhrases.StatsNode)
