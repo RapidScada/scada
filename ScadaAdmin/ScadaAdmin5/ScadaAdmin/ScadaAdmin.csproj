@@ -124,6 +124,12 @@
     <Compile Include="Forms\Deployment\FrmConnSettings.Designer.cs">
       <DependentUpon>FrmConnSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Deployment\FrmInstanceProfile.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmInstanceProfile.Designer.cs">
+      <DependentUpon>FrmInstanceProfile.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Deployment\FrmUploadConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -209,6 +215,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
       <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmInstanceProfile.resx">
+      <DependentUpon>FrmInstanceProfile.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmInstanceStatus.resx">
       <DependentUpon>FrmInstanceStatus.cs</DependentUpon>

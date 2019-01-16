@@ -173,6 +173,8 @@
     <Phrase key="lblPassword">Пароль</Phrase>
     <Phrase key="lblSecretKey">Секретный ключ</Phrase>
     <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="EmptyFieldsNotAllowed">Пустые значения полей не допускаются.</Phrase>
     <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
     <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
@@ -184,6 +186,12 @@
     <Phrase key="NothingToDownload">Конфигурация для скачивания не выбрана.</Phrase>
     <Phrase key="DownloadConfigComplete">Скачивание завершено успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceProfile">
+    <Phrase key="this">Профиль развёртывания</Phrase>
+    <Phrase key="btnTest">Тест</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
     <Phrase key="this">Статус экземпляра</Phrase>

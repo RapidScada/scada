@@ -173,6 +173,8 @@
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblSecretKey">Secret key</Phrase>
     <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
     <Phrase key="ProfileNameDuplicated">A profile with this name already exists.</Phrase>
     <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
@@ -184,6 +186,12 @@
     <Phrase key="NothingToDownload">Configuration for download is not selected.</Phrase>
     <Phrase key="DownloadConfigComplete">Download completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="DownloadConfigError">Error downloading configuration</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceProfile">
+    <Phrase key="this">Deployment Profile</Phrase>
+    <Phrase key="btnTest">Test</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
     <Phrase key="this">Instance Status</Phrase>

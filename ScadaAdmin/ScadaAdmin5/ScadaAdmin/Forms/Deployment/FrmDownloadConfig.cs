@@ -44,7 +44,7 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;      // the common data of the application
         private readonly ScadaProject project; // the project under development
         private readonly Instance instance;    // the affected instance
-        private bool downloadSettingsModified; // the selected download settings were modified
+        private bool downloadSettingsModified; // the selected download settings are modified
 
 
         /// <summary>
@@ -185,9 +185,9 @@ namespace Scada.Admin.App.Forms.Deployment
             InterfaceModified = false;
             InstanceModified = false;
 
-            downloadSettingsModified = false;
             ctrlTransferSettings.Disable();
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
+            downloadSettingsModified = false;
         }
 
         private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)

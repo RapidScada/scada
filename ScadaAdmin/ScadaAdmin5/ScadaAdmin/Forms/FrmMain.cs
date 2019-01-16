@@ -875,7 +875,26 @@ namespace Scada.Admin.App.Forms
 
         private void miDeployInstanceProfile_Click(object sender, EventArgs e)
         {
+            // select instance profile
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode,
+                out TreeNode instanceNode, out LiveInstance liveInstance))
+            {
+                // load deployment settings
+                LoadDeploymentSettings();
 
+                // open an instance profile form
+                Instance instance = liveInstance.Instance;
+                string profileName = instance.DeploymentProfile;
+                FrmInstanceProfile frmInstanceProfile = new FrmInstanceProfile(appData, project, instance);
+                frmInstanceProfile.ShowDialog();
+
+                // take the changes into account
+                if (profileName != instance.DeploymentProfile)
+                {
+                    UpdateAgentClient(liveInstance);
+                    SaveProjectSettings();
+                }
+            }
         }
 
         private void miDeployDownloadConfig_Click(object sender, EventArgs e)
