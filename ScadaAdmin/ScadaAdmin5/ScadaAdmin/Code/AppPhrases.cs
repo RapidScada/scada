@@ -49,6 +49,7 @@ namespace Scada.Admin.App.Code
         public static string EmptyNode { get; private set; }
 
         // Scada.Admin.App.Controls.Deployment.CtrlProfileSelector
+        public static string ProfileNotSet { get; private set; }
         public static string ConfirmDeleteProfile { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmConnSettings
@@ -60,6 +61,10 @@ namespace Scada.Admin.App.Code
         public static string NothingToDownload { get; private set; }
         public static string DownloadConfigComplete { get; private set; }
         public static string DownloadConfigError { get; private set; }
+
+        // Scada.Admin.App.Forms.Deployment.FrmInstanceProfile
+        public static string ConnectionOK { get; private set; }
+        public static string TestConnectionError { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmInstanceStatus
         public static string NormalSvcStatus { get; private set; }
@@ -136,6 +141,7 @@ namespace Scada.Admin.App.Code
             EmptyNode = dict.GetPhrase("EmptyNode");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
+            ProfileNotSet = dict.GetPhrase("ProfileNotSet");
             ConfirmDeleteProfile = dict.GetPhrase("ConfirmDeleteProfile");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmConnSettings");
@@ -147,6 +153,10 @@ namespace Scada.Admin.App.Code
             NothingToDownload = dict.GetPhrase("NothingToDownload");
             DownloadConfigComplete = dict.GetPhrase("DownloadConfigComplete");
             DownloadConfigError = dict.GetPhrase("DownloadConfigError");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmInstanceProfile");
+            ConnectionOK = dict.GetPhrase("ConnectionOK");
+            TestConnectionError = dict.GetPhrase("TestConnectionError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmInstanceStatus");
             NormalSvcStatus = dict.GetPhrase("NormalSvcStatus");

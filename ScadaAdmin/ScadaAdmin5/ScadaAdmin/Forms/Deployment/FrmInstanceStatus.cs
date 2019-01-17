@@ -184,6 +184,7 @@ namespace Scada.Admin.App.Forms.Deployment
         private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)
         {
             Disconnect();
+            gbAction.Enabled = ctrlProfileSelector.SelectedProfile != null;
         }
 
         private void btnConnect_Click(object sender, EventArgs e)

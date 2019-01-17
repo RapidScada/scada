@@ -43,7 +43,6 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;      // the common data of the application
         private readonly ScadaProject project; // the project under development
         private readonly Instance instance;    // the affected instance
-        private bool profileChanged;           // the selected profile is changed
 
 
         /// <summary>
@@ -66,6 +65,39 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
 
+        /// <summary>
+        /// Tests the connection of the selected profile.
+        /// </summary>
+        private void TestConnection()
+        {
+            try
+            {
+                Cursor = Cursors.WaitCursor;
+                DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
+
+                if (profile != null)
+                {
+                    ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
+                    connSettings.ScadaInstance = instance.Name;
+                    IAgentClient agentClient = new AgentWcfClient(connSettings);
+
+                    bool testResult = agentClient.TestConnection(out string errMsg);
+                    Cursor = Cursors.Default;
+
+                    if (testResult)
+                        ScadaUiUtils.ShowInfo(AppPhrases.ConnectionOK);
+                    else
+                        ScadaUiUtils.ShowError(errMsg);
+                }
+            }
+            catch (Exception ex)
+            {
+                Cursor = Cursors.Default;
+                appData.ProcError(ex, AppPhrases.TestConnectionError);
+            }
+        }
+
+
         private void FrmInstanceProfile_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
@@ -75,37 +107,23 @@ namespace Scada.Admin.App.Forms.Deployment
                 ctrlProfileSelector.Width = btnClose.Right - ctrlProfileSelector.Left;
 
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
-            profileChanged = false;
         }
 
         private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)
         {
-            profileChanged = true;
+            btnTest.Enabled = ctrlProfileSelector.SelectedProfile != null;
         }
 
         private void btnTest_Click(object sender, EventArgs e)
         {
-            // test connection
-            DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
-
-            if (profile != null)
-            {
-                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
-                connSettings.ScadaInstance = instance.Name;
-                IAgentClient agentClient = new AgentWcfClient(connSettings);
-
-                if (agentClient.GetServiceStatus(ServiceApp.Server, out ServiceStatus serviceStatus))
-                    ScadaUiUtils.ShowInfo("OK"); // TODO: message
-                else
-                    ScadaUiUtils.ShowError("Error");
-            }
+            TestConnection();
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            // save the settings changes
-            if (profileChanged && !project.DeploymentSettings.Save(out string errMsg))
-                appData.ProcError(errMsg);
+            // set the instance profile
+            instance.DeploymentProfile = ctrlProfileSelector.SelectedProfile?.Name ?? "";
+            DialogResult = DialogResult.OK;
         }
     }
 }

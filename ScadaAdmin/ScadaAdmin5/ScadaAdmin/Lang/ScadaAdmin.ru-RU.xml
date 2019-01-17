@@ -150,6 +150,7 @@
     <Phrase key="btnCreateProfile">Создать</Phrase>
     <Phrase key="btnEditProfile">Изменить</Phrase>
     <Phrase key="btnDeleteProfile">Удалить</Phrase>
+    <Phrase key="ProfileNotSet">&lt;Не задан&gt;</Phrase>
     <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlTransferSettings">
@@ -192,6 +193,8 @@
     <Phrase key="btnTest">Тест</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ConnectionOK">Соединение в норме.</Phrase>
+    <Phrase key="TestConnectionError">Ошибка при проверке соединения</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
     <Phrase key="this">Статус экземпляра</Phrase>

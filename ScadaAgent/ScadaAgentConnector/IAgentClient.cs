@@ -42,6 +42,11 @@ namespace Scada.Agent.Connector
 
 
         /// <summary>
+        /// Tests the connection with Agent.
+        /// </summary>
+        bool TestConnection(out string errMsg);
+
+        /// <summary>
         /// Sends the command to the service.
         /// </summary>
         bool ControlService(ServiceApp serviceApp, ServiceCommand command);

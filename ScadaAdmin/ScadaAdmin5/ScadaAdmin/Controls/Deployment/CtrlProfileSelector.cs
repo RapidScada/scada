@@ -74,6 +74,7 @@ namespace Scada.Admin.App.Controls.Deployment
             {
                 cbProfile.BeginUpdate();
                 cbProfile.Items.Clear();
+                cbProfile.Items.Add(AppPhrases.ProfileNotSet);
 
                 int selectedIndex = 0;
                 string selectedName = instance.DeploymentProfile;
@@ -85,8 +86,7 @@ namespace Scada.Admin.App.Controls.Deployment
                         selectedIndex = index;
                 }
 
-                if (cbProfile.Items.Count > 0)
-                    cbProfile.SelectedIndex = selectedIndex;
+                cbProfile.SelectedIndex = selectedIndex;
             }
             finally
             {
