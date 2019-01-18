@@ -87,6 +87,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Upload Configuration";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmUploadConfig_FormClosed);
             this.Load += new System.EventHandler(this.FrmDownloadConfig_Load);
             this.ResumeLayout(false);
 

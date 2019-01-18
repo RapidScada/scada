@@ -45,6 +45,22 @@
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
+    <Phrase key="this">Генерация команды</Phrase>
+    <Phrase key="lblCtrlCnlNum">Канал упр.</Phrase>
+    <Phrase key="lblUserID">Пользователь</Phrase>
+    <Phrase key="rbStandard">Стандартная</Phrase>
+    <Phrase key="rbBinary">Бинарная</Phrase>
+    <Phrase key="rbRequest">Опрос КП</Phrase>
+    <Phrase key="lblCmdVal">Значение</Phrase>
+    <Phrase key="btnOff">Откл.</Phrase>
+    <Phrase key="btnOn">Вкл.</Phrase>
+    <Phrase key="lblCmdKPNum">КП</Phrase>
+    <Phrase key="rbString">Строка</Phrase>
+    <Phrase key="rbHex">16-ричные данные</Phrase>
+    <Phrase key="btnSend">Отправить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
     <Phrase key="this">Генератор</Phrase>
     <Phrase key="gbServerConn">Связь с Сервером</Phrase>

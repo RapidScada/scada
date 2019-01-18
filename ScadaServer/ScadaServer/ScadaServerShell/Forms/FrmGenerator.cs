@@ -38,9 +38,10 @@ namespace Scada.Server.Shell.Forms
     /// </summary>
     public partial class FrmGenerator : Form
     {
-        private readonly Settings settings; // the application settings
+        private readonly Settings settings;  // the application settings
         private readonly ServerEnvironment environment; // the application environment
-        private ServerComm serverComm;      // the object to communicate with Server
+        private ServerComm serverComm;       // the object to communicate with Server
+        private FrmGenCommand frmGenCommand; // the form to send command
 
 
         /// <summary>
@@ -60,6 +61,7 @@ namespace Scada.Server.Shell.Forms
             this.settings = settings ?? throw new ArgumentNullException("settings");
             this.environment = environment ?? throw new ArgumentNullException("environment");
             serverComm = null;
+            frmGenCommand = null;
         }
 
 
@@ -97,11 +99,31 @@ namespace Scada.Server.Shell.Forms
             }
         }
 
+
         private void FrmGenerator_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenerator");
             InitServerComm();
             DisplayCommSettings();
+        }
+
+        private void btnGenerateData_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGenerateEvent_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnGenerateCmd_Click(object sender, EventArgs e)
+        {
+            // show the command form
+            if (frmGenCommand == null)
+                frmGenCommand = new FrmGenCommand(serverComm, environment.ErrLog);
+
+            frmGenCommand.ShowDialog();
         }
     }
 }

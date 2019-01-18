@@ -43,6 +43,8 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;      // the common data of the application
         private readonly ScadaProject project; // the project under development
         private readonly Instance instance;    // the affected instance
+        private DeploymentProfile initialProfile;       // the initial deployment profile
+        private ConnectionSettings initialConnSettings; // copy of the initial connection settings
 
 
         /// <summary>
@@ -63,6 +65,17 @@ namespace Scada.Admin.App.Forms.Deployment
             this.project = project ?? throw new ArgumentNullException("project");
             this.instance = instance ?? throw new ArgumentNullException("instance");
         }
+
+
+        /// <summary>
+        /// Gets a value indicating whether the selected profile changed.
+        /// </summary>
+        public bool ProfileChanged { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the connection settings were modified.
+        /// </summary>
+        public bool ConnSettingsModified { get; protected set; }
 
 
         /// <summary>
@@ -106,7 +119,18 @@ namespace Scada.Admin.App.Forms.Deployment
             if (ScadaUtils.IsRunningOnMono)
                 ctrlProfileSelector.Width = btnClose.Right - ctrlProfileSelector.Left;
 
+            ProfileChanged = false;
+            ConnSettingsModified = false;
+
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
+            initialProfile = ctrlProfileSelector.SelectedProfile;
+            initialConnSettings = initialProfile?.ConnectionSettings.Clone();
+        }
+
+        private void FrmInstanceProfile_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ConnSettingsModified = !ProfileChanged &&
+                !ConnectionSettings.Equals(initialConnSettings, initialProfile?.ConnectionSettings);
         }
 
         private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)
@@ -122,7 +146,9 @@ namespace Scada.Admin.App.Forms.Deployment
         private void btnOK_Click(object sender, EventArgs e)
         {
             // set the instance profile
-            instance.DeploymentProfile = ctrlProfileSelector.SelectedProfile?.Name ?? "";
+            DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
+            instance.DeploymentProfile = profile?.Name ?? "";
+            ProfileChanged = initialProfile != profile;
             DialogResult = DialogResult.OK;
         }
     }

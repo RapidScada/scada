@@ -70,6 +70,12 @@
     <Compile Include="Forms\FrmCommonParams.Designer.cs">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGenCommand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenCommand.designer.cs">
+      <DependentUpon>FrmGenCommand.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -127,6 +133,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\FrmCommonParams.resx">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenCommand.resx">
+      <DependentUpon>FrmGenCommand.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGenerator.resx">
       <DependentUpon>FrmGenerator.cs</DependentUpon>

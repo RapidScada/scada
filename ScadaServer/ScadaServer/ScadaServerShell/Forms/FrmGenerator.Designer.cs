@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmGenerator));
             this.gbServerConn = new System.Windows.Forms.GroupBox();
+            this.txtServerTimeout = new System.Windows.Forms.TextBox();
+            this.txtServerPort = new System.Windows.Forms.TextBox();
             this.lblServerPwd = new System.Windows.Forms.Label();
             this.txtServerPwd = new System.Windows.Forms.TextBox();
             this.txtServerUser = new System.Windows.Forms.TextBox();
@@ -39,11 +41,9 @@
             this.lblServerHost = new System.Windows.Forms.Label();
             this.txtServerHost = new System.Windows.Forms.TextBox();
             this.gbGenerator = new System.Windows.Forms.GroupBox();
-            this.btnGenerateData = new System.Windows.Forms.Button();
-            this.btnGenerateEvent = new System.Windows.Forms.Button();
             this.btnGenerateCmd = new System.Windows.Forms.Button();
-            this.txtServerPort = new System.Windows.Forms.TextBox();
-            this.txtServerTimeout = new System.Windows.Forms.TextBox();
+            this.btnGenerateEvent = new System.Windows.Forms.Button();
+            this.btnGenerateData = new System.Windows.Forms.Button();
             this.pnlProfileWarn = new System.Windows.Forms.Panel();
             this.lblProfileWarn = new System.Windows.Forms.Label();
             this.pbWarning = new System.Windows.Forms.PictureBox();
@@ -72,6 +72,22 @@
             this.gbServerConn.TabIndex = 0;
             this.gbServerConn.TabStop = false;
             this.gbServerConn.Text = "Server Connection";
+            // 
+            // txtServerTimeout
+            // 
+            this.txtServerTimeout.Location = new System.Drawing.Point(337, 32);
+            this.txtServerTimeout.Name = "txtServerTimeout";
+            this.txtServerTimeout.ReadOnly = true;
+            this.txtServerTimeout.Size = new System.Drawing.Size(100, 20);
+            this.txtServerTimeout.TabIndex = 5;
+            // 
+            // txtServerPort
+            // 
+            this.txtServerPort.Location = new System.Drawing.Point(231, 32);
+            this.txtServerPort.Name = "txtServerPort";
+            this.txtServerPort.ReadOnly = true;
+            this.txtServerPort.Size = new System.Drawing.Size(100, 20);
+            this.txtServerPort.TabIndex = 3;
             // 
             // lblServerPwd
             // 
@@ -156,14 +172,15 @@
             this.gbGenerator.TabStop = false;
             this.gbGenerator.Text = "Generator";
             // 
-            // btnGenerateData
+            // btnGenerateCmd
             // 
-            this.btnGenerateData.Location = new System.Drawing.Point(13, 19);
-            this.btnGenerateData.Name = "btnGenerateData";
-            this.btnGenerateData.Size = new System.Drawing.Size(137, 23);
-            this.btnGenerateData.TabIndex = 0;
-            this.btnGenerateData.Text = "Data";
-            this.btnGenerateData.UseVisualStyleBackColor = true;
+            this.btnGenerateCmd.Location = new System.Drawing.Point(299, 19);
+            this.btnGenerateCmd.Name = "btnGenerateCmd";
+            this.btnGenerateCmd.Size = new System.Drawing.Size(138, 23);
+            this.btnGenerateCmd.TabIndex = 2;
+            this.btnGenerateCmd.Text = "Command";
+            this.btnGenerateCmd.UseVisualStyleBackColor = true;
+            this.btnGenerateCmd.Click += new System.EventHandler(this.btnGenerateCmd_Click);
             // 
             // btnGenerateEvent
             // 
@@ -173,31 +190,17 @@
             this.btnGenerateEvent.TabIndex = 1;
             this.btnGenerateEvent.Text = "Event";
             this.btnGenerateEvent.UseVisualStyleBackColor = true;
+            this.btnGenerateEvent.Click += new System.EventHandler(this.btnGenerateEvent_Click);
             // 
-            // btnGenerateCmd
+            // btnGenerateData
             // 
-            this.btnGenerateCmd.Location = new System.Drawing.Point(299, 19);
-            this.btnGenerateCmd.Name = "btnGenerateCmd";
-            this.btnGenerateCmd.Size = new System.Drawing.Size(138, 23);
-            this.btnGenerateCmd.TabIndex = 2;
-            this.btnGenerateCmd.Text = "Command";
-            this.btnGenerateCmd.UseVisualStyleBackColor = true;
-            // 
-            // txtServerPort
-            // 
-            this.txtServerPort.Location = new System.Drawing.Point(231, 32);
-            this.txtServerPort.Name = "txtServerPort";
-            this.txtServerPort.ReadOnly = true;
-            this.txtServerPort.Size = new System.Drawing.Size(100, 20);
-            this.txtServerPort.TabIndex = 3;
-            // 
-            // txtServerTimeout
-            // 
-            this.txtServerTimeout.Location = new System.Drawing.Point(337, 32);
-            this.txtServerTimeout.Name = "txtServerTimeout";
-            this.txtServerTimeout.ReadOnly = true;
-            this.txtServerTimeout.Size = new System.Drawing.Size(100, 20);
-            this.txtServerTimeout.TabIndex = 5;
+            this.btnGenerateData.Location = new System.Drawing.Point(13, 19);
+            this.btnGenerateData.Name = "btnGenerateData";
+            this.btnGenerateData.Size = new System.Drawing.Size(137, 23);
+            this.btnGenerateData.TabIndex = 0;
+            this.btnGenerateData.Text = "Data";
+            this.btnGenerateData.UseVisualStyleBackColor = true;
+            this.btnGenerateData.Click += new System.EventHandler(this.btnGenerateData_Click);
             // 
             // pnlProfileWarn
             // 

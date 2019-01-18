@@ -43,7 +43,7 @@ namespace Scada.Comm.Shell.Forms
         private readonly Settings.KP kp;              // the device to control
         private readonly CommEnvironment environment; // the application environment
         private RemoteLogBox dataBox;                 // object to refresh device data
-        private FrmDeviceCommand frmDeviceCommand;    // the form to send commands
+        private FrmDeviceCommand frmDeviceCommand;    // the form to send command
 
 
         /// <summary>
