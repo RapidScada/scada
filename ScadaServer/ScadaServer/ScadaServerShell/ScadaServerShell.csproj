@@ -70,6 +70,18 @@
     <Compile Include="Forms\FrmCommonParams.Designer.cs">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGenCommand.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenCommand.designer.cs">
+      <DependentUpon>FrmGenCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGenerator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenerator.Designer.cs">
+      <DependentUpon>FrmGenerator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmModules.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -103,8 +115,12 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Lang\ScadaServer.en-GB.xml" />
-    <Content Include="Lang\ScadaServer.ru-RU.xml" />
+    <Content Include="Lang\ScadaServer.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\ScadaServer.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="Resources\server_params.png" />
     <None Include="Resources\server_archive.png" />
     <None Include="Resources\server_stats.png" />
@@ -117,6 +133,12 @@
   <ItemGroup>
     <EmbeddedResource Include="Forms\FrmCommonParams.resx">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenCommand.resx">
+      <DependentUpon>FrmGenCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenerator.resx">
+      <DependentUpon>FrmGenerator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmModules.resx">
       <DependentUpon>FrmModules.cs</DependentUpon>

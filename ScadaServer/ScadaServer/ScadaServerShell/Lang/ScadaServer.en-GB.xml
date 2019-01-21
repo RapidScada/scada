@@ -45,6 +45,36 @@
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
+    <Phrase key="this">Generate Command</Phrase>
+    <Phrase key="lblCtrlCnlNum">Out channel</Phrase>
+    <Phrase key="lblUserID">User</Phrase>
+    <Phrase key="rbStandard">Standard</Phrase>
+    <Phrase key="rbBinary">Binary</Phrase>
+    <Phrase key="rbRequest">Request</Phrase>
+    <Phrase key="lblCmdVal">Value</Phrase>
+    <Phrase key="btnOff">Off</Phrase>
+    <Phrase key="btnOn">On</Phrase>
+    <Phrase key="lblCmdKPNum">Device</Phrase>
+    <Phrase key="rbString">String</Phrase>
+    <Phrase key="rbHex">Hexadecimal</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
+    <Phrase key="this">Generator</Phrase>
+    <Phrase key="gbServerConn">Server Connection</Phrase>
+    <Phrase key="lblServerHost">Server</Phrase>
+    <Phrase key="lblServerPort">Port</Phrase>
+    <Phrase key="lblServerTimeout">Timeout</Phrase>
+    <Phrase key="lblServerUser">User</Phrase>
+    <Phrase key="lblServerPwd">Password</Phrase>
+    <Phrase key="gbGenerator">Generator</Phrase>
+    <Phrase key="btnGenerateData">Data</Phrase>
+    <Phrase key="btnGenerateEvent">Event</Phrase>
+    <Phrase key="btnGenerateCmd">Command</Phrase>
+    <Phrase key="lblProfileWarn">Set the instance deployment profile.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Modules</Phrase>
     <Phrase key="lblUnusedModules">Unused modules:</Phrase>

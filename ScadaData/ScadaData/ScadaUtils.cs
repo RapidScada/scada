@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 
@@ -40,7 +41,7 @@ namespace Scada
         /// <summary>
         /// Версия данной библиотеки
         /// </summary>
-        internal const string LibVersion = "5.1.2.0";
+        internal const string LibVersion = "5.1.2.1";
         /// <summary>
         /// Формат вещественных чисел с разделителем точкой
         /// </summary>
@@ -416,6 +417,19 @@ namespace Scada
             return !string.IsNullOrEmpty(s) && 
                 Uri.TryCreate(s, UriKind.Absolute, out Uri uri) &&
                 (uri.Scheme == Uri.UriSchemeHttp || uri.Scheme == Uri.UriSchemeHttps);
+        }
+
+        /// <summary>
+        /// Determines whether two arrays are equal.
+        /// </summary>
+        public static bool ArraysEqual<T>(T[] a, T[] b)
+        {
+            if (a == b)
+                return true;
+            else if (a == null || b == null)
+                return false;
+            else
+                return Enumerable.SequenceEqual(a, b);
         }
     }
 }

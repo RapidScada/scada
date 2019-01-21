@@ -374,6 +374,10 @@ namespace Scada.Agent.Engine
                         "Number of login attempts exceeded";
                     return false;
                 }
+                else
+                {
+                    validateUserAttemptNum++;
+                }
 
                 if (!string.IsNullOrEmpty(username) && !string.IsNullOrEmpty(password))
                 {
@@ -391,16 +395,25 @@ namespace Scada.Agent.Engine
                     if (rows.Length > 0)
                     {
                         DataRow row = rows[0];
-                        if ((string)row["Password"] == password && (int)row["RoleID"] == BaseValues.Roles.Admin)
+                        if ((string)row["Password"] == password)
                         {
-                            validateUserAttemptNum = 0;
-                            errMsg = "";
-                            return true;
+                            if ((int)row["RoleID"] == BaseValues.Roles.App)
+                            {
+                                validateUserAttemptNum = 0;
+                                errMsg = "";
+                                return true;
+                            }
+                            else
+                            {
+                                errMsg = Localization.UseRussian ?
+                                    "Недостаточно прав" :
+                                    "Insufficient rights";
+                                return false;
+                            }
                         }
                     }
                 }
 
-                validateUserAttemptNum++;
                 errMsg = Localization.UseRussian ?
                     "Неверное имя пользователя или пароль" :
                     "Invalid username or password";

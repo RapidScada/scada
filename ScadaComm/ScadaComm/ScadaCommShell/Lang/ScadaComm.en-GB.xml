@@ -130,6 +130,20 @@
     <Phrase key="lblWaitForStop">Wait for communication lines termination, ms</Phrase>
     <Phrase key="lblSendAllDataPer">Period of sending all device data to Server, sec</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceCommand">
+    <Phrase key="this">Command to {0}</Phrase>
+    <Phrase key="lblCmdNum">Command number</Phrase>
+    <Phrase key="rbStandard">Standard</Phrase>
+    <Phrase key="rbBinary">Binary</Phrase>
+    <Phrase key="rbRequest">Request</Phrase>
+    <Phrase key="lblCmdVal">Value</Phrase>
+    <Phrase key="btnOff">Off</Phrase>
+    <Phrase key="btnOn">On</Phrase>
+    <Phrase key="rbString">String</Phrase>
+    <Phrase key="rbHex">Hexadecimal</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
     <Phrase key="this">Device Data</Phrase>
     <Phrase key="btnSendCommand">Command</Phrase>

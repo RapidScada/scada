@@ -52,13 +52,13 @@
             // 
             // btnSendCommand
             // 
-            this.btnSendCommand.Enabled = false;
             this.btnSendCommand.Location = new System.Drawing.Point(12, 12);
             this.btnSendCommand.Name = "btnSendCommand";
             this.btnSendCommand.Size = new System.Drawing.Size(75, 23);
             this.btnSendCommand.TabIndex = 0;
             this.btnSendCommand.Text = "Command";
             this.btnSendCommand.UseVisualStyleBackColor = true;
+            this.btnSendCommand.Click += new System.EventHandler(this.btnSendCommand_Click);
             // 
             // lblCommandInfo
             // 

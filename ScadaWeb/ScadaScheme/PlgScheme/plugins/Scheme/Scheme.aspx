@@ -16,6 +16,7 @@
     <script type="text/javascript" src="../../js/api/ajaxqueue.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
     <script type="text/javascript" src="../../js/api/eventtypes.js"></script>
+    <script type="text/javascript" src="../../js/api/notiftypes.js"></script>
     <script type="text/javascript" src="../../js/api/viewhub.js"></script>
     <script type="text/javascript" src="../../js/controls/notifier.js"></script>
     <script type="text/javascript" src="../../js/controls/popup.js"></script>

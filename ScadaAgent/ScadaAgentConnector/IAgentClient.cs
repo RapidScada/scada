@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Client;
 using System;
 using System.Collections.Generic;
 
@@ -39,6 +40,11 @@ namespace Scada.Agent.Connector
         /// </summary>
         bool IsLocal { get; }
 
+
+        /// <summary>
+        /// Tests the connection with Agent.
+        /// </summary>
+        bool TestConnection(out string errMsg);
 
         /// <summary>
         /// Sends the command to the service.
@@ -74,5 +80,10 @@ namespace Scada.Agent.Connector
         /// Reads the rest of the log file.
         /// </summary>
         bool ReadLog(RelPath relPath, long offsetFromEnd, ref DateTime fileAge, out ICollection<string> lines);
+
+        /// <summary>
+        /// Creates new settings for connecting to Server based on the connection settings of the Agent.
+        /// </summary>
+        CommSettings CreateCommSettings();
     }
 }

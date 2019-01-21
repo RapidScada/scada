@@ -150,6 +150,7 @@
     <Phrase key="btnCreateProfile">Create</Phrase>
     <Phrase key="btnEditProfile">Edit</Phrase>
     <Phrase key="btnDeleteProfile">Delete</Phrase>
+    <Phrase key="ProfileNotSet">&lt;Not set&gt;</Phrase>
     <Phrase key="ConfirmDeleteProfile">Are you sure you want to delete the profile?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlTransferSettings">
@@ -173,6 +174,8 @@
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblSecretKey">Secret key</Phrase>
     <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
     <Phrase key="ProfileNameDuplicated">A profile with this name already exists.</Phrase>
     <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
@@ -184,6 +187,14 @@
     <Phrase key="NothingToDownload">Configuration for download is not selected.</Phrase>
     <Phrase key="DownloadConfigComplete">Download completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="DownloadConfigError">Error downloading configuration</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceProfile">
+    <Phrase key="this">Deployment Profile</Phrase>
+    <Phrase key="btnTest">Test</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ConnectionOK">Connection OK.</Phrase>
+    <Phrase key="TestConnectionError">Error testing connection</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
     <Phrase key="this">Instance Status</Phrase>
@@ -266,6 +277,7 @@
     <Phrase key="miEditCopy">Copy</Phrase>
     <Phrase key="miEditPaste">Paste</Phrase>
     <Phrase key="miDeploy">&amp;Deploy</Phrase>
+    <Phrase key="miDeployInstanceProfile">Deployment Profile...</Phrase>
     <Phrase key="miDeployDownloadConfig">Download Configuration...</Phrase>
     <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
@@ -298,6 +310,7 @@
     <Phrase key="miInstanceMoveUp">Move Instance Up</Phrase>
     <Phrase key="miInstanceMoveDown">Move Instance Down</Phrase>
     <Phrase key="miInstanceDelete">Delete Instance</Phrase>
+    <Phrase key="miInstanceProfile">Deployment Profile...</Phrase>
     <Phrase key="miInstanceDownloadConfig">Download Configuration...</Phrase>
     <Phrase key="miInstanceUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miInstanceStatus">Instance Status...</Phrase>

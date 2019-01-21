@@ -512,20 +512,37 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Creates a new Agent client.
+        /// Gets the deployment profile by name.
         /// </summary>
-        private IAgentClient CreateAgentClient(Instance instance)
+        private DeploymentProfile GetDeploymentProfile(string profileName)
         {
-            if (!string.IsNullOrEmpty(instance.DeploymentProfile) && 
-                project.DeploymentSettings.Profiles.TryGetValue(instance.DeploymentProfile, out DeploymentProfile profile))
+            if (!string.IsNullOrEmpty(profileName) &&
+                project.DeploymentSettings.Profiles.TryGetValue(profileName, out DeploymentProfile profile))
             {
-                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
-                connSettings.ScadaInstance = instance.Name;
-                return new AgentWcfClient(connSettings);
+                return profile;
             }
             else
             {
                 return null;
+            }
+        }
+
+        /// <summary>
+        /// Creates a new Agent client.
+        /// </summary>
+        private IAgentClient CreateAgentClient(Instance instance)
+        {
+            DeploymentProfile profile = GetDeploymentProfile(instance.DeploymentProfile);
+
+            if (profile == null)
+            {
+                return null;
+            }
+            else
+            {
+                ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
+                connSettings.ScadaInstance = instance.Name;
+                return new AgentWcfClient(connSettings);
             }
         }
 
@@ -867,9 +884,36 @@ namespace Scada.Admin.App.Forms
             // enable or disable the menu items
             bool deployInstanceFound = project != null && (project.Instances.Count == 1 ||
                 tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance) != null);
+            miDeployInstanceProfile.Enabled = deployInstanceFound;
             miDeployDownloadConfig.Enabled = deployInstanceFound;
             miDeployUploadConfig.Enabled = deployInstanceFound;
             miDeployInstanceStatus.Enabled = deployInstanceFound;
+        }
+
+        private void miDeployInstanceProfile_Click(object sender, EventArgs e)
+        {
+            // select instance profile
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode,
+                out TreeNode instanceNode, out LiveInstance liveInstance))
+            {
+                // load deployment settings
+                LoadDeploymentSettings();
+
+                // open an instance profile form
+                FrmInstanceProfile frmInstanceProfile = new FrmInstanceProfile(appData, project, liveInstance.Instance);
+                frmInstanceProfile.ShowDialog();
+
+                // take the changes into account
+                if (frmInstanceProfile.ProfileChanged)
+                {
+                    UpdateAgentClient(liveInstance);
+                    SaveProjectSettings();
+                }
+                else if (frmInstanceProfile.ConnSettingsModified)
+                {
+                    UpdateAgentClient(liveInstance);
+                }
+            }
         }
 
         private void miDeployDownloadConfig_Click(object sender, EventArgs e)
@@ -884,16 +928,18 @@ namespace Scada.Admin.App.Forms
                 LoadDeploymentSettings();
 
                 // open a download configuration form
-                Instance instance = liveInstance.Instance;
-                string profileName = instance.DeploymentProfile;
-                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(appData, project, instance);
+                FrmDownloadConfig frmDownloadConfig = new FrmDownloadConfig(appData, project, liveInstance.Instance);
                 frmDownloadConfig.ShowDialog();
 
                 // take the changes into account
-                if (profileName != instance.DeploymentProfile)
+                if (frmDownloadConfig.ProfileChanged)
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
+                else if (frmDownloadConfig.ConnSettingsModified)
+                {
+                    UpdateAgentClient(liveInstance);
                 }
 
                 if (frmDownloadConfig.BaseModified)
@@ -933,16 +979,18 @@ namespace Scada.Admin.App.Forms
                 LoadDeploymentSettings();
 
                 // open an upload configuration form
-                Instance instance = liveInstance.Instance;
-                string profileName = instance.DeploymentProfile;
-                FrmUploadConfig frmUploadConfig = new FrmUploadConfig(appData, project, instance);
+                FrmUploadConfig frmUploadConfig = new FrmUploadConfig(appData, project, liveInstance.Instance);
                 frmUploadConfig.ShowDialog();
 
                 // take the changes into account
-                if (profileName != instance.DeploymentProfile)
+                if (frmUploadConfig.ProfileChanged)
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
+                else if (frmUploadConfig.ConnSettingsModified)
+                {
+                    UpdateAgentClient(liveInstance);
                 }
             }
         }
@@ -957,17 +1005,19 @@ namespace Scada.Admin.App.Forms
                 LoadDeploymentSettings();
 
                 // open an instance status form
-                Instance instance = liveInstance.Instance;
-                string profileName = instance.DeploymentProfile;
                 FrmInstanceStatus frmInstanceStatus = 
-                    new FrmInstanceStatus(appData, project.DeploymentSettings, instance);
+                    new FrmInstanceStatus(appData, project.DeploymentSettings, liveInstance.Instance);
                 frmInstanceStatus.ShowDialog();
 
                 // take the changes into account
-                if (profileName != instance.DeploymentProfile)
+                if (frmInstanceStatus.ProfileChanged)
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                }
+                else if (frmInstanceStatus.ConnSettingsModified)
+                {
+                    UpdateAgentClient(liveInstance);
                 }
             }
         }
@@ -1320,6 +1370,7 @@ namespace Scada.Admin.App.Forms
             miInstanceDelete.Enabled = isInstanceNode;
 
             bool deployInstanceFound = isInstanceNode || project != null && project.Instances.Count == 1;
+            miInstanceProfile.Enabled = deployInstanceFound;
             miInstanceDownloadConfig.Enabled = deployInstanceFound;
             miInstanceUploadConfig.Enabled = deployInstanceFound;
             miInstanceStatus.Enabled = deployInstanceFound;

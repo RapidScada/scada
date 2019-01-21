@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -128,6 +128,31 @@ namespace Scada.Agent.Connector
         public ConnectionSettings Clone()
         {
             return ScadaUtils.DeepClone(this);
+        }
+
+        /// <summary>
+        /// Determines whether two specified objects have the same value.
+        /// </summary>
+        public static bool Equals(ConnectionSettings a, ConnectionSettings b)
+        {
+            if (a == b)
+            {
+                return true;
+            }
+            else if (a == null || b == null)
+            {
+                return false;
+            }
+            else
+            {
+                return
+                    a.Host == b.Host &&
+                    a.Port == b.Port &&
+                    a.Username == b.Username &&
+                    a.Password == b.Password &&
+                    a.ScadaInstance == b.ScadaInstance &&
+                    ScadaUtils.ArraysEqual(a.SecretKey, b.SecretKey);
+            }
         }
     }
 }

@@ -150,6 +150,7 @@
     <Phrase key="btnCreateProfile">Создать</Phrase>
     <Phrase key="btnEditProfile">Изменить</Phrase>
     <Phrase key="btnDeleteProfile">Удалить</Phrase>
+    <Phrase key="ProfileNotSet">&lt;Не задан&gt;</Phrase>
     <Phrase key="ConfirmDeleteProfile">Вы уверены, что хотите удалить профиль?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlTransferSettings">
@@ -173,6 +174,8 @@
     <Phrase key="lblPassword">Пароль</Phrase>
     <Phrase key="lblSecretKey">Секретный ключ</Phrase>
     <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="EmptyFieldsNotAllowed">Пустые значения полей не допускаются.</Phrase>
     <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
     <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
@@ -184,6 +187,14 @@
     <Phrase key="NothingToDownload">Конфигурация для скачивания не выбрана.</Phrase>
     <Phrase key="DownloadConfigComplete">Скачивание завершено успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="DownloadConfigError">Ошибка при скачивании конфигурации</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceProfile">
+    <Phrase key="this">Профиль развёртывания</Phrase>
+    <Phrase key="btnTest">Тест</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ConnectionOK">Соединение в норме.</Phrase>
+    <Phrase key="TestConnectionError">Ошибка при проверке соединения</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmInstanceStatus">
     <Phrase key="this">Статус экземпляра</Phrase>
@@ -266,6 +277,7 @@
     <Phrase key="miEditCopy">Копировать</Phrase>
     <Phrase key="miEditPaste">Вставить</Phrase>
     <Phrase key="miDeploy">&amp;Развертывание</Phrase>
+    <Phrase key="miDeployInstanceProfile">Профиль развёртывания...</Phrase>
     <Phrase key="miDeployDownloadConfig">Скачать конфигурацию...</Phrase>
     <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
@@ -298,6 +310,7 @@
     <Phrase key="miInstanceMoveUp">Переместить экземпляр вверх</Phrase>
     <Phrase key="miInstanceMoveDown">Переместить экземпляр вниз</Phrase>
     <Phrase key="miInstanceDelete">Удалить экземпляр</Phrase>
+    <Phrase key="miInstanceProfile">Профиль развёртывания...</Phrase>
     <Phrase key="miInstanceDownloadConfig">Скачать конфигурацию...</Phrase>
     <Phrase key="miInstanceUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miInstanceStatus">Статус экземпляра...</Phrase>

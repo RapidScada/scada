@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Communicator Shell
+ * Module   : Server Shell
  * Summary  : Form to send a telecontrol command.
  * 
  * Author   : Mikhail Shiryaev
@@ -23,34 +23,29 @@
  * Modified : 2019
  */
 
-using Scada.Comm.Shell.Code;
-using Scada.Data.Configuration;
+using Scada.Client;
 using Scada.Data.Models;
 using Scada.UI;
 using System;
 using System.Windows.Forms;
+using Utils;
 
-namespace Scada.Comm.Shell.Forms
+namespace Scada.Server.Shell.Forms
 {
     /// <summary>
     /// Form to send a telecontrol command.
     /// <para>Форма для отправки команды ТУ.</para>
     /// </summary>
-    public partial class FrmDeviceCommand : Form
+    public partial class FrmGenCommand : Form
     {
-        /// <summary>
-        /// The command sender specified in command files.
-        /// </summary>
-        private const string CommandSender = "ScadaCommShell";
-
-        private readonly Settings.KP kp;              // the device that receives command
-        private readonly CommEnvironment environment; // the application environment
+        private ServerComm serverComm; // the object to communicate with Server
+        private Log errLog;            // the application error log
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        private FrmDeviceCommand()
+        private FrmGenCommand()
         {
             InitializeComponent();
         }
@@ -58,11 +53,11 @@ namespace Scada.Comm.Shell.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmDeviceCommand(Settings.KP kp, CommEnvironment environment)
+        public FrmGenCommand(ServerComm serverComm, Log errLog)
             : this()
         {
-            this.kp = kp ?? throw new ArgumentNullException("kp");
-            this.environment = environment ?? throw new ArgumentNullException("environment");
+            this.serverComm = serverComm ?? throw new ArgumentNullException("serverComm");
+            this.errLog = errLog ?? throw new ArgumentNullException("errLog");
         }
 
 
@@ -73,29 +68,29 @@ namespace Scada.Comm.Shell.Forms
         {
             if (rbStandard.Checked)
             {
-                numCmdNum.Enabled = true;
                 pnlCmdVal.Visible = true;
                 pnlCmdData.Visible = false;
+                pnlCmdDevice.Visible = false;
             }
             else if (rbBinary.Checked)
             {
-                numCmdNum.Enabled = true;
                 pnlCmdVal.Visible = false;
                 pnlCmdData.Visible = true;
+                pnlCmdDevice.Visible = false;
             }
             else // rbRequest.Checked
             {
-                numCmdNum.Enabled = false;
                 pnlCmdVal.Visible = false;
                 pnlCmdData.Visible = false;
+                pnlCmdDevice.Visible = true;
             }
         }
 
 
         private void FrmDeviceCommand_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDeviceCommand");
-            Text = string.Format(Text, kp.Caption);
+            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenCommand");
+            pnlCmdVal.Top = pnlCmdDevice.Top = pnlCmdData.Top;
             AdjustControls();
         }
 
@@ -112,15 +107,14 @@ namespace Scada.Comm.Shell.Forms
 
         private void btnSend_Click(object sender, EventArgs e)
         {
-            // initialize a command
-            Command cmd = new Command() { KPNum = kp.Number };
-            bool cmdOK = false;
+            // send a command to Server
+            int userID = decimal.ToInt32(numUserID.Value);
+            int ctrlCnlNum = decimal.ToInt32(numCtrlCnlNum.Value);
+            bool cmdSent = false;
+            bool sendOK = false;
 
             if (rbStandard.Checked)
             {
-                cmd.CmdTypeID = BaseValues.CmdTypes.Standard;
-                cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
-
                 double cmdVal = ScadaUtils.StrToDouble(txtCmdVal.Text);
                 if (double.IsNaN(cmdVal))
                 {
@@ -128,24 +122,22 @@ namespace Scada.Comm.Shell.Forms
                 }
                 else
                 {
-                    cmd.CmdVal = cmdVal;
-                    cmdOK = true;
+                    sendOK = serverComm.SendStandardCommand(userID, ctrlCnlNum, cmdVal, out bool result);
+                    cmdSent = true;
                 }
             }
             else if (rbBinary.Checked)
             {
-                cmd.CmdTypeID = BaseValues.CmdTypes.Binary;
-                cmd.CmdNum = decimal.ToInt32(numCmdNum.Value);
-
                 if (rbString.Checked)
                 {
-                    cmd.CmdData = Command.StrToCmdData(txtCmdData.Text);
-                    cmdOK = true;
+                    byte[] cmdData = Command.StrToCmdData(txtCmdData.Text);
+                    sendOK = serverComm.SendBinaryCommand(userID, ctrlCnlNum, cmdData, out bool result);
+                    cmdSent = true;
                 }
                 else if (ScadaUtils.HexToBytes(txtCmdData.Text, out byte[] cmdData, true))
                 {
-                    cmd.CmdData = cmdData;
-                    cmdOK = true;
+                    sendOK = serverComm.SendBinaryCommand(userID, ctrlCnlNum, cmdData, out bool result);
+                    cmdSent = true;
                 }
                 else
                 {
@@ -154,21 +146,21 @@ namespace Scada.Comm.Shell.Forms
             }
             else
             {
-                cmd.CmdTypeID = BaseValues.CmdTypes.Request;
-                cmdOK = true;
+                int kpNum = decimal.ToInt32(numCmdKPNum.Value);
+                sendOK = serverComm.SendRequestCommand(userID, ctrlCnlNum, kpNum, out bool result);
+                cmdSent = true;
             }
 
-            // save the command to file
-            if (cmdOK)
+            if (cmdSent)
             {
-                if (CommUtils.SaveCmd(environment.AppDirs.CmdDir, CommandSender, cmd, out string msg))
+                if (sendOK)
                 {
                     DialogResult = DialogResult.OK;
                 }
                 else
                 {
-                    environment.ErrLog.WriteError(msg);
-                    ScadaUiUtils.ShowError(msg);
+                    errLog.WriteError(serverComm.ErrMsg);
+                    ScadaUiUtils.ShowError(serverComm.ErrMsg);
                 }
             }
         }

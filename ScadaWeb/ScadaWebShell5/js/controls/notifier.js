@@ -3,11 +3,12 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2019
  *
  * Requires:
  * - jquery
  * - eventtypes.js
+ * - notiftypes.js
  */
 
 // Rapid SCADA namespace

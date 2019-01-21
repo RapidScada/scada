@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -77,6 +77,8 @@ namespace Scada
         public static string XmlNodeNotFound { get; private set; }
         public static string EventAck { get; private set; }
         public static string EventNotAck { get; private set; }
+        public static string IncorrectCmdVal { get; private set; }
+        public static string IncorrectCmdData { get; private set; }
 
         public static string CmdTypeTable { get; private set; }
         public static string CmdValTable { get; private set; }
@@ -151,6 +153,8 @@ namespace Scada
             XmlNodeNotFound = Localization.Dict.GetEmptyPhrase("XmlNodeNotFound");
             EventAck = Localization.Dict.GetEmptyPhrase("EventAck");
             EventNotAck = Localization.Dict.GetEmptyPhrase("EventNotAck");
+            IncorrectCmdVal = Localization.Dict.GetEmptyPhrase("IncorrectCmdVal");
+            IncorrectCmdData = Localization.Dict.GetEmptyPhrase("IncorrectCmdData");
 
             CmdTypeTable = Localization.Dict.GetEmptyPhrase("CmdTypeTable");
             CmdValTable = Localization.Dict.GetEmptyPhrase("CmdValTable");
@@ -187,8 +191,7 @@ namespace Scada
 
         public static void Init()
         {
-            Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Common", out dict))
+            if (Localization.Dictionaries.TryGetValue("Common", out Localization.Dict dict))
             {
                 InfoCaption = dict.GetPhrase("InfoCaption", InfoCaption);
                 QuestionCaption = dict.GetPhrase("QuestionCaption", QuestionCaption);
@@ -228,6 +231,8 @@ namespace Scada
                 XmlNodeNotFound = dict.GetPhrase("XmlNodeNotFound", XmlNodeNotFound);
                 EventAck = dict.GetPhrase("EventAck", EventAck);
                 EventNotAck = dict.GetPhrase("EventNotAck", EventNotAck);
+                IncorrectCmdVal = dict.GetPhrase("IncorrectCmdVal", IncorrectCmdVal);
+                IncorrectCmdData = dict.GetPhrase("IncorrectCmdData", IncorrectCmdData);
 
                 CmdTypeTable = dict.GetPhrase("CmdTypeTable", CmdTypeTable);
                 CmdValTable = dict.GetPhrase("CmdValTable", CmdValTable);

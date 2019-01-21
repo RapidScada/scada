@@ -24,6 +24,7 @@
  */
 
 using Scada.Agent.Connector.AgentSvcRef;
+using Scada.Client;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -152,6 +153,24 @@ namespace Scada.Agent.Connector
             return iv;
         }
 
+
+        /// <summary>
+        /// Tests the connection with Agent.
+        /// </summary>
+        public bool TestConnection(out string errMsg)
+        {
+            try
+            {
+                RestoreConnection();
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return false;
+            }
+        }
 
         /// <summary>
         /// Sends the command to the service.
@@ -348,6 +367,19 @@ namespace Scada.Agent.Connector
                 lines = null;
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Creates new settings for connecting to Server based on the connection settings of the Agent.
+        /// </summary>
+        public CommSettings CreateCommSettings()
+        {
+            return new CommSettings()
+            {
+                ServerHost = connSettings.Host,
+                ServerUser = connSettings.Username,
+                ServerPwd = connSettings.Password
+            };
         }
     }
 }

@@ -44,7 +44,9 @@ namespace Scada.Admin.App.Forms.Deployment
         private readonly AppData appData;      // the common data of the application
         private readonly ScadaProject project; // the project under development
         private readonly Instance instance;    // the affected instance
-        private bool downloadSettingsModified; // the selected download settings were modified
+        private DeploymentProfile initialProfile;       // the initial deployment profile
+        private ConnectionSettings initialConnSettings; // copy of the initial connection settings
+        private bool downloadSettingsModified;          // the selected download settings are modified
 
 
         /// <summary>
@@ -68,17 +70,27 @@ namespace Scada.Admin.App.Forms.Deployment
 
 
         /// <summary>
-        /// Gets a value indicating whether the configuration database was modified
+        /// Gets a value indicating whether the selected profile changed.
+        /// </summary>
+        public bool ProfileChanged { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the connection settings were modified.
+        /// </summary>
+        public bool ConnSettingsModified { get; protected set; }
+
+        /// <summary>
+        /// Gets a value indicating whether the configuration database was modified.
         /// </summary>
         public bool BaseModified { get; protected set; }
 
         /// <summary>
-        /// Gets a value indicating whether the interface files were modified
+        /// Gets a value indicating whether the interface files were modified.
         /// </summary>
         public bool InterfaceModified { get; protected set; }
 
         /// <summary>
-        /// Gets a value indicating whether the instance was modified
+        /// Gets a value indicating whether the instance was modified.
         /// </summary>
         public bool InstanceModified { get; protected set; }
         
@@ -181,13 +193,24 @@ namespace Scada.Admin.App.Forms.Deployment
                 ctrlTransferSettings.Width = ctrlWidth;
             }
 
+            ProfileChanged = false;
+            ConnSettingsModified = false;
             BaseModified = false;
             InterfaceModified = false;
             InstanceModified = false;
 
-            downloadSettingsModified = false;
             ctrlTransferSettings.Disable();
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
+
+            initialProfile = ctrlProfileSelector.SelectedProfile;
+            initialConnSettings = initialProfile?.ConnectionSettings.Clone();
+            downloadSettingsModified = false;
+        }
+
+        private void FrmDownloadConfig_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            ConnSettingsModified = !ProfileChanged &&
+                !ConnectionSettings.Equals(initialConnSettings, initialProfile?.ConnectionSettings);
         }
 
         private void ctrlProfileSelector_SelectedProfileChanged(object sender, EventArgs e)
@@ -231,7 +254,10 @@ namespace Scada.Admin.App.Forms.Deployment
                 // download
                 instance.DeploymentProfile = profile.Name;
                 if (DownloadConfig(profile))
+                {
+                    ProfileChanged = initialProfile != profile;
                     DialogResult = DialogResult.OK;
+                }
             }
         }
     }
