@@ -48,6 +48,7 @@ namespace Scada.Server.Shell.Forms
         private FrmGenCommand()
         {
             InitializeComponent();
+            pnlCmdVal.Top = pnlCmdDevice.Top = pnlCmdData.Top;
         }
 
         /// <summary>
@@ -90,7 +91,6 @@ namespace Scada.Server.Shell.Forms
         private void FrmDeviceCommand_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenCommand");
-            pnlCmdVal.Top = pnlCmdDevice.Top = pnlCmdData.Top;
             AdjustControls();
         }
 

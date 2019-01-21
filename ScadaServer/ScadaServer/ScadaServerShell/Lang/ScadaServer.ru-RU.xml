@@ -61,6 +61,22 @@
     <Phrase key="btnSend">Отправить</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenData">
+    <Phrase key="this">Генерация данных</Phrase>
+    <Phrase key="rbCurData">Текущие данные</Phrase>
+    <Phrase key="rbArcData">Архивные данные</Phrase>
+    <Phrase key="lblCnlNum">Канал</Phrase>
+    <Phrase key="lblCnlVal">Значение</Phrase>
+    <Phrase key="btnValOff">Откл.</Phrase>
+    <Phrase key="btnValOn">Вкл.</Phrase>
+    <Phrase key="lblCnlStat">Статус</Phrase>
+    <Phrase key="btnStatZero">0</Phrase>
+    <Phrase key="btnStatOne">1</Phrase>
+    <Phrase key="btnSend">Отправить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="IncorrectCnlNum">Некорректный номер канала.</Phrase>
+    <Phrase key="IncorrectCnlVal">Некорректное значение канала.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
     <Phrase key="this">Генератор</Phrase>
     <Phrase key="gbServerConn">Связь с Сервером</Phrase>

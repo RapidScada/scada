@@ -76,11 +76,23 @@
     <Compile Include="Forms\FrmGenCommand.designer.cs">
       <DependentUpon>FrmGenCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGenData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenData.Designer.cs">
+      <DependentUpon>FrmGenData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmGenerator.Designer.cs">
       <DependentUpon>FrmGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGenEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenEvent.Designer.cs">
+      <DependentUpon>FrmGenEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmModules.cs">
       <SubType>Form</SubType>
@@ -136,6 +148,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGenCommand.resx">
       <DependentUpon>FrmGenCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenData.resx">
+      <DependentUpon>FrmGenData.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGenerator.resx">
       <DependentUpon>FrmGenerator.cs</DependentUpon>

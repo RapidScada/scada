@@ -61,6 +61,22 @@
     <Phrase key="btnSend">Send</Phrase>
     <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenData">
+    <Phrase key="this">Generate Data</Phrase>
+    <Phrase key="rbCurData">Current data</Phrase>
+    <Phrase key="rbArcData">Archive data</Phrase>
+    <Phrase key="lblCnlNum">Channel</Phrase>
+    <Phrase key="lblCnlVal">Value</Phrase>
+    <Phrase key="btnValOff">Off</Phrase>
+    <Phrase key="btnValOn">On</Phrase>
+    <Phrase key="lblCnlStat">Status</Phrase>
+    <Phrase key="btnStatZero">0</Phrase>
+    <Phrase key="btnStatOne">1</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="IncorrectCnlNum">Incorrect channel number.</Phrase>
+    <Phrase key="IncorrectCnlVal">Incorrect channel value.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
     <Phrase key="this">Generator</Phrase>
     <Phrase key="gbServerConn">Server Connection</Phrase>

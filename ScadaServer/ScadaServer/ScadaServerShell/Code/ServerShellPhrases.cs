@@ -54,6 +54,10 @@ namespace Scada.Server.Shell.Code
         public static string ChooseArcDir { get; private set; }
         public static string ChooseArcCopyDir { get; private set; }
 
+        // Scada.Server.Shell.Forms.FrmGenData
+        public static string IncorrectCnlNum { get; private set; }
+        public static string IncorrectCnlVal { get; private set; }
+
         // Scada.Server.Shell.Forms.FrmModules
         public static string ModuleNotFound { get; private set; }
 
@@ -79,6 +83,10 @@ namespace Scada.Server.Shell.Code
             ChooseItfDir = dict.GetPhrase("ChooseItfDir");
             ChooseArcDir = dict.GetPhrase("ChooseArcDir");
             ChooseArcCopyDir = dict.GetPhrase("ChooseArcCopyDir");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmGenData");
+            IncorrectCnlNum = dict.GetPhrase("IncorrectCnlNum");
+            IncorrectCnlVal = dict.GetPhrase("IncorrectCnlVal");
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmModules");
             ModuleNotFound = dict.GetPhrase("ModuleNotFound");

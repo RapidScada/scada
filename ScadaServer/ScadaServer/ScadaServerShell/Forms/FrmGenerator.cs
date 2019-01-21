@@ -41,6 +41,8 @@ namespace Scada.Server.Shell.Forms
         private readonly Settings settings;  // the application settings
         private readonly ServerEnvironment environment; // the application environment
         private ServerComm serverComm;       // the object to communicate with Server
+        private FrmGenData frmGenData;       // the form to send data
+        private FrmGenEvent frmGenEvent;     // the form to send event
         private FrmGenCommand frmGenCommand; // the form to send command
 
 
@@ -61,6 +63,8 @@ namespace Scada.Server.Shell.Forms
             this.settings = settings ?? throw new ArgumentNullException("settings");
             this.environment = environment ?? throw new ArgumentNullException("environment");
             serverComm = null;
+            frmGenData = null;
+            frmGenEvent = null;
             frmGenCommand = null;
         }
 
@@ -109,17 +113,25 @@ namespace Scada.Server.Shell.Forms
 
         private void btnGenerateData_Click(object sender, EventArgs e)
         {
+            // show the data generator form
+            if (frmGenData == null)
+                frmGenData = new FrmGenData(serverComm, environment.ErrLog);
 
+            frmGenData.ShowDialog();
         }
 
         private void btnGenerateEvent_Click(object sender, EventArgs e)
         {
+            // show the event generator form
+            if (frmGenEvent == null)
+                frmGenEvent = new FrmGenEvent(/*serverComm, environment.ErrLog*/);
 
+            frmGenEvent.ShowDialog();
         }
 
         private void btnGenerateCmd_Click(object sender, EventArgs e)
         {
-            // show the command form
+            // show the command generator form
             if (frmGenCommand == null)
                 frmGenCommand = new FrmGenCommand(serverComm, environment.ErrLog);
 

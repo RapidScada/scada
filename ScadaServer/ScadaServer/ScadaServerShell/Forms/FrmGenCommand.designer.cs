@@ -132,7 +132,7 @@
             // btnOn
             // 
             this.btnOn.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnOn.Location = new System.Drawing.Point(207, 16);
+            this.btnOn.Location = new System.Drawing.Point(213, 16);
             this.btnOn.Name = "btnOn";
             this.btnOn.Size = new System.Drawing.Size(45, 20);
             this.btnOn.TabIndex = 3;
@@ -143,7 +143,7 @@
             // btnOff
             // 
             this.btnOff.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.btnOff.Location = new System.Drawing.Point(156, 16);
+            this.btnOff.Location = new System.Drawing.Point(162, 16);
             this.btnOff.Name = "btnOff";
             this.btnOff.Size = new System.Drawing.Size(45, 20);
             this.btnOff.TabIndex = 2;
@@ -155,7 +155,7 @@
             // 
             this.txtCmdVal.Location = new System.Drawing.Point(0, 16);
             this.txtCmdVal.Name = "txtCmdVal";
-            this.txtCmdVal.Size = new System.Drawing.Size(150, 20);
+            this.txtCmdVal.Size = new System.Drawing.Size(156, 20);
             this.txtCmdVal.TabIndex = 1;
             this.txtCmdVal.Text = "0";
             // 
