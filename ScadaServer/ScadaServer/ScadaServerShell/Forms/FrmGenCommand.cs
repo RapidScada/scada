@@ -19,7 +19,7 @@
  * Summary  : Form to send a telecontrol command.
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
+ * Created  : 2019
  * Modified : 2019
  */
 
@@ -49,6 +49,7 @@ namespace Scada.Server.Shell.Forms
         {
             InitializeComponent();
             pnlCmdVal.Top = pnlCmdDevice.Top = pnlCmdData.Top;
+            AdjustControls();
         }
 
         /// <summary>
@@ -91,7 +92,6 @@ namespace Scada.Server.Shell.Forms
         private void FrmDeviceCommand_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenCommand");
-            AdjustControls();
         }
 
         private void rbCmdType_CheckedChanged(object sender, EventArgs e)

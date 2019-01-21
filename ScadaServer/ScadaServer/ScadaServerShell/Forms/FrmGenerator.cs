@@ -124,7 +124,7 @@ namespace Scada.Server.Shell.Forms
         {
             // show the event generator form
             if (frmGenEvent == null)
-                frmGenEvent = new FrmGenEvent(/*serverComm, environment.ErrLog*/);
+                frmGenEvent = new FrmGenEvent(serverComm, environment.ErrLog);
 
             frmGenEvent.ShowDialog();
         }

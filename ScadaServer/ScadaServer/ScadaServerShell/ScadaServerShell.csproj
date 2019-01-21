@@ -155,6 +155,9 @@
     <EmbeddedResource Include="Forms\FrmGenerator.resx">
       <DependentUpon>FrmGenerator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenEvent.resx">
+      <DependentUpon>FrmGenEvent.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmModules.resx">
       <DependentUpon>FrmModules.cs</DependentUpon>
     </EmbeddedResource>
