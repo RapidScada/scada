@@ -79,6 +79,7 @@
     <Content Include="js\api\ajaxqueue.js" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
+    <Content Include="js\api\notiftypes.js" />
     <Content Include="js\api\utils.js" />
     <Content Include="js\api\viewhub.js" />
     <Content Include="js\controls\notifier.js" />

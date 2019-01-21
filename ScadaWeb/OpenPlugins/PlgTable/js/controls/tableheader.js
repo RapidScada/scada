@@ -7,6 +7,7 @@
  *
  * Requires:
  * - jquery
+ * - utils.js
  */
 
 // Rapid SCADA namespace
@@ -24,9 +25,11 @@ scada.tableHeader = {
 
             if (origCell.css("display") != "none") {
                 var origCellSpan = origCell.children("span");
-                var cellWidth = origCellSpan.width(); // jQuery may round fractional part
-                origCellSpan.width(cellWidth);
-                $(this).find("span").width(cellWidth);
+                if (origCellSpan.length > 0) {
+                    var cellWidth = origCellSpan[0].getBoundingClientRect().width; // fractional value is required
+                    $(this).find("span").width(cellWidth);
+                    $(this).css("width", cellWidth);
+                }
             }
         });
     },
@@ -46,12 +49,24 @@ scada.tableHeader = {
             table.append(fixedHeader);
             thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
 
-            wrapper
-            .off("scroll")
-            .scroll(function () {
-                var fixedHeaderTop = -table.position().top;
-                fixedHeader.css("top", fixedHeaderTop);
-            });
+            var setHeaderTopFunc = function () {
+                fixedHeader.css("top", -table.position().top);
+            };
+
+            if (scada.utils.iOS()) {
+                // prevent header blinking on iOS
+                var scrollTimer = null;
+                wrapper
+                .off("scroll")
+                .on("scroll", function () {
+                    if (scrollTimer) {
+                        clearTimeout(scrollTimer);
+                    }
+                    scrollTimer = setTimeout(setHeaderTopFunc, 100);
+                });
+            } else {
+                wrapper.off("scroll").on("scroll", setHeaderTopFunc);
+            }
         });
     },
 
@@ -61,9 +76,20 @@ scada.tableHeader = {
 
         $(".table-wrapper").each(function () {
             var wrapper = $(this);
-            var origHeader = $(this).find("tr.orig-table-header:first");
-            var fixedHeader = $(this).find("tr.fixed-table-header:first");
-            thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
+            var table = wrapper.children("table");
+            var fixedHeader = table.find("tr.fixed-table-header:first");
+
+            if (fixedHeader.length > 0 /*already created*/) {
+                var origHeader = table.find("tr.orig-table-header:first");
+                thisObj._updateHeaderCellWidths(origHeader, fixedHeader);
+
+                // make sure that the fixed header is the last row
+                var lastRow = table.find("tr:last");
+                if (!fixedHeader.is(lastRow)) {
+                    fixedHeader.detach();
+                    table.append(fixedHeader);
+                }
+            }
         });
     }
 }

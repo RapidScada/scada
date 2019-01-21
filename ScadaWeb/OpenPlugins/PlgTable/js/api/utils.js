@@ -174,11 +174,16 @@ scada.utils = {
         }
     },        
 
-    // Check if browser is in fullscreen mode
+    // Check if browser is in fullscreen mode switched on programmatically
     // See https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API
     isFullscreen: function() {
         return document.fullscreenElement || document.mozFullScreenElement ||
             document.webkitFullscreenElement || document.msFullscreenElement;
+    },
+
+    // Check if browser is in fullscreen mode
+    isRealFullscreen: function () {
+        return screen.height - window.innerHeight <= 1;
     },
 
     // Switch browser to fullscreen mode
@@ -285,7 +290,16 @@ scada.utils = {
     },
 
     // Get URL of the view by its ID
-    getViewUrl: function (viewID) {
-        return "View.aspx?viewID=" + viewID;
+    getViewUrl: function (viewID, opt_isPopup) {
+        return (opt_isPopup ? "ViewPopup.aspx?viewID=" : "View.aspx?viewID=") + viewID;
+    },
+
+    // Check that the frame is accessible due to the browser security
+    checkAccessToFrame: function (frameWnd) {
+        try {
+            return frameWnd.document != null;
+        } catch (ex) {
+            return false;
+        }
     }
 };
