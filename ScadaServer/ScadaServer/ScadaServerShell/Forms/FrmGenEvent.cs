@@ -24,6 +24,8 @@
  */
 
 using Scada.Client;
+using Scada.Data.Tables;
+using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
 using System.Windows.Forms;
@@ -75,7 +77,48 @@ namespace Scada.Server.Shell.Forms
 
         private void btnSend_Click(object sender, EventArgs e)
         {
+            // create event to send
+            double oldCnlVal = ScadaUtils.StrToDouble(txtOldCnlVal.Text);
+            if (double.IsNaN(oldCnlVal))
+            {
+                ScadaUiUtils.ShowError(ServerShellPhrases.IncorrectOldCnlVal);
+                return;
+            }
 
+            double newCnlVal = ScadaUtils.StrToDouble(txtNewCnlVal.Text);
+            if (double.IsNaN(newCnlVal))
+            {
+                ScadaUiUtils.ShowError(ServerShellPhrases.IncorrectNewCnlVal);
+                return;
+            }
+
+            EventTableLight.Event ev = new EventTableLight.Event
+            {
+                DateTime = dtpDate.Value.Date.Add(dtpTime.Value.TimeOfDay),
+                ObjNum = decimal.ToInt32(numObjNum.Value),
+                KPNum = decimal.ToInt32(numKPNum.Value),
+                ParamID = decimal.ToInt32(numParamID.Value),
+                CnlNum = decimal.ToInt32(numCnlNum.Value),
+                OldCnlVal = oldCnlVal,
+                OldCnlStat = decimal.ToInt32(numOldCnlStat.Value),
+                NewCnlVal = newCnlVal,
+                NewCnlStat = decimal.ToInt32(numNewCnlStat.Value),
+                Checked = numUserID.Value > 0,
+                UserID = decimal.ToInt32(numUserID.Value),
+                Descr = txtDescr.Text,
+                Data = txtData.Text
+            };
+
+            // send event
+            if (serverComm.SendEvent(ev, out bool result))
+            {
+                DialogResult = DialogResult.OK;
+            }
+            else
+            {
+                errLog.WriteError(serverComm.ErrMsg);
+                ScadaUiUtils.ShowError(serverComm.ErrMsg);
+            }
         }
     }
 }

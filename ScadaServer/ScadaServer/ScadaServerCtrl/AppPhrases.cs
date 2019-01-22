@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2018
+ * Modified : 2019
  */
 
 namespace Scada.Server.Ctrl
@@ -85,6 +85,10 @@ namespace Scada.Server.Ctrl
         public static string IncorrectCmdVal { get; private set; }
         public static string IncorrectHexCmdData { get; private set; }
         public static string CmdDataRequired { get; private set; }
+        public static string DataSentSuccessfully { get; private set; }
+        public static string EventSentSuccessfully { get; private set; }
+        public static string EventCheckSentSuccessfully { get; private set; }
+        public static string CmdSentSuccessfully { get; private set; }
 
         // Словарь Scada.Server.Ctrl.FrmSrezTableEdit
         public static string EditSrezTableTitle { get; private set; }
@@ -140,6 +144,10 @@ namespace Scada.Server.Ctrl
             IncorrectCmdVal = "Некорректное значение команды.";
             IncorrectHexCmdData = "Некорректные 16-ричные данные команды.";
             CmdDataRequired = "Необходимо ввести данные команды.";
+            DataSentSuccessfully = "Данные отправлены успешно.";
+            EventSentSuccessfully = "Событие отправлено успешно.";
+            EventCheckSentSuccessfully = "Команда квитирования события отправлена успешно.";
+            CmdSentSuccessfully = "Команда отправлена успешно.";
 
             EditSrezTableTitle = "Редактирование таблицы срезов";
             ViewSrezTableTitle = "Просмотр таблицы срезов";
@@ -203,6 +211,10 @@ namespace Scada.Server.Ctrl
                 IncorrectCmdVal = dict.GetPhrase("IncorrectCmdVal", IncorrectCmdVal);
                 IncorrectHexCmdData = dict.GetPhrase("IncorrectHexCmdData", IncorrectHexCmdData);
                 CmdDataRequired = dict.GetPhrase("CmdDataRequired", CmdDataRequired);
+                DataSentSuccessfully = dict.GetPhrase("DataSentSuccessfully", DataSentSuccessfully);
+                EventSentSuccessfully = dict.GetPhrase("EventSentSuccessfully", EventSentSuccessfully);
+                EventCheckSentSuccessfully = dict.GetPhrase("EventCheckSentSuccessfully", EventCheckSentSuccessfully);
+                CmdSentSuccessfully = dict.GetPhrase("CmdSentSuccessfully", CmdSentSuccessfully);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Server.Ctrl.FrmSrezTableEdit", out dict))

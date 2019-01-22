@@ -91,6 +91,27 @@
     <Phrase key="btnGenerateCmd">Команда</Phrase>
     <Phrase key="lblProfileWarn">Установите профиль развертывания экземпляра.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenEvent">
+    <Phrase key="this">Генерация события</Phrase>
+    <Phrase key="lblDate">Дата</Phrase>
+    <Phrase key="lblTime">Время</Phrase>
+    <Phrase key="btnSetCurTime">Текущее</Phrase>
+    <Phrase key="lblObjNum">Объект</Phrase>
+    <Phrase key="lblKPNum">КП</Phrase>
+    <Phrase key="lblParamID">Параметр</Phrase>
+    <Phrase key="lblCnlNum">Канал</Phrase>
+    <Phrase key="lblOldCnlVal">Ст. значение</Phrase>
+    <Phrase key="lblOldCnlStat">Ст. статус</Phrase>
+    <Phrase key="lblNewCnlVal">Нов. значение</Phrase>
+    <Phrase key="lblNewCnlStat">Нов. статус</Phrase>
+    <Phrase key="lblUserID">Пользователь</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="lblData">Данные</Phrase>
+    <Phrase key="btnSend">Отправить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="IncorrectOldCnlVal">Некорректное старое значение канала.</Phrase>
+    <Phrase key="IncorrectNewCnlVal">Некорректное новое значение канала.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Модули</Phrase>
     <Phrase key="lblUnusedModules">Неиспользуемые модули:</Phrase>

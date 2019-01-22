@@ -58,6 +58,10 @@ namespace Scada.Server.Shell.Code
         public static string IncorrectCnlNum { get; private set; }
         public static string IncorrectCnlVal { get; private set; }
 
+        // Scada.Server.Shell.Forms.FrmGenEvent
+        public static string IncorrectOldCnlVal { get; private set; }
+        public static string IncorrectNewCnlVal { get; private set; }
+
         // Scada.Server.Shell.Forms.FrmModules
         public static string ModuleNotFound { get; private set; }
 
@@ -87,6 +91,10 @@ namespace Scada.Server.Shell.Code
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmGenData");
             IncorrectCnlNum = dict.GetPhrase("IncorrectCnlNum");
             IncorrectCnlVal = dict.GetPhrase("IncorrectCnlVal");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmGenEvent");
+            IncorrectOldCnlVal = dict.GetPhrase("IncorrectOldCnlVal");
+            IncorrectNewCnlVal = dict.GetPhrase("IncorrectNewCnlVal");
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmModules");
             ModuleNotFound = dict.GetPhrase("ModuleNotFound");

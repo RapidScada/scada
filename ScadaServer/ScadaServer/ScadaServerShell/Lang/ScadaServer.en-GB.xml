@@ -91,6 +91,27 @@
     <Phrase key="btnGenerateCmd">Command</Phrase>
     <Phrase key="lblProfileWarn">Set the instance deployment profile.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenEvent">
+    <Phrase key="this">Generate Event</Phrase>
+    <Phrase key="lblDate">Date</Phrase>
+    <Phrase key="lblTime">Time</Phrase>
+    <Phrase key="btnSetCurTime">Set Current</Phrase>
+    <Phrase key="lblObjNum">Object</Phrase>
+    <Phrase key="lblKPNum">Device</Phrase>
+    <Phrase key="lblParamID">Parameter</Phrase>
+    <Phrase key="lblCnlNum">Channel</Phrase>
+    <Phrase key="lblOldCnlVal">Old value</Phrase>
+    <Phrase key="lblOldCnlStat">Old status</Phrase>
+    <Phrase key="lblNewCnlVal">New value</Phrase>
+    <Phrase key="lblNewCnlStat">New status</Phrase>
+    <Phrase key="lblUserID">User</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="lblData">Data</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="IncorrectOldCnlVal">Incorrect old channel value.</Phrase>
+    <Phrase key="IncorrectNewCnlVal">Incorrect new channel value.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Modules</Phrase>
     <Phrase key="lblUnusedModules">Unused modules:</Phrase>

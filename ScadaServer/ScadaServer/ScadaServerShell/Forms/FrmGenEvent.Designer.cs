@@ -42,13 +42,13 @@
             this.lblOldCnlStat = new System.Windows.Forms.Label();
             this.lblOldCnlVal = new System.Windows.Forms.Label();
             this.txtOldCnlVal = new System.Windows.Forms.TextBox();
-            this.lblEvCnlNum = new System.Windows.Forms.Label();
+            this.lblCnlNum = new System.Windows.Forms.Label();
             this.numCnlNum = new System.Windows.Forms.NumericUpDown();
-            this.numEvParamID = new System.Windows.Forms.NumericUpDown();
+            this.numParamID = new System.Windows.Forms.NumericUpDown();
             this.lblParamID = new System.Windows.Forms.Label();
-            this.numEvKPNum = new System.Windows.Forms.NumericUpDown();
+            this.numKPNum = new System.Windows.Forms.NumericUpDown();
             this.lblKPNum = new System.Windows.Forms.Label();
-            this.numEvObjNum = new System.Windows.Forms.NumericUpDown();
+            this.numObjNum = new System.Windows.Forms.NumericUpDown();
             this.lblObjNum = new System.Windows.Forms.Label();
             this.btnSetCurTime = new System.Windows.Forms.Button();
             this.lblTime = new System.Windows.Forms.Label();
@@ -61,9 +61,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numNewCnlStat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numOldCnlStat)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlNum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvParamID)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvKPNum)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvObjNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numParamID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKPNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numObjNum)).BeginInit();
             this.SuspendLayout();
             // 
             // txtData
@@ -197,14 +197,14 @@
             this.txtOldCnlVal.TabIndex = 14;
             this.txtOldCnlVal.Text = "0";
             // 
-            // lblEvCnlNum
+            // lblCnlNum
             // 
-            this.lblEvCnlNum.AutoSize = true;
-            this.lblEvCnlNum.Location = new System.Drawing.Point(252, 48);
-            this.lblEvCnlNum.Name = "lblEvCnlNum";
-            this.lblEvCnlNum.Size = new System.Drawing.Size(46, 13);
-            this.lblEvCnlNum.TabIndex = 11;
-            this.lblEvCnlNum.Text = "Channel";
+            this.lblCnlNum.AutoSize = true;
+            this.lblCnlNum.Location = new System.Drawing.Point(252, 48);
+            this.lblCnlNum.Name = "lblCnlNum";
+            this.lblCnlNum.Size = new System.Drawing.Size(46, 13);
+            this.lblCnlNum.TabIndex = 11;
+            this.lblCnlNum.Text = "Channel";
             // 
             // numCnlNum
             // 
@@ -218,17 +218,17 @@
             this.numCnlNum.Size = new System.Drawing.Size(75, 20);
             this.numCnlNum.TabIndex = 12;
             // 
-            // numEvParamID
+            // numParamID
             // 
-            this.numEvParamID.Location = new System.Drawing.Point(174, 64);
-            this.numEvParamID.Maximum = new decimal(new int[] {
+            this.numParamID.Location = new System.Drawing.Point(174, 64);
+            this.numParamID.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.numEvParamID.Name = "numEvParamID";
-            this.numEvParamID.Size = new System.Drawing.Size(75, 20);
-            this.numEvParamID.TabIndex = 10;
+            this.numParamID.Name = "numParamID";
+            this.numParamID.Size = new System.Drawing.Size(75, 20);
+            this.numParamID.TabIndex = 10;
             // 
             // lblParamID
             // 
@@ -239,17 +239,17 @@
             this.lblParamID.TabIndex = 9;
             this.lblParamID.Text = "Parameter";
             // 
-            // numEvKPNum
+            // numKPNum
             // 
-            this.numEvKPNum.Location = new System.Drawing.Point(93, 64);
-            this.numEvKPNum.Maximum = new decimal(new int[] {
+            this.numKPNum.Location = new System.Drawing.Point(93, 64);
+            this.numKPNum.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.numEvKPNum.Name = "numEvKPNum";
-            this.numEvKPNum.Size = new System.Drawing.Size(75, 20);
-            this.numEvKPNum.TabIndex = 8;
+            this.numKPNum.Name = "numKPNum";
+            this.numKPNum.Size = new System.Drawing.Size(75, 20);
+            this.numKPNum.TabIndex = 8;
             // 
             // lblKPNum
             // 
@@ -260,17 +260,17 @@
             this.lblKPNum.TabIndex = 7;
             this.lblKPNum.Text = "Device";
             // 
-            // numEvObjNum
+            // numObjNum
             // 
-            this.numEvObjNum.Location = new System.Drawing.Point(12, 64);
-            this.numEvObjNum.Maximum = new decimal(new int[] {
+            this.numObjNum.Location = new System.Drawing.Point(12, 64);
+            this.numObjNum.Maximum = new decimal(new int[] {
             65535,
             0,
             0,
             0});
-            this.numEvObjNum.Name = "numEvObjNum";
-            this.numEvObjNum.Size = new System.Drawing.Size(75, 20);
-            this.numEvObjNum.TabIndex = 6;
+            this.numObjNum.Name = "numObjNum";
+            this.numObjNum.Size = new System.Drawing.Size(75, 20);
+            this.numObjNum.TabIndex = 6;
             // 
             // lblObjNum
             // 
@@ -372,13 +372,13 @@
             this.Controls.Add(this.lblOldCnlStat);
             this.Controls.Add(this.lblOldCnlVal);
             this.Controls.Add(this.txtOldCnlVal);
-            this.Controls.Add(this.lblEvCnlNum);
+            this.Controls.Add(this.lblCnlNum);
             this.Controls.Add(this.numCnlNum);
-            this.Controls.Add(this.numEvParamID);
+            this.Controls.Add(this.numParamID);
             this.Controls.Add(this.lblParamID);
-            this.Controls.Add(this.numEvKPNum);
+            this.Controls.Add(this.numKPNum);
             this.Controls.Add(this.lblKPNum);
-            this.Controls.Add(this.numEvObjNum);
+            this.Controls.Add(this.numObjNum);
             this.Controls.Add(this.lblObjNum);
             this.Controls.Add(this.btnSetCurTime);
             this.Controls.Add(this.lblTime);
@@ -397,9 +397,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numNewCnlStat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numOldCnlStat)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlNum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvParamID)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvKPNum)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numEvObjNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numParamID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numKPNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numObjNum)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -421,13 +421,13 @@
         private System.Windows.Forms.Label lblOldCnlStat;
         private System.Windows.Forms.Label lblOldCnlVal;
         private System.Windows.Forms.TextBox txtOldCnlVal;
-        private System.Windows.Forms.Label lblEvCnlNum;
+        private System.Windows.Forms.Label lblCnlNum;
         private System.Windows.Forms.NumericUpDown numCnlNum;
-        private System.Windows.Forms.NumericUpDown numEvParamID;
+        private System.Windows.Forms.NumericUpDown numParamID;
         private System.Windows.Forms.Label lblParamID;
-        private System.Windows.Forms.NumericUpDown numEvKPNum;
+        private System.Windows.Forms.NumericUpDown numKPNum;
         private System.Windows.Forms.Label lblKPNum;
-        private System.Windows.Forms.NumericUpDown numEvObjNum;
+        private System.Windows.Forms.NumericUpDown numObjNum;
         private System.Windows.Forms.Label lblObjNum;
         private System.Windows.Forms.Button btnSetCurTime;
         private System.Windows.Forms.Label lblTime;

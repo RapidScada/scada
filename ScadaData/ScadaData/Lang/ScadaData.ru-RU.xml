@@ -68,10 +68,6 @@
     <Phrase key="StoppedSvcState">остановлена</Phrase>
     <Phrase key="StopPendingSvcState">ожидание остановки</Phrase>
     <Phrase key="NotInstalledSvcState">не установлена</Phrase>
-    <Phrase key="DataSentSuccessfully">Данные отправлены успешно.</Phrase>
-    <Phrase key="EventSentSuccessfully">Событие отправлено успешно.</Phrase>
-    <Phrase key="EventCheckSentSuccessfully">Команда квитирования события отправлена успешно.</Phrase>
-    <Phrase key="CmdSentSuccessfully">Команда отправлена успешно.</Phrase>
   </Dictionary>
   <Dictionary key="KeyGen">
     <Phrase key="StringIsNotHex">Строка не является 16-ричной записью.</Phrase>
