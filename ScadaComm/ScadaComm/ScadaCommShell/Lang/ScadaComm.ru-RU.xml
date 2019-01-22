@@ -114,7 +114,7 @@
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+    <Phrase key="SetProfile">Установите профиль развертывания экземпляра.</Phrase>
     <Phrase key="Loading">Загрузка...</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">

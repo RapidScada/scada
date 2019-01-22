@@ -114,7 +114,7 @@
     <Phrase key="StatsNode">Stats</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Connection is not defined.</Phrase>
+    <Phrase key="SetProfile">Set the instance deployment profile.</Phrase>
     <Phrase key="Loading">Loading...</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">
@@ -147,7 +147,7 @@
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
     <Phrase key="this">Device Data</Phrase>
     <Phrase key="btnSendCommand">Command</Phrase>
-    <Phrase key="lblCommandInfo">Sending direct commands to Communicator is available locally only.</Phrase>
+    <Phrase key="lblCommandInfo">Sending direct commands to Communicator is available only locally.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDrivers">
     <Phrase key="this">Drivers</Phrase>

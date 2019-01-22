@@ -76,7 +76,7 @@ namespace Scada.Comm.Shell.Forms
 
             if (dataBox.AgentClient == null)
             {
-                dataBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
+                dataBox.SetFirstLine(CommShellPhrases.SetProfile);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
                 btnSendCommand.Enabled = false;
                 lblCommandInfo.Visible = false;

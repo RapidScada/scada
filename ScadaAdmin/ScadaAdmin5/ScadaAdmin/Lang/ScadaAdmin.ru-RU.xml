@@ -323,6 +323,7 @@
     <Phrase key="EmptyTitle">Администратор</Phrase>
     <Phrase key="ProjectTitle">{0} - Администратор</Phrase>
     <Phrase key="WelcomeMessage">Создайте новый проект или&#13;&#10;откройте существующий проект.</Phrase>
+    <Phrase key="SelectItemMessage">Выберите элемент в проводнике проекта.</Phrase>
     <Phrase key="ProjectFileFilter">Проекты (*.rsproj)|*.rsproj|Все файлы (*.*)|*.*.</Phrase>
     <Phrase key="ConfirmDeleteDirectory">Вы уверены, что хотите удалить папку?</Phrase>
     <Phrase key="ConfirmDeleteFile">Вы уверены, что хотите удалить файл?</Phrase>

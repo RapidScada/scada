@@ -68,7 +68,7 @@
             this.lblCommandInfo.Name = "lblCommandInfo";
             this.lblCommandInfo.Size = new System.Drawing.Size(323, 13);
             this.lblCommandInfo.TabIndex = 1;
-            this.lblCommandInfo.Text = "Sending direct commands to Communicator is available locally only.";
+            this.lblCommandInfo.Text = "Sending direct commands to Communicator is available only locally.";
             // 
             // tmrRefresh
             // 

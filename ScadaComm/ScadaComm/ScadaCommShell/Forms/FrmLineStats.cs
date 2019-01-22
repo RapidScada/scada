@@ -82,8 +82,8 @@ namespace Scada.Comm.Shell.Forms
 
             if (agentClient == null)
             {
-                stateBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
-                logBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
+                stateBox.SetFirstLine(CommShellPhrases.SetProfile);
+                logBox.SetFirstLine(CommShellPhrases.SetProfile);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else

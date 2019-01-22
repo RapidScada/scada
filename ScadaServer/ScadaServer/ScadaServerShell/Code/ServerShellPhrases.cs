@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
@@ -46,8 +46,15 @@ namespace Scada.Server.Shell.Code
         public static string StatsNode { get; private set; }
 
         // Scada.Server.Shell.Forms
-        public static string ConnectionUndefined { get; private set; }
+        public static string SetProfile { get; private set; }
         public static string Loading { get; private set; }
+
+        // Scada.Server.Shell.Forms.FrmArchive
+        public static string CurDataTitle { get; private set; }
+        public static string MinDataTitle { get; private set; }
+        public static string HourDataTitle { get; private set; }
+        public static string EventsTitle { get; private set; }
+        public static string ArcLocal { get; private set; }
 
         // Scada.Server.Shell.Forms.FrmCommonParams
         public static string ChooseItfDir { get; private set; }
@@ -80,8 +87,15 @@ namespace Scada.Server.Shell.Code
             StatsNode = dict.GetPhrase("StatsNode");
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms");
-            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
+            SetProfile = dict.GetPhrase("SetProfile");
             Loading = dict.GetPhrase("Loading");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmArchive");
+            CurDataTitle = dict.GetPhrase("CurDataTitle");
+            MinDataTitle = dict.GetPhrase("MinDataTitle");
+            HourDataTitle = dict.GetPhrase("HourDataTitle");
+            EventsTitle = dict.GetPhrase("EventsTitle");
+            ArcLocal = dict.GetPhrase("ArcLocal");
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmCommonParams");
             ChooseItfDir = dict.GetPhrase("ChooseItfDir");

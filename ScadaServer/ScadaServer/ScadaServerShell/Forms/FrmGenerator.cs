@@ -77,7 +77,8 @@ namespace Scada.Server.Shell.Forms
             if (environment.AgentClient == null)
             {
                 gbGenerator.Enabled = false;
-                pnlProfileWarn.Visible = true;
+                pnlWarning.Visible = true;
+                lblWarning.Text = ServerShellPhrases.SetProfile;
             }
             else
             {

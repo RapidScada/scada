@@ -44,12 +44,12 @@
             this.btnGenerateCmd = new System.Windows.Forms.Button();
             this.btnGenerateEvent = new System.Windows.Forms.Button();
             this.btnGenerateData = new System.Windows.Forms.Button();
-            this.pnlProfileWarn = new System.Windows.Forms.Panel();
-            this.lblProfileWarn = new System.Windows.Forms.Label();
+            this.pnlWarning = new System.Windows.Forms.Panel();
+            this.lblWarning = new System.Windows.Forms.Label();
             this.pbWarning = new System.Windows.Forms.PictureBox();
             this.gbServerConn.SuspendLayout();
             this.gbGenerator.SuspendLayout();
-            this.pnlProfileWarn.SuspendLayout();
+            this.pnlWarning.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).BeginInit();
             this.SuspendLayout();
             // 
@@ -202,24 +202,24 @@
             this.btnGenerateData.UseVisualStyleBackColor = true;
             this.btnGenerateData.Click += new System.EventHandler(this.btnGenerateData_Click);
             // 
-            // pnlProfileWarn
+            // pnlWarning
             // 
-            this.pnlProfileWarn.Controls.Add(this.lblProfileWarn);
-            this.pnlProfileWarn.Controls.Add(this.pbWarning);
-            this.pnlProfileWarn.Location = new System.Drawing.Point(12, 183);
-            this.pnlProfileWarn.Name = "pnlProfileWarn";
-            this.pnlProfileWarn.Size = new System.Drawing.Size(450, 19);
-            this.pnlProfileWarn.TabIndex = 3;
-            this.pnlProfileWarn.Visible = false;
+            this.pnlWarning.Controls.Add(this.lblWarning);
+            this.pnlWarning.Controls.Add(this.pbWarning);
+            this.pnlWarning.Location = new System.Drawing.Point(12, 183);
+            this.pnlWarning.Name = "pnlWarning";
+            this.pnlWarning.Size = new System.Drawing.Size(450, 19);
+            this.pnlWarning.TabIndex = 3;
+            this.pnlWarning.Visible = false;
             // 
-            // lblProfileWarn
+            // lblWarning
             // 
-            this.lblProfileWarn.AutoSize = true;
-            this.lblProfileWarn.Location = new System.Drawing.Point(22, 3);
-            this.lblProfileWarn.Name = "lblProfileWarn";
-            this.lblProfileWarn.Size = new System.Drawing.Size(175, 13);
-            this.lblProfileWarn.TabIndex = 1;
-            this.lblProfileWarn.Text = "Set the instance deployment profile.";
+            this.lblWarning.AutoSize = true;
+            this.lblWarning.Location = new System.Drawing.Point(22, 3);
+            this.lblWarning.Name = "lblWarning";
+            this.lblWarning.Size = new System.Drawing.Size(57, 13);
+            this.lblWarning.TabIndex = 1;
+            this.lblWarning.Text = "lblWarning";
             // 
             // pbWarning
             // 
@@ -235,7 +235,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 411);
-            this.Controls.Add(this.pnlProfileWarn);
+            this.Controls.Add(this.pnlWarning);
             this.Controls.Add(this.gbGenerator);
             this.Controls.Add(this.gbServerConn);
             this.Name = "FrmGenerator";
@@ -244,8 +244,8 @@
             this.gbServerConn.ResumeLayout(false);
             this.gbServerConn.PerformLayout();
             this.gbGenerator.ResumeLayout(false);
-            this.pnlProfileWarn.ResumeLayout(false);
-            this.pnlProfileWarn.PerformLayout();
+            this.pnlWarning.ResumeLayout(false);
+            this.pnlWarning.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pbWarning)).EndInit();
             this.ResumeLayout(false);
 
@@ -268,8 +268,8 @@
         private System.Windows.Forms.Button btnGenerateData;
         private System.Windows.Forms.TextBox txtServerTimeout;
         private System.Windows.Forms.TextBox txtServerPort;
-        private System.Windows.Forms.Panel pnlProfileWarn;
-        private System.Windows.Forms.Label lblProfileWarn;
+        private System.Windows.Forms.Panel pnlWarning;
+        private System.Windows.Forms.Label lblWarning;
         private System.Windows.Forms.PictureBox pbWarning;
     }
 }

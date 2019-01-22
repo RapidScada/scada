@@ -23,8 +23,19 @@
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+    <Phrase key="SetProfile">Установите профиль развертывания экземпляра.</Phrase>
     <Phrase key="Loading">Загрузка...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmArchive">
+    <Phrase key="btnView">Просмотреть</Phrase>
+    <Phrase key="btnEdit">Редактировать</Phrase>
+    <Phrase key="cbDataKind.Items[0]">Основные</Phrase>
+    <Phrase key="cbDataKind.Items[1]">Копии</Phrase>
+    <Phrase key="CurDataTitle">Текущие данные</Phrase>
+    <Phrase key="MinDataTitle">Минутные данные</Phrase>
+    <Phrase key="HourDataTitle">Часовые данные</Phrase>
+    <Phrase key="EventsTitle">События</Phrase>
+    <Phrase key="ArcLocal">Просмотр архива доступен только локально.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Общие параметры</Phrase>
@@ -89,7 +100,6 @@
     <Phrase key="btnGenerateData">Данные</Phrase>
     <Phrase key="btnGenerateEvent">Событие</Phrase>
     <Phrase key="btnGenerateCmd">Команда</Phrase>
-    <Phrase key="lblProfileWarn">Установите профиль развертывания экземпляра.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenEvent">
     <Phrase key="this">Генерация события</Phrase>

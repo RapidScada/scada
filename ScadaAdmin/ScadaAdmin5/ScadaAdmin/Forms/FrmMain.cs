@@ -797,6 +797,7 @@ namespace Scada.Admin.App.Forms
                 {
                     project = newProject;
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                    wctrlMain.MessageText = AppPhrases.SelectItemMessage;
                     InitMenuItems();
                     explorerBuilder.CreateNodes(project);
                 }
@@ -822,6 +823,7 @@ namespace Scada.Admin.App.Forms
                     appData.ProcError(errMsg);
 
                 Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                wctrlMain.MessageText = AppPhrases.SelectItemMessage;
                 InitMenuItems();
                 explorerBuilder.CreateNodes(project);
             }
@@ -854,6 +856,7 @@ namespace Scada.Admin.App.Forms
             {
                 project = null;
                 Text = AppPhrases.EmptyTitle;
+                wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                 InitMenuItems();
                 tvExplorer.Nodes.Clear();
             }

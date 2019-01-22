@@ -104,6 +104,7 @@ namespace Scada.Admin.App.Code
         public static string EmptyTitle { get; private set; }
         public static string ProjectTitle { get; private set; }
         public static string WelcomeMessage { get; private set; }
+        public static string SelectItemMessage { get; private set; }
         public static string ProjectFileFilter { get; private set; }
         public static string ConfirmDeleteDirectory { get; private set; }
         public static string ConfirmDeleteFile { get; private set; }
@@ -196,6 +197,7 @@ namespace Scada.Admin.App.Code
             EmptyTitle = dict.GetPhrase("EmptyTitle");
             ProjectTitle = dict.GetPhrase("ProjectTitle");
             WelcomeMessage = dict.GetPhrase("WelcomeMessage");
+            SelectItemMessage = dict.GetPhrase("SelectItemMessage");
             ProjectFileFilter = dict.GetPhrase("ProjectFileFilter");
             ConfirmDeleteDirectory = dict.GetPhrase("ConfirmDeleteDirectory");
             ConfirmDeleteFile = dict.GetPhrase("ConfirmDeleteFile");

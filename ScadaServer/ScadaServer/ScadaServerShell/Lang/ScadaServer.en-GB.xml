@@ -23,8 +23,19 @@
     <Phrase key="StatsNode">Stats</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Connection is not defined.</Phrase>
+    <Phrase key="SetProfile">Set the instance deployment profile.</Phrase>
     <Phrase key="Loading">Loading...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmArchive">
+    <Phrase key="btnView">View</Phrase>
+    <Phrase key="btnEdit">Edit</Phrase>
+    <Phrase key="cbDataKind.Items[0]">Main</Phrase>
+    <Phrase key="cbDataKind.Items[1]">Copy</Phrase>
+    <Phrase key="CurDataTitle">Current Data</Phrase>
+    <Phrase key="MinDataTitle">Minute Data</Phrase>
+    <Phrase key="HourDataTitle">Hourly Data</Phrase>
+    <Phrase key="EventsTitle">Events</Phrase>
+    <Phrase key="ArcLocal">Browsing archive is available only locally.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Common Parameters</Phrase>

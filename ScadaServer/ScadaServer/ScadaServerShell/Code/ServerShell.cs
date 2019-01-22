@@ -113,8 +113,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.CurData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.MinDataNode)
@@ -123,8 +123,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.MinData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.HourDataNode)
@@ -133,8 +133,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.HourData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.EventsNode)
@@ -143,8 +143,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_event.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.Events }
                             }
                         }
                     })

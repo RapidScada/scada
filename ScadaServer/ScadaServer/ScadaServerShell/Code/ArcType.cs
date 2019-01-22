@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,23 +16,39 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Server Shell
- * Summary  : Messages sent by Server forms
+ * Summary  : Specifies the type of archive
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
- * Modified : 2018
+ * Created  : 2019
+ * Modified : 2019
  */
-
-#pragma warning disable 1591 // Missing XML comment for publicly visible type or member
 
 namespace Scada.Server.Shell.Code
 {
     /// <summary>
-    /// Messages sent by Server forms.
-    /// <para>Сообщения, отправляемые формами Сервера.</para>
+    /// Specifies the type of archive.
+    /// <para>Задает тип архива.</para>
     /// </summary>
-    public static class ServerMessage
+    public enum ArcType
     {
-        public const string SaveSettings = "Server.SaveSettings";
-    }
+        /// <summary>
+        /// Current data.
+        /// </summary>
+        CurData,
+
+        /// <summary>
+        /// Minute data.
+        /// </summary>
+        MinData,
+
+        /// <summary>
+        /// Hourly data.
+        /// </summary>
+        HourData,
+
+        /// <summary>
+        /// Events.
+        /// </summary>
+        Events
+    };
 }
