@@ -39,8 +39,8 @@ namespace Scada.Server.Shell.Forms
     /// </summary>
     public partial class FrmGenEvent : Form
     {
-        private ServerComm serverComm; // the object to communicate with Server
-        private Log errLog;            // the application error log
+        private readonly ServerComm serverComm; // the object to communicate with Server
+        private readonly Log errLog;            // the application error log
 
 
         /// <summary>

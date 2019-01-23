@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmEventTable));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblCount = new System.Windows.Forms.ToolStripLabel();
@@ -76,7 +76,6 @@
             this.bindingNavigator.AddNewItem = null;
             this.bindingNavigator.BindingSource = this.bindingSource;
             this.bindingNavigator.CountItem = this.lblCount;
-            this.bindingNavigator.CountItemFormat = "из {0}";
             this.bindingNavigator.DeleteItem = null;
             this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnMoveFirst,
@@ -106,9 +105,9 @@
             // lblCount
             // 
             this.lblCount.Name = "lblCount";
-            this.lblCount.Size = new System.Drawing.Size(36, 22);
-            this.lblCount.Text = "из {0}";
-            this.lblCount.ToolTipText = "Всего строк";
+            this.lblCount.Size = new System.Drawing.Size(35, 22);
+            this.lblCount.Text = "of {0}";
+            this.lblCount.ToolTipText = "Total number of rows";
             // 
             // btnMoveFirst
             // 
@@ -117,7 +116,7 @@
             this.btnMoveFirst.Name = "btnMoveFirst";
             this.btnMoveFirst.RightToLeftAutoMirrorImage = true;
             this.btnMoveFirst.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveFirst.Text = "Переместиться в начало";
+            this.btnMoveFirst.Text = "Move first";
             // 
             // btnMovePrev
             // 
@@ -126,7 +125,7 @@
             this.btnMovePrev.Name = "btnMovePrev";
             this.btnMovePrev.RightToLeftAutoMirrorImage = true;
             this.btnMovePrev.Size = new System.Drawing.Size(23, 22);
-            this.btnMovePrev.Text = "Переместиться на предыдущую строку";
+            this.btnMovePrev.Text = "Move previous";
             // 
             // sep1
             // 
@@ -140,7 +139,7 @@
             this.txtPosition.Name = "txtPosition";
             this.txtPosition.Size = new System.Drawing.Size(50, 23);
             this.txtPosition.Text = "0";
-            this.txtPosition.ToolTipText = "Текущая строка";
+            this.txtPosition.ToolTipText = "Current position";
             // 
             // sep2
             // 
@@ -154,7 +153,7 @@
             this.btnMoveNext.Name = "btnMoveNext";
             this.btnMoveNext.RightToLeftAutoMirrorImage = true;
             this.btnMoveNext.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveNext.Text = "Переместиться на следующую строку";
+            this.btnMoveNext.Text = "Move next";
             // 
             // btnMoveLast
             // 
@@ -163,7 +162,7 @@
             this.btnMoveLast.Name = "btnMoveLast";
             this.btnMoveLast.RightToLeftAutoMirrorImage = true;
             this.btnMoveLast.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveLast.Text = "Переместиться в конец";
+            this.btnMoveLast.Text = "Move last";
             // 
             // sep3
             // 
@@ -177,7 +176,7 @@
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(23, 22);
-            this.btnRefresh.Text = "Обновить данные";
+            this.btnRefresh.Text = "Refresh data";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // sep4
@@ -188,13 +187,13 @@
             // lblFilter
             // 
             this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(77, 22);
-            this.lblFilter.Text = "SQL-фильтр:";
+            this.lblFilter.Size = new System.Drawing.Size(58, 22);
+            this.lblFilter.Text = "SQL filter:";
             // 
             // txtFilter
             // 
             this.txtFilter.Name = "txtFilter";
-            this.txtFilter.Size = new System.Drawing.Size(290, 25);
+            this.txtFilter.Size = new System.Drawing.Size(250, 25);
             this.txtFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFilter_KeyDown);
             // 
             // dataGridView
@@ -239,9 +238,9 @@
             // colDateTime
             // 
             this.colDateTime.DataPropertyName = "DateTime";
-            dataGridViewCellStyle1.Format = "G";
-            dataGridViewCellStyle1.NullValue = null;
-            this.colDateTime.DefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle10.Format = "G";
+            dataGridViewCellStyle10.NullValue = null;
+            this.colDateTime.DefaultCellStyle = dataGridViewCellStyle10;
             this.colDateTime.HeaderText = "DateTime";
             this.colDateTime.Name = "colDateTime";
             this.colDateTime.Width = 120;
@@ -340,7 +339,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 1;
-            this.btnClose.Text = "Закрыть";
+            this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
             // btnSave
@@ -350,7 +349,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 0;
-            this.btnSave.Text = "Сохранить";
+            this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -365,7 +364,7 @@
             this.pnlBottom.Size = new System.Drawing.Size(634, 41);
             this.pnlBottom.TabIndex = 2;
             // 
-            // FrmEventTableEdit
+            // FrmEventTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -376,11 +375,11 @@
             this.KeyPreview = true;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(650, 550);
-            this.Name = "FrmEventTableEdit";
+            this.Name = "FrmEventTable";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Редактирование таблицы событий";
+            this.Text = "Event Table";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmEventTableEdit_FormClosing);
             this.Load += new System.EventHandler(this.FrmEventTableEdit_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmEventTableEdit_KeyDown);

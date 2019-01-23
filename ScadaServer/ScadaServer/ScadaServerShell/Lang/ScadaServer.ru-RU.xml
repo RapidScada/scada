@@ -56,6 +56,25 @@
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmEventTable">
+    <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount">из {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
+    <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ViewEventsTitle">{0} - Просмотр событий</Phrase>
+    <Phrase key="EditEventsTitle">{0} - Редактирование событий</Phrase>
+    <Phrase key="SaveEventsConfirm">Таблица событий была изменена.&#13;&#10;Сохранить изменения?</Phrase>
+    <Phrase key="IncorrectEventFilter">Некорректный фильтр событий.</Phrase>
+    <Phrase key="LoadEventTableError">Ошибка при загрузке таблицы событий</Phrase>
+    <Phrase key="SaveEventTableError">Ошибка при сохранении таблицы событий</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
     <Phrase key="this">Генерация команды</Phrase>
     <Phrase key="lblCtrlCnlNum">Канал упр.</Phrase>
@@ -186,6 +205,32 @@
     <Phrase key="lblStoreEvPer">Период хранения, дней</Phrase>
     <Phrase key="chkWriteEv">Запись данных</Phrase>
     <Phrase key="chkWriteEvCopy">Запись копии данных</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmSnapshotTable">
+    <Phrase key="btnMoveFirst1.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev1.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition1.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount1">из {0}</Phrase>
+    <Phrase key="lblCount1.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext1.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast1.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
+    <Phrase key="btnMoveFirst2.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev2.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition2.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount2">из {0}</Phrase>
+    <Phrase key="lblCount2.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext2.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast2.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ViewSnapshotsTitle">{0} - Просмотр срезов</Phrase>
+    <Phrase key="EditSnapshotsTitle">{0} - Редактирование срезов</Phrase>
+    <Phrase key="SaveSnapshotsConfirm">Таблица срезов была изменена.&#13;&#10;Сохранить изменения?</Phrase>
+    <Phrase key="IncorrectSnapshotFilter">Некорректный фильтр срезов.</Phrase>
+    <Phrase key="LoadSnapshotTableError">Ошибка при загрузке таблицы срезов</Phrase>
+    <Phrase key="SaveSnapshotTableError">Ошибка при сохранении таблицы срезов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
     <Phrase key="this">Статистика</Phrase>

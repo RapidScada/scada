@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSnapshotTable));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.colCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -130,7 +130,7 @@
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
             this.btnClose.TabIndex = 2;
-            this.btnClose.Text = "Закрыть";
+            this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
             // btnSave
@@ -140,7 +140,7 @@
             this.btnSave.Name = "btnSave";
             this.btnSave.Size = new System.Drawing.Size(75, 23);
             this.btnSave.TabIndex = 1;
-            this.btnSave.Text = "Сохранить";
+            this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
@@ -160,7 +160,6 @@
             this.bindingNavigator2.AddNewItem = null;
             this.bindingNavigator2.BindingSource = this.bindingSource2;
             this.bindingNavigator2.CountItem = this.lblCount2;
-            this.bindingNavigator2.CountItemFormat = "из {0}";
             this.bindingNavigator2.DeleteItem = null;
             this.bindingNavigator2.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.bindingNavigator2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -189,9 +188,9 @@
             // lblCount2
             // 
             this.lblCount2.Name = "lblCount2";
-            this.lblCount2.Size = new System.Drawing.Size(36, 22);
-            this.lblCount2.Text = "из {0}";
-            this.lblCount2.ToolTipText = "Всего строк";
+            this.lblCount2.Size = new System.Drawing.Size(35, 22);
+            this.lblCount2.Text = "of {0}";
+            this.lblCount2.ToolTipText = "Total number of rows";
             // 
             // btnMoveFirst2
             // 
@@ -200,7 +199,7 @@
             this.btnMoveFirst2.Name = "btnMoveFirst2";
             this.btnMoveFirst2.RightToLeftAutoMirrorImage = true;
             this.btnMoveFirst2.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveFirst2.Text = "Переместиться в начало";
+            this.btnMoveFirst2.Text = "Move first";
             // 
             // btnMovePrev2
             // 
@@ -209,7 +208,7 @@
             this.btnMovePrev2.Name = "btnMovePrev2";
             this.btnMovePrev2.RightToLeftAutoMirrorImage = true;
             this.btnMovePrev2.Size = new System.Drawing.Size(23, 22);
-            this.btnMovePrev2.Text = "Переместиться на предыдущую строку";
+            this.btnMovePrev2.Text = "Move previous";
             // 
             // sep4
             // 
@@ -223,7 +222,7 @@
             this.txtPosition2.Name = "txtPosition2";
             this.txtPosition2.Size = new System.Drawing.Size(50, 23);
             this.txtPosition2.Text = "0";
-            this.txtPosition2.ToolTipText = "Текущая строка";
+            this.txtPosition2.ToolTipText = "Current position";
             // 
             // sep5
             // 
@@ -237,7 +236,7 @@
             this.btnMoveNext2.Name = "btnMoveNext2";
             this.btnMoveNext2.RightToLeftAutoMirrorImage = true;
             this.btnMoveNext2.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveNext2.Text = "Переместиться на следующую строку";
+            this.btnMoveNext2.Text = "Move next";
             // 
             // btnMoveLast2
             // 
@@ -246,7 +245,7 @@
             this.btnMoveLast2.Name = "btnMoveLast2";
             this.btnMoveLast2.RightToLeftAutoMirrorImage = true;
             this.btnMoveLast2.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveLast2.Text = "Переместиться в конец";
+            this.btnMoveLast2.Text = "Move last";
             // 
             // sep6
             // 
@@ -256,8 +255,8 @@
             // lblFilter
             // 
             this.lblFilter.Name = "lblFilter";
-            this.lblFilter.Size = new System.Drawing.Size(77, 22);
-            this.lblFilter.Text = "SQL-фильтр:";
+            this.lblFilter.Size = new System.Drawing.Size(58, 22);
+            this.lblFilter.Text = "SQL filter:";
             // 
             // txtFilter
             // 
@@ -300,9 +299,9 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "DateTime";
-            dataGridViewCellStyle9.Format = "G";
-            dataGridViewCellStyle9.NullValue = null;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle9;
+            dataGridViewCellStyle8.Format = "G";
+            dataGridViewCellStyle8.NullValue = null;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle8;
             this.dataGridViewTextBoxColumn1.HeaderText = "DateTime";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -312,7 +311,6 @@
             this.bindingNavigator1.AddNewItem = null;
             this.bindingNavigator1.BindingSource = this.bindingSource1;
             this.bindingNavigator1.CountItem = this.lblCount1;
-            this.bindingNavigator1.CountItemFormat = "из {0}";
             this.bindingNavigator1.DeleteItem = null;
             this.bindingNavigator1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnMoveFirst1,
@@ -339,9 +337,9 @@
             // lblCount1
             // 
             this.lblCount1.Name = "lblCount1";
-            this.lblCount1.Size = new System.Drawing.Size(36, 22);
-            this.lblCount1.Text = "из {0}";
-            this.lblCount1.ToolTipText = "Всего строк";
+            this.lblCount1.Size = new System.Drawing.Size(35, 22);
+            this.lblCount1.Text = "of {0}";
+            this.lblCount1.ToolTipText = "Total number of rows";
             // 
             // btnMoveFirst1
             // 
@@ -350,7 +348,7 @@
             this.btnMoveFirst1.Name = "btnMoveFirst1";
             this.btnMoveFirst1.RightToLeftAutoMirrorImage = true;
             this.btnMoveFirst1.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveFirst1.Text = "Переместиться в начало";
+            this.btnMoveFirst1.Text = "Move first";
             // 
             // btnMovePrev1
             // 
@@ -359,7 +357,7 @@
             this.btnMovePrev1.Name = "btnMovePrev1";
             this.btnMovePrev1.RightToLeftAutoMirrorImage = true;
             this.btnMovePrev1.Size = new System.Drawing.Size(23, 22);
-            this.btnMovePrev1.Text = "Переместиться на предыдущую строку";
+            this.btnMovePrev1.Text = "Move previous";
             // 
             // sep1
             // 
@@ -373,7 +371,7 @@
             this.txtPosition1.Name = "txtPosition1";
             this.txtPosition1.Size = new System.Drawing.Size(50, 23);
             this.txtPosition1.Text = "0";
-            this.txtPosition1.ToolTipText = "Текущая строка";
+            this.txtPosition1.ToolTipText = "Current position";
             // 
             // sep2
             // 
@@ -387,7 +385,7 @@
             this.btnMoveNext1.Name = "btnMoveNext1";
             this.btnMoveNext1.RightToLeftAutoMirrorImage = true;
             this.btnMoveNext1.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveNext1.Text = "Переместиться на следующую строку";
+            this.btnMoveNext1.Text = "Move next";
             // 
             // btnMoveLast1
             // 
@@ -396,7 +394,7 @@
             this.btnMoveLast1.Name = "btnMoveLast1";
             this.btnMoveLast1.RightToLeftAutoMirrorImage = true;
             this.btnMoveLast1.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveLast1.Text = "Переместиться в конец";
+            this.btnMoveLast1.Text = "Move last";
             // 
             // sep3
             // 
@@ -410,7 +408,7 @@
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(23, 22);
-            this.btnRefresh.Text = "Обновить данные";
+            this.btnRefresh.Text = "Refresh data";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // pnlMain
@@ -445,7 +443,7 @@
             this.pnlBottom.Size = new System.Drawing.Size(764, 41);
             this.pnlBottom.TabIndex = 3;
             // 
-            // FrmSrezTableEdit
+            // FrmSnapshotTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -455,11 +453,11 @@
             this.KeyPreview = true;
             this.MinimizeBox = false;
             this.MinimumSize = new System.Drawing.Size(780, 550);
-            this.Name = "FrmSrezTableEdit";
+            this.Name = "FrmSnapshotTable";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-            this.Text = "Редактирование таблицы срезов";
+            this.Text = "Snapshot Table";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmSrezTableEdit_FormClosing);
             this.Load += new System.EventHandler(this.FrmSrezTableEdit_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmSrezTableEdit_KeyDown);

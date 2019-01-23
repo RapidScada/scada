@@ -61,6 +61,14 @@ namespace Scada.Server.Shell.Code
         public static string ChooseArcDir { get; private set; }
         public static string ChooseArcCopyDir { get; private set; }
 
+        // Scada.Server.Shell.Forms.FrmEventTable
+        public static string ViewEventsTitle { get; private set; }
+        public static string EditEventsTitle { get; private set; }
+        public static string SaveEventsConfirm { get; private set; }
+        public static string IncorrectEventFilter { get; private set; }
+        public static string LoadEventTableError { get; private set; }
+        public static string SaveEventTableError { get; private set; }
+
         // Scada.Server.Shell.Forms.FrmGenData
         public static string IncorrectCnlNum { get; private set; }
         public static string IncorrectCnlVal { get; private set; }
@@ -71,6 +79,14 @@ namespace Scada.Server.Shell.Code
 
         // Scada.Server.Shell.Forms.FrmModules
         public static string ModuleNotFound { get; private set; }
+
+        // Scada.Server.Shell.Forms.FrmSnapshotTable
+        public static string ViewSnapshotsTitle { get; private set; }
+        public static string EditSnapshotsTitle { get; private set; }
+        public static string SaveSnapshotsConfirm { get; private set; }
+        public static string IncorrectSnapshotFilter { get; private set; }
+        public static string LoadSnapshotTableError { get; private set; }
+        public static string SaveSnapshotTableError { get; private set; }
 
         public static void Init()
         {
@@ -102,6 +118,14 @@ namespace Scada.Server.Shell.Code
             ChooseArcDir = dict.GetPhrase("ChooseArcDir");
             ChooseArcCopyDir = dict.GetPhrase("ChooseArcCopyDir");
 
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmEventTable");
+            ViewEventsTitle = dict.GetPhrase("ViewEventsTitle");
+            EditEventsTitle = dict.GetPhrase("EditEventsTitle");
+            SaveEventsConfirm = dict.GetPhrase("SaveEventsConfirm");
+            IncorrectEventFilter = dict.GetPhrase("IncorrectEventFilter");
+            LoadEventTableError = dict.GetPhrase("LoadEventTableError");
+            SaveEventTableError = dict.GetPhrase("SaveEventTableError");
+
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmGenData");
             IncorrectCnlNum = dict.GetPhrase("IncorrectCnlNum");
             IncorrectCnlVal = dict.GetPhrase("IncorrectCnlVal");
@@ -112,6 +136,14 @@ namespace Scada.Server.Shell.Code
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmModules");
             ModuleNotFound = dict.GetPhrase("ModuleNotFound");
+
+            dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmSnapshotTable");
+            ViewSnapshotsTitle = dict.GetPhrase("ViewSnapshotsTitle");
+            EditSnapshotsTitle = dict.GetPhrase("EditSnapshotsTitle");
+            SaveSnapshotsConfirm = dict.GetPhrase("SaveSnapshotsConfirm");
+            IncorrectSnapshotFilter = dict.GetPhrase("IncorrectSnapshotFilter");
+            LoadSnapshotTableError = dict.GetPhrase("LoadSnapshotTableError");
+            SaveSnapshotTableError = dict.GetPhrase("SaveSnapshotTableError");
         }
     }
 }

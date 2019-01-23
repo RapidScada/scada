@@ -56,6 +56,25 @@
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmEventTable">
+    <Phrase key="btnMoveFirst.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount">of {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
+    <Phrase key="lblFilter">SQL filter:</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ViewEventsTitle">{0} - View Events</Phrase>
+    <Phrase key="EditEventsTitle">{0} - Edit Events</Phrase>
+    <Phrase key="SaveEventsConfirm">The event table has been modified.&#13;&#10;Save the changes?</Phrase>
+    <Phrase key="IncorrectEventFilter">Incorrect event filter.</Phrase>
+    <Phrase key="LoadEventTableError">Error loading event table</Phrase>
+    <Phrase key="SaveEventTableError">Error saving event table</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
     <Phrase key="this">Generate Command</Phrase>
     <Phrase key="lblCtrlCnlNum">Out channel</Phrase>
@@ -186,6 +205,32 @@
     <Phrase key="lblStoreEvPer">Storing period, days</Phrase>
     <Phrase key="chkWriteEv">Write data</Phrase>
     <Phrase key="chkWriteEvCopy">Write data copy</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmSnapshotTable">
+    <Phrase key="btnMoveFirst1.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev1.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition1.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount1">of {0}</Phrase>
+    <Phrase key="lblCount1.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext1.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast1.ToolTip">Move last</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
+    <Phrase key="btnMoveFirst2.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev2.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition2.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount2">of {0}</Phrase>
+    <Phrase key="lblCount2.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext2.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast2.ToolTip">Move last</Phrase>
+    <Phrase key="lblFilter">SQL filter:</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ViewSnapshotsTitle">{0} - View Snapshots</Phrase>
+    <Phrase key="EditSnapshotsTitle">{0} - Edit Snapshots</Phrase>
+    <Phrase key="SaveSnapshotsConfirm">The snapshot table has been modified.&#13;&#10;Save the changes?</Phrase>
+    <Phrase key="IncorrectSnapshotFilter">Incorrect snapshot filter.</Phrase>
+    <Phrase key="LoadSnapshotTableError">Error loading snapshot table</Phrase>
+    <Phrase key="SaveSnapshotTableError">Error saving snapshot table</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
     <Phrase key="this">Stats</Phrase>

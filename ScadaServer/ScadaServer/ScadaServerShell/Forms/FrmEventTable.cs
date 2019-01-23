@@ -24,9 +24,11 @@
  */
 
 using Scada.Data.Tables;
+using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
 using System.Data;
+using System.IO;
 using System.Windows.Forms;
 using Utils;
 
@@ -38,10 +40,9 @@ namespace Scada.Server.Shell.Forms
     /// </summary>
     public partial class FrmEventTable : Form
     {
-        private Log errLog;                // журнал ошибок приложения
-        private EventAdapter eventAdapter; // адаптер таблицы событий
-        private DataTable dataTable;       // таблица событий
-        private bool editMode;             // режим редактирования
+        private readonly Log errLog;                // the application error log
+        private readonly EventAdapter eventAdapter; // the adapter to load and save an event table
+        private DataTable dataTable; // the table containing events
 
 
         /// <summary>
@@ -50,19 +51,79 @@ namespace Scada.Server.Shell.Forms
         private FrmEventTable()
         {
             InitializeComponent();
-            errLog = null;
-            eventAdapter = null;
-            dataTable = null;
-            editMode = false;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public FrmEventTable(Log errLog)
+            : this()
+        {
+            this.errLog = errLog ?? throw new ArgumentNullException("errLog");
+            eventAdapter = new EventAdapter();
+            dataTable = new DataTable();
+
+            FileName = "";
+            AllowEdit = false;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the file name of the event table.
+        /// </summary>
+        public string FileName { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the event table can be edited.
+        /// </summary>
+        public bool AllowEdit { get; set; }
+
+
+        /// <summary>
+        /// Loads the event table.
+        /// </summary>
+        private bool LoadEventTable(DataTable table)
+        {
+            try
+            {
+                eventAdapter.FileName = FileName;
+                eventAdapter.Fill(table);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errLog.WriteException(ex, ServerShellPhrases.LoadEventTableError);
+                ScadaUiUtils.ShowError(ServerShellPhrases.LoadEventTableError + ": " + ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves the snapshot table.
+        /// </summary>
+        private bool SaveEventTable()
+        {
+            try
+            {
+                eventAdapter.FileName = FileName;
+                eventAdapter.Update(dataTable);
+                dataGridView.Invalidate();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errLog.WriteException(ex, ServerShellPhrases.SaveEventTableError);
+                ScadaUiUtils.ShowError(ServerShellPhrases.SaveEventTableError + ": " + ex.Message);
+                return false;
+            }
+        }
 
         /// <summary>
         /// Validates a value of the specified cell.
         /// </summary>
         private bool ValidateCell(int colInd, int rowInd, object cellVal)
         {
-            if (0 <= colInd && colInd < dataGridView.ColumnCount && 
+            if (0 <= colInd && colInd < dataGridView.ColumnCount &&
                 0 <= rowInd && rowInd < dataGridView.RowCount &&
                 cellVal != null)
             {
@@ -98,105 +159,46 @@ namespace Scada.Server.Shell.Forms
             return true;
         }
 
-        /// <summary>
-        /// Сохранить изменения таблицы событий
-        /// </summary>
-        private bool Save()
-        {
-            try
-            {
-                eventAdapter.Update(dataTable);
-                dataGridView.Invalidate();
-                return true;
-            }
-            catch (Exception ex)
-            {
-                string errMsg = /*AppPhrases.SaveEventTableError +*/ ":\r\n" + ex.Message;
-                if (errLog != null)
-                    errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                ScadaUiUtils.ShowError(errMsg);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Загрузить таблицу событий
-        /// </summary>
-        private static bool LoadDataTable(EventAdapter eventAdapter, Log errLog, ref DataTable dataTable)
-        {
-            try
-            {
-                eventAdapter.Fill(dataTable);
-                return true;
-            }
-            catch (Exception ex)
-            {
-                string errMsg = /*AppPhrases.LoadEventTableError +*/ ":\r\n" + ex.Message;
-                if (errLog != null)
-                    errLog.WriteAction(errMsg, Log.ActTypes.Exception);
-                ScadaUiUtils.ShowError(errMsg);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Отобразить форму редактирования или просмотра таблицы срезов
-        /// </summary>
-        public static void Show(string directory, string tableName, bool editMode, Log errLog)
-        {
-            if (string.IsNullOrEmpty(directory))
-                throw new ArgumentException("directory");
-            if (string.IsNullOrEmpty(tableName))
-                throw new ArgumentException("tableName");
-            if (errLog == null)
-                throw new ArgumentNullException("errLog");
-
-            EventAdapter eventAdapter = new EventAdapter();
-            eventAdapter.Directory = directory;
-            eventAdapter.TableName = tableName;
-            DataTable dataTable = new DataTable();
-
-            if (LoadDataTable(eventAdapter, errLog, ref dataTable))
-            {
-                FrmEventTable frmEventTableEdit = new FrmEventTable();
-                frmEventTableEdit.errLog = errLog;
-                frmEventTableEdit.eventAdapter = eventAdapter;
-                frmEventTableEdit.dataTable = dataTable;
-                frmEventTableEdit.editMode = editMode;
-                frmEventTableEdit.ShowDialog();
-            }
-        }
-
 
         private void FrmEventTableEdit_Load(object sender, EventArgs e)
         {
-            // перевод формы
-            Translator.TranslateForm(this, "Scada.Server.Ctrl.FrmEventTableEdit");
+            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmEventTable");
+
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
 
-            // настройка элементов управления
-            Text = /*(editMode ? AppPhrases.EditEventTableTitle : AppPhrases.ViewEventTableTitle) + 
-                " - " +*/ eventAdapter.TableName;
-            dataTable.DefaultView.AllowNew = editMode;
-            dataTable.DefaultView.AllowEdit = editMode;
-            bindingSource.DataSource = dataTable;
-            btnSave.Visible = editMode;
+            Text = string.Format(AllowEdit ?
+                ServerShellPhrases.EditEventsTitle : ServerShellPhrases.ViewEventsTitle,
+                Path.GetFileName(FileName));
+            btnSave.Visible = AllowEdit;
+
+            if (LoadEventTable(dataTable))
+            {
+                dataTable.DefaultView.AllowNew = AllowEdit;
+                dataTable.DefaultView.AllowEdit = AllowEdit;
+                bindingSource.DataSource = dataTable;
+            }
+            else
+            {
+                bindingNavigator.Enabled = false;
+                dataGridView.Enabled = false;
+                pnlBottom.Enabled = false;
+            }
         }
 
         private void FrmEventTableEdit_FormClosing(object sender, FormClosingEventArgs e)
         {
-            btnClose.Focus(); // для завершения редактирования ячейки таблицы
+            btnClose.Focus(); // to finish cell editing
             DataView dataView = new DataView(dataTable, "", "", 
                 DataViewRowState.ModifiedCurrent | DataViewRowState.Added);
 
             if (dataView.Count > 0)
             {
-                DialogResult dlgRes = MessageBox.Show(/*AppPhrases.SaveEventTableConfirm*/"Save?", 
+                DialogResult dlgRes = MessageBox.Show(ServerShellPhrases.SaveEventsConfirm, 
                     CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
 
                 if (dlgRes == DialogResult.Yes)
-                    e.Cancel = !Save();
+                    e.Cancel = !SaveEventTable();
                 else if (dlgRes != DialogResult.No)
                     e.Cancel = true;
             }
@@ -204,30 +206,35 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmEventTableEdit_KeyDown(object sender, KeyEventArgs e)
         {
-            // закрытие формы по Escape, если ячейка таблицы не редактируется
-            if (e.KeyCode == Keys.Escape && dataGridView.CurrentCell != null && !dataGridView.CurrentCell.IsInEditMode)
+            // close the form by Escape if no table cell is editing
+            if (e.KeyCode == Keys.Escape &&
+                dataGridView.CurrentCell != null && !dataGridView.CurrentCell.IsInEditMode)
+            {
                 DialogResult = DialogResult.Cancel;
+            }
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-            // перезагрузка таблицы
+            // reload events
             DataTable newDataTable = new DataTable();
 
-            if (LoadDataTable(eventAdapter, errLog, ref newDataTable))
+            if (LoadEventTable(newDataTable))
             {
                 dataTable = newDataTable;
-                dataTable.DefaultView.AllowNew = editMode;
-                dataTable.DefaultView.AllowEdit = editMode;
+                dataTable.DefaultView.AllowNew = AllowEdit;
+                dataTable.DefaultView.AllowEdit = AllowEdit;
+
                 try { dataTable.DefaultView.RowFilter = txtFilter.Text; }
                 catch { txtFilter.Text = ""; }
+
                 bindingSource.DataSource = dataTable;
             }
         }
 
         private void txtFilter_KeyDown(object sender, KeyEventArgs e)
         {
-            // установка фильтра таблицы
+            // set table filter
             if (e.KeyCode == Keys.Enter)
             {
                 try
@@ -236,28 +243,28 @@ namespace Scada.Server.Shell.Forms
                 }
                 catch
                 {
-                    //ScadaUiUtils.ShowError(AppPhrases.IncorrectFilter);
+                    ScadaUiUtils.ShowError(ServerShellPhrases.IncorrectEventFilter);
                 }
             }
         }
 
         private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
         {
-            // проверка вводимых в ячейку данных
+            // validate data entered in the cell
             e.Cancel = dataGridView.CurrentCell != null && dataGridView.CurrentCell.IsInEditMode &&
                 !ValidateCell(e.ColumnIndex, e.RowIndex, e.FormattedValue);
         }
 
         private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
-            ScadaUiUtils.ShowError(CommonPhrases.GridDataError + ":\r\n" + e.Exception.Message);
+            // show error message
+            ScadaUiUtils.ShowError(CommonPhrases.GridDataError + ": " + e.Exception.Message);
             e.ThrowException = false;
         }
 
         private void btnSave_Click(object sender, EventArgs e)
         {
-            // сохранение изменений таблицы событий
-            Save();
+            SaveEventTable();
         }
     }
 }

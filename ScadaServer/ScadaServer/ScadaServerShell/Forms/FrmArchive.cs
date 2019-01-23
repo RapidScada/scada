@@ -192,15 +192,23 @@ namespace Scada.Server.Shell.Forms
         {
             if (lbFiles.SelectedItem is FileItem fileItem)
             {
-                MessageBox.Show(fileItem.FilePath);
-
                 if (arcType == ArcType.Events)
                 {
-
+                    new FrmEventTable(environment.ErrLog)
+                    {
+                        FileName = fileItem.FilePath,
+                        AllowEdit = allowEdit
+                    }
+                    .ShowDialog();
                 }
                 else
                 {
-
+                    new FrmSnapshotTable(environment.ErrLog)
+                    {
+                        FileName = fileItem.FilePath,
+                        AllowEdit = allowEdit
+                    }
+                    .ShowDialog();
                 }
             }
         }
