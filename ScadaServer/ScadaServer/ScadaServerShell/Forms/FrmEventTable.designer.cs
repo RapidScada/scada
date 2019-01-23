@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmEventTable));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle10 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblCount = new System.Windows.Forms.ToolStripLabel();
@@ -64,6 +64,7 @@
             this.btnClose = new System.Windows.Forms.Button();
             this.btnSave = new System.Windows.Forms.Button();
             this.pnlBottom = new System.Windows.Forms.Panel();
+            this.btnExportToCsv = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -88,6 +89,7 @@
             this.btnMoveLast,
             this.sep3,
             this.btnRefresh,
+            this.btnExportToCsv,
             this.sep4,
             this.lblFilter,
             this.txtFilter});
@@ -238,9 +240,9 @@
             // colDateTime
             // 
             this.colDateTime.DataPropertyName = "DateTime";
-            dataGridViewCellStyle10.Format = "G";
-            dataGridViewCellStyle10.NullValue = null;
-            this.colDateTime.DefaultCellStyle = dataGridViewCellStyle10;
+            dataGridViewCellStyle4.Format = "G";
+            dataGridViewCellStyle4.NullValue = null;
+            this.colDateTime.DefaultCellStyle = dataGridViewCellStyle4;
             this.colDateTime.HeaderText = "DateTime";
             this.colDateTime.Name = "colDateTime";
             this.colDateTime.Width = 120;
@@ -364,6 +366,16 @@
             this.pnlBottom.Size = new System.Drawing.Size(634, 41);
             this.pnlBottom.TabIndex = 2;
             // 
+            // btnExportToCsv
+            // 
+            this.btnExportToCsv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnExportToCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportToCsv.Image")));
+            this.btnExportToCsv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExportToCsv.Name = "btnExportToCsv";
+            this.btnExportToCsv.Size = new System.Drawing.Size(23, 22);
+            this.btnExportToCsv.Text = "Export to CSV";
+            this.btnExportToCsv.Click += new System.EventHandler(this.btnExportToCsv_Click);
+            // 
             // FrmEventTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -429,5 +441,6 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colDescr;
         private System.Windows.Forms.DataGridViewTextBoxColumn colData;
         private System.Windows.Forms.Panel pnlBottom;
+        private System.Windows.Forms.ToolStripButton btnExportToCsv;
     }
 }

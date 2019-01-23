@@ -287,6 +287,12 @@ namespace Scada.Server.Shell.Forms
             }
         }
 
+        private void btnExportToCsv_Click(object sender, EventArgs e)
+        {
+            CsvConverter csvConverter = new CsvConverter(@"C:\Users\Admin\Downloads\1.csv");
+            csvConverter.ConvertToCsv(srezTable);
+        }
+
         private void txtFilter_KeyDown(object sender, KeyEventArgs e)
         {
             // set table filter

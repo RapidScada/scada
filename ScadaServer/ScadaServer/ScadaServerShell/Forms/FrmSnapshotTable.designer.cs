@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSnapshotTable));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.colCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,6 +69,7 @@
             this.pnlMain = new System.Windows.Forms.Panel();
             this.splMain = new System.Windows.Forms.Splitter();
             this.pnlBottom = new System.Windows.Forms.Panel();
+            this.btnExportToCsv = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -299,9 +300,9 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "DateTime";
-            dataGridViewCellStyle8.Format = "G";
-            dataGridViewCellStyle8.NullValue = null;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle8;
+            dataGridViewCellStyle3.Format = "G";
+            dataGridViewCellStyle3.NullValue = null;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
             this.dataGridViewTextBoxColumn1.HeaderText = "DateTime";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -322,7 +323,8 @@
             this.btnMoveNext1,
             this.btnMoveLast1,
             this.sep3,
-            this.btnRefresh});
+            this.btnRefresh,
+            this.btnExportToCsv});
             this.bindingNavigator1.Location = new System.Drawing.Point(0, 0);
             this.bindingNavigator1.MoveFirstItem = this.btnMoveFirst1;
             this.bindingNavigator1.MoveLastItem = this.btnMoveLast1;
@@ -443,6 +445,16 @@
             this.pnlBottom.Size = new System.Drawing.Size(764, 41);
             this.pnlBottom.TabIndex = 3;
             // 
+            // btnExportToCsv
+            // 
+            this.btnExportToCsv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnExportToCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportToCsv.Image")));
+            this.btnExportToCsv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExportToCsv.Name = "btnExportToCsv";
+            this.btnExportToCsv.Size = new System.Drawing.Size(23, 22);
+            this.btnExportToCsv.Text = "Export to CSV";
+            this.btnExportToCsv.Click += new System.EventHandler(this.btnExportToCsv_Click);
+            // 
             // FrmSnapshotTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -521,5 +533,6 @@
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Splitter splMain;
         private System.Windows.Forms.Panel pnlBottom;
+        private System.Windows.Forms.ToolStripButton btnExportToCsv;
     }
 }
