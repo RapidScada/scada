@@ -105,7 +105,7 @@
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Code.CommShell">
     <Phrase key="CommonParamsNode">Общие параметры</Phrase>
-    <Phrase key="DriversNode">Драйверы устройств</Phrase>
+    <Phrase key="DriversNode">Драйверы</Phrase>
     <Phrase key="CommLinesNode">Линии связи</Phrase>
     <Phrase key="CommLineNode">[{0}] {1}</Phrase>
     <Phrase key="LineParamsNode">Параметры линии</Phrase>
@@ -145,7 +145,7 @@
     <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
-    <Phrase key="this">Данные КП</Phrase>
+    <Phrase key="this">КП {0}</Phrase>
     <Phrase key="btnSendCommand">Команда</Phrase>
     <Phrase key="lblCommandInfo">Отправка прямых команд Коммуникатору доступна только локально.</Phrase>
   </Dictionary>
@@ -156,7 +156,7 @@
     <Phrase key="lblDescr">Описание</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineParams">
-    <Phrase key="this">Параметры линии</Phrase>
+    <Phrase key="this">Параметры линии {0}</Phrase>
     <Phrase key="lbTabs.Items[0]">Основные</Phrase>
     <Phrase key="lbTabs.Items[1]">Пользовательские</Phrase>
     <Phrase key="lbTabs.Items[2]">Опрос КП</Phrase>
@@ -221,7 +221,7 @@
     <Phrase key="btnDeviceProps">Свойства</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
-    <Phrase key="this">Статистика линии</Phrase>
+    <Phrase key="this">Статистика линии {0}</Phrase>
     <Phrase key="lbTabs.Items[0]">Состояние линии</Phrase>
     <Phrase key="lbTabs.Items[1]">Журнал линии</Phrase>
     <Phrase key="chkPause">Пауза</Phrase>

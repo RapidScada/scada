@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -107,6 +107,7 @@ namespace Scada.Comm.Shell.Forms
         private void FrmDeviceData_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDeviceData");
+            Text = string.Format(Text, kp.Number);
             InitRefresh();
             tmrRefresh.Start();
         }
@@ -138,6 +139,11 @@ namespace Scada.Comm.Shell.Forms
 
                 tmrRefresh.Start();
             }
+        }
+
+        private void btnDeviceProps_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void btnSendCommand_Click(object sender, EventArgs e)

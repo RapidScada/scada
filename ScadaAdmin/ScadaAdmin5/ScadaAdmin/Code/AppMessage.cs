@@ -23,7 +23,7 @@
  * Modified : 2018
  */
 
-namespace Scada.Comm.Shell.Code
+namespace Scada.Admin.App.Code
 {
     /// <summary>
     /// Messages sent by the application forms.

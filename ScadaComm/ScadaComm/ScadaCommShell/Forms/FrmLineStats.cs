@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -112,6 +112,7 @@ namespace Scada.Comm.Shell.Forms
         private void FrmLineStats_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineStats");
+            Text = string.Format(Text, commLine.Number);
             lbTabs.SelectedIndex = 0;
             InitRefresh();
             tmrRefresh.Start();

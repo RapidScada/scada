@@ -105,7 +105,7 @@
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Code.CommShell">
     <Phrase key="CommonParamsNode">Common Parameters</Phrase>
-    <Phrase key="DriversNode">Device Drivers</Phrase>
+    <Phrase key="DriversNode">Drivers</Phrase>
     <Phrase key="CommLinesNode">Communication Lines</Phrase>
     <Phrase key="CommLineNode">[{0}] {1}</Phrase>
     <Phrase key="LineParamsNode">Line Parameters</Phrase>
@@ -145,7 +145,7 @@
     <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
-    <Phrase key="this">Device Data</Phrase>
+    <Phrase key="this">Device {0}</Phrase>
     <Phrase key="btnSendCommand">Command</Phrase>
     <Phrase key="lblCommandInfo">Sending direct commands to Communicator is available only locally.</Phrase>
   </Dictionary>
@@ -156,7 +156,7 @@
     <Phrase key="lblDescr">Description</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineParams">
-    <Phrase key="this">Line Parameters</Phrase>
+    <Phrase key="this">Line {0} Parameters</Phrase>
     <Phrase key="lbTabs.Items[0]">Main Parameters</Phrase>
     <Phrase key="lbTabs.Items[1]">Custom Parameters</Phrase>
     <Phrase key="lbTabs.Items[2]">Request Sequence</Phrase>
@@ -221,7 +221,7 @@
     <Phrase key="btnDeviceProps">Properies</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
-    <Phrase key="this">Line Stats</Phrase>
+    <Phrase key="this">Line {0} Stats</Phrase>
     <Phrase key="lbTabs.Items[0]">Line State</Phrase>
     <Phrase key="lbTabs.Items[1]">Line Log</Phrase>
     <Phrase key="chkPause">Pause</Phrase>

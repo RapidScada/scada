@@ -33,6 +33,7 @@
             this.btnSendCommand = new System.Windows.Forms.Button();
             this.lblCommandInfo = new System.Windows.Forms.Label();
             this.tmrRefresh = new System.Windows.Forms.Timer(this.components);
+            this.btnDeviceProps = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lbDeviceData
@@ -52,7 +53,7 @@
             // 
             // btnSendCommand
             // 
-            this.btnSendCommand.Location = new System.Drawing.Point(12, 12);
+            this.btnSendCommand.Location = new System.Drawing.Point(93, 12);
             this.btnSendCommand.Name = "btnSendCommand";
             this.btnSendCommand.Size = new System.Drawing.Size(75, 23);
             this.btnSendCommand.TabIndex = 0;
@@ -64,7 +65,7 @@
             // 
             this.lblCommandInfo.AutoSize = true;
             this.lblCommandInfo.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblCommandInfo.Location = new System.Drawing.Point(93, 17);
+            this.lblCommandInfo.Location = new System.Drawing.Point(174, 17);
             this.lblCommandInfo.Name = "lblCommandInfo";
             this.lblCommandInfo.Size = new System.Drawing.Size(323, 13);
             this.lblCommandInfo.TabIndex = 1;
@@ -75,16 +76,27 @@
             this.tmrRefresh.Interval = 500;
             this.tmrRefresh.Tick += new System.EventHandler(this.tmrRefresh_Tick);
             // 
+            // btnDeviceProps
+            // 
+            this.btnDeviceProps.Location = new System.Drawing.Point(12, 12);
+            this.btnDeviceProps.Name = "btnDeviceProps";
+            this.btnDeviceProps.Size = new System.Drawing.Size(75, 23);
+            this.btnDeviceProps.TabIndex = 3;
+            this.btnDeviceProps.Text = "Properties";
+            this.btnDeviceProps.UseVisualStyleBackColor = true;
+            this.btnDeviceProps.Click += new System.EventHandler(this.btnDeviceProps_Click);
+            // 
             // FrmDeviceData
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(684, 411);
+            this.Controls.Add(this.btnDeviceProps);
             this.Controls.Add(this.lblCommandInfo);
             this.Controls.Add(this.btnSendCommand);
             this.Controls.Add(this.lbDeviceData);
             this.Name = "FrmDeviceData";
-            this.Text = "Device Data";
+            this.Text = "Device {0} Data";
             this.Load += new System.EventHandler(this.FrmDeviceData_Load);
             this.VisibleChanged += new System.EventHandler(this.FrmDeviceData_VisibleChanged);
             this.ResumeLayout(false);
@@ -98,5 +110,6 @@
         private System.Windows.Forms.Button btnSendCommand;
         private System.Windows.Forms.Label lblCommandInfo;
         private System.Windows.Forms.Timer tmrRefresh;
+        private System.Windows.Forms.Button btnDeviceProps;
     }
 }
