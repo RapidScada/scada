@@ -48,6 +48,8 @@ namespace Scada.Server.Shell.Code
         // Scada.Server.Shell.Forms
         public static string SetProfile { get; private set; }
         public static string Loading { get; private set; }
+        public static string CsvFileFilter { get; private set; }
+        public static string ExportToCsvError { get; private set; }
 
         // Scada.Server.Shell.Forms.FrmArchive
         public static string CurDataTitle { get; private set; }
@@ -105,6 +107,8 @@ namespace Scada.Server.Shell.Code
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms");
             SetProfile = dict.GetPhrase("SetProfile");
             Loading = dict.GetPhrase("Loading");
+            CsvFileFilter = dict.GetPhrase("CsvFileFilter");
+            ExportToCsvError = dict.GetPhrase("ExportToCsvError");
 
             dict = Localization.GetDictionary("Scada.Server.Shell.Forms.FrmArchive");
             CurDataTitle = dict.GetPhrase("CurDataTitle");

@@ -25,6 +25,8 @@
   <Dictionary key="Scada.Server.Shell.Forms">
     <Phrase key="SetProfile">Установите профиль развертывания экземпляра.</Phrase>
     <Phrase key="Loading">Загрузка...</Phrase>
+    <Phrase key="CsvFileFilter">Comma-separated values (*.csv)|*.csv|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="ExportToCsvError">Ошибка при экспорте данных в CSV</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmArchive">
     <Phrase key="btnView">Просмотреть</Phrase>
@@ -66,6 +68,7 @@
     <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
     <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
     <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnExportToCsv">Экспорт в CSV</Phrase>
     <Phrase key="btnSave">Сохранить</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="ViewEventsTitle">{0} - Просмотр событий</Phrase>
@@ -223,6 +226,7 @@
     <Phrase key="btnMoveNext2.ToolTip">Переместиться на следующую строку</Phrase>
     <Phrase key="btnMoveLast2.ToolTip">Переместиться в конец</Phrase>
     <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnExportToCsv">Экспорт в CSV</Phrase>
     <Phrase key="btnSave">Сохранить</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="ViewSnapshotsTitle">{0} - Просмотр срезов</Phrase>

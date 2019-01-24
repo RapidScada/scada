@@ -99,7 +99,7 @@ namespace Scada.Server.Shell.Forms
         }
 
         /// <summary>
-        /// Saves the snapshot table.
+        /// Saves the event table.
         /// </summary>
         private bool SaveEventTable()
         {
@@ -159,10 +159,33 @@ namespace Scada.Server.Shell.Forms
             return true;
         }
 
+        /// <summary>
+        /// Exports data to CSV.
+        /// </summary>
+        private void ExportToCsv()
+        {
+            try
+            {
+                sfdCsv.FileName = Path.GetFileNameWithoutExtension(FileName) + ".csv";
+
+                if (sfdCsv.ShowDialog() == DialogResult.OK)
+                {
+                    CsvConverter csvConverter = new CsvConverter(sfdCsv.FileName);
+                    csvConverter.ConvertToCsv(dataTable);
+                }
+            }
+            catch (Exception ex)
+            {
+                errLog.WriteException(ex, ServerShellPhrases.ExportToCsvError);
+                ScadaUiUtils.ShowError(ServerShellPhrases.ExportToCsvError + ": " + ex.Message);
+            }
+        }
+
 
         private void FrmEventTableEdit_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmEventTable");
+            sfdCsv.Filter = ServerShellPhrases.CsvFileFilter;
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -232,12 +255,6 @@ namespace Scada.Server.Shell.Forms
             }
         }
 
-        private void btnExportToCsv_Click(object sender, EventArgs e)
-        {
-            CsvConverter csvConverter = new CsvConverter(@"C:\Users\Admin\Downloads\2.csv");
-            csvConverter.ConvertToCsv(dataTable);
-        }
-
         private void txtFilter_KeyDown(object sender, KeyEventArgs e)
         {
             // set table filter
@@ -266,6 +283,11 @@ namespace Scada.Server.Shell.Forms
             // show error message
             ScadaUiUtils.ShowError(CommonPhrases.GridDataError + ": " + e.Exception.Message);
             e.ThrowException = false;
+        }
+
+        private void btnExportToCsv_Click(object sender, EventArgs e)
+        {
+            ExportToCsv();
         }
 
         private void btnSave_Click(object sender, EventArgs e)

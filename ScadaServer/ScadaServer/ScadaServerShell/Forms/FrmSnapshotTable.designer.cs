@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmSnapshotTable));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.colCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -69,7 +69,8 @@
             this.pnlMain = new System.Windows.Forms.Panel();
             this.splMain = new System.Windows.Forms.Splitter();
             this.pnlBottom = new System.Windows.Forms.Panel();
-            this.btnExportToCsv = new System.Windows.Forms.ToolStripButton();
+            this.btnExportToCsv = new System.Windows.Forms.Button();
+            this.sfdCsv = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource2)).BeginInit();
@@ -300,9 +301,9 @@
             // 
             this.dataGridViewTextBoxColumn1.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.dataGridViewTextBoxColumn1.DataPropertyName = "DateTime";
-            dataGridViewCellStyle3.Format = "G";
-            dataGridViewCellStyle3.NullValue = null;
-            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle1.Format = "G";
+            dataGridViewCellStyle1.NullValue = null;
+            this.dataGridViewTextBoxColumn1.DefaultCellStyle = dataGridViewCellStyle1;
             this.dataGridViewTextBoxColumn1.HeaderText = "DateTime";
             this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
             this.dataGridViewTextBoxColumn1.ReadOnly = true;
@@ -323,8 +324,7 @@
             this.btnMoveNext1,
             this.btnMoveLast1,
             this.sep3,
-            this.btnRefresh,
-            this.btnExportToCsv});
+            this.btnRefresh});
             this.bindingNavigator1.Location = new System.Drawing.Point(0, 0);
             this.bindingNavigator1.MoveFirstItem = this.btnMoveFirst1;
             this.bindingNavigator1.MoveLastItem = this.btnMoveLast1;
@@ -436,6 +436,7 @@
             // 
             // pnlBottom
             // 
+            this.pnlBottom.Controls.Add(this.btnExportToCsv);
             this.pnlBottom.Controls.Add(this.btnClose);
             this.pnlBottom.Controls.Add(this.btnSave);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -447,13 +448,19 @@
             // 
             // btnExportToCsv
             // 
-            this.btnExportToCsv.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnExportToCsv.Image = ((System.Drawing.Image)(resources.GetObject("btnExportToCsv.Image")));
-            this.btnExportToCsv.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExportToCsv.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.btnExportToCsv.Location = new System.Drawing.Point(12, 6);
             this.btnExportToCsv.Name = "btnExportToCsv";
-            this.btnExportToCsv.Size = new System.Drawing.Size(23, 22);
+            this.btnExportToCsv.Size = new System.Drawing.Size(100, 23);
+            this.btnExportToCsv.TabIndex = 0;
             this.btnExportToCsv.Text = "Export to CSV";
+            this.btnExportToCsv.UseVisualStyleBackColor = true;
             this.btnExportToCsv.Click += new System.EventHandler(this.btnExportToCsv_Click);
+            // 
+            // sfdCsv
+            // 
+            this.sfdCsv.DefaultExt = "*.csv";
+            this.sfdCsv.Filter = "Comma-separated values (*.csv)|*.csv|All Files (*.*)|*.*";
             // 
             // FrmSnapshotTable
             // 
@@ -533,6 +540,7 @@
         private System.Windows.Forms.Panel pnlMain;
         private System.Windows.Forms.Splitter splMain;
         private System.Windows.Forms.Panel pnlBottom;
-        private System.Windows.Forms.ToolStripButton btnExportToCsv;
+        private System.Windows.Forms.Button btnExportToCsv;
+        private System.Windows.Forms.SaveFileDialog sfdCsv;
     }
 }
