@@ -324,6 +324,11 @@
     <Phrase key="miCommLineMoveUp">Move Line Up</Phrase>
     <Phrase key="miCommLineMoveDown">Move Line Down</Phrase>
     <Phrase key="miCommLineDelete">Delete Line</Phrase>
+    <Phrase key="miCommLineStart">Start Line</Phrase>
+    <Phrase key="miCommLineStop">Stop Line</Phrase>
+    <Phrase key="miCommLineRestart">Restart Line</Phrase>
+    <Phrase key="miDeviceCommand">Send Command...</Phrase>
+    <Phrase key="miDeviceProperties">Properies</Phrase>
     <Phrase key="EmptyTitle">Administrator</Phrase>
     <Phrase key="ProjectTitle">{0} - Administrator</Phrase>
     <Phrase key="WelcomeMessage">Create a new project or&#13;&#10;open an existing project.</Phrase>

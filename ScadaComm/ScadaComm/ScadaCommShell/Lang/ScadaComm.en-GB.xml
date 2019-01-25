@@ -156,7 +156,6 @@
     <Phrase key="lblDescr">Description</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineParams">
-    <Phrase key="this">Line {0} Parameters</Phrase>
     <Phrase key="lbTabs.Items[0]">Main Parameters</Phrase>
     <Phrase key="lbTabs.Items[1]">Custom Parameters</Phrase>
     <Phrase key="lbTabs.Items[2]">Request Sequence</Phrase>
@@ -219,6 +218,7 @@
     <Phrase key="btnResetReqParams">Reset</Phrase>
     <Phrase key="btnResetReqParams.ToolTip">Set the device request parameters to default</Phrase>
     <Phrase key="btnDeviceProps">Properies</Phrase>
+    <Phrase key="LineParamsTitle">Line {0} Parameters</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
     <Phrase key="this">Line {0} Stats</Phrase>

@@ -55,7 +55,7 @@
             this.miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelpDoc = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelpSupport = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miHelpSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.tsMain = new System.Windows.Forms.ToolStrip();
             this.btnFileNewProject = new System.Windows.Forms.ToolStripButton();
@@ -79,6 +79,10 @@
             this.miCommLineMoveUp = new System.Windows.Forms.ToolStripMenuItem();
             this.miCommLineMoveDown = new System.Windows.Forms.ToolStripMenuItem();
             this.miCommLineDelete = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miCommLineStart = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineStop = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCommLineRestart = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsInstance = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miInstanceAdd = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceMoveUp = new System.Windows.Forms.ToolStripMenuItem();
@@ -109,13 +113,16 @@
             this.cmsFileItem = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miFileItemOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileItemOpenLocation = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileItemSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileItemRename = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsServer = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miServerOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsComm = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miCommOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
+            this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -127,6 +134,7 @@
             this.cmsFileItem.SuspendLayout();
             this.cmsServer.SuspendLayout();
             this.cmsComm.SuspendLayout();
+            this.cmsDevice.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -328,7 +336,7 @@
             this.miHelp.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miHelpDoc,
             this.miHelpSupport,
-            this.toolStripMenuItem1,
+            this.miHelpSep1,
             this.miHelpAbout});
             this.miHelp.Name = "miHelp";
             this.miHelp.Size = new System.Drawing.Size(44, 20);
@@ -350,10 +358,10 @@
             this.miHelpSupport.Text = "Technical Support";
             this.miHelpSupport.Click += new System.EventHandler(this.miHelpSupport_Click);
             // 
-            // toolStripMenuItem1
+            // miHelpSep1
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(166, 6);
+            this.miHelpSep1.Name = "miHelpSep1";
+            this.miHelpSep1.Size = new System.Drawing.Size(166, 6);
             // 
             // miHelpAbout
             // 
@@ -538,9 +546,13 @@
             this.miCommLineAdd,
             this.miCommLineMoveUp,
             this.miCommLineMoveDown,
-            this.miCommLineDelete});
+            this.miCommLineDelete,
+            this.miCommLineSep1,
+            this.miCommLineStart,
+            this.miCommLineStop,
+            this.miCommLineRestart});
             this.cmsCommLine.Name = "cmsCommLine";
-            this.cmsCommLine.Size = new System.Drawing.Size(164, 92);
+            this.cmsCommLine.Size = new System.Drawing.Size(164, 164);
             this.cmsCommLine.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCommLine_Opening);
             // 
             // miCommLineAdd
@@ -574,6 +586,32 @@
             this.miCommLineDelete.Size = new System.Drawing.Size(163, 22);
             this.miCommLineDelete.Text = "Delete Line";
             this.miCommLineDelete.Click += new System.EventHandler(this.miCommLineDelete_Click);
+            // 
+            // miCommLineSep1
+            // 
+            this.miCommLineSep1.Name = "miCommLineSep1";
+            this.miCommLineSep1.Size = new System.Drawing.Size(160, 6);
+            // 
+            // miCommLineStart
+            // 
+            this.miCommLineStart.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineStart.Image")));
+            this.miCommLineStart.Name = "miCommLineStart";
+            this.miCommLineStart.Size = new System.Drawing.Size(163, 22);
+            this.miCommLineStart.Text = "Start Line";
+            // 
+            // miCommLineStop
+            // 
+            this.miCommLineStop.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineStop.Image")));
+            this.miCommLineStop.Name = "miCommLineStop";
+            this.miCommLineStop.Size = new System.Drawing.Size(163, 22);
+            this.miCommLineStop.Text = "Stop Line";
+            // 
+            // miCommLineRestart
+            // 
+            this.miCommLineRestart.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineRestart.Image")));
+            this.miCommLineRestart.Name = "miCommLineRestart";
+            this.miCommLineRestart.Size = new System.Drawing.Size(163, 22);
+            this.miCommLineRestart.Text = "Restart Line";
             // 
             // cmsInstance
             // 
@@ -804,7 +842,7 @@
             this.cmsFileItem.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miFileItemOpen,
             this.miFileItemOpenLocation,
-            this.toolStripMenuItem4,
+            this.miFileItemSep1,
             this.miFileItemDelete,
             this.miFileItemRename});
             this.cmsFileItem.Name = "cmsFileItem";
@@ -827,10 +865,10 @@
             this.miFileItemOpenLocation.Text = "Open Location in File Explorer";
             this.miFileItemOpenLocation.Click += new System.EventHandler(this.miFileItemOpenLocation_Click);
             // 
-            // toolStripMenuItem4
+            // miFileItemSep1
             // 
-            this.toolStripMenuItem4.Name = "toolStripMenuItem4";
-            this.toolStripMenuItem4.Size = new System.Drawing.Size(228, 6);
+            this.miFileItemSep1.Name = "miFileItemSep1";
+            this.miFileItemSep1.Size = new System.Drawing.Size(228, 6);
             // 
             // miFileItemDelete
             // 
@@ -853,7 +891,7 @@
             this.cmsServer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miServerOpenInExplorer});
             this.cmsServer.Name = "cmsServer";
-            this.cmsServer.Size = new System.Drawing.Size(219, 48);
+            this.cmsServer.Size = new System.Drawing.Size(219, 26);
             // 
             // miServerOpenInExplorer
             // 
@@ -877,6 +915,28 @@
             this.miCommOpenInExplorer.Size = new System.Drawing.Size(218, 22);
             this.miCommOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miCommOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
+            // 
+            // cmsDevice
+            // 
+            this.cmsDevice.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miDeviceCommand,
+            this.miDeviceProperties});
+            this.cmsDevice.Name = "cmsDevice";
+            this.cmsDevice.Size = new System.Drawing.Size(181, 70);
+            // 
+            // miDeviceCommand
+            // 
+            this.miDeviceCommand.Image = ((System.Drawing.Image)(resources.GetObject("miDeviceCommand.Image")));
+            this.miDeviceCommand.Name = "miDeviceCommand";
+            this.miDeviceCommand.Size = new System.Drawing.Size(180, 22);
+            this.miDeviceCommand.Text = "Send Command...";
+            // 
+            // miDeviceProperties
+            // 
+            this.miDeviceProperties.Image = ((System.Drawing.Image)(resources.GetObject("miDeviceProperties.Image")));
+            this.miDeviceProperties.Name = "miDeviceProperties";
+            this.miDeviceProperties.Size = new System.Drawing.Size(180, 22);
+            this.miDeviceProperties.Text = "Properies";
             // 
             // FrmMain
             // 
@@ -912,6 +972,7 @@
             this.cmsFileItem.ResumeLayout(false);
             this.cmsServer.ResumeLayout(false);
             this.cmsComm.ResumeLayout(false);
+            this.cmsDevice.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -942,7 +1003,7 @@
         private System.Windows.Forms.ToolStripMenuItem miHelpAbout;
         private System.Windows.Forms.ToolStripMenuItem miHelpDoc;
         private System.Windows.Forms.ToolStripMenuItem miHelpSupport;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator miHelpSep1;
         private System.Windows.Forms.ToolStripButton btnFileNewProject;
         private System.Windows.Forms.TreeView tvExplorer;
         private WinControl.WinControl wctrlMain;
@@ -975,7 +1036,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsFileItem;
         private System.Windows.Forms.ToolStripMenuItem miFileItemOpen;
         private System.Windows.Forms.ToolStripMenuItem miFileItemOpenLocation;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem4;
+        private System.Windows.Forms.ToolStripSeparator miFileItemSep1;
         private System.Windows.Forms.ToolStripMenuItem miFileItemDelete;
         private System.Windows.Forms.ToolStripMenuItem miFileItemRename;
         private System.Windows.Forms.ToolStripMenuItem miDirectoryRefresh;
@@ -1005,6 +1066,13 @@
         private System.Windows.Forms.ToolStripMenuItem miServerOpenInExplorer;
         private System.Windows.Forms.ContextMenuStrip cmsComm;
         private System.Windows.Forms.ToolStripMenuItem miCommOpenInExplorer;
+        private System.Windows.Forms.ToolStripSeparator miCommLineSep1;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineStart;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineStop;
+        private System.Windows.Forms.ToolStripMenuItem miCommLineRestart;
+        private System.Windows.Forms.ContextMenuStrip cmsDevice;
+        private System.Windows.Forms.ToolStripMenuItem miDeviceCommand;
+        private System.Windows.Forms.ToolStripMenuItem miDeviceProperties;
     }
 }
 

@@ -324,6 +324,11 @@
     <Phrase key="miCommLineMoveUp">Переместить линию вверх</Phrase>
     <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>
     <Phrase key="miCommLineDelete">Удалить линию</Phrase>
+    <Phrase key="miCommLineStart">Запустить линию</Phrase>
+    <Phrase key="miCommLineStop">Остановить линию</Phrase>
+    <Phrase key="miCommLineRestart">Перезапустить линию</Phrase>
+    <Phrase key="miDeviceCommand">Отправить команду...</Phrase>
+    <Phrase key="miDeviceProperties">Свойства</Phrase>
     <Phrase key="EmptyTitle">Администратор</Phrase>
     <Phrase key="ProjectTitle">{0} - Администратор</Phrase>
     <Phrase key="WelcomeMessage">Создайте новый проект или&#13;&#10;откройте существующий проект.</Phrase>

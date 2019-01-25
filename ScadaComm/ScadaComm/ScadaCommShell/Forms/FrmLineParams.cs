@@ -108,14 +108,17 @@ namespace Scada.Comm.Shell.Forms
             ControlsToSettings();
 
             if (ChildFormTag.SendMessage(this, CommMessage.SaveSettings))
+            {
+                Text = string.Format(CommShellPhrases.LineParamsTitle, commLine.Number);
                 ChildFormTag.Modified = false;
+            }
         }
 
 
         private void FrmLineParams_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineParams", ctrlLineReqSequence.toolTip);
-            Text = string.Format(Text, commLine.Number);
+            Text = string.Format(CommShellPhrases.LineParamsTitle, commLine.Number);
             lbTabs.SelectedIndex = 0;
             ctrlLineMainParams.CommLine = commLine;
             ctrlLineCustomParams.CommLine = commLine;

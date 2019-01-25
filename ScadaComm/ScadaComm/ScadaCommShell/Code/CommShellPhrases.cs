@@ -47,6 +47,9 @@ namespace Scada.Comm.Shell.Code
         public static string SetProfile { get; private set; }
         public static string Loading { get; private set; }
 
+        // Scada.Comm.Shell.Forms.FrmLineParams
+        public static string LineParamsTitle { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Comm.Shell.Code.CommShell");
@@ -62,6 +65,9 @@ namespace Scada.Comm.Shell.Code
             dict = Localization.GetDictionary("Scada.Comm.Shell.Forms");
             SetProfile = dict.GetPhrase("SetProfile");
             Loading = dict.GetPhrase("Loading");
+
+            dict = Localization.GetDictionary("Scada.Comm.Shell.Forms.FrmLineParams");
+            LineParamsTitle = dict.GetPhrase("LineParamsTitle");
         }
     }
 }

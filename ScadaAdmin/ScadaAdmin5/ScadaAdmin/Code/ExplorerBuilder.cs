@@ -302,10 +302,12 @@ namespace Scada.Admin.App.Code
 
                     foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(commNode.Nodes))
                     {
-                        if (treeNode.Tag is TreeNodeTag tag && 
-                            (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine))
+                        if (treeNode.Tag is TreeNodeTag tag)
                         {
-                            treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
+                            if (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine)
+                                treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
+                            else if (tag.NodeType == CommNodeType.Device)
+                                treeNode.ContextMenuStrip = contextMenus.DeviceMenu;
                         }
                     }
 

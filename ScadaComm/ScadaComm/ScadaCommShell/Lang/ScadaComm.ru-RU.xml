@@ -156,7 +156,6 @@
     <Phrase key="lblDescr">Описание</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineParams">
-    <Phrase key="this">Параметры линии {0}</Phrase>
     <Phrase key="lbTabs.Items[0]">Основные</Phrase>
     <Phrase key="lbTabs.Items[1]">Пользовательские</Phrase>
     <Phrase key="lbTabs.Items[2]">Опрос КП</Phrase>
@@ -219,6 +218,7 @@
     <Phrase key="btnResetReqParams">Сброс</Phrase>
     <Phrase key="btnResetReqParams.ToolTip">Установить параметры опроса КП по умолчанию</Phrase>
     <Phrase key="btnDeviceProps">Свойства</Phrase>
+    <Phrase key="LineParamsTitle">Параметры линии {0}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
     <Phrase key="this">Статистика линии {0}</Phrase>

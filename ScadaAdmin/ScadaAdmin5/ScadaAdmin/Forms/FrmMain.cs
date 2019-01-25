@@ -100,7 +100,8 @@ namespace Scada.Admin.App.Forms
             commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer, new ContextMenus() {
                 ProjectMenu = cmsProject, DirectoryMenu = cmsDirectory, FileItemMenu = cmsFileItem,
-                InstanceMenu = cmsInstance, ServerMenu = cmsServer, CommMenu = cmsComm, CommLineMenu = cmsCommLine });
+                InstanceMenu = cmsInstance, ServerMenu = cmsServer, CommMenu = cmsComm, CommLineMenu = cmsCommLine,
+                DeviceMenu = cmsDevice });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -150,7 +151,7 @@ namespace Scada.Admin.App.Forms
             if (adminDictLoaded)
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null,
-                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine);
+                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine, cmsDevice);
                 Text = AppPhrases.EmptyTitle;
                 wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                 ofdProject.Filter = AppPhrases.ProjectFileFilter;
@@ -1599,6 +1600,10 @@ namespace Scada.Admin.App.Forms
             miCommLineMoveUp.Enabled = isLineNode && treeNode.PrevNode != null;
             miCommLineMoveDown.Enabled = isLineNode && treeNode.NextNode != null;
             miCommLineDelete.Enabled = isLineNode;
+
+            miCommLineStart.Enabled = isLineNode;
+            miCommLineStop.Enabled = isLineNode;
+            miCommLineRestart.Enabled = isLineNode;
         }
 
         private void miCommLineAdd_Click(object sender, EventArgs e)
