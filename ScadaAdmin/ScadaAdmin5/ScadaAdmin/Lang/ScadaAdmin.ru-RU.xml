@@ -294,6 +294,7 @@
     <Phrase key="btnEditCut.ToolTip">Вырезать (Ctrl+X)</Phrase>
     <Phrase key="btnEditCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
     <Phrase key="btnEditPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
+    <Phrase key="miProjectOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miProjectRename">Переименовать проект</Phrase>
     <Phrase key="miProjectProperties">Свойства</Phrase>
     <Phrase key="miDirectoryNewFile">Создать файл...</Phrase>
@@ -314,8 +315,11 @@
     <Phrase key="miInstanceDownloadConfig">Скачать конфигурацию...</Phrase>
     <Phrase key="miInstanceUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miInstanceStatus">Статус экземпляра...</Phrase>
+    <Phrase key="miInstanceOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miInstanceRename">Переименовать экземпляр</Phrase>
     <Phrase key="miInstanceProperties">Свойства</Phrase>
+    <Phrase key="miServerOpenInExplorer">Открыть папку в проводнике</Phrase>
+    <Phrase key="miCommOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miCommLineAdd">Добавить линию</Phrase>
     <Phrase key="miCommLineMoveUp">Переместить линию вверх</Phrase>
     <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>

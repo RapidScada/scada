@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -100,7 +100,7 @@ namespace Scada.Admin.App.Forms
             commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer, new ContextMenus() {
                 ProjectMenu = cmsProject, DirectoryMenu = cmsDirectory, FileItemMenu = cmsFileItem,
-                InstanceMenu = cmsInstance, CommLineMenu = cmsCommLine });
+                InstanceMenu = cmsInstance, ServerMenu = cmsServer, CommMenu = cmsComm, CommLineMenu = cmsCommLine });
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
@@ -150,7 +150,7 @@ namespace Scada.Admin.App.Forms
             if (adminDictLoaded)
             {
                 Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null,
-                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsCommLine);
+                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine);
                 Text = AppPhrases.EmptyTitle;
                 wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                 ofdProject.Filter = AppPhrases.ProjectFileFilter;
@@ -383,7 +383,12 @@ namespace Scada.Admin.App.Forms
         {
             if (treeNode?.Tag is TreeNodeTag tag)
             {
-                if (tag.NodeType == AppNodeType.Directory || tag.NodeType == AppNodeType.File)
+                if (tag.NodeType == AppNodeType.Project)
+                {
+                    path = project.ProjectDir;
+                    return true;
+                }
+                else if (tag.NodeType == AppNodeType.Directory || tag.NodeType == AppNodeType.File)
                 {
                     FileItem fileItem = (FileItem)tag.RelatedObject;
                     path = fileItem.Path;
@@ -394,11 +399,37 @@ namespace Scada.Admin.App.Forms
                     path = project.Interface.InterfaceDir;
                     return true;
                 }
-                else if (tag.NodeType == AppNodeType.WebApp &&
-                    FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                else if (tag.NodeType == AppNodeType.Instance)
                 {
-                    path = liveInstance.Instance.WebApp.AppDir;
-                    return true;
+                    if (FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                    {
+                        path = liveInstance.Instance.InstanceDir;
+                        return true;
+                    }
+                }
+                else if (tag.NodeType == AppNodeType.ServerApp)
+                {
+                    if (FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                    {
+                        path = liveInstance.Instance.ServerApp.AppDir;
+                        return true;
+                    }
+                }
+                else if (tag.NodeType == AppNodeType.CommApp)
+                {
+                    if (FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                    {
+                        path = liveInstance.Instance.CommApp.AppDir;
+                        return true;
+                    }
+                }
+                else if (tag.NodeType == AppNodeType.WebApp)
+                {
+                    if (FindClosestInstance(treeNode, out LiveInstance liveInstance))
+                    {
+                        path = liveInstance.Instance.WebApp.AppDir;
+                        return true;
+                    }
                 }
             }
 
@@ -1378,6 +1409,7 @@ namespace Scada.Admin.App.Forms
             miInstanceUploadConfig.Enabled = deployInstanceFound;
             miInstanceStatus.Enabled = deployInstanceFound;
 
+            miInstanceOpenInExplorer.Enabled = isInstanceNode;
             miInstanceRename.Enabled = isInstanceNode;
             miInstanceProperties.Enabled = isInstanceNode;
         }

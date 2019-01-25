@@ -294,6 +294,7 @@
     <Phrase key="btnEditCut.ToolTip">Cut (Ctrl+X)</Phrase>
     <Phrase key="btnEditCopy.ToolTip">Copy (Ctrl+C)</Phrase>
     <Phrase key="btnEditPaste.ToolTip">Paste (Ctrl+V)</Phrase>
+    <Phrase key="miProjectOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miProjectRename">Rename Project</Phrase>
     <Phrase key="miProjectProperties">Properties</Phrase>
     <Phrase key="miDirectoryNewFile">New File...</Phrase>
@@ -314,8 +315,11 @@
     <Phrase key="miInstanceDownloadConfig">Download Configuration...</Phrase>
     <Phrase key="miInstanceUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miInstanceStatus">Instance Status...</Phrase>
+    <Phrase key="miInstanceOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miInstanceRename">Rename Instance</Phrase>
     <Phrase key="miInstanceProperties">Properties</Phrase>
+    <Phrase key="miServerOpenInExplorer">Open Folder in File Explorer</Phrase>
+    <Phrase key="miCommOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miCommLineAdd">Add Line</Phrase>
     <Phrase key="miCommLineMoveUp">Move Line Up</Phrase>
     <Phrase key="miCommLineMoveDown">Move Line Down</Phrase>

@@ -327,6 +327,7 @@
     </Content>
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <None Include="Resources\file.png" />
     <None Include="Resources\chrome.png" />

@@ -90,9 +90,11 @@
             this.miInstanceUploadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miInstanceOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceRename = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsProject = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miProjectOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.miProjectRename = new System.Windows.Forms.ToolStripMenuItem();
             this.miProjectProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsDirectory = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -110,6 +112,10 @@
             this.toolStripMenuItem4 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileItemDelete = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileItemRename = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsServer = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miServerOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.cmsComm = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miCommOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -119,6 +125,8 @@
             this.cmsProject.SuspendLayout();
             this.cmsDirectory.SuspendLayout();
             this.cmsFileItem.SuspendLayout();
+            this.cmsServer.SuspendLayout();
+            this.cmsComm.SuspendLayout();
             this.SuspendLayout();
             // 
             // msMain
@@ -580,17 +588,18 @@
             this.miInstanceUploadConfig,
             this.miInstanceStatus,
             this.miInstanceSep2,
+            this.miInstanceOpenInExplorer,
             this.miInstanceRename,
             this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
-            this.cmsInstance.Size = new System.Drawing.Size(215, 236);
+            this.cmsInstance.Size = new System.Drawing.Size(219, 258);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
             // 
             // miInstanceAdd
             // 
             this.miInstanceAdd.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceAdd.Image")));
             this.miInstanceAdd.Name = "miInstanceAdd";
-            this.miInstanceAdd.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceAdd.Size = new System.Drawing.Size(218, 22);
             this.miInstanceAdd.Text = "Add Instance...";
             this.miInstanceAdd.Click += new System.EventHandler(this.miInstanceAdd_Click);
             // 
@@ -598,7 +607,7 @@
             // 
             this.miInstanceMoveUp.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveUp.Image")));
             this.miInstanceMoveUp.Name = "miInstanceMoveUp";
-            this.miInstanceMoveUp.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceMoveUp.Size = new System.Drawing.Size(218, 22);
             this.miInstanceMoveUp.Text = "Move Instance Up";
             this.miInstanceMoveUp.Click += new System.EventHandler(this.miInstanceMoveUp_Click);
             // 
@@ -606,7 +615,7 @@
             // 
             this.miInstanceMoveDown.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveDown.Image")));
             this.miInstanceMoveDown.Name = "miInstanceMoveDown";
-            this.miInstanceMoveDown.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceMoveDown.Size = new System.Drawing.Size(218, 22);
             this.miInstanceMoveDown.Text = "Move Instance Down";
             this.miInstanceMoveDown.Click += new System.EventHandler(this.miInstanceMoveDown_Click);
             // 
@@ -614,20 +623,20 @@
             // 
             this.miInstanceDelete.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceDelete.Image")));
             this.miInstanceDelete.Name = "miInstanceDelete";
-            this.miInstanceDelete.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceDelete.Size = new System.Drawing.Size(218, 22);
             this.miInstanceDelete.Text = "Delete Instance";
             this.miInstanceDelete.Click += new System.EventHandler(this.miInstanceDelete_Click);
             // 
             // miInstanceSep1
             // 
             this.miInstanceSep1.Name = "miInstanceSep1";
-            this.miInstanceSep1.Size = new System.Drawing.Size(211, 6);
+            this.miInstanceSep1.Size = new System.Drawing.Size(215, 6);
             // 
             // miInstanceProfile
             // 
             this.miInstanceProfile.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProfile.Image")));
             this.miInstanceProfile.Name = "miInstanceProfile";
-            this.miInstanceProfile.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceProfile.Size = new System.Drawing.Size(218, 22);
             this.miInstanceProfile.Text = "Deployment Profile...";
             this.miInstanceProfile.Click += new System.EventHandler(this.miDeployInstanceProfile_Click);
             // 
@@ -635,7 +644,7 @@
             // 
             this.miInstanceDownloadConfig.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceDownloadConfig.Image")));
             this.miInstanceDownloadConfig.Name = "miInstanceDownloadConfig";
-            this.miInstanceDownloadConfig.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceDownloadConfig.Size = new System.Drawing.Size(218, 22);
             this.miInstanceDownloadConfig.Text = "Download Configuration...";
             this.miInstanceDownloadConfig.Click += new System.EventHandler(this.miDeployDownloadConfig_Click);
             // 
@@ -643,7 +652,7 @@
             // 
             this.miInstanceUploadConfig.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceUploadConfig.Image")));
             this.miInstanceUploadConfig.Name = "miInstanceUploadConfig";
-            this.miInstanceUploadConfig.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceUploadConfig.Size = new System.Drawing.Size(218, 22);
             this.miInstanceUploadConfig.Text = "Upload Configuration...";
             this.miInstanceUploadConfig.Click += new System.EventHandler(this.miDeployUploadConfig_Click);
             // 
@@ -651,20 +660,28 @@
             // 
             this.miInstanceStatus.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceStatus.Image")));
             this.miInstanceStatus.Name = "miInstanceStatus";
-            this.miInstanceStatus.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceStatus.Size = new System.Drawing.Size(218, 22);
             this.miInstanceStatus.Text = "Instance Status...";
             this.miInstanceStatus.Click += new System.EventHandler(this.miDeployInstanceStatus_Click);
             // 
             // miInstanceSep2
             // 
             this.miInstanceSep2.Name = "miInstanceSep2";
-            this.miInstanceSep2.Size = new System.Drawing.Size(211, 6);
+            this.miInstanceSep2.Size = new System.Drawing.Size(215, 6);
+            // 
+            // miInstanceOpenInExplorer
+            // 
+            this.miInstanceOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceOpenInExplorer.Image")));
+            this.miInstanceOpenInExplorer.Name = "miInstanceOpenInExplorer";
+            this.miInstanceOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceOpenInExplorer.Text = "Open Folder in File Explorer";
+            this.miInstanceOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
             // miInstanceRename
             // 
             this.miInstanceRename.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceRename.Image")));
             this.miInstanceRename.Name = "miInstanceRename";
-            this.miInstanceRename.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceRename.Size = new System.Drawing.Size(218, 22);
             this.miInstanceRename.Text = "Rename Instance";
             this.miInstanceRename.Click += new System.EventHandler(this.miInstanceRename_Click);
             // 
@@ -672,23 +689,32 @@
             // 
             this.miInstanceProperties.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProperties.Image")));
             this.miInstanceProperties.Name = "miInstanceProperties";
-            this.miInstanceProperties.Size = new System.Drawing.Size(214, 22);
+            this.miInstanceProperties.Size = new System.Drawing.Size(218, 22);
             this.miInstanceProperties.Text = "Properties";
             this.miInstanceProperties.Click += new System.EventHandler(this.miInstanceProperties_Click);
             // 
             // cmsProject
             // 
             this.cmsProject.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miProjectOpenInExplorer,
             this.miProjectRename,
             this.miProjectProperties});
             this.cmsProject.Name = "cmsCommLine";
-            this.cmsProject.Size = new System.Drawing.Size(158, 48);
+            this.cmsProject.Size = new System.Drawing.Size(219, 70);
+            // 
+            // miProjectOpenInExplorer
+            // 
+            this.miProjectOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miProjectOpenInExplorer.Image")));
+            this.miProjectOpenInExplorer.Name = "miProjectOpenInExplorer";
+            this.miProjectOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miProjectOpenInExplorer.Text = "Open Folder in File Explorer";
+            this.miProjectOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
             // miProjectRename
             // 
             this.miProjectRename.Image = ((System.Drawing.Image)(resources.GetObject("miProjectRename.Image")));
             this.miProjectRename.Name = "miProjectRename";
-            this.miProjectRename.Size = new System.Drawing.Size(157, 22);
+            this.miProjectRename.Size = new System.Drawing.Size(218, 22);
             this.miProjectRename.Text = "Rename Project";
             this.miProjectRename.Click += new System.EventHandler(this.miProjectRename_Click);
             // 
@@ -696,7 +722,7 @@
             // 
             this.miProjectProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProjectProperties.Image")));
             this.miProjectProperties.Name = "miProjectProperties";
-            this.miProjectProperties.Size = new System.Drawing.Size(157, 22);
+            this.miProjectProperties.Size = new System.Drawing.Size(218, 22);
             this.miProjectProperties.Text = "Properties";
             this.miProjectProperties.Click += new System.EventHandler(this.miProjectProperties_Click);
             // 
@@ -822,6 +848,36 @@
             this.miFileItemRename.Text = "Rename";
             this.miFileItemRename.Click += new System.EventHandler(this.miFileItemRename_Click);
             // 
+            // cmsServer
+            // 
+            this.cmsServer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miServerOpenInExplorer});
+            this.cmsServer.Name = "cmsServer";
+            this.cmsServer.Size = new System.Drawing.Size(219, 48);
+            // 
+            // miServerOpenInExplorer
+            // 
+            this.miServerOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miServerOpenInExplorer.Image")));
+            this.miServerOpenInExplorer.Name = "miServerOpenInExplorer";
+            this.miServerOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miServerOpenInExplorer.Text = "Open Folder in File Explorer";
+            this.miServerOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
+            // 
+            // cmsComm
+            // 
+            this.cmsComm.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miCommOpenInExplorer});
+            this.cmsComm.Name = "cmsServer";
+            this.cmsComm.Size = new System.Drawing.Size(219, 26);
+            // 
+            // miCommOpenInExplorer
+            // 
+            this.miCommOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miCommOpenInExplorer.Image")));
+            this.miCommOpenInExplorer.Name = "miCommOpenInExplorer";
+            this.miCommOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miCommOpenInExplorer.Text = "Open Folder in File Explorer";
+            this.miCommOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -854,6 +910,8 @@
             this.cmsProject.ResumeLayout(false);
             this.cmsDirectory.ResumeLayout(false);
             this.cmsFileItem.ResumeLayout(false);
+            this.cmsServer.ResumeLayout(false);
+            this.cmsComm.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -941,6 +999,12 @@
         private System.Windows.Forms.ToolStripMenuItem miInstanceStatus;
         private System.Windows.Forms.ToolStripMenuItem miInstanceProfile;
         private System.Windows.Forms.ToolStripMenuItem miDeployInstanceProfile;
+        private System.Windows.Forms.ToolStripMenuItem miProjectOpenInExplorer;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceOpenInExplorer;
+        private System.Windows.Forms.ContextMenuStrip cmsServer;
+        private System.Windows.Forms.ToolStripMenuItem miServerOpenInExplorer;
+        private System.Windows.Forms.ContextMenuStrip cmsComm;
+        private System.Windows.Forms.ToolStripMenuItem miCommOpenInExplorer;
     }
 }
 

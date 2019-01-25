@@ -276,6 +276,7 @@ namespace Scada.Admin.App.Code
                 if (instance.ServerApp.Enabled)
                 {
                     TreeNode serverNode = TreeViewUtils.CreateNode(AppPhrases.ServerNode, "server.png");
+                    serverNode.ContextMenuStrip = contextMenus.ServerMenu;
                     serverNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.ServerApp,
@@ -290,6 +291,7 @@ namespace Scada.Admin.App.Code
                 if (instance.CommApp.Enabled)
                 {
                     TreeNode commNode = TreeViewUtils.CreateNode(AppPhrases.CommNode, "comm.png");
+                    commNode.ContextMenuStrip = contextMenus.CommMenu;
                     commNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.CommApp,

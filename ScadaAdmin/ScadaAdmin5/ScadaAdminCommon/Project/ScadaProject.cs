@@ -104,6 +104,17 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Gets the project directory.
+        /// </summary>
+        public string ProjectDir
+        {
+            get
+            {
+                return Path.GetDirectoryName(FileName);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
