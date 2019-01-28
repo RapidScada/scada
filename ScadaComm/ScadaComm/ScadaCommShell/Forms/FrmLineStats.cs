@@ -142,6 +142,11 @@ namespace Scada.Comm.Shell.Forms
             }
         }
 
+        private void FrmLineStats_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
+        }
+
         private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)

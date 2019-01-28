@@ -112,6 +112,11 @@ namespace Scada.Comm.Shell.Forms
             tmrRefresh.Start();
         }
 
+        private void FrmDeviceData_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
+        }
+
         private void FrmDeviceData_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)

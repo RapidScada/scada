@@ -922,21 +922,24 @@
             this.miDeviceCommand,
             this.miDeviceProperties});
             this.cmsDevice.Name = "cmsDevice";
-            this.cmsDevice.Size = new System.Drawing.Size(181, 70);
+            this.cmsDevice.Size = new System.Drawing.Size(170, 48);
+            this.cmsDevice.Opening += new System.ComponentModel.CancelEventHandler(this.cmsDevice_Opening);
             // 
             // miDeviceCommand
             // 
             this.miDeviceCommand.Image = ((System.Drawing.Image)(resources.GetObject("miDeviceCommand.Image")));
             this.miDeviceCommand.Name = "miDeviceCommand";
-            this.miDeviceCommand.Size = new System.Drawing.Size(180, 22);
+            this.miDeviceCommand.Size = new System.Drawing.Size(169, 22);
             this.miDeviceCommand.Text = "Send Command...";
+            this.miDeviceCommand.Click += new System.EventHandler(this.miDeviceCommand_Click);
             // 
             // miDeviceProperties
             // 
             this.miDeviceProperties.Image = ((System.Drawing.Image)(resources.GetObject("miDeviceProperties.Image")));
             this.miDeviceProperties.Name = "miDeviceProperties";
-            this.miDeviceProperties.Size = new System.Drawing.Size(180, 22);
+            this.miDeviceProperties.Size = new System.Drawing.Size(169, 22);
             this.miDeviceProperties.Text = "Properies";
+            this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
             // FrmMain
             // 

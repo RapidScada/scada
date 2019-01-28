@@ -32,6 +32,7 @@ using Scada.Agent.Connector;
 using Scada.Comm;
 using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
+using Scada.Comm.Shell.Forms;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -1664,6 +1665,39 @@ namespace Scada.Admin.App.Forms
                 tvExplorer.RemoveSelectedNode();
                 SaveCommSettigns(liveInstance, null);
             }
+        }
+
+
+        private void cmsDevice_Opening(object sender, CancelEventArgs e)
+        {
+            if (FindClosestInstance(tvExplorer.SelectedNode, out LiveInstance liveInstance))
+            {
+                IAgentClient agentClient = liveInstance.CommEnvironment.AgentClient;
+                miDeviceCommand.Enabled = agentClient != null && agentClient.IsLocal;
+            }
+            else
+            {
+                miDeviceCommand.Enabled = false;
+                miDeviceProperties.Enabled = false;
+            }
+        }
+
+        private void miDeviceCommand_Click(object sender, EventArgs e)
+        {
+            // send command to device
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.Device) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                Comm.Settings.KP kp = (Comm.Settings.KP)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+                new FrmDeviceCommand(kp, liveInstance.CommEnvironment).ShowDialog();
+            }
+        }
+
+        private void miDeviceProperties_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

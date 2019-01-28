@@ -88,5 +88,17 @@ namespace Scada.Comm.Shell.Code
 
             return kpView;
         }
+
+        /// <summary>
+        /// Gets the user interface of the particular device.
+        /// </summary>
+        public KPView GetKPView(string dllPath, int kpNum, KPView.KPProperties kpProps)
+        {
+            KPView commonKpView = GetKPView(dllPath);
+            KPView kpView = KPFactory.GetKPView(commonKpView.GetType(), kpNum);
+            kpView.KPProps = kpProps;
+            kpView.AppDirs = AppDirs;
+            return kpView;
+        }
     }
 }

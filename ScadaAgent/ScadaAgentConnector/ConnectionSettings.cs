@@ -82,7 +82,7 @@ namespace Scada.Agent.Connector
         {
             Host = "";
             Port = 10002;
-            Username = "admin";
+            Username = "ScadaAdmin";
             Password = "";
             ScadaInstance = "Default";
             SecretKey = new byte[0];

@@ -146,6 +146,7 @@
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
     <Phrase key="this">КП {0}</Phrase>
+    <Phrase key="btnDeviceProps">Свойства</Phrase>
     <Phrase key="btnSendCommand">Команда</Phrase>
     <Phrase key="lblCommandInfo">Отправка прямых команд Коммуникатору доступна только локально.</Phrase>
   </Dictionary>

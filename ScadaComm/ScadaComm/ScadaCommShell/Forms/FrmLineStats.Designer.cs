@@ -114,6 +114,7 @@
             this.Controls.Add(this.lbTabs);
             this.Name = "FrmLineStats";
             this.Text = "Line Stats";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmLineStats_FormClosed);
             this.Load += new System.EventHandler(this.FrmLineStats_Load);
             this.VisibleChanged += new System.EventHandler(this.FrmLineStats_VisibleChanged);
             this.ResumeLayout(false);

@@ -109,6 +109,11 @@ namespace Scada.Server.Shell.Forms
             tmrRefresh.Start();
         }
 
+        private void FrmStats_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
+        }
+
         private void FrmStats_VisibleChanged(object sender, EventArgs e)
         {
             if (Visible)

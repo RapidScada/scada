@@ -97,6 +97,7 @@
             this.Controls.Add(this.lbDeviceData);
             this.Name = "FrmDeviceData";
             this.Text = "Device {0} Data";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmDeviceData_FormClosed);
             this.Load += new System.EventHandler(this.FrmDeviceData_Load);
             this.VisibleChanged += new System.EventHandler(this.FrmDeviceData_VisibleChanged);
             this.ResumeLayout(false);

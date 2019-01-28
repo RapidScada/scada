@@ -146,6 +146,7 @@
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceData">
     <Phrase key="this">Device {0}</Phrase>
+    <Phrase key="btnDeviceProps">Properties</Phrase>
     <Phrase key="btnSendCommand">Command</Phrase>
     <Phrase key="lblCommandInfo">Sending direct commands to Communicator is available only locally.</Phrase>
   </Dictionary>
