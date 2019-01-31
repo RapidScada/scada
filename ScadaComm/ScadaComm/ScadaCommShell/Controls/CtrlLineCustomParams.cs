@@ -114,7 +114,7 @@ namespace Scada.Comm.Shell.Controls
             if (CommLine == null)
                 throw new InvalidOperationException("CommLine must not be null.");
 
-            SetCustomParams(CommLine.CustomParams);
+            ShowCustomParams(CommLine.CustomParams);
         }
 
         /// <summary>
@@ -125,13 +125,13 @@ namespace Scada.Comm.Shell.Controls
             if (CommLine == null)
                 throw new InvalidOperationException("CommLine must not be null.");
 
-            GetCustomParams(CommLine.CustomParams);
+            RetrieveCustomParams(CommLine.CustomParams);
         }
 
         /// <summary>
         /// Fills the displayed list with the specified custom parameters.
         /// </summary>
-        public void SetCustomParams(SortedList<string, string> customParams)
+        public void ShowCustomParams(SortedList<string, string> customParams)
         {
             try
             {
@@ -155,7 +155,7 @@ namespace Scada.Comm.Shell.Controls
         /// <summary>
         /// Fills the specified list with actual custom parameters.
         /// </summary>
-        public void GetCustomParams(SortedList<string, string> customParams)
+        public void RetrieveCustomParams(SortedList<string, string> customParams)
         {
             customParams.Clear();
 

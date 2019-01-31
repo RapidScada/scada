@@ -102,13 +102,7 @@ namespace Scada.Comm.Shell.Forms
                 lbDrivers.BeginUpdate();
                 lbDrivers.Items.Clear();
 
-                DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.KPDir);
-
-                FileInfo[] fileInfoArr = dirInfo.Exists ?
-                    dirInfo.GetFiles("Kp*.dll", SearchOption.TopDirectoryOnly) :
-                    new FileInfo[0];
-
-                foreach (FileInfo fileInfo in fileInfoArr)
+                foreach (FileInfo fileInfo in environment.GetDrivers())
                 {
                     lbDrivers.Items.Add(new DriverItem()
                     {

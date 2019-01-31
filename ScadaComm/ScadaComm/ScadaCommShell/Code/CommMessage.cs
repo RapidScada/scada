@@ -34,5 +34,6 @@ namespace Scada.Comm.Shell.Code
     public static class CommMessage
     {
         public const string SaveSettings = "Comm.SaveSettings";
+        public const string UpdateLineParams = "Comm.UpdateLineParams";
     }
 }

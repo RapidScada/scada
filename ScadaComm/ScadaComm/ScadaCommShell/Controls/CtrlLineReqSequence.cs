@@ -61,6 +61,7 @@ namespace Scada.Comm.Shell.Controls
             deviceBuf = null;
             CommLine = null;
             Environment = null;
+            CustomParams = null;
         }
 
 
@@ -79,6 +80,21 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public SortedList<string, string> CustomParams { get; set; }
 
+
+        /// <summary>
+        /// Validates the required control properties.
+        /// </summary>
+        private void ValidateProps()
+        {
+            if (CommLine == null)
+                throw new InvalidOperationException("CommLine must not be null.");
+
+            if (Environment == null)
+                throw new InvalidOperationException("Environment must not be null.");
+
+            if (CustomParams == null)
+                throw new InvalidOperationException("CustomParams must not be null.");
+        }
 
         /// <summary>
         /// Sets the column names for the translation.
@@ -123,6 +139,27 @@ namespace Scada.Comm.Shell.Controls
                 btnCutDevice.Enabled = false;
                 btnCopyDevice.Enabled = false;
                 gbSelectedDevice.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Fills the combo box that specifies a device driver.
+        /// </summary>
+        private void FillDriverComboBox()
+        {
+            try
+            {
+                cbDeviceDll.BeginUpdate();
+                cbDeviceDll.Items.Clear();
+
+                foreach (FileInfo fileInfo in Environment.GetDrivers())
+                {
+                    cbDeviceDll.Items.Add(fileInfo.Name);
+                }
+            }
+            finally
+            {
+                cbDeviceDll.EndUpdate();
             }
         }
 
@@ -241,19 +278,6 @@ namespace Scada.Comm.Shell.Controls
                 kpView = common ? 
                     Environment.GetKPView(dllPath) : 
                     Environment.GetKPView(dllPath, kp.Number, new KPView.KPProperties(CustomParams, kp.CmdLine));
-                KPView commonKpView = Environment.GetKPView(dllPath);
-
-                if (common)
-                {
-                    kpView = commonKpView;
-                }
-                else
-                {
-                    kpView = KPFactory.GetKPView(commonKpView.GetType(), kp.Number);
-                    kpView.KPProps = new KPView.KPProperties(CustomParams, kp.CmdLine);
-                    kpView.AppDirs = Environment.AppDirs;
-                }
-
                 return true;
             }
             catch (Exception ex)
@@ -287,8 +311,8 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public void SettingsToControls()
         {
-            if (CommLine == null)
-                throw new InvalidOperationException("CommLine must not be null.");
+            ValidateProps();
+            FillDriverComboBox();
 
             try
             {
@@ -315,9 +339,7 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public void ControlsToSettings()
         {
-            if (CommLine == null)
-                throw new InvalidOperationException("CommLine must not be null.");
-
+            ValidateProps();
             CommLine.ReqSequence.Clear();
 
             foreach (ListViewItem item in lvReqSequence.Items)
@@ -630,13 +652,20 @@ namespace Scada.Comm.Shell.Controls
             if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) && 
                 GetDeviceView(kp, false, out KPView kpView) && kpView.CanShowProps)
             {
-                kpView.ShowProps();
-
-                if (kpView.KPProps.Modified)
+                if (kpView.CanShowProps)
                 {
-                    txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
-                    OnCustomParamsChanged();
-                    OnSettingsChanged();
+                    kpView.ShowProps();
+
+                    if (kpView.KPProps.Modified)
+                    {
+                        txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
+                        OnCustomParamsChanged();
+                        OnSettingsChanged();
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
                 }
             }
         }

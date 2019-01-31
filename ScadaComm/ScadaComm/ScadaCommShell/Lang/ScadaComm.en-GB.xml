@@ -116,6 +116,7 @@
   <Dictionary key="Scada.Comm.Shell.Forms">
     <Phrase key="SetProfile">Set the instance deployment profile.</Phrase>
     <Phrase key="Loading">Loading...</Phrase>
+    <Phrase key="NoDeviceProps">Displaying the properties of this device is not supported by the driver.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Common Parameters</Phrase>
@@ -208,7 +209,7 @@
     <Phrase key="chkDeviceBound">Bound to Server</Phrase>
     <Phrase key="lblDeviceNumber">Number</Phrase>
     <Phrase key="lblDeviceName">Name</Phrase>
-    <Phrase key="lblDeviceDll">DLL</Phrase>
+    <Phrase key="lblDeviceDll">Driver</Phrase>
     <Phrase key="lblDeviceAddress">Address</Phrase>
     <Phrase key="lblDeviceCallNum">Call number or host name</Phrase>
     <Phrase key="lblDeviceTimeout">Timeout</Phrase>

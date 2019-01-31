@@ -27,6 +27,7 @@ using Scada.Agent.Connector;
 using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Utils;
 
 namespace Scada.Comm.Shell.Code
@@ -58,6 +59,18 @@ namespace Scada.Comm.Shell.Code
         /// </summary>
         public Log ErrLog { get; set; }
 
+
+        /// <summary>
+        /// Gets information about available driver files.
+        /// </summary>
+        internal FileInfo[] GetDrivers()
+        {
+            DirectoryInfo dirInfo = new DirectoryInfo(AppDirs.KPDir);
+
+            return dirInfo.Exists ?
+                dirInfo.GetFiles("Kp*.dll", SearchOption.TopDirectoryOnly) :
+                new FileInfo[0];
+        }
 
         /// <summary>
         /// Validates the environment and throws an exception if it is incorrect.

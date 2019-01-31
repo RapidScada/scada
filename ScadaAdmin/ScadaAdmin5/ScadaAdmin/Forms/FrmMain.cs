@@ -347,6 +347,18 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Updates parameters of the open communication line related to the specified node.
+        /// </summary>
+        private void UpdateLineParams(TreeNode siblingNode)
+        {
+            if (siblingNode?.FindSibling(CommNodeType.LineParams) is TreeNode lineParamsNode &&
+                ((TreeNodeTag)lineParamsNode.Tag).ExistingForm is IChildForm childForm)
+            {
+                childForm.ChildFormTag.SendMessage(this, CommMessage.UpdateLineParams);
+            }
+        }
+
+        /// <summary>
         /// Closes the child forms corresponding to the specified node and its children.
         /// </summary>
         private void CloseChildForms(TreeNode treeNode, bool save = false)
@@ -620,17 +632,17 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Saves the Communicator settings and optionally updates the explorer.
         /// </summary>
-        private bool SaveCommSettigns(LiveInstance liveInstance, TreeNode commLineNode)
+        private bool SaveCommSettigns(LiveInstance liveInstance, TreeNode commLineNodeToUpdate = null)
         {
             if (liveInstance.Instance.CommApp.SaveSettings(out string errMsg))
             {
-                if (commLineNode != null)
+                if (commLineNodeToUpdate != null)
                 {
                     try
                     {
                         tvExplorer.BeginUpdate();
-                        commShell.UpdateCommLineNode(commLineNode, liveInstance.CommEnvironment);
-                        UpdateChildFormHints(commLineNode);
+                        commShell.UpdateCommLineNode(commLineNodeToUpdate, liveInstance.CommEnvironment);
+                        UpdateChildFormHints(commLineNodeToUpdate);
                     }
                     finally
                     {
@@ -791,6 +803,12 @@ namespace Scada.Admin.App.Forms
                     TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
                     if (!SaveCommSettigns(liveInstance, commLineNode))
                         e.Cancel = true;
+                }
+                else if (e.Message == CommMessage.UpdateLineParams)
+                {
+                    // refresh parameters of the specified line if they are open
+                    UpdateLineParams(FindTreeNode(e.Source));
+                    SaveCommSettigns(liveInstance);
                 }
             }
         }
@@ -1684,7 +1702,7 @@ namespace Scada.Admin.App.Forms
 
         private void miDeviceCommand_Click(object sender, EventArgs e)
         {
-            // send command to device
+            // show a device command form
             TreeNode selectedNode = tvExplorer.SelectedNode;
 
             if (selectedNode != null && selectedNode.TagIs(CommNodeType.Device) &&
@@ -1697,7 +1715,36 @@ namespace Scada.Admin.App.Forms
 
         private void miDeviceProperties_Click(object sender, EventArgs e)
         {
+            // show the device properties
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.Device) &&
+                selectedNode.FindClosest(CommNodeType.CommLine) is TreeNode commLineNode &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                Comm.Settings.CommLine commLine = (Comm.Settings.CommLine)((TreeNodeTag)commLineNode.Tag).RelatedObject;
+                Comm.Settings.KP kp = (Comm.Settings.KP)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+
+                string dllPath = Path.Combine(liveInstance.CommEnvironment.AppDirs.KPDir, kp.Dll);
+                KPView kpView = liveInstance.CommEnvironment.GetKPView(dllPath, kp.Number,
+                    new KPView.KPProperties(commLine.CustomParams, kp.CmdLine));
+
+                if (kpView.CanShowProps)
+                {
+                    kpView.ShowProps();
+
+                    if (kpView.KPProps.Modified)
+                    {
+                        kp.CmdLine = kpView.KPProps.CmdLine;
+                        UpdateLineParams(selectedNode);
+                        SaveCommSettigns(liveInstance);
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
+                }
+            }
         }
     }
 }

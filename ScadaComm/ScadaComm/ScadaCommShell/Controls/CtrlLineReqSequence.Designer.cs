@@ -301,9 +301,9 @@
             this.lblDeviceDll.AutoSize = true;
             this.lblDeviceDll.Location = new System.Drawing.Point(314, 39);
             this.lblDeviceDll.Name = "lblDeviceDll";
-            this.lblDeviceDll.Size = new System.Drawing.Size(27, 13);
+            this.lblDeviceDll.Size = new System.Drawing.Size(35, 13);
             this.lblDeviceDll.TabIndex = 6;
-            this.lblDeviceDll.Text = "DLL";
+            this.lblDeviceDll.Text = "Driver";
             // 
             // lblDeviceName
             // 

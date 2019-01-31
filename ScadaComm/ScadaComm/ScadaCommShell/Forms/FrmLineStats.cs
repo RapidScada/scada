@@ -118,6 +118,25 @@ namespace Scada.Comm.Shell.Forms
             tmrRefresh.Start();
         }
 
+        private void FrmLineStats_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
+        }
+
+        private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
+                    ScadaUiUtils.LogLocalRefreshInterval :
+                    ScadaUiUtils.LogRemoteRefreshInterval;
+            }
+            else
+            {
+                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
+            }
+        }
+
         private void lbTabs_DrawItem(object sender, DrawItemEventArgs e)
         {
             lbTabs.DrawTabItem(e);
@@ -139,25 +158,6 @@ namespace Scada.Comm.Shell.Forms
                 chkPause.Enabled = true;
                 lbState.Visible = false;
                 lbLog.Visible = true;
-            }
-        }
-
-        private void FrmLineStats_FormClosed(object sender, FormClosedEventArgs e)
-        {
-            tmrRefresh.Stop();
-        }
-
-        private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
-        {
-            if (Visible)
-            {
-                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
-                    ScadaUiUtils.LogLocalRefreshInterval :
-                    ScadaUiUtils.LogRemoteRefreshInterval;
-            }
-            else
-            {
-                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
             }
         }
 

@@ -116,6 +116,7 @@
   <Dictionary key="Scada.Comm.Shell.Forms">
     <Phrase key="SetProfile">Установите профиль развертывания экземпляра.</Phrase>
     <Phrase key="Loading">Загрузка...</Phrase>
+    <Phrase key="NoDeviceProps">Отображение свойств данного устройства не поддерживается драйвером.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Общие параметры</Phrase>
@@ -208,7 +209,7 @@
     <Phrase key="chkDeviceBound">Привязан к Серверу</Phrase>
     <Phrase key="lblDeviceNumber">Номер</Phrase>
     <Phrase key="lblDeviceName">Наименование</Phrase>
-    <Phrase key="lblDeviceDll">DLL</Phrase>
+    <Phrase key="lblDeviceDll">Драйвер</Phrase>
     <Phrase key="lblDeviceAddress">Адрес</Phrase>
     <Phrase key="lblDeviceCallNum">Позывной или хост</Phrase>
     <Phrase key="lblDeviceTimeout">Таймаут</Phrase>
