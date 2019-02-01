@@ -147,6 +147,9 @@ namespace Scada.Server.Shell.Forms
             newDataTable1.EndLoadData();
             dataTable1 = newDataTable1;
             bindingSource1.DataSource = dataTable1;
+
+            if (ScadaUtils.IsRunningOnMono)
+                CommShellUtils.RefreshColumns(dataGridView1);
         }
 
         /// <summary>
@@ -184,6 +187,9 @@ namespace Scada.Server.Shell.Forms
                 dataTable2 = newDataTable2;
                 dataTable2.RowChanged += dataTable2_RowChanged;
                 bindingSource2.DataSource = dataTable2;
+
+                if (ScadaUtils.IsRunningOnMono)
+                    CommShellUtils.RefreshColumns(dataGridView2);
             }
         }
 

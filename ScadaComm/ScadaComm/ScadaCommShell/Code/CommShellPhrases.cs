@@ -51,6 +51,9 @@ namespace Scada.Comm.Shell.Code
         // Scada.Comm.Shell.Forms.FrmLineParams
         public static string LineParamsTitle { get; private set; }
 
+        // Scada.Comm.Shell.Forms.FrmLineStats
+        public static string LineStatsTitle { get; private set; }
+
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Comm.Shell.Code.CommShell");
@@ -70,6 +73,9 @@ namespace Scada.Comm.Shell.Code
 
             dict = Localization.GetDictionary("Scada.Comm.Shell.Forms.FrmLineParams");
             LineParamsTitle = dict.GetPhrase("LineParamsTitle");
+
+            dict = Localization.GetDictionary("Scada.Comm.Shell.Forms.FrmLineStats");
+            LineStatsTitle = dict.GetPhrase("LineStatsTitle");
         }
     }
 }

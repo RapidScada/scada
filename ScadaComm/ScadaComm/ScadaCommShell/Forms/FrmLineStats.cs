@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinControl;
 
 namespace Scada.Comm.Shell.Forms
 {
@@ -40,7 +41,7 @@ namespace Scada.Comm.Shell.Forms
     /// Form for displaying communication line stats.
     /// <para>Форма для отображения статистики линии связи.</para>
     /// </summary>
-    public partial class FrmLineStats : Form
+    public partial class FrmLineStats : Form, IChildForm
     {
         private readonly Settings.CommLine commLine;  // the communication line settings to edit
         private readonly CommEnvironment environment; // the application environment
@@ -69,6 +70,12 @@ namespace Scada.Comm.Shell.Forms
             logBox = new RemoteLogBox(lbLog, true) { AutoScroll = true };
             stateTabActive = true;
         }
+
+
+        /// <summary>
+        /// Gets or sets the object associated with the form.
+        /// </summary>
+        public ChildFormTag ChildFormTag { get; set; }
 
 
         /// <summary>
@@ -108,11 +115,21 @@ namespace Scada.Comm.Shell.Forms
             }
         }
 
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public void Save()
+        {
+            // do nothing
+        }
+
 
         private void FrmLineStats_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineStats");
-            Text = string.Format(Text, commLine.Number);
+            Text = string.Format(CommShellPhrases.LineStatsTitle, commLine.Number);
+
+            ChildFormTag.MainFormMessage += ChildFormTag_MainFormMessage;
             lbTabs.SelectedIndex = 0;
             InitRefresh();
             tmrRefresh.Start();
@@ -134,6 +151,16 @@ namespace Scada.Comm.Shell.Forms
             else
             {
                 tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
+            }
+        }
+
+        private void ChildFormTag_MainFormMessage(object sender, FormMessageEventArgs e)
+        {
+            // update log file names
+            if (e.Message == CommMessage.UpdateFileName)
+            {
+                Text = string.Format(CommShellPhrases.LineStatsTitle, commLine.Number);
+                InitRefresh();
             }
         }
 

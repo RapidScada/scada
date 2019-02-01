@@ -27,6 +27,7 @@ using Scada.Data.Tables;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
@@ -200,6 +201,9 @@ namespace Scada.Server.Shell.Forms
                 dataTable.DefaultView.AllowNew = AllowEdit;
                 dataTable.DefaultView.AllowEdit = AllowEdit;
                 bindingSource.DataSource = dataTable;
+
+                if (ScadaUtils.IsRunningOnMono)
+                    CommShellUtils.RefreshColumns(dataGridView);
             }
             else
             {

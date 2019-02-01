@@ -223,10 +223,10 @@
     <Phrase key="LineParamsTitle">Параметры линии {0}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmLineStats">
-    <Phrase key="this">Статистика линии {0}</Phrase>
     <Phrase key="lbTabs.Items[0]">Состояние линии</Phrase>
     <Phrase key="lbTabs.Items[1]">Журнал линии</Phrase>
     <Phrase key="chkPause">Пауза</Phrase>
+    <Phrase key="LineStatsTitle">Статистика линии {0}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmStats">
     <Phrase key="this">Статистика</Phrase>
