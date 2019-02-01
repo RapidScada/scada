@@ -283,6 +283,7 @@
     <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miTools">&amp;Инструменты</Phrase>
     <Phrase key="miToolsOptions">Настройки...</Phrase>
+    <Phrase key="miToolsCulture">Язык...</Phrase>
     <Phrase key="miHelp">&amp;Справка</Phrase>
     <Phrase key="miHelpDoc">Документация</Phrase>
     <Phrase key="miHelpSupport">Техническая поддержка</Phrase>

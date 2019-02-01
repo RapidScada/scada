@@ -1101,6 +1101,12 @@ namespace Scada.Admin.App.Forms
 
         }
 
+        private void miToolsCulture_Click(object sender, EventArgs e)
+        {
+            // show a form to select culture
+            new FrmCulture(appData).ShowDialog();
+        }
+
         private void miHelpDoc_Click(object sender, EventArgs e)
         {
             // open the documentation

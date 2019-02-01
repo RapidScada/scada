@@ -123,6 +123,7 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsCulture = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -318,7 +319,8 @@
             // miTools
             // 
             this.miTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miToolsOptions});
+            this.miToolsOptions,
+            this.miToolsCulture});
             this.miTools.Name = "miTools";
             this.miTools.Size = new System.Drawing.Size(47, 20);
             this.miTools.Text = "&Tools";
@@ -327,7 +329,7 @@
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(125, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
@@ -941,6 +943,13 @@
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
+            // miToolsCulture
+            // 
+            this.miToolsCulture.Name = "miToolsCulture";
+            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCulture.Text = "Language...";
+            this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1076,6 +1085,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsDevice;
         private System.Windows.Forms.ToolStripMenuItem miDeviceCommand;
         private System.Windows.Forms.ToolStripMenuItem miDeviceProperties;
+        private System.Windows.Forms.ToolStripMenuItem miToolsCulture;
     }
 }
 

@@ -283,6 +283,7 @@
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
+    <Phrase key="miToolsCulture">Language...</Phrase>
     <Phrase key="miHelp">&amp;Help</Phrase>
     <Phrase key="miHelpDoc">Documentation</Phrase>
     <Phrase key="miHelpSupport">Technical Support</Phrase>

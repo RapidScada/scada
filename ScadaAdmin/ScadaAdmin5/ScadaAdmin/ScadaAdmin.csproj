@@ -163,6 +163,12 @@
     <Compile Include="Forms\FrmBaseTableGeneric.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\FrmCulture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmCulture.Designer.cs">
+      <DependentUpon>FrmCulture.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmFileNew.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -233,6 +239,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmCulture.resx">
+      <DependentUpon>FrmCulture.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmFileNew.resx">
       <DependentUpon>FrmFileNew.cs</DependentUpon>

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Communicator Shell
+ * Module   : Server Shell
  * Summary  : The class contains utility methods for the Server shell
  * 
  * Author   : Mikhail Shiryaev
