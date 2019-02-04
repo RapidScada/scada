@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,8 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Scada.Admin.App.Code
 {
@@ -83,6 +77,11 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Forms.FrmBaseTable
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmCulture
+        public static string LoadCulturesError { get; private set; }
+        public static string CultureRequired { get; private set; }
+        public static string CultureNotFound { get; private set; }
 
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
@@ -176,6 +175,11 @@ namespace Scada.Admin.App.Code
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
             GridViewError = dict.GetPhrase("GridViewError");
             ColumnLabel = dict.GetPhrase("ColumnLabel");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmCulture");
+            LoadCulturesError = dict.GetPhrase("LoadCulturesError");
+            CultureRequired = dict.GetPhrase("CultureRequired");
+            CultureNotFound = dict.GetPhrase("CultureNotFound");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
             FileNameEmpty = dict.GetPhrase("FileNameEmpty");

@@ -54,6 +54,7 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        private static string lastCultureName = null; // the last selected culture
         private readonly AppData appData; // the common data of the application
 
 
@@ -100,7 +101,7 @@ namespace Scada.Admin.App.Forms
                 {
                     cbCulture.BeginUpdate();
                     cbCulture.Items.Clear();
-                    string curCultureName = Localization.Culture.Name; // TODO
+                    string curCultureName = lastCultureName ?? Localization.Culture.Name;
                     int selectedIndex = -1;
 
                     foreach (string cultureName in cultureNames)
@@ -133,7 +134,7 @@ namespace Scada.Admin.App.Forms
             }
             catch (Exception ex)
             {
-                appData.ProcError(ex, AppPhrases.DownloadConfigError); // TODO: message
+                appData.ProcError(ex, AppPhrases.LoadCulturesError);
             }
         }
 
@@ -148,7 +149,7 @@ namespace Scada.Admin.App.Forms
         {
             if (cbCulture.Text == "")
             {
-                ScadaUiUtils.ShowError("111!!!"); // TODO: message
+                ScadaUiUtils.ShowError(AppPhrases.CultureRequired);
                 return;
             }
 
@@ -158,16 +159,25 @@ namespace Scada.Admin.App.Forms
 
             try
             {
-                CultureInfo.GetCultureInfo(cultureName);
+                CultureInfo cultureInfo = CultureInfo.GetCultureInfo(cultureName);
 
-                if (Localization.WriteCulture(cultureName, out string errMsg))
+                if (cultureInfo.EnglishName.StartsWith("Unknown"))
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.CultureNotFound);
+                }
+                else if (Localization.WriteCulture(cultureName, out string errMsg))
+                {
+                    lastCultureName = cultureName;
                     DialogResult = DialogResult.OK;
+                }
                 else
+                {
                     appData.ProcError(errMsg);
+                }
             }
             catch (CultureNotFoundException)
             {
-                ScadaUiUtils.ShowError("!!!"); // TODO: message
+                ScadaUiUtils.ShowError(AppPhrases.CultureNotFound);
             }
         }
     }

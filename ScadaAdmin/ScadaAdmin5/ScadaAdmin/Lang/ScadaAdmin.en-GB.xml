@@ -228,6 +228,15 @@
     <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmCulture">
+    <Phrase key="this">Language</Phrase>
+    <Phrase key="lblInfo">Changes will take effect after restarting the application.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="LoadCulturesError">Error loading cultures</Phrase>
+    <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
+    <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>
     <Phrase key="lbFileType.Items[0]">Scheme View</Phrase>

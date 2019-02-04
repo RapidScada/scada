@@ -228,6 +228,15 @@
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmCulture">
+    <Phrase key="this">Язык</Phrase>
+    <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="LoadCulturesError">Ошибка при загрузке культур</Phrase>
+    <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
+    <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>
     <Phrase key="lbFileType.Items[0]">Схема</Phrase>
