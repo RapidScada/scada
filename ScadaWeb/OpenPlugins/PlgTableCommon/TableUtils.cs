@@ -34,6 +34,6 @@ namespace Scada.Web.Plugins.Table
         /// <summary>
         /// Версия таблиц
         /// </summary>
-        public const string TableVersion = "5.0.2.1";
+        public const string TableVersion = "5.0.3.0";
     }
 }
