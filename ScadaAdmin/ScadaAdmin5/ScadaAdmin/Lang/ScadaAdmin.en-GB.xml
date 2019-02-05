@@ -224,11 +224,7 @@
     <Phrase key="UploadConfigComplete">Upload completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
-    <Phrase key="ColumnLabel">Column: </Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmCulture">
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Language</Phrase>
     <Phrase key="lblInfo">Changes will take effect after restarting the application.</Phrase>
     <Phrase key="btnOK">OK</Phrase>
@@ -236,6 +232,24 @@
     <Phrase key="LoadCulturesError">Error loading cultures</Phrase>
     <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
     <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
+    <Phrase key="this">Channel Map</Phrase>
+    <Phrase key="gbCnlKind">Channel Kind</Phrase>
+    <Phrase key="rbInCnls">Input channels</Phrase>
+    <Phrase key="rbOutCnls">Output channels</Phrase>
+    <Phrase key="gbGroupBy">Group By</Phrase>
+    <Phrase key="rbGroupByDevices">Devices</Phrase>
+    <Phrase key="rbGroupByObjects">Objects</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="InCnlMapTitle">Input Channel Map</Phrase>
+    <Phrase key="OutCnlMapTitle">Output Channel Map</Phrase>
+    <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
+    <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
+    <Phrase key="ColumnLabel">Column: </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>
@@ -291,6 +305,7 @@
     <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
+    <Phrase key="miToolsCnlMap">Channel Map...</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
     <Phrase key="miToolsCulture">Language...</Phrase>
     <Phrase key="miHelp">&amp;Help</Phrase>

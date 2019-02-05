@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.App.Forms.Deployment;
+using Scada.Admin.App.Forms.Tools;
 using Scada.Admin.App.Properties;
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
@@ -1094,6 +1095,17 @@ namespace Scada.Admin.App.Forms
                     UpdateAgentClient(liveInstance);
                 }
             }
+        }
+
+        private void miTools_DropDownOpening(object sender, EventArgs e)
+        {
+            miToolsCnlMap.Enabled = project != null;
+        }
+
+        private void miToolsCnlMap_Click(object sender, EventArgs e)
+        {
+            // show a channel map form
+            new FrmCnlMap(project.ConfigBase, appData).ShowDialog();
         }
 
         private void miToolsOptions_Click(object sender, EventArgs e)

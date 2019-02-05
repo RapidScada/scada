@@ -163,10 +163,10 @@
     <Compile Include="Forms\FrmBaseTableGeneric.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmCulture.cs">
+    <Compile Include="Forms\Tools\FrmCulture.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmCulture.Designer.cs">
+    <Compile Include="Forms\Tools\FrmCulture.Designer.cs">
       <DependentUpon>FrmCulture.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmFileNew.cs">
@@ -211,6 +211,12 @@
     <Compile Include="Forms\FrmTextEditor.Designer.cs">
       <DependentUpon>FrmTextEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tools\FrmCnlMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlMap.Designer.cs">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\Deployment\CtrlProfileSelector.resx">
@@ -240,7 +246,7 @@
     <EmbeddedResource Include="Forms\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmCulture.resx">
+    <EmbeddedResource Include="Forms\Tools\FrmCulture.resx">
       <DependentUpon>FrmCulture.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmFileNew.resx">
@@ -263,6 +269,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmTextEditor.resx">
       <DependentUpon>FrmTextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCnlMap.resx">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

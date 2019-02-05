@@ -74,14 +74,19 @@ namespace Scada.Admin.App.Code
         public static string UploadConfigComplete { get; private set; }
         public static string UploadConfigError { get; private set; }
 
-        // Scada.Admin.App.Forms.FrmBaseTable
-        public static string GridViewError { get; private set; }
-        public static string ColumnLabel { get; private set; }
+        // Scada.Admin.App.Forms.Tools.FrmCnlMap
+        public static string InCnlMapTitle { get; private set; }
+        public static string OutCnlMapTitle { get; private set; }
+        public static string GenerateCnlMapError { get; private set; }
 
-        // Scada.Admin.App.Forms.FrmCulture
+        // Scada.Admin.App.Forms.Tools.FrmCulture
         public static string LoadCulturesError { get; private set; }
         public static string CultureRequired { get; private set; }
         public static string CultureNotFound { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmBaseTable
+        public static string GridViewError { get; private set; }
+        public static string ColumnLabel { get; private set; }
 
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
@@ -172,14 +177,19 @@ namespace Scada.Admin.App.Code
             UploadConfigComplete = dict.GetPhrase("UploadConfigComplete");
             UploadConfigError = dict.GetPhrase("UploadConfigError");
 
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
-            GridViewError = dict.GetPhrase("GridViewError");
-            ColumnLabel = dict.GetPhrase("ColumnLabel");
-
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmCulture");
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");
             CultureRequired = dict.GetPhrase("CultureRequired");
             CultureNotFound = dict.GetPhrase("CultureNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCnlMap");
+            InCnlMapTitle = dict.GetPhrase("InCnlMapTitle");
+            OutCnlMapTitle = dict.GetPhrase("OutCnlMapTitle");
+            GenerateCnlMapError = dict.GetPhrase("GenerateCnlMapError");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
+            GridViewError = dict.GetPhrase("GridViewError");
+            ColumnLabel = dict.GetPhrase("ColumnLabel");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
             FileNameEmpty = dict.GetPhrase("FileNameEmpty");

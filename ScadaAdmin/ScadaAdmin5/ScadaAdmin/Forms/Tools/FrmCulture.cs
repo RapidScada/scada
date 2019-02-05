@@ -31,7 +31,7 @@ using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
 
-namespace Scada.Admin.App.Forms
+namespace Scada.Admin.App.Forms.Tools
 {
     /// <summary>
     /// Form for selecting the culture.
@@ -141,7 +141,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmCulture_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmCulture");
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCultures();
         }
 

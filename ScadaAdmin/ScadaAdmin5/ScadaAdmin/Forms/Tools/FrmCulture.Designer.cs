@@ -1,4 +1,4 @@
-﻿namespace Scada.Admin.App.Forms
+﻿namespace Scada.Admin.App.Forms.Tools
 {
     partial class FrmCulture
     {

@@ -224,11 +224,7 @@
     <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
-    <Phrase key="ColumnLabel">Столбец: </Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmCulture">
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Язык</Phrase>
     <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>
     <Phrase key="btnOK">OK</Phrase>
@@ -236,6 +232,24 @@
     <Phrase key="LoadCulturesError">Ошибка при загрузке культур</Phrase>
     <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
     <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
+    <Phrase key="this">Карта каналов</Phrase>
+    <Phrase key="gbCnlKind">Вид каналов</Phrase>
+    <Phrase key="rbInCnls">Входные каналы</Phrase>
+    <Phrase key="rbOutCnls">Каналы управления</Phrase>
+    <Phrase key="gbGroupBy">Группировать</Phrase>
+    <Phrase key="rbGroupByDevices">По КП</Phrase>
+    <Phrase key="rbGroupByObjects">По объектам</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="InCnlMapTitle">Карта входных каналов</Phrase>
+    <Phrase key="OutCnlMapTitle">Карта каналов управления</Phrase>
+    <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
+    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
+    <Phrase key="ColumnLabel">Столбец: </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>
@@ -291,6 +305,7 @@
     <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miTools">&amp;Инструменты</Phrase>
+    <Phrase key="miToolsCnlMap">Карта каналов...</Phrase>
     <Phrase key="miToolsOptions">Настройки...</Phrase>
     <Phrase key="miToolsCulture">Язык...</Phrase>
     <Phrase key="miHelp">&amp;Справка</Phrase>

@@ -401,7 +401,7 @@ namespace Scada.Comm
                 };
             }
             /// <summary>
-            /// Получить обозначение линии связи
+            /// Получить обозначение КП
             /// </summary>
             public static string GetCaption(int number, object name)
             {
