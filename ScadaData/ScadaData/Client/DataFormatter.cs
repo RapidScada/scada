@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -176,11 +176,15 @@ namespace Scada.Client
                         NumberFormatInfo nfi;
                         bool sepDefined = !(decSep == null && grSep == null);
 
-                        if (cnlPropsIsNull || sepDefined)
+                        if (cnlPropsIsNull)
                         {
-                            nfi = sepDefined ? 
+                            nfi = sepDefined ?
                                 CreateFormatInfo(DefDecDig, decSep, grSep) :
                                 defNfi;
+                        }
+                        else if (sepDefined)
+                        {
+                            nfi = CreateFormatInfo(cnlProps.DecDigits, decSep, grSep);
                         }
                         else if (cnlProps.FormatInfo == null)
                         {

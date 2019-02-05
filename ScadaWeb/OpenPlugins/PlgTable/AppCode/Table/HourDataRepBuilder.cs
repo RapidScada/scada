@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -53,7 +53,6 @@ namespace Scada.Web.Plugins.Table
         private DateTime genDT;                   // дата и время генерации отчёта
         private Row itemRowTemplate;              // строка-шаблон табличного представления
         private TableView.Item viewItem;          // элемент представления для вывода в отчёт
-        private InCnlProps cnlProps;              // свойства канала элемента представления
         private SrezTableLight reqDateHourTable;  // таблица часовых данных за запрошенную дату
         private SrezTableLight prevDateHourTable; // таблица часовых данных за предыдущую дату
 
@@ -205,7 +204,6 @@ namespace Scada.Web.Plugins.Table
                 viewItem = tableView.Items[i];
                 if (!viewItem.Hidden)
                 {
-                    cnlProps = viewItem.CnlNum > 0 ? dataAccess.GetCnlProps(viewItem.CnlNum) : null;
                     Row newRow = itemRowTemplate.Clone();
                     ExcelProc(newRow);
                     table.AppendRow(newRow);
@@ -238,8 +236,7 @@ namespace Scada.Web.Plugins.Table
             else if (valName.StartsWith("H"))
             {
                 // заголовок таблицы часовых данных
-                int hour;
-                if (int.TryParse(valName.Substring(1), out hour))
+                if (int.TryParse(valName.Substring(1), out int hour))
                     nodeText = WFrmTable.GetLocalizedHour(hour);
             }
             else if (viewItem != null)
@@ -251,33 +248,28 @@ namespace Scada.Web.Plugins.Table
                 else if (valName.StartsWith("h"))
                 {
                     // часовые данные
-                    int hour;
-                    if (int.TryParse(valName.Substring(1), out hour))
+                    if (int.TryParse(valName.Substring(1), out int hour))
                     {
                         if (viewItem.CnlNum > 0 && startHour <= hour && hour <= endHour)
                         {
                             DateTime colDT = date.AddHours(hour);
-                            SrezTableLight.Srez snapshot;
                             SrezTableLight hourTable = hour >= 0 ? reqDateHourTable : prevDateHourTable;
-                            hourTable.SrezList.TryGetValue(colDT, out snapshot);
+                            hourTable.SrezList.TryGetValue(colDT, out SrezTableLight.Srez snapshot);
 
-                            string emptyVal;
-                            if (dataFormatter.HourDataVisible(colDT, genDT, snapshot != null, out emptyVal))
+                            if (dataFormatter.HourDataVisible(colDT, genDT, snapshot != null, out string emptyVal))
                             {
                                 // получение данных
-                                double val;
-                                int stat;
-                                snapshot.GetCnlData(viewItem.CnlNum, out val, out stat);
+                                snapshot.GetCnlData(viewItem.CnlNum, out double val, out int stat);
 
                                 // форматирование данных
-                                string text;
-                                string textWithUnit;
-                                bool textIsNumber;
-                                dataFormatter.FormatCnlVal(val, stat, cnlProps, ".", "", 
-                                    out text, out textWithUnit, out textIsNumber);
+                                dataFormatter.FormatCnlVal(val, stat, viewItem.CnlProps, ".", "", 
+                                    out string text, out string textWithUnit, out bool textIsNumber);
+                                string color = dataFormatter.GetCnlValColor(val, stat, viewItem.CnlProps, 
+                                    dataAccess.GetCnlStatProps(stat));
 
                                 // вывод данных
                                 nodeText = text;
+                                workbook.SetColor(cell.Node, null, color);
                                 if (textIsNumber)
                                     cell.SetNumberType();
                             }
