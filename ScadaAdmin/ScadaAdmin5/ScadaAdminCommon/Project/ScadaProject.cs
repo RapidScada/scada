@@ -381,7 +381,7 @@ namespace Scada.Admin.Project
         {
             try
             {
-                // validate argumants
+                // validate arguments
                 if (!AdminUtils.NameIsValid(name))
                     throw new ArgumentException(AdminPhrases.IncorrectProjectName);
 

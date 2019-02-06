@@ -137,6 +137,8 @@
     <Phrase key="BaseNode">База конфигурации</Phrase>
     <Phrase key="SysTableNode">Система</Phrase>
     <Phrase key="DictTableNode">Справочники</Phrase>
+    <Phrase key="TableByDeviceNode">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDeviceNode">Пустой КП</Phrase>
     <Phrase key="InterfaceNode">Интерфейс</Phrase>
     <Phrase key="InstancesNode">Экземпляры</Phrase>
     <Phrase key="ServerNode">Сервер</Phrase>
@@ -308,6 +310,10 @@
     <Phrase key="miToolsCnlMap">Карта каналов...</Phrase>
     <Phrase key="miToolsOptions">Настройки...</Phrase>
     <Phrase key="miToolsCulture">Язык...</Phrase>
+    <Phrase key="miWindow">&amp;Окно</Phrase>
+    <Phrase key="miWindowCloseActive">Закрыть активное</Phrase>
+    <Phrase key="miWindowCloseAll">Закрыть все</Phrase>
+    <Phrase key="miWindowCloseAllButActive">Закрыть все кроме активного</Phrase>
     <Phrase key="miHelp">&amp;Справка</Phrase>
     <Phrase key="miHelpDoc">Документация</Phrase>
     <Phrase key="miHelpSupport">Техническая поддержка</Phrase>

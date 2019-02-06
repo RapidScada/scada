@@ -55,6 +55,10 @@
             this.miToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCulture = new System.Windows.Forms.ToolStripMenuItem();
+            this.miWindow = new System.Windows.Forms.ToolStripMenuItem();
+            this.miWindowCloseActive = new System.Windows.Forms.ToolStripMenuItem();
+            this.miWindowCloseAll = new System.Windows.Forms.ToolStripMenuItem();
+            this.miWindowCloseAllButActive = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelpDoc = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelpSupport = new System.Windows.Forms.ToolStripMenuItem();
@@ -147,6 +151,7 @@
             this.miEdit,
             this.miDeploy,
             this.miTools,
+            this.miWindow,
             this.miHelp});
             this.msMain.Location = new System.Drawing.Point(0, 0);
             this.msMain.Name = "msMain";
@@ -333,29 +338,62 @@
             // miToolsCnlMap
             // 
             this.miToolsCnlMap.Name = "miToolsCnlMap";
-            this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCnlMap.Size = new System.Drawing.Size(154, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
             // 
             // miToolsSep1
             // 
             this.miToolsSep1.Name = "miToolsSep1";
-            this.miToolsSep1.Size = new System.Drawing.Size(177, 6);
+            this.miToolsSep1.Size = new System.Drawing.Size(151, 6);
             // 
             // miToolsOptions
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(154, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
             // miToolsCulture
             // 
             this.miToolsCulture.Name = "miToolsCulture";
-            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCulture.Size = new System.Drawing.Size(154, 22);
             this.miToolsCulture.Text = "Language...";
             this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
+            // 
+            // miWindow
+            // 
+            this.miWindow.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miWindowCloseActive,
+            this.miWindowCloseAll,
+            this.miWindowCloseAllButActive});
+            this.miWindow.Name = "miWindow";
+            this.miWindow.Size = new System.Drawing.Size(63, 20);
+            this.miWindow.Text = "&Window";
+            this.miWindow.DropDownOpening += new System.EventHandler(this.miWindow_DropDownOpening);
+            // 
+            // miWindowCloseActive
+            // 
+            this.miWindowCloseActive.Name = "miWindowCloseActive";
+            this.miWindowCloseActive.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F4)));
+            this.miWindowCloseActive.Size = new System.Drawing.Size(185, 22);
+            this.miWindowCloseActive.Text = "Close Active";
+            this.miWindowCloseActive.Click += new System.EventHandler(this.miWindowCloseActive_Click);
+            // 
+            // miWindowCloseAll
+            // 
+            this.miWindowCloseAll.Name = "miWindowCloseAll";
+            this.miWindowCloseAll.Size = new System.Drawing.Size(185, 22);
+            this.miWindowCloseAll.Text = "Close All";
+            this.miWindowCloseAll.Click += new System.EventHandler(this.miWindowCloseAll_Click);
+            // 
+            // miWindowCloseAllButActive
+            // 
+            this.miWindowCloseAllButActive.Name = "miWindowCloseAllButActive";
+            this.miWindowCloseAllButActive.Size = new System.Drawing.Size(185, 22);
+            this.miWindowCloseAllButActive.Text = "Close All But Active";
+            this.miWindowCloseAllButActive.Click += new System.EventHandler(this.miWindowCloseAllButActive_Click);
             // 
             // miHelp
             // 
@@ -516,11 +554,14 @@
             this.tvExplorer.ShowRootLines = false;
             this.tvExplorer.Size = new System.Drawing.Size(250, 340);
             this.tvExplorer.TabIndex = 0;
+            this.tvExplorer.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeCollapse);
             this.tvExplorer.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterCollapse);
             this.tvExplorer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeExpand);
             this.tvExplorer.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterExpand);
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
             this.tvExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseDoubleClick);
+            this.tvExplorer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvExplorer_KeyDown);
+            this.tvExplorer.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvExplorer_MouseDown);
             // 
             // ilExplorer
             // 
@@ -979,6 +1020,7 @@
             this.Controls.Add(this.tsMain);
             this.Controls.Add(this.msMain);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.KeyPreview = true;
             this.MainMenuStrip = this.msMain;
             this.MinimumSize = new System.Drawing.Size(300, 200);
             this.Name = "FrmMain";
@@ -1105,6 +1147,10 @@
         private System.Windows.Forms.ToolStripMenuItem miToolsCulture;
         private System.Windows.Forms.ToolStripMenuItem miToolsCnlMap;
         private System.Windows.Forms.ToolStripSeparator miToolsSep1;
+        private System.Windows.Forms.ToolStripMenuItem miWindow;
+        private System.Windows.Forms.ToolStripMenuItem miWindowCloseActive;
+        private System.Windows.Forms.ToolStripMenuItem miWindowCloseAll;
+        private System.Windows.Forms.ToolStripMenuItem miWindowCloseAllButActive;
     }
 }
 

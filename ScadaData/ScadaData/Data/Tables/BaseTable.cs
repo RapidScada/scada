@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -155,6 +155,33 @@ namespace Scada.Data.Tables
         {
             if (obj is T item)
                 AddItem(item);
+        }
+
+        /// <summary>
+        /// Gets the items that match the specified filter.
+        /// </summary>
+        public ICollection<T> GetFilteredItems(TableFilter tableFilter)
+        {
+            if (tableFilter == null)
+                throw new ArgumentNullException("tableFilter");
+
+            // find the property used by the filter
+            PropertyDescriptor filterProp = TypeDescriptor.GetProperties(ItemType)[tableFilter.ColumnName];
+            if (filterProp == null)
+                throw new ArgumentException("The filter property not found.");
+
+            // get the matched items
+            List<T> filteredItems = new List<T>();
+            object filterVal = tableFilter.Value;
+
+            foreach (T item in Items.Values)
+            {
+                object val = filterProp.GetValue(item);
+                if (Equals(val, filterVal))
+                    filteredItems.Add(item);
+            }
+
+            return filteredItems;
         }
 
         /// <summary>

@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 
@@ -67,11 +68,19 @@ namespace Scada.Data.Tables
 
             return item;
         }
-
+        
         /// <summary>
         /// Converts the BaseTable to a DataTable.
         /// </summary>
         public static DataTable ToDataTable<T>(this BaseTable<T> baseTable, bool allowNull = false)
+        {
+            return baseTable.Items.Values.ToDataTable<T>(allowNull);
+        }
+
+        /// <summary>
+        /// Converts the collection to a DataTable.
+        /// </summary>
+        public static DataTable ToDataTable<T>(this ICollection<T> items, bool allowNull = false)
         {
             // create columns
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
@@ -97,7 +106,7 @@ namespace Scada.Data.Tables
 
             try
             {
-                foreach (T item in baseTable.Items.Values)
+                foreach (T item in items)
                 {
                     for (int i = 0; i < propCnt; i++)
                     {

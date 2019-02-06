@@ -27,7 +27,6 @@ using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.UI;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -84,7 +83,7 @@ namespace Scada.Admin.App.Forms.Tools
                     writer.WriteLine(new string('-', title.Length));
                 }
 
-                Process.Start(mapFileName);
+                AppUtils.OpenTextFile(mapFileName);
             }
             catch (Exception ex)
             {

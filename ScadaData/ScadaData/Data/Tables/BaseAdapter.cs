@@ -513,7 +513,7 @@ namespace Scada.Data.Tables
                             foreach (FieldDef fieldDef in fieldDefs)
                             {
                                 bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
-                                PropertyDescriptor prop = props[fieldDef.Name];
+                                PropertyDescriptor prop = props[fieldDef.Name]; // TODO: improve performance here
 
                                 if (prop != null)
                                 {

@@ -137,6 +137,8 @@
     <Phrase key="BaseNode">Configuration Database</Phrase>
     <Phrase key="SysTableNode">System</Phrase>
     <Phrase key="DictTableNode">Dictionaries</Phrase>
+    <Phrase key="TableByDeviceNode">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDeviceNode">Empty device</Phrase>
     <Phrase key="InterfaceNode">Interface</Phrase>
     <Phrase key="InstancesNode">Instances</Phrase>
     <Phrase key="ServerNode">Server</Phrase>
@@ -308,6 +310,10 @@
     <Phrase key="miToolsCnlMap">Channel Map...</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
     <Phrase key="miToolsCulture">Language...</Phrase>
+    <Phrase key="miWindow">&amp;Window</Phrase>
+    <Phrase key="miWindowCloseActive">Close Active</Phrase>
+    <Phrase key="miWindowCloseAll">Close All</Phrase>
+    <Phrase key="miWindowCloseAllButActive">Close All But Active</Phrase>
     <Phrase key="miHelp">&amp;Help</Phrase>
     <Phrase key="miHelpDoc">Documentation</Phrase>
     <Phrase key="miHelpSupport">Technical Support</Phrase>

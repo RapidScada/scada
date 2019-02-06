@@ -26,6 +26,7 @@
 using Scada.Admin.App.Forms;
 using Scada.Admin.Project;
 using Scada.Comm.Shell.Code;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -80,8 +81,33 @@ namespace Scada.Admin.App.Code
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTable));
-            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InCnlTable));
-            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CtrlCnlTable));
+
+            TreeNode inCnlTableNode = CreateBaseTableNode(configBase.InCnlTable);
+            TreeNode ctrlCnlTableNode = CreateBaseTableNode(configBase.CtrlCnlTable);
+            sysTableNode.Nodes.Add(inCnlTableNode);
+            sysTableNode.Nodes.Add(ctrlCnlTableNode);
+
+            foreach (KP kp in configBase.KPTable.Items.Values)
+            {
+                string nodeText = string.Format(AppPhrases.TableByDeviceNode, kp.KPNum, kp.Name);
+
+                TreeNode inCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                inCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(kp));
+                inCnlTableNode.Nodes.Add(inCnlsByDeviceNode);
+
+                TreeNode ctrlCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                ctrlCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(kp));
+                ctrlCnlTableNode.Nodes.Add(ctrlCnlsByDeviceNode);
+            }
+
+            TreeNode inCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            inCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(null));
+            inCnlTableNode.Nodes.Add(inCnlsEmptyDeviceNode);
+
+            TreeNode ctrlCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            ctrlCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(null));
+            ctrlCnlTableNode.Nodes.Add(ctrlCnlsEmptyDeviceNode);
+
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
@@ -109,14 +135,33 @@ namespace Scada.Admin.App.Code
         private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
         {
             TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
-            baseTableNode.Tag = new TreeNodeTag
+            baseTableNode.Tag = CreateBaseTableTag<T>(baseTable);
+            return baseTableNode;
+        }
+
+        /// <summary>
+        /// Creates a tag to associate with a tree node representing a table.
+        /// </summary>
+        private TreeNodeTag CreateBaseTableTag<T>(BaseTable<T> baseTable, TableFilter tableFilter = null)
+        {
+            return new TreeNodeTag
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
-                FormArgs = new object[] { appData, project, baseTable },
+                FormArgs = new object[] { baseTable, tableFilter, project.ConfigBase, appData },
                 RelatedObject = baseTable,
                 NodeType = AppNodeType.BaseTable
             };
-            return baseTableNode;
+        }
+
+        /// <summary>
+        /// Creates a table filter for filtering by device.
+        /// </summary>
+        private TableFilter CreateFilterByDevice(KP kp)
+        {
+            // TODO: phrases
+            return kp == null ?
+                new TableFilter("KPNum", null) { Title = "Empty device" } :
+                new TableFilter("KPNum", kp.KPNum) { Title = string.Format("Device {0}", kp.KPNum)};
         }
 
         /// <summary>
@@ -255,7 +300,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public void FillInterfaceNode(TreeNode interfaceNode)
         {
-            Interface interfaceObj = (Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
+            Project.Interface interfaceObj = (Project.Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
             FillFileNode(interfaceNode, interfaceObj.InterfaceDir);
         }
 

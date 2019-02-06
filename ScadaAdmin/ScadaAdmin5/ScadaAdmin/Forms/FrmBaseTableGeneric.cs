@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.Data.Tables;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using WinControl;
 
@@ -38,21 +39,23 @@ namespace Scada.Admin.App.Forms
     /// </summary>
     public class FrmBaseTableGeneric<T> : FrmBaseTable, IChildForm
     {
-        private readonly ScadaProject project;   // the project under development
-        private readonly BaseTable<T> baseTable; // the table being edited
-        private DataTable dataTable;             // the table used by a grid view control
+        private readonly BaseTable<T> baseTable;  // the table being edited
+        private readonly TableFilter tableFilter; // the table filter
+        private readonly ConfigBase configBase;   // the configuration database
+        private DataTable dataTable;              // the table used by a grid view control
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmBaseTableGeneric(AppData appData, ScadaProject project, BaseTable<T> baseTable)
+        public FrmBaseTableGeneric(BaseTable<T> baseTable, TableFilter tableFilter, ConfigBase configBase, AppData appData)
             : base(appData)
         {
-            this.project = project ?? throw new ArgumentNullException("project");
             this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
+            this.tableFilter = tableFilter;
+            this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             dataTable = null;
-            Text = baseTable.Title;
+            Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
         }
 
 
@@ -69,15 +72,18 @@ namespace Scada.Admin.App.Forms
         {
             base.LoadTableData();
 
-            if (!project.ConfigBase.Load(out string errMsg))
+            if (!configBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
-            dataTable = baseTable.ToDataTable();
+            ICollection<T> tableItems = tableFilter == null ? 
+                baseTable.Items.Values : 
+                baseTable.GetFilteredItems(tableFilter);
+            dataTable = tableItems.ToDataTable();
             dataTable.RowChanged += dataTable_RowChanged;
             dataTable.RowDeleted += dataTable_RowDeleted;
             bindingSource.DataSource = dataTable;
 
-            ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
+            ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
 
@@ -99,7 +105,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         public void Save()
         {
-            if (project.ConfigBase.SaveTable(baseTable, out string errMsg))
+            if (configBase.SaveTable(baseTable, out string errMsg))
                 ChildFormTag.Modified = false;
             else
                 appData.ProcError(errMsg);

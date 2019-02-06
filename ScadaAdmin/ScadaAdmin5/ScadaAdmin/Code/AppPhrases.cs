@@ -35,6 +35,8 @@ namespace Scada.Admin.App.Code
         public static string BaseNode { get; private set; }
         public static string SysTableNode { get; private set; }
         public static string DictTableNode { get; private set; }
+        public static string TableByDeviceNode { get; private set; }
+        public static string EmptyDeviceNode { get; private set; }
         public static string InterfaceNode { get; private set; }
         public static string InstancesNode { get; private set; }
         public static string ServerNode { get; private set; }
@@ -138,6 +140,8 @@ namespace Scada.Admin.App.Code
             BaseNode = dict.GetPhrase("BaseNode");
             SysTableNode = dict.GetPhrase("SysTableNode");
             DictTableNode = dict.GetPhrase("DictTableNode");
+            TableByDeviceNode = dict.GetPhrase("TableByDeviceNode");
+            EmptyDeviceNode = dict.GetPhrase("EmptyDeviceNode");
             InterfaceNode = dict.GetPhrase("InterfaceNode");
             InstancesNode = dict.GetPhrase("InstancesNode");
             ServerNode = dict.GetPhrase("ServerNode");

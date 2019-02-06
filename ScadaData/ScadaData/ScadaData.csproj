@@ -94,7 +94,8 @@
     <Compile Include="Data\Tables\BaseTable.cs" />
     <Compile Include="Data\Tables\CsvConverter.cs" />
     <Compile Include="Data\Tables\IBaseTable.cs" />
-    <Compile Include="Data\Tables\BaseTableConverter.cs" />
+    <Compile Include="Data\Tables\TableConverter.cs" />
+    <Compile Include="Data\Tables\TableFilter.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Tables\BaseAdapter.cs" />
     <Compile Include="Data\Configuration\BaseValues.cs" />

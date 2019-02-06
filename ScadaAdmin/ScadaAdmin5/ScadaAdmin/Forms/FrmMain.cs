@@ -80,6 +80,7 @@ namespace Scada.Admin.App.Forms
         private ScadaProject project;                     // the project under development
         private Dictionary<string, ModView> moduleViews;  // the user interface of the modules
         private Dictionary<string, KPView> kpViews;       // the user interface of the drivers
+        private bool preventNodeExpand;                   // prevent a tree node from expanding or collapsing
 
 
         /// <summary>
@@ -107,6 +108,7 @@ namespace Scada.Admin.App.Forms
             project = null;
             moduleViews = new Dictionary<string, ModView>();
             kpViews = new Dictionary<string, KPView>();
+            preventNodeExpand = false;
         }
 
 
@@ -210,8 +212,6 @@ namespace Scada.Admin.App.Forms
             miEditCut.Enabled = btnEditCut.Enabled = false;
             miEditCopy.Enabled = btnEditCopy.Enabled = false;
             miEditPaste.Enabled = btnEditPaste.Enabled = false;
-
-            miToolsOptions.Enabled = false;
         }
 
         /// <summary>
@@ -729,6 +729,37 @@ namespace Scada.Admin.App.Forms
         }
 
 
+        private void tvExplorer_KeyDown(object sender, KeyEventArgs e)
+        {
+            // execute a node action on press Enter
+            if (e.KeyCode == Keys.Enter && tvExplorer.SelectedNode != null)
+            {
+                TreeNode node = tvExplorer.SelectedNode;
+                if (node.TagIs(AppNodeType.File))
+                    ExecOpenFileAction(node);
+                else if (node.Tag is TreeNodeTag tag && tag.FormType != null)
+                    ExecNodeAction(node);
+                else if (node.Nodes.Count > 0)
+                {
+                    if (node.IsExpanded)
+                        node.Collapse(true);
+                    else
+                        node.Expand();
+                }
+            }
+        }
+
+        private void tvExplorer_MouseDown(object sender, MouseEventArgs e)
+        {
+            // check whether to prevent a node from expanding
+            if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                TreeNode node = tvExplorer.GetNodeAt(e.Location);
+                preventNodeExpand = node != null && node.Nodes.Count > 0 && 
+                    node.Tag is TreeNodeTag tag && tag.FormType != null;
+            }
+        }
+
         private void tvExplorer_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
         {
             // select a tree node on right click
@@ -751,28 +782,46 @@ namespace Scada.Admin.App.Forms
 
         private void tvExplorer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
-            // fill a node on demand
-            TreeNode treeNode = e.Node;
-
-            if (treeNode.TagIs(AppNodeType.Interface))
+            // prevent the node from expanding
+            if (preventNodeExpand)
             {
-                explorerBuilder.FillInterfaceNode(treeNode);
+                e.Cancel = true;
+                preventNodeExpand = false;
+                return;
             }
-            else if (treeNode.TagIs(AppNodeType.Instance))
+
+            // fill a node on demand
+            TreeNode node = e.Node;
+
+            if (node.TagIs(AppNodeType.Interface))
+            {
+                explorerBuilder.FillInterfaceNode(node);
+            }
+            else if (node.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
                 LoadDeploymentSettings();
-                PrepareInstanceNode(treeNode, liveInstance);
+                PrepareInstanceNode(node, liveInstance);
             }
-            else if (treeNode.TagIs(AppNodeType.WebApp))
+            else if (node.TagIs(AppNodeType.WebApp))
             {
-                explorerBuilder.FillWebstationNode(treeNode);
+                explorerBuilder.FillWebstationNode(node);
             }
         }
 
         private void tvExplorer_AfterExpand(object sender, TreeViewEventArgs e)
         {
             explorerBuilder.SetFolderImage(e.Node);
+        }
+
+        private void tvExplorer_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            // prevent the node from collapsing
+            if (preventNodeExpand)
+            {
+                e.Cancel = true;
+                preventNodeExpand = false;
+            }
         }
 
         private void tvExplorer_AfterCollapse(object sender, TreeViewEventArgs e)
@@ -868,6 +917,7 @@ namespace Scada.Admin.App.Forms
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
                 {
                     project = newProject;
+                    LoadConfigBase();
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                     wctrlMain.MessageText = AppPhrases.SelectItemMessage;
                     InitMenuItems();
@@ -894,6 +944,7 @@ namespace Scada.Admin.App.Forms
                 if (!project.Load(ofdProject.FileName, out string errMsg))
                     appData.ProcError(errMsg);
 
+                LoadConfigBase();
                 Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                 wctrlMain.MessageText = AppPhrases.SelectItemMessage;
                 InitMenuItems();
@@ -997,9 +1048,8 @@ namespace Scada.Admin.App.Forms
             if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
                 out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                // save and load the required data
+                // save all changes and load the deployment settings
                 SaveAll();
-                LoadConfigBase();
                 LoadDeploymentSettings();
 
                 // open a download configuration form
@@ -1048,9 +1098,8 @@ namespace Scada.Admin.App.Forms
             if (FindInstanceForDeploy(tvExplorer.SelectedNode, 
                 out TreeNode instanceNode, out LiveInstance liveInstance))
             {
-                // save and load the required data
+                // save all changes and load the deployment settings
                 SaveAll();
-                LoadConfigBase();
                 LoadDeploymentSettings();
 
                 // open an upload configuration form
@@ -1100,6 +1149,7 @@ namespace Scada.Admin.App.Forms
         private void miTools_DropDownOpening(object sender, EventArgs e)
         {
             miToolsCnlMap.Enabled = project != null;
+            miToolsOptions.Enabled = false;
         }
 
         private void miToolsCnlMap_Click(object sender, EventArgs e)
@@ -1117,6 +1167,29 @@ namespace Scada.Admin.App.Forms
         {
             // show a form to select culture
             new FrmCulture(appData).ShowDialog();
+        }
+
+        private void miWindow_DropDownOpening(object sender, EventArgs e)
+        {
+            int formCount = wctrlMain.FormCount;
+            miWindowCloseActive.Enabled = formCount > 0;
+            miWindowCloseAll.Enabled = formCount > 0;
+            miWindowCloseAllButActive.Enabled = formCount > 1;
+        }
+
+        private void miWindowCloseActive_Click(object sender, EventArgs e)
+        {
+            wctrlMain.CloseActiveForm(out bool cancel);
+        }
+
+        private void miWindowCloseAll_Click(object sender, EventArgs e)
+        {
+            wctrlMain.CloseAllForms(out bool cancel);
+        }
+
+        private void miWindowCloseAllButActive_Click(object sender, EventArgs e)
+        {
+            wctrlMain.CloseAllButActive(out bool cancel);
         }
 
         private void miHelpDoc_Click(object sender, EventArgs e)
