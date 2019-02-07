@@ -145,6 +145,8 @@
     <Phrase key="CommNode">Communicator</Phrase>
     <Phrase key="WebNode">Webstation</Phrase>
     <Phrase key="EmptyNode">Empty</Phrase>
+    <Phrase key="DeviceFilter">Device {0}</Phrase>
+    <Phrase key="EmptyDeviceFilter">Empty device</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
     <Phrase key="gbInstance">Instance</Phrase>
@@ -250,8 +252,22 @@
     <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="GridViewError">Error displaying table, the {0} column</Phrase>
+    <Phrase key="btnCloseError">Close</Phrase>
+    <Phrase key="btnMoveFirst.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrevious.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount">of {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
+    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
+    <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
+    <Phrase key="RetrieveChangesError">Error retrieving changes from data table</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>

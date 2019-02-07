@@ -158,10 +158,9 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private TableFilter CreateFilterByDevice(KP kp)
         {
-            // TODO: phrases
             return kp == null ?
-                new TableFilter("KPNum", null) { Title = "Empty device" } :
-                new TableFilter("KPNum", kp.KPNum) { Title = string.Format("Device {0}", kp.KPNum)};
+                new TableFilter("KPNum", null) { Title = AppPhrases.EmptyDeviceFilter } :
+                new TableFilter("KPNum", kp.KPNum) { Title = string.Format(AppPhrases.DeviceFilter, kp.KPNum)};
         }
 
         /// <summary>

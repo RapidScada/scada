@@ -43,6 +43,8 @@ namespace Scada.Admin.App.Code
         public static string CommNode { get; private set; }
         public static string WebNode { get; private set; }
         public static string EmptyNode { get; private set; }
+        public static string DeviceFilter { get; private set; }
+        public static string EmptyDeviceFilter { get; private set; }
 
         // Scada.Admin.App.Controls.Deployment.CtrlProfileSelector
         public static string ProfileNotSet { get; private set; }
@@ -87,8 +89,12 @@ namespace Scada.Admin.App.Code
         public static string CultureNotFound { get; private set; }
 
         // Scada.Admin.App.Forms.FrmBaseTable
+        public static string ColumnNotNull { get; private set; }
         public static string GridViewError { get; private set; }
         public static string ColumnLabel { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmBaseTableGeneric
+        public static string RetrieveChangesError { get; private set; }
 
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
@@ -148,6 +154,8 @@ namespace Scada.Admin.App.Code
             CommNode = dict.GetPhrase("CommNode");
             WebNode = dict.GetPhrase("WebNode");
             EmptyNode = dict.GetPhrase("EmptyNode");
+            DeviceFilter = dict.GetPhrase("DeviceFilter");
+            EmptyDeviceFilter = dict.GetPhrase("EmptyDeviceFilter");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
             ProfileNotSet = dict.GetPhrase("ProfileNotSet");
@@ -192,8 +200,12 @@ namespace Scada.Admin.App.Code
             GenerateCnlMapError = dict.GetPhrase("GenerateCnlMapError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
+            ColumnNotNull = dict.GetPhrase("ColumnNotNull");
             GridViewError = dict.GetPhrase("GridViewError");
             ColumnLabel = dict.GetPhrase("ColumnLabel");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTableGeneric");
+            RetrieveChangesError = dict.GetPhrase("RetrieveChangesError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
             FileNameEmpty = dict.GetPhrase("FileNameEmpty");

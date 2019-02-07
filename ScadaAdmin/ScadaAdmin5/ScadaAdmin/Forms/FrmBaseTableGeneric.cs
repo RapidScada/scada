@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.Data.Tables;
+using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -75,14 +76,18 @@ namespace Scada.Admin.App.Forms
             if (!configBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
+            // create and setup a data table
             ICollection<T> tableItems = tableFilter == null ? 
                 baseTable.Items.Values : 
                 baseTable.GetFilteredItems(tableFilter);
             dataTable = tableItems.ToDataTable();
+            if (tableFilter != null)
+                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
             dataTable.RowChanged += dataTable_RowChanged;
             dataTable.RowDeleted += dataTable_RowDeleted;
             bindingSource.DataSource = dataTable;
 
+            // create grid columns
             ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
             dataGridView.AutoResizeColumns();
@@ -91,13 +96,48 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Validates that the primary key value is unique.
+        /// </summary>
+        private bool PkUnique(int keyVal, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Validates that no record refers the primary key.
+        /// </summary>
+        private bool NoReferencesToPk(int keyVal, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Validates that the primary key exists.
+        /// </summary>
+        private bool PkExists(int keyVal, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
         /// Copies the changes from a one table to another.
         /// </summary>
         private void RetrieveChanges()
         {
-            baseTable.RetrieveChanges(dataTable);
-            baseTable.Modified = true;
-            ChildFormTag.Modified = true;
+            try
+            {
+                baseTable.RetrieveChanges(dataTable);
+                baseTable.Modified = true;
+                ChildFormTag.Modified = true;
+            }
+            catch (Exception ex)
+            {
+                appData.ErrLog.WriteException(ex, AppPhrases.RetrieveChangesError);
+                ShowError(ex.Message);
+            }
         }
 
         /// <summary>
@@ -115,13 +155,53 @@ namespace Scada.Admin.App.Forms
         private void dataTable_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             if (e.Action == DataRowAction.Add || e.Action == DataRowAction.Change)
-                RetrieveChanges();
+            {
+                DataRow row = e.Row;
+                bool rowIsValid = true;
+                string errMsg = "";
+
+                if (e.Action == DataRowAction.Add)
+                {
+                    int key = (int)row[baseTable.PrimaryKey];
+                    rowIsValid = PkUnique(key, out errMsg);
+                }
+                else // DataRowAction.Change
+                {
+                    int origKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
+                    int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
+                    if (origKey != curKey)
+                        rowIsValid = PkUnique(curKey, out errMsg) && NoReferencesToPk(origKey, out errMsg);
+                }
+
+                if (rowIsValid)
+                {
+                    RetrieveChanges();
+                }
+                else
+                {
+                    e.Row.RejectChanges();
+                    ScadaUiUtils.ShowError(errMsg);
+                }
+            }
         }
 
         private void dataTable_RowDeleted(object sender, DataRowChangeEventArgs e)
         {
             if (e.Action == DataRowAction.Delete)
-                RetrieveChanges();
+            {
+                DataRow row = e.Row;
+                int key = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
+
+                if (NoReferencesToPk(key, out string errMsg))
+                {
+                    RetrieveChanges();
+                }
+                else
+                {
+                    e.Row.RejectChanges();
+                    ScadaUiUtils.ShowError(errMsg);
+                }
+            }
         }
     }
 }

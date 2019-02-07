@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -91,12 +91,17 @@ namespace Scada.Data.Tables
                 bool isNullable = prop.PropertyType.IsNullable();
                 bool isClass = prop.PropertyType.IsClass;
 
-                dataTable.Columns.Add(new DataColumn()
+                DataColumn col = new DataColumn()
                 {
                     ColumnName = prop.Name,
                     DataType = isNullable ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType,
                     AllowDBNull = isNullable || isClass || allowNull
-                });
+                };
+
+                if (col.DataType == typeof(bool) && !col.AllowDBNull)
+                    col.DefaultValue = false;
+
+                dataTable.Columns.Add(col);
             }
 
             // copy data
@@ -135,7 +140,7 @@ namespace Scada.Data.Tables
 
             foreach (DataRow row in deletedRows)
             {
-                int key = (int)row[baseTable.PrimaryKey];
+                int key = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
                 baseTable.Items.Remove(key);
                 row.AcceptChanges();
             }

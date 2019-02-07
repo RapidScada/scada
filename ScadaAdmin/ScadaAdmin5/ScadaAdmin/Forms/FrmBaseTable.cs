@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
+using Scada.UI;
 using System;
 using System.Data;
 using System.Windows.Forms;
@@ -58,6 +59,18 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
+        /// Gets the source data table.
+        /// </summary>
+        private DataTable SourceDataTable
+        {
+            get
+            {
+                return (DataTable)bindingSource.DataSource;
+            }
+        }
+
+
+        /// <summary>
         /// Loads the table data.
         /// </summary>
         protected virtual void LoadTableData()
@@ -81,9 +94,82 @@ namespace Scada.Admin.App.Forms
             pnlError.Visible = false;
         }
 
+        /// <summary>
+        /// Validates a cell after editing.
+        /// </summary>
+        protected bool ValidateCell(int colInd, int rowInd, string cellVal, out string errMsg)
+        {
+            errMsg = "";
+
+            if (0 <= colInd && colInd < dataGridView.ColumnCount && 0 <= rowInd && rowInd < dataGridView.RowCount)
+            {
+                DataGridViewColumn col = dataGridView.Columns[colInd];
+
+                if (col is DataGridViewTextBoxColumn)
+                {
+                    if (!string.IsNullOrEmpty(cellVal))
+                    {
+                        Type valueType = col.ValueType;
+
+                        if (valueType == typeof(int))
+                        {
+                            if (!int.TryParse(cellVal, out int intVal))
+                                errMsg = CommonPhrases.IntegerRequired;
+                        }
+                        else if (valueType == typeof(double))
+                        {
+                            if (!double.TryParse(cellVal, out double doubleVal))
+                                errMsg = CommonPhrases.RealRequired;
+                        }
+                    }
+                }
+
+                dataGridView.Rows[rowInd].ErrorText = errMsg;
+            }
+
+            return string.IsNullOrEmpty(errMsg);
+        }
+
+        /// <summary>
+        /// Validates a row after editing.
+        /// </summary>
+        protected bool ValidateRow(int rowInd, out string errMsg)
+        {
+            errMsg = "";
+
+            if (0 <= rowInd && rowInd < dataGridView.RowCount)
+            {
+                DataGridViewRow row = dataGridView.Rows[rowInd];
+
+                if (!row.IsNewRow)
+                {
+                    // check for nulls
+                    DataTable dataTable = SourceDataTable;
+
+                    for (int colInd = 0, colCnt = dataGridView.Columns.Count; colInd < colCnt; colInd++)
+                    {
+                        DataGridViewColumn col = dataGridView.Columns[colInd];
+                        object cellVal = row.Cells[colInd].Value;
+
+                        if (cellVal == DBNull.Value && !dataTable.Columns[col.Name].AllowDBNull)
+                            errMsg = string.Format(AppPhrases.ColumnNotNull, col.HeaderText);
+                    }
+                }
+
+                dataGridView.Rows[rowInd].ErrorText = errMsg;
+            }
+
+            return string.IsNullOrEmpty(errMsg);
+        }
+
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmBaseTable");
+
+            if (lblCount.Text.Contains("{0}"))
+                bindingNavigator.CountItemFormat = lblCount.Text;
+
             if (ScadaUtils.IsRunningOnMono)
             {
                 // because of the bug in Mono 5.12.0.301
@@ -94,6 +180,24 @@ namespace Scada.Admin.App.Forms
         private void FrmBaseTable_Shown(object sender, EventArgs e)
         {
             LoadTableData();
+        }
+
+        private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
+        {
+            if (!ValidateCell(e.ColumnIndex, e.RowIndex, e.FormattedValue?.ToString(), out string errMsg))
+            {
+                ScadaUiUtils.ShowError(errMsg);
+                e.Cancel = true;
+            }
+        }
+
+        private void dataGridView_RowValidating(object sender, DataGridViewCellCancelEventArgs e)
+        {
+            if (!ValidateRow(e.RowIndex, out string errMsg))
+            {
+                ScadaUiUtils.ShowError(errMsg);
+                e.Cancel = true;
+            }
         }
 
         private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)

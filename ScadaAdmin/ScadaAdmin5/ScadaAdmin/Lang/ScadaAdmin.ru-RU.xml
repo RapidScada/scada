@@ -145,6 +145,8 @@
     <Phrase key="CommNode">Коммуникатор</Phrase>
     <Phrase key="WebNode">Вебстанция</Phrase>
     <Phrase key="EmptyNode">Пусто</Phrase>
+    <Phrase key="DeviceFilter">КП {0}</Phrase>
+    <Phrase key="EmptyDeviceFilter">Пустой КП</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
     <Phrase key="gbInstance">Экземпляр</Phrase>
@@ -250,8 +252,22 @@
     <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец {0}</Phrase>
+    <Phrase key="btnCloseError">Закрыть</Phrase>
+    <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrevious.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount">из {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnAddNew.ToolTip">Добавить новую строку</Phrase>
+    <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
+    <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
+    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
+    <Phrase key="RetrieveChangesError">Ошибка при извлечении изменений из таблицы данных</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>

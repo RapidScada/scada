@@ -31,22 +31,22 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmBaseTable));
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
-            this.bindingNavigatorAddNewItem = new System.Windows.Forms.ToolStripButton();
+            this.btnAddNew = new System.Windows.Forms.ToolStripButton();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
-            this.bindingNavigatorCountItem = new System.Windows.Forms.ToolStripLabel();
-            this.bindingNavigatorDeleteItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveFirstItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMovePreviousItem = new System.Windows.Forms.ToolStripButton();
+            this.lblCount = new System.Windows.Forms.ToolStripLabel();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveFirst = new System.Windows.Forms.ToolStripButton();
+            this.btnMovePrevious = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorPositionItem = new System.Windows.Forms.ToolStripTextBox();
+            this.txtPosition = new System.Windows.Forms.ToolStripTextBox();
             this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.bindingNavigatorMoveNextItem = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorMoveLastItem = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
-            this.lblError = new System.Windows.Forms.Label();
             this.btnCloseError = new System.Windows.Forms.Button();
+            this.lblError = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -56,111 +56,111 @@
             // 
             // bindingNavigator
             // 
-            this.bindingNavigator.AddNewItem = this.bindingNavigatorAddNewItem;
+            this.bindingNavigator.AddNewItem = this.btnAddNew;
             this.bindingNavigator.BindingSource = this.bindingSource;
-            this.bindingNavigator.CountItem = this.bindingNavigatorCountItem;
-            this.bindingNavigator.DeleteItem = this.bindingNavigatorDeleteItem;
+            this.bindingNavigator.CountItem = this.lblCount;
+            this.bindingNavigator.DeleteItem = this.btnDelete;
             this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.bindingNavigatorMoveFirstItem,
-            this.bindingNavigatorMovePreviousItem,
+            this.btnMoveFirst,
+            this.btnMovePrevious,
             this.bindingNavigatorSeparator,
-            this.bindingNavigatorPositionItem,
-            this.bindingNavigatorCountItem,
+            this.txtPosition,
+            this.lblCount,
             this.bindingNavigatorSeparator1,
-            this.bindingNavigatorMoveNextItem,
-            this.bindingNavigatorMoveLastItem,
+            this.btnMoveNext,
+            this.btnMoveLast,
             this.bindingNavigatorSeparator2,
-            this.bindingNavigatorAddNewItem,
-            this.bindingNavigatorDeleteItem});
+            this.btnAddNew,
+            this.btnDelete});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
-            this.bindingNavigator.MoveFirstItem = this.bindingNavigatorMoveFirstItem;
-            this.bindingNavigator.MoveLastItem = this.bindingNavigatorMoveLastItem;
-            this.bindingNavigator.MoveNextItem = this.bindingNavigatorMoveNextItem;
-            this.bindingNavigator.MovePreviousItem = this.bindingNavigatorMovePreviousItem;
+            this.bindingNavigator.MoveFirstItem = this.btnMoveFirst;
+            this.bindingNavigator.MoveLastItem = this.btnMoveLast;
+            this.bindingNavigator.MoveNextItem = this.btnMoveNext;
+            this.bindingNavigator.MovePreviousItem = this.btnMovePrevious;
             this.bindingNavigator.Name = "bindingNavigator";
-            this.bindingNavigator.PositionItem = this.bindingNavigatorPositionItem;
+            this.bindingNavigator.PositionItem = this.txtPosition;
             this.bindingNavigator.Size = new System.Drawing.Size(584, 25);
             this.bindingNavigator.TabIndex = 1;
             // 
-            // bindingNavigatorAddNewItem
+            // btnAddNew
             // 
-            this.bindingNavigatorAddNewItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorAddNewItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorAddNewItem.Image")));
-            this.bindingNavigatorAddNewItem.Name = "bindingNavigatorAddNewItem";
-            this.bindingNavigatorAddNewItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorAddNewItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorAddNewItem.Text = "Add new";
+            this.btnAddNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAddNew.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNew.Image")));
+            this.btnAddNew.Name = "btnAddNew";
+            this.btnAddNew.RightToLeftAutoMirrorImage = true;
+            this.btnAddNew.Size = new System.Drawing.Size(23, 22);
+            this.btnAddNew.Text = "Add new";
             // 
-            // bindingNavigatorCountItem
+            // lblCount
             // 
-            this.bindingNavigatorCountItem.Name = "bindingNavigatorCountItem";
-            this.bindingNavigatorCountItem.Size = new System.Drawing.Size(35, 22);
-            this.bindingNavigatorCountItem.Text = "of {0}";
-            this.bindingNavigatorCountItem.ToolTipText = "Total number of items";
+            this.lblCount.Name = "lblCount";
+            this.lblCount.Size = new System.Drawing.Size(35, 22);
+            this.lblCount.Text = "of {0}";
+            this.lblCount.ToolTipText = "Total number of items";
             // 
-            // bindingNavigatorDeleteItem
+            // btnDelete
             // 
-            this.bindingNavigatorDeleteItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorDeleteItem.Image")));
-            this.bindingNavigatorDeleteItem.Name = "bindingNavigatorDeleteItem";
-            this.bindingNavigatorDeleteItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorDeleteItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorDeleteItem.Text = "Delete";
+            this.btnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.RightToLeftAutoMirrorImage = true;
+            this.btnDelete.Size = new System.Drawing.Size(23, 22);
+            this.btnDelete.Text = "Delete";
             // 
-            // bindingNavigatorMoveFirstItem
+            // btnMoveFirst
             // 
-            this.bindingNavigatorMoveFirstItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveFirstItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveFirstItem.Image")));
-            this.bindingNavigatorMoveFirstItem.Name = "bindingNavigatorMoveFirstItem";
-            this.bindingNavigatorMoveFirstItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveFirstItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveFirstItem.Text = "Move first";
+            this.btnMoveFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMoveFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveFirst.Image")));
+            this.btnMoveFirst.Name = "btnMoveFirst";
+            this.btnMoveFirst.RightToLeftAutoMirrorImage = true;
+            this.btnMoveFirst.Size = new System.Drawing.Size(23, 22);
+            this.btnMoveFirst.Text = "Move first";
             // 
-            // bindingNavigatorMovePreviousItem
+            // btnMovePrevious
             // 
-            this.bindingNavigatorMovePreviousItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMovePreviousItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMovePreviousItem.Image")));
-            this.bindingNavigatorMovePreviousItem.Name = "bindingNavigatorMovePreviousItem";
-            this.bindingNavigatorMovePreviousItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMovePreviousItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMovePreviousItem.Text = "Move previous";
+            this.btnMovePrevious.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMovePrevious.Image = ((System.Drawing.Image)(resources.GetObject("btnMovePrevious.Image")));
+            this.btnMovePrevious.Name = "btnMovePrevious";
+            this.btnMovePrevious.RightToLeftAutoMirrorImage = true;
+            this.btnMovePrevious.Size = new System.Drawing.Size(23, 22);
+            this.btnMovePrevious.Text = "Move previous";
             // 
             // bindingNavigatorSeparator
             // 
             this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
             this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 25);
             // 
-            // bindingNavigatorPositionItem
+            // txtPosition
             // 
-            this.bindingNavigatorPositionItem.AccessibleName = "Position";
-            this.bindingNavigatorPositionItem.AutoSize = false;
-            this.bindingNavigatorPositionItem.Name = "bindingNavigatorPositionItem";
-            this.bindingNavigatorPositionItem.Size = new System.Drawing.Size(50, 23);
-            this.bindingNavigatorPositionItem.Text = "0";
-            this.bindingNavigatorPositionItem.ToolTipText = "Current position";
+            this.txtPosition.AccessibleName = "Position";
+            this.txtPosition.AutoSize = false;
+            this.txtPosition.Name = "txtPosition";
+            this.txtPosition.Size = new System.Drawing.Size(50, 23);
+            this.txtPosition.Text = "0";
+            this.txtPosition.ToolTipText = "Current position";
             // 
             // bindingNavigatorSeparator1
             // 
             this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
             this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // bindingNavigatorMoveNextItem
+            // btnMoveNext
             // 
-            this.bindingNavigatorMoveNextItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveNextItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveNextItem.Image")));
-            this.bindingNavigatorMoveNextItem.Name = "bindingNavigatorMoveNextItem";
-            this.bindingNavigatorMoveNextItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveNextItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveNextItem.Text = "Move next";
+            this.btnMoveNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMoveNext.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveNext.Image")));
+            this.btnMoveNext.Name = "btnMoveNext";
+            this.btnMoveNext.RightToLeftAutoMirrorImage = true;
+            this.btnMoveNext.Size = new System.Drawing.Size(23, 22);
+            this.btnMoveNext.Text = "Move next";
             // 
-            // bindingNavigatorMoveLastItem
+            // btnMoveLast
             // 
-            this.bindingNavigatorMoveLastItem.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.bindingNavigatorMoveLastItem.Image = ((System.Drawing.Image)(resources.GetObject("bindingNavigatorMoveLastItem.Image")));
-            this.bindingNavigatorMoveLastItem.Name = "bindingNavigatorMoveLastItem";
-            this.bindingNavigatorMoveLastItem.RightToLeftAutoMirrorImage = true;
-            this.bindingNavigatorMoveLastItem.Size = new System.Drawing.Size(23, 22);
-            this.bindingNavigatorMoveLastItem.Text = "Move last";
+            this.btnMoveLast.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMoveLast.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveLast.Image")));
+            this.btnMoveLast.Name = "btnMoveLast";
+            this.btnMoveLast.RightToLeftAutoMirrorImage = true;
+            this.btnMoveLast.Size = new System.Drawing.Size(23, 22);
+            this.btnMoveLast.Text = "Move last";
             // 
             // bindingNavigatorSeparator2
             // 
@@ -177,7 +177,9 @@
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.Size = new System.Drawing.Size(584, 296);
             this.dataGridView.TabIndex = 2;
+            this.dataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView_CellValidating);
             this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
+            this.dataGridView.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_RowValidating);
             // 
             // pnlError
             // 
@@ -193,6 +195,17 @@
             this.pnlError.TabIndex = 0;
             this.pnlError.Visible = false;
             // 
+            // btnCloseError
+            // 
+            this.btnCloseError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCloseError.Location = new System.Drawing.Point(497, 8);
+            this.btnCloseError.Name = "btnCloseError";
+            this.btnCloseError.Size = new System.Drawing.Size(75, 23);
+            this.btnCloseError.TabIndex = 1;
+            this.btnCloseError.Text = "Close";
+            this.btnCloseError.UseVisualStyleBackColor = true;
+            this.btnCloseError.Click += new System.EventHandler(this.btnCloseError_Click);
+            // 
             // lblError
             // 
             this.lblError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -204,17 +217,6 @@
             this.lblError.TabIndex = 0;
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btnCloseError
-            // 
-            this.btnCloseError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCloseError.Location = new System.Drawing.Point(497, 8);
-            this.btnCloseError.Name = "btnCloseError";
-            this.btnCloseError.Size = new System.Drawing.Size(75, 23);
-            this.btnCloseError.TabIndex = 1;
-            this.btnCloseError.Text = "Close";
-            this.btnCloseError.UseVisualStyleBackColor = true;
-            this.btnCloseError.Click += new System.EventHandler(this.btnCloseError_Click);
             // 
             // FrmBaseTable
             // 
@@ -242,16 +244,16 @@
         #endregion
 
         private System.Windows.Forms.BindingNavigator bindingNavigator;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorAddNewItem;
-        private System.Windows.Forms.ToolStripLabel bindingNavigatorCountItem;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorDeleteItem;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveFirstItem;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorMovePreviousItem;
+        private System.Windows.Forms.ToolStripButton btnAddNew;
+        private System.Windows.Forms.ToolStripLabel lblCount;
+        private System.Windows.Forms.ToolStripButton btnDelete;
+        private System.Windows.Forms.ToolStripButton btnMoveFirst;
+        private System.Windows.Forms.ToolStripButton btnMovePrevious;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
-        private System.Windows.Forms.ToolStripTextBox bindingNavigatorPositionItem;
+        private System.Windows.Forms.ToolStripTextBox txtPosition;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator1;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveNextItem;
-        private System.Windows.Forms.ToolStripButton bindingNavigatorMoveLastItem;
+        private System.Windows.Forms.ToolStripButton btnMoveNext;
+        private System.Windows.Forms.ToolStripButton btnMoveLast;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
         protected System.Windows.Forms.BindingSource bindingSource;
         protected System.Windows.Forms.DataGridView dataGridView;
