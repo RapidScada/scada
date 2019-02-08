@@ -267,7 +267,8 @@
     <Phrase key="ColumnLabel">Column: </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
-    <Phrase key="RetrieveChangesError">Error retrieving changes from data table</Phrase>
+    <Phrase key="UniqueRequired">A duplicate value cannot be inserted into the &quot;{0}&quot; column.</Phrase>
+    <Phrase key="DataChangeError">Error changing table data</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>

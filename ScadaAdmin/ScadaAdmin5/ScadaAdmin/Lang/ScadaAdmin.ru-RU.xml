@@ -267,7 +267,8 @@
     <Phrase key="ColumnLabel">Столбец: </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
-    <Phrase key="RetrieveChangesError">Ошибка при извлечении изменений из таблицы данных</Phrase>
+    <Phrase key="UniqueRequired">Для столбца &quot;{0}&quot; не допускаются дублирующиеся значения.</Phrase>
+    <Phrase key="DataChangeError">Ошибка при изменении данных в таблице</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>
