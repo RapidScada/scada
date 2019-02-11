@@ -40,6 +40,8 @@
     <Compile Include="..\ScadaData\Data\Tables\SrezTableLight.cs" Link="Data\Tables\SrezTableLight.cs" />
     <Compile Include="..\ScadaData\Data\Tables\TableConverter.cs" Link="Data\Tables\TableConverter.cs" />
     <Compile Include="..\ScadaData\Data\Tables\TableFilter.cs" Link="Data\Tables\TableFilter.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\TableIndex.cs" Link="Data\Tables\TableIndex.cs" />
+    <Compile Include="..\ScadaData\Data\Tables\TableRelation.cs" Link="Data\Tables\TableRelation.cs" />
     <Compile Include="..\ScadaData\Data\Tables\Trend.cs" Link="Data\Tables\Trend.cs" />
     <Compile Include="..\ScadaData\FileListener.cs" Link="FileListener.cs" />
     <Compile Include="..\ScadaData\ISettings.cs" Link="ISettings.cs" />

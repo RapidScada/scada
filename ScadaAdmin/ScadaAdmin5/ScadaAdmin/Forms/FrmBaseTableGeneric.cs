@@ -118,6 +118,15 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private bool NoReferencesToPk(int keyVal, out string errMsg)
         {
+            foreach (TableRelation relation in baseTable.Dependent)
+            {
+                if (relation.ChildIndex.ItemGroups.ContainsKey(keyVal))
+                {
+                    errMsg = "!!!";
+                    return false;
+                }
+            }
+
             errMsg = "";
             return true;
         }
@@ -125,10 +134,22 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates that the primary key exists.
         /// </summary>
-        private bool PkExists<TEntity>(BaseTable<TEntity> baseTable, int keyVal, out string errMsg)
+        private bool PkExists(IBaseTable table, int keyVal, out string errMsg)
         {
             errMsg = "";
             return true;
+
+            /*if (table.PkExists(keyVal))
+            {
+                errMsg = "";
+                return true;
+            }
+            else
+            {
+                errMsg = string.Format(AppPhrases.UniqueRequired,
+                    dataGridView.Columns[table.PrimaryKey].HeaderText);
+                return false;
+            }*/
         }
 
         /// <summary>
@@ -175,7 +196,16 @@ namespace Scada.Admin.App.Forms
                         if (origKey != curKey)
                             rowIsValid = PkUnique(curKey, out errMsg) && NoReferencesToPk(origKey, out errMsg);
 
-                        // TODO: check all FKs
+                        // check the table dependencies
+                        foreach (TableRelation relation in baseTable.DependsOn)
+                        {
+                            int keyVal = (int)row[relation.ChildColumn];
+                            if (!PkExists(relation.ParentTable, keyVal, out errMsg))
+                            {
+                                rowIsValid = false;
+                                break;
+                            }
+                        }
                     }
 
                     if (rowIsValid)

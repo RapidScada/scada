@@ -57,6 +57,9 @@ namespace Scada.Data.Tables
             PrimaryKey = primaryKey;
             Title = title;
             Items = new SortedDictionary<int, T>();
+            Indexes = new Dictionary<string, TableIndex>();
+            DependsOn = new List<TableRelation>();
+            Dependent = new List<TableRelation>();
             Modified = false;
         }
 
@@ -124,6 +127,21 @@ namespace Scada.Data.Tables
         /// Gets the table items sorted by primary key.
         /// </summary>
         public SortedDictionary<int, T> Items { get; protected set; }
+
+        /// <summary>
+        /// Gets the table indexes accessed by column name.
+        /// </summary>
+        public Dictionary<string, TableIndex> Indexes { get; protected set; }
+
+        /// <summary>
+        /// Gets the tables that this table depends on (foreign keys).
+        /// </summary>
+        public List<TableRelation> DependsOn { get; protected set; }
+
+        /// <summary>
+        /// Gets the tables that depend on this table.
+        /// </summary>
+        public List<TableRelation> Dependent { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the table was modified.
