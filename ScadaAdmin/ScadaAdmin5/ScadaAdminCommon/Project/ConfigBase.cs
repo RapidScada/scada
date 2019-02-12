@@ -189,7 +189,15 @@ namespace Scada.Admin.Project
         /// </summary>
         private void AddRelations()
         {
+            AddRelation(KPTypeTable, KPTable, "KPTypeID");
+            AddRelation(CommLineTable, KPTable, "CommLineNum");
+
+            AddRelation(CnlTypeTable, InCnlTable, "CnlTypeID");
+            AddRelation(ObjTable, InCnlTable, "ObjNum");
             AddRelation(KPTable, InCnlTable, "KPNum");
+            AddRelation(ParamTable, InCnlTable, "ParamID");
+            AddRelation(FormatTable, InCnlTable, "FormatID");
+            AddRelation(UnitTable, InCnlTable, "UnitID");
         }
 
         /// <summary>
@@ -197,11 +205,11 @@ namespace Scada.Admin.Project
         /// </summary>
         private void AddRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn)
         {
-            /*TableIndex index = new TableIndex(childColumn);
+            TableIndex index = new TableIndex(childColumn);
             TableRelation relation = new TableRelation(parentTable, childTable, childColumn, index);
             childTable.Indexes.Add(childColumn, index);
             childTable.DependsOn.Add(relation);
-            parentTable.Dependent.Add(relation);*/
+            parentTable.Dependent.Add(relation);
         }
 
 

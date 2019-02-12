@@ -141,7 +141,7 @@ namespace Scada.Data.Tables
             foreach (DataRow row in deletedRows)
             {
                 int key = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
-                baseTable.Items.Remove(key);
+                baseTable.RemoveItem(key);
                 row.AcceptChanges();
             }
 
@@ -156,7 +156,7 @@ namespace Scada.Data.Tables
                 int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
 
                 if (origKey != curKey)
-                    baseTable.Items.Remove(origKey);
+                    baseTable.RemoveItem(origKey);
 
                 baseTable.AddItem(item);
                 row.AcceptChanges();

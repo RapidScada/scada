@@ -83,7 +83,7 @@ namespace Scada.Data.Tables
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentException("The primary key can not be empty.");
 
-                PropertyDescriptor prop = TypeDescriptor.GetProperties(ItemType)[value];
+                PropertyDescriptor prop = TypeDescriptor.GetProperties(typeof(T))[value];
 
                 if (prop == null)
                     throw new ArgumentException("The primary key property not found.");
@@ -126,6 +126,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Gets the table items sorted by primary key.
         /// </summary>
+        /// <remarks>Do not change items directly to avoid data corruption.</remarks>
         public SortedDictionary<int, T> Items { get; protected set; }
 
         /// <summary>
@@ -176,6 +177,35 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Removes an item with the specified primary key.
+        /// </summary>
+        public void RemoveItem(int key)
+        {
+            Items.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes all items.
+        /// </summary>
+        public void ClearItems()
+        {
+            Items.Clear();
+
+            foreach (TableIndex index in Indexes.Values)
+            {
+                index.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Checks if there is an item with the specified primary key.
+        /// </summary>
+        public bool PkExists(int key)
+        {
+            return Items.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Gets the items that match the specified filter.
         /// </summary>
         public ICollection<T> GetFilteredItems(TableFilter tableFilter)
@@ -190,13 +220,20 @@ namespace Scada.Data.Tables
 
             // get the matched items
             List<T> filteredItems = new List<T>();
-            object filterVal = tableFilter.Value;
 
-            foreach (T item in Items.Values)
+            if (Indexes.TryGetValue(tableFilter.ColumnName, out TableIndex tableIndex))
             {
-                object val = filterProp.GetValue(item);
-                if (Equals(val, filterVal))
-                    filteredItems.Add(item);
+                // TODO: make filter ready and select from index
+            }
+            else
+            {
+                object filterVal = tableFilter.Value;
+                foreach (T item in Items.Values)
+                {
+                    object val = filterProp.GetValue(item);
+                    if (Equals(val, filterVal))
+                        filteredItems.Add(item);
+                }
             }
 
             return filteredItems;

@@ -95,6 +95,8 @@ namespace Scada.Admin.App.Code
 
         // Scada.Admin.App.Forms.FrmBaseTableGeneric
         public static string UniqueRequired { get; private set; }
+        public static string KeyReferenced { get; private set; }
+        public static string DataNotExist { get; private set; }
         public static string DataChangeError { get; private set; }
 
         // Scada.Admin.App.Forms.FrmFileNew
@@ -206,7 +208,9 @@ namespace Scada.Admin.App.Code
             ColumnLabel = dict.GetPhrase("ColumnLabel");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTableGeneric");
-            UniqueRequired = dict.GetPhrase("RetrieveChangesError");
+            UniqueRequired = dict.GetPhrase("UniqueRequired");
+            KeyReferenced = dict.GetPhrase("KeyReferenced");
+            DataNotExist = dict.GetPhrase("DataNotExist");
             DataChangeError = dict.GetPhrase("DataChangeError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");

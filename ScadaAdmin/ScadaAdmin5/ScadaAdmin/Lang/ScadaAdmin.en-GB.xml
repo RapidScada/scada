@@ -268,6 +268,8 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
     <Phrase key="UniqueRequired">A duplicate value cannot be inserted into the &quot;{0}&quot; column.</Phrase>
+    <Phrase key="KeyReferenced">The primary key is referenced by a row from the &quot;{0}&quot; table.</Phrase>
+    <Phrase key="DataNotExist">No data exist for the &quot;{0}&quot; column.</Phrase>
     <Phrase key="DataChangeError">Error changing table data</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">

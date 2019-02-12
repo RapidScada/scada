@@ -122,7 +122,7 @@ namespace Scada.Admin.App.Forms
             {
                 if (relation.ChildIndex.ItemGroups.ContainsKey(keyVal))
                 {
-                    errMsg = "!!!";
+                    errMsg = string.Format(AppPhrases.KeyReferenced, relation.ChildTable.Title);
                     return false;
                 }
             }
@@ -134,22 +134,18 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates that the primary key exists.
         /// </summary>
-        private bool PkExists(IBaseTable table, int keyVal, out string errMsg)
+        private bool PkExists(IBaseTable parentTable, int keyVal, string childColumn, out string errMsg)
         {
-            errMsg = "";
-            return true;
-
-            /*if (table.PkExists(keyVal))
+            if (parentTable.PkExists(keyVal))
             {
                 errMsg = "";
                 return true;
             }
             else
             {
-                errMsg = string.Format(AppPhrases.UniqueRequired,
-                    dataGridView.Columns[table.PrimaryKey].HeaderText);
+                errMsg = string.Format(AppPhrases.DataNotExist, dataGridView.Columns[childColumn].HeaderText);
                 return false;
-            }*/
+            }
         }
 
         /// <summary>
@@ -176,11 +172,12 @@ namespace Scada.Admin.App.Forms
 
         private void dataTable_RowChanged(object sender, DataRowChangeEventArgs e)
         {
+            DataRow row = e.Row;
+
             try
             {
                 if (e.Action == DataRowAction.Add || e.Action == DataRowAction.Change)
                 {
-                    DataRow row = e.Row;
                     bool rowIsValid = true;
                     string errMsg = "";
 
@@ -195,12 +192,15 @@ namespace Scada.Admin.App.Forms
                         int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
                         if (origKey != curKey)
                             rowIsValid = PkUnique(curKey, out errMsg) && NoReferencesToPk(origKey, out errMsg);
+                    }
 
-                        // check the table dependencies
-                        foreach (TableRelation relation in baseTable.DependsOn)
+                    // check the table dependencies
+                    foreach (TableRelation relation in baseTable.DependsOn)
+                    {
+                        if (!row.IsNull(relation.ChildColumn))
                         {
                             int keyVal = (int)row[relation.ChildColumn];
-                            if (!PkExists(relation.ParentTable, keyVal, out errMsg))
+                            if (!PkExists(relation.ParentTable, keyVal, relation.ChildColumn, out errMsg))
                             {
                                 rowIsValid = false;
                                 break;
@@ -214,13 +214,14 @@ namespace Scada.Admin.App.Forms
                     }
                     else
                     {
-                        e.Row.RejectChanges();
+                        row.RejectChanges();
                         ScadaUiUtils.ShowError(errMsg);
                     }
                 }
             }
             catch (Exception ex)
             {
+                row.RejectChanges();
                 appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
                 ShowError(ex.Message);
             }
@@ -228,11 +229,12 @@ namespace Scada.Admin.App.Forms
 
         private void dataTable_RowDeleted(object sender, DataRowChangeEventArgs e)
         {
+            DataRow row = e.Row;
+
             try
             {
                 if (e.Action == DataRowAction.Delete)
                 {
-                    DataRow row = e.Row;
                     int key = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
 
                     if (NoReferencesToPk(key, out string errMsg))
@@ -241,13 +243,14 @@ namespace Scada.Admin.App.Forms
                     }
                     else
                     {
-                        e.Row.RejectChanges();
+                        row.RejectChanges();
                         ScadaUiUtils.ShowError(errMsg);
                     }
                 }
             }
             catch (Exception ex)
             {
+                row.RejectChanges();
                 appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
                 ShowError(ex.Message);
             }

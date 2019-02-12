@@ -58,7 +58,22 @@ namespace Scada.Data.Tables
         /// Gets the type of the table items.
         /// </summary>
         Type ItemType { get; }
-        
+
+        /// <summary>
+        /// Gets the table indexes accessed by column name.
+        /// </summary>
+        Dictionary<string, TableIndex> Indexes { get; }
+
+        /// <summary>
+        /// Gets the tables that this table depends on (foreign keys).
+        /// </summary>
+        List<TableRelation> DependsOn { get; }
+
+        /// <summary>
+        /// Gets the tables that depend on this table.
+        /// </summary>
+        List<TableRelation> Dependent { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether the table was modified.
         /// </summary>
@@ -69,6 +84,21 @@ namespace Scada.Data.Tables
         /// Adds or updates an item in the table.
         /// </summary>
         void AddObject(object obj);
+
+        /// <summary>
+        /// Removes an item with the specified primary key.
+        /// </summary>
+        void RemoveItem(int key);
+
+        /// <summary>
+        /// Removes all items.
+        /// </summary>
+        void ClearItems();
+
+        /// <summary>
+        /// Checks if there is an item with the specified primary key.
+        /// </summary>
+        bool PkExists(int key);
 
         /// <summary>
         /// Returns an enumerable collection of the table items.

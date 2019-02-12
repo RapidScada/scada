@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace Scada.Data.Tables
 {
@@ -35,12 +36,20 @@ namespace Scada.Data.Tables
     public class TableIndex
     {
         /// <summary>
+        /// The indexed property.
+        /// </summary>
+        protected PropertyDescriptor indexProp;
+
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public TableIndex(string columnName)
         {
+            indexProp = null;
             ColumnName = columnName ?? throw new ArgumentNullException("columnName");
             ItemGroups = new SortedDictionary<int, SortedDictionary<int, object>>();
+            IsReady = false;
         }
 
 
@@ -54,5 +63,80 @@ namespace Scada.Data.Tables
         /// </summary>
         /// <remarks>Value of ItemGroups is a dictionary of table items sorted by primary key.</remarks>
         public SortedDictionary<int, SortedDictionary<int, object>> ItemGroups { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether the index is ready to use.
+        /// </summary>
+        public bool IsReady { get; set; }
+
+
+
+        /// <summary>
+        /// Gets the value of the indexed property.
+        /// </summary>
+        private int GetIndexKey(object item)
+        {
+            if (indexProp == null)
+            {
+                PropertyDescriptorCollection itemProps = TypeDescriptor.GetProperties(item);
+                PropertyDescriptor prop = itemProps[ColumnName];
+
+                if (prop == null)
+                {
+                    throw new InvalidOperationException("The item doesn't contain the required property.");
+                }
+                else if (!(prop.PropertyType == typeof(int) ||
+                    prop.PropertyType.IsNullable() && Nullable.GetUnderlyingType(prop.PropertyType) == typeof(int)))
+                {
+                    throw new InvalidOperationException("The property must be integer.");
+                }
+
+                indexProp = prop;
+            }
+
+            object indexKey = indexProp.GetValue(item);
+            return indexKey == null ? 0 : (int)indexKey;
+        }
+
+        /// <summary>
+        /// Adds the item to the index.
+        /// </summary>
+        public void AddToIndex(object item, int itemKey)
+        {
+            int indexKey = GetIndexKey(item);
+
+            if (!ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
+            {
+                group = new SortedDictionary<int, object>();
+                ItemGroups.Add(indexKey, group);
+            }
+
+            group[itemKey] = item;
+        }
+
+        /// <summary>
+        /// Removes the item from the index.
+        /// </summary>
+        public void RemoveFromIndex(object item, int itemKey)
+        {
+            int indexKey = GetIndexKey(item);
+
+            if (ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
+            {
+                group.Remove(itemKey);
+                if (group.Count == 0)
+                    ItemGroups.Remove(indexKey);
+            }
+        }
+
+        /// <summary>
+        /// Resets the index to its initial state.
+        /// </summary>
+        public void Reset()
+        {
+            indexProp = null;
+            ItemGroups.Clear();
+            IsReady = false;
+        }
     }
 }

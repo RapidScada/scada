@@ -485,7 +485,7 @@ namespace Scada.Data.Tables
             Stream stream = null;
             BinaryReader reader = null;
 
-            baseTable.Items.Clear();
+            baseTable.ClearItems();
             PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
 
             try
