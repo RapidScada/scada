@@ -36,12 +36,11 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public TableRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn, TableIndex childIndex)
+        public TableRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn)
         {
             ParentTable = parentTable ?? throw new ArgumentNullException("parentTable");
             ChildTable = childTable ?? throw new ArgumentNullException("childTable");
             ChildColumn = childColumn ?? throw new ArgumentNullException("childColumn");
-            ChildIndex = childIndex ?? throw new ArgumentNullException("childIndex");
         }
 
 
@@ -60,10 +59,5 @@ namespace Scada.Data.Tables
         /// </summary>
         /// <remarks>Whereas the column of the parent table is its primary key.</remarks>
         public string ChildColumn { get; protected set; }
-
-        /// <summary>
-        /// Gets the foreign key index of the child table.
-        /// </summary>
-        public TableIndex ChildIndex { get; protected set; }
     }
 }

@@ -486,16 +486,26 @@ namespace Scada.Data.Tables
             BinaryReader reader = null;
 
             baseTable.ClearItems();
-            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+            baseTable.IndexesEnabled = false;
 
             try
             {
                 stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new BinaryReader(stream);
                 FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
+                int fieldCnt = fieldDefs.Length;
 
-                if (fieldDefs.Length > 0)
+                if (fieldCnt > 0)
                 {
+                    // получение свойств, соответствующих определениям полей
+                    PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+                    PropertyDescriptor[] propArr = new PropertyDescriptor[fieldCnt];
+
+                    for (int i = 0; i < fieldCnt; i++)
+                    {
+                        propArr[i] = props[fieldDefs[i].Name];
+                    }
+
                     // считывание строк
                     byte[] rowBuf = new byte[recSize];
 
@@ -510,10 +520,11 @@ namespace Scada.Data.Tables
                             T item = Activator.CreateInstance<T>();
                             int bufInd = 2;
 
-                            foreach (FieldDef fieldDef in fieldDefs)
+                            for (int fieldInd = 0; fieldInd < fieldCnt; fieldInd++)
                             {
+                                FieldDef fieldDef = fieldDefs[fieldInd];
+                                PropertyDescriptor prop = propArr[fieldInd];
                                 bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
-                                PropertyDescriptor prop = props[fieldDef.Name]; // TODO: improve performance here
 
                                 if (prop != null)
                                 {
@@ -541,6 +552,8 @@ namespace Scada.Data.Tables
                     reader?.Close();
                     stream?.Close();
                 }
+
+                baseTable.IndexesEnabled = true;
             }
         }
 

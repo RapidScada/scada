@@ -44,10 +44,15 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public TableIndex(string columnName)
+        public TableIndex(string columnName, Type itemType)
         {
-            indexProp = null;
-            ColumnName = columnName ?? throw new ArgumentNullException("columnName");
+            if (string.IsNullOrEmpty(columnName))
+                throw new ArgumentException("Column name must not be empty.", "columnName");
+            if (itemType == null)
+                throw new ArgumentNullException("itemType");
+
+            indexProp = GetIndexProp(columnName, itemType);
+            ColumnName = columnName;
             ItemGroups = new SortedDictionary<int, SortedDictionary<int, object>>();
             IsReady = false;
         }
@@ -70,39 +75,45 @@ namespace Scada.Data.Tables
         public bool IsReady { get; set; }
 
 
+        /// <summary>
+        /// Gets the indexed property.
+        /// </summary>
+        private PropertyDescriptor GetIndexProp(string columnName, Type itemType)
+        {
+            PropertyDescriptorCollection itemProps = TypeDescriptor.GetProperties(itemType);
+            PropertyDescriptor prop = itemProps[columnName];
+
+            if (prop == null)
+            {
+                throw new InvalidOperationException("The item doesn't contain the required property.");
+            }
+            else if (!(prop.PropertyType == typeof(int) ||
+                prop.PropertyType.IsNullable() && Nullable.GetUnderlyingType(prop.PropertyType) == typeof(int)))
+            {
+                throw new InvalidOperationException("The property must be integer.");
+            }
+
+            return prop;
+        }
 
         /// <summary>
         /// Gets the value of the indexed property.
         /// </summary>
         private int GetIndexKey(object item)
         {
-            if (indexProp == null)
-            {
-                PropertyDescriptorCollection itemProps = TypeDescriptor.GetProperties(item);
-                PropertyDescriptor prop = itemProps[ColumnName];
-
-                if (prop == null)
-                {
-                    throw new InvalidOperationException("The item doesn't contain the required property.");
-                }
-                else if (!(prop.PropertyType == typeof(int) ||
-                    prop.PropertyType.IsNullable() && Nullable.GetUnderlyingType(prop.PropertyType) == typeof(int)))
-                {
-                    throw new InvalidOperationException("The property must be integer.");
-                }
-
-                indexProp = prop;
-            }
-
             object indexKey = indexProp.GetValue(item);
             return indexKey == null ? 0 : (int)indexKey;
         }
+
 
         /// <summary>
         /// Adds the item to the index.
         /// </summary>
         public void AddToIndex(object item, int itemKey)
         {
+            if (item == null)
+                throw new ArgumentNullException("item");
+
             int indexKey = GetIndexKey(item);
 
             if (!ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
@@ -119,6 +130,9 @@ namespace Scada.Data.Tables
         /// </summary>
         public void RemoveFromIndex(object item, int itemKey)
         {
+            if (item == null)
+                throw new ArgumentNullException("item");
+
             int indexKey = GetIndexKey(item);
 
             if (ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
@@ -130,11 +144,36 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Checks whether the specified key is represented in the index.
+        /// </summary>
+        public bool IndexKeyExists(int indexKey)
+        {
+            return ItemGroups.ContainsKey(indexKey);
+        }
+
+        /// <summary>
+        /// Selects items by the specified index key.
+        /// </summary>
+        public ICollection<T> SelectItems<T>(int indexKey)
+        {
+            List<T> items = new List<T>();
+
+            if (ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
+            {
+                foreach (object item in group.Values)
+                {
+                    items.Add((T)item);
+                }
+            }
+
+            return items;
+        }
+
+        /// <summary>
         /// Resets the index to its initial state.
         /// </summary>
         public void Reset()
         {
-            indexProp = null;
             ItemGroups.Clear();
             IsReady = false;
         }

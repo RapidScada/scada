@@ -26,7 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -61,6 +60,7 @@ namespace Scada.Data.Tables
             DependsOn = new List<TableRelation>();
             Dependent = new List<TableRelation>();
             Modified = false;
+            IndexesEnabled = true;
         }
 
 
@@ -149,6 +149,11 @@ namespace Scada.Data.Tables
         /// </summary>
         public bool Modified { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether all indexes of the table are maintained up to date.
+        /// </summary>
+        public bool IndexesEnabled { get; set; }
+
 
         /// <summary>
         /// Gets the primary key value of the item.
@@ -164,7 +169,17 @@ namespace Scada.Data.Tables
         /// </summary>
         public void AddItem(T item)
         {
-            Items[GetPkValue(item)] = item;
+            int itemKey = GetPkValue(item);
+            Items[itemKey] = item;
+
+            if (IndexesEnabled)
+            {
+                foreach (TableIndex index in Indexes.Values)
+                {
+                    if (index.IsReady)
+                        index.AddToIndex(item, itemKey);
+                }
+            }
         }
 
         /// <summary>
@@ -181,6 +196,15 @@ namespace Scada.Data.Tables
         /// </summary>
         public void RemoveItem(int key)
         {
+            if (IndexesEnabled && Items.TryGetValue(key, out T item))
+            {
+                foreach (TableIndex index in Indexes.Values)
+                {
+                    if (index.IsReady)
+                        index.RemoveFromIndex(item, key);
+                }
+            }
+
             Items.Remove(key);
         }
 
@@ -206,6 +230,31 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Gets an index by the column name, populating it if necessary.
+        /// </summary>
+        public bool TryGetIndex(string columnName, out TableIndex index)
+        {
+            if (Indexes.TryGetValue(columnName, out index))
+            {
+                if (!index.IsReady)
+                {
+                    index.IsReady = true;
+                    foreach (KeyValuePair<int, T> pair in Items)
+                    {
+                        index.AddToIndex(pair.Value, pair.Key);
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                index = null;
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Gets the items that match the specified filter.
         /// </summary>
         public ICollection<T> GetFilteredItems(TableFilter tableFilter)
@@ -219,24 +268,24 @@ namespace Scada.Data.Tables
                 throw new ArgumentException("The filter property not found.");
 
             // get the matched items
-            List<T> filteredItems = new List<T>();
-
-            if (Indexes.TryGetValue(tableFilter.ColumnName, out TableIndex tableIndex))
+            if (TryGetIndex(tableFilter.ColumnName, out TableIndex index))
             {
-                // TODO: make filter ready and select from index
+                return index.SelectItems<T>((int)tableFilter.Value);
             }
             else
             {
+                List<T> filteredItems = new List<T>();
                 object filterVal = tableFilter.Value;
+
                 foreach (T item in Items.Values)
                 {
                     object val = filterProp.GetValue(item);
                     if (Equals(val, filterVal))
                         filteredItems.Add(item);
                 }
-            }
 
-            return filteredItems;
+                return filteredItems;
+            }
         }
 
         /// <summary>

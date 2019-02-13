@@ -79,6 +79,11 @@ namespace Scada.Data.Tables
         /// </summary>
         bool Modified { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether all indexes of the table are maintained up to date.
+        /// </summary>
+        bool IndexesEnabled { get; set; }
+
 
         /// <summary>
         /// Adds or updates an item in the table.
@@ -99,6 +104,11 @@ namespace Scada.Data.Tables
         /// Checks if there is an item with the specified primary key.
         /// </summary>
         bool PkExists(int key);
+
+        /// <summary>
+        /// Gets an index by the column name, populating it if necessary.
+        /// </summary>
+        bool TryGetIndex(string columnName, out TableIndex index);
 
         /// <summary>
         /// Returns an enumerable collection of the table items.
