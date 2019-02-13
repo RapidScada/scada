@@ -247,8 +247,16 @@
     <Phrase key="rbGroupByObjects">Objects</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="InCnlMapTitle">Input Channel Map</Phrase>
-    <Phrase key="OutCnlMapTitle">Output Channel Map</Phrase>
+    <Phrase key="InCnlByDevTitle">Input Channels by Device</Phrase>
+    <Phrase key="InCnlByObjTitle">Input Channels by Object</Phrase>
+    <Phrase key="OutCnlByDevTitle">Output Channels by Device</Phrase>
+    <Phrase key="OutCnlByObjTitle">Output Channels by Object</Phrase>
+    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
+    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDevice">Empty device</Phrase>
+    <Phrase key="EmptyObject">Empty object</Phrase>
+    <Phrase key="NoChannels">No channels</Phrase>
+    <Phrase key="IndexNotFound">Index not found.</Phrase>
     <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
@@ -260,8 +268,11 @@
     <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
     <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
     <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
     <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
     <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="btnClear.ToolTip">Clear table</Phrase>
+    <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
     <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
     <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>

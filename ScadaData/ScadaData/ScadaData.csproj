@@ -108,6 +108,7 @@
     <Compile Include="Localization.cs" />
     <Compile Include="Data\Models\InCnlProps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeUtils.cs" />
     <Compile Include="ScadaException.cs" />
     <Compile Include="ScadaUtils.Crypto.cs" />
     <Compile Include="ScadaUtils.cs" />

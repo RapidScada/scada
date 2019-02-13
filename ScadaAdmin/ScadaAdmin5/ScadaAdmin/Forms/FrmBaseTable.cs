@@ -215,5 +215,25 @@ namespace Scada.Admin.App.Forms
         {
             HideError();
         }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDelete_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnClear_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAutoSizeColumns_Click(object sender, EventArgs e)
+        {
+            ScadaUiUtils.AutoResizeColumns(dataGridView);
+        }
     }
 }

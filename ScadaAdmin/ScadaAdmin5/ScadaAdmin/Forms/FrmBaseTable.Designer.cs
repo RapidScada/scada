@@ -37,16 +37,20 @@
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.btnMoveFirst = new System.Windows.Forms.ToolStripButton();
             this.btnMovePrevious = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.txtPosition = new System.Windows.Forms.ToolStripTextBox();
-            this.bindingNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.sep2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
             this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
-            this.bindingNavigatorSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.sep3 = new System.Windows.Forms.ToolStripSeparator();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
+            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
+            this.btnClear = new System.Windows.Forms.ToolStripButton();
+            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -59,19 +63,23 @@
             this.bindingNavigator.AddNewItem = this.btnAddNew;
             this.bindingNavigator.BindingSource = this.bindingSource;
             this.bindingNavigator.CountItem = this.lblCount;
-            this.bindingNavigator.DeleteItem = this.btnDelete;
+            this.bindingNavigator.DeleteItem = null;
             this.bindingNavigator.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.btnMoveFirst,
             this.btnMovePrevious,
-            this.bindingNavigatorSeparator,
+            this.sep1,
             this.txtPosition,
             this.lblCount,
-            this.bindingNavigatorSeparator1,
+            this.sep2,
             this.btnMoveNext,
             this.btnMoveLast,
-            this.bindingNavigatorSeparator2,
+            this.sep3,
+            this.btnRefresh,
             this.btnAddNew,
-            this.btnDelete});
+            this.btnDelete,
+            this.btnClear,
+            this.sep4,
+            this.btnAutoSizeColumns});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
             this.bindingNavigator.MoveFirstItem = this.btnMoveFirst;
             this.bindingNavigator.MoveLastItem = this.btnMoveLast;
@@ -90,6 +98,7 @@
             this.btnAddNew.RightToLeftAutoMirrorImage = true;
             this.btnAddNew.Size = new System.Drawing.Size(23, 22);
             this.btnAddNew.Text = "Add new";
+            this.btnAddNew.Visible = false;
             // 
             // lblCount
             // 
@@ -106,6 +115,7 @@
             this.btnDelete.RightToLeftAutoMirrorImage = true;
             this.btnDelete.Size = new System.Drawing.Size(23, 22);
             this.btnDelete.Text = "Delete";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnMoveFirst
             // 
@@ -125,10 +135,10 @@
             this.btnMovePrevious.Size = new System.Drawing.Size(23, 22);
             this.btnMovePrevious.Text = "Move previous";
             // 
-            // bindingNavigatorSeparator
+            // sep1
             // 
-            this.bindingNavigatorSeparator.Name = "bindingNavigatorSeparator";
-            this.bindingNavigatorSeparator.Size = new System.Drawing.Size(6, 25);
+            this.sep1.Name = "sep1";
+            this.sep1.Size = new System.Drawing.Size(6, 25);
             // 
             // txtPosition
             // 
@@ -139,10 +149,10 @@
             this.txtPosition.Text = "0";
             this.txtPosition.ToolTipText = "Current position";
             // 
-            // bindingNavigatorSeparator1
+            // sep2
             // 
-            this.bindingNavigatorSeparator1.Name = "bindingNavigatorSeparator1";
-            this.bindingNavigatorSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.sep2.Name = "sep2";
+            this.sep2.Size = new System.Drawing.Size(6, 25);
             // 
             // btnMoveNext
             // 
@@ -162,10 +172,10 @@
             this.btnMoveLast.Size = new System.Drawing.Size(23, 22);
             this.btnMoveLast.Text = "Move last";
             // 
-            // bindingNavigatorSeparator2
+            // sep3
             // 
-            this.bindingNavigatorSeparator2.Name = "bindingNavigatorSeparator2";
-            this.bindingNavigatorSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.sep3.Name = "sep3";
+            this.sep3.Size = new System.Drawing.Size(6, 25);
             // 
             // dataGridView
             // 
@@ -218,6 +228,41 @@
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
+            this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(23, 22);
+            this.btnRefresh.Text = "Refresh data";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
+            this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(23, 22);
+            this.btnClear.Text = "Clear table";
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // sep4
+            // 
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnAutoSizeColumns
+            // 
+            this.btnAutoSizeColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAutoSizeColumns.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoSizeColumns.Image")));
+            this.btnAutoSizeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAutoSizeColumns.Name = "btnAutoSizeColumns";
+            this.btnAutoSizeColumns.Size = new System.Drawing.Size(23, 22);
+            this.btnAutoSizeColumns.Text = "Autofit column widths";
+            this.btnAutoSizeColumns.Click += new System.EventHandler(this.btnAutoSizeColumns_Click);
+            // 
             // FrmBaseTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -249,16 +294,20 @@
         private System.Windows.Forms.ToolStripButton btnDelete;
         private System.Windows.Forms.ToolStripButton btnMoveFirst;
         private System.Windows.Forms.ToolStripButton btnMovePrevious;
-        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
+        private System.Windows.Forms.ToolStripSeparator sep1;
         private System.Windows.Forms.ToolStripTextBox txtPosition;
-        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator1;
+        private System.Windows.Forms.ToolStripSeparator sep2;
         private System.Windows.Forms.ToolStripButton btnMoveNext;
         private System.Windows.Forms.ToolStripButton btnMoveLast;
-        private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator2;
+        private System.Windows.Forms.ToolStripSeparator sep3;
         protected System.Windows.Forms.BindingSource bindingSource;
         protected System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Panel pnlError;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnCloseError;
+        private System.Windows.Forms.ToolStripButton btnRefresh;
+        private System.Windows.Forms.ToolStripButton btnClear;
+        private System.Windows.Forms.ToolStripSeparator sep4;
+        private System.Windows.Forms.ToolStripButton btnAutoSizeColumns;
     }
 }

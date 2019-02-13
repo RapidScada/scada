@@ -98,9 +98,9 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates that the primary key value is unique.
         /// </summary>
-        private bool PkUnique(int keyVal, out string errMsg)
+        private bool PkUnique(int key, out string errMsg)
         {
-            if (baseTable.Items.ContainsKey(keyVal))
+            if (baseTable.Items.ContainsKey(key))
             {
                 errMsg = string.Format(AppPhrases.UniqueRequired, 
                     dataGridView.Columns[baseTable.PrimaryKey].HeaderText);
@@ -116,11 +116,12 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates that no record refers the primary key.
         /// </summary>
-        private bool NoReferencesToPk(int keyVal, out string errMsg)
+        private bool NoReferencesToPk(int key, out string errMsg)
         {
             foreach (TableRelation relation in baseTable.Dependent)
             {
-                if (relation.ChildIndex.ItemGroups.ContainsKey(keyVal))
+                if (relation.ChildTable.TryGetIndex(relation.ChildColumn, out TableIndex index) &&
+                    index.IndexKeyExists(key))
                 {
                     errMsg = string.Format(AppPhrases.KeyReferenced, relation.ChildTable.Title);
                     return false;
@@ -134,9 +135,9 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates that the primary key exists.
         /// </summary>
-        private bool PkExists(IBaseTable parentTable, int keyVal, string childColumn, out string errMsg)
+        private bool PkExists(IBaseTable parentTable, int key, string childColumn, out string errMsg)
         {
-            if (parentTable.PkExists(keyVal))
+            if (parentTable.PkExists(key))
             {
                 errMsg = "";
                 return true;

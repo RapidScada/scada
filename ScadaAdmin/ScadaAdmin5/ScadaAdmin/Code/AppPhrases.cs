@@ -79,8 +79,16 @@ namespace Scada.Admin.App.Code
         public static string UploadConfigError { get; private set; }
 
         // Scada.Admin.App.Forms.Tools.FrmCnlMap
-        public static string InCnlMapTitle { get; private set; }
-        public static string OutCnlMapTitle { get; private set; }
+        public static string InCnlByDevTitle { get; private set; }
+        public static string InCnlByObjTitle { get; private set; }
+        public static string OutCnlByDevTitle { get; private set; }
+        public static string OutCnlByObjTitle { get; private set; }
+        public static string DeviceCaption { get; private set; }
+        public static string ObjectCaption { get; private set; }
+        public static string EmptyDevice { get; private set; }
+        public static string EmptyObject { get; private set; }
+        public static string NoChannels { get; private set; }
+        public static string IndexNotFound { get; private set; }
         public static string GenerateCnlMapError { get; private set; }
 
         // Scada.Admin.App.Forms.Tools.FrmCulture
@@ -198,8 +206,16 @@ namespace Scada.Admin.App.Code
             CultureNotFound = dict.GetPhrase("CultureNotFound");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCnlMap");
-            InCnlMapTitle = dict.GetPhrase("InCnlMapTitle");
-            OutCnlMapTitle = dict.GetPhrase("OutCnlMapTitle");
+            InCnlByDevTitle = dict.GetPhrase("InCnlByDevTitle");
+            InCnlByObjTitle = dict.GetPhrase("InCnlByObjTitle");
+            OutCnlByDevTitle = dict.GetPhrase("OutCnlByDevTitle");
+            OutCnlByObjTitle = dict.GetPhrase("OutCnlByObjTitle");
+            DeviceCaption = dict.GetPhrase("DeviceCaption");
+            ObjectCaption = dict.GetPhrase("ObjectCaption");
+            EmptyDevice = dict.GetPhrase("EmptyDevice");
+            EmptyObject = dict.GetPhrase("EmptyObject");
+            NoChannels = dict.GetPhrase("NoChannels");
+            IndexNotFound = dict.GetPhrase("IndexNotFound");
             GenerateCnlMapError = dict.GetPhrase("GenerateCnlMapError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");

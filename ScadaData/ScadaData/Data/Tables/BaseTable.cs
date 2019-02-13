@@ -270,7 +270,7 @@ namespace Scada.Data.Tables
             // get the matched items
             if (TryGetIndex(tableFilter.ColumnName, out TableIndex index))
             {
-                return index.SelectItems<T>((int)tableFilter.Value);
+                return index.SelectItems<T>(tableFilter.Value == null ? 0 : (int)tableFilter.Value);
             }
             else
             {

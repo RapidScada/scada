@@ -25,8 +25,11 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Data.Entities;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -43,6 +46,10 @@ namespace Scada.Admin.App.Forms.Tools
         /// The file name of newly created maps.
         /// </summary>
         private const string MapFileName = "ScadaAdminCnlMap.txt";
+        /// <summary>
+        /// The maximum line length.
+        /// </summary>
+        private const int MaxLineLen = 80;
 
         private readonly ConfigBase configBase; // the configuration database
         private readonly AppData appData;       // the common data of the application
@@ -78,9 +85,46 @@ namespace Scada.Admin.App.Forms.Tools
 
                 using (StreamWriter writer = new StreamWriter(mapFileName, false, Encoding.UTF8))
                 {
-                    string title = inCnlMap ? AppPhrases.InCnlMapTitle : AppPhrases.OutCnlMapTitle;
+                    string title = inCnlMap ? 
+                        (groupByDevices ? AppPhrases.InCnlByDevTitle : AppPhrases.InCnlByObjTitle) : 
+                        (groupByDevices ? AppPhrases.OutCnlByDevTitle : AppPhrases.OutCnlByObjTitle);
                     writer.WriteLine(title);
                     writer.WriteLine(new string('-', title.Length));
+
+                    IBaseTable cnlTable = inCnlMap ? (IBaseTable)configBase.InCnlTable : configBase.CtrlCnlTable;
+                    string indexedColumn = groupByDevices ? "KPNum" : "ObjNum";
+
+                    if (cnlTable.TryGetIndex(indexedColumn, out TableIndex index))
+                    {
+                        if (groupByDevices)
+                        {
+                            foreach (KP kp in configBase.KPTable.EnumerateItems())
+                            {
+                                writer.WriteLine(string.Format(AppPhrases.DeviceCaption, kp.KPNum, kp.Name));
+                                WriteCnls(writer, index, kp.KPNum);
+                                writer.WriteLine();
+                            }
+
+                            writer.WriteLine(AppPhrases.EmptyDevice);
+                            WriteCnls(writer, index, 0);
+                        }
+                        else
+                        {
+                            foreach (Obj obj in configBase.ObjTable.EnumerateItems())
+                            {
+                                writer.WriteLine(string.Format(AppPhrases.ObjectCaption, obj.ObjNum, obj.Name));
+                                WriteCnls(writer, index, obj.ObjNum);
+                                writer.WriteLine();
+                            }
+
+                            writer.WriteLine(AppPhrases.EmptyObject);
+                            WriteCnls(writer, index, 0);
+                        }
+                    }
+                    else
+                    {
+                        throw new ScadaException(AppPhrases.IndexNotFound);
+                    }
                 }
 
                 AppUtils.OpenTextFile(mapFileName);
@@ -89,6 +133,17 @@ namespace Scada.Admin.App.Forms.Tools
             {
                 appData.ProcError(ex, AppPhrases.GenerateCnlMapError);
             }
+        }
+
+        /// <summary>
+        /// Writes input channels having the specified index key.
+        /// </summary>
+        private void WriteCnls(StreamWriter writer, TableIndex index, int indexKey)
+        {
+            writer.WriteLine("    " + 
+                (index.ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group) ?
+                    RangeUtils.RangeToStr(group.Keys) :
+                    AppPhrases.NoChannels));
         }
 
 

@@ -198,6 +198,16 @@ namespace Scada.Admin.Project
             AddRelation(ParamTable, InCnlTable, "ParamID");
             AddRelation(FormatTable, InCnlTable, "FormatID");
             AddRelation(UnitTable, InCnlTable, "UnitID");
+
+            AddRelation(CmdTypeTable, CtrlCnlTable, "CmdTypeID");
+            AddRelation(ObjTable, CtrlCnlTable, "ObjNum");
+            AddRelation(KPTable, CtrlCnlTable, "KPNum");
+            AddRelation(CmdValTable, CtrlCnlTable, "CmdValID");
+
+            AddRelation(RoleTable, UserTable, "RoleID");
+
+            AddRelation(InterfaceTable, RightTable, "ItfID");
+            AddRelation(RoleTable, RightTable, "RoleID");
         }
 
         /// <summary>
@@ -205,8 +215,8 @@ namespace Scada.Admin.Project
         /// </summary>
         private void AddRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn)
         {
-            TableIndex index = new TableIndex(childColumn);
-            TableRelation relation = new TableRelation(parentTable, childTable, childColumn, index);
+            TableRelation relation = new TableRelation(parentTable, childTable, childColumn);
+            TableIndex index = new TableIndex(childColumn, childTable.ItemType);
             childTable.Indexes.Add(childColumn, index);
             childTable.DependsOn.Add(relation);
             parentTable.Dependent.Add(relation);

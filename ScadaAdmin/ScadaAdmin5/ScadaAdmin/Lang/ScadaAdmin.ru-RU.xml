@@ -247,8 +247,16 @@
     <Phrase key="rbGroupByObjects">По объектам</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="InCnlMapTitle">Карта входных каналов</Phrase>
-    <Phrase key="OutCnlMapTitle">Карта каналов управления</Phrase>
+    <Phrase key="InCnlByDevTitle">Входные каналы по КП</Phrase>
+    <Phrase key="InCnlByObjTitle">Входные каналы по объектам</Phrase>
+    <Phrase key="OutCnlByDevTitle">Каналы управления по КП</Phrase>
+    <Phrase key="OutCnlByObjTitle">Каналы управления по объектам</Phrase>
+    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
+    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDevice">Пустой КП</Phrase>
+    <Phrase key="EmptyObject">Пустой объект</Phrase>
+    <Phrase key="NoChannels">Каналы отсутствуют</Phrase>
+    <Phrase key="IndexNotFound">Индекс не найден.</Phrase>
     <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
@@ -260,8 +268,11 @@
     <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
     <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
     <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
     <Phrase key="btnAddNew.ToolTip">Добавить новую строку</Phrase>
     <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
+    <Phrase key="btnClear.ToolTip">Очистить таблицу</Phrase>
+    <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
     <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
