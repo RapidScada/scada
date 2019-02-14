@@ -78,6 +78,20 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Deletes the selected rows.
+        /// </summary>
+        protected virtual void DeleteSelectedRows()
+        {
+        }
+
+        /// <summary>
+        /// Clears the table data.
+        /// </summary>
+        protected virtual void ClearTableData()
+        {
+        }
+
+        /// <summary>
         /// Shows error message in the error panel.
         /// </summary>
         protected void ShowError(string message)
@@ -162,6 +176,28 @@ namespace Scada.Admin.App.Forms
             return string.IsNullOrEmpty(errMsg);
         }
 
+        /// <summary>
+        /// Commits and ends the edit operation on the current cell and row.
+        /// </summary>
+        protected bool EndEdit()
+        {
+            if (dataGridView.EndEdit())
+            {
+                if (dataGridView.CurrentRow == null || 
+                    ValidateRow(dataGridView.CurrentRow.Index, out string errMsg))
+                {
+                    bindingSource.EndEdit();
+                    return true;
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                }
+            }
+
+            return false;
+        }
+
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
@@ -216,24 +252,47 @@ namespace Scada.Admin.App.Forms
             HideError();
         }
 
+        private void btnApplyEdit_Click(object sender, EventArgs e)
+        {
+            EndEdit();
+        }
+
+        private void btnCancelEdit_Click(object sender, EventArgs e)
+        {
+            if (dataGridView.CancelEdit())
+                bindingSource.CancelEdit();
+        }
+
         private void btnRefresh_Click(object sender, EventArgs e)
         {
-
+            // refresh data of the table and the combo box columns
+            if (EndEdit())
+                LoadTableData();
         }
 
         private void btnDelete_Click(object sender, EventArgs e)
         {
-
+            if (MessageBox.Show(
+                    dataGridView.SelectedRows.Count > 1 ? AppPhrases.DeleteRowsConfirm : AppPhrases.DeleteRowConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == 
+                    DialogResult.Yes)
+            {
+                DeleteSelectedRows();
+            }
         }
 
         private void btnClear_Click(object sender, EventArgs e)
         {
-
+            if (MessageBox.Show(AppPhrases.ClearTableConfirm, CommonPhrases.QuestionCaption,
+                MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                ClearTableData();
+            }
         }
 
         private void btnAutoSizeColumns_Click(object sender, EventArgs e)
         {
-            ScadaUiUtils.AutoResizeColumns(dataGridView);
+            dataGridView.AutoSizeColumns();
         }
     }
 }

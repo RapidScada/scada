@@ -30,6 +30,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Windows.Forms;
 using WinControl;
 
 namespace Scada.Admin.App.Forms
@@ -67,40 +68,11 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Loads the table data.
-        /// </summary>
-        protected override void LoadTableData()
-        {
-            base.LoadTableData();
-
-            if (!configBase.Load(out string errMsg))
-                appData.ProcError(errMsg);
-
-            // create and setup a data table
-            ICollection<T> tableItems = tableFilter == null ? 
-                baseTable.Items.Values : 
-                baseTable.GetFilteredItems(tableFilter);
-            dataTable = tableItems.ToDataTable();
-            if (tableFilter != null)
-                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
-            dataTable.RowChanged += dataTable_RowChanged;
-            dataTable.RowDeleted += dataTable_RowDeleted;
-            bindingSource.DataSource = dataTable;
-
-            // create grid columns
-            ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
-            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
-            dataGridView.AutoResizeColumns();
-
-            ChildFormTag.Modified = baseTable.Modified;
-        }
-
-        /// <summary>
         /// Validates that the primary key value is unique.
         /// </summary>
         private bool PkUnique(int key, out string errMsg)
         {
-            if (baseTable.Items.ContainsKey(key))
+            if (baseTable.PkExists(key))
             {
                 errMsg = string.Format(AppPhrases.UniqueRequired, 
                     dataGridView.Columns[baseTable.PrimaryKey].HeaderText);
@@ -150,6 +122,34 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Deletes a row with the specified index if it is not referenced.
+        /// </summary>
+        private bool DeleteRow(DataView dataView, int rowIndex)
+        {
+            if (0 <= rowIndex && rowIndex < dataView.Count)
+            {
+                DataRowView rowView = dataView[rowIndex];
+
+                if (!rowView.IsNew)
+                {
+                    int key = (int)rowView.Row[baseTable.PrimaryKey];
+
+                    if (NoReferencesToPk(key, out string errMsg))
+                    {
+                        dataView.Delete(rowIndex);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Copies the changes from a one table to another.
         /// </summary>
         private void RetrieveChanges()
@@ -157,6 +157,120 @@ namespace Scada.Admin.App.Forms
             baseTable.RetrieveChanges(dataTable);
             baseTable.Modified = true;
             ChildFormTag.Modified = true;
+        }
+
+        /// <summary>
+        /// Loads the table data.
+        /// </summary>
+        protected override void LoadTableData()
+        {
+            if (!configBase.Load(out string errMsg))
+                appData.ProcError(errMsg);
+
+            // create and setup a data table
+            bindingSource.DataSource = null;
+            ICollection<T> tableItems = tableFilter == null ?
+                baseTable.Items.Values :
+                baseTable.GetFilteredItems(tableFilter);
+            dataTable = tableItems.ToDataTable();
+            if (tableFilter != null)
+                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
+            dataTable.RowChanged += dataTable_RowChanged;
+            dataTable.RowDeleted += dataTable_RowDeleted;
+            bindingSource.DataSource = dataTable;
+
+            // create grid columns
+            ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
+            dataGridView.AutoSizeColumns();
+
+            ChildFormTag.Modified = baseTable.Modified;
+        }
+
+        /// <summary>
+        /// Deletes the selected rows.
+        /// </summary>
+        protected override void DeleteSelectedRows()
+        {
+            try
+            {
+                bool notDeleted = false;
+
+                try
+                {
+                    dataTable.RowDeleted -= dataTable_RowDeleted;
+                    DataView dataView = dataTable.DefaultView;
+                    DataGridViewSelectedRowCollection selectedRows = dataGridView.SelectedRows;
+
+                    if (selectedRows.Count > 0)
+                    {
+                        for (int i = selectedRows.Count - 1; i >= 0; i--)
+                        {
+                            if (!DeleteRow(dataView, selectedRows[i].Index))
+                                notDeleted = true;
+                        }
+                    }
+                    else if (dataGridView.CurrentRow != null)
+                    {
+                        if (!DeleteRow(dataView, dataGridView.CurrentRow.Index))
+                            notDeleted = true;
+                    }
+                }
+                finally
+                {
+                    dataTable.RowDeleted += dataTable_RowDeleted;
+                }
+
+                RetrieveChanges();
+
+                if (notDeleted)
+                    ScadaUiUtils.ShowInfo(AppPhrases.RowsNotDeleted);
+            }
+            catch (Exception ex)
+            {
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Clears the table data.
+        /// </summary>
+        protected override void ClearTableData()
+        {
+            try
+            {
+                bool notDeleted = false;
+
+                try
+                {
+                    bindingSource.DataSource = null;
+                    dataTable.RowDeleted -= dataTable_RowDeleted;
+                    DataView dataView = dataTable.DefaultView;
+
+                    for (int rowIndex = dataView.Count - 1; rowIndex >= 0; rowIndex--)
+                    {
+                        if (!DeleteRow(dataView, rowIndex))
+                            notDeleted = true;
+                    }
+                }
+                finally
+                {
+                    dataTable.RowDeleted += dataTable_RowDeleted;
+                    bindingSource.DataSource = dataTable;
+                }
+
+                RetrieveChanges();
+
+                if (notDeleted)
+                    ScadaUiUtils.ShowInfo(AppPhrases.RowsNotDeleted);
+            }
+            catch (Exception ex)
+            {
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
         }
 
         /// <summary>

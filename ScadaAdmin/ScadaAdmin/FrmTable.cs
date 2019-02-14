@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada;
@@ -395,7 +395,7 @@ namespace ScadaAdmin
 
                 bindingSource.DataSource = Table;
                 dataGridView.Columns.AddRange(Table.ExtendedProperties["Columns"] as DataGridViewColumn[]);
-                ScadaUiUtils.AutoResizeColumns(dataGridView);
+                dataGridView.AutoSizeColumns();
 
                 SetModified(false);
             }
@@ -705,7 +705,7 @@ namespace ScadaAdmin
 
         private void bindingNavigatorAutoResizeItem_Click(object sender, EventArgs e)
         {
-            ScadaUiUtils.AutoResizeColumns(dataGridView);
+            dataGridView.AutoSizeColumns();
         }
     }
 }

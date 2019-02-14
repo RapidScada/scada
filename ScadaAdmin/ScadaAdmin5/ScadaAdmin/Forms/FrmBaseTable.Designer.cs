@@ -34,7 +34,6 @@
             this.btnAddNew = new System.Windows.Forms.ToolStripButton();
             this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblCount = new System.Windows.Forms.ToolStripLabel();
-            this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.btnMoveFirst = new System.Windows.Forms.ToolStripButton();
             this.btnMovePrevious = new System.Windows.Forms.ToolStripButton();
             this.sep1 = new System.Windows.Forms.ToolStripSeparator();
@@ -43,14 +42,17 @@
             this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
             this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.btnClear = new System.Windows.Forms.ToolStripButton();
+            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
-            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.btnClear = new System.Windows.Forms.ToolStripButton();
-            this.sep4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
+            this.btnApplyEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnCancelEdit = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -74,6 +76,8 @@
             this.btnMoveNext,
             this.btnMoveLast,
             this.sep3,
+            this.btnApplyEdit,
+            this.btnCancelEdit,
             this.btnRefresh,
             this.btnAddNew,
             this.btnDelete,
@@ -106,16 +110,6 @@
             this.lblCount.Size = new System.Drawing.Size(35, 22);
             this.lblCount.Text = "of {0}";
             this.lblCount.ToolTipText = "Total number of items";
-            // 
-            // btnDelete
-            // 
-            this.btnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
-            this.btnDelete.Name = "btnDelete";
-            this.btnDelete.RightToLeftAutoMirrorImage = true;
-            this.btnDelete.Size = new System.Drawing.Size(23, 22);
-            this.btnDelete.Text = "Delete";
-            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
             // 
             // btnMoveFirst
             // 
@@ -177,6 +171,51 @@
             this.sep3.Name = "sep3";
             this.sep3.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnRefresh
+            // 
+            this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
+            this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnRefresh.Name = "btnRefresh";
+            this.btnRefresh.Size = new System.Drawing.Size(23, 22);
+            this.btnRefresh.Text = "Refresh data";
+            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            // 
+            // btnDelete
+            // 
+            this.btnDelete.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDelete.Image = ((System.Drawing.Image)(resources.GetObject("btnDelete.Image")));
+            this.btnDelete.Name = "btnDelete";
+            this.btnDelete.RightToLeftAutoMirrorImage = true;
+            this.btnDelete.Size = new System.Drawing.Size(23, 22);
+            this.btnDelete.Text = "Delete";
+            this.btnDelete.Click += new System.EventHandler(this.btnDelete_Click);
+            // 
+            // btnClear
+            // 
+            this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
+            this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnClear.Name = "btnClear";
+            this.btnClear.Size = new System.Drawing.Size(23, 22);
+            this.btnClear.Text = "Clear table";
+            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
+            // 
+            // sep4
+            // 
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnAutoSizeColumns
+            // 
+            this.btnAutoSizeColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAutoSizeColumns.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoSizeColumns.Image")));
+            this.btnAutoSizeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnAutoSizeColumns.Name = "btnAutoSizeColumns";
+            this.btnAutoSizeColumns.Size = new System.Drawing.Size(23, 22);
+            this.btnAutoSizeColumns.Text = "Autofit column widths";
+            this.btnAutoSizeColumns.Click += new System.EventHandler(this.btnAutoSizeColumns_Click);
+            // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToOrderColumns = true;
@@ -228,40 +267,25 @@
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btnRefresh
+            // btnApplyEdit
             // 
-            this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnRefresh.Image = ((System.Drawing.Image)(resources.GetObject("btnRefresh.Image")));
-            this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnRefresh.Name = "btnRefresh";
-            this.btnRefresh.Size = new System.Drawing.Size(23, 22);
-            this.btnRefresh.Text = "Refresh data";
-            this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
+            this.btnApplyEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnApplyEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnApplyEdit.Image")));
+            this.btnApplyEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnApplyEdit.Name = "btnApplyEdit";
+            this.btnApplyEdit.Size = new System.Drawing.Size(23, 22);
+            this.btnApplyEdit.Text = "Apply edit operation";
+            this.btnApplyEdit.Click += new System.EventHandler(this.btnApplyEdit_Click);
             // 
-            // btnClear
+            // btnCancelEdit
             // 
-            this.btnClear.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnClear.Image = ((System.Drawing.Image)(resources.GetObject("btnClear.Image")));
-            this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnClear.Name = "btnClear";
-            this.btnClear.Size = new System.Drawing.Size(23, 22);
-            this.btnClear.Text = "Clear table";
-            this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
-            // 
-            // sep4
-            // 
-            this.sep4.Name = "sep4";
-            this.sep4.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnAutoSizeColumns
-            // 
-            this.btnAutoSizeColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnAutoSizeColumns.Image = ((System.Drawing.Image)(resources.GetObject("btnAutoSizeColumns.Image")));
-            this.btnAutoSizeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnAutoSizeColumns.Name = "btnAutoSizeColumns";
-            this.btnAutoSizeColumns.Size = new System.Drawing.Size(23, 22);
-            this.btnAutoSizeColumns.Text = "Autofit column widths";
-            this.btnAutoSizeColumns.Click += new System.EventHandler(this.btnAutoSizeColumns_Click);
+            this.btnCancelEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCancelEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelEdit.Image")));
+            this.btnCancelEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCancelEdit.Name = "btnCancelEdit";
+            this.btnCancelEdit.Size = new System.Drawing.Size(23, 22);
+            this.btnCancelEdit.Text = "Cancel edit operation";
+            this.btnCancelEdit.Click += new System.EventHandler(this.btnCancelEdit_Click);
             // 
             // FrmBaseTable
             // 
@@ -309,5 +333,7 @@
         private System.Windows.Forms.ToolStripButton btnClear;
         private System.Windows.Forms.ToolStripSeparator sep4;
         private System.Windows.Forms.ToolStripButton btnAutoSizeColumns;
+        private System.Windows.Forms.ToolStripButton btnApplyEdit;
+        private System.Windows.Forms.ToolStripButton btnCancelEdit;
     }
 }

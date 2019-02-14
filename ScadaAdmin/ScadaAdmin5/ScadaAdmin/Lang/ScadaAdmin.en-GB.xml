@@ -268,6 +268,8 @@
     <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
     <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
     <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnApplyEdit.ToolTip">Apply edit operation</Phrase>
+    <Phrase key="btnCancelEdit.ToolTip">Cancel edit operation</Phrase>
     <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
     <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
     <Phrase key="btnDelete.ToolTip">Delete</Phrase>
@@ -276,8 +278,12 @@
     <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
     <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
+    <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
+    <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
+    <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
+    <Phrase key="RowsNotDeleted">Some rows have not been deleted because they are referenced.</Phrase>
     <Phrase key="UniqueRequired">A duplicate value cannot be inserted into the &quot;{0}&quot; column.</Phrase>
     <Phrase key="KeyReferenced">The primary key is referenced by a row from the &quot;{0}&quot; table.</Phrase>
     <Phrase key="DataNotExist">No data exist for the &quot;{0}&quot; column.</Phrase>

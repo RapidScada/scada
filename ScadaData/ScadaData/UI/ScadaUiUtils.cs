@@ -204,7 +204,7 @@ namespace Scada.UI
         /// <summary>
         /// Автоподбор ширины столбцов таблицы с выбором режима в зависимости от количества строк
         /// </summary>
-        public static void AutoResizeColumns(this DataGridView dataGridView)
+        public static void AutoSizeColumns(this DataGridView dataGridView)
         {
             if (dataGridView.RowCount <= GridAutoResizeBoundary)
                 dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
