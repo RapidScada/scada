@@ -690,10 +690,17 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Saves the configuration database.
         /// </summary>
-        private void SaveConfigBase()
+        private bool SaveConfigBase()
         {
-            if (!project.ConfigBase.Save(out string errMsg))
+            if (project.ConfigBase.Save(out string errMsg))
+            {
+                return true;
+            }
+            else
+            {
                 appData.ProcError(errMsg);
+                return false;
+            }
         }
 
         /// <summary>
@@ -710,6 +717,18 @@ namespace Scada.Admin.App.Forms
             SaveConfigBase();
         }
 
+        /// <summary>
+        /// Prepares to close all forms.
+        /// </summary>
+        private void PrepareToCloseAll()
+        {
+            foreach (Form form in wctrlMain.Forms)
+            {
+                if (form is FrmBaseTable frmBaseTable)
+                    frmBaseTable.PrepareToClose();
+            }
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -720,7 +739,29 @@ namespace Scada.Admin.App.Forms
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
+            // confirm saving the project before closing
+            PrepareToCloseAll();
+            wctrlMain.CloseAllForms(out bool cancel);
+            e.Cancel = cancel;
 
+            if (!cancel)
+            {
+                if (project.ConfigBase.Modified)
+                {
+                    switch (MessageBox.Show(AppPhrases.SaveConfigBaseConfirm,
+                        CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+                    {
+                        case DialogResult.Yes:
+                            e.Cancel = !SaveConfigBase();
+                            break;
+                        case DialogResult.No:
+                            break;
+                        default:
+                            e.Cancel = true;
+                            break;
+                    }
+                }
+            }
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -937,6 +978,7 @@ namespace Scada.Admin.App.Forms
 
             if (ofdProject.ShowDialog() == DialogResult.OK)
             {
+                PrepareToCloseAll();
                 wctrlMain.CloseAllForms(out bool cancel);
                 ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
                 project = new ScadaProject();
@@ -973,6 +1015,7 @@ namespace Scada.Admin.App.Forms
         private void miFileCloseProject_Click(object sender, EventArgs e)
         {
             // close the project
+            PrepareToCloseAll();
             wctrlMain.CloseAllForms(out bool cancel);
 
             if (!cancel)
@@ -1179,11 +1222,15 @@ namespace Scada.Admin.App.Forms
 
         private void miWindowCloseActive_Click(object sender, EventArgs e)
         {
+            if (wctrlMain.ActiveForm is FrmBaseTable frmBaseTable)
+                frmBaseTable.PrepareToClose();
+
             wctrlMain.CloseActiveForm(out bool cancel);
         }
 
         private void miWindowCloseAll_Click(object sender, EventArgs e)
         {
+            PrepareToCloseAll();
             wctrlMain.CloseAllForms(out bool cancel);
         }
 

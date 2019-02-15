@@ -409,6 +409,7 @@
     <Phrase key="DirectoryAlreadyExists">Директория уже существует.</Phrase>
     <Phrase key="FileAlreadyExists">Файл уже существует.</Phrase>
     <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
+    <Phrase key="SaveConfigBaseConfirm">База конфигурации была изменена. Сохранить изменения?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">Новый проект</Phrase>

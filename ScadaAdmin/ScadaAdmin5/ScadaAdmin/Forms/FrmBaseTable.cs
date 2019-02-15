@@ -71,47 +71,9 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Loads the table data.
-        /// </summary>
-        protected virtual void LoadTableData()
-        {
-        }
-
-        /// <summary>
-        /// Deletes the selected rows.
-        /// </summary>
-        protected virtual void DeleteSelectedRows()
-        {
-        }
-
-        /// <summary>
-        /// Clears the table data.
-        /// </summary>
-        protected virtual void ClearTableData()
-        {
-        }
-
-        /// <summary>
-        /// Shows error message in the error panel.
-        /// </summary>
-        protected void ShowError(string message)
-        {
-            lblError.Text = message;
-            pnlError.Visible = true;
-        }
-
-        /// <summary>
-        /// Hides the error panel.
-        /// </summary>
-        protected void HideError()
-        {
-            pnlError.Visible = false;
-        }
-
-        /// <summary>
         /// Validates a cell after editing.
         /// </summary>
-        protected bool ValidateCell(int colInd, int rowInd, string cellVal, out string errMsg)
+        private bool ValidateCell(int colInd, int rowInd, string cellVal, out string errMsg)
         {
             errMsg = "";
 
@@ -147,7 +109,7 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Validates a row after editing.
         /// </summary>
-        protected bool ValidateRow(int rowInd, out string errMsg)
+        private bool ValidateRow(int rowInd, out string errMsg)
         {
             errMsg = "";
 
@@ -179,11 +141,11 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Commits and ends the edit operation on the current cell and row.
         /// </summary>
-        protected bool EndEdit()
+        private bool EndEdit()
         {
             if (dataGridView.EndEdit())
             {
-                if (dataGridView.CurrentRow == null || 
+                if (dataGridView.CurrentRow == null ||
                     ValidateRow(dataGridView.CurrentRow.Index, out string errMsg))
                 {
                     bindingSource.EndEdit();
@@ -196,6 +158,62 @@ namespace Scada.Admin.App.Forms
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Cancels edit mode.
+        /// </summary>
+        private void CancelEdit()
+        {
+            if (dataGridView.CancelEdit())
+                bindingSource.CancelEdit();
+        }
+
+        /// <summary>
+        /// Hides the error panel.
+        /// </summary>
+        private void HideError()
+        {
+            pnlError.Visible = false;
+        }
+
+        /// <summary>
+        /// Loads the table data.
+        /// </summary>
+        protected virtual void LoadTableData()
+        {
+        }
+
+        /// <summary>
+        /// Deletes the selected rows.
+        /// </summary>
+        protected virtual void DeleteSelectedRows()
+        {
+        }
+
+        /// <summary>
+        /// Clears the table data.
+        /// </summary>
+        protected virtual void ClearTableData()
+        {
+        }
+
+        /// <summary>
+        /// Shows error message in the error panel.
+        /// </summary>
+        protected void ShowError(string message)
+        {
+            lblError.Text = message;
+            pnlError.Visible = true;
+        }
+
+        /// <summary>
+        /// Prepares to close all forms.
+        /// </summary>
+        public void PrepareToClose()
+        {
+            if (!EndEdit())
+                CancelEdit();
         }
 
 
@@ -259,8 +277,7 @@ namespace Scada.Admin.App.Forms
 
         private void btnCancelEdit_Click(object sender, EventArgs e)
         {
-            if (dataGridView.CancelEdit())
-                bindingSource.CancelEdit();
+            CancelEdit();
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)

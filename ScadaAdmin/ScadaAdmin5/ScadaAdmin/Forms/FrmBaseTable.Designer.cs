@@ -42,6 +42,8 @@
             this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
             this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnApplyEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnCancelEdit = new System.Windows.Forms.ToolStripButton();
             this.btnRefresh = new System.Windows.Forms.ToolStripButton();
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
@@ -51,8 +53,6 @@
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
-            this.btnApplyEdit = new System.Windows.Forms.ToolStripButton();
-            this.btnCancelEdit = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -171,6 +171,26 @@
             this.sep3.Name = "sep3";
             this.sep3.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnApplyEdit
+            // 
+            this.btnApplyEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnApplyEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnApplyEdit.Image")));
+            this.btnApplyEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnApplyEdit.Name = "btnApplyEdit";
+            this.btnApplyEdit.Size = new System.Drawing.Size(23, 22);
+            this.btnApplyEdit.Text = "Apply edit operation";
+            this.btnApplyEdit.Click += new System.EventHandler(this.btnApplyEdit_Click);
+            // 
+            // btnCancelEdit
+            // 
+            this.btnCancelEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCancelEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelEdit.Image")));
+            this.btnCancelEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCancelEdit.Name = "btnCancelEdit";
+            this.btnCancelEdit.Size = new System.Drawing.Size(23, 22);
+            this.btnCancelEdit.Text = "Cancel edit operation";
+            this.btnCancelEdit.Click += new System.EventHandler(this.btnCancelEdit_Click);
+            // 
             // btnRefresh
             // 
             this.btnRefresh.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -266,26 +286,6 @@
             this.lblError.TabIndex = 0;
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // btnApplyEdit
-            // 
-            this.btnApplyEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnApplyEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnApplyEdit.Image")));
-            this.btnApplyEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnApplyEdit.Name = "btnApplyEdit";
-            this.btnApplyEdit.Size = new System.Drawing.Size(23, 22);
-            this.btnApplyEdit.Text = "Apply edit operation";
-            this.btnApplyEdit.Click += new System.EventHandler(this.btnApplyEdit_Click);
-            // 
-            // btnCancelEdit
-            // 
-            this.btnCancelEdit.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnCancelEdit.Image = ((System.Drawing.Image)(resources.GetObject("btnCancelEdit.Image")));
-            this.btnCancelEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnCancelEdit.Name = "btnCancelEdit";
-            this.btnCancelEdit.Size = new System.Drawing.Size(23, 22);
-            this.btnCancelEdit.Text = "Cancel edit operation";
-            this.btnCancelEdit.Click += new System.EventHandler(this.btnCancelEdit_Click);
             // 
             // FrmBaseTable
             // 

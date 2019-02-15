@@ -141,6 +141,7 @@ namespace Scada.Admin.App.Code
         public static string DirectoryAlreadyExists { get; private set; }
         public static string FileAlreadyExists { get; private set; }
         public static string InstanceAlreadyExists { get; private set; }
+        public static string SaveConfigBaseConfirm { get; private set; }
 
         // Scada.Admin.App.Forms.FrmProjectNew
         public static string ChooseProjectLocation { get; private set; }
@@ -267,6 +268,7 @@ namespace Scada.Admin.App.Code
             DirectoryAlreadyExists = dict.GetPhrase("DirectoryAlreadyExists");
             FileAlreadyExists = dict.GetPhrase("FileAlreadyExists");
             InstanceAlreadyExists = dict.GetPhrase("InstanceAlreadyExists");
+            SaveConfigBaseConfirm = dict.GetPhrase("SaveConfigBaseConfirm");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmProjectNew");
             ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");

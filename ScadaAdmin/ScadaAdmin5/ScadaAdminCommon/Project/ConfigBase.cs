@@ -154,6 +154,23 @@ namespace Scada.Admin.Project
         /// </summary>
         public bool Loaded { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether at least one table was modified.
+        /// </summary>
+        public bool Modified
+        {
+            get
+            {
+                foreach (IBaseTable baseTable in AllTables)
+                {
+                    if (baseTable.Modified)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
 
         /// <summary>
         /// Creates all tables of the configuration database.
