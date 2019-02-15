@@ -1,5 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
+  <Dictionary key="Scada.Admin.App">
+    <Phrase key="IndexNotFound">Index not found.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
     <Phrase key="CmdTypeID">ID</Phrase>
     <Phrase key="Name">Name</Phrase>
@@ -148,6 +151,15 @@
     <Phrase key="DeviceFilter">Device {0}</Phrase>
     <Phrase key="EmptyDeviceFilter">Empty device</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.IntegrityCheck">
+    <Phrase key="IntegrityCheckTitle">Integrity Check</Phrase>
+    <Phrase key="TableCorrect">OK</Phrase>
+    <Phrase key="TableHasErrors">Error</Phrase>
+    <Phrase key="LostPrimaryKeys">Lost primary keys: </Phrase>
+    <Phrase key="BaseCorrect">The configuration database is correct.</Phrase>
+    <Phrase key="BaseHasErrors">The configuration database has errors.</Phrase>
+    <Phrase key="IntegrityCheckError">Error checking integrity</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Controls.Deployment.CtrlProfileSelector">
     <Phrase key="gbInstance">Instance</Phrase>
     <Phrase key="gbProfile">Profile</Phrase>
@@ -256,7 +268,6 @@
     <Phrase key="EmptyDevice">Empty device</Phrase>
     <Phrase key="EmptyObject">Empty object</Phrase>
     <Phrase key="NoChannels">No channels</Phrase>
-    <Phrase key="IndexNotFound">Index not found.</Phrase>
     <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
@@ -344,6 +355,7 @@
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
     <Phrase key="miToolsCnlMap">Channel Map...</Phrase>
+    <Phrase key="miToolsCheckIntegrity">Check Integrity</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
     <Phrase key="miToolsCulture">Language...</Phrase>
     <Phrase key="miWindow">&amp;Window</Phrase>

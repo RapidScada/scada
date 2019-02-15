@@ -31,6 +31,9 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal static class AppPhrases
     {
+        // Scada.Admin.App
+        public static string IndexNotFound { get; private set; }
+
         // Scada.Admin.App.Code.ExplorerBuilder
         public static string BaseNode { get; private set; }
         public static string SysTableNode { get; private set; }
@@ -45,6 +48,15 @@ namespace Scada.Admin.App.Code
         public static string EmptyNode { get; private set; }
         public static string DeviceFilter { get; private set; }
         public static string EmptyDeviceFilter { get; private set; }
+
+        // Scada.Admin.App.Code.IntegrityCheck
+        public static string IntegrityCheckTitle { get; private set; }
+        public static string TableCorrect { get; private set; }
+        public static string TableHasErrors { get; private set; }
+        public static string LostPrimaryKeys { get; private set; }
+        public static string BaseCorrect { get; private set; }
+        public static string BaseHasErrors { get; private set; }
+        public static string IntegrityCheckError { get; private set; }
 
         // Scada.Admin.App.Controls.Deployment.CtrlProfileSelector
         public static string ProfileNotSet { get; private set; }
@@ -88,7 +100,6 @@ namespace Scada.Admin.App.Code
         public static string EmptyDevice { get; private set; }
         public static string EmptyObject { get; private set; }
         public static string NoChannels { get; private set; }
-        public static string IndexNotFound { get; private set; }
         public static string GenerateCnlMapError { get; private set; }
 
         // Scada.Admin.App.Forms.Tools.FrmCulture
@@ -158,7 +169,10 @@ namespace Scada.Admin.App.Code
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App");
+            IndexNotFound = dict.GetPhrase("IndexNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
             BaseNode = dict.GetPhrase("BaseNode");
             SysTableNode = dict.GetPhrase("SysTableNode");
             DictTableNode = dict.GetPhrase("DictTableNode");
@@ -172,6 +186,15 @@ namespace Scada.Admin.App.Code
             EmptyNode = dict.GetPhrase("EmptyNode");
             DeviceFilter = dict.GetPhrase("DeviceFilter");
             EmptyDeviceFilter = dict.GetPhrase("EmptyDeviceFilter");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Code.IntegrityCheck");
+            IntegrityCheckTitle = dict.GetPhrase("IntegrityCheckTitle");
+            TableCorrect = dict.GetPhrase("TableCorrect");
+            TableHasErrors = dict.GetPhrase("TableHasErrors");
+            LostPrimaryKeys = dict.GetPhrase("LostPrimaryKeys");
+            BaseCorrect = dict.GetPhrase("BaseCorrect");
+            BaseHasErrors = dict.GetPhrase("BaseHasErrors");
+            IntegrityCheckError = dict.GetPhrase("IntegrityCheckError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
             ProfileNotSet = dict.GetPhrase("ProfileNotSet");
@@ -220,7 +243,6 @@ namespace Scada.Admin.App.Code
             EmptyDevice = dict.GetPhrase("EmptyDevice");
             EmptyObject = dict.GetPhrase("EmptyObject");
             NoChannels = dict.GetPhrase("NoChannels");
-            IndexNotFound = dict.GetPhrase("IndexNotFound");
             GenerateCnlMapError = dict.GetPhrase("GenerateCnlMapError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");

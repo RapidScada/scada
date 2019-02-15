@@ -130,6 +130,7 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsCheckIntegrity = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -327,6 +328,7 @@
             // 
             this.miTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miToolsCnlMap,
+            this.miToolsCheckIntegrity,
             this.miToolsSep1,
             this.miToolsOptions,
             this.miToolsCulture});
@@ -338,27 +340,27 @@
             // miToolsCnlMap
             // 
             this.miToolsCnlMap.Name = "miToolsCnlMap";
-            this.miToolsCnlMap.Size = new System.Drawing.Size(154, 22);
+            this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
             // 
             // miToolsSep1
             // 
             this.miToolsSep1.Name = "miToolsSep1";
-            this.miToolsSep1.Size = new System.Drawing.Size(151, 6);
+            this.miToolsSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // miToolsOptions
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(154, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
             // miToolsCulture
             // 
             this.miToolsCulture.Name = "miToolsCulture";
-            this.miToolsCulture.Size = new System.Drawing.Size(154, 22);
+            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
             this.miToolsCulture.Text = "Language...";
             this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
             // 
@@ -1008,6 +1010,13 @@
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
+            // miToolsCheckIntegrity
+            // 
+            this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
+            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCheckIntegrity.Text = "Check Integrity";
+            this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1151,6 +1160,7 @@
         private System.Windows.Forms.ToolStripMenuItem miWindowCloseActive;
         private System.Windows.Forms.ToolStripMenuItem miWindowCloseAll;
         private System.Windows.Forms.ToolStripMenuItem miWindowCloseAllButActive;
+        private System.Windows.Forms.ToolStripMenuItem miToolsCheckIntegrity;
     }
 }
 

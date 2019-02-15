@@ -74,6 +74,11 @@ namespace Scada.Data.Tables
         /// </summary>
         public bool IsReady { get; set; }
 
+        /// <summary>
+        /// Gets a value indicating whether null values are allowed in the indexed column.
+        /// </summary>
+        public bool AllowNull { get; protected set; }
+
 
         /// <summary>
         /// Gets the indexed property.
@@ -84,14 +89,13 @@ namespace Scada.Data.Tables
             PropertyDescriptor prop = itemProps[columnName];
 
             if (prop == null)
-            {
-                throw new InvalidOperationException("The item doesn't contain the required property.");
-            }
-            else if (!(prop.PropertyType == typeof(int) ||
-                prop.PropertyType.IsNullable() && Nullable.GetUnderlyingType(prop.PropertyType) == typeof(int)))
-            {
+                throw new InvalidOperationException("The item type doesn't contain the required property.");
+
+            AllowNull = prop.PropertyType.IsNullable();
+            Type propType = AllowNull ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType;
+
+            if (propType != typeof(int))
                 throw new InvalidOperationException("The property must be integer.");
-            }
 
             return prop;
         }

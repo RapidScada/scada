@@ -392,6 +392,18 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Prepares to close all forms.
+        /// </summary>
+        private void PrepareToCloseAll()
+        {
+            foreach (Form form in wctrlMain.Forms)
+            {
+                if (form is FrmBaseTable frmBaseTable)
+                    frmBaseTable.PrepareToClose();
+            }
+        }
+
+        /// <summary>
         /// Closes the child forms corresponding to the specified node and its children.
         /// </summary>
         private void CloseChildForms(TreeNode treeNode, bool save = false)
@@ -718,14 +730,43 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Prepares to close all forms.
+        /// Closes the project.
         /// </summary>
-        private void PrepareToCloseAll()
+        private void CloseProject(out bool cancel)
         {
-            foreach (Form form in wctrlMain.Forms)
+            if (project == null)
             {
-                if (form is FrmBaseTable frmBaseTable)
-                    frmBaseTable.PrepareToClose();
+                cancel = false;
+            }
+            else
+            {
+                PrepareToCloseAll();
+                wctrlMain.CloseAllForms(out cancel);
+
+                if (!cancel && project.ConfigBase.Modified)
+                {
+                    switch (MessageBox.Show(AppPhrases.SaveConfigBaseConfirm,
+                        CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
+                    {
+                        case DialogResult.Yes:
+                            cancel = !SaveConfigBase();
+                            break;
+                        case DialogResult.No:
+                            break;
+                        default:
+                            cancel = true;
+                            break;
+                    }
+                }
+
+                if (!cancel)
+                {
+                    project = null;
+                    Text = AppPhrases.EmptyTitle;
+                    wctrlMain.MessageText = AppPhrases.WelcomeMessage;
+                    InitMenuItems();
+                    tvExplorer.Nodes.Clear();
+                }
             }
         }
 
@@ -740,28 +781,8 @@ namespace Scada.Admin.App.Forms
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // confirm saving the project before closing
-            PrepareToCloseAll();
-            wctrlMain.CloseAllForms(out bool cancel);
+            CloseProject(out bool cancel);
             e.Cancel = cancel;
-
-            if (!cancel)
-            {
-                if (project.ConfigBase.Modified)
-                {
-                    switch (MessageBox.Show(AppPhrases.SaveConfigBaseConfirm,
-                        CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question))
-                    {
-                        case DialogResult.Yes:
-                            e.Cancel = !SaveConfigBase();
-                            break;
-                        case DialogResult.No:
-                            break;
-                        default:
-                            e.Cancel = true;
-                            break;
-                    }
-                }
-            }
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -1008,24 +1029,13 @@ namespace Scada.Admin.App.Forms
 
         private void miFileClose_Click(object sender, EventArgs e)
         {
-            // close the active form
-            wctrlMain.CloseActiveForm(out bool cancel);
+            miWindowCloseActive_Click(null, null);
         }
 
         private void miFileCloseProject_Click(object sender, EventArgs e)
         {
             // close the project
-            PrepareToCloseAll();
-            wctrlMain.CloseAllForms(out bool cancel);
-
-            if (!cancel)
-            {
-                project = null;
-                Text = AppPhrases.EmptyTitle;
-                wctrlMain.MessageText = AppPhrases.WelcomeMessage;
-                InitMenuItems();
-                tvExplorer.Nodes.Clear();
-            }
+            CloseProject(out bool cancel);
         }
 
         private void miFileExit_Click(object sender, EventArgs e)
@@ -1191,7 +1201,9 @@ namespace Scada.Admin.App.Forms
 
         private void miTools_DropDownOpening(object sender, EventArgs e)
         {
-            miToolsCnlMap.Enabled = project != null;
+            bool projectOpen = project != null;
+            miToolsCnlMap.Enabled = projectOpen;
+            miToolsCheckIntegrity.Enabled = projectOpen;
             miToolsOptions.Enabled = false;
         }
 
@@ -1199,6 +1211,12 @@ namespace Scada.Admin.App.Forms
         {
             // show a channel map form
             new FrmCnlMap(project.ConfigBase, appData).ShowDialog();
+        }
+
+        private void miToolsCheckIntegrity_Click(object sender, EventArgs e)
+        {
+            // check integrity
+            new IntegrityCheck(project.ConfigBase, appData).Execute();
         }
 
         private void miToolsOptions_Click(object sender, EventArgs e)

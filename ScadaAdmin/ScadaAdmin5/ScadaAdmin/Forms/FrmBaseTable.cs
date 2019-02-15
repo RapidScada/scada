@@ -229,6 +229,10 @@ namespace Scada.Admin.App.Forms
                 // because of the bug in Mono 5.12.0.301
                 dataGridView.AllowUserToAddRows = false;
             }
+            else
+            {
+                btnAddNew.Visible = false;
+            }
         }
 
         private void FrmBaseTable_Shown(object sender, EventArgs e)

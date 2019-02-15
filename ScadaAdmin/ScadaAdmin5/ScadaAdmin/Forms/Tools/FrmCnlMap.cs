@@ -45,11 +45,7 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// The file name of newly created maps.
         /// </summary>
-        private const string MapFileName = "ScadaAdminCnlMap.txt";
-        /// <summary>
-        /// The maximum line length.
-        /// </summary>
-        private const int MaxLineLen = 80;
+        private const string MapFileName = "ScadaAdmin_CnlMap.txt";
 
         private readonly ConfigBase configBase; // the configuration database
         private readonly AppData appData;       // the common data of the application

@@ -102,7 +102,6 @@
             this.btnAddNew.RightToLeftAutoMirrorImage = true;
             this.btnAddNew.Size = new System.Drawing.Size(23, 22);
             this.btnAddNew.Text = "Add new";
-            this.btnAddNew.Visible = false;
             // 
             // lblCount
             // 
