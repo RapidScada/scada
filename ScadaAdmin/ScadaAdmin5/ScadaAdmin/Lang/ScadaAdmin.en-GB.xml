@@ -42,6 +42,7 @@
     <Phrase key="CnlStatus">Status</Phrase>
     <Phrase key="Name">Name</Phrase>
     <Phrase key="Color">Color</Phrase>
+    <Phrase key="ColorButton">Select Color</Phrase>
     <Phrase key="Descr">Description</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.FormatTable">
@@ -54,6 +55,7 @@
     <Phrase key="FormulaID">ID</Phrase>
     <Phrase key="Name">Name</Phrase>
     <Phrase key="Source">Source Code</Phrase>
+    <Phrase key="SourceButton">Edit Source Code</Phrase>
     <Phrase key="Descr">Description</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InCnlTable">
@@ -83,6 +85,7 @@
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InterfaceTable">
     <Phrase key="ItfID">ID</Phrase>
     <Phrase key="Name">Path</Phrase>
+    <Phrase key="NameButton">Browse</Phrase>
     <Phrase key="Descr">Title</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">

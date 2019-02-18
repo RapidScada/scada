@@ -135,7 +135,7 @@ namespace Scada.Admin.App.Code
         private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
         {
             TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
-            baseTableNode.Tag = CreateBaseTableTag<T>(baseTable);
+            baseTableNode.Tag = CreateBaseTableTag(baseTable);
             return baseTableNode;
         }
 

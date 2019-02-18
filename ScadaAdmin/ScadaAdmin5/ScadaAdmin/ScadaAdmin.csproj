@@ -95,6 +95,7 @@
     <Compile Include="Code\AppPhrases.cs" />
     <Compile Include="Code\AppState.cs" />
     <Compile Include="Code\AppUtils.cs" />
+    <Compile Include="Code\ColumnOptions.cs" />
     <Compile Include="Code\IntegrityCheck.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\AppMessage.cs" />

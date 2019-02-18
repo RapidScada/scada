@@ -173,6 +173,7 @@ namespace Scada.Admin.App.Forms
                 baseTable.Items.Values :
                 baseTable.GetFilteredItems(tableFilter);
             dataTable = tableItems.ToDataTable();
+            dataTable.DefaultView.Sort = baseTable.PrimaryKey;
             if (tableFilter != null)
                 dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
             dataTable.RowChanged += dataTable_RowChanged;

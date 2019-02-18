@@ -77,7 +77,8 @@ namespace Scada.Admin.App.Forms
         {
             errMsg = "";
 
-            if (0 <= colInd && colInd < dataGridView.ColumnCount && 0 <= rowInd && rowInd < dataGridView.RowCount)
+            if (0 <= colInd && colInd < dataGridView.ColumnCount && 
+                0 <= rowInd && rowInd < dataGridView.RowCount)
             {
                 DataGridViewColumn col = dataGridView.Columns[colInd];
 
@@ -258,6 +259,33 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        private void dataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            int colInd = e.ColumnIndex;
+            int rowInd = e.RowIndex;
+
+            if (0 <= rowInd && rowInd < dataGridView.RowCount &&
+                0 <= colInd && colInd < dataGridView.ColumnCount &&
+                dataGridView.Columns[colInd] is DataGridViewButtonColumn buttonColumn)
+            {
+                // process a command button
+                string dataColumnName = buttonColumn.DataPropertyName;
+                DataGridViewColumn dataColumn = dataGridView.Columns[dataColumnName];
+
+                if (dataColumn == null)
+                {
+                    throw new ScadaException("Column not found.");
+                }
+                else
+                {
+                    DataGridViewRow row = dataGridView.Rows[rowInd];
+                    object val = row.Cells[dataColumnName].Value;
+                    ScadaUiUtils.ShowInfo(val?.ToString());
+                    //row.Cells[dataColumnName].Value = "aaa";
+                }
+            }
+        }
+
         private void dataGridView_DataError(object sender, DataGridViewDataErrorEventArgs e)
         {
             // write and display a error
@@ -268,6 +296,7 @@ namespace Scada.Admin.App.Forms
             ShowError(e.Exception.Message + columnPhrase);
             e.ThrowException = false;
         }
+
 
         private void btnCloseError_Click(object sender, EventArgs e)
         {

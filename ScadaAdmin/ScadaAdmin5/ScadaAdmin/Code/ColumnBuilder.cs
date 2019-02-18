@@ -54,7 +54,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts text cells.
         /// </summary>
-        private DataGridViewColumn NewTextBoxColumn(string dataPropertyName)
+        private DataGridViewColumn NewTextBoxColumn(string dataPropertyName, ColumnOptions options = null)
         {
             return new DataGridViewTextBoxColumn
             {
@@ -67,7 +67,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells with checkboxes.
         /// </summary>
-        private DataGridViewColumn NewCheckBoxColumn(string dataPropertyName)
+        private DataGridViewColumn NewCheckBoxColumn(string dataPropertyName, ColumnOptions options = null)
         {
             return new DataGridViewCheckBoxColumn
             {
@@ -75,6 +75,21 @@ namespace Scada.Admin.App.Code
                 HeaderText = dataPropertyName,
                 DataPropertyName = dataPropertyName,
                 SortMode = DataGridViewColumnSortMode.Automatic
+            };
+        }
+
+        /// <summary>
+        /// Creates a new column that hosts cells with buttons.
+        /// </summary>
+        private DataGridViewColumn NewButtonColumn(string dataPropertyName, ColumnOptions options = null)
+        {
+            return new DataGridViewButtonColumn
+            {
+                Name = dataPropertyName + "Button",
+                HeaderText = "",
+                DataPropertyName = dataPropertyName,
+                Text = dataPropertyName,
+                UseColumnTextForButtonValue = true
             };
         }
 
@@ -141,7 +156,12 @@ namespace Scada.Admin.App.Code
                 foreach (DataGridViewColumn col in columns)
                 {
                     if (dict.Phrases.TryGetValue(col.Name, out string header))
-                        col.HeaderText = header;
+                    {
+                        if (col is DataGridViewButtonColumn buttonColumn)
+                            buttonColumn.Text = header;
+                        else
+                            col.HeaderText = header;
+                    }
                 }
             }
 
@@ -234,6 +254,7 @@ namespace Scada.Admin.App.Code
                 NewTextBoxColumn("CnlStatus"),
                 NewTextBoxColumn("Name"),
                 NewTextBoxColumn("Color"),
+                NewButtonColumn("Color"),
                 NewTextBoxColumn("Descr")
             });
         }
@@ -262,6 +283,7 @@ namespace Scada.Admin.App.Code
                 NewTextBoxColumn("FormulaID"),
                 NewTextBoxColumn("Name"),
                 NewTextBoxColumn("Source"),
+                NewButtonColumn("Source"),
                 NewTextBoxColumn("Descr")
             });
         }
@@ -307,6 +329,7 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("ItfID"),
                 NewTextBoxColumn("Name"),
+                NewButtonColumn("Name"),
                 NewTextBoxColumn("Descr")
             });
         }

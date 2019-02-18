@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -33,34 +33,38 @@ using System.Windows.Forms;
 namespace Scada.UI
 {
     /// <summary>
-    /// The class contains user interface utility methods for the whole system
-    /// <para>Класс, содержащий вспомогательные методы работы с пользовательским интерфейсом для всей системы</para>
+    /// The class contains user interface utility methods for the whole system.
+    /// <para>Класс, содержащий вспомогательные методы работы с пользовательским интерфейсом для всей системы.</para>
     /// </summary>
     public static class ScadaUiUtils
     {
         /// <summary>
-        /// Размер отображаемых данных журналов, 10 КБ
+        /// Размер отображаемых данных журналов, КБ.
         /// </summary>
         private const long LogViewSize = 10240;
         /// <summary>
-        /// Порог количества строк в таблице для выбора режима автоподбора ширины столбцов
+        /// Порог количества строк в таблице для выбора режима автоподбора ширины столбцов.
         /// </summary>
         private const int GridAutoResizeBoundary = 100;
         /// <summary>
-        /// Адрес русскоязычного сайта проекта
+        /// The maximum column width in DataGridView in pixels.
+        /// </summary>
+        private const int MaxColumnWidth = 500;
+        /// <summary>
+        /// Адрес русскоязычного сайта проекта.
         /// </summary>
         private const string WebsiteRu = "http://rapidscada.ru";
         /// <summary>
-        /// Адрес англоязычного сайта проекта
+        /// Адрес англоязычного сайта проекта.
         /// </summary>
         private const string WebsiteEn = "http://rapidscada.org";
         
         /// <summary>
-        /// Log refresh interval on local connection, ms.
+        /// The log refresh interval on local connection, ms.
         /// </summary>
         public const int LogLocalRefreshInterval = 500;
         /// <summary>
-        /// Log refresh interval on remote connection, ms.
+        /// The log refresh interval on remote connection, ms.
         /// </summary>
         public const int LogRemoteRefreshInterval = 1000;
         /// <summary>
@@ -70,9 +74,9 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Загрузить строки из файла
+        /// Загрузить строки из файла.
         /// </summary>
-        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize</remarks>
+        /// <remarks>Если fullLoad равен false, то объём загружаемых данных не более LogViewSize.</remarks>
         private static List<string> LoadStrings(string fileName, bool fullLoad)
         {
             using (FileStream fileStream =
@@ -107,7 +111,7 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Показать информационное сообщение
+        /// Показать информационное сообщение.
         /// </summary>
         public static void ShowInfo(string message)
         {
@@ -115,7 +119,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Показать сообщение об ошибке
+        /// Показать сообщение об ошибке.
         /// </summary>
         public static void ShowError(string message)
         {
@@ -123,7 +127,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Показать предупреждение
+        /// Показать предупреждение.
         /// </summary>
         public static void ShowWarning(string message)
         {
@@ -132,7 +136,7 @@ namespace Scada.UI
 
 
         /// <summary>
-        /// Установить значение элемента управления типа NumericUpDown в пределах его допустимого диапазона
+        /// Установить значение элемента управления типа NumericUpDown в пределах его допустимого диапазона.
         /// </summary>
         public static void SetValue(this NumericUpDown num, decimal val)
         {
@@ -145,7 +149,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Установить время элемента управления типа DateTimePicker
+        /// Установить время элемента управления типа DateTimePicker.
         /// </summary>
         public static void SetTime(this DateTimePicker picker, DateTime time)
         {
@@ -154,7 +158,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Установить время элемента управления типа DateTimePicker
+        /// Установить время элемента управления типа DateTimePicker.
         /// </summary>
         public static void SetTime(this DateTimePicker picker, TimeSpan timeSpan)
         {
@@ -164,7 +168,7 @@ namespace Scada.UI
 
         /// <summary>
         /// Установить выбранный элемент выпадающего списка, 
-        /// используя карту соответствия значений и индексов элементов списка
+        /// используя карту соответствия значений и индексов элементов списка.
         /// </summary>
         public static void SetSelectedItem(this ComboBox comboBox, object value,
             Dictionary<string, int> valueToItemIndex, int defaultIndex = -1)
@@ -178,7 +182,7 @@ namespace Scada.UI
 
         /// <summary>
         /// Получить выбранный элемент выпадающего списка, 
-        /// используя карту соответствия индексов элементов списка и значений
+        /// используя карту соответствия индексов элементов списка и значений.
         /// </summary>
         public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> itemIndexToValue)
         {
@@ -190,7 +194,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Распознать текст элемента управления и пробразовать его в значение перечислимого типа
+        /// Распознать текст элемента управления и пробразовать его в значение перечислимого типа.
         /// </summary>
         public static T ParseText<T>(this Control control) where T : struct
         {
@@ -202,7 +206,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Автоподбор ширины столбцов таблицы с выбором режима в зависимости от количества строк
+        /// Автоподбор ширины столбцов таблицы с выбором режима в зависимости от количества строк.
         /// </summary>
         public static void AutoSizeColumns(this DataGridView dataGridView)
         {
@@ -210,10 +214,16 @@ namespace Scada.UI
                 dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.AllCells);
             else
                 dataGridView.AutoResizeColumns(DataGridViewAutoSizeColumnsMode.DisplayedCells);
+
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (column.Width > MaxColumnWidth)
+                    column.Width = MaxColumnWidth;
+            }
         }
 
         /// <summary>
-        /// Загрузить новые данные в элемент списка из файла
+        /// Загрузить новые данные в элемент списка из файла.
         /// </summary>
         [Obsolete("Use LogBox")]
         public static void ReloadItems(this ListBox listBox, string fileName, bool fullLoad,
@@ -305,7 +315,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Загрузить из файлов изображение и гиперссылку для формы о программе
+        /// Загрузить из файлов изображение и гиперссылку для формы о программе.
         /// </summary>
         public static bool LoadAboutForm(string exeDir, Form frmAbout, PictureBox pictureBox, Label lblLink,
             out bool imgLoaded, out string linkUrl, out string errMsg)
@@ -433,7 +443,7 @@ namespace Scada.UI
         }
 
         /// <summary>
-        /// Получить ссылку на онлайн генератор ключей
+        /// Получить ссылку на онлайн генератор ключей.
         /// </summary>
         public static string GetKeyGenUrl(string prod, bool trial, bool? useRussian = null)
         {
