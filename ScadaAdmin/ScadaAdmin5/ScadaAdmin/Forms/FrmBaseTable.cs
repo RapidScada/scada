@@ -90,8 +90,20 @@ namespace Scada.Admin.App.Forms
 
                         if (valueType == typeof(int))
                         {
-                            if (!int.TryParse(cellVal, out int intVal))
+                            if (int.TryParse(cellVal, out int intVal))
+                            {
+                                // check primary key range
+                                if (col.Tag is ColumnOptions options && options.Kind == ColumnKind.PrimaryKey &&
+                                    (intVal < options.Minimum || intVal > options.Maximum))
+                                {
+                                    errMsg = string.Format(CommonPhrases.IntegerRangingRequired,
+                                        options.Minimum, options.Maximum);
+                                }
+                            }
+                            else
+                            {
                                 errMsg = CommonPhrases.IntegerRequired;
+                            }
                         }
                         else if (valueType == typeof(double))
                         {

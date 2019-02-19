@@ -33,11 +33,26 @@ using System.Windows.Forms;
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// Creates columns for a DataGridView control
-    /// <para>Создает столбцы для элемента управления DataGridView</para>
+    /// Creates columns for a DataGridView control.
+    /// <para>Создает столбцы для элемента управления DataGridView.</para>
     /// </summary>
     internal class ColumnBuilder
     {
+        /// <summary>
+        /// Predefined lengths of string columns.
+        /// <para>Предопределенные длины строковых столбцов.</para>
+        /// </summary>
+        private static class StringLength
+        {
+            public const int Default = 100;
+            public const int Name = 100;
+            public const int Password = 100;
+            public const int StringValue = 1000;
+            public const int Description = 1000;
+            public const int Path = 1000;
+            public const int SourceCode = 10000;
+        }
+
         private readonly ConfigBase configBase; // the reference to the configuration database
 
 
@@ -56,12 +71,18 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private DataGridViewColumn NewTextBoxColumn(string dataPropertyName, ColumnOptions options = null)
         {
-            return new DataGridViewTextBoxColumn
+            DataGridViewTextBoxColumn column = new DataGridViewTextBoxColumn
             {
                 Name = dataPropertyName,
                 HeaderText = dataPropertyName,
-                DataPropertyName = dataPropertyName
+                DataPropertyName = dataPropertyName,
+                Tag = options
             };
+
+            if (options != null && options.MaxLength > 0)
+                column.MaxInputLength = options.MaxLength;
+
+            return column;
         }
 
         /// <summary>
@@ -74,6 +95,7 @@ namespace Scada.Admin.App.Code
                 Name = dataPropertyName,
                 HeaderText = dataPropertyName,
                 DataPropertyName = dataPropertyName,
+                Tag = options,
                 SortMode = DataGridViewColumnSortMode.Automatic
             };
         }
@@ -88,6 +110,7 @@ namespace Scada.Admin.App.Code
                 Name = dataPropertyName + "Button",
                 HeaderText = "",
                 DataPropertyName = dataPropertyName,
+                Tag = options,
                 Text = dataPropertyName,
                 UseColumnTextForButtonValue = true
             };
@@ -176,9 +199,9 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CmdTypeTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CmdTypeID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("CmdTypeID", new ColumnOptions(0, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -189,10 +212,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CmdValTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CmdValID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Val"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("CmdValID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Val", new ColumnOptions(StringLength.StringValue)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -203,10 +226,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CnlTypeTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CnlTypeID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("ShtName"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("CnlTypeID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("ShtName", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -217,9 +240,9 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CommLineTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CommLineNum"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("CommLineNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -230,16 +253,16 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CtrlCnlTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CtrlCnlNum"),
-                NewCheckBoxColumn("Active"),
-                NewTextBoxColumn("Name"),
+                NewTextBoxColumn("CtrlCnlNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewCheckBoxColumn("Active", new ColumnOptions() { DefaultValue = true }),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewComboBoxColumn("CmdTypeID", "Name", configBase.CmdTypeTable),
                 NewComboBoxColumn("ObjNum", "Name", configBase.ObjTable, true),
                 NewComboBoxColumn("KPNum", "Name", configBase.KPTable, true),
                 NewTextBoxColumn("CmdNum"),
                 NewComboBoxColumn("CmdValID", "Name", configBase.CmdValTable, true),
                 NewCheckBoxColumn("FormulaUsed"),
-                NewTextBoxColumn("Formula"),
+                NewTextBoxColumn("Formula", new ColumnOptions(StringLength.Default)),
                 NewCheckBoxColumn("EvEnabled")
             });
         }
@@ -251,11 +274,11 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("EvTypeTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CnlStatus"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Color"),
+                NewTextBoxColumn("CnlStatus", new ColumnOptions(0, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Color", new ColumnOptions(ColumnKind.Color, StringLength.Default)),
                 NewButtonColumn("Color"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -266,8 +289,8 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("FormatTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("FormatID"),
-                NewTextBoxColumn("Name"),
+                NewTextBoxColumn("FormatID", new ColumnOptions(0, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewCheckBoxColumn("ShowNumber"),
                 NewTextBoxColumn("DecDigits")
             });
@@ -280,11 +303,11 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("FormulaTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("FormulaID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Source"),
+                NewTextBoxColumn("FormulaID", new ColumnOptions(0, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Source", new ColumnOptions(StringLength.SourceCode)),
                 NewButtonColumn("Source"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -295,15 +318,15 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("InCnlTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CnlNum"),
-                NewCheckBoxColumn("Active"),
-                NewTextBoxColumn("Name"),
+                NewTextBoxColumn("CnlNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewCheckBoxColumn("Active", new ColumnOptions() { DefaultValue = true }),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewComboBoxColumn("CnlTypeID", "Name", configBase.CnlTypeTable),
                 NewComboBoxColumn("ObjNum","Name", configBase.ObjTable, true),
                 NewComboBoxColumn("KPNum", "Name", configBase.KPTable, true),
                 NewTextBoxColumn("Signal"),
                 NewCheckBoxColumn("FormulaUsed"),
-                NewTextBoxColumn("Formula"),
+                NewTextBoxColumn("Formula", new ColumnOptions(StringLength.Default)),
                 NewCheckBoxColumn("Averaging"),
                 NewComboBoxColumn("ParamID", "Name", configBase.ParamTable, true),
                 NewComboBoxColumn("FormatID", "Name", configBase.FormatTable, true),
@@ -327,10 +350,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("InterfaceTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("ItfID"),
-                NewTextBoxColumn("Name"),
+                NewTextBoxColumn("ItfID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Path)),
                 NewButtonColumn("Name"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -341,13 +364,13 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("KPTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("KPNum"),
-                NewTextBoxColumn("Name"),
+                NewTextBoxColumn("KPNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewComboBoxColumn("KPTypeID", "Name", configBase.KPTypeTable),
                 NewTextBoxColumn("Address"),
-                NewTextBoxColumn("CallNum"),
+                NewTextBoxColumn("CallNum", new ColumnOptions(StringLength.Default)),
                 NewComboBoxColumn("CommLineNum", "Name", configBase.CommLineTable, true),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -358,10 +381,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("KPTypeTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("KPTypeID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("DllFileName"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("KPTypeID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("DllFileName", new ColumnOptions(StringLength.Default)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -372,9 +395,9 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("ObjTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("ObjNum"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("ObjNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -385,10 +408,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("ParamTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("ParamID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Sign"),
-                NewTextBoxColumn("IconFileName")
+                NewTextBoxColumn("ParamID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Sign", new ColumnOptions(StringLength.Default)),
+                NewTextBoxColumn("IconFileName", new ColumnOptions(StringLength.Default))
             });
         }
 
@@ -399,7 +422,7 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("RightTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("RightID"),
+                NewTextBoxColumn("RightID", new ColumnOptions(1, ushort.MaxValue)),
                 NewComboBoxColumn("ItfID", "Name", configBase.InterfaceTable),
                 NewComboBoxColumn("RoleID", "Name", configBase.RoleTable),
                 NewCheckBoxColumn("ViewRight"),
@@ -414,9 +437,9 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("RoleTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("RoleID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("RoleID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -427,10 +450,10 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("UnitTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("UnitID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Sign"),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("UnitID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Sign", new ColumnOptions(StringLength.Default)),
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 
@@ -441,11 +464,11 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("UserTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("UserID"),
-                NewTextBoxColumn("Name"),
-                NewTextBoxColumn("Password"),
+                NewTextBoxColumn("UserID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
+                NewTextBoxColumn("Password", new ColumnOptions(ColumnKind.Password, StringLength.Password)),
                 NewComboBoxColumn("RoleID", "Name", configBase.RoleTable),
-                NewTextBoxColumn("Descr")
+                NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }
 

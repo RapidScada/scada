@@ -167,25 +167,35 @@ namespace Scada.Admin.App.Forms
             if (!configBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
-            // create and setup a data table
+            // reset the binding source
             bindingSource.DataSource = null;
+
+            // create a data table
             ICollection<T> tableItems = tableFilter == null ?
                 baseTable.Items.Values :
                 baseTable.GetFilteredItems(tableFilter);
             dataTable = tableItems.ToDataTable();
             dataTable.DefaultView.Sort = baseTable.PrimaryKey;
-            if (tableFilter != null)
-                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
             dataTable.RowChanged += dataTable_RowChanged;
             dataTable.RowDeleted += dataTable_RowDeleted;
-            bindingSource.DataSource = dataTable;
 
             // create grid columns
             ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
             dataGridView.Columns.Clear();
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
-            dataGridView.AutoSizeColumns();
 
+            // set default values
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (column.Tag is ColumnOptions options && options.DefaultValue != null)
+                    dataTable.Columns[column.Name].DefaultValue = options.DefaultValue;
+            }
+
+            if (tableFilter != null)
+                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
+
+            bindingSource.DataSource = dataTable;
+            dataGridView.AutoSizeColumns();
             ChildFormTag.Modified = baseTable.Modified;
         }
 
