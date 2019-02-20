@@ -103,13 +103,14 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells with buttons.
         /// </summary>
-        private DataGridViewColumn NewButtonColumn(string dataPropertyName)
+        private DataGridViewColumn NewButtonColumn(string dataPropertyName, ColumnOptions options = null)
         {
             return new DataGridViewButtonColumn
             {
-                Name = dataPropertyName + "Button",
+                Name = dataPropertyName + (options == null ? ColumnKind.Button : options.Kind),
                 HeaderText = "",
                 DataPropertyName = dataPropertyName,
+                Tag = options,
                 Text = dataPropertyName,
                 UseColumnTextForButtonValue = true
             };
@@ -351,7 +352,8 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("ItfID", new ColumnOptions(1, ushort.MaxValue)),
                 NewTextBoxColumn("Name", new ColumnOptions(ColumnKind.Path, StringLength.Path)),
-                NewButtonColumn("Name"),
+                NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFileButton)),
+                NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFolderButton)),
                 NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
         }

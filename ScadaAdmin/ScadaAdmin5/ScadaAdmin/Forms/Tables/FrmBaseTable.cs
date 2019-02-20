@@ -29,6 +29,7 @@ using System;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
+using System.IO;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tables
@@ -73,6 +74,17 @@ namespace Scada.Admin.App.Forms.Tables
             get
             {
                 return (DataTable)bindingSource.DataSource;
+            }
+        }
+
+        /// <summary>
+        /// Gets the directory of the interface files.
+        /// </summary>
+        protected virtual string InterfaceDir
+        {
+            get
+            {
+                return "";
             }
         }
 
@@ -223,6 +235,93 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Executes an action on cell button click.
+        /// </summary>
+        private bool ExecCellAction(ColumnOptions dataColumnOptions, ColumnOptions buttonColumnOptions, ref object cellValue)
+        {
+            ColumnKind dataKind = dataColumnOptions.Kind;
+            ColumnKind buttonKind = buttonColumnOptions == null ? ColumnKind.Button : buttonColumnOptions.Kind;
+
+            if (dataKind == ColumnKind.Color)
+            {
+                // select color
+                FrmColorSelect frmColorSelect = new FrmColorSelect
+                {
+                    SelectedColor = cellValue == null ? Color.Empty : StrToColor(cellValue.ToString())
+                };
+
+                if (frmColorSelect.ShowDialog() == DialogResult.OK)
+                {
+                    cellValue = frmColorSelect.SelectedColor.Name;
+                    return true;
+                }
+            }
+            else if (dataKind == ColumnKind.Path)
+            {
+                // select file or folder
+                string path = "";
+                string selectedPath = Path.Combine(InterfaceDir, cellValue == null ? "" : cellValue.ToString());
+
+                if (buttonKind == ColumnKind.SelectFolderButton)
+                {
+                    // select folder
+                    selectedPath = Path.GetDirectoryName(selectedPath);
+                    folderBrowserDialog.SelectedPath = Directory.Exists(selectedPath) ? selectedPath : InterfaceDir;
+
+                    if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
+                        path = ScadaUtils.NormalDir(folderBrowserDialog.SelectedPath);
+                }
+                else
+                {
+                    // select file
+                    if (string.IsNullOrEmpty(selectedPath) || !File.Exists(selectedPath))
+                    {
+                        openFileDialog.InitialDirectory = InterfaceDir;
+                        openFileDialog.FileName = "";
+                    }
+                    else
+                    {
+                        openFileDialog.InitialDirectory = Path.GetDirectoryName(selectedPath);
+                        openFileDialog.FileName = Path.GetFileName(selectedPath);
+                    }
+
+                    if (openFileDialog.ShowDialog() == DialogResult.OK)
+                    {
+                        openFileDialog.InitialDirectory = Path.GetDirectoryName(openFileDialog.FileName);
+                        path = openFileDialog.FileName;
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string interfaceDir = ScadaUtils.NormalDir(InterfaceDir);
+                    if (path.StartsWith(interfaceDir, StringComparison.OrdinalIgnoreCase))
+                        path = path.Substring(interfaceDir.Length);
+
+                    cellValue = path;
+                    return true;
+                }
+            }
+            else if (dataKind == ColumnKind.SourceCode)
+            {
+                // edit source code
+                FrmSourceCode frmSourceCode = new FrmSourceCode
+                {
+                    MaxLength = dataColumnOptions.MaxLength,
+                    SourceCode = cellValue.ToString()
+                };
+
+                if (frmSourceCode.ShowDialog() == DialogResult.OK)
+                {
+                    cellValue = frmSourceCode.SourceCode;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Loads the table data.
         /// </summary>
         protected virtual void LoadTableData()
@@ -355,46 +454,17 @@ namespace Scada.Admin.App.Forms.Tables
 
                 if (dataColumn == null)
                 {
-                    throw new ScadaException("Column not found.");
+                    throw new ScadaException("Data column not found.");
                 }
-                else if (dataColumn.Tag is ColumnOptions options)
+                else if (dataColumn.Tag is ColumnOptions dataColumnOptions)
                 {
-                    DataGridViewRow row = dataGridView.Rows[rowInd];
-                    DataGridViewCell cell = row.Cells[dataColumnName];
-                    object val = cell.Value;
+                    DataGridViewCell dataCell = dataGridView.Rows[rowInd].Cells[dataColumnName];
+                    object cellValue = dataCell.Value;
 
-                    if (options.Kind == ColumnKind.Color)
+                    if (ExecCellAction(dataColumnOptions, buttonColumn.Tag as ColumnOptions, ref cellValue))
                     {
-                        // select color
-                        FrmColorSelect frmColorSelect = new FrmColorSelect
-                        {
-                            SelectedColor = val == null ? Color.Empty : StrToColor(val.ToString())
-                        };
-
-                        if (frmColorSelect.ShowDialog() == DialogResult.OK)
-                        {
-                            cell.Value = frmColorSelect.SelectedColor.Name;
-                            EndEdit();
-                        }
-                    }
-                    else if (options.Kind == ColumnKind.Path)
-                    {
-                        // browse for folder or file
-                    }
-                    else if (options.Kind == ColumnKind.SourceCode)
-                    {
-                        // edit source code
-                        FrmSourceCode frmSourceCode = new FrmSourceCode
-                        {
-                            MaxLength = options.MaxLength,
-                            SourceCode = val.ToString()
-                        };
-
-                        if (frmSourceCode.ShowDialog() == DialogResult.OK)
-                        {
-                            cell.Value = frmSourceCode.SourceCode;
-                            EndEdit();
-                        }
+                        dataCell.Value = cellValue;
+                        EndEdit();
                     }
                 }
             }

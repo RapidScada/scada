@@ -43,23 +43,34 @@ namespace Scada.Admin.App.Forms.Tables
     {
         private readonly BaseTable<T> baseTable;  // the table being edited
         private readonly TableFilter tableFilter; // the table filter
-        private readonly ConfigBase configBase;   // the configuration database
+        private readonly ScadaProject project;    // the project under development
         private DataTable dataTable;              // the table used by a grid view control
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmBaseTableGeneric(BaseTable<T> baseTable, TableFilter tableFilter, ConfigBase configBase, AppData appData)
+        public FrmBaseTableGeneric(BaseTable<T> baseTable, TableFilter tableFilter, ScadaProject project, AppData appData)
             : base(appData)
         {
             this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
             this.tableFilter = tableFilter;
-            this.configBase = configBase ?? throw new ArgumentNullException("configBase");
+            this.project = project ?? throw new ArgumentNullException("project");
             dataTable = null;
             Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
         }
 
+
+        /// <summary>
+        /// Gets the directory of the interface files.
+        /// </summary>
+        protected override string InterfaceDir
+        {
+            get
+            {
+                return project.Interface.InterfaceDir;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the object associated with the form.
@@ -164,7 +175,7 @@ namespace Scada.Admin.App.Forms.Tables
         /// </summary>
         protected override void LoadTableData()
         {
-            if (!configBase.Load(out string errMsg))
+            if (!project.ConfigBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
             // reset the binding source
@@ -180,7 +191,7 @@ namespace Scada.Admin.App.Forms.Tables
             dataTable.RowDeleted += dataTable_RowDeleted;
 
             // create grid columns
-            ColumnBuilder columnBuilder = new ColumnBuilder(configBase);
+            ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
             dataGridView.Columns.Clear();
             dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
 
@@ -289,7 +300,7 @@ namespace Scada.Admin.App.Forms.Tables
         /// </summary>
         public void Save()
         {
-            if (configBase.SaveTable(baseTable, out string errMsg))
+            if (project.ConfigBase.SaveTable(baseTable, out string errMsg))
                 ChildFormTag.Modified = false;
             else
                 appData.ProcError(errMsg);

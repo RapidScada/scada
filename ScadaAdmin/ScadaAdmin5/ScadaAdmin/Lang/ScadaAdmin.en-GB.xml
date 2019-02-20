@@ -85,7 +85,8 @@
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.InterfaceTable">
     <Phrase key="ItfID">ID</Phrase>
     <Phrase key="Name">Path</Phrase>
-    <Phrase key="NameButton">Browse</Phrase>
+    <Phrase key="NameSelectFileButton">Select File</Phrase>
+    <Phrase key="NameSelectFolderButton">Select Folder</Phrase>
     <Phrase key="Descr">Title</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">

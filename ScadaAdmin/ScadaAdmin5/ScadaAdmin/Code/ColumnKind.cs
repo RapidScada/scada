@@ -36,6 +36,9 @@ namespace Scada.Admin.App.Code
         Password,
         Color,
         Path,
-        SourceCode
+        SourceCode,
+        Button,
+        SelectFileButton,
+        SelectFolderButton
     }
 }

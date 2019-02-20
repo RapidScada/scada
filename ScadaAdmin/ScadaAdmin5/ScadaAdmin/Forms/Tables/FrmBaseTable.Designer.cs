@@ -53,6 +53,8 @@
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
+            this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -337,5 +339,7 @@
         private System.Windows.Forms.ToolStripButton btnAutoSizeColumns;
         private System.Windows.Forms.ToolStripButton btnApplyEdit;
         private System.Windows.Forms.ToolStripButton btnCancelEdit;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
+        private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
     }
 }

@@ -147,7 +147,7 @@ namespace Scada.Admin.App.Code
             return new TreeNodeTag
             {
                 FormType = typeof(FrmBaseTableGeneric<T>),
-                FormArgs = new object[] { baseTable, tableFilter, project.ConfigBase, appData },
+                FormArgs = new object[] { baseTable, tableFilter, project, appData },
                 RelatedObject = baseTable,
                 NodeType = AppNodeType.BaseTable
             };
