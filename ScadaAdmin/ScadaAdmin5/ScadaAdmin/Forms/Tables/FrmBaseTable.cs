@@ -27,9 +27,11 @@ using Scada.Admin.App.Code;
 using Scada.UI;
 using System;
 using System.Data;
+using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
-namespace Scada.Admin.App.Forms
+namespace Scada.Admin.App.Forms.Tables
 {
     /// <summary>
     /// Form for editing a table of the configuration database.
@@ -37,6 +39,11 @@ namespace Scada.Admin.App.Forms
     /// </summary>
     public partial class FrmBaseTable : Form
     {
+        /// <summary>
+        /// The string to display instead of password.
+        /// </summary>
+        private string DisplayPassword = "●●●●●";
+
         protected readonly AppData appData; // the common data of the application
 
 
@@ -191,6 +198,31 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Convers string to color.
+        /// </summary>
+        private Color StrToColor(string s)
+        {
+            try
+            {
+                if (s.Length == 7 && s[0] == '#')
+                {
+                    int r = int.Parse(s.Substring(1, 2), NumberStyles.HexNumber);
+                    int g = int.Parse(s.Substring(3, 2), NumberStyles.HexNumber);
+                    int b = int.Parse(s.Substring(5, 2), NumberStyles.HexNumber);
+                    return Color.FromArgb(r, g, b);
+                }
+                else
+                {
+                    return Color.FromName(s);
+                }
+            }
+            catch
+            {
+                return Color.Black;
+            }
+        }
+
+        /// <summary>
         /// Loads the table data.
         /// </summary>
         protected virtual void LoadTableData()
@@ -232,7 +264,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmBaseTable");
+            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tables.FrmBaseTable");
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -251,6 +283,43 @@ namespace Scada.Admin.App.Forms
         private void FrmBaseTable_Shown(object sender, EventArgs e)
         {
             LoadTableData();
+        }
+
+        private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            int colInd = e.ColumnIndex;
+            string valStr = e.Value?.ToString();
+
+            if (0 <= colInd && colInd < dataGridView.ColumnCount &&
+                dataGridView.Columns[colInd].Tag is ColumnOptions options && !string.IsNullOrEmpty(valStr))
+            {
+                if (options.Kind == ColumnKind.Password)
+                    e.Value = DisplayPassword; // hide actual password
+                else if (options.Kind == ColumnKind.Color)
+                    e.CellStyle.ForeColor = StrToColor(valStr); // set text color of the cell
+            }
+        }
+
+        private void dataGridView_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            if (dataGridView.CurrentCell != null)
+            {
+                int colInd = dataGridView.CurrentCell.ColumnIndex;
+                int rowInd = dataGridView.CurrentCell.RowIndex;
+
+                if (0 <= rowInd && rowInd < dataGridView.RowCount &&
+                    0 <= colInd && colInd < dataGridView.ColumnCount &&
+                    dataGridView.Columns[colInd].Tag is ColumnOptions options)
+                {
+                    // display actual password in edit mode
+                    if (options.Kind == ColumnKind.Password)
+                    {
+                        object cellValue = SourceDataTable.DefaultView[rowInd][colInd];
+                        if (e.Control is TextBox textBox && cellValue != null && cellValue != DBNull.Value)
+                            textBox.Text = cellValue.ToString();
+                    }
+                }
+            }
         }
 
         private void dataGridView_CellValidating(object sender, DataGridViewCellValidatingEventArgs e)
@@ -288,12 +357,45 @@ namespace Scada.Admin.App.Forms
                 {
                     throw new ScadaException("Column not found.");
                 }
-                else
+                else if (dataColumn.Tag is ColumnOptions options)
                 {
                     DataGridViewRow row = dataGridView.Rows[rowInd];
-                    object val = row.Cells[dataColumnName].Value;
-                    ScadaUiUtils.ShowInfo(val?.ToString());
-                    //row.Cells[dataColumnName].Value = "aaa";
+                    DataGridViewCell cell = row.Cells[dataColumnName];
+                    object val = cell.Value;
+
+                    if (options.Kind == ColumnKind.Color)
+                    {
+                        // select color
+                        FrmColorSelect frmColorSelect = new FrmColorSelect
+                        {
+                            SelectedColor = val == null ? Color.Empty : StrToColor(val.ToString())
+                        };
+
+                        if (frmColorSelect.ShowDialog() == DialogResult.OK)
+                        {
+                            cell.Value = frmColorSelect.SelectedColor.Name;
+                            EndEdit();
+                        }
+                    }
+                    else if (options.Kind == ColumnKind.Path)
+                    {
+                        // browse for folder or file
+                    }
+                    else if (options.Kind == ColumnKind.SourceCode)
+                    {
+                        // edit source code
+                        FrmSourceCode frmSourceCode = new FrmSourceCode
+                        {
+                            MaxLength = options.MaxLength,
+                            SourceCode = val.ToString()
+                        };
+
+                        if (frmSourceCode.ShowDialog() == DialogResult.OK)
+                        {
+                            cell.Value = frmSourceCode.SourceCode;
+                            EndEdit();
+                        }
+                    }
                 }
             }
         }

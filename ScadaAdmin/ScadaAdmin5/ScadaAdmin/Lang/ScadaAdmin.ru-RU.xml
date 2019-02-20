@@ -243,6 +243,49 @@
     <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTable">
+    <Phrase key="btnCloseError">Закрыть</Phrase>
+    <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrevious.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount">из {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnApplyEdit.ToolTip">Применить редактирование</Phrase>
+    <Phrase key="btnCancelEdit.ToolTip">Отменить редактирование</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
+    <Phrase key="btnAddNew.ToolTip">Добавить новую строку</Phrase>
+    <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
+    <Phrase key="btnClear.ToolTip">Очистить таблицу</Phrase>
+    <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
+    <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
+    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
+    <Phrase key="ColumnLabel">Столбец: </Phrase>
+    <Phrase key="DeleteRowConfirm">Вы уверены, что хотите удалить строку?</Phrase>
+    <Phrase key="DeleteRowsConfirm">Вы уверены, что хотите удалить строки?</Phrase>
+    <Phrase key="ClearTableConfirm">Вы уверены, что хотите очистить таблицу?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
+    <Phrase key="RowsNotDeleted">Некоторые строки не были удалены, потому что на них есть ссылки.</Phrase>
+    <Phrase key="UniqueRequired">Для столбца &quot;{0}&quot; не допускаются дублирующиеся значения.</Phrase>
+    <Phrase key="KeyReferenced">На данный первичный ключ ссылается строка из таблицы &quot;{0}&quot;.</Phrase>
+    <Phrase key="DataNotExist">Не существуют данные для столбца &quot;{0}&quot;.</Phrase>
+    <Phrase key="DataChangeError">Ошибка при изменении данных в таблице</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmColorSelect">
+    <Phrase key="this">Выбор цвета</Phrase>
+    <Phrase key="lblSort">Сортировка:</Phrase>
+    <Phrase key="rbSortByAbc">По алфавиту</Phrase>
+    <Phrase key="rbSortByColor">По цвету</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmSourceCode">
+    <Phrase key="this">Исходный код</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Язык</Phrase>
     <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>
@@ -272,36 +315,6 @@
     <Phrase key="EmptyObject">Пустой объект</Phrase>
     <Phrase key="NoChannels">Каналы отсутствуют</Phrase>
     <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="btnCloseError">Закрыть</Phrase>
-    <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
-    <Phrase key="btnMovePrevious.ToolTip">Переместиться на предыдущую строку</Phrase>
-    <Phrase key="txtPosition.ToolTip">Текущая строка</Phrase>
-    <Phrase key="lblCount">из {0}</Phrase>
-    <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
-    <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
-    <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
-    <Phrase key="btnApplyEdit.ToolTip">Применить редактирование</Phrase>
-    <Phrase key="btnCancelEdit.ToolTip">Отменить редактирование</Phrase>
-    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
-    <Phrase key="btnAddNew.ToolTip">Добавить новую строку</Phrase>
-    <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
-    <Phrase key="btnClear.ToolTip">Очистить таблицу</Phrase>
-    <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
-    <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
-    <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
-    <Phrase key="ColumnLabel">Столбец: </Phrase>
-    <Phrase key="DeleteRowConfirm">Вы уверены, что хотите удалить строку?</Phrase>
-    <Phrase key="DeleteRowsConfirm">Вы уверены, что хотите удалить строки?</Phrase>
-    <Phrase key="ClearTableConfirm">Вы уверены, что хотите очистить таблицу?</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
-    <Phrase key="RowsNotDeleted">Некоторые строки не были удалены, потому что на них есть ссылки.</Phrase>
-    <Phrase key="UniqueRequired">Для столбца &quot;{0}&quot; не допускаются дублирующиеся значения.</Phrase>
-    <Phrase key="KeyReferenced">На данный первичный ключ ссылается строка из таблицы &quot;{0}&quot;.</Phrase>
-    <Phrase key="DataNotExist">Не существуют данные для столбца &quot;{0}&quot;.</Phrase>
-    <Phrase key="DataChangeError">Ошибка при изменении данных в таблице</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>

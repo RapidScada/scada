@@ -158,14 +158,26 @@
     <Compile Include="Forms\FrmAbout.designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmBaseTable.cs">
+    <Compile Include="Forms\Tables\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmBaseTable.Designer.cs">
+    <Compile Include="Forms\Tables\FrmBaseTable.Designer.cs">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmBaseTableGeneric.cs">
+    <Compile Include="Forms\Tables\FrmBaseTableGeneric.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmColorSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmColorSelect.designer.cs">
+      <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmSourceCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmSourceCode.designer.cs">
+      <DependentUpon>FrmSourceCode.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Tools\FrmCulture.cs">
       <SubType>Form</SubType>
@@ -247,8 +259,14 @@
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmBaseTable.resx">
+    <EmbeddedResource Include="Forms\Tables\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmColorSelect.resx">
+      <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmSourceCode.resx">
+      <DependentUpon>FrmSourceCode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\FrmCulture.resx">
       <DependentUpon>FrmCulture.cs</DependentUpon>

@@ -23,7 +23,7 @@
  * Modified : 2018
  */
 
-using Scada.Admin.App.Forms;
+using Scada.Admin.App.Forms.Tables;
 using Scada.Admin.Project;
 using Scada.Comm.Shell.Code;
 using Scada.Data.Entities;

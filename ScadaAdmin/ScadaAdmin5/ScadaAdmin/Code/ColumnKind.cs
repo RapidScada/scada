@@ -34,6 +34,8 @@ namespace Scada.Admin.App.Code
         Unspecified,
         PrimaryKey,
         Password,
-        Color
+        Color,
+        Path,
+        SourceCode
     }
 }

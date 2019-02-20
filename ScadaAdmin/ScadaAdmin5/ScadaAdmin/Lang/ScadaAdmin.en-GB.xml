@@ -243,6 +243,49 @@
     <Phrase key="UploadConfigComplete">Upload completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTable">
+    <Phrase key="btnCloseError">Close</Phrase>
+    <Phrase key="btnMoveFirst.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrevious.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount">of {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnApplyEdit.ToolTip">Apply edit operation</Phrase>
+    <Phrase key="btnCancelEdit.ToolTip">Cancel edit operation</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
+    <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
+    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
+    <Phrase key="btnClear.ToolTip">Clear table</Phrase>
+    <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
+    <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
+    <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
+    <Phrase key="ColumnLabel">Column: </Phrase>
+    <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
+    <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
+    <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
+    <Phrase key="RowsNotDeleted">Some rows have not been deleted because they are referenced.</Phrase>
+    <Phrase key="UniqueRequired">A duplicate value cannot be inserted into the &quot;{0}&quot; column.</Phrase>
+    <Phrase key="KeyReferenced">The primary key is referenced by a row from the &quot;{0}&quot; table.</Phrase>
+    <Phrase key="DataNotExist">No data exist for the &quot;{0}&quot; column.</Phrase>
+    <Phrase key="DataChangeError">Error changing table data</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmColorSelect">
+    <Phrase key="this">Select Color</Phrase>
+    <Phrase key="lblSort">Sort:</Phrase>
+    <Phrase key="rbSortByAbc">Alphabetically</Phrase>
+    <Phrase key="rbSortByColor">By color</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmSourceCode">
+    <Phrase key="this">Source Code</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Language</Phrase>
     <Phrase key="lblInfo">Changes will take effect after restarting the application.</Phrase>
@@ -272,36 +315,6 @@
     <Phrase key="EmptyObject">Empty object</Phrase>
     <Phrase key="NoChannels">No channels</Phrase>
     <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTable">
-    <Phrase key="btnCloseError">Close</Phrase>
-    <Phrase key="btnMoveFirst.ToolTip">Move first</Phrase>
-    <Phrase key="btnMovePrevious.ToolTip">Move previous</Phrase>
-    <Phrase key="txtPosition.ToolTip">Current position</Phrase>
-    <Phrase key="lblCount">of {0}</Phrase>
-    <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
-    <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
-    <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
-    <Phrase key="btnApplyEdit.ToolTip">Apply edit operation</Phrase>
-    <Phrase key="btnCancelEdit.ToolTip">Cancel edit operation</Phrase>
-    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
-    <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
-    <Phrase key="btnDelete.ToolTip">Delete</Phrase>
-    <Phrase key="btnClear.ToolTip">Clear table</Phrase>
-    <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
-    <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
-    <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
-    <Phrase key="ColumnLabel">Column: </Phrase>
-    <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
-    <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
-    <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmBaseTableGeneric">
-    <Phrase key="RowsNotDeleted">Some rows have not been deleted because they are referenced.</Phrase>
-    <Phrase key="UniqueRequired">A duplicate value cannot be inserted into the &quot;{0}&quot; column.</Phrase>
-    <Phrase key="KeyReferenced">The primary key is referenced by a row from the &quot;{0}&quot; table.</Phrase>
-    <Phrase key="DataNotExist">No data exist for the &quot;{0}&quot; column.</Phrase>
-    <Phrase key="DataChangeError">Error changing table data</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>

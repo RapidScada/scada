@@ -33,7 +33,7 @@ using System.Data;
 using System.Windows.Forms;
 using WinControl;
 
-namespace Scada.Admin.App.Forms
+namespace Scada.Admin.App.Forms.Tables
 {
     /// <summary>
     /// Form for editing a table of the configuration database that has a particular type.

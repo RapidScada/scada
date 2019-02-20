@@ -103,14 +103,13 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells with buttons.
         /// </summary>
-        private DataGridViewColumn NewButtonColumn(string dataPropertyName, ColumnOptions options = null)
+        private DataGridViewColumn NewButtonColumn(string dataPropertyName)
         {
             return new DataGridViewButtonColumn
             {
                 Name = dataPropertyName + "Button",
                 HeaderText = "",
                 DataPropertyName = dataPropertyName,
-                Tag = options,
                 Text = dataPropertyName,
                 UseColumnTextForButtonValue = true
             };
@@ -305,7 +304,7 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("FormulaID", new ColumnOptions(0, ushort.MaxValue)),
                 NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
-                NewTextBoxColumn("Source", new ColumnOptions(StringLength.SourceCode)),
+                NewTextBoxColumn("Source", new ColumnOptions(ColumnKind.SourceCode, StringLength.SourceCode)),
                 NewButtonColumn("Source"),
                 NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });
@@ -351,7 +350,7 @@ namespace Scada.Admin.App.Code
             return TranslateHeaders("InterfaceTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("ItfID", new ColumnOptions(1, ushort.MaxValue)),
-                NewTextBoxColumn("Name", new ColumnOptions(StringLength.Path)),
+                NewTextBoxColumn("Name", new ColumnOptions(ColumnKind.Path, StringLength.Path)),
                 NewButtonColumn("Name"),
                 NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });

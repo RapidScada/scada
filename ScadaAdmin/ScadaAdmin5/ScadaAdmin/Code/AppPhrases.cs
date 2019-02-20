@@ -90,6 +90,21 @@ namespace Scada.Admin.App.Code
         public static string UploadConfigComplete { get; private set; }
         public static string UploadConfigError { get; private set; }
 
+        // Scada.Admin.App.Forms.Tables.FrmBaseTable
+        public static string ColumnNotNull { get; private set; }
+        public static string GridViewError { get; private set; }
+        public static string ColumnLabel { get; private set; }
+        public static string DeleteRowConfirm { get; private set; }
+        public static string DeleteRowsConfirm { get; private set; }
+        public static string ClearTableConfirm { get; private set; }
+
+        // Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric
+        public static string RowsNotDeleted { get; private set; }
+        public static string UniqueRequired { get; private set; }
+        public static string KeyReferenced { get; private set; }
+        public static string DataNotExist { get; private set; }
+        public static string DataChangeError { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmCnlMap
         public static string InCnlByDevTitle { get; private set; }
         public static string InCnlByObjTitle { get; private set; }
@@ -106,21 +121,6 @@ namespace Scada.Admin.App.Code
         public static string LoadCulturesError { get; private set; }
         public static string CultureRequired { get; private set; }
         public static string CultureNotFound { get; private set; }
-
-        // Scada.Admin.App.Forms.FrmBaseTable
-        public static string ColumnNotNull { get; private set; }
-        public static string GridViewError { get; private set; }
-        public static string ColumnLabel { get; private set; }
-        public static string DeleteRowConfirm { get; private set; }
-        public static string DeleteRowsConfirm { get; private set; }
-        public static string ClearTableConfirm { get; private set; }
-
-        // Scada.Admin.App.Forms.FrmBaseTableGeneric
-        public static string RowsNotDeleted { get; private set; }
-        public static string UniqueRequired { get; private set; }
-        public static string KeyReferenced { get; private set; }
-        public static string DataNotExist { get; private set; }
-        public static string DataChangeError { get; private set; }
 
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
@@ -228,6 +228,21 @@ namespace Scada.Admin.App.Code
             UploadConfigComplete = dict.GetPhrase("UploadConfigComplete");
             UploadConfigError = dict.GetPhrase("UploadConfigError");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tables.FrmBaseTable");
+            ColumnNotNull = dict.GetPhrase("ColumnNotNull");
+            GridViewError = dict.GetPhrase("GridViewError");
+            ColumnLabel = dict.GetPhrase("ColumnLabel");
+            DeleteRowConfirm = dict.GetPhrase("DeleteRowConfirm");
+            DeleteRowsConfirm = dict.GetPhrase("DeleteRowsConfirm");
+            ClearTableConfirm = dict.GetPhrase("ClearTableConfirm");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric");
+            RowsNotDeleted = dict.GetPhrase("RowsNotDeleted");
+            UniqueRequired = dict.GetPhrase("UniqueRequired");
+            KeyReferenced = dict.GetPhrase("KeyReferenced");
+            DataNotExist = dict.GetPhrase("DataNotExist");
+            DataChangeError = dict.GetPhrase("DataChangeError");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");
             CultureRequired = dict.GetPhrase("CultureRequired");
@@ -244,21 +259,6 @@ namespace Scada.Admin.App.Code
             EmptyObject = dict.GetPhrase("EmptyObject");
             NoChannels = dict.GetPhrase("NoChannels");
             GenerateCnlMapError = dict.GetPhrase("GenerateCnlMapError");
-
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTable");
-            ColumnNotNull = dict.GetPhrase("ColumnNotNull");
-            GridViewError = dict.GetPhrase("GridViewError");
-            ColumnLabel = dict.GetPhrase("ColumnLabel");
-            DeleteRowConfirm = dict.GetPhrase("DeleteRowConfirm");
-            DeleteRowsConfirm = dict.GetPhrase("DeleteRowsConfirm");
-            ClearTableConfirm = dict.GetPhrase("ClearTableConfirm");
-
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmBaseTableGeneric");
-            RowsNotDeleted = dict.GetPhrase("RowsNotDeleted");
-            UniqueRequired = dict.GetPhrase("UniqueRequired");
-            KeyReferenced = dict.GetPhrase("KeyReferenced");
-            DataNotExist = dict.GetPhrase("DataNotExist");
-            DataChangeError = dict.GetPhrase("DataChangeError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
             FileNameEmpty = dict.GetPhrase("FileNameEmpty");
