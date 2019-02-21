@@ -173,7 +173,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void FrmColor_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tables.FrmColorSelect");
+            Translator.TranslateForm(this, GetType().FullName);
             FillListBox(ColorArr1);
             ActiveControl = lbColor;
         }

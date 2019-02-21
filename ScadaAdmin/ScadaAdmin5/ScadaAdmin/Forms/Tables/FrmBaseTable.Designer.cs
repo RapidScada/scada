@@ -48,6 +48,10 @@
             this.btnDelete = new System.Windows.Forms.ToolStripButton();
             this.btnClear = new System.Windows.Forms.ToolStripButton();
             this.sep4 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnCut = new System.Windows.Forms.ToolStripButton();
+            this.btnCopy = new System.Windows.Forms.ToolStripButton();
+            this.btnPaste = new System.Windows.Forms.ToolStripButton();
+            this.sep5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
@@ -85,6 +89,10 @@
             this.btnDelete,
             this.btnClear,
             this.sep4,
+            this.btnCut,
+            this.btnCopy,
+            this.btnPaste,
+            this.sep5,
             this.btnAutoSizeColumns});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
             this.bindingNavigator.MoveFirstItem = this.btnMoveFirst;
@@ -227,6 +235,41 @@
             this.sep4.Name = "sep4";
             this.sep4.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnCut
+            // 
+            this.btnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCut.Image = ((System.Drawing.Image)(resources.GetObject("btnCut.Image")));
+            this.btnCut.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCut.Name = "btnCut";
+            this.btnCut.Size = new System.Drawing.Size(23, 22);
+            this.btnCut.Text = "Cut (Ctrl+X)";
+            this.btnCut.Click += new System.EventHandler(this.btnCut_Click);
+            // 
+            // btnCopy
+            // 
+            this.btnCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCopy.Image = ((System.Drawing.Image)(resources.GetObject("btnCopy.Image")));
+            this.btnCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCopy.Name = "btnCopy";
+            this.btnCopy.Size = new System.Drawing.Size(23, 22);
+            this.btnCopy.Text = "Copy (Ctrl+C)";
+            this.btnCopy.Click += new System.EventHandler(this.btnCopy_Click);
+            // 
+            // btnPaste
+            // 
+            this.btnPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnPaste.Image = ((System.Drawing.Image)(resources.GetObject("btnPaste.Image")));
+            this.btnPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnPaste.Name = "btnPaste";
+            this.btnPaste.Size = new System.Drawing.Size(23, 22);
+            this.btnPaste.Text = "Paste (Ctrl+V)";
+            this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
+            // 
+            // sep5
+            // 
+            this.sep5.Name = "sep5";
+            this.sep5.Size = new System.Drawing.Size(6, 25);
+            // 
             // btnAutoSizeColumns
             // 
             this.btnAutoSizeColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -299,10 +342,12 @@
             this.Controls.Add(this.dataGridView);
             this.Controls.Add(this.bindingNavigator);
             this.Controls.Add(this.pnlError);
+            this.KeyPreview = true;
             this.Name = "FrmBaseTable";
             this.Text = "FrmBaseTable";
             this.Load += new System.EventHandler(this.FrmBaseTable_Load);
             this.Shown += new System.EventHandler(this.FrmBaseTable_Shown);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmBaseTable_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).EndInit();
             this.bindingNavigator.ResumeLayout(false);
             this.bindingNavigator.PerformLayout();
@@ -341,5 +386,9 @@
         private System.Windows.Forms.ToolStripButton btnCancelEdit;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.ToolStripButton btnCut;
+        private System.Windows.Forms.ToolStripButton btnCopy;
+        private System.Windows.Forms.ToolStripButton btnPaste;
+        private System.Windows.Forms.ToolStripSeparator sep5;
     }
 }

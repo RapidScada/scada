@@ -41,9 +41,25 @@ namespace Scada.Admin.App.Forms.Tables
     public partial class FrmBaseTable : Form
     {
         /// <summary>
+        /// Represents a buffer for copying cells.
+        /// <para>Представляет буфер для копирования ячеек.</para>
+        /// </summary>
+        [Serializable]
+        private class CellBuffer
+        {
+            public string ColumnName { get; set; }
+            public object CellValue { get; set; }
+        }
+
+
+        /// <summary>
         /// The string to display instead of password.
         /// </summary>
-        private string DisplayPassword = "●●●●●";
+        private const string DisplayPassword = "●●●●●";
+        /// <summary>
+        /// The format for copying cell values to the clipboard.
+        /// </summary>
+        private static string ClipboardFormat = typeof(FrmBaseTable).FullName;
 
         protected readonly AppData appData; // the common data of the application
 
@@ -322,6 +338,86 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Copies or cuts the current cell value.
+        /// </summary>
+        private void CopyCell(bool cut)
+        {
+            DataGridViewCell cell = dataGridView.CurrentCell;
+
+            if (cell != null)
+            {
+                DataGridViewColumn col = dataGridView.Columns[cell.ColumnIndex];
+
+                if (col is DataGridViewTextBoxColumn)
+                {
+                    if (cell.IsInEditMode)
+                    {
+                        if (dataGridView.EditingControl is TextBox textBox)
+                            textBox.Cut();
+                    }
+                    else
+                    {
+                        string valStr = cell.Value?.ToString();
+
+                        if (string.IsNullOrEmpty(valStr))
+                            Clipboard.Clear();
+                        else
+                            Clipboard.SetText(valStr);
+
+                        if (cut)
+                            cell.Value = cell.ValueType == typeof(string) ? "" : (object)DBNull.Value;
+                    }
+                }
+                else if (col is DataGridViewComboBoxColumn)
+                {
+                    Clipboard.SetData(ClipboardFormat, new CellBuffer { ColumnName = col.Name, CellValue = cell.Value });
+
+                    if (cut)
+                        cell.Value = DBNull.Value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pastes the current cell value.
+        /// </summary>
+        private void PasteCell()
+        {
+            DataGridViewCell cell = dataGridView.CurrentCell;
+
+            if (cell != null)
+            {
+                DataGridViewColumn col = dataGridView.Columns[cell.ColumnIndex];
+
+                if (col is DataGridViewTextBoxColumn)
+                {
+                    if (dataGridView.BeginEdit(true))
+                    {
+                        if (dataGridView.EditingControl is TextBox textBox)
+                            textBox.Paste();
+                    }
+                }
+                else if (col is DataGridViewComboBoxColumn comboBoxColumn && 
+                    Clipboard.GetData(ClipboardFormat) is CellBuffer cellBuffer &&
+                    comboBoxColumn.DataSource is DataTable table)
+                {
+                    string sortBuf = table.DefaultView.Sort;
+
+                    try
+                    {
+                        table.DefaultView.Sort = comboBoxColumn.ValueMember;
+                        if (table.DefaultView.Find(cellBuffer.CellValue) >= 0)
+                            cell.Value = cellBuffer.CellValue;
+                    }
+                    finally
+                    {
+                        table.DefaultView.Sort = sortBuf;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Loads the table data.
         /// </summary>
         protected virtual void LoadTableData()
@@ -363,7 +459,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tables.FrmBaseTable");
+            Translator.TranslateForm(this, typeof(FrmBaseTable).FullName);
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -382,6 +478,28 @@ namespace Scada.Admin.App.Forms.Tables
         private void FrmBaseTable_Shown(object sender, EventArgs e)
         {
             LoadTableData();
+        }
+
+        private void FrmBaseTable_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.X:
+                        CopyCell(true);
+                        e.Handled = true;
+                        break;
+                    case Keys.C:
+                        CopyCell(false);
+                        e.Handled = true;
+                        break;
+                    case Keys.V:
+                        PasteCell();
+                        e.Handled = true;
+                        break;
+                }
+            }
         }
 
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -522,6 +640,21 @@ namespace Scada.Admin.App.Forms.Tables
             {
                 ClearTableData();
             }
+        }
+
+        private void btnCut_Click(object sender, EventArgs e)
+        {
+            CopyCell(true);
+        }
+
+        private void btnCopy_Click(object sender, EventArgs e)
+        {
+            CopyCell(false);
+        }
+
+        private void btnPaste_Click(object sender, EventArgs e)
+        {
+            PasteCell();
         }
 
         private void btnAutoSizeColumns_Click(object sender, EventArgs e)

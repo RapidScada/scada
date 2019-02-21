@@ -128,7 +128,7 @@ namespace Scada.Admin.App.Forms.Deployment
 
         private void FrmConnSettings_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmConnSettings", toolTip);
+            Translator.TranslateForm(this, GetType().FullName, toolTip);
             SettingsToControls();
         }
 

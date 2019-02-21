@@ -185,7 +185,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmEventTableEdit_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmEventTable");
+            Translator.TranslateForm(this, GetType().FullName);
             sfdCsv.Filter = ServerShellPhrases.CsvFileFilter;
 
             if (lblCount.Text.Contains("{0}"))

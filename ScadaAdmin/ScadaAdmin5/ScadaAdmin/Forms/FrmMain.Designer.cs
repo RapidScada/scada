@@ -41,10 +41,6 @@
             this.miFileCloseProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
-            this.miEdit = new System.Windows.Forms.ToolStripMenuItem();
-            this.miEditCut = new System.Windows.Forms.ToolStripMenuItem();
-            this.miEditCopy = new System.Windows.Forms.ToolStripMenuItem();
-            this.miEditPaste = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeploy = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployInstanceProfile = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployDownloadConfig = new System.Windows.Forms.ToolStripMenuItem();
@@ -52,6 +48,7 @@
             this.miDeployInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.miTools = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCnlMap = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsCheckIntegrity = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCulture = new System.Windows.Forms.ToolStripMenuItem();
@@ -70,9 +67,6 @@
             this.btnFileSave = new System.Windows.Forms.ToolStripButton();
             this.btnFileSaveAll = new System.Windows.Forms.ToolStripButton();
             this.toolSep1 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnEditCut = new System.Windows.Forms.ToolStripButton();
-            this.btnEditCopy = new System.Windows.Forms.ToolStripButton();
-            this.btnEditPaste = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
@@ -130,7 +124,6 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
-            this.miToolsCheckIntegrity = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -149,7 +142,6 @@
             // 
             this.msMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miFile,
-            this.miEdit,
             this.miDeploy,
             this.miTools,
             this.miWindow,
@@ -243,43 +235,6 @@
             this.miFileExit.Text = "Exit";
             this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
             // 
-            // miEdit
-            // 
-            this.miEdit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.miEditCut,
-            this.miEditCopy,
-            this.miEditPaste});
-            this.miEdit.Name = "miEdit";
-            this.miEdit.Size = new System.Drawing.Size(39, 20);
-            this.miEdit.Text = "&Edit";
-            // 
-            // miEditCut
-            // 
-            this.miEditCut.Image = ((System.Drawing.Image)(resources.GetObject("miEditCut.Image")));
-            this.miEditCut.Name = "miEditCut";
-            this.miEditCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.miEditCut.Size = new System.Drawing.Size(144, 22);
-            this.miEditCut.Text = "Cut";
-            this.miEditCut.Click += new System.EventHandler(this.miEditCut_Click);
-            // 
-            // miEditCopy
-            // 
-            this.miEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("miEditCopy.Image")));
-            this.miEditCopy.Name = "miEditCopy";
-            this.miEditCopy.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.miEditCopy.Size = new System.Drawing.Size(144, 22);
-            this.miEditCopy.Text = "Copy";
-            this.miEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
-            // 
-            // miEditPaste
-            // 
-            this.miEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("miEditPaste.Image")));
-            this.miEditPaste.Name = "miEditPaste";
-            this.miEditPaste.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.miEditPaste.Size = new System.Drawing.Size(144, 22);
-            this.miEditPaste.Text = "Paste";
-            this.miEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
-            // 
             // miDeploy
             // 
             this.miDeploy.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -343,6 +298,13 @@
             this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
+            // 
+            // miToolsCheckIntegrity
+            // 
+            this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
+            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCheckIntegrity.Text = "Check Integrity";
+            this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
             // 
             // miToolsSep1
             // 
@@ -444,10 +406,7 @@
             this.btnFileOpenProject,
             this.btnFileSave,
             this.btnFileSaveAll,
-            this.toolSep1,
-            this.btnEditCut,
-            this.btnEditCopy,
-            this.btnEditPaste});
+            this.toolSep1});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(684, 25);
@@ -497,36 +456,6 @@
             // 
             this.toolSep1.Name = "toolSep1";
             this.toolSep1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // btnEditCut
-            // 
-            this.btnEditCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditCut.Image = ((System.Drawing.Image)(resources.GetObject("btnEditCut.Image")));
-            this.btnEditCut.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditCut.Name = "btnEditCut";
-            this.btnEditCut.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCut.ToolTipText = "Cut (Ctrl+X)";
-            this.btnEditCut.Click += new System.EventHandler(this.miEditCut_Click);
-            // 
-            // btnEditCopy
-            // 
-            this.btnEditCopy.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditCopy.Image = ((System.Drawing.Image)(resources.GetObject("btnEditCopy.Image")));
-            this.btnEditCopy.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditCopy.Name = "btnEditCopy";
-            this.btnEditCopy.Size = new System.Drawing.Size(23, 22);
-            this.btnEditCopy.ToolTipText = "Copy (Ctrl+C)";
-            this.btnEditCopy.Click += new System.EventHandler(this.miEditCopy_Click);
-            // 
-            // btnEditPaste
-            // 
-            this.btnEditPaste.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnEditPaste.Image = ((System.Drawing.Image)(resources.GetObject("btnEditPaste.Image")));
-            this.btnEditPaste.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnEditPaste.Name = "btnEditPaste";
-            this.btnEditPaste.Size = new System.Drawing.Size(23, 22);
-            this.btnEditPaste.ToolTipText = "Paste (Ctrl+V)";
-            this.btnEditPaste.Click += new System.EventHandler(this.miEditPaste_Click);
             // 
             // ssMain
             // 
@@ -1010,13 +939,6 @@
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
-            // miToolsCheckIntegrity
-            // 
-            this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
-            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
-            this.miToolsCheckIntegrity.Text = "Check Integrity";
-            this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1067,16 +989,12 @@
         private System.Windows.Forms.Splitter splVert;
         private System.Windows.Forms.Panel pnlRight;
         private System.Windows.Forms.ToolStripMenuItem miFile;
-        private System.Windows.Forms.ToolStripMenuItem miEdit;
         private System.Windows.Forms.ToolStripMenuItem miFileNewProject;
         private System.Windows.Forms.ToolStripMenuItem miFileOpenProject;
         private System.Windows.Forms.ToolStripMenuItem miFileSave;
         private System.Windows.Forms.ToolStripMenuItem miFileSaveAll;
         private System.Windows.Forms.ToolStripSeparator miFileSep1;
         private System.Windows.Forms.ToolStripMenuItem miFileExit;
-        private System.Windows.Forms.ToolStripMenuItem miEditCut;
-        private System.Windows.Forms.ToolStripMenuItem miEditCopy;
-        private System.Windows.Forms.ToolStripMenuItem miEditPaste;
         private System.Windows.Forms.ToolStripMenuItem miTools;
         private System.Windows.Forms.ToolStripMenuItem miToolsOptions;
         private System.Windows.Forms.ToolStripMenuItem miHelp;
@@ -1127,9 +1045,6 @@
         private System.Windows.Forms.ToolStripButton btnFileSave;
         private System.Windows.Forms.ToolStripButton btnFileSaveAll;
         private System.Windows.Forms.ToolStripSeparator toolSep1;
-        private System.Windows.Forms.ToolStripButton btnEditCut;
-        private System.Windows.Forms.ToolStripButton btnEditCopy;
-        private System.Windows.Forms.ToolStripButton btnEditPaste;
         private System.Windows.Forms.ToolStripMenuItem miDeploy;
         private System.Windows.Forms.ToolStripMenuItem miDeployDownloadConfig;
         private System.Windows.Forms.ToolStripMenuItem miDeployUploadConfig;

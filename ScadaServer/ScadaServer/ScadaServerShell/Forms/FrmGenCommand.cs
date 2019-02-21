@@ -91,7 +91,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmDeviceCommand_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenCommand");
+            Translator.TranslateForm(this, GetType().FullName);
         }
 
         private void rbCmdType_CheckedChanged(object sender, EventArgs e)

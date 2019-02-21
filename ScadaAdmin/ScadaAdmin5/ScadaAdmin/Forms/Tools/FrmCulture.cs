@@ -141,7 +141,7 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void FrmCulture_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tools.FrmCulture");
+            Translator.TranslateForm(this, GetType().FullName);
             LoadCultures();
         }
 

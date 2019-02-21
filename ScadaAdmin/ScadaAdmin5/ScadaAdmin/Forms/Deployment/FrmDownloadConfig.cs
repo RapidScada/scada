@@ -182,9 +182,9 @@ namespace Scada.Admin.App.Forms.Deployment
 
         private void FrmDownloadConfig_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
-            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlTransferSettings");
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
+            Translator.TranslateForm(this, ctrlProfileSelector.GetType().FullName);
+            Translator.TranslateForm(this, ctrlTransferSettings.GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName);
 
             if (ScadaUtils.IsRunningOnMono)
             {

@@ -107,7 +107,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmGenerator_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenerator");
+            Translator.TranslateForm(this, GetType().FullName);
             InitServerComm();
             DisplayCommSettings();
         }

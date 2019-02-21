@@ -216,7 +216,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmArchive_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmArchive");
+            Translator.TranslateForm(this, GetType().FullName);
             SetFormTitle();
 
             if (environment.AgentClient == null)

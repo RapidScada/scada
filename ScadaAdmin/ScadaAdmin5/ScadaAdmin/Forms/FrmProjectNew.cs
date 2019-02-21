@@ -241,7 +241,7 @@ namespace Scada.Admin.App.Forms
         private void FrmNewProject_Load(object sender, EventArgs e)
         {
             // translate the form
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmProjectNew");
+            Translator.TranslateForm(this, GetType().FullName);
             fbdLocation.Description = AppPhrases.ChooseProjectLocation;
             ofdTemplate.Filter = AppPhrases.ProjectFileFilter;
 

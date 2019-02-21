@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Tables;
@@ -144,7 +144,7 @@ namespace Scada.Server.Ctrl
             Text += " - " + baseAdapter.TableName + tableTitle;
             dataGridView.AutoGenerateColumns = true;
             bindingSource.DataSource = dataTable;
-            ScadaUiUtils.AutoResizeColumns(dataGridView);
+            ScadaUiUtils.AutoSizeColumns(dataGridView);
         }
 
         private void btnRefresh_Click(object sender, EventArgs e)
@@ -158,7 +158,7 @@ namespace Scada.Server.Ctrl
                 try { dataTable.DefaultView.RowFilter = txtFilter.Text; }
                 catch { txtFilter.Text = ""; }
                 bindingSource.DataSource = dataTable;
-                ScadaUiUtils.AutoResizeColumns(dataGridView);
+                ScadaUiUtils.AutoSizeColumns(dataGridView);
             }
         }
 

@@ -259,6 +259,9 @@
     <Phrase key="btnAddNew.ToolTip">Add new</Phrase>
     <Phrase key="btnDelete.ToolTip">Delete</Phrase>
     <Phrase key="btnClear.ToolTip">Clear table</Phrase>
+    <Phrase key="btnCut.ToolTip">Cut (Ctrl+X)</Phrase>
+    <Phrase key="btnCopy.ToolTip">Copy (Ctrl+C)</Phrase>
+    <Phrase key="btnPaste.ToolTip">Paste (Ctrl+V)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
     <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
     <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
@@ -361,10 +364,6 @@
     <Phrase key="miFileClose">Close</Phrase>
     <Phrase key="miFileCloseProject">Close Project</Phrase>
     <Phrase key="miFileExit">Exit</Phrase>
-    <Phrase key="miEdit">&amp;Edit</Phrase>
-    <Phrase key="miEditCut">Cut</Phrase>
-    <Phrase key="miEditCopy">Copy</Phrase>
-    <Phrase key="miEditPaste">Paste</Phrase>
     <Phrase key="miDeploy">&amp;Deploy</Phrase>
     <Phrase key="miDeployInstanceProfile">Deployment Profile...</Phrase>
     <Phrase key="miDeployDownloadConfig">Download Configuration...</Phrase>
@@ -387,9 +386,6 @@
     <Phrase key="btnFileOpenProject.ToolTip">Open Project (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Save (Ctrl+S)</Phrase>
     <Phrase key="btnFileSaveAll.ToolTip">Save All</Phrase>
-    <Phrase key="btnEditCut.ToolTip">Cut (Ctrl+X)</Phrase>
-    <Phrase key="btnEditCopy.ToolTip">Copy (Ctrl+C)</Phrase>
-    <Phrase key="btnEditPaste.ToolTip">Paste (Ctrl+V)</Phrase>
     <Phrase key="miProjectOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miProjectRename">Rename Project</Phrase>
     <Phrase key="miProjectProperties">Properties</Phrase>

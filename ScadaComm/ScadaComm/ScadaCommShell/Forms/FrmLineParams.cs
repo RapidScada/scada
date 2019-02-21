@@ -117,7 +117,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmLineParams_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineParams", ctrlLineReqSequence.toolTip);
+            Translator.TranslateForm(this, GetType().FullName, ctrlLineReqSequence.toolTip);
             Text = string.Format(CommShellPhrases.LineParamsTitle, commLine.Number);
 
             ChildFormTag.MainFormMessage += ChildFormTag_MainFormMessage;

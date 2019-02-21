@@ -104,7 +104,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmStats_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmStats");
+            Translator.TranslateForm(this, GetType().FullName);
             InitRefresh();
             tmrRefresh.Start();
         }

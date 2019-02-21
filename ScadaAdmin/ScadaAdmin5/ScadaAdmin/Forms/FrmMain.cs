@@ -155,7 +155,7 @@ namespace Scada.Admin.App.Forms
 
             if (adminDictLoaded)
             {
-                Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmMain", null,
+                Translator.TranslateForm(this, GetType().FullName, null,
                     cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine, cmsDevice);
                 Text = AppPhrases.EmptyTitle;
                 wctrlMain.MessageText = AppPhrases.WelcomeMessage;
@@ -209,10 +209,6 @@ namespace Scada.Admin.App.Forms
         {
             miFileSave.Enabled = btnFileSave.Enabled = false;
             miFileSaveAll.Enabled = btnFileSaveAll.Enabled = false;
-
-            miEditCut.Enabled = btnEditCut.Enabled = false;
-            miEditCopy.Enabled = btnEditCopy.Enabled = false;
-            miEditPaste.Enabled = btnEditPaste.Enabled = false;
         }
 
         /// <summary>
@@ -1042,21 +1038,6 @@ namespace Scada.Admin.App.Forms
         private void miFileExit_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void miEditCut_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void miEditCopy_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void miEditPaste_Click(object sender, EventArgs e)
-        {
-
         }
 
         private void miDeploy_DropDownOpening(object sender, EventArgs e)

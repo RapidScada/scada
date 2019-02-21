@@ -96,7 +96,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void FrmEditSource_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tables.FrmSourceCode");
+            Translator.TranslateForm(this, GetType().FullName);
             txtSourceCode.MaxLength = MaxLength;
             string sourceCode = Normalize(SourceCode);
             txtSourceCode.Text = sourceCode.Length <= MaxLength ? sourceCode : sourceCode.Substring(0, MaxLength); 

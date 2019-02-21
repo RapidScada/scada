@@ -125,7 +125,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmDeviceData_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDeviceData");
+            Translator.TranslateForm(this, GetType().FullName);
             Text = string.Format(Text, kp.Number);
             InitRefresh();
             tmrRefresh.Start();

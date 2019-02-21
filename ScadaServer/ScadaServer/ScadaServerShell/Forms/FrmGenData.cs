@@ -68,7 +68,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmGenData_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenData");
+            Translator.TranslateForm(this, GetType().FullName);
         }
 
         private void rbArcData_CheckedChanged(object sender, EventArgs e)

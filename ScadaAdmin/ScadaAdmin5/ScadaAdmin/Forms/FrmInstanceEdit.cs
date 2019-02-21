@@ -178,7 +178,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmInstanceEdit_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmInstanceEdit");
+            Translator.TranslateForm(this, GetType().FullName);
 
             if (Mode == FormOperatingMode.New)
             {

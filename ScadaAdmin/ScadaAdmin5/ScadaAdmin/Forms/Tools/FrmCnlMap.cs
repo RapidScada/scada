@@ -145,7 +145,7 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void FrmCnlMap_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Tools.FrmCnlMap");
+            Translator.TranslateForm(this, GetType().FullName);
         }
 
         private void btnOK_Click(object sender, EventArgs e)

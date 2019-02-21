@@ -94,7 +94,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmDeviceCommand_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDeviceCommand");
+            Translator.TranslateForm(this, GetType().FullName);
             Text = string.Format(Text, kp.Caption);
             AdjustControls();
         }

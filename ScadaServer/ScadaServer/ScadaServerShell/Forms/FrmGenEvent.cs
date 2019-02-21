@@ -67,7 +67,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmGenEvent_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmGenEvent");
+            Translator.TranslateForm(this, GetType().FullName);
         }
 
         private void btnSetCurTime_Click(object sender, EventArgs e)

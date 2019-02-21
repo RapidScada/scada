@@ -259,6 +259,9 @@
     <Phrase key="btnAddNew.ToolTip">Добавить новую строку</Phrase>
     <Phrase key="btnDelete.ToolTip">Удалить</Phrase>
     <Phrase key="btnClear.ToolTip">Очистить таблицу</Phrase>
+    <Phrase key="btnCut.ToolTip">Вырезать (Ctrl+X)</Phrase>
+    <Phrase key="btnCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
+    <Phrase key="btnPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
     <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
@@ -361,10 +364,6 @@
     <Phrase key="miFileClose">Закрыть</Phrase>
     <Phrase key="miFileCloseProject">Закрыть проект</Phrase>
     <Phrase key="miFileExit">Выход</Phrase>
-    <Phrase key="miEdit">&amp;Правка</Phrase>
-    <Phrase key="miEditCut">Вырезать</Phrase>
-    <Phrase key="miEditCopy">Копировать</Phrase>
-    <Phrase key="miEditPaste">Вставить</Phrase>
     <Phrase key="miDeploy">&amp;Развертывание</Phrase>
     <Phrase key="miDeployInstanceProfile">Профиль развёртывания...</Phrase>
     <Phrase key="miDeployDownloadConfig">Скачать конфигурацию...</Phrase>
@@ -387,9 +386,6 @@
     <Phrase key="btnFileOpenProject.ToolTip">Открыть проект (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Сохранить (Ctrl+S)</Phrase>
     <Phrase key="btnFileSaveAll.ToolTip">Сохранить все</Phrase>
-    <Phrase key="btnEditCut.ToolTip">Вырезать (Ctrl+X)</Phrase>
-    <Phrase key="btnEditCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
-    <Phrase key="btnEditPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
     <Phrase key="miProjectOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miProjectRename">Переименовать проект</Phrase>
     <Phrase key="miProjectProperties">Свойства</Phrase>
