@@ -438,7 +438,7 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("RoleTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("RoleID", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("RoleID", new ColumnOptions(0, ushort.MaxValue)),
                 NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewTextBoxColumn("Descr", new ColumnOptions(StringLength.Description))
             });

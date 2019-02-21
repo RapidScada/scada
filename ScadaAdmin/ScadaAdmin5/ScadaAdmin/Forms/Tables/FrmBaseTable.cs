@@ -397,9 +397,10 @@ namespace Scada.Admin.App.Forms.Tables
                             textBox.Paste();
                     }
                 }
-                else if (col is DataGridViewComboBoxColumn comboBoxColumn && 
+                else if (col is DataGridViewComboBoxColumn comboBoxColumn &&
+                    comboBoxColumn.DataSource is DataTable table &&
                     Clipboard.GetData(ClipboardFormat) is CellBuffer cellBuffer &&
-                    comboBoxColumn.DataSource is DataTable table)
+                    cellBuffer.ColumnName == col.Name)
                 {
                     string sortBuf = table.DefaultView.Sort;
 
