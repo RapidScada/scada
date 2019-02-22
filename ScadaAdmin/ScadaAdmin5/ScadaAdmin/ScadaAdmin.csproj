@@ -173,6 +173,12 @@
     <Compile Include="Forms\Tables\FrmColorSelect.designer.cs">
       <DependentUpon>FrmColorSelect.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tables\FrmFind.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmFind.designer.cs">
+      <DependentUpon>FrmFind.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Tables\FrmSourceCode.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -264,6 +270,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tables\FrmColorSelect.resx">
       <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmFind.resx">
+      <DependentUpon>FrmFind.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tables\FrmSourceCode.resx">
       <DependentUpon>FrmSourceCode.cs</DependentUpon>

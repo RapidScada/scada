@@ -262,6 +262,7 @@
     <Phrase key="btnCut.ToolTip">Cut (Ctrl+X)</Phrase>
     <Phrase key="btnCopy.ToolTip">Copy (Ctrl+C)</Phrase>
     <Phrase key="btnPaste.ToolTip">Paste (Ctrl+V)</Phrase>
+    <Phrase key="btnFind.ToolTip">Find and Replace (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
     <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
     <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
@@ -284,6 +285,21 @@
     <Phrase key="rbSortByColor">By color</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFind">
+    <Phrase key="this">Find and Replace</Phrase>
+    <Phrase key="lblColumn">Column</Phrase>
+    <Phrase key="lblFind">Find what</Phrase>
+    <Phrase key="lblReplaceWith">Replace with</Phrase>
+    <Phrase key="chkCaseSensitive">Match case</Phrase>
+    <Phrase key="chkWholeCellOnly">Match whole cell</Phrase>
+    <Phrase key="btnFindNext">FindNext</Phrase>
+    <Phrase key="btnReplace">Replace</Phrase>
+    <Phrase key="btnReplaceAll">Replace All</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ValueNotFound">The specified value was not found.</Phrase>
+    <Phrase key="SearchComplete">Search completed.</Phrase>
+    <Phrase key="ReplaceCount">{0} occurrence(s) replaced.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmSourceCode">
     <Phrase key="this">Source Code</Phrase>

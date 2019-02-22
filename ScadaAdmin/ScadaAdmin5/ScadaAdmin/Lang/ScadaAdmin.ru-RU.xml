@@ -262,6 +262,7 @@
     <Phrase key="btnCut.ToolTip">Вырезать (Ctrl+X)</Phrase>
     <Phrase key="btnCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
     <Phrase key="btnPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
+    <Phrase key="btnFind.ToolTip">Найти и заменить (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
     <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
@@ -284,6 +285,21 @@
     <Phrase key="rbSortByColor">По цвету</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFind">
+    <Phrase key="this">Найти и заменить</Phrase>
+    <Phrase key="lblColumn">Столбец</Phrase>
+    <Phrase key="lblFind">Найти</Phrase>
+    <Phrase key="lblReplaceWith">Заменить на</Phrase>
+    <Phrase key="chkCaseSensitive">Учитывать регистр</Phrase>
+    <Phrase key="chkWholeCellOnly">Только ячейку целиком</Phrase>
+    <Phrase key="btnFindNext">Найти далее</Phrase>
+    <Phrase key="btnReplace">Заменить</Phrase>
+    <Phrase key="btnReplaceAll">Заменить все</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ValueNotFound">Указанное значение не найдено.</Phrase>
+    <Phrase key="SearchComplete">Поиск завершён.</Phrase>
+    <Phrase key="ReplaceCount">{0} вхождений заменено.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmSourceCode">
     <Phrase key="this">Исходный код</Phrase>

@@ -52,6 +52,7 @@
             this.btnCopy = new System.Windows.Forms.ToolStripButton();
             this.btnPaste = new System.Windows.Forms.ToolStripButton();
             this.sep5 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnFind = new System.Windows.Forms.ToolStripButton();
             this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
@@ -93,6 +94,7 @@
             this.btnCopy,
             this.btnPaste,
             this.sep5,
+            this.btnFind,
             this.btnAutoSizeColumns});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
             this.bindingNavigator.MoveFirstItem = this.btnMoveFirst;
@@ -270,6 +272,16 @@
             this.sep5.Name = "sep5";
             this.sep5.Size = new System.Drawing.Size(6, 25);
             // 
+            // btnFind
+            // 
+            this.btnFind.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFind.Image = ((System.Drawing.Image)(resources.GetObject("btnFind.Image")));
+            this.btnFind.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFind.Name = "btnFind";
+            this.btnFind.Size = new System.Drawing.Size(23, 22);
+            this.btnFind.Text = "Find and Replace (Ctrl+F)";
+            this.btnFind.Click += new System.EventHandler(this.btnFind_Click);
+            // 
             // btnAutoSizeColumns
             // 
             this.btnAutoSizeColumns.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -347,6 +359,7 @@
             this.Text = "FrmBaseTable";
             this.Load += new System.EventHandler(this.FrmBaseTable_Load);
             this.Shown += new System.EventHandler(this.FrmBaseTable_Shown);
+            this.VisibleChanged += new System.EventHandler(this.FrmBaseTable_VisibleChanged);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmBaseTable_KeyDown);
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).EndInit();
             this.bindingNavigator.ResumeLayout(false);
@@ -390,5 +403,6 @@
         private System.Windows.Forms.ToolStripButton btnCopy;
         private System.Windows.Forms.ToolStripButton btnPaste;
         private System.Windows.Forms.ToolStripSeparator sep5;
+        private System.Windows.Forms.ToolStripButton btnFind;
     }
 }

@@ -62,6 +62,7 @@ namespace Scada.Admin.App.Forms.Tables
         private static string ClipboardFormat = typeof(FrmBaseTable).FullName;
 
         protected readonly AppData appData; // the common data of the application
+        private FrmFind frmFind;            // the find and replace form
 
 
         /// <summary>
@@ -79,19 +80,9 @@ namespace Scada.Admin.App.Forms.Tables
             : this()
         {
             this.appData = appData ?? throw new ArgumentNullException("appData");
+            frmFind = null;
         }
 
-
-        /// <summary>
-        /// Gets the source data table.
-        /// </summary>
-        private DataTable SourceDataTable
-        {
-            get
-            {
-                return (DataTable)bindingSource.DataSource;
-            }
-        }
 
         /// <summary>
         /// Gets the directory of the interface files.
@@ -101,6 +92,28 @@ namespace Scada.Admin.App.Forms.Tables
             get
             {
                 return "";
+            }
+        }
+
+        /// <summary>
+        /// Gets the source data table.
+        /// </summary>
+        public DataTable SourceDataTable
+        {
+            get
+            {
+                return (DataTable)bindingSource.DataSource ?? throw new ScadaException("Source data table is null.");
+            }
+        }
+
+        /// <summary>
+        /// Gets the data grid view control.
+        /// </summary>
+        public DataGridView DataGridView
+        {
+            get
+            {
+                return dataGridView;
             }
         }
 
@@ -184,28 +197,6 @@ namespace Scada.Admin.App.Forms.Tables
             }
 
             return string.IsNullOrEmpty(errMsg);
-        }
-
-        /// <summary>
-        /// Commits and ends the edit operation on the current cell and row.
-        /// </summary>
-        private bool EndEdit()
-        {
-            if (dataGridView.EndEdit())
-            {
-                if (dataGridView.CurrentRow == null ||
-                    ValidateRow(dataGridView.CurrentRow.Index, out string errMsg))
-                {
-                    bindingSource.EndEdit();
-                    return true;
-                }
-                else
-                {
-                    ScadaUiUtils.ShowError(errMsg);
-                }
-            }
-
-            return false;
         }
 
         /// <summary>
@@ -449,6 +440,28 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Commits and ends the edit operation on the current cell and row.
+        /// </summary>
+        public bool EndEdit()
+        {
+            if (dataGridView.EndEdit())
+            {
+                if (dataGridView.CurrentRow == null ||
+                    ValidateRow(dataGridView.CurrentRow.Index, out string errMsg))
+                {
+                    bindingSource.EndEdit();
+                    return true;
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
         /// Prepares to close all forms.
         /// </summary>
         public void PrepareToClose()
@@ -499,9 +512,24 @@ namespace Scada.Admin.App.Forms.Tables
                         PasteCell();
                         e.Handled = true;
                         break;
+                    case Keys.F:
+                        btnFind_Click(null, null);
+                        e.Handled = true;
+                        break;
                 }
             }
         }
+
+        private void FrmBaseTable_VisibleChanged(object sender, EventArgs e)
+        {
+            // close the find and replace form
+            if (frmFind != null)
+            {
+                frmFind.Close();
+                frmFind = null;
+            }
+        }
+
 
         private void dataGridView_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
@@ -656,6 +684,23 @@ namespace Scada.Admin.App.Forms.Tables
         private void btnPaste_Click(object sender, EventArgs e)
         {
             PasteCell();
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
+        {
+            if (frmFind == null || !frmFind.Visible)
+            {
+                frmFind = new FrmFind(this);
+
+                // center the form within the bounds of its parent
+                frmFind.Left = (Left + Right - frmFind.Width) / 2;
+                frmFind.Top = (Top + Bottom - frmFind.Height) / 2;
+                frmFind.Show(this);
+            }
+            else
+            {
+                frmFind.Activate();
+            }
         }
 
         private void btnAutoSizeColumns_Click(object sender, EventArgs e)
