@@ -23,7 +23,9 @@
  * Modified : 2019
  */
 
+using System;
 using System.Diagnostics;
+using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
 {
@@ -39,6 +41,43 @@ namespace Scada.Admin.App.Code
         public static void OpenTextFile(string fileName)
         {
             Process.Start(fileName);
+        }
+
+        /// <summary>
+        /// Sets the check box state according to the cell value.
+        /// </summary>
+        public static void SetChecked(this CheckBox checkBox, DataGridViewCell cell)
+        {
+            if (cell == null)
+                throw new ArgumentNullException("cell");
+            checkBox.Checked = (bool)cell.Value;
+        }
+
+        /// <summary>
+        /// Sets the text box according to the cell value.
+        /// </summary>
+        public static void SetText(this TextBox textBox, DataGridViewCell cell)
+        {
+            if (cell == null)
+                throw new ArgumentNullException("cell");
+            textBox.Text = cell.Value == null ? "" : cell.Value.ToString();
+        }
+
+        /// <summary>
+        /// Sets the combp box value according to the cell value.
+        /// </summary>
+        public static void SetValue(this ComboBox comboBox, DataGridViewCell cell)
+        {
+            if (cell == null)
+                throw new ArgumentNullException("cell");
+
+            if (cell.OwningColumn is DataGridViewComboBoxColumn comboBoxColumn)
+            {
+                comboBox.DataSource = comboBoxColumn.DataSource;
+                comboBox.DisplayMember = comboBoxColumn.DisplayMember;
+                comboBox.ValueMember = comboBoxColumn.ValueMember;
+                comboBox.SelectedValue = cell.Value;
+            }
         }
     }
 }

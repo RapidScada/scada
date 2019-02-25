@@ -60,6 +60,7 @@
             this.lblError = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.btnProperties = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -95,7 +96,8 @@
             this.btnPaste,
             this.sep5,
             this.btnFind,
-            this.btnAutoSizeColumns});
+            this.btnAutoSizeColumns,
+            this.btnProperties});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
             this.bindingNavigator.MoveFirstItem = this.btnMoveFirst;
             this.bindingNavigator.MoveLastItem = this.btnMoveLast;
@@ -346,6 +348,16 @@
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // btnProperties
+            // 
+            this.btnProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnProperties.Image = ((System.Drawing.Image)(resources.GetObject("btnProperties.Image")));
+            this.btnProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnProperties.Name = "btnProperties";
+            this.btnProperties.Size = new System.Drawing.Size(23, 22);
+            this.btnProperties.Text = "Item Properties";
+            this.btnProperties.Click += new System.EventHandler(this.btnProperties_Click);
+            // 
             // FrmBaseTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -404,5 +416,6 @@
         private System.Windows.Forms.ToolStripButton btnPaste;
         private System.Windows.Forms.ToolStripSeparator sep5;
         private System.Windows.Forms.ToolStripButton btnFind;
+        private System.Windows.Forms.ToolStripButton btnProperties;
     }
 }

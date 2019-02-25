@@ -96,9 +96,20 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Gets a value indicating whether an item properties form is available.
+        /// </summary>
+        protected virtual bool ProperiesAvailable
+        {
+            get
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Gets the source data table.
         /// </summary>
-        public DataTable SourceDataTable
+        protected DataTable SourceDataTable
         {
             get
             {
@@ -431,6 +442,14 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Creates a form to edit item properties.
+        /// </summary>
+        protected virtual Form CreatePropertiesForm()
+        {
+            return null;
+        }
+
+        /// <summary>
         /// Shows error message in the error panel.
         /// </summary>
         protected void ShowError(string message)
@@ -477,6 +496,8 @@ namespace Scada.Admin.App.Forms.Tables
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
+
+            btnProperties.Visible = ProperiesAvailable;
 
             if (ScadaUtils.IsRunningOnMono)
             {
@@ -706,6 +727,23 @@ namespace Scada.Admin.App.Forms.Tables
         private void btnAutoSizeColumns_Click(object sender, EventArgs e)
         {
             dataGridView.AutoSizeColumns();
+        }
+
+        private void btnProperties_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (dataGridView.CurrentRow != null)
+                {
+                    Form form = CreatePropertiesForm();
+                    if (form != null)
+                        form.ShowDialog();
+                }
+            }
+            catch (Exception ex)
+            {
+                appData.ProcError(ex, AppPhrases.EditItemPropsError);
+            }
         }
     }
 }

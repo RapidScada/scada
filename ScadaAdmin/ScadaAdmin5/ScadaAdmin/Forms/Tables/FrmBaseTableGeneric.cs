@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
@@ -69,6 +70,18 @@ namespace Scada.Admin.App.Forms.Tables
             get
             {
                 return project.Interface.InterfaceDir;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether an item properties form is available.
+        /// </summary>
+        protected override bool ProperiesAvailable
+        {
+            get
+            {
+                Type itemType = typeof(T);
+                return itemType == typeof(InCnl) || itemType == typeof(CtrlCnl);
             }
         }
 
@@ -293,6 +306,19 @@ namespace Scada.Admin.App.Forms.Tables
                 appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
                 ShowError(ex.Message);
             }
+        }
+
+        /// <summary>
+        /// Creates a form to edit item properties.
+        /// </summary>
+        protected override Form CreatePropertiesForm()
+        {
+            Type itemType = typeof(T);
+
+            if (itemType == typeof(InCnl))
+                return new FrmInCnlProps(this);
+            else
+                return null;
         }
 
         /// <summary>

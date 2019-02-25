@@ -264,12 +264,14 @@
     <Phrase key="btnPaste.ToolTip">Paste (Ctrl+V)</Phrase>
     <Phrase key="btnFind.ToolTip">Find and Replace (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Autofit column widths</Phrase>
+    <Phrase key="btnProperties.ToolTip">Item Properties</Phrase>
     <Phrase key="ColumnNotNull">The &quot;{0}&quot; column cannot contain empty values.</Phrase>
     <Phrase key="GridViewError">Error displaying table, the &quot;{0}&quot; column</Phrase>
     <Phrase key="ColumnLabel">Column: </Phrase>
     <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
     <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
     <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
+    <Phrase key="EditItemPropsError">Error editing item properties</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
     <Phrase key="RowsNotDeleted">Some rows have not been deleted because they are referenced.</Phrase>

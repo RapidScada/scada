@@ -164,7 +164,6 @@ namespace Scada.Admin.App.Forms.Tables
 
 
         private readonly FrmBaseTable frmBaseTable;
-        private readonly DataTable dataTable;
         private readonly DataGridView dataGridView;
         private int startRowIndex;   // the starting point of the search
         private bool foundSomething; // at least one result found
@@ -185,7 +184,6 @@ namespace Scada.Admin.App.Forms.Tables
             : this()
         {
             this.frmBaseTable = frmBaseTable ?? throw new ArgumentNullException("frmBaseTable");
-            dataTable = frmBaseTable.SourceDataTable;
             dataGridView = frmBaseTable.DataGridView;
         }
 
