@@ -217,7 +217,7 @@
             this.txtFormula.Location = new System.Drawing.Point(68, 210);
             this.txtFormula.MaxLength = 100;
             this.txtFormula.Name = "txtFormula";
-            this.txtFormula.Size = new System.Drawing.Size(254, 20);
+            this.txtFormula.Size = new System.Drawing.Size(240, 20);
             this.txtFormula.TabIndex = 17;
             // 
             // lblParam
@@ -279,9 +279,9 @@
             this.lblCtrlCnlNum.AutoSize = true;
             this.lblCtrlCnlNum.Location = new System.Drawing.Point(9, 273);
             this.lblCtrlCnlNum.Name = "lblCtrlCnlNum";
-            this.lblCtrlCnlNum.Size = new System.Drawing.Size(81, 13);
+            this.lblCtrlCnlNum.Size = new System.Drawing.Size(80, 13);
             this.lblCtrlCnlNum.TabIndex = 25;
-            this.lblCtrlCnlNum.Text = "Output Channel";
+            this.lblCtrlCnlNum.Text = "Output channel";
             // 
             // chkEvEnabled
             // 
@@ -442,7 +442,7 @@
             // chkAveraging
             // 
             this.chkAveraging.AutoSize = true;
-            this.chkAveraging.Location = new System.Drawing.Point(328, 212);
+            this.chkAveraging.Location = new System.Drawing.Point(314, 212);
             this.chkAveraging.Name = "chkAveraging";
             this.chkAveraging.Size = new System.Drawing.Size(74, 17);
             this.chkAveraging.TabIndex = 18;

@@ -33,6 +33,7 @@ namespace Scada.Admin.App.Code
     {
         // Scada.Admin.App
         public static string IndexNotFound { get; private set; }
+        public static string CorrectErrors { get; private set; }
 
         // Scada.Admin.App.Code.ExplorerBuilder
         public static string BaseNode { get; private set; }
@@ -177,6 +178,7 @@ namespace Scada.Admin.App.Code
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App");
             IndexNotFound = dict.GetPhrase("IndexNotFound");
+            CorrectErrors = dict.GetPhrase("CorrectErrors");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Code.ExplorerBuilder");
             BaseNode = dict.GetPhrase("BaseNode");

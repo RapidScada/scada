@@ -2,6 +2,7 @@
 <ScadaAdminDictionaries>
   <Dictionary key="Scada.Admin.App">
     <Phrase key="IndexNotFound">Index not found.</Phrase>
+    <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
     <Phrase key="CmdTypeID">ID</Phrase>
@@ -302,6 +303,34 @@
     <Phrase key="ValueNotFound">The specified value was not found.</Phrase>
     <Phrase key="SearchComplete">Search completed.</Phrase>
     <Phrase key="ReplaceCount">{0} occurrence(s) replaced.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmInCnlProps">
+    <Phrase key="this">Input Channel Properties</Phrase>
+    <Phrase key="chkActive">Active</Phrase>
+    <Phrase key="lblCnlNum">Number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblCnlType">Channel type</Phrase>
+    <Phrase key="lblObj">Object</Phrase>
+    <Phrase key="lblKP">Device</Phrase>
+    <Phrase key="lblSignal">Signal</Phrase>
+    <Phrase key="lblFormula">Formula</Phrase>
+    <Phrase key="chkAveraging">Averaging</Phrase>
+    <Phrase key="lblParam">Quantity</Phrase>
+    <Phrase key="lblFormat">Format</Phrase>
+    <Phrase key="lblUnit">Unit</Phrase>
+    <Phrase key="lblCtrlCnlNum">Output channel</Phrase>
+    <Phrase key="gbEvents">Events</Phrase>
+    <Phrase key="chkEvEnabled">Write events</Phrase>
+    <Phrase key="chkEvSound">Event sound</Phrase>
+    <Phrase key="chkEvOnChange">On change</Phrase>
+    <Phrase key="chkEvOnUndef">On undefined</Phrase>
+    <Phrase key="gbLimits">Limits</Phrase>
+    <Phrase key="lblLimLowCrash">Lower alarm limit</Phrase>
+    <Phrase key="lblLimLow">Lower limit</Phrase>
+    <Phrase key="lblLimHigh">Upper limit</Phrase>
+    <Phrase key="lblLimHighCrash">Upper alarm limit</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmSourceCode">
     <Phrase key="this">Source Code</Phrase>

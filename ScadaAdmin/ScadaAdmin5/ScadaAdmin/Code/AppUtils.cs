@@ -25,6 +25,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Code
@@ -78,6 +79,17 @@ namespace Scada.Admin.App.Code
                 comboBox.ValueMember = comboBoxColumn.ValueMember;
                 comboBox.SelectedValue = cell.Value;
             }
+        }
+
+        /// <summary>
+        /// Appends the error to the string builder.
+        /// </summary>
+        public static void AppendError(this StringBuilder stringBuilder, Label label, string text)
+        {
+            if (label == null)
+                throw new ArgumentNullException("label");
+
+            stringBuilder.Append(label.Text).Append(": ").AppendLine(text);
         }
     }
 }

@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.UI;
 using System;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tables
@@ -36,7 +37,6 @@ namespace Scada.Admin.App.Forms.Tables
     /// </summary>
     public partial class FrmInCnlProps : Form
     {
-        private readonly FrmBaseTable frmBaseTable;
         private readonly DataGridView dataGridView;
 
 
@@ -51,11 +51,10 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmInCnlProps(FrmBaseTable frmBaseTable)
+        public FrmInCnlProps(DataGridView dataGridView)
             : this()
         {
-            this.frmBaseTable = frmBaseTable ?? throw new ArgumentNullException("frmBaseTable");
-            dataGridView = frmBaseTable.DataGridView;
+            this.dataGridView = dataGridView ?? throw new ArgumentNullException("dataGridView");
         }
 
 
@@ -101,7 +100,71 @@ namespace Scada.Admin.App.Forms.Tables
         /// </summary>
         private bool ApplyChanges()
         {
-            return true;
+            // validate changes
+            StringBuilder sbError = new StringBuilder();
+
+            if (!(int.TryParse(txtCnlNum.Text, out int cnlNum) && 1 <= cnlNum && cnlNum <= ushort.MaxValue))
+                sbError.AppendError(lblCnlNum, string.Format(CommonPhrases.IntegerRangingRequired, 1, ushort.MaxValue));
+
+            int signal = -1;
+            if (txtSignal.Text != "" && !int.TryParse(txtSignal.Text, out signal))
+                sbError.AppendError(lblSignal, CommonPhrases.IntegerRequired);
+
+            int ctrlCnlNum = -1;
+            if (txtCtrlCnlNum.Text != "" && !int.TryParse(txtCtrlCnlNum.Text, out ctrlCnlNum))
+                sbError.AppendError(lblCtrlCnlNum, CommonPhrases.IntegerRequired);
+
+            double limLowCrash = double.NaN;
+            if (txtLimLowCrash.Text != "" && !double.TryParse(txtLimLowCrash.Text, out limLowCrash))
+                sbError.AppendError(lblLimLowCrash, CommonPhrases.RealRequired);
+
+            double limLow = double.NaN;
+            if (txtLimLow.Text != "" && !double.TryParse(txtLimLow.Text, out limLow))
+                sbError.AppendError(lblLimLow, CommonPhrases.RealRequired);
+
+            double limHigh = double.NaN;
+            if (txtLimHigh.Text != "" && !double.TryParse(txtLimHigh.Text, out limHigh))
+                sbError.AppendError(lblLimHigh, CommonPhrases.RealRequired);
+
+            double limHighCrash = double.NaN;
+            if (txtLimHighCrash.Text != "" && !double.TryParse(txtLimHighCrash.Text, out limHighCrash))
+                sbError.AppendError(lblLimHighCrash, CommonPhrases.RealRequired);
+
+            if (sbError.Length > 0)
+            {
+                sbError.Insert(0, AppPhrases.CorrectErrors + Environment.NewLine);
+                ScadaUiUtils.ShowError(sbError.ToString().TrimEnd());
+            }
+            else if (dataGridView.CurrentRow != null)
+            {
+                // apply changes
+                DataGridViewCellCollection cells = dataGridView.CurrentRow.Cells;
+                cells["Active"].Value = chkActive.Checked;
+                cells["CnlNum"].Value = cnlNum;
+                cells["Name"].Value = txtName.Text;
+                cells["CnlTypeID"].Value = cbCnlType.SelectedValue ?? DBNull.Value;
+                cells["ObjNum"].Value = cbObj.SelectedValue ?? DBNull.Value;
+                cells["KPNum"].Value = cbKP.SelectedValue ?? DBNull.Value;
+                cells["Signal"].Value = signal > 0 ? (object)signal : DBNull.Value;
+                cells["FormulaUsed"].Value = chkFormulaUsed.Checked;
+                cells["Formula"].Value = txtFormula.Text;
+                cells["Averaging"].Value = chkAveraging.Checked;
+                cells["ParamID"].Value = cbParam.SelectedValue ?? DBNull.Value;
+                cells["FormatID"].Value = cbFormat.SelectedValue ?? DBNull.Value;
+                cells["UnitID"].Value = cbUnit.SelectedValue ?? DBNull.Value;
+                cells["CtrlCnlNum"].Value = ctrlCnlNum > 0 ? (object)ctrlCnlNum : DBNull.Value;
+                cells["EvEnabled"].Value = chkEvEnabled.Checked;
+                cells["EvSound"].Value = chkEvSound.Checked;
+                cells["EvOnChange"].Value = chkEvOnChange.Checked;
+                cells["EvOnUndef"].Value = chkEvOnUndef.Checked;
+                cells["LimLowCrash"].Value = double.IsNaN(limLowCrash) ? DBNull.Value : (object)limLowCrash;
+                cells["LimLow"].Value = double.IsNaN(limLow) ? DBNull.Value : (object)limLow;
+                cells["LimHigh"].Value = double.IsNaN(limHigh) ? DBNull.Value : (object)limHigh;
+                cells["LimHighCrash"].Value = double.IsNaN(limHighCrash) ? DBNull.Value : (object)limHighCrash;
+                return true;
+            }
+
+            return false;
         }
 
 
@@ -128,85 +191,6 @@ namespace Scada.Admin.App.Forms.Tables
         {
             if (ApplyChanges())
                 DialogResult = DialogResult.OK;
-
-            // проверка введённых данных
-            /*StringBuilder errors = new StringBuilder();
-            string errMsg;
-
-            if (!AppUtils.ValidateInt(txtCnlNum.Text, 1, ushort.MaxValue, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectInCnlNum).AppendLine(errMsg);
-            if (txtName.Text == "")
-                errors.AppendLine(AppPhrases.IncorrectInCnlName).AppendLine(CommonPhrases.NonemptyRequired);
-            if (cbCnlType.SelectedValue == null)
-                errors.AppendLine(AppPhrases.IncorrectCnlType).AppendLine(CommonPhrases.NonemptyRequired);
-            if (txtSignal.Text != "" && !AppUtils.ValidateInt(txtSignal.Text, 1, int.MaxValue, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectSignal).AppendLine(errMsg);
-            string ctrlCnlNum = txtCtrlCnlNum.Text;
-            if (ctrlCnlNum != "")
-            {
-                if (AppUtils.ValidateInt(ctrlCnlNum, 1, ushort.MaxValue, out errMsg))
-                {
-                    if (Tables.GetCtrlCnlName(int.Parse(ctrlCnlNum)) == "")
-                        errors.AppendLine(AppPhrases.IncorrectCtrlCnlNum).
-                            AppendLine(string.Format(AppPhrases.CtrlCnlNotExists, ctrlCnlNum));
-                }
-                else
-                {
-                    errors.AppendLine(AppPhrases.IncorrectCtrlCnlNum).AppendLine(errMsg);
-                }
-            }
-            if (txtLimLowCrash.Text != "" && !AppUtils.ValidateDouble(txtLimLowCrash.Text, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectLimLowCrash).AppendLine(errMsg);
-            if (txtLimLow.Text != "" && !AppUtils.ValidateDouble(txtLimLow.Text, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectLimLow).AppendLine(errMsg);
-            if (txtLimHigh.Text != "" && !AppUtils.ValidateDouble(txtLimHigh.Text, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectLimHigh).AppendLine(errMsg);
-            if (txtLimHighCrash.Text != "" && !AppUtils.ValidateDouble(txtLimHighCrash.Text, out errMsg))
-                errors.AppendLine(AppPhrases.IncorrectLimHighCrash).AppendLine(errMsg);
-            
-            errMsg = errors.ToString().TrimEnd();
-
-            if (errMsg == "")
-            {
-                // передача свойств входного канала в редактируемую таблицу
-                try
-                {
-                    DataRowView dataRow = frmTable.Table.DefaultView[row.Index];
-                    dataRow["Active"] = chkActive.Checked;
-                    dataRow["CnlNum"] = txtCnlNum.Text;
-                    dataRow["Name"] = txtName.Text;
-                    dataRow["CnlTypeID"] = cbCnlType.SelectedValue;
-                    dataRow["ModifiedDT"] = DateTime.Now;
-                    dataRow["ObjNum"] = cbObj.SelectedValue;
-                    dataRow["KPNum"] = cbKP.SelectedValue;
-                    dataRow["Signal"] = txtSignal.Text == "" ? DBNull.Value : (object)txtSignal.Text;
-                    dataRow["FormulaUsed"] = chkFormulaUsed.Checked;
-                    dataRow["Formula"] = txtFormula.Text == "" ? DBNull.Value : (object)txtFormula.Text;
-                    dataRow["Averaging"] = chkAveraging.Checked;
-                    dataRow["ParamID"] = cbParam.SelectedValue;
-                    dataRow["FormatID"] = cbFormat.SelectedValue;
-                    dataRow["UnitID"] = cbUnit.SelectedValue;
-                    dataRow["CtrlCnlNum"] = txtCtrlCnlNum.Text == "" ? DBNull.Value : (object)txtCtrlCnlNum.Text;
-                    dataRow["EvEnabled"] = chkEvEnabled.Checked;
-                    dataRow["EvSound"] = chkEvSound.Checked;
-                    dataRow["EvOnChange"] = chkEvOnChange.Checked;
-                    dataRow["EvOnUndef"] = chkEvOnUndef.Checked;
-                    dataRow["LimLowCrash"] = txtLimLowCrash.Text == "" ? DBNull.Value : (object)txtLimLowCrash.Text;
-                    dataRow["LimLow"] = txtLimLow.Text == "" ? DBNull.Value : (object)txtLimLow.Text;
-                    dataRow["LimHigh"] = txtLimHigh.Text == "" ? DBNull.Value : (object)txtLimHigh.Text;
-                    dataRow["LimHighCrash"] = txtLimHighCrash.Text == "" ? DBNull.Value : (object)txtLimHighCrash.Text;
-                    DialogResult = DialogResult.OK;
-                }
-                catch (Exception ex)
-                {
-                    AppUtils.ProcError(AppPhrases.WriteInCnlPropsError + ":\r\n" + ex.Message);
-                    DialogResult = DialogResult.Cancel;
-                }
-            }
-            else
-            {
-                ScadaUiUtils.ShowError(errMsg);
-            }*/
         }
     }
 }

@@ -736,8 +736,8 @@ namespace Scada.Admin.App.Forms.Tables
                 if (dataGridView.CurrentRow != null)
                 {
                     Form form = CreatePropertiesForm();
-                    if (form != null)
-                        form.ShowDialog();
+                    if (form != null && form.ShowDialog() == DialogResult.OK)
+                        EndEdit();
                 }
             }
             catch (Exception ex)

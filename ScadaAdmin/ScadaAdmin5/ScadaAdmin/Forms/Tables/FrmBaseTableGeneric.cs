@@ -316,7 +316,7 @@ namespace Scada.Admin.App.Forms.Tables
             Type itemType = typeof(T);
 
             if (itemType == typeof(InCnl))
-                return new FrmInCnlProps(this);
+                return new FrmInCnlProps(dataGridView);
             else
                 return null;
         }
