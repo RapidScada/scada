@@ -961,8 +961,11 @@ namespace Scada.Admin.App.Forms
         private void miFile_DropDownOpening(object sender, EventArgs e)
         {
             // enable or disable the menu items
+            bool projectOpen = project != null;
             miFileClose.Enabled = wctrlMain.ActiveForm != null;
-            miFileCloseProject.Enabled = project != null;
+            miFileCloseProject.Enabled = projectOpen;
+            miFileImportTable.Enabled = projectOpen;
+            miFileExportTable.Enabled = projectOpen;
         }
 
         private void miFileNewProject_Click(object sender, EventArgs e)
@@ -1022,6 +1025,16 @@ namespace Scada.Admin.App.Forms
         private void miFileSaveAll_Click(object sender, EventArgs e)
         {
             SaveAll();
+        }
+
+        private void miFileImportTable_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miFileExportTable_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void miFileClose_Click(object sender, EventArgs e)

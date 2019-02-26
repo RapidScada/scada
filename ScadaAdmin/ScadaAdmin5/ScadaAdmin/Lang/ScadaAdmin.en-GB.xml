@@ -422,6 +422,8 @@
     <Phrase key="miFileOpenProject">Open Project...</Phrase>
     <Phrase key="miFileSave">Save</Phrase>
     <Phrase key="miFileSaveAll">Save All</Phrase>
+    <Phrase key="miFileImportTable">Import Table...</Phrase>
+    <Phrase key="miFileExportTable">Export Table...</Phrase>
     <Phrase key="miFileClose">Close</Phrase>
     <Phrase key="miFileCloseProject">Close Project</Phrase>
     <Phrase key="miFileExit">Exit</Phrase>

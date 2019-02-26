@@ -422,6 +422,8 @@
     <Phrase key="miFileOpenProject">Открыть проект...</Phrase>
     <Phrase key="miFileSave">Сохранить</Phrase>
     <Phrase key="miFileSaveAll">Сохранить все</Phrase>
+    <Phrase key="miFileImportTable">Импортировать таблицу...</Phrase>
+    <Phrase key="miFileExportTable">Экспортировать таблицу...</Phrase>
     <Phrase key="miFileClose">Закрыть</Phrase>
     <Phrase key="miFileCloseProject">Закрыть проект</Phrase>
     <Phrase key="miFileExit">Выход</Phrase>
