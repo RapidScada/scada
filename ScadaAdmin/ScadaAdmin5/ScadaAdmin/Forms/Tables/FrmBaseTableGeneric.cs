@@ -317,6 +317,8 @@ namespace Scada.Admin.App.Forms.Tables
 
             if (itemType == typeof(InCnl))
                 return new FrmInCnlProps(dataGridView);
+            else if (itemType == typeof(CtrlCnl))
+                return new FrmCtrlCnlProps(dataGridView);
             else
                 return null;
         }
@@ -358,15 +360,18 @@ namespace Scada.Admin.App.Forms.Tables
                     }
 
                     // check the table dependencies
-                    foreach (TableRelation relation in baseTable.DependsOn)
+                    if (rowIsValid)
                     {
-                        if (!row.IsNull(relation.ChildColumn))
+                        foreach (TableRelation relation in baseTable.DependsOn)
                         {
-                            int keyVal = (int)row[relation.ChildColumn];
-                            if (!PkExists(relation.ParentTable, keyVal, relation.ChildColumn, out errMsg))
+                            if (!row.IsNull(relation.ChildColumn))
                             {
-                                rowIsValid = false;
-                                break;
+                                int keyVal = (int)row[relation.ChildColumn];
+                                if (!PkExists(relation.ParentTable, keyVal, relation.ChildColumn, out errMsg))
+                                {
+                                    rowIsValid = false;
+                                    break;
+                                }
                             }
                         }
                     }

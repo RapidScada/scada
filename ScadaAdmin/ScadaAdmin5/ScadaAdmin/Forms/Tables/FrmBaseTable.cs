@@ -731,18 +731,12 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void btnProperties_Click(object sender, EventArgs e)
         {
-            try
+            // show an item properties form
+            if (dataGridView.CurrentRow != null)
             {
-                if (dataGridView.CurrentRow != null)
-                {
-                    Form form = CreatePropertiesForm();
-                    if (form != null && form.ShowDialog() == DialogResult.OK)
-                        EndEdit();
-                }
-            }
-            catch (Exception ex)
-            {
-                appData.ProcError(ex, AppPhrases.EditItemPropsError);
+                Form form = CreatePropertiesForm();
+                if (form != null && form.ShowDialog() == DialogResult.OK)
+                    EndEdit();
             }
         }
     }

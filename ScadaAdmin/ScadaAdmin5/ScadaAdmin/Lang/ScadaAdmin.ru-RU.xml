@@ -272,7 +272,6 @@
     <Phrase key="DeleteRowConfirm">Вы уверены, что хотите удалить строку?</Phrase>
     <Phrase key="DeleteRowsConfirm">Вы уверены, что хотите удалить строки?</Phrase>
     <Phrase key="ClearTableConfirm">Вы уверены, что хотите очистить таблицу?</Phrase>
-    <Phrase key="EditItemPropsError">Ошибка при редактировании свойств элемента</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
     <Phrase key="RowsNotDeleted">Некоторые строки не были удалены, потому что на них есть ссылки.</Phrase>
@@ -286,6 +285,21 @@
     <Phrase key="lblSort">Сортировка:</Phrase>
     <Phrase key="rbSortByAbc">По алфавиту</Phrase>
     <Phrase key="rbSortByColor">По цвету</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmCtrlCnlProps">
+    <Phrase key="this">Свойства канала управления</Phrase>
+    <Phrase key="chkActive">Активный</Phrase>
+    <Phrase key="lblCtrlCnlNum">Номер</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="lblCmdType">Тип команды</Phrase>
+    <Phrase key="lblObj">Объект</Phrase>
+    <Phrase key="lblKP">КП</Phrase>
+    <Phrase key="lblCmdNum">Номер команды</Phrase>
+    <Phrase key="lblCmd">Команда</Phrase>
+    <Phrase key="lblFormula">Формула</Phrase>
+    <Phrase key="chkEvEnabled">Запись событий</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>

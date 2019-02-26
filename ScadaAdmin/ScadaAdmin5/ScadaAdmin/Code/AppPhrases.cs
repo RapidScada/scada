@@ -98,7 +98,6 @@ namespace Scada.Admin.App.Code
         public static string DeleteRowConfirm { get; private set; }
         public static string DeleteRowsConfirm { get; private set; }
         public static string ClearTableConfirm { get; private set; }
-        public static string EditItemPropsError { get; private set; }
 
         // Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric
         public static string RowsNotDeleted { get; private set; }
@@ -243,7 +242,6 @@ namespace Scada.Admin.App.Code
             DeleteRowConfirm = dict.GetPhrase("DeleteRowConfirm");
             DeleteRowsConfirm = dict.GetPhrase("DeleteRowsConfirm");
             ClearTableConfirm = dict.GetPhrase("ClearTableConfirm");
-            EditItemPropsError = dict.GetPhrase("EditItemPropsError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric");
             RowsNotDeleted = dict.GetPhrase("RowsNotDeleted");

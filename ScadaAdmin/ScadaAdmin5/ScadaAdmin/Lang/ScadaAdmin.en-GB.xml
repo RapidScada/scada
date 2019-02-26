@@ -272,7 +272,6 @@
     <Phrase key="DeleteRowConfirm">Are you sure you want to delete the row?</Phrase>
     <Phrase key="DeleteRowsConfirm">Are you sure you want to delete the rows?</Phrase>
     <Phrase key="ClearTableConfirm">Are you sure you want to clear the table?</Phrase>
-    <Phrase key="EditItemPropsError">Error editing item properties</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
     <Phrase key="RowsNotDeleted">Some rows have not been deleted because they are referenced.</Phrase>
@@ -286,6 +285,21 @@
     <Phrase key="lblSort">Sort:</Phrase>
     <Phrase key="rbSortByAbc">Alphabetically</Phrase>
     <Phrase key="rbSortByColor">By color</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmCtrlCnlProps">
+    <Phrase key="this">Output Channel Properties</Phrase>
+    <Phrase key="chkActive">Active</Phrase>
+    <Phrase key="lblCtrlCnlNum">Number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblCmdType">Command type</Phrase>
+    <Phrase key="lblObj">Object</Phrase>
+    <Phrase key="lblKP">Device</Phrase>
+    <Phrase key="lblCmdNum">Command number</Phrase>
+    <Phrase key="lblCmd">Command</Phrase>
+    <Phrase key="lblFormula">Formula</Phrase>
+    <Phrase key="chkEvEnabled">Write events</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
