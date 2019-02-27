@@ -361,16 +361,27 @@ namespace Scada.Admin
             if (baseTable == null)
                 throw new ArgumentNullException("baseTable");
 
+            IBaseTable destTable;
+            if (0 < startID || endID < int.MaxValue)
+            {
+                // filter data
+                destTable = baseTable;
+            }
+            else
+            {
+                destTable = baseTable;
+            }
+
             switch (format)
             {
                 case BaseTableFormat.DAT:
-                    new BaseAdapter() { FileName = destFileName }.Update(baseTable);
+                    new BaseAdapter() { FileName = destFileName }.Update(destTable);
                     break;
                 case BaseTableFormat.XML:
-                    baseTable.Save(destFileName);
+                    destTable.Save(destFileName);
                     break;
                 default: // BaseTableFormat.CSV
-                    new CsvConverter(destFileName).ConvertToCsv(baseTable);
+                    new CsvConverter(destFileName).ConvertToCsv(destTable);
                     break;
             }
         }

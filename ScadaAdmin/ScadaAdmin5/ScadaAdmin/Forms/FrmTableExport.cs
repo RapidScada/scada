@@ -140,8 +140,9 @@ namespace Scada.Admin.App.Forms
         {
             try
             {
-                new ImportExport().ExportBaseTable(saveFileDialog.FileName, format, baseTable, 
-                    Convert.ToInt32(numStartID.Value), Convert.ToInt32(numEndID.Value));
+                new ImportExport().ExportBaseTable(saveFileDialog.FileName, format, baseTable,
+                    chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 0, 
+                    chkEndID.Checked ? Convert.ToInt32(numEndID.Value) : int.MaxValue);
             }
             catch (Exception ex)
             {
