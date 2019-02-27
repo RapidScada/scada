@@ -266,15 +266,13 @@
     <Phrase key="btnFind.ToolTip">Найти и заменить (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
     <Phrase key="btnProperties.ToolTip">Свойства элемента</Phrase>
-    <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
     <Phrase key="ColumnLabel">Столбец: </Phrase>
     <Phrase key="DeleteRowConfirm">Вы уверены, что хотите удалить строку?</Phrase>
     <Phrase key="DeleteRowsConfirm">Вы уверены, что хотите удалить строки?</Phrase>
     <Phrase key="ClearTableConfirm">Вы уверены, что хотите очистить таблицу?</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTableGeneric">
     <Phrase key="RowsNotDeleted">Некоторые строки не были удалены, потому что на них есть ссылки.</Phrase>
+    <Phrase key="ColumnNotNull">Столбец &quot;{0}&quot; не может содержать пустых значений.</Phrase>
     <Phrase key="UniqueRequired">Для столбца &quot;{0}&quot; не допускаются дублирующиеся значения.</Phrase>
     <Phrase key="KeyReferenced">На данный первичный ключ ссылается строка из таблицы &quot;{0}&quot;.</Phrase>
     <Phrase key="DataNotExist">Не существуют данные для столбца &quot;{0}&quot;.</Phrase>
@@ -567,5 +565,6 @@
     <Phrase key="ImportBaseTableError">Ошибка при импорте таблицы &quot;{0}&quot;</Phrase>
     <Phrase key="ImportArchiveError">Ошибка при импорте архива конфигурации</Phrase>
     <Phrase key="ExportToArchiveError">Ошибка при экспорте конфигурации из архива</Phrase>
+    <Phrase key="ExportBaseTableError">Ошибка при экспорте таблицы &quot;{0}&quot;</Phrase>
   </Dictionary>
 </ScadaAdminDictionaries>

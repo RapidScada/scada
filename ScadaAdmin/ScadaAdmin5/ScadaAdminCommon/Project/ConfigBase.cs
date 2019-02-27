@@ -319,7 +319,7 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Saves the specified table of the configuration database.
         /// </summary>
-        public bool SaveTable<T>(BaseTable<T> baseTable, out string errMsg)
+        public bool SaveTable(IBaseTable baseTable, out string errMsg)
         {
             try
             {

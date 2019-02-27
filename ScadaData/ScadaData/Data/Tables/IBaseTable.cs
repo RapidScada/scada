@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Scada.Data.Tables
@@ -58,6 +59,11 @@ namespace Scada.Data.Tables
         /// Gets the type of the table items.
         /// </summary>
         Type ItemType { get; }
+
+        /// <summary>
+        /// Gets the number of table items.
+        /// </summary>
+        int ItemCount { get; }
 
         /// <summary>
         /// Gets the table indexes accessed by column name.
@@ -114,7 +120,12 @@ namespace Scada.Data.Tables
         /// Returns an enumerable collection of the table items.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> EnumerateItems();
+        IEnumerable EnumerateItems();
+
+        /// <summary>
+        /// Selects the items that match the specified filter.
+        /// </summary>
+        IEnumerable SelectItems(TableFilter tableFilter);
 
         /// <summary>
         /// Loads the table from the specified file.

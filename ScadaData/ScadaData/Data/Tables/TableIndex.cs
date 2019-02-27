@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -158,19 +159,15 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Selects items by the specified index key.
         /// </summary>
-        public ICollection<T> SelectItems<T>(int indexKey)
+        public IEnumerable SelectItems(int indexKey)
         {
-            List<T> items = new List<T>();
-
             if (ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group))
             {
                 foreach (object item in group.Values)
                 {
-                    items.Add((T)item);
+                    yield return item;
                 }
             }
-
-            return items;
         }
 
         /// <summary>

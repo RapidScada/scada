@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.Text;
@@ -85,6 +86,38 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Writes the specified value in CSV format.
+        /// </summary>
+        protected void WriteValue(StreamWriter writer, object val)
+        {
+            if (val != null && val != DBNull.Value)
+            {
+                if (val is bool)
+                {
+                    writer.Write(val.ToString().ToLowerInvariant());
+                }
+                else if (val is double dbl)
+                {
+                    writer.Write(dbl.ToString(Localization.Culture));
+                }
+                else if (val is DateTime dt)
+                {
+                    writer.Write(dt.ToString(Localization.Culture));
+                }
+                else if (val is string str)
+                {
+                    writer.Write("\"");
+                    writer.Write(str.Replace("\"", "\"\""));
+                    writer.Write("\"");
+                }
+                else
+                {
+                    writer.Write(val);
+                }
+            }
+        }
+
+        /// <summary>
         /// Converts the specified data table to CSV.
         /// </summary>
         public void ConvertToCsv(DataTable dataTable)
@@ -119,36 +152,60 @@ namespace Scada.Data.Tables
                         {
                             if (i > 0)
                                 writer.Write(";");
-
-                            object val = rowView[i];
-
-                            if (val != null && val != DBNull.Value)
-                            {
-                                if (val is bool)
-                                {
-                                    writer.Write(val.ToString().ToLowerInvariant());
-                                }
-                                else if (val is double dbl)
-                                {
-                                    writer.Write(dbl.ToString(Localization.Culture));
-                                }
-                                else if (val is DateTime dt)
-                                {
-                                    writer.Write(dt.ToString(Localization.Culture));
-                                }
-                                else if (val is string str)
-                                {
-                                    writer.Write("\"");
-                                    writer.Write(str.Replace("\"", "\"\""));
-                                    writer.Write("\"");
-                                }
-                                else
-                                {
-                                    writer.Write(val);
-                                }
-                            }
+                            WriteValue(writer, rowView[i]);
                         }
+                        writer.WriteLine();
+                    }
+                }
+            }
+            finally
+            {
+                if (fileMode)
+                {
+                    writer?.Dispose();
+                    stream?.Dispose();
+                }
+            }
+        }
 
+        /// <summary>
+        /// Converts the specified configuration database table to CSV.
+        /// </summary>
+        public void ConvertToCsv(IBaseTable baseTable)
+        {
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            Stream stream = GetStream();
+            StreamWriter writer = null;
+
+            try
+            {
+                if (baseTable.ItemCount > 0)
+                {
+                    // prepare a writer
+                    writer = new StreamWriter(stream, Encoding.Default);
+
+                    // output the table header
+                    PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
+                    int propCnt = props.Count;
+                    for (int i = 0; i < propCnt; i++)
+                    {
+                        if (i > 0)
+                            writer.Write(";");
+                        writer.Write("[" + props[i].Name + "]");
+                    }
+                    writer.WriteLine();
+
+                    // output the table rows
+                    foreach (object item in baseTable.EnumerateItems())
+                    {
+                        for (int i = 0; i < propCnt; i++)
+                        {
+                            if (i > 0)
+                                writer.Write(";");
+                            WriteValue(writer, props[i].GetValue(item));
+                        }
                         writer.WriteLine();
                     }
                 }

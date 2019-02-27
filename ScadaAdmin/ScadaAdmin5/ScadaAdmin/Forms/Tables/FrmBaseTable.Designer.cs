@@ -54,13 +54,13 @@
             this.sep5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnFind = new System.Windows.Forms.ToolStripButton();
             this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
+            this.btnProperties = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.btnProperties = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
@@ -294,6 +294,16 @@
             this.btnAutoSizeColumns.Text = "Autofit column widths";
             this.btnAutoSizeColumns.Click += new System.EventHandler(this.btnAutoSizeColumns_Click);
             // 
+            // btnProperties
+            // 
+            this.btnProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnProperties.Image = ((System.Drawing.Image)(resources.GetObject("btnProperties.Image")));
+            this.btnProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnProperties.Name = "btnProperties";
+            this.btnProperties.Size = new System.Drawing.Size(23, 22);
+            this.btnProperties.Text = "Item Properties";
+            this.btnProperties.Click += new System.EventHandler(this.btnProperties_Click);
+            // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToOrderColumns = true;
@@ -348,16 +358,6 @@
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // btnProperties
-            // 
-            this.btnProperties.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnProperties.Image = ((System.Drawing.Image)(resources.GetObject("btnProperties.Image")));
-            this.btnProperties.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnProperties.Name = "btnProperties";
-            this.btnProperties.Size = new System.Drawing.Size(23, 22);
-            this.btnProperties.Text = "Item Properties";
-            this.btnProperties.Click += new System.EventHandler(this.btnProperties_Click);
-            // 
             // FrmBaseTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -398,8 +398,6 @@
         private System.Windows.Forms.ToolStripButton btnMoveNext;
         private System.Windows.Forms.ToolStripButton btnMoveLast;
         private System.Windows.Forms.ToolStripSeparator sep3;
-        protected System.Windows.Forms.BindingSource bindingSource;
-        protected System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Panel pnlError;
         private System.Windows.Forms.Label lblError;
         private System.Windows.Forms.Button btnCloseError;
@@ -417,5 +415,7 @@
         private System.Windows.Forms.ToolStripSeparator sep5;
         private System.Windows.Forms.ToolStripButton btnFind;
         private System.Windows.Forms.ToolStripButton btnProperties;
+        private System.Windows.Forms.BindingSource bindingSource;
+        private System.Windows.Forms.DataGridView dataGridView;
     }
 }

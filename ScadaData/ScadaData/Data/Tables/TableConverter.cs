@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -36,15 +37,6 @@ namespace Scada.Data.Tables
     /// </summary>
     public static class TableConverter
     {
-        /// <summary>
-        /// Creates a new item getting values from the row.
-        /// </summary>
-        private static T CreateItem<T>(DataRow row, PropertyDescriptorCollection props)
-        {
-            return (T)CreateItem(typeof(T), row, props);
-        }
-
-
         /// <summary>
         /// Creates a new item getting values from the row.
         /// </summary>
@@ -68,22 +60,22 @@ namespace Scada.Data.Tables
 
             return item;
         }
-        
+
         /// <summary>
         /// Converts the BaseTable to a DataTable.
         /// </summary>
-        public static DataTable ToDataTable<T>(this BaseTable<T> baseTable, bool allowNull = false)
+        public static DataTable ToDataTable(this IBaseTable baseTable, bool allowNull = false)
         {
-            return baseTable.Items.Values.ToDataTable<T>(allowNull);
+            return baseTable.EnumerateItems().ToDataTable(baseTable.ItemType, allowNull);
         }
 
         /// <summary>
         /// Converts the collection to a DataTable.
         /// </summary>
-        public static DataTable ToDataTable<T>(this ICollection<T> items, bool allowNull = false)
+        public static DataTable ToDataTable(this IEnumerable items, Type itemType, bool allowNull = false)
         {
             // create columns
-            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(itemType);
             DataTable dataTable = new DataTable();
 
             foreach (PropertyDescriptor prop in props)
@@ -111,7 +103,7 @@ namespace Scada.Data.Tables
 
             try
             {
-                foreach (T item in items)
+                foreach (object item in items)
                 {
                     for (int i = 0; i < propCnt; i++)
                     {
@@ -133,7 +125,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Copies the changes from the DataTable to the BaseTable.
         /// </summary>
-        public static void RetrieveChanges<T>(this BaseTable<T> baseTable, DataTable dataTable)
+        public static void RetrieveChanges(this IBaseTable baseTable, DataTable dataTable)
         {
             // delete rows from the target table
             DataRow[] deletedRows = dataTable.Select("", "", DataViewRowState.Deleted);
@@ -146,19 +138,20 @@ namespace Scada.Data.Tables
             }
 
             // change rows in the target table
-            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+            Type itemType = baseTable.ItemType;
+            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(itemType);
             DataRow[] modifiedRows = dataTable.Select("", "", DataViewRowState.ModifiedCurrent);
 
             foreach (DataRow row in modifiedRows)
             {
-                T item = CreateItem<T>(row, props);
+                object item = CreateItem(itemType, row, props);
                 int origKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
                 int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
 
                 if (origKey != curKey)
                     baseTable.RemoveItem(origKey);
 
-                baseTable.AddItem(item);
+                baseTable.AddObject(item);
                 row.AcceptChanges();
             }
 
@@ -167,8 +160,8 @@ namespace Scada.Data.Tables
 
             foreach (DataRow row in addedRows)
             {
-                T item = CreateItem<T>(row, props);
-                baseTable.AddItem(item);
+                object item = CreateItem(itemType, row, props);
+                baseTable.AddObject(item);
                 row.AcceptChanges();
             }
         }

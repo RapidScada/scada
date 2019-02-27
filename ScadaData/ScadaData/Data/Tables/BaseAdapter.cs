@@ -477,7 +477,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Заполнить таблицу baseTable из файла или потока
         /// </summary>
-        public void Fill<T>(BaseTable<T> baseTable, bool allowNulls)
+        public void Fill(IBaseTable baseTable, bool allowNulls)
         {
             if (baseTable == null)
                 throw new ArgumentNullException("baseTable");
@@ -498,7 +498,7 @@ namespace Scada.Data.Tables
                 if (fieldCnt > 0)
                 {
                     // получение свойств, соответствующих определениям полей
-                    PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+                    PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
                     PropertyDescriptor[] propArr = new PropertyDescriptor[fieldCnt];
 
                     for (int i = 0; i < fieldCnt; i++)
@@ -517,7 +517,7 @@ namespace Scada.Data.Tables
                         // заполение строки таблицы из буфера
                         if (readSize == recSize)
                         {
-                            T item = Activator.CreateInstance<T>();
+                            object item = Activator.CreateInstance(baseTable.ItemType);
                             int bufInd = 2;
 
                             for (int fieldInd = 0; fieldInd < fieldCnt; fieldInd++)
@@ -536,7 +536,7 @@ namespace Scada.Data.Tables
                                 bufInd += fieldDef.DataSize;
                             }
 
-                            baseTable.AddItem(item);
+                            baseTable.AddObject(item);
                         }
                     }
                 }
@@ -700,14 +700,6 @@ namespace Scada.Data.Tables
                     stream?.Close();
                 }
             }
-        }
-
-        /// <summary>
-        /// Записать таблицу baseTable в файл или поток
-        /// </summary>
-        public void Update<T>(BaseTable<T> baseTable)
-        {
-            Update((IBaseTable)baseTable);
         }
     }
 }

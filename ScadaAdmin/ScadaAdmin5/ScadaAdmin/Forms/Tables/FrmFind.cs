@@ -180,11 +180,11 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmFind(FrmBaseTable frmBaseTable)
+        public FrmFind(FrmBaseTable frmBaseTable, DataGridView dataGridView)
             : this()
         {
             this.frmBaseTable = frmBaseTable ?? throw new ArgumentNullException("frmBaseTable");
-            dataGridView = frmBaseTable.DataGridView;
+            this.dataGridView = dataGridView ?? throw new ArgumentNullException("dataGridView");
         }
 
 

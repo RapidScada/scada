@@ -73,6 +73,7 @@ namespace Scada.Admin
         public static string ImportBaseTableError { get; private set; }
         public static string ImportArchiveError { get; private set; }
         public static string ExportToArchiveError { get; private set; }
+        public static string ExportBaseTableError { get; private set; }
 
         public static void Init()
         {
@@ -116,6 +117,7 @@ namespace Scada.Admin
             ImportBaseTableError = dict.GetPhrase("ImportBaseTableError");
             ImportArchiveError = dict.GetPhrase("ImportArchiveError");
             ExportToArchiveError = dict.GetPhrase("ExportToArchiveError");
+            ExportBaseTableError = dict.GetPhrase("ExportBaseTableError");
         }
     }
 }

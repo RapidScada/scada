@@ -961,11 +961,11 @@ namespace Scada.Admin.App.Forms
         private void miFile_DropDownOpening(object sender, EventArgs e)
         {
             // enable or disable the menu items
-            bool projectOpen = project != null;
+            bool projectIsOpen = project != null;
             miFileClose.Enabled = wctrlMain.ActiveForm != null;
-            miFileCloseProject.Enabled = projectOpen;
-            miFileImportTable.Enabled = projectOpen;
-            miFileExportTable.Enabled = projectOpen;
+            miFileCloseProject.Enabled = projectIsOpen;
+            miFileImportTable.Enabled = projectIsOpen;
+            miFileExportTable.Enabled = projectIsOpen;
         }
 
         private void miFileNewProject_Click(object sender, EventArgs e)
@@ -1029,12 +1029,21 @@ namespace Scada.Admin.App.Forms
 
         private void miFileImportTable_Click(object sender, EventArgs e)
         {
-
+            // import a configuration database table
+            new FrmTableImport().ShowDialog();
         }
 
         private void miFileExportTable_Click(object sender, EventArgs e)
         {
-
+            // export a configuration database table
+            if (project != null)
+            {
+                new FrmTableExport(project.ConfigBase, appData)
+                {
+                    SelectedItemType = (wctrlMain.ActiveForm as FrmBaseTable)?.ItemType
+                }
+                .ShowDialog();
+            }
         }
 
         private void miFileClose_Click(object sender, EventArgs e)
@@ -1196,22 +1205,24 @@ namespace Scada.Admin.App.Forms
 
         private void miTools_DropDownOpening(object sender, EventArgs e)
         {
-            bool projectOpen = project != null;
-            miToolsCnlMap.Enabled = projectOpen;
-            miToolsCheckIntegrity.Enabled = projectOpen;
+            bool projectIsOpen = project != null;
+            miToolsCnlMap.Enabled = projectIsOpen;
+            miToolsCheckIntegrity.Enabled = projectIsOpen;
             miToolsOptions.Enabled = false;
         }
 
         private void miToolsCnlMap_Click(object sender, EventArgs e)
         {
             // show a channel map form
-            new FrmCnlMap(project.ConfigBase, appData).ShowDialog();
+            if (project != null)
+                new FrmCnlMap(project.ConfigBase, appData).ShowDialog();
         }
 
         private void miToolsCheckIntegrity_Click(object sender, EventArgs e)
         {
             // check integrity
-            new IntegrityCheck(project.ConfigBase, appData).Execute();
+            if (project != null)
+                new IntegrityCheck(project.ConfigBase, appData).Execute();
         }
 
         private void miToolsOptions_Click(object sender, EventArgs e)

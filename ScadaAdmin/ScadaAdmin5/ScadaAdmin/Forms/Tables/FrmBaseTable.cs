@@ -24,6 +24,9 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Project;
+using Scada.Data.Entities;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Data;
@@ -31,6 +34,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
+using WinControl;
 
 namespace Scada.Admin.App.Forms.Tables
 {
@@ -38,7 +42,7 @@ namespace Scada.Admin.App.Forms.Tables
     /// Form for editing a table of the configuration database.
     /// <para>Форма редактирования таблицы базы конфигурации.</para>
     /// </summary>
-    public partial class FrmBaseTable : Form
+    public partial class FrmBaseTable : Form, IChildForm
     {
         /// <summary>
         /// Represents a buffer for copying cells.
@@ -61,8 +65,13 @@ namespace Scada.Admin.App.Forms.Tables
         /// </summary>
         private static string ClipboardFormat = typeof(FrmBaseTable).FullName;
 
-        protected readonly AppData appData; // the common data of the application
-        private FrmFind frmFind;            // the find and replace form
+        private readonly IBaseTable baseTable;    // the table being edited
+        private readonly TableFilter tableFilter; // the table filter
+        private readonly ScadaProject project;    // the project under development
+        private readonly AppData appData;         // the common data of the application
+
+        private DataTable dataTable; // the table used by a grid view control
+        private FrmFind frmFind;     // the find and replace form
 
 
         /// <summary>
@@ -76,58 +85,113 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        protected FrmBaseTable(AppData appData)
+        public FrmBaseTable(IBaseTable baseTable, TableFilter tableFilter, ScadaProject project, AppData appData)
             : this()
         {
+            this.baseTable = baseTable ?? throw new ArgumentNullException("baseTable");
+            this.tableFilter = tableFilter;
+            this.project = project ?? throw new ArgumentNullException("project");
             this.appData = appData ?? throw new ArgumentNullException("appData");
+
+            dataTable = null;
             frmFind = null;
+
+            Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
         }
 
-
-        /// <summary>
-        /// Gets the directory of the interface files.
-        /// </summary>
-        protected virtual string InterfaceDir
-        {
-            get
-            {
-                return "";
-            }
-        }
 
         /// <summary>
         /// Gets a value indicating whether an item properties form is available.
         /// </summary>
-        protected virtual bool ProperiesAvailable
+        private bool ProperiesAvailable
         {
             get
             {
-                return false;
+                Type itemType = baseTable.ItemType;
+                return itemType == typeof(InCnl) || itemType == typeof(CtrlCnl);
             }
         }
 
         /// <summary>
-        /// Gets the source data table.
+        /// Gets the type of the table items.
         /// </summary>
-        protected DataTable SourceDataTable
+        public Type ItemType
         {
             get
             {
-                return (DataTable)bindingSource.DataSource ?? throw new ScadaException("Source data table is null.");
+                return baseTable.ItemType;
             }
         }
 
         /// <summary>
-        /// Gets the data grid view control.
+        /// Gets or sets the object associated with the form.
         /// </summary>
-        public DataGridView DataGridView
+        public ChildFormTag ChildFormTag { get; set; }
+
+
+        /// <summary>
+        /// Creates a form to edit item properties.
+        /// </summary>
+        private Form CreatePropertiesForm()
         {
-            get
-            {
-                return dataGridView;
-            }
+            Type itemType = baseTable.ItemType;
+
+            if (itemType == typeof(InCnl))
+                return new FrmInCnlProps(dataGridView);
+            else if (itemType == typeof(CtrlCnl))
+                return new FrmCtrlCnlProps(dataGridView);
+            else
+                return null;
         }
 
+        /// <summary>
+        /// Loads the table data.
+        /// </summary>
+        private void LoadTableData()
+        {
+            if (!project.ConfigBase.Load(out string errMsg))
+                appData.ProcError(errMsg);
+
+            // reset the binding source
+            bindingSource.DataSource = null;
+
+            // create a data table
+            dataTable = tableFilter == null ?
+                baseTable.ToDataTable() :
+                baseTable.SelectItems(tableFilter).ToDataTable(baseTable.ItemType);
+            dataTable.DefaultView.Sort = baseTable.PrimaryKey;
+            dataTable.RowChanged += dataTable_RowChanged;
+            dataTable.RowDeleted += dataTable_RowDeleted;
+
+            // create grid columns
+            ColumnBuilder columnBuilder = new ColumnBuilder(project.ConfigBase);
+            dataGridView.Columns.Clear();
+            dataGridView.Columns.AddRange(columnBuilder.CreateColumns(baseTable.ItemType));
+
+            // set default values
+            foreach (DataGridViewColumn column in dataGridView.Columns)
+            {
+                if (column.Tag is ColumnOptions options && options.DefaultValue != null)
+                    dataTable.Columns[column.Name].DefaultValue = options.DefaultValue;
+            }
+
+            if (tableFilter != null)
+                dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
+
+            bindingSource.DataSource = dataTable;
+            dataGridView.AutoSizeColumns();
+            ChildFormTag.Modified = baseTable.Modified;
+        }
+
+        /// <summary>
+        /// Copies the changes from a one table to another.
+        /// </summary>
+        private void RetrieveChanges()
+        {
+            baseTable.RetrieveChanges(dataTable);
+            baseTable.Modified = true;
+            ChildFormTag.Modified = true;
+        }
 
         /// <summary>
         /// Validates a cell after editing.
@@ -136,7 +200,7 @@ namespace Scada.Admin.App.Forms.Tables
         {
             errMsg = "";
 
-            if (0 <= colInd && colInd < dataGridView.ColumnCount && 
+            if (0 <= colInd && colInd < dataGridView.ColumnCount &&
                 0 <= rowInd && rowInd < dataGridView.RowCount)
             {
                 DataGridViewColumn col = dataGridView.Columns[colInd];
@@ -192,8 +256,6 @@ namespace Scada.Admin.App.Forms.Tables
                 if (!row.IsNewRow)
                 {
                     // check for nulls
-                    DataTable dataTable = SourceDataTable;
-
                     for (int colInd = 0, colCnt = dataGridView.Columns.Count; colInd < colCnt; colInd++)
                     {
                         DataGridViewColumn col = dataGridView.Columns[colInd];
@@ -211,12 +273,188 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
+        /// Validates that the primary key value is unique.
+        /// </summary>
+        private bool PkUnique(int key, out string errMsg)
+        {
+            if (baseTable.PkExists(key))
+            {
+                errMsg = string.Format(AppPhrases.UniqueRequired,
+                    dataGridView.Columns[baseTable.PrimaryKey].HeaderText);
+                return false;
+            }
+            else
+            {
+                errMsg = "";
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Validates that no record refers the primary key.
+        /// </summary>
+        private bool NoReferencesToPk(int key, out string errMsg)
+        {
+            foreach (TableRelation relation in baseTable.Dependent)
+            {
+                if (relation.ChildTable.TryGetIndex(relation.ChildColumn, out TableIndex index) &&
+                    index.IndexKeyExists(key))
+                {
+                    errMsg = string.Format(AppPhrases.KeyReferenced, relation.ChildTable.Title);
+                    return false;
+                }
+            }
+
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Validates that the primary key exists.
+        /// </summary>
+        private bool PkExists(IBaseTable parentTable, int key, string childColumn, out string errMsg)
+        {
+            if (parentTable.PkExists(key))
+            {
+                errMsg = "";
+                return true;
+            }
+            else
+            {
+                errMsg = string.Format(AppPhrases.DataNotExist, dataGridView.Columns[childColumn].HeaderText);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Deletes the selected rows.
+        /// </summary>
+        private void DeleteSelectedRows()
+        {
+            try
+            {
+                bool notDeleted = false;
+
+                try
+                {
+                    dataTable.RowDeleted -= dataTable_RowDeleted;
+                    DataView dataView = dataTable.DefaultView;
+                    DataGridViewSelectedRowCollection selectedRows = dataGridView.SelectedRows;
+
+                    if (selectedRows.Count > 0)
+                    {
+                        for (int i = selectedRows.Count - 1; i >= 0; i--)
+                        {
+                            if (!DeleteRow(dataView, selectedRows[i].Index))
+                                notDeleted = true;
+                        }
+                    }
+                    else if (dataGridView.CurrentRow != null)
+                    {
+                        if (!DeleteRow(dataView, dataGridView.CurrentRow.Index))
+                            notDeleted = true;
+                    }
+                }
+                finally
+                {
+                    dataTable.RowDeleted += dataTable_RowDeleted;
+                }
+
+                RetrieveChanges();
+
+                if (notDeleted)
+                    ScadaUiUtils.ShowInfo(AppPhrases.RowsNotDeleted);
+            }
+            catch (Exception ex)
+            {
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Clears the table data.
+        /// </summary>
+        private void ClearTableData()
+        {
+            try
+            {
+                bool notDeleted = false;
+
+                try
+                {
+                    bindingSource.DataSource = null;
+                    dataTable.RowDeleted -= dataTable_RowDeleted;
+                    DataView dataView = dataTable.DefaultView;
+
+                    for (int rowIndex = dataView.Count - 1; rowIndex >= 0; rowIndex--)
+                    {
+                        if (!DeleteRow(dataView, rowIndex))
+                            notDeleted = true;
+                    }
+                }
+                finally
+                {
+                    dataTable.RowDeleted += dataTable_RowDeleted;
+                    bindingSource.DataSource = dataTable;
+                }
+
+                RetrieveChanges();
+
+                if (notDeleted)
+                    ScadaUiUtils.ShowInfo(AppPhrases.RowsNotDeleted);
+            }
+            catch (Exception ex)
+            {
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes a row with the specified index if it is not referenced.
+        /// </summary>
+        private bool DeleteRow(DataView dataView, int rowIndex)
+        {
+            if (0 <= rowIndex && rowIndex < dataView.Count)
+            {
+                DataRowView rowView = dataView[rowIndex];
+
+                if (!rowView.IsNew)
+                {
+                    int key = (int)rowView.Row[baseTable.PrimaryKey];
+
+                    if (NoReferencesToPk(key, out string errMsg))
+                    {
+                        dataView.Delete(rowIndex);
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Cancels edit mode.
         /// </summary>
         private void CancelEdit()
         {
             if (dataGridView.CancelEdit())
                 bindingSource.CancelEdit();
+        }
+
+        /// <summary>
+        /// Shows error message in the error panel.
+        /// </summary>
+        private void ShowError(string message)
+        {
+            lblError.Text = message;
+            pnlError.Visible = true;
         }
 
         /// <summary>
@@ -278,13 +516,14 @@ namespace Scada.Admin.App.Forms.Tables
             {
                 // select file or folder
                 string path = "";
-                string selectedPath = Path.Combine(InterfaceDir, cellValue == null ? "" : cellValue.ToString());
+                string interfaceDir = ScadaUtils.NormalDir(project.Interface.InterfaceDir);
+                string selectedPath = Path.Combine(interfaceDir, cellValue == null ? "" : cellValue.ToString());
 
                 if (buttonKind == ColumnKind.SelectFolderButton)
                 {
                     // select folder
                     selectedPath = Path.GetDirectoryName(selectedPath);
-                    folderBrowserDialog.SelectedPath = Directory.Exists(selectedPath) ? selectedPath : InterfaceDir;
+                    folderBrowserDialog.SelectedPath = Directory.Exists(selectedPath) ? selectedPath : interfaceDir;
 
                     if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
                         path = ScadaUtils.NormalDir(folderBrowserDialog.SelectedPath);
@@ -294,7 +533,7 @@ namespace Scada.Admin.App.Forms.Tables
                     // select file
                     if (string.IsNullOrEmpty(selectedPath) || !File.Exists(selectedPath))
                     {
-                        openFileDialog.InitialDirectory = InterfaceDir;
+                        openFileDialog.InitialDirectory = interfaceDir;
                         openFileDialog.FileName = "";
                     }
                     else
@@ -312,7 +551,6 @@ namespace Scada.Admin.App.Forms.Tables
 
                 if (!string.IsNullOrEmpty(path))
                 {
-                    string interfaceDir = ScadaUtils.NormalDir(InterfaceDir);
                     if (path.StartsWith(interfaceDir, StringComparison.OrdinalIgnoreCase))
                         path = path.Substring(interfaceDir.Length);
 
@@ -421,44 +659,6 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
         /// <summary>
-        /// Loads the table data.
-        /// </summary>
-        protected virtual void LoadTableData()
-        {
-        }
-
-        /// <summary>
-        /// Deletes the selected rows.
-        /// </summary>
-        protected virtual void DeleteSelectedRows()
-        {
-        }
-
-        /// <summary>
-        /// Clears the table data.
-        /// </summary>
-        protected virtual void ClearTableData()
-        {
-        }
-
-        /// <summary>
-        /// Creates a form to edit item properties.
-        /// </summary>
-        protected virtual Form CreatePropertiesForm()
-        {
-            return null;
-        }
-
-        /// <summary>
-        /// Shows error message in the error panel.
-        /// </summary>
-        protected void ShowError(string message)
-        {
-            lblError.Text = message;
-            pnlError.Visible = true;
-        }
-
-        /// <summary>
         /// Commits and ends the edit operation on the current cell and row.
         /// </summary>
         public bool EndEdit()
@@ -489,10 +689,21 @@ namespace Scada.Admin.App.Forms.Tables
                 CancelEdit();
         }
 
+        /// <summary>
+        /// Saves the table.
+        /// </summary>
+        public void Save()
+        {
+            if (project.ConfigBase.SaveTable(baseTable, out string errMsg))
+                ChildFormTag.Modified = false;
+            else
+                appData.ProcError(errMsg);
+        }
+
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, typeof(FrmBaseTable).FullName);
+            Translator.TranslateForm(this, GetType().FullName);
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -581,7 +792,7 @@ namespace Scada.Admin.App.Forms.Tables
                     // display actual password in edit mode
                     if (options.Kind == ColumnKind.Password)
                     {
-                        object cellValue = SourceDataTable.DefaultView[rowInd][colInd];
+                        object cellValue = dataTable.DefaultView[rowInd][colInd];
                         if (e.Control is TextBox textBox && cellValue != null && cellValue != DBNull.Value)
                             textBox.Text = cellValue.ToString();
                     }
@@ -650,6 +861,96 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
 
+        private void dataTable_RowChanged(object sender, DataRowChangeEventArgs e)
+        {
+            DataRow row = e.Row;
+
+            try
+            {
+                if (e.Action == DataRowAction.Add || e.Action == DataRowAction.Change)
+                {
+                    bool rowIsValid = true;
+                    string errMsg = "";
+
+                    if (e.Action == DataRowAction.Add)
+                    {
+                        int key = (int)row[baseTable.PrimaryKey];
+                        rowIsValid = PkUnique(key, out errMsg);
+                    }
+                    else // DataRowAction.Change
+                    {
+                        int origKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
+                        int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
+                        if (origKey != curKey)
+                            rowIsValid = PkUnique(curKey, out errMsg) && NoReferencesToPk(origKey, out errMsg);
+                    }
+
+                    // check the table dependencies
+                    if (rowIsValid)
+                    {
+                        foreach (TableRelation relation in baseTable.DependsOn)
+                        {
+                            if (!row.IsNull(relation.ChildColumn))
+                            {
+                                int keyVal = (int)row[relation.ChildColumn];
+                                if (!PkExists(relation.ParentTable, keyVal, relation.ChildColumn, out errMsg))
+                                {
+                                    rowIsValid = false;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+
+                    if (rowIsValid)
+                    {
+                        RetrieveChanges();
+                    }
+                    else
+                    {
+                        row.RejectChanges();
+                        ScadaUiUtils.ShowError(errMsg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                row.RejectChanges();
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
+        }
+
+        private void dataTable_RowDeleted(object sender, DataRowChangeEventArgs e)
+        {
+            DataRow row = e.Row;
+
+            try
+            {
+                if (e.Action == DataRowAction.Delete)
+                {
+                    int key = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
+
+                    if (NoReferencesToPk(key, out string errMsg))
+                    {
+                        RetrieveChanges();
+                    }
+                    else
+                    {
+                        row.RejectChanges();
+                        ScadaUiUtils.ShowError(errMsg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                row.RejectChanges();
+                appData.ErrLog.WriteException(ex, AppPhrases.DataChangeError);
+                ShowError(ex.Message);
+            }
+        }
+
+
         private void btnCloseError_Click(object sender, EventArgs e)
         {
             HideError();
@@ -711,7 +1012,7 @@ namespace Scada.Admin.App.Forms.Tables
         {
             if (frmFind == null || !frmFind.Visible)
             {
-                frmFind = new FrmFind(this);
+                frmFind = new FrmFind(this, dataGridView);
 
                 // center the form within the bounds of its parent
                 frmFind.Left = (Left + Right - frmFind.Width) / 2;

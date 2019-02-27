@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Xml;
@@ -120,6 +121,17 @@ namespace Scada.Data.Tables
             get
             {
                 return typeof(T);
+            }
+        }
+
+        /// <summary>
+        /// Gets the number of table items.
+        /// </summary>
+        public int ItemCount
+        {
+            get
+            {
+                return Items.Count;
             }
         }
 
@@ -255,9 +267,20 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
-        /// Gets the items that match the specified filter.
+        /// Returns an enumerable collection of the table items.
         /// </summary>
-        public ICollection<T> GetFilteredItems(TableFilter tableFilter)
+        public IEnumerable EnumerateItems()
+        {
+            foreach (T item in Items.Values)
+            {
+                yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Selects the items that match the specified filter.
+        /// </summary>
+        public IEnumerable SelectItems(TableFilter tableFilter)
         {
             if (tableFilter == null)
                 throw new ArgumentNullException("tableFilter");
@@ -270,32 +293,23 @@ namespace Scada.Data.Tables
             // get the matched items
             if (TryGetIndex(tableFilter.ColumnName, out TableIndex index))
             {
-                return index.SelectItems<T>(tableFilter.Value == null ? 0 : (int)tableFilter.Value);
+                int indexKey = tableFilter.Value == null ? 0 : (int)tableFilter.Value;
+
+                foreach (object item in index.SelectItems(indexKey))
+                {
+                    yield return item;
+                }
             }
             else
             {
-                List<T> filteredItems = new List<T>();
                 object filterVal = tableFilter.Value;
 
                 foreach (T item in Items.Values)
                 {
                     object val = filterProp.GetValue(item);
                     if (Equals(val, filterVal))
-                        filteredItems.Add(item);
+                        yield return item;
                 }
-
-                return filteredItems;
-            }
-        }
-
-        /// <summary>
-        /// Returns an enumerable collection of the table items.
-        /// </summary>
-        public IEnumerable<object> EnumerateItems()
-        {
-            foreach (T item in Items.Values)
-            {
-                yield return item;
             }
         }
 

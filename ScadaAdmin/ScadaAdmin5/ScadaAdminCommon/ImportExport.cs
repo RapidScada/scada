@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.Deployment;
@@ -347,6 +347,31 @@ namespace Scada.Admin
             {
                 zipArchive?.Dispose();
                 fileStream?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Exports the configuration database table to the file.
+        /// </summary>
+        public void ExportBaseTable(string destFileName, BaseTableFormat format, IBaseTable baseTable, 
+            int startID, int endID)
+        {
+            if (destFileName == null)
+                throw new ArgumentNullException("destFileName");
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            switch (format)
+            {
+                case BaseTableFormat.DAT:
+                    new BaseAdapter() { FileName = destFileName }.Update(baseTable);
+                    break;
+                case BaseTableFormat.XML:
+                    baseTable.Save(destFileName);
+                    break;
+                default: // BaseTableFormat.CSV
+                    new CsvConverter(destFileName).ConvertToCsv(baseTable);
+                    break;
             }
         }
     }

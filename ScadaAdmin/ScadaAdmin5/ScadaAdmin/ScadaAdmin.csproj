@@ -158,14 +158,23 @@
     <Compile Include="Forms\FrmAbout.designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmTableImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTableImport.Designer.cs">
+      <DependentUpon>FrmTableImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmTableExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTableExport.Designer.cs">
+      <DependentUpon>FrmTableExport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Tables\FrmBaseTable.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Tables\FrmBaseTable.Designer.cs">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Forms\Tables\FrmBaseTableGeneric.cs">
-      <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\Tables\FrmColorSelect.cs">
       <SubType>Form</SubType>
@@ -276,6 +285,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTableImport.resx">
+      <DependentUpon>FrmTableImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTableExport.resx">
+      <DependentUpon>FrmTableExport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tables\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>

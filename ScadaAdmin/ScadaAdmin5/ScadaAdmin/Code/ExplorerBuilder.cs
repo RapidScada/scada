@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Forms.Tables;
@@ -132,7 +132,7 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a node that represents the table of the configuration database.
         /// </summary>
-        private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
+        private TreeNode CreateBaseTableNode(IBaseTable baseTable)
         {
             TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
             baseTableNode.Tag = CreateBaseTableTag(baseTable);
@@ -142,11 +142,11 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a tag to associate with a tree node representing a table.
         /// </summary>
-        private TreeNodeTag CreateBaseTableTag<T>(BaseTable<T> baseTable, TableFilter tableFilter = null)
+        private TreeNodeTag CreateBaseTableTag(IBaseTable baseTable, TableFilter tableFilter = null)
         {
             return new TreeNodeTag
             {
-                FormType = typeof(FrmBaseTableGeneric<T>),
+                FormType = typeof(FrmBaseTable),
                 FormArgs = new object[] { baseTable, tableFilter, project, appData },
                 RelatedObject = baseTable,
                 NodeType = AppNodeType.BaseTable

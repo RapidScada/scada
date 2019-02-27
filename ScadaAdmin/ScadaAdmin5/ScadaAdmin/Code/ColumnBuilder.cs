@@ -140,8 +140,8 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewColumn NewComboBoxColumn<T>(
-            string dataPropertyName, string displayMember, BaseTable<T> dataSource, bool addEmptyRow = false)
+        private DataGridViewColumn NewComboBoxColumn(
+            string dataPropertyName, string displayMember, IBaseTable dataSource, bool addEmptyRow = false)
         {
             return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember,
                 CreateComboBoxSource(dataSource, dataPropertyName, displayMember, addEmptyRow));
@@ -150,8 +150,8 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a data table for using as a data source of a combo box.
         /// </summary>
-        private DataTable CreateComboBoxSource<T>(
-            BaseTable<T> baseTable, string valueMember, string displayMember, bool addEmptyRow)
+        private DataTable CreateComboBoxSource(
+            IBaseTable baseTable, string valueMember, string displayMember, bool addEmptyRow)
         {
             DataTable dataTable = baseTable.ToDataTable(true);
 
