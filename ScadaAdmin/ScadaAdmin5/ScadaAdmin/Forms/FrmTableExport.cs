@@ -28,12 +28,6 @@ using Scada.Admin.Project;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms
@@ -136,17 +130,19 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Exports the table
         /// </summary>
-        private void Export(IBaseTable baseTable, BaseTableFormat format)
+        private bool Export(IBaseTable baseTable, BaseTableFormat format)
         {
             try
             {
                 new ImportExport().ExportBaseTable(saveFileDialog.FileName, format, baseTable,
                     chkStartID.Checked ? Convert.ToInt32(numStartID.Value) : 0, 
                     chkEndID.Checked ? Convert.ToInt32(numEndID.Value) : int.MaxValue);
+                return true;
             }
             catch (Exception ex)
             {
                 appData.ProcError(ex, string.Format(AdminPhrases.ExportBaseTableError, baseTable.Name));
+                return false;
             }
         }
 
@@ -176,8 +172,11 @@ namespace Scada.Admin.App.Forms
             {
                 saveFileDialog.FileName = GetOutputFileName(tableItem.BaseTable, out BaseTableFormat format);
 
-                if (saveFileDialog.ShowDialog() == DialogResult.OK)
-                    Export(tableItem.BaseTable, format);
+                if (saveFileDialog.ShowDialog() == DialogResult.OK &&
+                    Export(tableItem.BaseTable, format))
+                {
+                    DialogResult = DialogResult.OK;
+                }
             }
         }
     }

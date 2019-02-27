@@ -168,15 +168,6 @@ namespace Scada.Data.Tables
 
 
         /// <summary>
-        /// Gets the primary key value of the item.
-        /// </summary>
-        protected int GetPkValue(T item)
-        {
-            return (int)primaryKeyProp.GetValue(item);
-        }
-
-
-        /// <summary>
         /// Adds or updates an item in the table.
         /// </summary>
         public void AddItem(T item)
@@ -231,6 +222,14 @@ namespace Scada.Data.Tables
             {
                 index.Reset();
             }
+        }
+
+        /// <summary>
+        /// Gets the primary key value of the item.
+        /// </summary>
+        public int GetPkValue(object item)
+        {
+            return (int)primaryKeyProp.GetValue(item);
         }
 
         /// <summary>

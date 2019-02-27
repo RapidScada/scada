@@ -365,7 +365,16 @@ namespace Scada.Admin
             if (0 < startID || endID < int.MaxValue)
             {
                 // filter data
-                destTable = baseTable;
+                destTable = BaseTableFactory.GetBaseTable(baseTable);
+
+                foreach (object item in baseTable.EnumerateItems())
+                {
+                    int itemID = baseTable.GetPkValue(item);
+                    if (startID <= itemID && itemID <= endID)
+                        destTable.AddObject(item);
+                    else if (itemID > endID)
+                        break;
+                }
             }
             else
             {

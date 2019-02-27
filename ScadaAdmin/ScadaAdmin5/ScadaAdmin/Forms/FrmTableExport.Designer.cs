@@ -31,20 +31,20 @@
             this.lblTable = new System.Windows.Forms.Label();
             this.cbTable = new System.Windows.Forms.ComboBox();
             this.gbIdent = new System.Windows.Forms.GroupBox();
-            this.cbFormat = new System.Windows.Forms.ComboBox();
-            this.lblFormat = new System.Windows.Forms.Label();
-            this.lblStartID = new System.Windows.Forms.Label();
-            this.numStartID = new System.Windows.Forms.NumericUpDown();
+            this.chkEndID = new System.Windows.Forms.CheckBox();
+            this.chkStartID = new System.Windows.Forms.CheckBox();
             this.numEndID = new System.Windows.Forms.NumericUpDown();
             this.lblEndID = new System.Windows.Forms.Label();
-            this.chkStartID = new System.Windows.Forms.CheckBox();
-            this.chkEndID = new System.Windows.Forms.CheckBox();
+            this.numStartID = new System.Windows.Forms.NumericUpDown();
+            this.lblStartID = new System.Windows.Forms.Label();
+            this.cbFormat = new System.Windows.Forms.ComboBox();
+            this.lblFormat = new System.Windows.Forms.Label();
             this.btnExport = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.gbIdent.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numEndID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).BeginInit();
             this.SuspendLayout();
             // 
             // lblTable
@@ -81,6 +81,68 @@
             this.gbIdent.TabStop = false;
             this.gbIdent.Text = "IDs";
             // 
+            // chkEndID
+            // 
+            this.chkEndID.AutoSize = true;
+            this.chkEndID.Location = new System.Drawing.Point(158, 35);
+            this.chkEndID.Name = "chkEndID";
+            this.chkEndID.Size = new System.Drawing.Size(15, 14);
+            this.chkEndID.TabIndex = 4;
+            this.chkEndID.UseVisualStyleBackColor = true;
+            this.chkEndID.CheckedChanged += new System.EventHandler(this.chkEndID_CheckedChanged);
+            // 
+            // chkStartID
+            // 
+            this.chkStartID.AutoSize = true;
+            this.chkStartID.Location = new System.Drawing.Point(13, 35);
+            this.chkStartID.Name = "chkStartID";
+            this.chkStartID.Size = new System.Drawing.Size(15, 14);
+            this.chkStartID.TabIndex = 1;
+            this.chkStartID.UseVisualStyleBackColor = true;
+            this.chkStartID.CheckedChanged += new System.EventHandler(this.chkStartID_CheckedChanged);
+            // 
+            // numEndID
+            // 
+            this.numEndID.Location = new System.Drawing.Point(179, 32);
+            this.numEndID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numEndID.Name = "numEndID";
+            this.numEndID.Size = new System.Drawing.Size(118, 20);
+            this.numEndID.TabIndex = 5;
+            // 
+            // lblEndID
+            // 
+            this.lblEndID.AutoSize = true;
+            this.lblEndID.Location = new System.Drawing.Point(176, 16);
+            this.lblEndID.Name = "lblEndID";
+            this.lblEndID.Size = new System.Drawing.Size(26, 13);
+            this.lblEndID.TabIndex = 3;
+            this.lblEndID.Text = "End";
+            // 
+            // numStartID
+            // 
+            this.numStartID.Location = new System.Drawing.Point(34, 32);
+            this.numStartID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numStartID.Name = "numStartID";
+            this.numStartID.Size = new System.Drawing.Size(118, 20);
+            this.numStartID.TabIndex = 2;
+            // 
+            // lblStartID
+            // 
+            this.lblStartID.AutoSize = true;
+            this.lblStartID.Location = new System.Drawing.Point(31, 16);
+            this.lblStartID.Name = "lblStartID";
+            this.lblStartID.Size = new System.Drawing.Size(29, 13);
+            this.lblStartID.TabIndex = 0;
+            this.lblStartID.Text = "Start";
+            // 
             // cbFormat
             // 
             this.cbFormat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -102,58 +164,6 @@
             this.lblFormat.Size = new System.Drawing.Size(39, 13);
             this.lblFormat.TabIndex = 2;
             this.lblFormat.Text = "Format";
-            // 
-            // lblStartID
-            // 
-            this.lblStartID.AutoSize = true;
-            this.lblStartID.Location = new System.Drawing.Point(31, 16);
-            this.lblStartID.Name = "lblStartID";
-            this.lblStartID.Size = new System.Drawing.Size(29, 13);
-            this.lblStartID.TabIndex = 0;
-            this.lblStartID.Text = "Start";
-            // 
-            // numStartID
-            // 
-            this.numStartID.Location = new System.Drawing.Point(34, 32);
-            this.numStartID.Name = "numStartID";
-            this.numStartID.Size = new System.Drawing.Size(118, 20);
-            this.numStartID.TabIndex = 2;
-            // 
-            // numEndID
-            // 
-            this.numEndID.Location = new System.Drawing.Point(179, 32);
-            this.numEndID.Name = "numEndID";
-            this.numEndID.Size = new System.Drawing.Size(118, 20);
-            this.numEndID.TabIndex = 5;
-            // 
-            // lblEndID
-            // 
-            this.lblEndID.AutoSize = true;
-            this.lblEndID.Location = new System.Drawing.Point(176, 16);
-            this.lblEndID.Name = "lblEndID";
-            this.lblEndID.Size = new System.Drawing.Size(26, 13);
-            this.lblEndID.TabIndex = 3;
-            this.lblEndID.Text = "End";
-            // 
-            // chkStartID
-            // 
-            this.chkStartID.AutoSize = true;
-            this.chkStartID.Location = new System.Drawing.Point(13, 35);
-            this.chkStartID.Name = "chkStartID";
-            this.chkStartID.Size = new System.Drawing.Size(15, 14);
-            this.chkStartID.TabIndex = 1;
-            this.chkStartID.UseVisualStyleBackColor = true;
-            this.chkStartID.CheckedChanged += new System.EventHandler(this.chkStartID_CheckedChanged);
-            // 
-            // chkEndID
-            // 
-            this.chkEndID.AutoSize = true;
-            this.chkEndID.Location = new System.Drawing.Point(158, 35);
-            this.chkEndID.Name = "chkEndID";
-            this.chkEndID.Size = new System.Drawing.Size(15, 14);
-            this.chkEndID.TabIndex = 4;
-            this.chkEndID.UseVisualStyleBackColor = true;
-            this.chkEndID.CheckedChanged += new System.EventHandler(this.chkEndID_CheckedChanged);
             // 
             // btnExport
             // 
@@ -203,8 +213,8 @@
             this.Load += new System.EventHandler(this.FrmTableExport_Load);
             this.gbIdent.ResumeLayout(false);
             this.gbIdent.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numEndID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

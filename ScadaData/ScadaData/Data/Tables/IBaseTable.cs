@@ -107,6 +107,11 @@ namespace Scada.Data.Tables
         void ClearItems();
 
         /// <summary>
+        /// Gets the primary key value of the item.
+        /// </summary>
+        int GetPkValue(object item);
+
+        /// <summary>
         /// Checks if there is an item with the specified primary key.
         /// </summary>
         bool PkExists(int key);
