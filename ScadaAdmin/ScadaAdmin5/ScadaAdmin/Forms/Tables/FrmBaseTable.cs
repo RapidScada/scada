@@ -708,6 +708,7 @@ namespace Scada.Admin.App.Forms.Tables
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
 
+            ChildFormTag.MainFormMessage += ChildFormTag_MainFormMessage;
             btnProperties.Visible = ProperiesAvailable;
 
             if (ScadaUtils.IsRunningOnMono)
@@ -760,6 +761,12 @@ namespace Scada.Admin.App.Forms.Tables
                 frmFind.Close();
                 frmFind = null;
             }
+        }
+
+        private void ChildFormTag_MainFormMessage(object sender, FormMessageEventArgs e)
+        {
+            if (e.Message == AppMessage.RefreshData)
+                btnRefresh_Click(null, null);
         }
 
 

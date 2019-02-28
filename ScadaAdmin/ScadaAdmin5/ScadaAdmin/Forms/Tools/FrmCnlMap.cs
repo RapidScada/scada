@@ -67,7 +67,14 @@ namespace Scada.Admin.App.Forms.Tools
         {
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             this.appData = appData ?? throw new ArgumentNullException("appData");
+            InCnlsSelected = true;
         }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to select input channels by default.
+        /// </summary>
+        public bool InCnlsSelected { get; set; }
 
 
         /// <summary>
@@ -146,10 +153,14 @@ namespace Scada.Admin.App.Forms.Tools
         private void FrmCnlMap_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
+
+            if (!InCnlsSelected)
+                rbOutCnls.Checked = true;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
+            InCnlsSelected = rbInCnls.Checked;
             GenerateCnlMap(rbInCnls.Checked, rbGroupByDevices.Checked);
             DialogResult = DialogResult.OK;
         }

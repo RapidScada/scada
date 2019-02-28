@@ -525,6 +525,33 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmTableExport">
+    <Phrase key="this">Экспорт таблицы</Phrase>
+    <Phrase key="lblTable">Таблица</Phrase>
+    <Phrase key="lblFormat">Формат</Phrase>
+    <Phrase key="gbIdent">Идентификаторы</Phrase>
+    <Phrase key="lblStartID">Начальный</Phrase>
+    <Phrase key="lblEndID">Конечный</Phrase>
+    <Phrase key="btnExport">Экспорт</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ExportTableFilter">Таблицы (*.dat;*.xml;*.csv)|*.dat;*.xml;*.csv|Все файлы (*.*)|*.*</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmTableImport">
+    <Phrase key="this">Импорт таблицы</Phrase>
+    <Phrase key="lblTable">Таблица</Phrase>
+    <Phrase key="lblSrcFile">Исходный файл</Phrase>
+    <Phrase key="btnBrowse">Обзор...</Phrase>
+    <Phrase key="gbSrcIdent">Исходные идентификаторы</Phrase>
+    <Phrase key="lblSrcStartID">Начальный</Phrase>
+    <Phrase key="lblSrcEndID">Конечный</Phrase>
+    <Phrase key="gbDestIDs">Назначаемые идентификаторы</Phrase>
+    <Phrase key="lblDestStartID">Начальный</Phrase>
+    <Phrase key="lblDestEndID">Конечный</Phrase>
+    <Phrase key="btnImport">Импорт</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ImportTableFilter">Таблицы (*.dat;*.xml)|*.dat;*.xml|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="ImportTableComplete">Импорт завершён успешно.&#13;&#10;Затронуто строк: {0}.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.Deployment.DeploymentSettings">
     <Phrase key="LoadDeploymentSettingsError">Ошибка при загрузке настроек развёртывания</Phrase>
     <Phrase key="SaveDeploymentSettingsError">Ошибка при сохранении настроек развёртывания</Phrase>

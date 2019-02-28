@@ -353,6 +353,56 @@ namespace Scada.Admin
         /// <summary>
         /// Exports the configuration database table to the file.
         /// </summary>
+        public void ImportBaseTable(string srcFileName, BaseTableFormat format, IBaseTable baseTable,
+            int srcStartID, int srcEndID, int destStartID, out int affectedRows)
+        {
+            if (srcFileName == null)
+                throw new ArgumentNullException("destFileName");
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            // open the source table
+            IBaseTable srcTable = BaseTableFactory.GetBaseTable(baseTable);
+
+            switch (format)
+            {
+                case BaseTableFormat.DAT:
+                    new BaseAdapter() { FileName = srcFileName }.Fill(srcTable, true);
+                    break;
+                case BaseTableFormat.XML:
+                    srcTable.Load(srcFileName);
+                    break;
+                default: // BaseTableFormat.CSV
+                    throw new ScadaException("Format is not supported.");
+            }
+
+            // copy data from the source table to the destination
+            affectedRows = 0;
+            int shiftID = destStartID - srcStartID;
+
+            foreach (object item in srcTable.EnumerateItems())
+            {
+                int itemID = srcTable.GetPkValue(item);
+                if (srcStartID <= itemID && itemID <= srcEndID)
+                {
+                    if (shiftID > 0)
+                        srcTable.SetPkValue(item, itemID + shiftID);
+                    baseTable.AddObject(item);
+                    affectedRows++;
+                }
+                else if (itemID > srcEndID)
+                {
+                    break;
+                }
+            }
+
+            if (affectedRows > 0)
+                baseTable.Modified = true;
+        }
+
+        /// <summary>
+        /// Exports the configuration database table to the file.
+        /// </summary>
         public void ExportBaseTable(string destFileName, BaseTableFormat format, IBaseTable baseTable, 
             int startID, int endID)
         {

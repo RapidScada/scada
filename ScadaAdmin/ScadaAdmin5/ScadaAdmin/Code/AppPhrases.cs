@@ -167,6 +167,13 @@ namespace Scada.Admin.App.Code
         public static string ProjectTemplateEmpty { get; private set; }
         public static string ProjectTemplateNotFound { get; private set; }
 
+        // Scada.Admin.App.Forms.FrmTableExport
+        public static string ExportTableFilter { get; private set; }
+
+        // Scada.Admin.App.Forms.FrmTableImport
+        public static string ImportTableFilter { get; private set; }
+        public static string ImportTableComplete { get; private set; }
+
         // Scada.Admin.App.Forms.FrmTextEditor
         public static string OpenTextFileError { get; private set; }
         public static string SaveTextFileError { get; private set; }
@@ -308,6 +315,13 @@ namespace Scada.Admin.App.Code
             ProjectAlreadyExists = dict.GetPhrase("ProjectAlreadyExists");
             ProjectTemplateEmpty = dict.GetPhrase("ProjectTemplateEmpty");
             ProjectTemplateNotFound = dict.GetPhrase("ProjectTemplateNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmTableExport");
+            ExportTableFilter = dict.GetPhrase("ExportTableFilter");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmTableImport");
+            ImportTableFilter = dict.GetPhrase("ImportTableFilter");
+            ImportTableComplete = dict.GetPhrase("ImportTableComplete");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmTextEditor");
             OpenTextFileError = dict.GetPhrase("OpenTextFileError");

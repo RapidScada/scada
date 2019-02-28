@@ -35,7 +35,7 @@
             this.chkSrcStartID = new System.Windows.Forms.CheckBox();
             this.numSrcEndID = new System.Windows.Forms.NumericUpDown();
             this.lblSrcEndID = new System.Windows.Forms.Label();
-            this.numStartID = new System.Windows.Forms.NumericUpDown();
+            this.numSrcStartID = new System.Windows.Forms.NumericUpDown();
             this.lblSrcStartID = new System.Windows.Forms.Label();
             this.lblSrcFile = new System.Windows.Forms.Label();
             this.btnImport = new System.Windows.Forms.Button();
@@ -48,9 +48,10 @@
             this.lblDestEndID = new System.Windows.Forms.Label();
             this.numDestStartID = new System.Windows.Forms.NumericUpDown();
             this.lblDestStartID = new System.Windows.Forms.Label();
+            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.gbSrcIdent.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcEndID)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSrcStartID)).BeginInit();
             this.gbDestIDs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDestEndID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDestStartID)).BeginInit();
@@ -80,7 +81,7 @@
             this.gbSrcIdent.Controls.Add(this.chkSrcStartID);
             this.gbSrcIdent.Controls.Add(this.numSrcEndID);
             this.gbSrcIdent.Controls.Add(this.lblSrcEndID);
-            this.gbSrcIdent.Controls.Add(this.numStartID);
+            this.gbSrcIdent.Controls.Add(this.numSrcStartID);
             this.gbSrcIdent.Controls.Add(this.lblSrcStartID);
             this.gbSrcIdent.Location = new System.Drawing.Point(12, 93);
             this.gbSrcIdent.Name = "gbSrcIdent";
@@ -98,6 +99,7 @@
             this.chkSrcEndID.Size = new System.Drawing.Size(15, 14);
             this.chkSrcEndID.TabIndex = 4;
             this.chkSrcEndID.UseVisualStyleBackColor = true;
+            this.chkSrcEndID.CheckedChanged += new System.EventHandler(this.chkSrcEndID_CheckedChanged);
             // 
             // chkSrcStartID
             // 
@@ -107,13 +109,21 @@
             this.chkSrcStartID.Size = new System.Drawing.Size(15, 14);
             this.chkSrcStartID.TabIndex = 1;
             this.chkSrcStartID.UseVisualStyleBackColor = true;
+            this.chkSrcStartID.CheckedChanged += new System.EventHandler(this.chkSrcStartID_CheckedChanged);
             // 
             // numSrcEndID
             // 
+            this.numSrcEndID.Enabled = false;
             this.numSrcEndID.Location = new System.Drawing.Point(179, 32);
+            this.numSrcEndID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
             this.numSrcEndID.Name = "numSrcEndID";
             this.numSrcEndID.Size = new System.Drawing.Size(118, 20);
             this.numSrcEndID.TabIndex = 5;
+            this.numSrcEndID.ValueChanged += new System.EventHandler(this.num_ValueChanged);
             // 
             // lblSrcEndID
             // 
@@ -124,12 +134,19 @@
             this.lblSrcEndID.TabIndex = 3;
             this.lblSrcEndID.Text = "End";
             // 
-            // numStartID
+            // numSrcStartID
             // 
-            this.numStartID.Location = new System.Drawing.Point(34, 32);
-            this.numStartID.Name = "numStartID";
-            this.numStartID.Size = new System.Drawing.Size(118, 20);
-            this.numStartID.TabIndex = 2;
+            this.numSrcStartID.Enabled = false;
+            this.numSrcStartID.Location = new System.Drawing.Point(34, 32);
+            this.numSrcStartID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
+            this.numSrcStartID.Name = "numSrcStartID";
+            this.numSrcStartID.Size = new System.Drawing.Size(118, 20);
+            this.numSrcStartID.TabIndex = 2;
+            this.numSrcStartID.ValueChanged += new System.EventHandler(this.num_ValueChanged);
             // 
             // lblSrcStartID
             // 
@@ -157,6 +174,7 @@
             this.btnImport.TabIndex = 7;
             this.btnImport.Text = "Import";
             this.btnImport.UseVisualStyleBackColor = true;
+            this.btnImport.Click += new System.EventHandler(this.btnImport_Click);
             // 
             // btnClose
             // 
@@ -183,6 +201,7 @@
             this.btnBrowse.TabIndex = 4;
             this.btnBrowse.Text = "Browse...";
             this.btnBrowse.UseVisualStyleBackColor = true;
+            this.btnBrowse.Click += new System.EventHandler(this.btnBrowse_Click);
             // 
             // gbDestIDs
             // 
@@ -207,11 +226,17 @@
             this.chkDestStartID.Size = new System.Drawing.Size(15, 14);
             this.chkDestStartID.TabIndex = 1;
             this.chkDestStartID.UseVisualStyleBackColor = true;
+            this.chkDestStartID.CheckedChanged += new System.EventHandler(this.chkDestStartID_CheckedChanged);
             // 
             // numDestEndID
             // 
             this.numDestEndID.Enabled = false;
             this.numDestEndID.Location = new System.Drawing.Point(179, 32);
+            this.numDestEndID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
             this.numDestEndID.Name = "numDestEndID";
             this.numDestEndID.Size = new System.Drawing.Size(118, 20);
             this.numDestEndID.TabIndex = 4;
@@ -227,10 +252,17 @@
             // 
             // numDestStartID
             // 
+            this.numDestStartID.Enabled = false;
             this.numDestStartID.Location = new System.Drawing.Point(34, 32);
+            this.numDestStartID.Maximum = new decimal(new int[] {
+            2147483647,
+            0,
+            0,
+            0});
             this.numDestStartID.Name = "numDestStartID";
             this.numDestStartID.Size = new System.Drawing.Size(118, 20);
             this.numDestStartID.TabIndex = 2;
+            this.numDestStartID.ValueChanged += new System.EventHandler(this.num_ValueChanged);
             // 
             // lblDestStartID
             // 
@@ -240,6 +272,10 @@
             this.lblDestStartID.Size = new System.Drawing.Size(29, 13);
             this.lblDestStartID.TabIndex = 0;
             this.lblDestStartID.Text = "Start";
+            // 
+            // openFileDialog
+            // 
+            this.openFileDialog.Filter = "Tables (*.dat;*.xml)|*.dat;*.xml|All Files (*.*)|*.*";
             // 
             // FrmTableImport
             // 
@@ -264,10 +300,11 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Import Table";
+            this.Load += new System.EventHandler(this.FrmTableImport_Load);
             this.gbSrcIdent.ResumeLayout(false);
             this.gbSrcIdent.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcEndID)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numStartID)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numSrcStartID)).EndInit();
             this.gbDestIDs.ResumeLayout(false);
             this.gbDestIDs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDestEndID)).EndInit();
@@ -287,7 +324,7 @@
         private System.Windows.Forms.CheckBox chkSrcStartID;
         private System.Windows.Forms.NumericUpDown numSrcEndID;
         private System.Windows.Forms.Label lblSrcEndID;
-        private System.Windows.Forms.NumericUpDown numStartID;
+        private System.Windows.Forms.NumericUpDown numSrcStartID;
         private System.Windows.Forms.Label lblSrcStartID;
         private System.Windows.Forms.Button btnImport;
         private System.Windows.Forms.Button btnClose;
@@ -299,5 +336,6 @@
         private System.Windows.Forms.Label lblDestEndID;
         private System.Windows.Forms.NumericUpDown numDestStartID;
         private System.Windows.Forms.Label lblDestStartID;
+        private System.Windows.Forms.OpenFileDialog openFileDialog;
     }
 }

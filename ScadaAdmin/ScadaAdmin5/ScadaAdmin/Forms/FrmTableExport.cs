@@ -54,7 +54,7 @@ namespace Scada.Admin.App.Forms
         private readonly ConfigBase configBase; // the configuration database
         private readonly AppData appData;       // the common data of the application
 
-        
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -71,6 +71,7 @@ namespace Scada.Admin.App.Forms
         {
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             this.appData = appData ?? throw new ArgumentNullException("appData");
+            SelectedItemType = null;
         }
 
 
@@ -128,7 +129,7 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Exports the table
+        /// Exports the table.
         /// </summary>
         private bool Export(IBaseTable baseTable, BaseTableFormat format)
         {
@@ -150,10 +151,10 @@ namespace Scada.Admin.App.Forms
         private void FrmTableExport_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
+            saveFileDialog.Filter = AppPhrases.ExportTableFilter;
+
             FillTableList();
             cbFormat.SelectedIndex = 0;
-            numStartID.Enabled = false;
-            numEndID.Enabled = false;
         }
 
         private void chkStartID_CheckedChanged(object sender, EventArgs e)
@@ -170,6 +171,7 @@ namespace Scada.Admin.App.Forms
         {
             if (cbTable.SelectedItem is TableItem tableItem)
             {
+                SelectedItemType = tableItem.BaseTable.ItemType;
                 saveFileDialog.FileName = GetOutputFileName(tableItem.BaseTable, out BaseTableFormat format);
 
                 if (saveFileDialog.ShowDialog() == DialogResult.OK &&

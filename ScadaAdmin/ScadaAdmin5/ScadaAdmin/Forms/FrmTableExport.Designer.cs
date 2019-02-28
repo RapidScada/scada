@@ -103,6 +103,7 @@
             // 
             // numEndID
             // 
+            this.numEndID.Enabled = false;
             this.numEndID.Location = new System.Drawing.Point(179, 32);
             this.numEndID.Maximum = new decimal(new int[] {
             2147483647,
@@ -124,6 +125,7 @@
             // 
             // numStartID
             // 
+            this.numStartID.Enabled = false;
             this.numStartID.Location = new System.Drawing.Point(34, 32);
             this.numStartID.Maximum = new decimal(new int[] {
             2147483647,

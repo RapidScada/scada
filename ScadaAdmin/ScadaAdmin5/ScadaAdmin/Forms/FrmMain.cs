@@ -35,6 +35,7 @@ using Scada.Comm;
 using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
 using Scada.Comm.Shell.Forms;
+using Scada.Data.Entities;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -1030,7 +1031,26 @@ namespace Scada.Admin.App.Forms
         private void miFileImportTable_Click(object sender, EventArgs e)
         {
             // import a configuration database table
-            new FrmTableImport().ShowDialog();
+            if (project != null)
+            {
+                FrmTableImport frmTableImport = new FrmTableImport(project.ConfigBase, appData)
+                {
+                    SelectedItemType = (wctrlMain.ActiveForm as FrmBaseTable)?.ItemType
+                };
+
+                if (frmTableImport.ShowDialog() == DialogResult.OK)
+                {
+                    // refresh the affected tables if they are open
+                    foreach (Form form in wctrlMain.Forms)
+                    {
+                        if (form is FrmBaseTable frmBaseTable && 
+                            frmBaseTable.ItemType == frmTableImport.SelectedItemType)
+                        {
+                            frmBaseTable.ChildFormTag.SendMessage(this, AppMessage.RefreshData);
+                        }
+                    }
+                }
+            }
         }
 
         private void miFileExportTable_Click(object sender, EventArgs e)
@@ -1215,7 +1235,14 @@ namespace Scada.Admin.App.Forms
         {
             // show a channel map form
             if (project != null)
-                new FrmCnlMap(project.ConfigBase, appData).ShowDialog();
+            {
+                new FrmCnlMap(project.ConfigBase, appData)
+                {
+                    InCnlsSelected = wctrlMain.ActiveForm is FrmBaseTable frmBaseTable &&
+                        frmBaseTable.ItemType != typeof(CtrlCnl)
+                }
+                .ShowDialog();
+            }
         }
 
         private void miToolsCheckIntegrity_Click(object sender, EventArgs e)

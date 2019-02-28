@@ -31,6 +31,7 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal static class AppMessage
     {
+        public const string RefreshData = "Admin.RefreshData";
         public const string UpdateFileName = "Admin.UpdateFileName";
     }
 }

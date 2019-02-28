@@ -233,6 +233,14 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Sets the primary key value of the item.
+        /// </summary>
+        public void SetPkValue(object item, int key)
+        {
+            primaryKeyProp.SetValue(item, key);
+        }
+
+        /// <summary>
         /// Checks if there is an item with the specified primary key.
         /// </summary>
         public bool PkExists(int key)
