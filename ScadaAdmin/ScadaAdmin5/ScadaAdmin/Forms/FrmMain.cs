@@ -390,6 +390,18 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Refreshes data of the table forms having the specified item type.
+        /// </summary>
+        private void RefreshBaseTables(Type itemType)
+        {
+            foreach (Form form in wctrlMain.Forms)
+            {
+                if (form is FrmBaseTable frmBaseTable && frmBaseTable.ItemType == itemType)
+                    frmBaseTable.ChildFormTag.SendMessage(this, AppMessage.RefreshData);
+            }
+        }
+
+        /// <summary>
         /// Prepares to close all forms.
         /// </summary>
         private void PrepareToCloseAll()
@@ -1039,17 +1051,7 @@ namespace Scada.Admin.App.Forms
                 };
 
                 if (frmTableImport.ShowDialog() == DialogResult.OK)
-                {
-                    // refresh the affected tables if they are open
-                    foreach (Form form in wctrlMain.Forms)
-                    {
-                        if (form is FrmBaseTable frmBaseTable && 
-                            frmBaseTable.ItemType == frmTableImport.SelectedItemType)
-                        {
-                            frmBaseTable.ChildFormTag.SendMessage(this, AppMessage.RefreshData);
-                        }
-                    }
-                }
+                    RefreshBaseTables(frmTableImport.SelectedItemType);
             }
         }
 
@@ -1226,9 +1228,26 @@ namespace Scada.Admin.App.Forms
         private void miTools_DropDownOpening(object sender, EventArgs e)
         {
             bool projectIsOpen = project != null;
+            miToolsCloneCnls.Enabled = projectIsOpen;
             miToolsCnlMap.Enabled = projectIsOpen;
             miToolsCheckIntegrity.Enabled = projectIsOpen;
             miToolsOptions.Enabled = false;
+        }
+
+        private void miToolsCloneCnls_Click(object sender, EventArgs e)
+        {
+            // show a cloning channels form
+            if (project != null)
+            {
+                FrmCnlClone frmCnlClone = new FrmCnlClone(project.ConfigBase, appData)
+                {
+                    InCnlsSelected = !(wctrlMain.ActiveForm is FrmBaseTable frmBaseTable &&
+                        frmBaseTable.ItemType == typeof(CtrlCnl))
+                };
+
+                if (frmCnlClone.ShowDialog() == DialogResult.OK)
+                    RefreshBaseTables(frmCnlClone.InCnlsSelected ? typeof(InCnl) : typeof(CtrlCnl));
+            }
         }
 
         private void miToolsCnlMap_Click(object sender, EventArgs e)
@@ -1238,8 +1257,8 @@ namespace Scada.Admin.App.Forms
             {
                 new FrmCnlMap(project.ConfigBase, appData)
                 {
-                    InCnlsSelected = wctrlMain.ActiveForm is FrmBaseTable frmBaseTable &&
-                        frmBaseTable.ItemType != typeof(CtrlCnl)
+                    InCnlsSelected = !(wctrlMain.ActiveForm is FrmBaseTable frmBaseTable &&
+                        frmBaseTable.ItemType == typeof(CtrlCnl))
                 }
                 .ShowDialog();
             }

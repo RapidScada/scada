@@ -253,7 +253,7 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("CtrlCnlTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CtrlCnlNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("CtrlCnlNum", new ColumnOptions(1, AdminUtils.MaxCnlNum)),
                 NewCheckBoxColumn("Active", new ColumnOptions() { DefaultValue = true }),
                 NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewComboBoxColumn("CmdTypeID", "Name", configBase.CmdTypeTable),
@@ -318,7 +318,7 @@ namespace Scada.Admin.App.Code
         {
             return TranslateHeaders("InCnlTable", new DataGridViewColumn[]
             {
-                NewTextBoxColumn("CnlNum", new ColumnOptions(1, ushort.MaxValue)),
+                NewTextBoxColumn("CnlNum", new ColumnOptions(1, AdminUtils.MaxCnlNum)),
                 NewCheckBoxColumn("Active", new ColumnOptions() { DefaultValue = true }),
                 NewTextBoxColumn("Name", new ColumnOptions(StringLength.Name)),
                 NewComboBoxColumn("CnlTypeID", "Name", configBase.CnlTypeTable),

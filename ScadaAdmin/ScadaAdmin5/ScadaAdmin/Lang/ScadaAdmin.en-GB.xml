@@ -358,6 +358,28 @@
     <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
     <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
+    <Phrase key="this">Clone Channels</Phrase>
+    <Phrase key="gbCnlKind">Kind</Phrase>
+    <Phrase key="rbInCnls">Input channels</Phrase>
+    <Phrase key="rbOutCnls">Output channels</Phrase>
+    <Phrase key="gbSrcNums">Source Numbers</Phrase>
+    <Phrase key="lblSrcStartNum">Start</Phrase>
+    <Phrase key="lblSrcEndNum">End</Phrase>
+    <Phrase key="gbDestNums">Destination Numbers</Phrase>
+    <Phrase key="lblDestStartNum">Start</Phrase>
+    <Phrase key="lblDestEndNum">End</Phrase>
+    <Phrase key="gbOptions">Options</Phrase>
+    <Phrase key="lblReplaceObj">Replace object</Phrase>
+    <Phrase key="lblReplaceKP">Replace device</Phrase>
+    <Phrase key="chkUpdateFormulas">Update channel numbers in formulas</Phrase>
+    <Phrase key="btnClone">Clone</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="KeepUnchanged">&lt;Keep unchanged&gt;</Phrase>
+    <Phrase key="CloneCnlsComplete">Cloning completed successfully.&#13;&#10;{0} channel(s) added.</Phrase>
+    <Phrase key="CloneInCnlsError">Error cloning input channels</Phrase>
+    <Phrase key="CloneCtrlCnlsError">Error cloning output channels</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Channel Map</Phrase>
     <Phrase key="gbCnlKind">Channel Kind</Phrase>
@@ -431,6 +453,7 @@
     <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
+    <Phrase key="miToolsCloneCnls">Clone Channels...</Phrase>
     <Phrase key="miToolsCnlMap">Channel Map...</Phrase>
     <Phrase key="miToolsCheckIntegrity">Check Integrity</Phrase>
     <Phrase key="miToolsOptions">Options...</Phrase>
@@ -525,7 +548,7 @@
     <Phrase key="this">Export Table</Phrase>
     <Phrase key="lblTable">Table</Phrase>
     <Phrase key="lblFormat">Format</Phrase>
-    <Phrase key="gbIdent">IDs</Phrase>
+    <Phrase key="gbIDs">IDs</Phrase>
     <Phrase key="lblStartID">Start</Phrase>
     <Phrase key="lblEndID">End</Phrase>
     <Phrase key="btnExport">Export</Phrase>
@@ -537,7 +560,7 @@
     <Phrase key="lblTable">Table</Phrase>
     <Phrase key="lblSrcFile">Source file</Phrase>
     <Phrase key="btnBrowse">Browse...</Phrase>
-    <Phrase key="gbSrcIdent">Source IDs</Phrase>
+    <Phrase key="gbSrcIDs">Source IDs</Phrase>
     <Phrase key="lblSrcStartID">Start</Phrase>
     <Phrase key="lblSrcEndID">End</Phrase>
     <Phrase key="gbDestIDs">Destination IDs</Phrase>

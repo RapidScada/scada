@@ -160,8 +160,8 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            InCnlsSelected = rbInCnls.Checked;
             GenerateCnlMap(rbInCnls.Checked, rbGroupByDevices.Checked);
+            InCnlsSelected = rbInCnls.Checked;
             DialogResult = DialogResult.OK;
         }
     }

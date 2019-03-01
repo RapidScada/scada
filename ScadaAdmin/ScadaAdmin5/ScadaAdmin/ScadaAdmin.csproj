@@ -206,6 +206,12 @@
     <Compile Include="Forms\Tables\FrmSourceCode.designer.cs">
       <DependentUpon>FrmSourceCode.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tools\FrmCnlClone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlClone.Designer.cs">
+      <DependentUpon>FrmCnlClone.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Tools\FrmCulture.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -309,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tables\FrmSourceCode.resx">
       <DependentUpon>FrmSourceCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCnlClone.resx">
+      <DependentUpon>FrmCnlClone.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\FrmCulture.resx">
       <DependentUpon>FrmCulture.cs</DependentUpon>

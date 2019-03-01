@@ -43,6 +43,10 @@ namespace Scada.Admin
         /// Extension of a project file.
         /// </summary>
         public const string ProjectExt = ".rsproj";
+        /// <summary>
+        /// The maximum channel number for input and output channels.
+        /// </summary>
+        public const int MaxCnlNum = ushort.MaxValue;
 
 
         /// <summary>

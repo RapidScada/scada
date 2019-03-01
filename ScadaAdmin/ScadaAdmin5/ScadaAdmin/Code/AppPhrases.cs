@@ -109,6 +109,12 @@ namespace Scada.Admin.App.Code
         public static string SearchComplete { get; private set; }
         public static string ReplaceCount { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmCnlClone
+        public static string KeepUnchanged { get; private set; }
+        public static string CloneCnlsComplete { get; private set; }
+        public static string CloneInCnlsError { get; private set; }
+        public static string CloneCtrlCnlsError { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmCnlMap
         public static string InCnlByDevTitle { get; private set; }
         public static string InCnlByObjTitle { get; private set; }
@@ -257,6 +263,12 @@ namespace Scada.Admin.App.Code
             ValueNotFound = dict.GetPhrase("ValueNotFound");
             SearchComplete = dict.GetPhrase("SearchComplete");
             ReplaceCount = dict.GetPhrase("ReplaceCount");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCnlClone");
+            KeepUnchanged = dict.GetPhrase("KeepUnchanged");
+            CloneCnlsComplete = dict.GetPhrase("CloneCnlsComplete");
+            CloneInCnlsError = dict.GetPhrase("CloneInCnlsError");
+            CloneCtrlCnlsError = dict.GetPhrase("CloneCtrlCnlsError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");

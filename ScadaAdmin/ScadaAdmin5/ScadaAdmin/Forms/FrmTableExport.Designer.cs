@@ -30,7 +30,7 @@
         {
             this.lblTable = new System.Windows.Forms.Label();
             this.cbTable = new System.Windows.Forms.ComboBox();
-            this.gbIdent = new System.Windows.Forms.GroupBox();
+            this.gbIDs = new System.Windows.Forms.GroupBox();
             this.chkEndID = new System.Windows.Forms.CheckBox();
             this.chkStartID = new System.Windows.Forms.CheckBox();
             this.numEndID = new System.Windows.Forms.NumericUpDown();
@@ -42,7 +42,7 @@
             this.btnExport = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.gbIdent.SuspendLayout();
+            this.gbIDs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEndID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartID)).BeginInit();
             this.SuspendLayout();
@@ -65,21 +65,21 @@
             this.cbTable.Size = new System.Drawing.Size(310, 21);
             this.cbTable.TabIndex = 1;
             // 
-            // gbIdent
+            // gbIDs
             // 
-            this.gbIdent.Controls.Add(this.chkEndID);
-            this.gbIdent.Controls.Add(this.chkStartID);
-            this.gbIdent.Controls.Add(this.numEndID);
-            this.gbIdent.Controls.Add(this.lblEndID);
-            this.gbIdent.Controls.Add(this.numStartID);
-            this.gbIdent.Controls.Add(this.lblStartID);
-            this.gbIdent.Location = new System.Drawing.Point(12, 92);
-            this.gbIdent.Name = "gbIdent";
-            this.gbIdent.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbIdent.Size = new System.Drawing.Size(310, 65);
-            this.gbIdent.TabIndex = 4;
-            this.gbIdent.TabStop = false;
-            this.gbIdent.Text = "IDs";
+            this.gbIDs.Controls.Add(this.chkEndID);
+            this.gbIDs.Controls.Add(this.chkStartID);
+            this.gbIDs.Controls.Add(this.numEndID);
+            this.gbIDs.Controls.Add(this.lblEndID);
+            this.gbIDs.Controls.Add(this.numStartID);
+            this.gbIDs.Controls.Add(this.lblStartID);
+            this.gbIDs.Location = new System.Drawing.Point(12, 92);
+            this.gbIDs.Name = "gbIDs";
+            this.gbIDs.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbIDs.Size = new System.Drawing.Size(310, 65);
+            this.gbIDs.TabIndex = 4;
+            this.gbIDs.TabStop = false;
+            this.gbIDs.Text = "IDs";
             // 
             // chkEndID
             // 
@@ -202,7 +202,7 @@
             this.Controls.Add(this.btnExport);
             this.Controls.Add(this.cbFormat);
             this.Controls.Add(this.lblFormat);
-            this.Controls.Add(this.gbIdent);
+            this.Controls.Add(this.gbIDs);
             this.Controls.Add(this.cbTable);
             this.Controls.Add(this.lblTable);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -213,8 +213,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Export Table";
             this.Load += new System.EventHandler(this.FrmTableExport_Load);
-            this.gbIdent.ResumeLayout(false);
-            this.gbIdent.PerformLayout();
+            this.gbIDs.ResumeLayout(false);
+            this.gbIDs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numEndID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numStartID)).EndInit();
             this.ResumeLayout(false);
@@ -226,7 +226,7 @@
 
         private System.Windows.Forms.Label lblTable;
         private System.Windows.Forms.ComboBox cbTable;
-        private System.Windows.Forms.GroupBox gbIdent;
+        private System.Windows.Forms.GroupBox gbIDs;
         private System.Windows.Forms.ComboBox cbFormat;
         private System.Windows.Forms.Label lblFormat;
         private System.Windows.Forms.CheckBox chkEndID;

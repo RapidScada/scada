@@ -115,10 +115,10 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private void CalcDestEndID()
         {
-            numDestEndID.Value = chkSrcEndID.Checked ? chkDestStartID.Checked ? 
+            numDestEndID.SetValue(chkSrcEndID.Checked ? chkDestStartID.Checked ? 
                 numSrcEndID.Value - numSrcStartID.Value + numDestStartID.Value : 
                 numSrcEndID.Value :
-                0;
+                0);
         }
 
         /// <summary>

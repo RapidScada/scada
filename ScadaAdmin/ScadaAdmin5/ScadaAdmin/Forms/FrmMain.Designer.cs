@@ -37,9 +37,12 @@
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSaveAll = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileImportTable = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileExportTable = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileCloseProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeploy = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployInstanceProfile = new System.Windows.Forms.ToolStripMenuItem();
@@ -124,9 +127,7 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileImportTable = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileExportTable = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miToolsCloneCnls = new System.Windows.Forms.ToolStripMenuItem();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -214,6 +215,25 @@
             this.miFileSep1.Name = "miFileSep1";
             this.miFileSep1.Size = new System.Drawing.Size(192, 6);
             // 
+            // miFileImportTable
+            // 
+            this.miFileImportTable.Name = "miFileImportTable";
+            this.miFileImportTable.Size = new System.Drawing.Size(195, 22);
+            this.miFileImportTable.Text = "Import Table...";
+            this.miFileImportTable.Click += new System.EventHandler(this.miFileImportTable_Click);
+            // 
+            // miFileExportTable
+            // 
+            this.miFileExportTable.Name = "miFileExportTable";
+            this.miFileExportTable.Size = new System.Drawing.Size(195, 22);
+            this.miFileExportTable.Text = "Export Table...";
+            this.miFileExportTable.Click += new System.EventHandler(this.miFileExportTable_Click);
+            // 
+            // miFileSep2
+            // 
+            this.miFileSep2.Name = "miFileSep2";
+            this.miFileSep2.Size = new System.Drawing.Size(192, 6);
+            // 
             // miFileClose
             // 
             this.miFileClose.Name = "miFileClose";
@@ -228,10 +248,10 @@
             this.miFileCloseProject.Text = "Close Project";
             this.miFileCloseProject.Click += new System.EventHandler(this.miFileCloseProject_Click);
             // 
-            // miFileSep2
+            // miFileSep3
             // 
-            this.miFileSep2.Name = "miFileSep2";
-            this.miFileSep2.Size = new System.Drawing.Size(192, 6);
+            this.miFileSep3.Name = "miFileSep3";
+            this.miFileSep3.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileExit
             // 
@@ -288,6 +308,7 @@
             // miTools
             // 
             this.miTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miToolsCloneCnls,
             this.miToolsCnlMap,
             this.miToolsCheckIntegrity,
             this.miToolsSep1,
@@ -301,34 +322,34 @@
             // miToolsCnlMap
             // 
             this.miToolsCnlMap.Name = "miToolsCnlMap";
-            this.miToolsCnlMap.Size = new System.Drawing.Size(154, 22);
+            this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
             // 
             // miToolsCheckIntegrity
             // 
             this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
-            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(154, 22);
+            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
             this.miToolsCheckIntegrity.Text = "Check Integrity";
             this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
             // 
             // miToolsSep1
             // 
             this.miToolsSep1.Name = "miToolsSep1";
-            this.miToolsSep1.Size = new System.Drawing.Size(151, 6);
+            this.miToolsSep1.Size = new System.Drawing.Size(177, 6);
             // 
             // miToolsOptions
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(154, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
             // miToolsCulture
             // 
             this.miToolsCulture.Name = "miToolsCulture";
-            this.miToolsCulture.Size = new System.Drawing.Size(154, 22);
+            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
             this.miToolsCulture.Text = "Language...";
             this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
             // 
@@ -945,24 +966,12 @@
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
-            // miFileImportTable
+            // miToolsCloneCnls
             // 
-            this.miFileImportTable.Name = "miFileImportTable";
-            this.miFileImportTable.Size = new System.Drawing.Size(195, 22);
-            this.miFileImportTable.Text = "Import Table...";
-            this.miFileImportTable.Click += new System.EventHandler(this.miFileImportTable_Click);
-            // 
-            // miFileExportTable
-            // 
-            this.miFileExportTable.Name = "miFileExportTable";
-            this.miFileExportTable.Size = new System.Drawing.Size(195, 22);
-            this.miFileExportTable.Text = "Export Table...";
-            this.miFileExportTable.Click += new System.EventHandler(this.miFileExportTable_Click);
-            // 
-            // miFileSep3
-            // 
-            this.miFileSep3.Name = "miFileSep3";
-            this.miFileSep3.Size = new System.Drawing.Size(192, 6);
+            this.miToolsCloneCnls.Name = "miToolsCloneCnls";
+            this.miToolsCloneCnls.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCloneCnls.Text = "Clone Channels...";
+            this.miToolsCloneCnls.Click += new System.EventHandler(this.miToolsCloneCnls_Click);
             // 
             // FrmMain
             // 
@@ -1104,6 +1113,7 @@
         private System.Windows.Forms.ToolStripMenuItem miFileImportTable;
         private System.Windows.Forms.ToolStripMenuItem miFileExportTable;
         private System.Windows.Forms.ToolStripSeparator miFileSep3;
+        private System.Windows.Forms.ToolStripMenuItem miToolsCloneCnls;
     }
 }
 

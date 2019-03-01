@@ -361,6 +361,10 @@ namespace Scada.Admin
             if (baseTable == null)
                 throw new ArgumentNullException("baseTable");
 
+            affectedRows = 0;
+            if (srcStartID > srcEndID)
+                return;
+
             // open the source table
             IBaseTable srcTable = BaseTableFactory.GetBaseTable(baseTable);
 
@@ -377,7 +381,6 @@ namespace Scada.Admin
             }
 
             // copy data from the source table to the destination
-            affectedRows = 0;
             int shiftID = destStartID - srcStartID;
 
             foreach (object item in srcTable.EnumerateItems())
@@ -386,9 +389,20 @@ namespace Scada.Admin
                 if (srcStartID <= itemID && itemID <= srcEndID)
                 {
                     if (shiftID > 0)
-                        srcTable.SetPkValue(item, itemID + shiftID);
-                    baseTable.AddObject(item);
-                    affectedRows++;
+                    {
+                        int newItemID = itemID + shiftID;
+                        if (newItemID <= AdminUtils.MaxCnlNum)
+                        {
+                            srcTable.SetPkValue(item, newItemID);
+                            baseTable.AddObject(item);
+                            affectedRows++;
+                        }
+                    }
+                    else
+                    {
+                        baseTable.AddObject(item);
+                        affectedRows++;
+                    }
                 }
                 else if (itemID > srcEndID)
                 {
@@ -417,13 +431,16 @@ namespace Scada.Admin
                 // filter data
                 destTable = BaseTableFactory.GetBaseTable(baseTable);
 
-                foreach (object item in baseTable.EnumerateItems())
+                if (startID <= endID)
                 {
-                    int itemID = baseTable.GetPkValue(item);
-                    if (startID <= itemID && itemID <= endID)
-                        destTable.AddObject(item);
-                    else if (itemID > endID)
-                        break;
+                    foreach (object item in baseTable.EnumerateItems())
+                    {
+                        int itemID = baseTable.GetPkValue(item);
+                        if (startID <= itemID && itemID <= endID)
+                            destTable.AddObject(item);
+                        else if (itemID > endID)
+                            break;
+                    }
                 }
             }
             else

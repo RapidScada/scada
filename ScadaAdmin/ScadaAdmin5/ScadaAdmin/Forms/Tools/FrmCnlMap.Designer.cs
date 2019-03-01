@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             this.gbCnlKind = new System.Windows.Forms.GroupBox();
-            this.gbGroupBy = new System.Windows.Forms.GroupBox();
-            this.rbInCnls = new System.Windows.Forms.RadioButton();
             this.rbOutCnls = new System.Windows.Forms.RadioButton();
-            this.rbGroupByDevices = new System.Windows.Forms.RadioButton();
+            this.rbInCnls = new System.Windows.Forms.RadioButton();
+            this.gbGroupBy = new System.Windows.Forms.GroupBox();
             this.rbGroupByObjects = new System.Windows.Forms.RadioButton();
+            this.rbGroupByDevices = new System.Windows.Forms.RadioButton();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbCnlKind.SuspendLayout();
@@ -47,22 +47,20 @@
             this.gbCnlKind.Location = new System.Drawing.Point(12, 12);
             this.gbCnlKind.Name = "gbCnlKind";
             this.gbCnlKind.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbCnlKind.Size = new System.Drawing.Size(360, 49);
+            this.gbCnlKind.Size = new System.Drawing.Size(310, 49);
             this.gbCnlKind.TabIndex = 0;
             this.gbCnlKind.TabStop = false;
             this.gbCnlKind.Text = "Channel Kind";
             // 
-            // gbGroupBy
+            // rbOutCnls
             // 
-            this.gbGroupBy.Controls.Add(this.rbGroupByObjects);
-            this.gbGroupBy.Controls.Add(this.rbGroupByDevices);
-            this.gbGroupBy.Location = new System.Drawing.Point(12, 67);
-            this.gbGroupBy.Name = "gbGroupBy";
-            this.gbGroupBy.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbGroupBy.Size = new System.Drawing.Size(360, 49);
-            this.gbGroupBy.TabIndex = 1;
-            this.gbGroupBy.TabStop = false;
-            this.gbGroupBy.Text = "Group By";
+            this.rbOutCnls.AutoSize = true;
+            this.rbOutCnls.Location = new System.Drawing.Point(158, 19);
+            this.rbOutCnls.Name = "rbOutCnls";
+            this.rbOutCnls.Size = new System.Drawing.Size(103, 17);
+            this.rbOutCnls.TabIndex = 1;
+            this.rbOutCnls.Text = "Output channels";
+            this.rbOutCnls.UseVisualStyleBackColor = true;
             // 
             // rbInCnls
             // 
@@ -76,15 +74,27 @@
             this.rbInCnls.Text = "Input channels";
             this.rbInCnls.UseVisualStyleBackColor = true;
             // 
-            // rbOutCnls
+            // gbGroupBy
             // 
-            this.rbOutCnls.AutoSize = true;
-            this.rbOutCnls.Location = new System.Drawing.Point(168, 19);
-            this.rbOutCnls.Name = "rbOutCnls";
-            this.rbOutCnls.Size = new System.Drawing.Size(103, 17);
-            this.rbOutCnls.TabIndex = 1;
-            this.rbOutCnls.Text = "Output channels";
-            this.rbOutCnls.UseVisualStyleBackColor = true;
+            this.gbGroupBy.Controls.Add(this.rbGroupByObjects);
+            this.gbGroupBy.Controls.Add(this.rbGroupByDevices);
+            this.gbGroupBy.Location = new System.Drawing.Point(12, 67);
+            this.gbGroupBy.Name = "gbGroupBy";
+            this.gbGroupBy.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbGroupBy.Size = new System.Drawing.Size(310, 49);
+            this.gbGroupBy.TabIndex = 1;
+            this.gbGroupBy.TabStop = false;
+            this.gbGroupBy.Text = "Group By";
+            // 
+            // rbGroupByObjects
+            // 
+            this.rbGroupByObjects.AutoSize = true;
+            this.rbGroupByObjects.Location = new System.Drawing.Point(158, 19);
+            this.rbGroupByObjects.Name = "rbGroupByObjects";
+            this.rbGroupByObjects.Size = new System.Drawing.Size(61, 17);
+            this.rbGroupByObjects.TabIndex = 1;
+            this.rbGroupByObjects.Text = "Objects";
+            this.rbGroupByObjects.UseVisualStyleBackColor = true;
             // 
             // rbGroupByDevices
             // 
@@ -98,19 +108,9 @@
             this.rbGroupByDevices.Text = "Devices";
             this.rbGroupByDevices.UseVisualStyleBackColor = true;
             // 
-            // rbGroupByObjects
-            // 
-            this.rbGroupByObjects.AutoSize = true;
-            this.rbGroupByObjects.Location = new System.Drawing.Point(168, 19);
-            this.rbGroupByObjects.Name = "rbGroupByObjects";
-            this.rbGroupByObjects.Size = new System.Drawing.Size(61, 17);
-            this.rbGroupByObjects.TabIndex = 1;
-            this.rbGroupByObjects.Text = "Objects";
-            this.rbGroupByObjects.UseVisualStyleBackColor = true;
-            // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(216, 132);
+            this.btnOK.Location = new System.Drawing.Point(166, 132);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
             this.btnOK.TabIndex = 2;
@@ -121,7 +121,7 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(297, 132);
+            this.btnCancel.Location = new System.Drawing.Point(247, 132);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
             this.btnCancel.TabIndex = 3;
@@ -134,7 +134,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(384, 167);
+            this.ClientSize = new System.Drawing.Size(334, 167);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.gbGroupBy);

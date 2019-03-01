@@ -358,6 +358,28 @@
     <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
     <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
+    <Phrase key="this">Клонирование каналов</Phrase>
+    <Phrase key="gbCnlKind">Вид каналов</Phrase>
+    <Phrase key="rbInCnls">Входные каналы</Phrase>
+    <Phrase key="rbOutCnls">Каналы управления</Phrase>
+    <Phrase key="gbSrcNums">Исходные номера</Phrase>
+    <Phrase key="lblSrcStartNum">Начальный</Phrase>
+    <Phrase key="lblSrcEndNum">Конечный</Phrase>
+    <Phrase key="gbDestNums">Номера назначения</Phrase>
+    <Phrase key="lblDestStartNum">Начальный</Phrase>
+    <Phrase key="lblDestEndNum">Конечный</Phrase>
+    <Phrase key="gbOptions">Параметры</Phrase>
+    <Phrase key="lblReplaceObj">Замена объекта</Phrase>
+    <Phrase key="lblReplaceKP">Замена КП</Phrase>
+    <Phrase key="chkUpdateFormulas">Обновить номера каналов в формулах</Phrase>
+    <Phrase key="btnClone">Клонировать</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="KeepUnchanged">&lt;Без изменений&gt;</Phrase>
+    <Phrase key="CloneCnlsComplete">Клонирование завершено успешно.&#13;&#10;Добавлено каналов: {0}.</Phrase>
+    <Phrase key="CloneInCnlsError">Ошибка при клонировании входных каналов</Phrase>
+    <Phrase key="CloneCtrlCnlsError">Ошибка при клонировании каналов управления</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Карта каналов</Phrase>
     <Phrase key="gbCnlKind">Вид каналов</Phrase>
@@ -431,6 +453,7 @@
     <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miTools">&amp;Инструменты</Phrase>
+    <Phrase key="miToolsCloneCnls">Клонировать каналы...</Phrase>
     <Phrase key="miToolsCnlMap">Карта каналов...</Phrase>
     <Phrase key="miToolsCheckIntegrity">Проверить целостность</Phrase>
     <Phrase key="miToolsOptions">Настройки...</Phrase>
@@ -529,7 +552,7 @@
     <Phrase key="this">Экспорт таблицы</Phrase>
     <Phrase key="lblTable">Таблица</Phrase>
     <Phrase key="lblFormat">Формат</Phrase>
-    <Phrase key="gbIdent">Идентификаторы</Phrase>
+    <Phrase key="gbIDs">Идентификаторы</Phrase>
     <Phrase key="lblStartID">Начальный</Phrase>
     <Phrase key="lblEndID">Конечный</Phrase>
     <Phrase key="btnExport">Экспорт</Phrase>
@@ -541,7 +564,7 @@
     <Phrase key="lblTable">Таблица</Phrase>
     <Phrase key="lblSrcFile">Исходный файл</Phrase>
     <Phrase key="btnBrowse">Обзор...</Phrase>
-    <Phrase key="gbSrcIdent">Исходные идентификаторы</Phrase>
+    <Phrase key="gbSrcIDs">Исходные идентификаторы</Phrase>
     <Phrase key="lblSrcStartID">Начальный</Phrase>
     <Phrase key="lblSrcEndID">Конечный</Phrase>
     <Phrase key="gbDestIDs">Назначаемые идентификаторы</Phrase>

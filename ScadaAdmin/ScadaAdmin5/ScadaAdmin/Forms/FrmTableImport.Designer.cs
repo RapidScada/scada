@@ -30,7 +30,7 @@
         {
             this.lblTable = new System.Windows.Forms.Label();
             this.cbTable = new System.Windows.Forms.ComboBox();
-            this.gbSrcIdent = new System.Windows.Forms.GroupBox();
+            this.gbSrcIDs = new System.Windows.Forms.GroupBox();
             this.chkSrcEndID = new System.Windows.Forms.CheckBox();
             this.chkSrcStartID = new System.Windows.Forms.CheckBox();
             this.numSrcEndID = new System.Windows.Forms.NumericUpDown();
@@ -49,7 +49,7 @@
             this.numDestStartID = new System.Windows.Forms.NumericUpDown();
             this.lblDestStartID = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            this.gbSrcIdent.SuspendLayout();
+            this.gbSrcIDs.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcEndID)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcStartID)).BeginInit();
             this.gbDestIDs.SuspendLayout();
@@ -75,21 +75,21 @@
             this.cbTable.Size = new System.Drawing.Size(310, 21);
             this.cbTable.TabIndex = 1;
             // 
-            // gbSrcIdent
+            // gbSrcIDs
             // 
-            this.gbSrcIdent.Controls.Add(this.chkSrcEndID);
-            this.gbSrcIdent.Controls.Add(this.chkSrcStartID);
-            this.gbSrcIdent.Controls.Add(this.numSrcEndID);
-            this.gbSrcIdent.Controls.Add(this.lblSrcEndID);
-            this.gbSrcIdent.Controls.Add(this.numSrcStartID);
-            this.gbSrcIdent.Controls.Add(this.lblSrcStartID);
-            this.gbSrcIdent.Location = new System.Drawing.Point(12, 93);
-            this.gbSrcIdent.Name = "gbSrcIdent";
-            this.gbSrcIdent.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbSrcIdent.Size = new System.Drawing.Size(310, 65);
-            this.gbSrcIdent.TabIndex = 5;
-            this.gbSrcIdent.TabStop = false;
-            this.gbSrcIdent.Text = "Source IDs";
+            this.gbSrcIDs.Controls.Add(this.chkSrcEndID);
+            this.gbSrcIDs.Controls.Add(this.chkSrcStartID);
+            this.gbSrcIDs.Controls.Add(this.numSrcEndID);
+            this.gbSrcIDs.Controls.Add(this.lblSrcEndID);
+            this.gbSrcIDs.Controls.Add(this.numSrcStartID);
+            this.gbSrcIDs.Controls.Add(this.lblSrcStartID);
+            this.gbSrcIDs.Location = new System.Drawing.Point(12, 93);
+            this.gbSrcIDs.Name = "gbSrcIDs";
+            this.gbSrcIDs.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbSrcIDs.Size = new System.Drawing.Size(310, 65);
+            this.gbSrcIDs.TabIndex = 5;
+            this.gbSrcIDs.TabStop = false;
+            this.gbSrcIDs.Text = "Source IDs";
             // 
             // chkSrcEndID
             // 
@@ -230,7 +230,11 @@
             // 
             // numDestEndID
             // 
-            this.numDestEndID.Enabled = false;
+            this.numDestEndID.Increment = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
             this.numDestEndID.Location = new System.Drawing.Point(179, 32);
             this.numDestEndID.Maximum = new decimal(new int[] {
             2147483647,
@@ -238,6 +242,7 @@
             0,
             0});
             this.numDestEndID.Name = "numDestEndID";
+            this.numDestEndID.ReadOnly = true;
             this.numDestEndID.Size = new System.Drawing.Size(118, 20);
             this.numDestEndID.TabIndex = 4;
             // 
@@ -290,7 +295,7 @@
             this.Controls.Add(this.btnClose);
             this.Controls.Add(this.btnImport);
             this.Controls.Add(this.lblSrcFile);
-            this.Controls.Add(this.gbSrcIdent);
+            this.Controls.Add(this.gbSrcIDs);
             this.Controls.Add(this.cbTable);
             this.Controls.Add(this.lblTable);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -301,8 +306,8 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Import Table";
             this.Load += new System.EventHandler(this.FrmTableImport_Load);
-            this.gbSrcIdent.ResumeLayout(false);
-            this.gbSrcIdent.PerformLayout();
+            this.gbSrcIDs.ResumeLayout(false);
+            this.gbSrcIDs.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcEndID)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numSrcStartID)).EndInit();
             this.gbDestIDs.ResumeLayout(false);
@@ -318,7 +323,7 @@
 
         private System.Windows.Forms.Label lblTable;
         private System.Windows.Forms.ComboBox cbTable;
-        private System.Windows.Forms.GroupBox gbSrcIdent;
+        private System.Windows.Forms.GroupBox gbSrcIDs;
         private System.Windows.Forms.Label lblSrcFile;
         private System.Windows.Forms.CheckBox chkSrcEndID;
         private System.Windows.Forms.CheckBox chkSrcStartID;
