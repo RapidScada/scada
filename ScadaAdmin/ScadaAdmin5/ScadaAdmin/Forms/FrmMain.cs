@@ -1853,6 +1853,16 @@ namespace Scada.Admin.App.Forms
             miCommLineRestart.Enabled = isLineNode;
         }
 
+        private void miCommLineImport_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miCommLineSync_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void miCommLineAdd_Click(object sender, EventArgs e)
         {
             // add a new communication line

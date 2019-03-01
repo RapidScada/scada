@@ -121,7 +121,7 @@ namespace Scada.Admin.App.Code
             }
             catch (Exception ex)
             {
-                appData.ProcError(ex, "AppPhrases.IntegrityCheckError");
+                appData.ProcError(ex, AppPhrases.IntegrityCheckError);
             }
         }
     }

@@ -71,6 +71,7 @@ namespace Scada.Admin.App.Forms.Tables
         private readonly AppData appData;         // the common data of the application
 
         private DataTable dataTable; // the table used by a grid view control
+        private int maxRowID;        // the maximum ID in the table
         private FrmFind frmFind;     // the find and replace form
 
 
@@ -94,6 +95,7 @@ namespace Scada.Admin.App.Forms.Tables
             this.appData = appData ?? throw new ArgumentNullException("appData");
 
             dataTable = null;
+            maxRowID = 0;
             frmFind = null;
 
             Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
@@ -160,6 +162,11 @@ namespace Scada.Admin.App.Forms.Tables
                 baseTable.ToDataTable() :
                 baseTable.SelectItems(tableFilter).ToDataTable(baseTable.ItemType);
             dataTable.DefaultView.Sort = baseTable.PrimaryKey;
+            maxRowID = dataTable.DefaultView.Count > 0 ? 
+                (int)dataTable.DefaultView[dataTable.DefaultView.Count - 1][baseTable.PrimaryKey] : 0;
+
+            // bind table events
+            dataTable.TableNewRow += dataTable_TableNewRow;
             dataTable.RowChanged += dataTable_RowChanged;
             dataTable.RowDeleted += dataTable_RowDeleted;
 
@@ -868,6 +875,14 @@ namespace Scada.Admin.App.Forms.Tables
         }
 
 
+        private void dataTable_TableNewRow(object sender, DataTableNewRowEventArgs e)
+        {
+            // generate a new ID
+            int newRowID = maxRowID + 1;
+            if (!baseTable.PkExists(newRowID))
+                e.Row[0] = newRowID;
+        }
+
         private void dataTable_RowChanged(object sender, DataRowChangeEventArgs e)
         {
             DataRow row = e.Row;
@@ -878,16 +893,17 @@ namespace Scada.Admin.App.Forms.Tables
                 {
                     bool rowIsValid = true;
                     string errMsg = "";
+                    int curKey; // the current key of the row
 
                     if (e.Action == DataRowAction.Add)
                     {
-                        int key = (int)row[baseTable.PrimaryKey];
-                        rowIsValid = PkUnique(key, out errMsg);
+                        curKey = (int)row[baseTable.PrimaryKey];
+                        rowIsValid = PkUnique(curKey, out errMsg);
                     }
                     else // DataRowAction.Change
                     {
+                        curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
                         int origKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Original];
-                        int curKey = (int)row[baseTable.PrimaryKey, DataRowVersion.Current];
                         if (origKey != curKey)
                             rowIsValid = PkUnique(curKey, out errMsg) && NoReferencesToPk(origKey, out errMsg);
                     }
@@ -912,6 +928,9 @@ namespace Scada.Admin.App.Forms.Tables
                     if (rowIsValid)
                     {
                         RetrieveChanges();
+
+                        if (maxRowID < curKey)
+                            maxRowID = curKey;
                     }
                     else
                     {

@@ -366,6 +366,11 @@ namespace Scada.Comm.Shell.Controls
             btnPasteDevice.Enabled = false;
         }
 
+        private void btnImportDevice_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void btnAddDevice_Click(object sender, EventArgs e)
         {
             // add a new device
@@ -644,6 +649,11 @@ namespace Scada.Comm.Shell.Controls
 
                 OnSettingsChanged();
             }
+        }
+
+        private void btnSyncDeviceProps_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void btnDeviceProps_Click(object sender, EventArgs e)

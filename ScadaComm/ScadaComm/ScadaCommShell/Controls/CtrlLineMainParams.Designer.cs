@@ -341,7 +341,7 @@
             this.Controls.Add(this.gbLineParams);
             this.Controls.Add(this.gbCommChannel);
             this.Name = "CtrlLineMainParams";
-            this.Size = new System.Drawing.Size(550, 450);
+            this.Size = new System.Drawing.Size(500, 450);
             this.Load += new System.EventHandler(this.CtrlLineMainParams_Load);
             this.gbCommLine.ResumeLayout(false);
             this.gbCommLine.PerformLayout();

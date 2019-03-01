@@ -184,6 +184,7 @@
     <Phrase key="gbSelectedParam">Выбранный параметр</Phrase>
     <Phrase key="lblParamName">Наименование</Phrase>
     <Phrase key="lblParamValue">Значение</Phrase>
+    <Phrase key="btnImportDevice">Импорт</Phrase>
     <Phrase key="btnAddDevice">Добавить</Phrase>
     <Phrase key="btnMoveUpDevice">Вверх</Phrase>
     <Phrase key="btnMoveDownDevice">Вниз</Phrase>
@@ -217,6 +218,8 @@
     <Phrase key="lblDeviceTime">Время</Phrase>
     <Phrase key="lblDevicePeriod">Период</Phrase>
     <Phrase key="lblDeviceCmdLine">Командная строка</Phrase>
+    <Phrase key="btnSyncDeviceProps">Синхр.</Phrase>
+    <Phrase key="btnSyncDeviceProps.ToolTip">Установить свойства КП в соответствии с базой конфигурации</Phrase>
     <Phrase key="btnResetReqParams">Сброс</Phrase>
     <Phrase key="btnResetReqParams.ToolTip">Установить параметры опроса КП по умолчанию</Phrase>
     <Phrase key="btnDeviceProps">Свойства</Phrase>

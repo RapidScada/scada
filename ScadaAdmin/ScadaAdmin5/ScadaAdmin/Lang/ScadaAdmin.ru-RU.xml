@@ -496,6 +496,8 @@
     <Phrase key="miInstanceProperties">Свойства</Phrase>
     <Phrase key="miServerOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miCommOpenInExplorer">Открыть папку в проводнике</Phrase>
+    <Phrase key="miCommLineImport">Импортировать...</Phrase>
+    <Phrase key="miCommLineSync">Сихронизировать...</Phrase>
     <Phrase key="miCommLineAdd">Добавить линию</Phrase>
     <Phrase key="miCommLineMoveUp">Переместить линию вверх</Phrase>
     <Phrase key="miCommLineMoveDown">Переместить линию вниз</Phrase>

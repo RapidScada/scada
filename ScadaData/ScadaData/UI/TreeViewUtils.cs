@@ -277,6 +277,7 @@ namespace Scada.UI
             if (GetRelatedObject(parentNode) is ITreeNode parentObj &&
                 GetRelatedObject(nodeToAdd) is ITreeNode objToAdd)
             {
+                objToAdd.Parent = parentObj;
                 treeView.Add(parentNode, nodeToAdd, parentObj.Children, objToAdd);
             }
         }
@@ -318,6 +319,7 @@ namespace Scada.UI
             if (GetRelatedObject(parentNode) is ITreeNode parentObj &&
                 GetRelatedObject(nodeToInsert) is ITreeNode objToInsert)
             {
+                objToInsert.Parent = parentObj;
                 treeView.Insert(parentNode, nodeToInsert, parentObj.Children, objToInsert);
             }
         }

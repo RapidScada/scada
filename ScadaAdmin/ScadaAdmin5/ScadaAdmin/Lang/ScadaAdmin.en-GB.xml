@@ -496,6 +496,8 @@
     <Phrase key="miInstanceProperties">Properties</Phrase>
     <Phrase key="miServerOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miCommOpenInExplorer">Open Folder in File Explorer</Phrase>
+    <Phrase key="miCommLineImport">Import...</Phrase>
+    <Phrase key="miCommLineSync">Synchronize...</Phrase>
     <Phrase key="miCommLineAdd">Add Line</Phrase>
     <Phrase key="miCommLineMoveUp">Move Line Up</Phrase>
     <Phrase key="miCommLineMoveDown">Move Line Down</Phrase>
