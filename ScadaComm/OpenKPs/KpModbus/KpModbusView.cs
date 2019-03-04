@@ -34,8 +34,8 @@ using System.IO;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// Device library user interface.
+    /// <para>Пользовательский интерфейс библиотеки КП.</para>
     /// </summary>
     public class KpModbusView : KPView
     {

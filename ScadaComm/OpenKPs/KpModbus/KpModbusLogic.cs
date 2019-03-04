@@ -35,8 +35,8 @@ using System.Threading;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// Device communication logic.
+    /// <para>Логика работы КП.</para>
     /// </summary>
     public class KpModbusLogic : KPLogic
     {
