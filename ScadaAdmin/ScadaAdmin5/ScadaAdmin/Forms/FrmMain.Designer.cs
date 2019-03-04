@@ -82,6 +82,9 @@
             this.btnDeployUploadConfig = new System.Windows.Forms.ToolStripButton();
             this.btnDeployInstanceStatus = new System.Windows.Forms.ToolStripButton();
             this.toolSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnToolsAddLine = new System.Windows.Forms.ToolStripButton();
+            this.btnToolsAddDevice = new System.Windows.Forms.ToolStripButton();
+            this.btnToolsCreateCnls = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
@@ -142,9 +145,6 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnToolsAddLine = new System.Windows.Forms.ToolStripButton();
-            this.btnToolsAddDevice = new System.Windows.Forms.ToolStripButton();
-            this.btnToolsCreateCnls = new System.Windows.Forms.ToolStripButton();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -357,6 +357,7 @@
             // 
             // miToolsAddLine
             // 
+            this.miToolsAddLine.Image = ((System.Drawing.Image)(resources.GetObject("miToolsAddLine.Image")));
             this.miToolsAddLine.Name = "miToolsAddLine";
             this.miToolsAddLine.Size = new System.Drawing.Size(180, 22);
             this.miToolsAddLine.Text = "Add Line...";
@@ -364,6 +365,7 @@
             // 
             // miToolsAddDevice
             // 
+            this.miToolsAddDevice.Image = ((System.Drawing.Image)(resources.GetObject("miToolsAddDevice.Image")));
             this.miToolsAddDevice.Name = "miToolsAddDevice";
             this.miToolsAddDevice.Size = new System.Drawing.Size(180, 22);
             this.miToolsAddDevice.Text = "Add Device...";
@@ -371,6 +373,7 @@
             // 
             // miToolsCreateCnls
             // 
+            this.miToolsCreateCnls.Image = ((System.Drawing.Image)(resources.GetObject("miToolsCreateCnls.Image")));
             this.miToolsCreateCnls.Name = "miToolsCreateCnls";
             this.miToolsCreateCnls.Size = new System.Drawing.Size(180, 22);
             this.miToolsCreateCnls.Text = "Create Channels...";
@@ -605,6 +608,36 @@
             // 
             this.toolSep2.Name = "toolSep2";
             this.toolSep2.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnToolsAddLine
+            // 
+            this.btnToolsAddLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsAddLine.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddLine.Image")));
+            this.btnToolsAddLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsAddLine.Name = "btnToolsAddLine";
+            this.btnToolsAddLine.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsAddLine.ToolTipText = "Add Line";
+            this.btnToolsAddLine.Click += new System.EventHandler(this.miToolsAddLine_Click);
+            // 
+            // btnToolsAddDevice
+            // 
+            this.btnToolsAddDevice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsAddDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddDevice.Image")));
+            this.btnToolsAddDevice.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsAddDevice.Name = "btnToolsAddDevice";
+            this.btnToolsAddDevice.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsAddDevice.ToolTipText = "Add Device";
+            this.btnToolsAddDevice.Click += new System.EventHandler(this.miToolsAddDevice_Click);
+            // 
+            // btnToolsCreateCnls
+            // 
+            this.btnToolsCreateCnls.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsCreateCnls.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsCreateCnls.Image")));
+            this.btnToolsCreateCnls.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsCreateCnls.Name = "btnToolsCreateCnls";
+            this.btnToolsCreateCnls.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsCreateCnls.ToolTipText = "Create Channels";
+            this.btnToolsCreateCnls.Click += new System.EventHandler(this.miToolsCreateCnls_Click);
             // 
             // ssMain
             // 
@@ -1111,36 +1144,6 @@
             this.miDeviceProperties.Size = new System.Drawing.Size(169, 22);
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
-            // 
-            // btnToolsAddLine
-            // 
-            this.btnToolsAddLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnToolsAddLine.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddLine.Image")));
-            this.btnToolsAddLine.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnToolsAddLine.Name = "btnToolsAddLine";
-            this.btnToolsAddLine.Size = new System.Drawing.Size(23, 22);
-            this.btnToolsAddLine.ToolTipText = "Add Line";
-            this.btnToolsAddLine.Click += new System.EventHandler(this.miToolsAddLine_Click);
-            // 
-            // btnToolsAddDevice
-            // 
-            this.btnToolsAddDevice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnToolsAddDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddDevice.Image")));
-            this.btnToolsAddDevice.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnToolsAddDevice.Name = "btnToolsAddDevice";
-            this.btnToolsAddDevice.Size = new System.Drawing.Size(23, 22);
-            this.btnToolsAddDevice.ToolTipText = "Add Device";
-            this.btnToolsAddDevice.Click += new System.EventHandler(this.miToolsAddDevice_Click);
-            // 
-            // btnToolsCreateCnls
-            // 
-            this.btnToolsCreateCnls.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnToolsCreateCnls.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsCreateCnls.Image")));
-            this.btnToolsCreateCnls.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnToolsCreateCnls.Name = "btnToolsCreateCnls";
-            this.btnToolsCreateCnls.Size = new System.Drawing.Size(23, 22);
-            this.btnToolsCreateCnls.ToolTipText = "Create Channels";
-            this.btnToolsCreateCnls.Click += new System.EventHandler(this.miToolsCreateCnls_Click);
             // 
             // FrmMain
             // 
