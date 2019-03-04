@@ -440,6 +440,7 @@
     <Phrase key="miFile">&amp;Файл</Phrase>
     <Phrase key="miFileNewProject">Новый проект...</Phrase>
     <Phrase key="miFileOpenProject">Открыть проект...</Phrase>
+    <Phrase key="miFileShowStartPage">Стартовая страница</Phrase>
     <Phrase key="miFileSave">Сохранить</Phrase>
     <Phrase key="miFileSaveAll">Сохранить все</Phrase>
     <Phrase key="miFileImportTable">Импортировать таблицу...</Phrase>
@@ -453,6 +454,9 @@
     <Phrase key="miDeployUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miDeployInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miTools">&amp;Инструменты</Phrase>
+    <Phrase key="miToolsAddLine">Добавить линию...</Phrase>
+    <Phrase key="miToolsAddDevice">Добавить КП...</Phrase>
+    <Phrase key="miToolsCreateCnls">Создать каналы...</Phrase>
     <Phrase key="miToolsCloneCnls">Клонировать каналы...</Phrase>
     <Phrase key="miToolsCnlMap">Карта каналов...</Phrase>
     <Phrase key="miToolsCheckIntegrity">Проверить целостность</Phrase>
@@ -470,6 +474,13 @@
     <Phrase key="btnFileOpenProject.ToolTip">Открыть проект (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Сохранить (Ctrl+S)</Phrase>
     <Phrase key="btnFileSaveAll.ToolTip">Сохранить все</Phrase>
+    <Phrase key="btnDeployInstanceProfile.ToolTip">Профиль развёртывания</Phrase>
+    <Phrase key="btnDeployDownloadConfig.ToolTip">Скачать конфигурацию</Phrase>
+    <Phrase key="btnDeployUploadConfig.ToolTip">Передать конфигурацию</Phrase>
+    <Phrase key="btnDeployInstanceStatus.ToolTip">Статус экземпляра</Phrase>
+    <Phrase key="btnToolsAddLine.ToolTip">Добавить линию</Phrase>
+    <Phrase key="btnToolsAddDevice.ToolTip">Добавить КП</Phrase>
+    <Phrase key="btnToolsCreateCnls.ToolTip">Создать каналы</Phrase>
     <Phrase key="miProjectOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miProjectRename">Переименовать проект</Phrase>
     <Phrase key="miProjectProperties">Свойства</Phrase>

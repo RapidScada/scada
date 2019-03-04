@@ -182,8 +182,7 @@ namespace Scada.Admin.App.Code
                     {
                         if (col is DataGridViewButtonColumn buttonColumn)
                             buttonColumn.Text = header;
-                        else
-                            col.HeaderText = header;
+                        col.HeaderText = header;
                     }
                 }
             }

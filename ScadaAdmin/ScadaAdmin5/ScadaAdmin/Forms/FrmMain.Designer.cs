@@ -34,15 +34,17 @@
             this.miFile = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileNewProject = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileOpenProject = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileShowStartPage = new System.Windows.Forms.ToolStripMenuItem();
+            this.miFileSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSaveAll = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileImportTable = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileExportTable = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep2 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSep3 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileClose = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileCloseProject = new System.Windows.Forms.ToolStripMenuItem();
-            this.miFileSep3 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSep4 = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeploy = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployInstanceProfile = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,10 +52,14 @@
             this.miDeployUploadConfig = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeployInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.miTools = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsAddLine = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsAddDevice = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsCreateCnls = new System.Windows.Forms.ToolStripMenuItem();
+            this.miToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.miToolsCloneCnls = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCnlMap = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCheckIntegrity = new System.Windows.Forms.ToolStripMenuItem();
-            this.miToolsSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miToolsSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miToolsOptions = new System.Windows.Forms.ToolStripMenuItem();
             this.miToolsCulture = new System.Windows.Forms.ToolStripMenuItem();
             this.miWindow = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +77,11 @@
             this.btnFileSave = new System.Windows.Forms.ToolStripButton();
             this.btnFileSaveAll = new System.Windows.Forms.ToolStripButton();
             this.toolSep1 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnDeployInstanceProfile = new System.Windows.Forms.ToolStripButton();
+            this.btnDeployDownloadConfig = new System.Windows.Forms.ToolStripButton();
+            this.btnDeployUploadConfig = new System.Windows.Forms.ToolStripButton();
+            this.btnDeployInstanceStatus = new System.Windows.Forms.ToolStripButton();
+            this.toolSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
@@ -131,6 +142,9 @@
             this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miDeviceCommand = new System.Windows.Forms.ToolStripMenuItem();
             this.miDeviceProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnToolsAddLine = new System.Windows.Forms.ToolStripButton();
+            this.btnToolsAddDevice = new System.Windows.Forms.ToolStripButton();
+            this.btnToolsCreateCnls = new System.Windows.Forms.ToolStripButton();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
@@ -163,15 +177,17 @@
             this.miFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miFileNewProject,
             this.miFileOpenProject,
+            this.miFileShowStartPage,
+            this.miFileSep1,
             this.miFileSave,
             this.miFileSaveAll,
-            this.miFileSep1,
+            this.miFileSep2,
             this.miFileImportTable,
             this.miFileExportTable,
-            this.miFileSep2,
+            this.miFileSep3,
             this.miFileClose,
             this.miFileCloseProject,
-            this.miFileSep3,
+            this.miFileSep4,
             this.miFileExit});
             this.miFile.Name = "miFile";
             this.miFile.Size = new System.Drawing.Size(37, 20);
@@ -196,6 +212,19 @@
             this.miFileOpenProject.Text = "Open Project...";
             this.miFileOpenProject.Click += new System.EventHandler(this.miFileOpenProject_Click);
             // 
+            // miFileShowStartPage
+            // 
+            this.miFileShowStartPage.Image = ((System.Drawing.Image)(resources.GetObject("miFileShowStartPage.Image")));
+            this.miFileShowStartPage.Name = "miFileShowStartPage";
+            this.miFileShowStartPage.Size = new System.Drawing.Size(195, 22);
+            this.miFileShowStartPage.Text = "Start Page";
+            this.miFileShowStartPage.Click += new System.EventHandler(this.miFileShowStartPage_Click);
+            // 
+            // miFileSep1
+            // 
+            this.miFileSep1.Name = "miFileSep1";
+            this.miFileSep1.Size = new System.Drawing.Size(192, 6);
+            // 
             // miFileSave
             // 
             this.miFileSave.Image = ((System.Drawing.Image)(resources.GetObject("miFileSave.Image")));
@@ -213,10 +242,10 @@
             this.miFileSaveAll.Text = "Save All";
             this.miFileSaveAll.Click += new System.EventHandler(this.miFileSaveAll_Click);
             // 
-            // miFileSep1
+            // miFileSep2
             // 
-            this.miFileSep1.Name = "miFileSep1";
-            this.miFileSep1.Size = new System.Drawing.Size(192, 6);
+            this.miFileSep2.Name = "miFileSep2";
+            this.miFileSep2.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileImportTable
             // 
@@ -232,10 +261,10 @@
             this.miFileExportTable.Text = "Export Table...";
             this.miFileExportTable.Click += new System.EventHandler(this.miFileExportTable_Click);
             // 
-            // miFileSep2
+            // miFileSep3
             // 
-            this.miFileSep2.Name = "miFileSep2";
-            this.miFileSep2.Size = new System.Drawing.Size(192, 6);
+            this.miFileSep3.Name = "miFileSep3";
+            this.miFileSep3.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileClose
             // 
@@ -251,10 +280,10 @@
             this.miFileCloseProject.Text = "Close Project";
             this.miFileCloseProject.Click += new System.EventHandler(this.miFileCloseProject_Click);
             // 
-            // miFileSep3
+            // miFileSep4
             // 
-            this.miFileSep3.Name = "miFileSep3";
-            this.miFileSep3.Size = new System.Drawing.Size(192, 6);
+            this.miFileSep4.Name = "miFileSep4";
+            this.miFileSep4.Size = new System.Drawing.Size(192, 6);
             // 
             // miFileExit
             // 
@@ -311,10 +340,14 @@
             // miTools
             // 
             this.miTools.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miToolsAddLine,
+            this.miToolsAddDevice,
+            this.miToolsCreateCnls,
+            this.miToolsSep1,
             this.miToolsCloneCnls,
             this.miToolsCnlMap,
             this.miToolsCheckIntegrity,
-            this.miToolsSep1,
+            this.miToolsSep2,
             this.miToolsOptions,
             this.miToolsCulture});
             this.miTools.Name = "miTools";
@@ -322,44 +355,70 @@
             this.miTools.Text = "&Tools";
             this.miTools.DropDownOpening += new System.EventHandler(this.miTools_DropDownOpening);
             // 
+            // miToolsAddLine
+            // 
+            this.miToolsAddLine.Name = "miToolsAddLine";
+            this.miToolsAddLine.Size = new System.Drawing.Size(180, 22);
+            this.miToolsAddLine.Text = "Add Line...";
+            this.miToolsAddLine.Click += new System.EventHandler(this.miToolsAddLine_Click);
+            // 
+            // miToolsAddDevice
+            // 
+            this.miToolsAddDevice.Name = "miToolsAddDevice";
+            this.miToolsAddDevice.Size = new System.Drawing.Size(180, 22);
+            this.miToolsAddDevice.Text = "Add Device...";
+            this.miToolsAddDevice.Click += new System.EventHandler(this.miToolsAddDevice_Click);
+            // 
+            // miToolsCreateCnls
+            // 
+            this.miToolsCreateCnls.Name = "miToolsCreateCnls";
+            this.miToolsCreateCnls.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCreateCnls.Text = "Create Channels...";
+            this.miToolsCreateCnls.Click += new System.EventHandler(this.miToolsCreateCnls_Click);
+            // 
+            // miToolsSep1
+            // 
+            this.miToolsSep1.Name = "miToolsSep1";
+            this.miToolsSep1.Size = new System.Drawing.Size(177, 6);
+            // 
             // miToolsCloneCnls
             // 
             this.miToolsCloneCnls.Name = "miToolsCloneCnls";
-            this.miToolsCloneCnls.Size = new System.Drawing.Size(166, 22);
+            this.miToolsCloneCnls.Size = new System.Drawing.Size(180, 22);
             this.miToolsCloneCnls.Text = "Clone Channels...";
             this.miToolsCloneCnls.Click += new System.EventHandler(this.miToolsCloneCnls_Click);
             // 
             // miToolsCnlMap
             // 
             this.miToolsCnlMap.Name = "miToolsCnlMap";
-            this.miToolsCnlMap.Size = new System.Drawing.Size(166, 22);
+            this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
             // 
             // miToolsCheckIntegrity
             // 
             this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
-            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(166, 22);
+            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
             this.miToolsCheckIntegrity.Text = "Check Integrity";
             this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
             // 
-            // miToolsSep1
+            // miToolsSep2
             // 
-            this.miToolsSep1.Name = "miToolsSep1";
-            this.miToolsSep1.Size = new System.Drawing.Size(163, 6);
+            this.miToolsSep2.Name = "miToolsSep2";
+            this.miToolsSep2.Size = new System.Drawing.Size(177, 6);
             // 
             // miToolsOptions
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(166, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
             // miToolsCulture
             // 
             this.miToolsCulture.Name = "miToolsCulture";
-            this.miToolsCulture.Size = new System.Drawing.Size(166, 22);
+            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
             this.miToolsCulture.Text = "Language...";
             this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
             // 
@@ -443,7 +502,15 @@
             this.btnFileOpenProject,
             this.btnFileSave,
             this.btnFileSaveAll,
-            this.toolSep1});
+            this.toolSep1,
+            this.btnDeployInstanceProfile,
+            this.btnDeployDownloadConfig,
+            this.btnDeployUploadConfig,
+            this.btnDeployInstanceStatus,
+            this.toolSep2,
+            this.btnToolsAddLine,
+            this.btnToolsAddDevice,
+            this.btnToolsCreateCnls});
             this.tsMain.Location = new System.Drawing.Point(0, 24);
             this.tsMain.Name = "tsMain";
             this.tsMain.Size = new System.Drawing.Size(684, 25);
@@ -493,6 +560,51 @@
             // 
             this.toolSep1.Name = "toolSep1";
             this.toolSep1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnDeployInstanceProfile
+            // 
+            this.btnDeployInstanceProfile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeployInstanceProfile.Image = ((System.Drawing.Image)(resources.GetObject("btnDeployInstanceProfile.Image")));
+            this.btnDeployInstanceProfile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeployInstanceProfile.Name = "btnDeployInstanceProfile";
+            this.btnDeployInstanceProfile.Size = new System.Drawing.Size(23, 22);
+            this.btnDeployInstanceProfile.ToolTipText = "Deployment Profile";
+            this.btnDeployInstanceProfile.Click += new System.EventHandler(this.miDeployInstanceProfile_Click);
+            // 
+            // btnDeployDownloadConfig
+            // 
+            this.btnDeployDownloadConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeployDownloadConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnDeployDownloadConfig.Image")));
+            this.btnDeployDownloadConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeployDownloadConfig.Name = "btnDeployDownloadConfig";
+            this.btnDeployDownloadConfig.Size = new System.Drawing.Size(23, 22);
+            this.btnDeployDownloadConfig.ToolTipText = "Download Configuration";
+            this.btnDeployDownloadConfig.Click += new System.EventHandler(this.miDeployDownloadConfig_Click);
+            // 
+            // btnDeployUploadConfig
+            // 
+            this.btnDeployUploadConfig.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeployUploadConfig.Image = ((System.Drawing.Image)(resources.GetObject("btnDeployUploadConfig.Image")));
+            this.btnDeployUploadConfig.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeployUploadConfig.Name = "btnDeployUploadConfig";
+            this.btnDeployUploadConfig.Size = new System.Drawing.Size(23, 22);
+            this.btnDeployUploadConfig.ToolTipText = "Upload Configuration";
+            this.btnDeployUploadConfig.Click += new System.EventHandler(this.miDeployUploadConfig_Click);
+            // 
+            // btnDeployInstanceStatus
+            // 
+            this.btnDeployInstanceStatus.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnDeployInstanceStatus.Image = ((System.Drawing.Image)(resources.GetObject("btnDeployInstanceStatus.Image")));
+            this.btnDeployInstanceStatus.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnDeployInstanceStatus.Name = "btnDeployInstanceStatus";
+            this.btnDeployInstanceStatus.Size = new System.Drawing.Size(23, 22);
+            this.btnDeployInstanceStatus.ToolTipText = "Instance Status";
+            this.btnDeployInstanceStatus.Click += new System.EventHandler(this.miDeployInstanceStatus_Click);
+            // 
+            // toolSep2
+            // 
+            this.toolSep2.Name = "toolSep2";
+            this.toolSep2.Size = new System.Drawing.Size(6, 25);
             // 
             // ssMain
             // 
@@ -590,14 +702,14 @@
             this.miCommLineStop,
             this.miCommLineRestart});
             this.cmsCommLine.Name = "cmsCommLine";
-            this.cmsCommLine.Size = new System.Drawing.Size(181, 236);
+            this.cmsCommLine.Size = new System.Drawing.Size(164, 214);
             this.cmsCommLine.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCommLine_Opening);
             // 
             // miCommLineImport
             // 
             this.miCommLineImport.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineImport.Image")));
             this.miCommLineImport.Name = "miCommLineImport";
-            this.miCommLineImport.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineImport.Size = new System.Drawing.Size(163, 22);
             this.miCommLineImport.Text = "Import...";
             this.miCommLineImport.Click += new System.EventHandler(this.miCommLineImport_Click);
             // 
@@ -605,7 +717,7 @@
             // 
             this.miCommLineSync.Image = ((System.Drawing.Image)(resources.GetObject("miCommLineSync.Image")));
             this.miCommLineSync.Name = "miCommLineSync";
-            this.miCommLineSync.Size = new System.Drawing.Size(180, 22);
+            this.miCommLineSync.Size = new System.Drawing.Size(163, 22);
             this.miCommLineSync.Text = "Synchronize...";
             this.miCommLineSync.Click += new System.EventHandler(this.miCommLineSync_Click);
             // 
@@ -1000,6 +1112,36 @@
             this.miDeviceProperties.Text = "Properies";
             this.miDeviceProperties.Click += new System.EventHandler(this.miDeviceProperties_Click);
             // 
+            // btnToolsAddLine
+            // 
+            this.btnToolsAddLine.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsAddLine.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddLine.Image")));
+            this.btnToolsAddLine.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsAddLine.Name = "btnToolsAddLine";
+            this.btnToolsAddLine.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsAddLine.ToolTipText = "Add Line";
+            this.btnToolsAddLine.Click += new System.EventHandler(this.miToolsAddLine_Click);
+            // 
+            // btnToolsAddDevice
+            // 
+            this.btnToolsAddDevice.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsAddDevice.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsAddDevice.Image")));
+            this.btnToolsAddDevice.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsAddDevice.Name = "btnToolsAddDevice";
+            this.btnToolsAddDevice.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsAddDevice.ToolTipText = "Add Device";
+            this.btnToolsAddDevice.Click += new System.EventHandler(this.miToolsAddDevice_Click);
+            // 
+            // btnToolsCreateCnls
+            // 
+            this.btnToolsCreateCnls.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnToolsCreateCnls.Image = ((System.Drawing.Image)(resources.GetObject("btnToolsCreateCnls.Image")));
+            this.btnToolsCreateCnls.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnToolsCreateCnls.Name = "btnToolsCreateCnls";
+            this.btnToolsCreateCnls.Size = new System.Drawing.Size(23, 22);
+            this.btnToolsCreateCnls.ToolTipText = "Create Channels";
+            this.btnToolsCreateCnls.Click += new System.EventHandler(this.miToolsCreateCnls_Click);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1144,6 +1286,20 @@
         private System.Windows.Forms.ToolStripMenuItem miCommLineImport;
         private System.Windows.Forms.ToolStripMenuItem miCommLineSync;
         private System.Windows.Forms.ToolStripSeparator miCommLineSep1;
+        private System.Windows.Forms.ToolStripMenuItem miFileShowStartPage;
+        private System.Windows.Forms.ToolStripSeparator miFileSep4;
+        private System.Windows.Forms.ToolStripButton btnDeployInstanceProfile;
+        private System.Windows.Forms.ToolStripButton btnDeployDownloadConfig;
+        private System.Windows.Forms.ToolStripButton btnDeployUploadConfig;
+        private System.Windows.Forms.ToolStripButton btnDeployInstanceStatus;
+        private System.Windows.Forms.ToolStripSeparator toolSep2;
+        private System.Windows.Forms.ToolStripMenuItem miToolsAddLine;
+        private System.Windows.Forms.ToolStripMenuItem miToolsAddDevice;
+        private System.Windows.Forms.ToolStripMenuItem miToolsCreateCnls;
+        private System.Windows.Forms.ToolStripSeparator miToolsSep2;
+        private System.Windows.Forms.ToolStripButton btnToolsAddLine;
+        private System.Windows.Forms.ToolStripButton btnToolsAddDevice;
+        private System.Windows.Forms.ToolStripButton btnToolsCreateCnls;
     }
 }
 

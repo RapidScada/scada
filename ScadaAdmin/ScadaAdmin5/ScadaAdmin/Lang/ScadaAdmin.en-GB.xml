@@ -440,6 +440,7 @@
     <Phrase key="miFile">&amp;File</Phrase>
     <Phrase key="miFileNewProject">New Project...</Phrase>
     <Phrase key="miFileOpenProject">Open Project...</Phrase>
+    <Phrase key="miFileShowStartPage">Start Page</Phrase>
     <Phrase key="miFileSave">Save</Phrase>
     <Phrase key="miFileSaveAll">Save All</Phrase>
     <Phrase key="miFileImportTable">Import Table...</Phrase>
@@ -453,6 +454,9 @@
     <Phrase key="miDeployUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miDeployInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miTools">&amp;Tools</Phrase>
+    <Phrase key="miToolsAddLine">Add Line...</Phrase>
+    <Phrase key="miToolsAddDevice">Add Device...</Phrase>
+    <Phrase key="miToolsCreateCnls">Create Channels...</Phrase>
     <Phrase key="miToolsCloneCnls">Clone Channels...</Phrase>
     <Phrase key="miToolsCnlMap">Channel Map...</Phrase>
     <Phrase key="miToolsCheckIntegrity">Check Integrity</Phrase>
@@ -470,6 +474,13 @@
     <Phrase key="btnFileOpenProject.ToolTip">Open Project (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Save (Ctrl+S)</Phrase>
     <Phrase key="btnFileSaveAll.ToolTip">Save All</Phrase>
+    <Phrase key="btnDeployInstanceProfile.ToolTip">Deployment Profile</Phrase>
+    <Phrase key="btnDeployDownloadConfig.ToolTip">Download Configuration</Phrase>
+    <Phrase key="btnDeployUploadConfig.ToolTip">Upload Configuration</Phrase>
+    <Phrase key="btnDeployInstanceStatus.ToolTip">Instance Status</Phrase>
+    <Phrase key="btnToolsAddLine.ToolTip">Add Line</Phrase>
+    <Phrase key="btnToolsAddDevice.ToolTip">Add Device</Phrase>
+    <Phrase key="btnToolsCreateCnls.ToolTip">Create Channels</Phrase>
     <Phrase key="miProjectOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miProjectRename">Rename Project</Phrase>
     <Phrase key="miProjectProperties">Properties</Phrase>

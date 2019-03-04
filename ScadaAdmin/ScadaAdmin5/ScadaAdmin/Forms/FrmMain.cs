@@ -1028,6 +1028,11 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        private void miFileShowStartPage_Click(object sender, EventArgs e)
+        {
+
+        }
+
         private void miFileSave_Click(object sender, EventArgs e)
         {
             // save the active form
@@ -1228,10 +1233,28 @@ namespace Scada.Admin.App.Forms
         private void miTools_DropDownOpening(object sender, EventArgs e)
         {
             bool projectIsOpen = project != null;
+            miToolsAddLine.Enabled = projectIsOpen;
+            miToolsAddDevice.Enabled = projectIsOpen;
+            miToolsCreateCnls.Enabled = projectIsOpen;
             miToolsCloneCnls.Enabled = projectIsOpen;
             miToolsCnlMap.Enabled = projectIsOpen;
             miToolsCheckIntegrity.Enabled = projectIsOpen;
             miToolsOptions.Enabled = false;
+        }
+
+        private void miToolsAddLine_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miToolsAddDevice_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miToolsCreateCnls_Click(object sender, EventArgs e)
+        {
+
         }
 
         private void miToolsCloneCnls_Click(object sender, EventArgs e)
