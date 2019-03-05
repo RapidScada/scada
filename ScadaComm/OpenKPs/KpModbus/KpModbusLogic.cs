@@ -63,7 +63,11 @@ namespace Scada.Comm.Devices
         private List<ElemGroup> elemGroups;         // активные запрашиваемые группы элементов
         private int elemGroupCnt;                   // количество активных групп элементов
         private HashSet<int> floatSignals;          // множество сигналов, форматируемых как вещественное число
-        protected DeviceTemplate deviceTemplate;    // шаблон устройства, используемый данным КП
+
+        /// <summary>
+        /// Шаблон устройства, используемый данным КП
+        /// </summary>
+        protected DeviceTemplate deviceTemplate;
 
 
         /// <summary>

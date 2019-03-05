@@ -23,6 +23,8 @@
  * Modified : 2017
  */
 
+#pragma warning disable 1591 // Missing XML comment for publicly visible type or member
+
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
