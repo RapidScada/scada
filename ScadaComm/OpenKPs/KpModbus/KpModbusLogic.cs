@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices.Modbus;
@@ -86,18 +86,18 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                return "ModbusTemplates";
+                return "Modbus.Templates";
             }
         }
 
 
         /// <summary>
-        /// Gets the template dictionary from the common properties or creates it.
+        /// Gets or creates the template dictionary from the common line properties.
         /// </summary>
-        private Dictionary<string, DeviceTemplate> GetTemplateDictionary()
+        private TemplateDict GetTemplateDictionary()
         {
-            Dictionary<string, DeviceTemplate> templateDict = CommonProps.ContainsKey(TemplateDictKey) ?
-                CommonProps[TemplateDictKey] as Dictionary<string, DeviceTemplate> : null;
+            TemplateDict templateDict = CommonProps.ContainsKey(TemplateDictKey) ? 
+                CommonProps[TemplateDictKey] as TemplateDict : null;
 
             if (templateDict == null)
             {
@@ -113,7 +113,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void PrepareTemplate(string fileName)
         {
-            if (fileName == "")
+            if (string.IsNullOrEmpty(fileName))
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Ошибка: Не задан шаблон устройства для {1}" :
@@ -123,12 +123,12 @@ namespace Scada.Comm.Devices
             else
             {
                 deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
-                Dictionary<string, DeviceTemplate> templates = GetTemplateDictionary();
+                TemplateDict templateDict = GetTemplateDictionary();
 
-                if (templates.ContainsKey(fileName))
+                if (templateDict.ContainsKey(fileName))
                 {
                     // копирование свойств шаблона, загруженного ранее
-                    deviceTemplate.CopyFrom(templates[fileName]);
+                    deviceTemplate.CopyFrom(templateDict[fileName]);
                 }
                 else
                 {
@@ -138,13 +138,15 @@ namespace Scada.Comm.Devices
                     string filePath = Path.IsPathRooted(fileName) ?
                         fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                    if (!deviceTemplate.Load(filePath, out string errMsg))
+                    if (deviceTemplate.Load(filePath, out string errMsg))
+                    {
+                        templateDict.Add(fileName, deviceTemplate);
+                    }
+                    else
                     {
                         WriteToLog(errMsg);
                         deviceTemplate = null;
                     }
-
-                    templates.Add(fileName, deviceTemplate);
                 }
             }
         }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,29 +20,29 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2019
  */
 
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
-    /// The class contains utility methods for the Modbus protocol implementation
-    /// <para>Класс, содержащий вспомогательные константы и методы для реализации протокола Modbus</para>
+    /// The class contains utility methods for the Modbus protocol implementation.
+    /// <para>Класс, содержащий вспомогательные константы и методы для реализации протокола Modbus.</para>
     /// </summary>
     public static class ModbusUtils
     {
         /// <summary>
-        /// Символ начала сообщения в режиме ASCII
+        /// Символ начала сообщения в режиме ASCII.
         /// </summary>
         public const string Colon = ":";
 
         /// <summary>
-        /// Окончание сообщения в режиме ASCII
+        /// Окончание сообщения в режиме ASCII.
         /// </summary>
         public const string CRLF = "\x0D\x0A";
 
         /// <summary>
-        /// Номер порта, используемого в режиме TCP по умолчанию
+        /// Номер порта, используемого в режиме TCP по умолчанию.
         /// </summary>
         public const int DefTcpPort = 502;
 
@@ -94,7 +94,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
 
         /// <summary>
-        /// Рассчитать CRC-16
+        /// Рассчитать CRC-16.
         /// </summary>
         /// <remarks>Метод взят из официального описания протокола Modbus.</remarks>
         public static ushort CalcCRC16(byte[] buffer, int offset, int length)
@@ -114,7 +114,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Рассчитать LRC
+        /// Рассчитать LRC.
         /// </summary>
         /// <remarks>Метод взят из официального описания протокола Modbus.</remarks>
         public static byte CalcLRC(byte[] buffer, int offset, int length)
@@ -126,7 +126,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Получить наименование типа таблицы данных
+        /// Получить наименование типа таблицы данных.
         /// </summary>
         public static string GetTableTypeName(TableType tableType)
         {
@@ -144,7 +144,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Получить описание исключения, полученного от устройства
+        /// Получить описание исключения, полученного от устройства.
         /// </summary>
         public static string GetExcDescr(byte excCode)
         {
@@ -188,7 +188,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Получить строковую запись диапазона адресов элемента
+        /// Получить строковую запись диапазона адресов элемента.
         /// </summary>
         public static string GetAddressRange(int address, int count, bool zeroAddr, bool decAddr)
         {
@@ -202,7 +202,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
         
         /// <summary>
-        /// Разобрать массив, определяющий порядок байт, из строковой записи вида '01234567'
+        /// Разобрать массив, определяющий порядок байт, из строковой записи вида '01234567'.
         /// </summary>
         public static int[] ParseByteOrder(string byteOrderStr)
         {
@@ -226,7 +226,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Применить заданный порядок байт
+        /// Применить заданный порядок байт.
         /// </summary>
         public static void ApplyByteOrder(byte[] src, byte[] dest, int destOffset, int destLenght, int[] byteOrder)
         {
@@ -255,7 +255,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Применить заданный порядок байт
+        /// Применить заданный порядок байт.
         /// </summary>
         public static void ApplyByteOrder(byte[] src, byte[] dest, int[] byteOrder)
         {
@@ -263,7 +263,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
         
         /// <summary>
-        /// Получить количество элементов (количество адресов) в зависимости от типа элемента
+        /// Получить количество элементов (количество адресов) в зависимости от типа элемента.
         /// </summary>
         public static int GetElemCount(ElemType elemType)
         {
@@ -280,6 +280,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 default:
                     return 1;
             }
+        }
+
+        /// <summary>
+        /// Determines whether the specified function is a read function.
+        /// </summary>
+        public static bool IsReadFunction(byte funcCode)
+        {
+            return funcCode <= 0x04;
         }
     }
 }
