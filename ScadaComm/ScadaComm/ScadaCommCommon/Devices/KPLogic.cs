@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
@@ -852,7 +852,12 @@ namespace Scada.Comm.Devices
                 else
                 {
                     foreach (KPTag kpTag in tagGroup.KPTags)
-                        KPTags[tagIndex++] = kpTag == null ? new KPTag() : kpTag;
+                    {
+                        KPTag destTag = kpTag ?? new KPTag();
+                        destTag.Index = tagIndex;
+                        KPTags[tagIndex] = destTag;
+                        tagIndex++;
+                    }
                 }
             }
 
@@ -880,8 +885,13 @@ namespace Scada.Comm.Devices
             tagTable = null;
 
             int tagIndex = 0;
-            foreach (KPTag kpTag in srcKPTags)
-                KPTags[tagIndex++] = kpTag == null ? new KPTag() : kpTag;
+            foreach (KPTag srcTag in srcKPTags)
+            {
+                KPTag destTag = srcTag ?? new KPTag();
+                destTag.Index = tagIndex;
+                KPTags[tagIndex] = destTag;
+                tagIndex++;
+            }
 
             for (int i = 0; i < tagCnt; i++)
             {

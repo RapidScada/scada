@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Tables;
@@ -93,6 +93,7 @@ namespace Scada.Comm.Devices
             public KPTag(int signal, string name)
             {
                 Signal = signal;
+                Index = -1;
                 Name = name;
                 CnlNum = 0;
                 ObjNum = 0;
@@ -103,6 +104,10 @@ namespace Scada.Comm.Devices
             /// Получить или установить сигнал (номер тега)
             /// </summary>
             public int Signal { get; set; }
+            /// <summary>
+            /// Gets or sets the tag index.
+            /// </summary>
+            public int Index { get; set; }
             /// <summary>
             /// Получить или установить наименование
             /// </summary>
