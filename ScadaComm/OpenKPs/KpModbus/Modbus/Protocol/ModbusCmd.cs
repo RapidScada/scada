@@ -156,7 +156,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 ReqPDU[4] = (byte)(ElemCnt % 256);
                 ReqPDU[5] = (byte)byteCnt;
 
-                ModbusUtils.ApplyByteOrder(Data, ReqPDU, 6, byteCnt, ByteOrder);
+                ModbusUtils.ApplyByteOrder(Data, 0, ReqPDU, 6, byteCnt, ByteOrder, false);
             }
             else
             {
@@ -178,7 +178,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         (byte)(Value / 256),
                         (byte)(Value % 256)
                     };
-                    ModbusUtils.ApplyByteOrder(data, ReqPDU, 3, 2, ByteOrder);
+                    ModbusUtils.ApplyByteOrder(data, 0, ReqPDU, 3, 2, ByteOrder, false);
                 }
             }
 

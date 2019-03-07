@@ -226,40 +226,41 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         }
 
         /// <summary>
-        /// Применить заданный порядок байт.
+        /// Копировать элементы массива с заданным порядоком байт.
         /// </summary>
-        public static void ApplyByteOrder(byte[] src, byte[] dest, int destOffset, int destLenght, int[] byteOrder)
+        public static void ApplyByteOrder(byte[] src, int srcOffset, byte[] dest, int destOffset, int count, 
+            int[] byteOrder, bool reverse)
         {
+            int srcLen = src == null ? 0 : src.Length;
+            int endSrcInd = srcOffset + count - 1;
+            int ordLen = byteOrder == null ? 0 : byteOrder.Length;
+
             if (byteOrder == null)
             {
-                // копирование данных без перестановок
-                for (int srcInd = 0, srcLen = src == null ? 0 : src.Length, 
-                    destInd = destOffset, destLastInd = destOffset + destLenght;
-                    destInd < destLastInd; srcInd++, destInd++)
+                // копирование данных без учёта порядка байт
+                for (int i = 0; i < count; i++)
                 {
-                    dest[destInd] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
+                    int srcInd = reverse ? endSrcInd - i : srcOffset + i;
+                    dest[destOffset++] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
                 }
             }
             else
             {
                 // копирование данных с учётом порядка байт
-                for (int ordInd = 0, ordLen = byteOrder.Length,
-                    srcLen = src == null ? 0 : src.Length,
-                    destInd = destOffset, destLastInd = destOffset + destLenght; 
-                    destInd < destLastInd; ordInd++, destInd++)
+                for (int i = 0; i < count; i++)
                 {
-                    int srcInd = ordInd < ordLen ? byteOrder[ordInd] : -1;
-                    dest[destInd] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
+                    int srcInd = i < ordLen ? (reverse ? endSrcInd - byteOrder[i] : srcOffset + byteOrder[i]) : -1;
+                    dest[destOffset++] = 0 <= srcInd && srcInd < srcLen ? src[srcInd] : (byte)0;
                 }
             }
         }
 
         /// <summary>
-        /// Применить заданный порядок байт.
+        /// Копировать элементы массива с заданным порядоком байт.
         /// </summary>
         public static void ApplyByteOrder(byte[] src, byte[] dest, int[] byteOrder)
         {
-            ApplyByteOrder(src, dest, 0, dest.Length, byteOrder);
+            ApplyByteOrder(src, 0, dest, 0, dest.Length, byteOrder, false);
         }
         
         /// <summary>

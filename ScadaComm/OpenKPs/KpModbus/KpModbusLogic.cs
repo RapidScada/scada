@@ -113,40 +113,41 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void PrepareTemplate(string fileName)
         {
+            deviceTemplate = null;
+
             if (string.IsNullOrEmpty(fileName))
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Ошибка: Не задан шаблон устройства для {1}" :
                     "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
-                deviceTemplate = null;
             }
             else
             {
-                deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
                 TemplateDict templateDict = GetTemplateDictionary();
 
-                if (templateDict.ContainsKey(fileName))
+                if (templateDict.TryGetValue(fileName, out DeviceTemplate existingTemplate))
                 {
-                    // копирование свойств шаблона, загруженного ранее
-                    deviceTemplate.CopyFrom(templateDict[fileName]);
+                    if (existingTemplate != null)
+                    {
+                        deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
+                        deviceTemplate.CopyFrom(existingTemplate);
+                    }
                 }
                 else
                 {
+                    DeviceTemplate newTemplate = GetTemplateFactory().CreateDeviceTemplate();
                     WriteToLog(string.Format(Localization.UseRussian ?
                         "{0} Загрузка шаблона устройства из файла {1}" :
                         "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
                     string filePath = Path.IsPathRooted(fileName) ?
                         fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                    if (deviceTemplate.Load(filePath, out string errMsg))
-                    {
-                        templateDict.Add(fileName, deviceTemplate);
-                    }
+                    if (newTemplate.Load(filePath, out string errMsg))
+                        deviceTemplate = newTemplate;
                     else
-                    {
                         WriteToLog(errMsg);
-                        deviceTemplate = null;
-                    }
+
+                    templateDict.Add(fileName, deviceTemplate);
                 }
             }
         }
