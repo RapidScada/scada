@@ -161,22 +161,20 @@ namespace Scada.Comm.Engine
         }
 
         /// <summary>
-        /// Принять таблицу входных каналов и таблицу КП от SCADA-Сервера
+        /// Receives the configuration database subset from Server.
         /// </summary>
-        private bool ReceiveBaseTables(out DataTable tblInCnl, out DataTable tblKP)
+        private bool ReceiveConfigBase(out ConfigBaseSubset configBase)
         {
-            tblInCnl = new DataTable();
-            tblKP = new DataTable();
+            configBase = new ConfigBaseSubset();
 
-            if (ServerComm.ReceiveBaseTable("incnl.dat", tblInCnl) &&
-                ServerComm.ReceiveBaseTable("kp.dat", tblKP))
+            if (ServerComm.ReceiveBaseTable("incnl.dat", configBase.InCnlTable) &&
+                ServerComm.ReceiveBaseTable("kp.dat", configBase.KPTable))
             {
                 return true;
             }
             else
             {
-                tblInCnl = null;
-                tblKP = null;
+                configBase = null;
                 return false;
             }
         }
@@ -477,13 +475,12 @@ namespace Scada.Comm.Engine
             {
                 // приём необходимых таблиц базы конфигурации от SCADA-Сервера
                 bool fatalError = false;
-                DataTable tblInCnl;
-                DataTable tblKP;
+                ConfigBaseSubset configBase = null;
 
                 if (Settings.Params.ServerUse)
                 {
                     ServerComm = new ServerCommEx(Settings.Params, AppLog);
-                    if (!ReceiveBaseTables(out tblInCnl, out tblKP))
+                    if (!ReceiveConfigBase(out configBase))
                     {
                         fatalError = true;
                         AppLog.WriteAction(string.Format(Localization.UseRussian ?
@@ -494,11 +491,6 @@ namespace Scada.Comm.Engine
                         ServerComm = null;
                     }
                 }
-                else
-                {
-                    tblInCnl = null;
-                    tblKP = null;
-                }
 
                 if (!fatalError)
                 {
@@ -507,7 +499,7 @@ namespace Scada.Comm.Engine
                     {
                         foreach (CommLine commLine in commLines)
                         {
-                            commLine.Tune(tblInCnl, tblKP);
+                            commLine.Tune(configBase);
                         }
                     }
 
@@ -694,20 +686,17 @@ namespace Scada.Comm.Engine
                         // настройка линии связи
                         if (commLine != null && ServerComm != null)
                         {
-                            DataTable tblInCnl;
-                            DataTable tblKP;
-
-                            if (ReceiveBaseTables(out tblInCnl, out tblKP))
+                            if (ReceiveConfigBase(out ConfigBaseSubset configBase))
                             {
-                                commLine.Tune(tblInCnl, tblKP);
+                                commLine.Tune(configBase);
                             }
                             else
                             {
                                 commLine = null;
-                                AppLog.WriteAction(string.Format(Localization.UseRussian ?
-                                    "Невозможно запустить линию связи {0} из-за проблем взаимодействия со SCADA-Сервером" :
-                                    "Unable to start communication line {0} due to SCADA-Server communication error",
-                                    lineNum), Log.ActTypes.Error);
+                                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Невозможно запустить линию связи {0} из-за проблем взаимодействия с Сервером" :
+                                    "Unable to start communication line {0} due to Server communication error", 
+                                    lineNum));
                             }
                         }
 

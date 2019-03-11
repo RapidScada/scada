@@ -74,6 +74,10 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected bool[] curDataModified;
         /// <summary>
+        /// All device tags with access by signals.
+        /// </summary>
+        protected Dictionary<int, KPTag> tagsBySignal;
+        /// <summary>
         /// Список не переданных архивных срезов КП
         /// </summary>
         protected List<TagSrez> arcSrezList;
@@ -130,6 +134,7 @@ namespace Scada.Comm.Devices
             // protected fields
             curData = new SrezTableLight.CnlData[0];
             curDataModified = new bool[0];
+            tagsBySignal = new Dictionary<int, KPTag>();
             arcSrezList = new List<TagSrez>();
             eventList = new List<KPEvent>();
             lastArcSrezList = new List<TagSrez>();
@@ -139,7 +144,7 @@ namespace Scada.Comm.Devices
             kpStats.Reset();
 
             // public properties
-            Bind = false;
+            Bound = false;
             Number = number;
             Name = "";
             Dll = Assembly.GetCallingAssembly().GetName().Name;
@@ -163,9 +168,9 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Получить или установить признак привязки к SCADA-Серверу
+        /// Gets or sets a value indicating whether the device is bound to Server.
         /// </summary>
-        public bool Bind { get; set; }
+        public bool Bound { get; set; }
 
         /// <summary>
         /// Получить номер КП
@@ -838,6 +843,7 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagsBySignal.Clear();
             tagTable = null;
 
             int groupCnt = TagGroups.Length;
@@ -857,6 +863,9 @@ namespace Scada.Comm.Devices
                         destTag.Index = tagIndex;
                         KPTags[tagIndex] = destTag;
                         tagIndex++;
+
+                        if (destTag.Signal > 0)
+                            tagsBySignal[destTag.Signal] = destTag;
                     }
                 }
             }
@@ -882,6 +891,7 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagsBySignal.Clear();
             tagTable = null;
 
             int tagIndex = 0;
@@ -891,6 +901,9 @@ namespace Scada.Comm.Devices
                 destTag.Index = tagIndex;
                 KPTags[tagIndex] = destTag;
                 tagIndex++;
+
+                if (destTag.Signal > 0)
+                    tagsBySignal[destTag.Signal] = destTag;
             }
 
             for (int i = 0; i < tagCnt; i++)
@@ -971,10 +984,13 @@ namespace Scada.Comm.Devices
             {
                 // добавление среза в список не переданных срезов
                 arcSrezList.Add(tagSrez);
+                
                 // добавление среза в список последних срезов
                 lastArcSrezList.Add(tagSrez);
                 while (lastArcSrezList.Count > LastSrezListSize)
+                {
                     lastArcSrezList.RemoveAt(0);
+                }
             }
         }
 
@@ -987,10 +1003,13 @@ namespace Scada.Comm.Devices
             {
                 // добавление события в список не переданных событий
                 eventList.Add(kpEvent);
+
                 // добавление события в список последних событий
                 lastEventList.Add(kpEvent);
                 while (lastEventList.Count > LastSrezListSize)
+                {
                     lastEventList.RemoveAt(0);
+                }
             }
         }
 
@@ -1170,6 +1189,13 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Binds the device to the configuration database.
+        /// </summary>
+        public virtual void Bind(ConfigBaseSubset configBase)
+        {
+        }
+
+        /// <summary>
         /// Привязать тег КП к входному каналу базы конфигурации
         /// </summary>
         public virtual void BindTag(int signal, int cnlNum, int objNum, int paramID)
@@ -1190,16 +1216,7 @@ namespace Scada.Comm.Devices
 
                     // поиск тега КП по сигналу при их произвольной нумерации
                     if (boundKPTag == null)
-                    {
-                        foreach (KPTag kpTag in KPTags)
-                        {
-                            if (kpTag.Signal == signal)
-                            {
-                                boundKPTag = kpTag;
-                                break;
-                            }
-                        }
-                    }
+                        tagsBySignal.TryGetValue(signal, out boundKPTag);
                 }
                 else
                 {

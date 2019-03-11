@@ -26,6 +26,7 @@
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
 using Scada.Data.Configuration;
+using Scada.Data.Entities;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
@@ -194,7 +195,7 @@ namespace Scada.Comm.Engine
             kpCaptions = null;
 
             // свойства
-            Bind = bind;
+            Bound = bind;
             Number = number;
             Name = name;
             Caption = (Localization.UseRussian ? "Линия " : "Line ") + numAndName;
@@ -215,9 +216,9 @@ namespace Scada.Comm.Engine
 
 
         /// <summary>
-        /// Получить признак привязки к SCADA-Серверу
+        /// Gets or sets a value indicating whether the line is bound to Server.
         /// </summary>
-        public bool Bind { get; private set; }
+        public bool Bound { get; private set; }
 
         /// <summary>
         /// Получить номер линии связи
@@ -314,7 +315,7 @@ namespace Scada.Comm.Engine
             set
             {
                 CheckChangesAllowed();
-                serverComm = Bind ? value : null;
+                serverComm = Bound ? value : null;
             }
         }
 
@@ -1266,38 +1267,35 @@ namespace Scada.Comm.Engine
 
 
         /// <summary>
-        /// Настроить линию связи в соответствии с таблицами базы конфигурации
+        /// Tunes the line according to the configuration database.
         /// </summary>
-        public void Tune(DataTable tblInCnl, DataTable tblKP)
+        public void Tune(ConfigBaseSubset configBase)
         {
             try
             {
-                if (Bind)
+                if (Bound)
                 {
                     foreach (KPLogic kpLogic in KPList)
                     {
-                        if (kpLogic.Bind)
+                        if (kpLogic.Bound)
                         {
-                            // привязка тегов КП к входным каналам
-                            tblInCnl.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
-                            for (int i = 0; i < tblInCnl.DefaultView.Count; i++)
+                            // let the device to use all the tables
+                            kpLogic.Bind(configBase);
+
+                            // bind the device tags to the input channels
+                            foreach (InCnl inCnl in 
+                                configBase.InCnlTable.SelectItems(new TableFilter("KPNum", kpLogic.Number)))
                             {
-                                DataRowView rowView = tblInCnl.DefaultView[i];
-                                if ((bool)rowView["Active"])
-                                {
-                                    kpLogic.BindTag((int)rowView["Signal"], (int)rowView["CnlNum"],
-                                        (int)rowView["ObjNum"], (int)rowView["ParamID"]);
-                                }
+                                if (inCnl.Active)
+                                    kpLogic.BindTag(inCnl.Signal ?? 0, inCnl.CnlNum, inCnl.ObjNum ?? 0, inCnl.ParamID ?? 0);
                             }
 
-                            // перезапись имени, адреса и позывного КП
-                            tblKP.DefaultView.RowFilter = "KPNum = " + kpLogic.Number;
-                            if (tblKP.DefaultView.Count > 0)
+                            // update the device properties according the configuration database
+                            if (configBase.KPTable.Items.TryGetValue(kpLogic.Number, out KP kp))
                             {
-                                DataRowView rowKP = tblKP.DefaultView[0];
-                                kpLogic.Name = (string)rowKP["Name"];
-                                kpLogic.Address = (int)rowKP["Address"];
-                                kpLogic.CallNum = (string)rowKP["CallNum"];
+                                kpLogic.Name = kp.Name;
+                                kpLogic.Address = kp.Address ?? 0;
+                                kpLogic.CallNum = kp.CallNum;
                             }
                         }
                     }
@@ -1307,7 +1305,7 @@ namespace Scada.Comm.Engine
             {
                 log.WriteAction(string.Format(Localization.UseRussian ?
                     "Ошибка при настройке линии связи {0}: {1}" :
-                    "Error tuning communication line {0}: {1}", Number, ex.Message), 
+                    "Error tuning the communication line {0}: {1}", Number, ex.Message),
                     Log.ActTypes.Exception);
             }
         }
@@ -1635,7 +1633,7 @@ namespace Scada.Comm.Engine
                 if (kpSett.Active)
                 {
                     KPLogic kpLogic = CreateKPLogic(kpSett.Number, kpSett.Dll, appDirs, kpTypes, appLog);
-                    kpLogic.Bind = kpSett.Bind;
+                    kpLogic.Bound = kpSett.Bind;
                     kpLogic.Name = kpSett.Name;
                     kpLogic.Address = kpSett.Address;
                     kpLogic.CallNum = kpSett.CallNum;
