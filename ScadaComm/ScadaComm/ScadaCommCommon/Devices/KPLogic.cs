@@ -1202,7 +1202,7 @@ namespace Scada.Comm.Devices
         {
             if (cnlNum > 0)
             {
-                KPTag boundKPTag = null;
+                KPTag tagToBind = null;
 
                 if (signal > 0)
                 {
@@ -1211,32 +1211,20 @@ namespace Scada.Comm.Devices
                     {
                         KPTag kpTag = KPTags[signal - 1];
                         if (kpTag.Signal == signal)
-                            boundKPTag = kpTag;
+                            tagToBind = kpTag;
                     }
 
                     // поиск тега КП по сигналу при их произвольной нумерации
-                    if (boundKPTag == null)
-                        tagsBySignal.TryGetValue(signal, out boundKPTag);
-                }
-                else
-                {
-                    // поиск тега КП по номеру канала
-                    foreach (KPTag kpTag in KPTags)
-                    {
-                        if (kpTag.CnlNum == cnlNum)
-                        {
-                            boundKPTag = kpTag;
-                            break;
-                        }
-                    }
+                    if (tagToBind == null)
+                        tagsBySignal.TryGetValue(signal, out tagToBind);
                 }
 
                 // привязка тега КП
-                if (boundKPTag != null)
+                if (tagToBind != null)
                 {
-                    boundKPTag.CnlNum = cnlNum;
-                    boundKPTag.ObjNum = objNum;
-                    boundKPTag.ParamID = paramID;
+                    tagToBind.CnlNum = cnlNum;
+                    tagToBind.ObjNum = objNum;
+                    tagToBind.ParamID = paramID;
                 }
             }
         }
@@ -1337,43 +1325,44 @@ namespace Scada.Comm.Devices
                 TagSrez curSrez = null;
                 int tagCnt = curData.Length;
 
-                if (allTags)
+                if (tagCnt > 0)
                 {
-                    if (tagCnt > 0)
+                    if (allTags)
                     {
-                        curSrez = new KPLogic.TagSrez(tagCnt);
+                        curSrez = new TagSrez(tagCnt);
                         for (int i = 0; i < tagCnt; i++)
                         {
                             curSrez.KPTags[i] = KPTags[i];
                             curSrez.TagData[i] = curData[i];
                         }
                     }
-                }
-                else
-                {
-                    int modTagCnt = 0; // number of modified tags
-                    for (int i = 0; i < tagCnt; i++)
+                    else
                     {
-                        if (curDataModified[i])
-                            modTagCnt++;
-                    }
-
-                    if (modTagCnt > 0)
-                    {
-                        curSrez = new TagSrez(modTagCnt);
-                        for (int i = 0, j = 0; i < tagCnt; i++)
+                        int modTagCnt = 0; // number of modified tags
+                        for (int i = 0; i < tagCnt; i++)
                         {
                             if (curDataModified[i])
+                                modTagCnt++;
+                        }
+
+                        if (modTagCnt > 0)
+                        {
+                            curSrez = new TagSrez(modTagCnt);
+                            for (int i = 0, j = 0; i < tagCnt; i++)
                             {
-                                curSrez.KPTags[j] = KPTags[i];
-                                curSrez.TagData[j] = curData[i];
-                                j++;
+                                if (curDataModified[i])
+                                {
+                                    curSrez.KPTags[j] = KPTags[i];
+                                    curSrez.TagData[j] = curData[i];
+                                    j++;
+                                }
                             }
                         }
                     }
+
+                    Array.Clear(curDataModified, 0, tagCnt);
                 }
 
-                Array.Clear(curDataModified, 0, tagCnt);
                 return curSrez;
             }
         }

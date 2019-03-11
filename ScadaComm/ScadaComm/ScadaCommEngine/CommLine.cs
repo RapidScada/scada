@@ -1265,6 +1265,81 @@ namespace Scada.Comm.Engine
             return kpNumDict.TryGetValue(kpNum, out kpLogic) ? kpLogic : null;
         }
 
+        /// <summary>
+        /// Добавить КП в последовательность опроса линии связи
+        /// </summary>
+        private void AddKP(KPLogic kpLogic)
+        {
+            CheckChangesAllowed();
+            kpCaptions = null;
+
+            // настройка свойств КП, относящихся к линии связи
+            kpLogic.ReqTriesCnt = ReqTriesCnt;
+            kpLogic.CustomParams = CustomParams;
+            kpLogic.CommonProps = commonProps;
+            kpLogic.AppDirs = appDirs;
+            if (DetailedLog)
+                kpLogic.WriteToLog = log.WriteLine;
+            kpLogic.CommLineSvc = this;
+
+            // вызов метода обработки добавления КП
+            try
+            {
+                kpLogic.OnAddedToCommLine();
+            }
+            catch (Exception ex)
+            {
+                kpLogic.WorkState = KPLogic.WorkStates.Error;
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при выполнении действий {0} при добавлении КП на линию связи: {1}" :
+                    "Error executing actions of {0} on adding device to communication line: {1}",
+                    kpLogic.Caption, ex.Message));
+            }
+
+            // добавление КП в список опрашиваемых КП
+            KPList.Add(kpLogic);
+
+            // добавление КП в словари для быстрого поиска
+            if (!kpNumDict.ContainsKey(kpLogic.Number))
+                kpNumDict.Add(kpLogic.Number, kpLogic);
+
+            int address = kpLogic.Address;
+            string callNum = kpLogic.CallNum;
+
+            if (!kpAddrDict.ContainsKey(address))
+                kpAddrDict.Add(address, kpLogic);
+
+            if (callNum != null && !kpCallNumDict.ContainsKey(callNum))
+                kpCallNumDict.Add(callNum, kpLogic);
+
+            KPFullAddr kpFullAddr = new KPFullAddr(address, callNum);
+            if (!kpFullAddrDict.ContainsKey(kpFullAddr))
+                kpFullAddrDict.Add(kpFullAddr, kpLogic);
+        }
+
+        /// <summary>
+        /// Создать КП
+        /// </summary>
+        private static KPLogic CreateKPLogic(int kpNum, string dllName,
+            AppDirs appDirs, Dictionary<string, Type> kpTypes, Log appLog)
+        {
+            Type kpType;
+            if (kpTypes.TryGetValue(dllName, out kpType))
+            {
+                return KPFactory.GetKPLogic(kpType, kpNum);
+            }
+            else
+            {
+                appLog.WriteAction((Localization.UseRussian ?
+                    "Загрузка библиотеки КП: " :
+                    "Load device library: ") + dllName, Log.ActTypes.Action);
+
+                KPLogic kpLogic = KPFactory.GetKPLogic(appDirs.KPDir, dllName, kpNum);
+                kpTypes.Add(dllName, kpLogic.GetType());
+                return kpLogic;
+            }
+        }
+
 
         /// <summary>
         /// Tunes the line according to the configuration database.
@@ -1343,58 +1418,6 @@ namespace Scada.Comm.Engine
                 thread.Abort();
                 thread = null;
             }
-        }
-        
-        /// <summary>
-        /// Добавить КП в последовательность опроса линии связи
-        /// </summary>
-        public void AddKP(KPLogic kpLogic)
-        {
-            CheckChangesAllowed();
-            kpCaptions = null;
-
-            // настройка свойств КП, относящихся к линии связи
-            kpLogic.ReqTriesCnt = ReqTriesCnt;
-            kpLogic.CustomParams = CustomParams;
-            kpLogic.CommonProps = commonProps;
-            kpLogic.AppDirs = appDirs;
-            if (DetailedLog)
-                kpLogic.WriteToLog = log.WriteLine;
-            kpLogic.CommLineSvc = this;
-
-            // вызов метода обработки добавления КП
-            try
-            {
-                kpLogic.OnAddedToCommLine();
-            }
-            catch (Exception ex)
-            {
-                kpLogic.WorkState = KPLogic.WorkStates.Error;
-                log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при выполнении действий {0} при добавлении КП на линию связи: {1}" :
-                    "Error executing actions of {0} on adding device to communication line: {1}",
-                    kpLogic.Caption, ex.Message));
-            }
-
-            // добавление КП в список опрашиваемых КП
-            KPList.Add(kpLogic);
-
-            // добавление КП в словари для быстрого поиска
-            if (!kpNumDict.ContainsKey(kpLogic.Number))
-                kpNumDict.Add(kpLogic.Number, kpLogic);
-
-            int address = kpLogic.Address;
-            string callNum = kpLogic.CallNum;
-
-            if (!kpAddrDict.ContainsKey(address))
-                kpAddrDict.Add(address, kpLogic);
-
-            if (callNum != null && !kpCallNumDict.ContainsKey(callNum))
-                kpCallNumDict.Add(callNum, kpLogic);
-
-            KPFullAddr kpFullAddr = new KPFullAddr(address, callNum);
-            if (!kpFullAddrDict.ContainsKey(kpFullAddr))
-                kpFullAddrDict.Add(kpFullAddr, kpLogic);
         }
 
         /// <summary>
@@ -1569,29 +1592,6 @@ namespace Scada.Comm.Engine
             PassCmd?.Invoke(cmd);
         }
 
-
-        /// <summary>
-        /// Создать КП
-        /// </summary>
-        private static KPLogic CreateKPLogic(int kpNum, string dllName, 
-            AppDirs appDirs, Dictionary<string, Type> kpTypes, Log appLog)
-        {
-            Type kpType;
-            if (kpTypes.TryGetValue(dllName, out kpType))
-            {
-                return KPFactory.GetKPLogic(kpType, kpNum);
-            }
-            else
-            {
-                appLog.WriteAction((Localization.UseRussian ?
-                    "Загрузка библиотеки КП: " :
-                    "Load device library: ") + dllName, Log.ActTypes.Action);
-
-                KPLogic kpLogic = KPFactory.GetKPLogic(appDirs.KPDir, dllName, kpNum);
-                kpTypes.Add(dllName, kpLogic.GetType());
-                return kpLogic;
-            }
-        }
 
         /// <summary>
         /// Создать линию связи и КП на основе настроек
