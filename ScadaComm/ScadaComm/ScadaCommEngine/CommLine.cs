@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
@@ -130,17 +130,14 @@ namespace Scada.Comm.Engine
         /// </summary>
         private static readonly string NoAction = Localization.UseRussian ? "нет" : "no";
 
-        private string numAndName;        // номер и нименование линии связи
-        private CommChannelLogic commCnl; // канал связи с физическими КП
-        private int reqTriesCnt;          // количество попыток перезапроса КП при ошибке
-        private int cycleDelay;           // пауза после цикла опроса, мс
-        private bool cmdEnabled;          // разрешены ли команды ТУ
-        private bool reqAfterCmd;         // опрос КП после команды ТУ
-        private bool detailedLog;         // признак записи в журнал линии связи подробной информации
-        private int sendAllDataPer;       // период передачи на сервер всех данных КП, с
-        private AppDirs appDirs;          // директории приложения
-        private ServerCommEx serverComm;  // ссылка на объект обмена данными со SCADA-Сервером
-        private PassCmdDelegate passCmd;  // метод передачи команды КП всем линиям связи
+        private readonly string numAndName;       // номер и нименование линии связи
+        private readonly string captionUnderline; // подчёркивание обозначения линии связи
+        private readonly object infoLock;   // объект для синхронизации записи в файл информации о работе линии связи
+        private readonly object serverLock; // объект для синхронизации связи с сервером в рамках линии связи
+
+        private AppDirs appDirs;            // директории приложения
+        private ServerCommEx serverComm;    // ссылка на объект обмена данными со SCADA-Сервером
+        private PassCmdDelegate passCmd;    // метод передачи команды КП всем линиям связи
 
         private Thread thread;                                  // поток работы линии связи
         private SortedList<string, object> commonProps;         // общие свойства линии связи, доступные её КП
@@ -155,12 +152,8 @@ namespace Scada.Comm.Engine
         private Log log;                  // журнал линии связи
         private string infoFileName;      // имя файла информации о работе линии связи
         private string curAction;         // описание текущего действия
-        private string captionUnderline;  // подчёркивание обозначения линии связи
         private string allCustomParams;   // все имена и значения пользовательских параметров
         private string[] kpCaptions;      // обозначения КП
-
-        private object infoLock;          // объект для синхронизации записи в файл информации о работе линии связи
-        private object serverLock;        // объект для синхронизации связи с сервером в рамках линии связи
         
 
         /// <summary>
@@ -177,13 +170,9 @@ namespace Scada.Comm.Engine
         {
             // поля
             numAndName = number + (string.IsNullOrEmpty(name) ? "" : " \"" + name + "\"");
-            commCnl = null;
-            reqTriesCnt = 1;
-            cycleDelay = 0;
-            cmdEnabled = false;
-            reqAfterCmd = false;
-            detailedLog = true;
-            sendAllDataPer = 0;
+            infoLock = new object();
+            serverLock = new object();
+
             appDirs = new AppDirs();
             serverComm = null;
             passCmd = null;
@@ -204,14 +193,19 @@ namespace Scada.Comm.Engine
             allCustomParams = null;
             kpCaptions = null;
 
-            infoLock = new object();
-            serverLock = new object();
-
             // свойства
             Bind = bind;
             Number = number;
             Name = name;
             Caption = (Localization.UseRussian ? "Линия " : "Line ") + numAndName;
+            CommChannel = null;
+            ReqTriesCnt = 1;
+            CycleDelay = 0;
+            CmdEnabled = false;
+            ReqAfterCmd = false;
+            DetailedLog = true;
+            SendModData = true;
+            SendAllDataPer = 0;
             CustomParams = new SortedList<string, string>();
             KPList = new List<KPLogic>();
             
@@ -241,116 +235,44 @@ namespace Scada.Comm.Engine
         public string Caption { get; private set; }
 
         /// <summary>
-        /// Получить или установить канал связи с физическими КП
+        /// Получить канал связи с физическими КП
         /// </summary>
-        public CommChannelLogic CommChannelLogic
-        {
-            get
-            {
-                return commCnl;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                commCnl = value;
-            }
-        }
+        public CommChannelLogic CommChannel { get; private set; }
 
         /// <summary>
-        /// Получить или установить количество попыток перезапроса КП при ошибке
+        /// Получить количество попыток перезапроса КП при ошибке
         /// </summary>
-        public int ReqTriesCnt
-        {
-            get
-            {
-                return reqTriesCnt;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                reqTriesCnt = value;
-            }
-        }
+        public int ReqTriesCnt { get; private set; }
 
         /// <summary>
-        /// Получить или установить паузу после цикла опроса, мс
+        /// Получить паузу после цикла опроса, мс
         /// </summary>
-        public int CycleDelay
-        {
-            get
-            {
-                return cycleDelay;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                cycleDelay = value;
-            }
-        }
+        public int CycleDelay { get; private set; }
 
         /// <summary>
-        /// Получить или установить признак, разрешены ли команды ТУ
+        /// Получить признак, разрешены ли команды ТУ
         /// </summary>
-        public bool CmdEnabled
-        {
-            get
-            {
-                return cmdEnabled;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                cmdEnabled = value;
-            }
-        }
+        public bool CmdEnabled { get; private set; }
 
         /// <summary>
-        /// Получить или установить необходимость опроса КП после команды ТУ
+        /// Получить необходимость опроса КП после команды ТУ
         /// </summary>
-        public bool ReqAfterCmd
-        {
-            get
-            {
-                return reqAfterCmd;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                reqAfterCmd = value;
-            }
-        }
+        public bool ReqAfterCmd { get; private set; }
 
         /// <summary>
-        /// Получить или установить признак записи в журнал линии связи подробной информации
+        /// Получить признак записи в журнал линии связи подробной информации
         /// </summary>
-        public bool DetailedLog
-        {
-            get
-            {
-                return detailedLog;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                detailedLog = value;
-            }
-        }
+        public bool DetailedLog { get; private set; }
 
         /// <summary>
-        /// Получить или установить период передачи на сервер всех данных КП, с
+        /// Получить признак передачи данных только изменившихся тегов КП
         /// </summary>
-        public int SendAllDataPer
-        {
-            get
-            {
-                return sendAllDataPer;
-            }
-            set
-            {
-                CheckChangesAllowed();
-                sendAllDataPer = value;
-            }
-        }
+        public bool SendModData { get; private set; }
+
+        /// <summary>
+        /// Получить период передачи на сервер всех данных КП, с
+        /// </summary>
+        public int SendAllDataPer { get; private set; }
 
         /// <summary>
         /// Получить пользовательские параметры линии связи
@@ -373,11 +295,8 @@ namespace Scada.Comm.Engine
             }
             set
             {
-                if (value == null)
-                    throw new ArgumentNullException("value");
-
-                appDirs = value;
-                string fileName = appDirs.LogDir + "line" + CommUtils.AddZeros(Number, 3);
+                appDirs = value ?? throw new ArgumentNullException("value");
+                string fileName = Path.Combine(appDirs.LogDir, "line" + CommUtils.AddZeros(Number, 3));
                 log.FileName = fileName + ".log";
                 infoFileName = fileName + ".txt";
             }
@@ -458,9 +377,11 @@ namespace Scada.Comm.Engine
         private void CheckChangesAllowed()
         {
             if (workState == WorkStates.Running || workState == WorkStates.Terminating)
+            {
                 throw new InvalidOperationException(Localization.UseRussian ?
                     "Невозможно изменить конфигурацию линии связи, если линия работает." :
                     "Unable to change the communication line configuration if the line is operating.");
+            }
         }
 
         /// <summary>
@@ -489,8 +410,8 @@ namespace Scada.Comm.Engine
                 }
 
                 sbInfo.AppendLine();
-                if (commCnl != null)
-                    sbInfo.Append(commCnl.GetInfo()).AppendLine();
+                if (CommChannel != null)
+                    sbInfo.Append(CommChannel.GetInfo()).AppendLine();
                 AppendCustomParams(sbInfo);
                 AppendCommonProps(sbInfo);
                 AppendActiveKP(sbInfo);
@@ -708,7 +629,7 @@ namespace Scada.Comm.Engine
                 else
                 {
                     // запуск канала связи
-                    if (commCnl != null)
+                    if (CommChannel != null)
                     {
                         bool commCnlStarted = false;
                         while (!commCnlStarted)
@@ -741,7 +662,7 @@ namespace Scada.Comm.Engine
                         WriteKPInfo(kpLogic);
                     }
 
-                    if (!detailedLog)
+                    if (!DetailedLog)
                     {
                         log.WriteAction(Localization.UseRussian ?
                             "Вывод информации КП в журнал отключен" :
@@ -840,9 +761,9 @@ namespace Scada.Comm.Engine
         /// </summary>
         private void WorkCycle()
         {
-            bool terminateCycle = false;           // завершить цикл работы
-            DateTime sendAllDataDT = DateTime.Now; // время передачи на сервер всех текущих данных КП
-            int kpCnt = KPList.Count;              // количество КП
+            bool terminateCycle = false;          // завершить цикл работы
+            DateTime sendAllDT = DateTime.UtcNow; // время передачи на сервер всех текущих данных КП, UTC
+            int kpCnt = KPList.Count;             // количество КП
 
             while (!terminateCycle)
             {
@@ -850,10 +771,12 @@ namespace Scada.Comm.Engine
                 int kpInd = 0;   // индекс опрашиваемого КП
 
                 // определение необходимости передать на сервер все текущие данные КП
-                DateTime nowDT = DateTime.Now;
-                bool sendAllData = sendAllDataPer > 0 && (nowDT - sendAllDataDT).TotalSeconds >= sendAllDataPer;
-                if (sendAllData)
-                    sendAllDataDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                bool sendAll = !SendModData || 
+                    SendAllDataPer > 0 && (utcNowDT - sendAllDT).TotalSeconds >= SendAllDataPer;
+
+                if (sendAll)
+                    sendAllDT = utcNowDT;
 
                 while (kpInd < kpCnt && !terminateCycle)
                 {
@@ -867,7 +790,7 @@ namespace Scada.Comm.Engine
                         for (int ind = 0, cnt = extraKPs.Count; ind < cnt && !terminateCycle; ind++)
                         {
                             KPLogic extraKP = extraKPs[ind];
-                            InteractKP(extraKP, true, sendAllData, ref commCnt, out terminateCycle);
+                            InteractKP(extraKP, true, sendAll, ref commCnt, out terminateCycle);
                         }
                     }
 
@@ -881,7 +804,7 @@ namespace Scada.Comm.Engine
 
                         KPLogic kpLogic = KPList[kpInd];
                         bool sessionNeeded = CheckSessionNeeded(kpLogic);
-                        InteractKP(kpLogic, sessionNeeded, sendAllData, ref commCnt, out terminateCycle);
+                        InteractKP(kpLogic, sessionNeeded, sendAll, ref commCnt, out terminateCycle);
                         kpInd++;
                     }
                 }
@@ -892,7 +815,7 @@ namespace Scada.Comm.Engine
                     if (commCnt == 0)
                         Thread.Sleep(EmptyCycleDelay);
                     else
-                        Thread.Sleep(cycleDelay);
+                        Thread.Sleep(CycleDelay);
                 }
             }
         }
@@ -900,7 +823,7 @@ namespace Scada.Comm.Engine
         /// <summary>
         /// Выполнить взаимодействие с КП
         /// </summary>
-        private void InteractKP(KPLogic kpLogic, bool sessionNeeded, bool sendAllData, 
+        private void InteractKP(KPLogic kpLogic, bool sessionNeeded, bool sendAll, 
             ref int commCnt, out bool terminateCycle)
         {
             terminateCycle = false;
@@ -914,8 +837,8 @@ namespace Scada.Comm.Engine
                 if (sessionNeeded)
                 {
                     curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
-                    " Сеанс связи с " :
-                    " Communication with ") + kpLogic.Caption;
+                        " Сеанс связи с " :
+                        " Communication with ") + kpLogic.Caption;
                     WriteInfo();
 
                     CommCnlBeforeSession(kpLogic);
@@ -926,8 +849,7 @@ namespace Scada.Comm.Engine
                         log.WriteLine();
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно выполнить сеанс связи с {0}, т.к. соединение не установлено" :
-                            "Unable to communicate with {0} because connection is not established",
-                            kpLogic.Caption));
+                            "Unable to communicate with {0} because connection is not established", kpLogic.Caption));
                     }
                     else if (KPSession(kpLogic))
                     {
@@ -939,8 +861,8 @@ namespace Scada.Comm.Engine
                 }
 
                 // передача данных КП на сервер
-                if (sessionNeeded || sendAllData)
-                    SendDataToServer(kpLogic, sendAllData);
+                if (sessionNeeded || sendAll)
+                    SendDataToServer(kpLogic, sendAll);
 
                 // определение необходимости завершить цикл работы
                 terminateCycle = workState == WorkStates.Terminating && kpLogic.Terminated;
@@ -966,7 +888,7 @@ namespace Scada.Comm.Engine
         {
             try
             {
-                commCnl.Start();
+                CommChannel.Start();
                 return true;
             }
             catch (Exception ex)
@@ -985,8 +907,8 @@ namespace Scada.Comm.Engine
         {
             try
             {
-                if (commCnl != null)
-                    commCnl.Stop();
+                if (CommChannel != null)
+                    CommChannel.Stop();
             }
             catch (Exception ex)
             {
@@ -1003,8 +925,8 @@ namespace Scada.Comm.Engine
         {
             try
             {
-                if (commCnl != null)
-                    commCnl.BeforeSession(kpLogic);
+                if (CommChannel != null)
+                    CommChannel.BeforeSession(kpLogic);
             }
             catch (Exception ex)
             {
@@ -1021,8 +943,8 @@ namespace Scada.Comm.Engine
         {
             try
             {
-                if (commCnl != null)
-                    commCnl.AfterSession(kpLogic);
+                if (CommChannel != null)
+                    CommChannel.AfterSession(kpLogic);
             }
             catch (Exception ex)
             {
@@ -1045,9 +967,9 @@ namespace Scada.Comm.Engine
             catch (Exception ex)
             {
                 kpLogic.WorkState = KPLogic.WorkStates.Error;
-                log.WriteAction((Localization.UseRussian ?
-                    "Ошибка при выполнении сеанса опроса КП: " :
-                    "Error communicating with the device: ") + ex.Message);
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при выполнении сеанса опроса {0}: {1}" :
+                    "Error communicating with {0}: {1}", kpLogic.Caption, ex.Message));
                 return false;
             }
         }
@@ -1118,7 +1040,7 @@ namespace Scada.Comm.Engine
                         {
                             Command cmd = cmdList[0];
 
-                            if (cmd.CmdTypeID == BaseValues.CmdTypes.Request || reqAfterCmd)
+                            if (cmd.CmdTypeID == BaseValues.CmdTypes.Request || ReqAfterCmd)
                             {
                                 if (reqKPs == null)
                                 {
@@ -1225,7 +1147,7 @@ namespace Scada.Comm.Engine
         /// <summary>
         /// Передать данные КП SCADA-Серверу
         /// </summary>
-        private void SendDataToServer(KPLogic kpLogic, bool sendAllData)
+        private void SendDataToServer(KPLogic kpLogic, bool sendAll)
         {
             if (serverComm != null)
             {
@@ -1236,14 +1158,37 @@ namespace Scada.Comm.Engine
                         " Sending data to SCADA-Server");
                     WriteInfo();
 
-                    // передача текущих данных
-                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, sendAllData);
+                    // get current data to send
+                    KPLogic.TagSrez curSrez;
+                    try
+                    {
+                        curSrez = kpLogic.GetCurData(sendAll);
+                    }
+                    catch (Exception ex)
+                    {
+                        curSrez = null;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при получении текущих данных {0}: {1}" :
+                            "Error getting current data of {0}: {1}", kpLogic.Caption, ex.Message));
+                    }
+
+                    // send current data
                     if (curSrez != null)
                         serverComm.SendSrez(curSrez);
 
-                    // передача архивных срезов до тех пор, пока все срезы не будут переданы
-                    kpLogic.MoveArcSrez(unsentSrezList);
+                    // get archives to send
+                    try
+                    {
+                        kpLogic.MoveArcData(unsentSrezList);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при перемещении существующих архивов {0}: {1}" :
+                            "Error moving existing archives of {0}: {1}", kpLogic.Caption, ex.Message));
+                    }
 
+                    // send archives until all are successfully sent
                     foreach (KPLogic.TagSrez tagSrez in unsentSrezList)
                     {
                         int attemptNum = 0;
@@ -1254,13 +1199,13 @@ namespace Scada.Comm.Engine
                                 if (attemptNum == 1)
                                     log.WriteLine();
                                 log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка передачи архивного среза SCADA-серверу" :
+                                    "Неудачная попытка передачи архивного среза SCADA-Серверу" :
                                     "Attempt to send archive data to SCADA-Server failed");
                                 Thread.Sleep(ScadaUtils.ThreadDelay);
                             }
                             else
                             {
-                                // задержка перед следующей попыткой
+                                // delay before the next attempt
                                 log.WriteAction(CommPhrases.RetryDelay);
                                 Thread.Sleep(RetryDelay);
                             }
@@ -1269,9 +1214,19 @@ namespace Scada.Comm.Engine
 
                     unsentSrezList.Clear();
 
-                    // передача событий до тех пор, пока все события не будут переданы
-                    kpLogic.MoveEvents(unsentEventList);
+                    // get events to send
+                    try
+                    {
+                        kpLogic.MoveEvents(unsentEventList);
+                    }
+                    catch (Exception ex)
+                    {
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при перемещении существующих событий {0}: {1}" :
+                            "Error moving existing events of {0}: {1}", kpLogic.Caption, ex.Message));
+                    }
 
+                    // send events until all are successfully sent
                     foreach (KPLogic.KPEvent kpEvent in unsentEventList)
                     {
                         int attemptNum = 0;
@@ -1282,13 +1237,13 @@ namespace Scada.Comm.Engine
                                 if (attemptNum == 1)
                                     log.WriteLine();
                                 log.WriteAction(Localization.UseRussian ?
-                                    "Неудачная попытка передачи события SCADA-серверу" :
+                                    "Неудачная попытка передачи события SCADA-Серверу" :
                                     "Attempt to send event to SCADA-Server failed");
                                 Thread.Sleep(ScadaUtils.ThreadDelay);
                             }
                             else
                             {
-                                // задержка перед следующей попыткой
+                                // delay before the next attempt
                                 log.WriteAction(CommPhrases.RetryDelay);
                                 Thread.Sleep(RetryDelay);
                             }
@@ -1298,57 +1253,6 @@ namespace Scada.Comm.Engine
                     unsentEventList.Clear();
                 }
             }
-        }
-
-        /// <summary>
-        /// Получить текущие данные КП
-        /// </summary>
-        private KPLogic.TagSrez GetKPCurData(KPLogic kpLogic, bool allData)
-        {
-            // получение текущих данных КП
-            int tagCnt = kpLogic.KPTags.Length;
-            SrezTableLight.CnlData[] curData = new SrezTableLight.CnlData[tagCnt];
-            bool[] curDataMod = new bool[tagCnt];
-            kpLogic.CopyCurData(curData, curDataMod);
-
-            // создание среза передаваемых данных
-            KPLogic.TagSrez curSrez = null;
-            if (allData)
-            {
-                if (tagCnt > 0)
-                {
-                    curSrez = new KPLogic.TagSrez(tagCnt);
-                    for (int i = 0; i < tagCnt; i++)
-                    {
-                        curSrez.KPTags[i] = kpLogic.KPTags[i];
-                        curSrez.TagData[i] = curData[i];
-                    }
-                    serverComm.SendSrez(curSrez);
-                }
-            }
-            else
-            {
-                int modTagCnt = 0; // количество изменившихся тегов
-                for (int i = 0; i < tagCnt; i++)
-                    if (curDataMod[i])
-                        modTagCnt++;
-
-                if (modTagCnt > 0)
-                {
-                    curSrez = new KPLogic.TagSrez(modTagCnt);
-                    for (int i = 0, j = 0; i < tagCnt; i++)
-                    {
-                        if (curDataMod[i])
-                        {
-                            curSrez.KPTags[j] = kpLogic.KPTags[i];
-                            curSrez.TagData[j] = curData[i];
-                            j++;
-                        }
-                    }
-                }
-            }
-
-            return curSrez;
         }
 
         /// <summary>
@@ -1456,7 +1360,7 @@ namespace Scada.Comm.Engine
             kpLogic.CustomParams = CustomParams;
             kpLogic.CommonProps = commonProps;
             kpLogic.AppDirs = appDirs;
-            if (detailedLog)
+            if (DetailedLog)
                 kpLogic.WriteToLog = log.WriteLine;
             kpLogic.CommLineSvc = this;
 
@@ -1502,10 +1406,12 @@ namespace Scada.Comm.Engine
         {
             try
             {
-                if (cmdEnabled)
+                if (CmdEnabled)
                 {
                     lock (cmdList)
+                    {
                         cmdList.Add(cmd);
+                    }
                 }
                 else if (kpNumDict.ContainsKey(cmd.KPNum))
                 {
@@ -1570,19 +1476,19 @@ namespace Scada.Comm.Engine
                 lock (serverLock)
                 {
                     curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
-                        " Форсированная передача текущих данных SCADA-серверу" :
+                        " Форсированная передача текущих данных SCADA-Серверу" :
                         " Flushing current data to SCADA-Server");
                     WriteInfo();
 
-                    KPLogic.TagSrez curSrez = GetKPCurData(kpLogic, false);
+                    KPLogic.TagSrez curSrez = kpLogic.GetCurData(false);
                     return serverComm.SendSrez(curSrez);
                 }
             }
             catch (Exception ex)
             {
-                log.WriteAction((Localization.UseRussian ?
-                    "Ошибка при форсированной передаче текущих данных SCADA-серверу: " :
-                    "Error flushing current data to SCADA-Server") + ex.Message);
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при форсированной передаче текущих данных от {0}: {1}" :
+                    "Error flushing current data of {0}: {1}", kpLogic.Caption, ex.Message));
                 return false;
             }
         }
@@ -1606,12 +1512,12 @@ namespace Scada.Comm.Engine
                 lock (serverLock)
                 {
                     curAction = DateTime.Now.ToLocalizedString() + (Localization.UseRussian ?
-                        " Форсированная передача архивов SCADA-серверу" :
+                        " Форсированная передача архивов SCADA-Серверу" :
                         " Flushing archives to SCADA-Server");
                     WriteInfo();
 
                     // передача архивных срезов до передачи всех срезов или возникновения ошибки
-                    kpLogic.MoveArcSrez(unsentSrezList);
+                    kpLogic.MoveArcData(unsentSrezList);
 
                     while (unsentSrezList.Count > 0 && arcOK)
                     {
@@ -1622,7 +1528,7 @@ namespace Scada.Comm.Engine
                         else
                         {
                             log.WriteAction(Localization.UseRussian ?
-                                "Неудачная попытка форсированной передачи архивного среза SCADA-серверу" :
+                                "Неудачная попытка форсированной передачи архивного среза SCADA-Серверу" :
                                 "Attempt to flush archive data to SCADA-Server failed");
                             arcOK = false;
                         }
@@ -1640,7 +1546,7 @@ namespace Scada.Comm.Engine
                         else
                         {
                             log.WriteAction(Localization.UseRussian ?
-                                "Неудачная попытка форсированной передачи события SCADA-серверу" :
+                                "Неудачная попытка форсированной передачи события SCADA-Серверу" :
                                 "Attempt to flush event to SCADA-Server failed");
                             evOK = false;
                         }
@@ -1649,9 +1555,9 @@ namespace Scada.Comm.Engine
             }
             catch (Exception ex)
             {
-                log.WriteAction((Localization.UseRussian ?
-                    "Ошибка при форсированной передаче архивов SCADA-серверу: " : 
-                    "Error flushing archives to SCADA-Server") + ex.Message);
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при форсированной передаче архивов от {0}: {1}" : 
+                    "Error flushing archives of {0}: {1}", kpLogic.Caption, ex.Message));
             }
 
             return arcOK && evOK;
@@ -1662,8 +1568,7 @@ namespace Scada.Comm.Engine
         /// </summary>
         void ICommLineService.PassCmd(Command cmd)
         {
-            if (PassCmd != null)
-                PassCmd(cmd);
+            PassCmd?.Invoke(cmd);
         }
 
 
@@ -1716,10 +1621,13 @@ namespace Scada.Comm.Engine
             commLine.CmdEnabled = commLineSett.CmdEnabled;
             commLine.ReqAfterCmd = commLineSett.ReqAfterCmd;
             commLine.DetailedLog = commLineSett.DetailedLog;
+            commLine.SendModData = commonParams.SendModData;
             commLine.SendAllDataPer = commonParams.SendAllDataPer;
 
             foreach (KeyValuePair<string, string> customParam in commLineSett.CustomParams)
+            {
                 commLine.CustomParams.Add(customParam.Key, customParam.Value);
+            }
 
             // создание КП на линии связи
             foreach (Settings.KP kpSett in commLineSett.ReqSequence)
@@ -1746,12 +1654,12 @@ namespace Scada.Comm.Engine
             // создание канала связи
             if (!string.IsNullOrEmpty(commLineSett.CommCnlType))
             {
-                commLine.CommChannelLogic = CommChannelFactory.GetCommChannel(commLineSett.CommCnlType);
-                commLine.CommChannelLogic.WriteToLog = commLine.log.WriteLine;
+                commLine.CommChannel = CommChannelFactory.GetCommChannel(commLineSett.CommCnlType);
+                commLine.CommChannel.WriteToLog = commLine.log.WriteLine;
 
                 try
                 {
-                    commLine.CommChannelLogic.Init(commLineSett.CommCnlParams, commLine.KPList);
+                    commLine.CommChannel.Init(commLineSett.CommCnlParams, commLine.KPList);
                 }
                 catch (Exception ex)
                 {

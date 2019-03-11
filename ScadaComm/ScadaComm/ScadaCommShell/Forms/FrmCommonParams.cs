@@ -83,7 +83,9 @@ namespace Scada.Comm.Shell.Forms
 
             // runtime options
             numWaitForStop.SetValue(commonParams.WaitForStop);
+            chkSendModData.Checked = commonParams.SendModData;
             numSendAllDataPer.SetValue(commonParams.SendAllDataPer);
+            numSendAllDataPer.Enabled = chkSendModData.Checked;
 
             changing = false;
         }
@@ -103,6 +105,7 @@ namespace Scada.Comm.Shell.Forms
 
             // runtime options
             commonParams.WaitForStop = decimal.ToInt32(numWaitForStop.Value);
+            commonParams.SendModData = chkSendModData.Checked;
             commonParams.SendAllDataPer = decimal.ToInt32(numSendAllDataPer.Value);
         }
 
@@ -128,6 +131,15 @@ namespace Scada.Comm.Shell.Forms
         {
             if (!changing)
                 ChildFormTag.Modified = true;
+        }
+
+        private void chkSendModData_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing)
+            {
+                numSendAllDataPer.Enabled = chkSendModData.Checked;
+                ChildFormTag.Modified = true;
+            }
         }
     }
 }

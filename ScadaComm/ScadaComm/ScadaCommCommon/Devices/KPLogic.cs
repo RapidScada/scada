@@ -37,8 +37,8 @@ using Utils;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// The base class for device communication logic
-    /// <para>Родительский класс логики взаимодействия с КП</para>
+    /// The base class for device communication logic.
+    /// <para>Родительский класс логики взаимодействия с КП.</para>
     /// </summary>
     public abstract partial class KPLogic
     {
@@ -1311,79 +1311,83 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Копировать текущие данные и признаки изменения тегов КП, 
-        /// затем сбросить признаки изменения
+        /// Gets the current data of the device and clears the modification flags.
         /// </summary>
-        public void CopyCurData(SrezTableLight.CnlData[] destCurData, bool[] destCurDataModified)
+        public virtual TagSrez GetCurData(bool allTags)
         {
-            if (destCurData == null)
-                throw new ArgumentNullException("destCurData");
-            if (destCurDataModified == null)
-                throw new ArgumentNullException("destCurDataModified");
+            lock (curData)
+            {
+                TagSrez curSrez = null;
+                int tagCnt = curData.Length;
 
-            try
-            {
-                lock (curData)
+                if (allTags)
                 {
-                    int tagCnt = curData.Length;
-                    Array.Copy(curData, destCurData, tagCnt);
-                    Array.Copy(curDataModified, destCurDataModified, tagCnt);
-                    Array.Clear(curDataModified, 0, tagCnt);
+                    if (tagCnt > 0)
+                    {
+                        curSrez = new KPLogic.TagSrez(tagCnt);
+                        for (int i = 0; i < tagCnt; i++)
+                        {
+                            curSrez.KPTags[i] = KPTags[i];
+                            curSrez.TagData[i] = curData[i];
+                        }
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при копировании текущих данных тегов КП: " :
-                    "Error copying current data of device tags: ") + ex.Message);
+                else
+                {
+                    int modTagCnt = 0; // number of modified tags
+                    for (int i = 0; i < tagCnt; i++)
+                    {
+                        if (curDataModified[i])
+                            modTagCnt++;
+                    }
+
+                    if (modTagCnt > 0)
+                    {
+                        curSrez = new TagSrez(modTagCnt);
+                        for (int i = 0, j = 0; i < tagCnt; i++)
+                        {
+                            if (curDataModified[i])
+                            {
+                                curSrez.KPTags[j] = KPTags[i];
+                                curSrez.TagData[j] = curData[i];
+                                j++;
+                            }
+                        }
+                    }
+                }
+
+                Array.Clear(curDataModified, 0, tagCnt);
+                return curSrez;
             }
         }
 
         /// <summary>
-        /// Переместить существующие архивные срезы КП
+        /// Moves existing archives from the internal list to the destination.
         /// </summary>
-        public void MoveArcSrez(List<TagSrez> destSrezList)
+        public void MoveArcData(List<TagSrez> destSrezList)
         {
             if (destSrezList == null)
                 throw new ArgumentNullException("destSrezList");
 
-            try
+            lock (arcSrezList)
             {
-                lock (arcSrezList)
-                {
-                    destSrezList.AddRange(arcSrezList);
-                    arcSrezList.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при перемещении существующих архивных срезов КП: " :
-                    "Error moving existing device archive data: ") + ex.Message);
+                destSrezList.AddRange(arcSrezList);
+                arcSrezList.Clear();
             }
         }
 
         /// <summary>
-        /// Переместить существующие события КП
+        /// Moves existing events from the internal list to the destination.
         /// </summary>
         public void MoveEvents(List<KPEvent> destEventList)
         {
             if (destEventList == null)
                 throw new ArgumentNullException("destEventList");
 
-            try
+            lock (eventList)
             {
-                lock (arcSrezList)
-                {
-                    destEventList.AddRange(eventList);
-                    eventList.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при перемещении существующих событий КП: " :
-                    "Error moving existing device events: ") + ex.Message);
+                destEventList.AddRange(eventList);
+                eventList.Clear();
             }
         }
     }

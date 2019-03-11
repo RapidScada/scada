@@ -81,6 +81,10 @@ namespace Scada.Comm
             /// </summary>
             public int WaitForStop { get; set; }
             /// <summary>
+            /// Получить или установить признак передачи данных только изменившихся тегов КП
+            /// </summary>
+            public bool SendModData { get; set; }
+            /// <summary>
             /// Получить или установить период передачи на сервер всех данных КП, с
             /// </summary>
             public int SendAllDataPer { get; set; }
@@ -97,6 +101,7 @@ namespace Scada.Comm
                 ServerPwd = "12345";
                 ServerTimeout = 10000;
                 WaitForStop = 1000;
+                SendModData = true;
                 SendAllDataPer = 60;
             }
             /// <summary>
@@ -104,16 +109,18 @@ namespace Scada.Comm
             /// </summary>
             public CommonParams Clone()
             {
-                CommonParams commonParams = new CommonParams();
-                commonParams.ServerUse = ServerUse;
-                commonParams.ServerHost = ServerHost;
-                commonParams.ServerPort = ServerPort;
-                commonParams.ServerUser = ServerUser;
-                commonParams.ServerPwd = ServerPwd;
-                commonParams.ServerTimeout = ServerTimeout;
-                commonParams.WaitForStop = WaitForStop;
-                commonParams.SendAllDataPer = SendAllDataPer;
-                return commonParams;
+                return new CommonParams
+                {
+                    ServerUse = ServerUse,
+                    ServerHost = ServerHost,
+                    ServerPort = ServerPort,
+                    ServerUser = ServerUser,
+                    ServerPwd = ServerPwd,
+                    ServerTimeout = ServerTimeout,
+                    WaitForStop = WaitForStop,
+                    SendModData = SendModData,
+                    SendAllDataPer = SendAllDataPer
+                };
             }
         }
 
@@ -502,6 +509,8 @@ namespace Scada.Comm
                             Params.ServerTimeout = int.Parse(val);
                         else if (nameL == "waitforstop")
                             Params.WaitForStop = int.Parse(val);
+                        else if (nameL == "sendmoddata")
+                            Params.SendModData = bool.Parse(val);
                         else if (nameL == "sendalldataper")
                             Params.SendAllDataPer = int.Parse(val);
                     }
@@ -799,9 +808,11 @@ namespace Scada.Comm
                 paramsElem.AppendParamElem("ServerTimeout", Params.ServerTimeout,
                     "Таймаут ожидания ответа SCADA-Сервера, мс", "SCADA-Server response timeout, ms");
                 paramsElem.AppendParamElem("WaitForStop", Params.WaitForStop,
-                    "Ожидание остановки линий связи, мс", "Waiting for the communication lines temrination, ms");
+                    "Ожидание остановки линий связи, мс", "Wait for communication lines termination, ms");
+                paramsElem.AppendParamElem("SendModData", Params.SendModData,
+                    "Передавать только изменившиеся теги КП", "Send only modified device tags");
                 paramsElem.AppendParamElem("SendAllDataPer", Params.SendAllDataPer,
-                    "Период передачи всех данных КП, с", "Sending all device data period, sec");
+                    "Период передачи всех тегов КП, с", "Period of sending all device tags, sec");
 
                 // Линии связи
                 rootElem.AppendChild(xmlDoc.CreateComment(

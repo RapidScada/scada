@@ -506,7 +506,9 @@ namespace Scada.Comm.Engine
                     if (Settings.Params.ServerUse)
                     {
                         foreach (CommLine commLine in commLines)
+                        {
                             commLine.Tune(tblInCnl, tblKP);
+                        }
                     }
 
                     // запуск потоков линий связи

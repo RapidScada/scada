@@ -45,6 +45,8 @@
             this.lblServerHost = new System.Windows.Forms.Label();
             this.chkServerUse = new System.Windows.Forms.CheckBox();
             this.txtServerHost = new System.Windows.Forms.TextBox();
+            this.lblSendModData = new System.Windows.Forms.Label();
+            this.chkSendModData = new System.Windows.Forms.CheckBox();
             this.gbRuntimeOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSendAllDataPer)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numWaitForStop)).BeginInit();
@@ -55,6 +57,8 @@
             // 
             // gbRuntimeOptions
             // 
+            this.gbRuntimeOptions.Controls.Add(this.lblSendModData);
+            this.gbRuntimeOptions.Controls.Add(this.chkSendModData);
             this.gbRuntimeOptions.Controls.Add(this.lblSendAllDataPer);
             this.gbRuntimeOptions.Controls.Add(this.numSendAllDataPer);
             this.gbRuntimeOptions.Controls.Add(this.numWaitForStop);
@@ -62,7 +66,7 @@
             this.gbRuntimeOptions.Location = new System.Drawing.Point(12, 146);
             this.gbRuntimeOptions.Name = "gbRuntimeOptions";
             this.gbRuntimeOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbRuntimeOptions.Size = new System.Drawing.Size(450, 78);
+            this.gbRuntimeOptions.Size = new System.Drawing.Size(450, 104);
             this.gbRuntimeOptions.TabIndex = 1;
             this.gbRuntimeOptions.TabStop = false;
             this.gbRuntimeOptions.Text = "Runtime Options";
@@ -70,15 +74,15 @@
             // lblSendAllDataPer
             // 
             this.lblSendAllDataPer.AutoSize = true;
-            this.lblSendAllDataPer.Location = new System.Drawing.Point(13, 49);
+            this.lblSendAllDataPer.Location = new System.Drawing.Point(13, 75);
             this.lblSendAllDataPer.Name = "lblSendAllDataPer";
-            this.lblSendAllDataPer.Size = new System.Drawing.Size(184, 13);
-            this.lblSendAllDataPer.TabIndex = 2;
-            this.lblSendAllDataPer.Text = "Period of sending all device data, sec";
+            this.lblSendAllDataPer.Size = new System.Drawing.Size(183, 13);
+            this.lblSendAllDataPer.TabIndex = 4;
+            this.lblSendAllDataPer.Text = "Period of sending all device tags, sec";
             // 
             // numSendAllDataPer
             // 
-            this.numSendAllDataPer.Location = new System.Drawing.Point(337, 45);
+            this.numSendAllDataPer.Location = new System.Drawing.Point(337, 71);
             this.numSendAllDataPer.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -86,7 +90,7 @@
             0});
             this.numSendAllDataPer.Name = "numSendAllDataPer";
             this.numSendAllDataPer.Size = new System.Drawing.Size(100, 20);
-            this.numSendAllDataPer.TabIndex = 3;
+            this.numSendAllDataPer.TabIndex = 5;
             this.numSendAllDataPer.Value = new decimal(new int[] {
             60,
             0,
@@ -279,6 +283,25 @@
             this.txtServerHost.Text = "localhost";
             this.txtServerHost.TextChanged += new System.EventHandler(this.control_Changed);
             // 
+            // lblSendModData
+            // 
+            this.lblSendModData.AutoSize = true;
+            this.lblSendModData.Location = new System.Drawing.Point(13, 49);
+            this.lblSendModData.Name = "lblSendModData";
+            this.lblSendModData.Size = new System.Drawing.Size(154, 13);
+            this.lblSendModData.TabIndex = 2;
+            this.lblSendModData.Text = "Send only modified device tags";
+            // 
+            // chkSendModData
+            // 
+            this.chkSendModData.AutoSize = true;
+            this.chkSendModData.Location = new System.Drawing.Point(382, 48);
+            this.chkSendModData.Name = "chkSendModData";
+            this.chkSendModData.Size = new System.Drawing.Size(15, 14);
+            this.chkSendModData.TabIndex = 3;
+            this.chkSendModData.UseVisualStyleBackColor = true;
+            this.chkSendModData.CheckedChanged += new System.EventHandler(this.chkSendModData_CheckedChanged);
+            // 
             // FrmCommonParams
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -320,5 +343,7 @@
         private System.Windows.Forms.Label lblServerHost;
         private System.Windows.Forms.CheckBox chkServerUse;
         private System.Windows.Forms.TextBox txtServerHost;
+        private System.Windows.Forms.Label lblSendModData;
+        private System.Windows.Forms.CheckBox chkSendModData;
     }
 }

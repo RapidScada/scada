@@ -30,10 +30,10 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("Общие параметры");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("Библиотеки КП");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("Линии связи");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("Статистика");
+            System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("Общие параметры");
+            System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("Библиотеки КП");
+            System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("Линии связи");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("Статистика");
             this.cmsLine = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miAddLine = new System.Windows.Forms.ToolStripMenuItem();
             this.miMoveUpLine = new System.Windows.Forms.ToolStripMenuItem();
@@ -73,7 +73,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageCommonParams = new System.Windows.Forms.TabPage();
             this.gbPerformance = new System.Windows.Forms.GroupBox();
-            this.lblRefrParams = new System.Windows.Forms.Label();
+            this.lblSendAllDataPer = new System.Windows.Forms.Label();
             this.numSendAllDataPer = new System.Windows.Forms.NumericUpDown();
             this.numWaitForStop = new System.Windows.Forms.NumericUpDown();
             this.lblWaitForStop = new System.Windows.Forms.Label();
@@ -213,6 +213,8 @@
             this.cmsKP = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miKpProps = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlMain = new System.Windows.Forms.Panel();
+            this.lblSendModData = new System.Windows.Forms.Label();
+            this.chkSendModData = new System.Windows.Forms.CheckBox();
             this.cmsLine.SuspendLayout();
             this.cmsNotify.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -434,28 +436,28 @@
             this.treeView.Location = new System.Drawing.Point(0, 0);
             this.treeView.Margin = new System.Windows.Forms.Padding(0);
             this.treeView.Name = "treeView";
-            treeNode1.ImageKey = "params.png";
-            treeNode1.Name = "nodeCommonParams";
-            treeNode1.SelectedImageKey = "params.png";
-            treeNode1.Text = "Общие параметры";
-            treeNode2.ImageKey = "kpdll.png";
-            treeNode2.Name = "nodeKpDlls";
-            treeNode2.SelectedImageKey = "kpdll.png";
-            treeNode2.Text = "Библиотеки КП";
-            treeNode3.ContextMenuStrip = this.cmsLine;
-            treeNode3.ImageKey = "commlines.png";
-            treeNode3.Name = "nodeLines";
-            treeNode3.SelectedImageKey = "commlines.png";
-            treeNode3.Text = "Линии связи";
-            treeNode4.ImageKey = "stats.png";
-            treeNode4.Name = "nodeStats";
-            treeNode4.SelectedImageKey = "stats.png";
-            treeNode4.Text = "Статистика";
+            treeNode5.ImageKey = "params.png";
+            treeNode5.Name = "nodeCommonParams";
+            treeNode5.SelectedImageKey = "params.png";
+            treeNode5.Text = "Общие параметры";
+            treeNode6.ImageKey = "kpdll.png";
+            treeNode6.Name = "nodeKpDlls";
+            treeNode6.SelectedImageKey = "kpdll.png";
+            treeNode6.Text = "Библиотеки КП";
+            treeNode7.ContextMenuStrip = this.cmsLine;
+            treeNode7.ImageKey = "commlines.png";
+            treeNode7.Name = "nodeLines";
+            treeNode7.SelectedImageKey = "commlines.png";
+            treeNode7.Text = "Линии связи";
+            treeNode8.ImageKey = "stats.png";
+            treeNode8.Name = "nodeStats";
+            treeNode8.SelectedImageKey = "stats.png";
+            treeNode8.Text = "Статистика";
             this.treeView.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {
-            treeNode1,
-            treeNode2,
-            treeNode3,
-            treeNode4});
+            treeNode5,
+            treeNode6,
+            treeNode7,
+            treeNode8});
             this.treeView.SelectedImageKey = "params.png";
             this.treeView.ShowRootLines = false;
             this.treeView.Size = new System.Drawing.Size(240, 464);
@@ -645,30 +647,32 @@
             // 
             // gbPerformance
             // 
-            this.gbPerformance.Controls.Add(this.lblRefrParams);
+            this.gbPerformance.Controls.Add(this.lblSendModData);
+            this.gbPerformance.Controls.Add(this.chkSendModData);
+            this.gbPerformance.Controls.Add(this.lblSendAllDataPer);
             this.gbPerformance.Controls.Add(this.numSendAllDataPer);
             this.gbPerformance.Controls.Add(this.numWaitForStop);
             this.gbPerformance.Controls.Add(this.lblWaitForStop);
             this.gbPerformance.Location = new System.Drawing.Point(6, 140);
             this.gbPerformance.Name = "gbPerformance";
             this.gbPerformance.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbPerformance.Size = new System.Drawing.Size(392, 78);
+            this.gbPerformance.Size = new System.Drawing.Size(392, 104);
             this.gbPerformance.TabIndex = 1;
             this.gbPerformance.TabStop = false;
             this.gbPerformance.Text = "Выполнение";
             // 
-            // lblRefrParams
+            // lblSendAllDataPer
             // 
-            this.lblRefrParams.AutoSize = true;
-            this.lblRefrParams.Location = new System.Drawing.Point(13, 49);
-            this.lblRefrParams.Name = "lblRefrParams";
-            this.lblRefrParams.Size = new System.Drawing.Size(245, 13);
-            this.lblRefrParams.TabIndex = 2;
-            this.lblRefrParams.Text = "Период передачи на сервер всех данных КП, с";
+            this.lblSendAllDataPer.AutoSize = true;
+            this.lblSendAllDataPer.Location = new System.Drawing.Point(13, 75);
+            this.lblSendAllDataPer.Name = "lblSendAllDataPer";
+            this.lblSendAllDataPer.Size = new System.Drawing.Size(227, 13);
+            this.lblSendAllDataPer.TabIndex = 4;
+            this.lblSendAllDataPer.Text = "Период передачи Серверу всех тегов КП, с";
             // 
             // numSendAllDataPer
             // 
-            this.numSendAllDataPer.Location = new System.Drawing.Point(319, 45);
+            this.numSendAllDataPer.Location = new System.Drawing.Point(319, 71);
             this.numSendAllDataPer.Maximum = new decimal(new int[] {
             3600,
             0,
@@ -676,7 +680,7 @@
             0});
             this.numSendAllDataPer.Name = "numSendAllDataPer";
             this.numSendAllDataPer.Size = new System.Drawing.Size(60, 20);
-            this.numSendAllDataPer.TabIndex = 3;
+            this.numSendAllDataPer.TabIndex = 5;
             this.numSendAllDataPer.Value = new decimal(new int[] {
             60,
             0,
@@ -2253,6 +2257,25 @@
             this.pnlMain.Size = new System.Drawing.Size(654, 465);
             this.pnlMain.TabIndex = 1;
             // 
+            // lblSendModData
+            // 
+            this.lblSendModData.AutoSize = true;
+            this.lblSendModData.Location = new System.Drawing.Point(13, 49);
+            this.lblSendModData.Name = "lblSendModData";
+            this.lblSendModData.Size = new System.Drawing.Size(228, 13);
+            this.lblSendModData.TabIndex = 2;
+            this.lblSendModData.Text = "Передавать только изменившиеся теги КП";
+            // 
+            // chkSendModData
+            // 
+            this.chkSendModData.AutoSize = true;
+            this.chkSendModData.Location = new System.Drawing.Point(342, 48);
+            this.chkSendModData.Name = "chkSendModData";
+            this.chkSendModData.Size = new System.Drawing.Size(15, 14);
+            this.chkSendModData.TabIndex = 3;
+            this.chkSendModData.UseVisualStyleBackColor = true;
+            this.chkSendModData.CheckedChanged += new System.EventHandler(this.chkSendModData_CheckedChanged);
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -2472,7 +2495,7 @@
         private System.Windows.Forms.ToolStripSeparator sepMain2;
         private System.Windows.Forms.CheckBox chkLineLogPause;
         private System.Windows.Forms.GroupBox gbPerformance;
-        private System.Windows.Forms.Label lblRefrParams;
+        private System.Windows.Forms.Label lblSendAllDataPer;
         private System.Windows.Forms.NumericUpDown numSendAllDataPer;
         private System.Windows.Forms.NumericUpDown numWaitForStop;
         private System.Windows.Forms.Label lblWaitForStop;
@@ -2515,6 +2538,8 @@
         private System.Windows.Forms.Label lblCommCnlParams;
         private System.Windows.Forms.Label lblReqAfterCmd;
         private System.Windows.Forms.CheckBox chkReqAfterCmd;
+        private System.Windows.Forms.Label lblSendModData;
+        private System.Windows.Forms.CheckBox chkSendModData;
     }
 }
 

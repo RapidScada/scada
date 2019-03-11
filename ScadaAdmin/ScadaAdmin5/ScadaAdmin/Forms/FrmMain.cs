@@ -940,11 +940,16 @@ namespace Scada.Admin.App.Forms
                 else if (e.Message == CommMessage.SaveSettings)
                 {
                     // save the Communicator settings
-                    TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
                     if (SaveCommSettigns(liveInstance))
-                        UpdateCommLine(commLineNode, liveInstance.CommEnvironment);
+                    {
+                        TreeNode commLineNode = sourceNode.FindClosest(CommNodeType.CommLine);
+                        if (commLineNode != null)
+                            UpdateCommLine(commLineNode, liveInstance.CommEnvironment);
+                    }
                     else
+                    {
                         e.Cancel = true;
+                    }
                 }
                 else if (e.Message == CommMessage.UpdateLineParams)
                 {

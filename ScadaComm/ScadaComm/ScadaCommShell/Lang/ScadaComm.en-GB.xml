@@ -129,7 +129,8 @@
     <Phrase key="lblServerPwd">Password</Phrase>
     <Phrase key="gbRuntimeOptions">Runtime Options</Phrase>
     <Phrase key="lblWaitForStop">Wait for communication lines termination, ms</Phrase>
-    <Phrase key="lblSendAllDataPer">Period of sending all device data to Server, sec</Phrase>
+    <Phrase key="lblSendModData">Send only modified device tags</Phrase>
+    <Phrase key="lblSendAllDataPer">Period of sending all device tags, sec</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Shell.Forms.FrmDeviceCommand">
     <Phrase key="this">Command to {0}</Phrase>
