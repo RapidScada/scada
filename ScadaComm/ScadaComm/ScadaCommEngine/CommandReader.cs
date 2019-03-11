@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -41,11 +41,11 @@ namespace Scada.Comm.Engine
     /// </summary>
     internal sealed class CommandReader
     {
-        private Manager mngr;            // менеджер, управляющий работой программы
-        private ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
-        private string cmdDir;           // директория команд
-        private Log log;                 // ссылка на основной log-файл программы
-        private Thread thread;           // поток приёма команд
+        private readonly Manager mngr;            // менеджер, управляющий работой программы
+        private readonly ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
+        private readonly string cmdDir;           // директория команд
+        private readonly Log log;                 // ссылка на основной log-файл программы
+        private Thread thread;                    // поток приёма команд
 
 
         /// <summary>
@@ -53,10 +53,7 @@ namespace Scada.Comm.Engine
         /// </summary>
         public CommandReader(Manager mngr)
         {
-            if (mngr == null)
-                throw new ArgumentNullException("mngr");
-
-            this.mngr = mngr;
+            this.mngr = mngr ?? throw new ArgumentNullException("mngr");
             serverComm = mngr.ServerComm;
             cmdDir = mngr.AppDirs.CmdDir;
             log = mngr.AppLog;
