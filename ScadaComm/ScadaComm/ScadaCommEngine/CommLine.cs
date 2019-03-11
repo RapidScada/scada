@@ -1379,8 +1379,11 @@ namespace Scada.Comm.Engine
                             for (int i = 0; i < tblInCnl.DefaultView.Count; i++)
                             {
                                 DataRowView rowView = tblInCnl.DefaultView[i];
-                                kpLogic.BindTag((int)rowView["Signal"], (int)rowView["CnlNum"],
-                                    (int)rowView["ObjNum"], (int)rowView["ParamID"]);
+                                if ((bool)rowView["Active"])
+                                {
+                                    kpLogic.BindTag((int)rowView["Signal"], (int)rowView["CnlNum"],
+                                        (int)rowView["ObjNum"], (int)rowView["ParamID"]);
+                                }
                             }
 
                             // перезапись имени, адреса и позывного КП
