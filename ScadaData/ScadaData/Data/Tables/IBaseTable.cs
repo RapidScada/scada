@@ -122,6 +122,11 @@ namespace Scada.Data.Tables
         bool PkExists(int key);
 
         /// <summary>
+        /// Adds a new index.
+        /// </summary>
+        TableIndex AddIndex(string columnName);
+
+        /// <summary>
         /// Gets an index by the column name, populating it if necessary.
         /// </summary>
         bool TryGetIndex(string columnName, out TableIndex index);

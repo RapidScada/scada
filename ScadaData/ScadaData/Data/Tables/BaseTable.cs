@@ -249,6 +249,16 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Adds a new index.
+        /// </summary>
+        public TableIndex AddIndex(string columnName)
+        {
+            TableIndex index = new TableIndex(columnName, ItemType);
+            Indexes.Add(columnName, index);
+            return index;
+        }
+
+        /// <summary>
         /// Gets an index by the column name, populating it if necessary.
         /// </summary>
         public bool TryGetIndex(string columnName, out TableIndex index)

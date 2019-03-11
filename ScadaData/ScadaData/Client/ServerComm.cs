@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,14 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaData
- * Summary  : Communication with SCADA-Server
+ * Summary  : Implements communication with SCADA-Server
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2019
  */
 
-#undef DETAILED_LOG // выводить в журнал подробную информацию об обмене данными со SCADA-Сервером
+#undef DETAILED_LOG // enable output the detailed information to the log
 
 using Scada.Data.Configuration;
 using Scada.Data.Models;
@@ -40,8 +40,8 @@ using Utils;
 namespace Scada.Client
 {
     /// <summary>
-    /// Communication with SCADA-Server
-    /// <para>Обмен данными со SCADA-Сервером</para>
+    /// Implements communication with SCADA-Server.
+    /// <para>Реализует обмен данными со SCADA-Сервером.</para>
     /// </summary>
     public class ServerComm
     {
@@ -1017,6 +1017,55 @@ namespace Scada.Client
                 errMsg = (Localization.UseRussian ? 
                     "Ошибка при приёме таблицы базы конфигурации от SCADA-Сервера: " : 
                     "Error receiving configuration database table from SCADA-Server: ") + ex.Message;
+                WriteAction(errMsg, Log.ActTypes.Exception);
+            }
+            finally
+            {
+                Monitor.Exit(tcpLock);
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Receives the table of the configuration database from Server.
+        /// </summary>
+        public bool ReceiveBaseTable(string tableName, IBaseTable baseTable)
+        {
+            Monitor.Enter(tcpLock);
+            bool result = false;
+            errMsg = "";
+
+            try
+            {
+                try
+                {
+                    if (RestoreConnection())
+                    {
+                        using (MemoryStream memStream = new MemoryStream())
+                        {
+                            if (ReceiveFileToStream(Dirs.BaseDAT, tableName, memStream))
+                            {
+                                BaseAdapter adapter = new BaseAdapter();
+                                adapter.Stream = memStream;
+                                adapter.TableName = tableName;
+                                adapter.Fill(baseTable, false);
+                                result = true;
+                            }
+                        }
+                    }
+                }
+                finally
+                {
+                    if (!result)
+                        baseTable.ClearItems();
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = (Localization.UseRussian ?
+                    "Ошибка при приёме таблицы базы конфигурации от Сервера: " :
+                    "Error receiving configuration database table from Server: ") + ex.Message;
                 WriteAction(errMsg, Log.ActTypes.Exception);
             }
             finally
