@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
+ * Module   : ScadaCommEngine
  * Summary  : Communication with SCADA-Server adapted for SCADA-Communicator
  * 
  * Author   : Mikhail Shiryaev
@@ -33,8 +33,8 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Communication with SCADA-Server adapted for SCADA-Communicator
-    /// <para>Обмен данными со SCADA-Сервером, адаптированный для SCADA-Коммуникатора</para>
+    /// Communication with SCADA-Server adapted for SCADA-Communicator.
+    /// <para>Обмен данными со SCADA-Сервером, адаптированный для SCADA-Коммуникатора.</para>
     /// </summary>
     sealed class ServerCommEx : ServerComm
     {

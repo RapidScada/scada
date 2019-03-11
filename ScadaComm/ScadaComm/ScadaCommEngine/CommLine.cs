@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
+ * Module   : ScadaCommEngine
  * Summary  : Communication line
  * 
  * Author   : Mikhail Shiryaev
@@ -39,8 +39,8 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Communication line
-    /// <para>Линия связи</para>
+    /// Communication line.
+    /// <para>Линия связи.</para>
     /// </summary>
     internal sealed class CommLine : ICommLineService
     {

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
+ * Module   : ScadaCommEngine
  * Summary  : Receive commands via TCP and files
  * 
  * Author   : Mikhail Shiryaev
@@ -36,8 +36,8 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Receive commands via TCP and files
-    /// <para>Приём команд по протоколу TCP и через файлы</para>
+    /// Receive commands via TCP and files.
+    /// <para>Приём команд по протоколу TCP и через файлы.</para>
     /// </summary>
     internal sealed class CommandReader
     {

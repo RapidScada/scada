@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,19 +15,18 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
+ * Module   : ScadaCommEngine
  * Summary  : Program execution management
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Text;
@@ -37,8 +36,8 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Program execution management
-    /// <para>Управление работой программы</para>
+    /// Program execution management.
+    /// <para>Управление работой программы.</para>
     /// </summary>
     public sealed class Manager
     {
@@ -183,18 +182,14 @@ namespace Scada.Comm.Engine
         }
 
         /// <summary>
-        /// Инициализировать директории приложения
+        /// Инициализировать директории и журнал приложения
         /// </summary>
-        private void InitAppDirs(out bool dirsExist, out bool logDirExists)
+        private void InitAppDirs()
         {
             AppDirs.Init(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location));
 
             AppLog.FileName = AppDirs.LogDir + CommUtils.AppLogFileName;
             infoFileName = AppDirs.LogDir + CommUtils.AppStateFileName;
-            logDirExists = Directory.Exists(AppDirs.LogDir);
-
-            dirsExist = Directory.Exists(AppDirs.ConfigDir) && Directory.Exists(AppDirs.LangDir) && logDirExists &&
-                Directory.Exists(AppDirs.KPDir) && Directory.Exists(AppDirs.CmdDir);
         }
 
         /// <summary>
@@ -858,56 +853,36 @@ namespace Scada.Comm.Engine
         public void StartService()
         {
             // инициализация необходимых директорий
-            bool dirsExist;    // необходимые директории существуют
-            bool logDirExists; // директория log-файлов существует
-            InitAppDirs(out dirsExist, out logDirExists);
+            InitAppDirs();
 
-            if (logDirExists)
-            {
-                AppLog.WriteBreak();
-                AppLog.WriteAction(string.Format(Localization.UseRussian ? 
-                    "Служба ScadaCommService {0} запущена" :
-                    "ScadaCommService {0} is started", CommUtils.AppVersion), Log.ActTypes.Action);
-            }
+            AppLog.WriteBreak();
+            AppLog.WriteAction(string.Format(Localization.UseRussian ? 
+                "Служба ScadaCommService {0} запущена" :
+                "ScadaCommService {0} is started", CommUtils.AppVersion));
 
-            if (dirsExist)
+            if (AppDirs.Exist)
             {
                 // локализация ScadaData.dll
-                string errMsg;
-                if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out errMsg))
+                if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out string errMsg))
                     CommonPhrases.Init();
                 else
                     AppLog.WriteAction(errMsg, Log.ActTypes.Error);
 
                 // запуск работы
-                if (!StartOperation())
-                {
-                    AppLog.WriteAction(Localization.UseRussian ?
-                        "Нормальная работа программы невозможна." :
-                        "Normal program execution is impossible.", Log.ActTypes.Error);
-                }
+                if (StartOperation())
+                    return;
             }
             else
             {
-                string errMsg = string.Format(Localization.UseRussian ?
-                    "Не существуют необходимые директории:{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}" +
-                    "Нормальная работа программы невозможна." :
-                    "Required directories are not exist:{0}{1}{0}{2}{0}{3}{0}{4}{0}{5}{0}" +
-                    "Normal program execution is impossible.",
-                    Environment.NewLine, AppDirs.ConfigDir, AppDirs.LangDir, AppDirs.LogDir, 
-                    AppDirs.KPDir, AppDirs.CmdDir);
-
-                try
-                {
-                    if (EventLog.SourceExists("ScadaCommService"))
-                        EventLog.WriteEvent("ScadaCommService",
-                            new EventInstance(0, 0, EventLogEntryType.Error), errMsg);
-                }
-                catch { }
-
-                if (logDirExists)
-                    AppLog.WriteAction(errMsg, Log.ActTypes.Error);
+                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                    "Необходимые директории не существуют:{0}{1}" :
+                    "The required directories do not exist:{0}{1}",
+                    Environment.NewLine, string.Join(Environment.NewLine, AppDirs.GetRequiredDirs())));
             }
+
+            AppLog.WriteError(Localization.UseRussian ?
+                "Нормальная работа программы невозможна" :
+                "Normal program execution is impossible");
         }
 
         /// <summary>
@@ -918,7 +893,7 @@ namespace Scada.Comm.Engine
             StopOperation();
             AppLog.WriteAction(Localization.UseRussian ? 
                 "Служба ScadaCommService остановлена" :
-                "ScadaCommService is stopped", Log.ActTypes.Action);
+                "ScadaCommService is stopped");
             AppLog.WriteBreak();
         }
 
@@ -930,7 +905,7 @@ namespace Scada.Comm.Engine
             StopOperation();
             AppLog.WriteAction(Localization.UseRussian ? 
                 "Служба ScadaCommService отключена" :
-                "ScadaCommService is shutdown", Log.ActTypes.Action);
+                "ScadaCommService is shutdown");
             AppLog.WriteBreak();
         }
     }
