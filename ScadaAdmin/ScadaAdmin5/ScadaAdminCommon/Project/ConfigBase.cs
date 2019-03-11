@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Entities;
@@ -233,8 +233,7 @@ namespace Scada.Admin.Project
         private void AddRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn)
         {
             TableRelation relation = new TableRelation(parentTable, childTable, childColumn);
-            TableIndex index = new TableIndex(childColumn, childTable.ItemType);
-            childTable.Indexes.Add(childColumn, index);
+            childTable.AddIndex(childColumn);
             childTable.DependsOn.Add(relation);
             parentTable.Dependent.Add(relation);
         }
