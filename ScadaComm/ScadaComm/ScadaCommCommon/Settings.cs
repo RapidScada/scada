@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Control
- * Summary  : SCADA-Communicator settings
+ * Module   : ScadaCommCommon
+ * Summary  : Communicator settings
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
@@ -34,8 +34,8 @@ using System.Xml;
 namespace Scada.Comm
 {
     /// <summary>
-    /// SCADA-Communicator settings
-    /// <para>Настройки SCADA-Коммуникатора</para>
+    /// Communicator settings.
+    /// <para>Настройки Коммуникатора</para>
     /// </summary>
     public class Settings : ITreeNode
     {
@@ -137,7 +137,7 @@ namespace Scada.Comm
 
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
-                CmdEnabled = false;
+                CmdEnabled = true;
                 ReqAfterCmd = false;
                 DetailedLog = true;
 
