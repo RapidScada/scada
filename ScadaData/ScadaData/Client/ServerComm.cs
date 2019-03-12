@@ -1266,6 +1266,94 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Receives current data from Server.
+        /// </summary>
+        public bool ReceiveCurData(SrezTableLight.Srez srez)
+        {
+            Monitor.Enter(tcpLock);
+            bool result = false;
+            errMsg = "";
+
+            try
+            {
+                if (RestoreConnection())
+                {
+#if DETAILED_LOG
+                    WriteAction(Localization.UseRussian ?
+                        "Приём текущих данных от Сервера" :
+                        "Receive current data from Server", Log.ActTypes.Action);
+#endif
+                    commState = CommStates.WaitResponse;
+                    tcpClient.ReceiveTimeout = commSettings.ServerTimeout;
+
+                    // send a request
+                    ushort cnlCnt = (ushort)srez.CnlNums.Length;
+                    int bufLen = 9 + cnlCnt * 4;
+                    byte[] buf = new byte[bufLen];
+                    buf[0] = (byte)(bufLen % 256);
+                    buf[1] = (byte)(bufLen / 256);
+                    buf[2] = 0x0D; // command
+                    buf[3] = 0x01; // current data
+                    buf[4] = 0x00; // year
+                    buf[5] = 0x00; // month
+                    buf[6] = 0x00; // day
+                    buf[7] = (byte)(cnlCnt % 256);
+                    buf[8] = (byte)(cnlCnt / 256);
+
+                    for (int cnlInd = 0, arrInd = 9; cnlInd < cnlCnt; cnlInd++, arrInd += 4)
+                    {
+                        byte[] bytes = BitConverter.GetBytes(srez.CnlNums[cnlInd]);
+                        Array.Copy(bytes, 0, buf, arrInd, 4);
+                    }
+
+                    netStream.Write(buf, 0, bufLen);
+
+                    // receive a response
+                    int bytesToRead = 15 + cnlCnt * 10;
+                    buf = new byte[bytesToRead];
+                    int bytesRead = ReadNetStream(buf, 0, bytesToRead);
+
+                    if (bytesRead == bytesToRead && buf[4] == 0x0D /*command*/ && 
+                        buf[5] + buf[6] * 256 == 1 /*snapshot count*/)
+                    {
+                        for (int cnlInd = 0, arrInd = 15; cnlInd < cnlCnt; cnlInd++, arrInd += 10)
+                        {
+                            srez.CnlData[cnlInd] = new SrezTableLight.CnlData(
+                                BitConverter.ToDouble(buf, arrInd),
+                                BitConverter.ToUInt16(buf, arrInd + 8));
+                        }
+
+                        result = true;
+                        commState = CommStates.Authorized;
+                    }
+                    else
+                    {
+                        errMsg = Localization.UseRussian ?
+                            "Неверный формат ответа Сервера на запрос текущих данных" :
+                            "Incorrect Server response to current data request";
+                        WriteAction(errMsg, Log.ActTypes.Error);
+                        commState = CommStates.Error;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                errMsg = (Localization.UseRussian ?
+                    "Ошибка при приёме текущих данных от Сервера: " :
+                    "Error receiving current data from Server: ") + ex.Message;
+                WriteAction(errMsg, Log.ActTypes.Exception);
+                Disconnect();
+            }
+            finally
+            {
+                RestoreReceiveTimeout();
+                Monitor.Exit(tcpLock);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Принять таблицу событий от SCADA-Сервера
         /// </summary>
         public bool ReceiveEventTable(string tableName, EventTableLight eventTableLight)
