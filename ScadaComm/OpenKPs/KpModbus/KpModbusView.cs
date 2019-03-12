@@ -106,7 +106,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Gets the default device request parameters.
+        /// Gets the channel prototypes.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
