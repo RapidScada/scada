@@ -229,9 +229,9 @@ namespace Scada.Comm.Devices
                     foreach (Elem elem in elemGroup.Elems)
                     {
                         int signal = ++tagInd;
-                        tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
+                        tagGroup.AddNewTag(signal, elem.Name);
 
-                        if (elem.ElemType == ElemType.Float)
+                        if (elem.ElemType == ElemType.Float || elem.ElemType == ElemType.Double)
                             floatSignals.Add(signal);
                     }
                 }
