@@ -23,6 +23,7 @@
  * Modified : 2019
  */
 
+using Scada.Client;
 using Scada.Comm.Channels;
 using Scada.Comm.Devices;
 using Scada.Data.Configuration;
@@ -167,7 +168,7 @@ namespace Scada.Comm.Engine
         /// <summary>
         /// Конструктор
         /// </summary>
-        public CommLine(bool bind, int number, string name)
+        public CommLine(bool bound, int number, string name)
         {
             // поля
             numAndName = number + (string.IsNullOrEmpty(name) ? "" : " \"" + name + "\"");
@@ -195,7 +196,7 @@ namespace Scada.Comm.Engine
             kpCaptions = null;
 
             // свойства
-            Bound = bind;
+            Bound = bound;
             Number = number;
             Name = name;
             Caption = (Localization.UseRussian ? "Линия " : "Line ") + numAndName;
@@ -1452,6 +1453,17 @@ namespace Scada.Comm.Engine
 
 
         /// <summary>
+        /// Gets the client to communicate with Server.
+        /// </summary>
+        ServerComm ICommLineService.ServerComm
+        {
+            get
+            {
+                return serverComm;
+            }
+        }
+
+        /// <summary>
         /// Найти КП на линии связи по адресу и позывному
         /// </summary>
         /// <remarks>Если address меньше 0, то он не учитывается при поиске.
@@ -1633,7 +1645,7 @@ namespace Scada.Comm.Engine
                 if (kpSett.Active)
                 {
                     KPLogic kpLogic = CreateKPLogic(kpSett.Number, kpSett.Dll, appDirs, kpTypes, appLog);
-                    kpLogic.Bound = kpSett.Bind;
+                    kpLogic.Bound = commLine.Bound && kpSett.Bind;
                     kpLogic.Name = kpSett.Name;
                     kpLogic.Address = kpSett.Address;
                     kpLogic.CallNum = kpSett.CallNum;
