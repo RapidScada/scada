@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
@@ -114,13 +113,13 @@ namespace Scada.Comm.Devices
             {
                 // загрузка шаблона устройства
                 string fileName = KPProps == null ? "" : KPProps.CmdLine.Trim();
-                string filePath = Path.IsPathRooted(fileName) ?
-                    fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                if (!File.Exists(filePath))
+                if (fileName == "")
                     return null;
 
+                string filePath = Path.IsPathRooted(fileName) ? fileName : Path.Combine(AppDirs.ConfigDir, fileName);
                 DeviceTemplate deviceTemplate = GetUiCustomization().TemplateFactory.CreateDeviceTemplate();
+
                 if (!deviceTemplate.Load(filePath, out string errMsg))
                     throw new ScadaException(errMsg);
 
