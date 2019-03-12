@@ -620,7 +620,9 @@ namespace Scada.Comm.Engine
 
                 WriteInfo();
                 foreach (KPLogic kpLogic in KPList)
+                {
                     WriteKPInfo(kpLogic);
+                }
 
                 if (KPList.Count <= 0)
                 {
@@ -1615,12 +1617,14 @@ namespace Scada.Comm.Engine
                 return null;
 
             // создание линии связи
-            CommLine commLine = new CommLine(commLineSett.Bind, commLineSett.Number, commLineSett.Name);
-
-            // установка свойств для связи с окружением
-            commLine.AppDirs = appDirs;
-            commLine.ServerComm = null;
-            commLine.PassCmd = passCmd;
+            CommLine commLine = new CommLine(commLineSett.Bind && commonParams.ServerUse,
+                commLineSett.Number, commLineSett.Name)
+            {
+                // установка свойств для связи с окружением
+                AppDirs = appDirs,
+                ServerComm = null,
+                PassCmd = passCmd
+            };
 
             // вывод начальной информации о линии связи
             commLine.WriteInitialInfo();

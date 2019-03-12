@@ -567,7 +567,7 @@ namespace Scada.Comm.Devices
                     {
                         KPTag kpTag = KPTags[paramInd];
                         colName[i] = kpTag.Name;
-                        colVal[i] = ConvertTagDataToStr(kpTag.Signal, curData[paramInd]);
+                        colVal[i] = ConvertTagDataToStr(kpTag, curData[paramInd]);
                         paramInd++;
                     }
                 }
@@ -819,6 +819,14 @@ namespace Scada.Comm.Devices
         protected virtual string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
         {
             return tagData.Stat > 0 ? tagData.Val.ToString("N3", Localization.Culture) : "---";
+        }
+
+        /// <summary>
+        /// Converts the tag data to string.
+        /// </summary>
+        protected virtual string ConvertTagDataToStr(KPTag kpTag, SrezTableLight.CnlData tagData)
+        {
+            return ConvertTagDataToStr(kpTag.Signal, tagData);
         }
 
         /// <summary>

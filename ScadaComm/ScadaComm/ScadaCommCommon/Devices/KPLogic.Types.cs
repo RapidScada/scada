@@ -98,6 +98,7 @@ namespace Scada.Comm.Devices
                 CnlNum = 0;
                 ObjNum = 0;
                 ParamID = 0;
+                Aux = null;
             }
 
             /// <summary>
@@ -125,6 +126,10 @@ namespace Scada.Comm.Devices
             /// </summary>
             /// <remarks>Необходим для событий КП</remarks>
             public int ParamID { get; set; }
+            /// <summary>
+            /// Gets or sets the auxiliary object that contains data about the tag.
+            /// </summary>
+            public object Aux { get; set; }
         }
 
         /// <summary>
@@ -156,6 +161,16 @@ namespace Scada.Comm.Devices
             /// Получить список тегов КП, входящих в группу
             /// </summary>
             public List<KPTag> KPTags { get; protected set; }
+
+            /// <summary>
+            /// Creates and adds a new tag to the group.
+            /// </summary>
+            public KPTag AddNewTag(int signal, string name, object aux = null)
+            {
+                KPTag kpTag = new KPTag(signal, name) { Aux = aux };
+                KPTags.Add(kpTag);
+                return kpTag;
+            }
         }
 
         /// <summary>
