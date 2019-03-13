@@ -187,10 +187,10 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected virtual void Localize()
         {
-            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
-                KpPhrases.Init();
-            else
+            if (!Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
                 ScadaUiUtils.ShowError(errMsg);
+
+            KpPhrases.Init();
         }
 
         /// <summary>
