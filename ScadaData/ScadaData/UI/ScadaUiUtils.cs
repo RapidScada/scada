@@ -194,6 +194,15 @@ namespace Scada.UI
         }
 
         /// <summary>
+        /// Sets the file dialog filter suppressing possible exception.
+        /// </summary>
+        public static void SetFilter(this FileDialog fileDialog, string filter)
+        {
+            try { fileDialog.Filter = filter; }
+            catch { }
+        }
+
+        /// <summary>
         /// Распознать текст элемента управления и пробразовать его в значение перечислимого типа.
         /// </summary>
         public static T ParseText<T>(this Control control) where T : struct
