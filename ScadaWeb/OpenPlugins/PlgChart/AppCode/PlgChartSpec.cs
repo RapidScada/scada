@@ -82,7 +82,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "5.0.0.1";
+                return ChartUtils.ChartVersion;
             }
         }
 
