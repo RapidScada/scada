@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -33,31 +33,32 @@ namespace Scada.Web
     partial class WebUtils
     {
         /// <summary>
-        /// Разделитель элементов массива, передаваемого в параметре запроса
+        /// Разделитель элементов массива, передаваемого в параметре запроса.
         /// </summary>
         private static readonly char[] QueryParamSeparator = { ',' };
 
 
         /// <summary>
-        /// Получить логическое значение параметра из строки запроса
+        /// Получить логическое значение параметра из строки запроса.
         /// </summary>
-        public static bool GetParamAsBool(this NameValueCollection queryString, string paramName)
+        public static bool GetParamAsBool(this NameValueCollection queryString, string paramName, 
+            bool defaultVal = false)
         {
-            return bool.TryParse(queryString[paramName], out bool paramVal) ? paramVal : false;
+            return bool.TryParse(queryString[paramName], out bool paramVal) ? paramVal : defaultVal;
         }
 
         /// <summary>
-        /// Получить целое значение параметра из строки запроса
+        /// Получить целое значение параметра из строки запроса.
         /// </summary>
-        public static int GetParamAsInt(this NameValueCollection queryString, string paramName)
+        public static int GetParamAsInt(this NameValueCollection queryString, string paramName, int defaultVal = 0)
         {
-            return int.TryParse(queryString[paramName], out int paramVal) ? paramVal : 0;
+            return int.TryParse(queryString[paramName], out int paramVal) ? paramVal : defaultVal;
         }
 
         /// <summary>
-        /// Получить значение параметра из строки запроса как дату
+        /// Получить значение параметра из строки запроса как дату.
         /// </summary>
-        public static DateTime GetParamAsDate(this NameValueCollection queryString,
+        public static DateTime GetParamAsDate(this NameValueCollection queryString, DateTime? defaultVal = null,
             string yearParamName = "year", string monthParamName = "month", string dayParamName = "day")
         {
             int.TryParse(queryString[yearParamName], out int year);
@@ -66,7 +67,7 @@ namespace Scada.Web
 
             if (year == 0 && month == 0 && day == 0)
             {
-                return DateTime.Today;
+                return defaultVal ?? DateTime.MinValue;
             }
             else
             {
@@ -76,23 +77,30 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить значение параметра из строки запроса как дату
+        /// Получить значение параметра из строки запроса как дату.
         /// </summary>
-        public static DateTime GetParamAsDate(this NameValueCollection queryString, string paramName)
+        public static DateTime GetParamAsDate(this NameValueCollection queryString, string paramName, 
+            DateTime? defaultVal = null)
         {
             string dateStr = queryString[paramName];
 
             if (string.IsNullOrEmpty(dateStr))
-                return DateTime.Today;
-            else if (DateTime.TryParse(dateStr, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None, 
+            {
+                return defaultVal ?? DateTime.MinValue;
+            }
+            else if (DateTime.TryParse(dateStr, DateTimeFormatInfo.InvariantInfo, DateTimeStyles.None,
                 out DateTime dateTime))
+            {
                 return dateTime.Date;
+            }
             else
+            {
                 throw new ScadaException(WebPhrases.IncorrectDate);
+            }
         }
 
         /// <summary>
-        /// Получить значение параметра из строки запроса как массив целых чисел
+        /// Получить значение параметра из строки запроса как массив целых чисел.
         /// </summary>
         public static int[] GetParamAsIntArray(this NameValueCollection queryString, string paramName)
         {
@@ -100,7 +108,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить значение параметра из строки запроса как множество целых чисел
+        /// Получить значение параметра из строки запроса как множество целых чисел.
         /// </summary>
         public static HashSet<int> GetParamAsIntSet(this NameValueCollection queryString, string paramName)
         {
@@ -108,7 +116,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать значение параметра запроса в массив целых чисел
+        /// Преобразовать значение параметра запроса в массив целых чисел.
         /// </summary>
         public static int[] QueryParamToIntArray(string paramVal)
         {
@@ -130,7 +138,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать значение параметра запроса в множество целых чисел
+        /// Преобразовать значение параметра запроса в множество целых чисел.
         /// </summary>
         public static HashSet<int> QueryParamToIntSet(string paramVal)
         {
@@ -152,7 +160,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать дату в значение параметра запроса
+        /// Преобразовать дату в значение параметра запроса.
         /// </summary>
         public static string DateToQueryParam(DateTime date)
         {
