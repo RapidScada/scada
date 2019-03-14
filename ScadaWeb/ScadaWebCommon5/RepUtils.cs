@@ -148,55 +148,71 @@ namespace Scada.Web
         /// Нормализовать интервал времени
         /// </summary>
         /// <remarks>Чтобы начальная дата являлась левой границей интервала времени и период был положительным</remarks>
-        public static void NormalizeTimeRange(ref DateTime startDate, ref int period)
+        public static void NormalizeTimeRange(ref DateTime startDate, ref int period, bool periodInMonths = false)
         {
-            // Примеры:
-            // период равный -1, 0 или 1 - это одни сутки startDate,
-            // период 2 - двое суток, начиная от startDate включительно,
-            // период -2 - двое суток, заканчивая startDate включительно.
+            startDate = startDate > DateTime.MinValue ? startDate.Date : DateTime.Today;
 
-            if (startDate == DateTime.MinValue)
-                startDate = DateTime.Today;
-
-            if (period > -2)
+            if (periodInMonths)
             {
-                startDate = startDate.Date;
-                if (period < 1)
-                    period = 1;
+                if (period < 0)
+                {
+                    startDate = startDate.AddMonths(period).Date;
+                    period = -period;
+                }
             }
             else
             {
-                startDate = startDate.AddDays(period + 1).Date;
-                period = -period;
+                // Примеры:
+                // период равный -1, 0 или 1 - это одни сутки startDate,
+                // период 2 - двое суток, начиная от startDate включительно,
+                // период -2 - двое суток, заканчивая startDate включительно.
+                if (period <= -2)
+                {
+                    startDate = startDate.AddDays(period + 1).Date;
+                    period = -period;
+                }
+                else if (period < 1)
+                {
+                    period = 1;
+                }
             }
         }
 
         /// <summary>
         /// Normalizes the time range.
         /// </summary>
-        public static void NormalizeTimeRange(ref DateTime startDate, ref DateTime endDate, ref int period)
+        public static void NormalizeTimeRange(ref DateTime startDate, ref DateTime endDate, ref int period, 
+            bool periodInMonths = false)
         {
             if (startDate > DateTime.MinValue && endDate > DateTime.MinValue)
             {
                 if (endDate < startDate)
                     endDate = startDate;
-                period = (int)(endDate - startDate).TotalDays + 1;
+                period = periodInMonths ?
+                    ((endDate.Year - startDate.Year) * 12) + endDate.Month - startDate.Month : 
+                    (int)(endDate - startDate).TotalDays + 1;
             }
             else if (startDate > DateTime.MinValue)
             {
-                NormalizeTimeRange(ref startDate, ref period);
-                endDate = startDate.AddDays(period - 1);
+                NormalizeTimeRange(ref startDate, ref period, periodInMonths);
+                endDate = periodInMonths ? 
+                    startDate.AddMonths(period) : 
+                    startDate.AddDays(period - 1);
             }
             else if (endDate > DateTime.MinValue)
             {
-                period = -period;
-                NormalizeTimeRange(ref endDate, ref period);
-                startDate = endDate.AddDays(1 - period);
+                period = Math.Abs(period);
+                NormalizeTimeRange(ref endDate, ref period, periodInMonths);
+                startDate = periodInMonths ?
+                    endDate.AddMonths(-period) :
+                    endDate.AddDays(-period + 1);
             }
             else
             {
-                NormalizeTimeRange(ref startDate, ref period);
-                endDate = startDate.AddDays(period - 1);
+                NormalizeTimeRange(ref startDate, ref period, periodInMonths);
+                endDate = periodInMonths ?
+                    startDate.AddMonths(period) :
+                    startDate.AddDays(period - 1);
             }
         }
     }
