@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2019
  */
 
 using System;
@@ -29,8 +29,8 @@ using Utils;
 namespace Scada.Web
 {
     /// <summary>
-    /// The class contains utility methods for generating reports
-    /// <para>Класс, содержащий вспомогательные методы для генерации отчётов</para>
+    /// The class contains utility methods for generating reports.
+    /// <para>Класс, содержащий вспомогательные методы для генерации отчётов.</para>
     /// </summary>
     public static class RepUtils
     {
@@ -153,7 +153,11 @@ namespace Scada.Web
             // Примеры:
             // период равный -1, 0 или 1 - это одни сутки startDate,
             // период 2 - двое суток, начиная от startDate включительно,
-            // период -2 - двое суток, заканчивая startDate включительно
+            // период -2 - двое суток, заканчивая startDate включительно.
+
+            if (startDate == DateTime.MinValue)
+                startDate = DateTime.Today;
+
             if (period > -2)
             {
                 startDate = startDate.Date;
@@ -164,6 +168,35 @@ namespace Scada.Web
             {
                 startDate = startDate.AddDays(period + 1).Date;
                 period = -period;
+            }
+        }
+
+        /// <summary>
+        /// Normalizes the time range.
+        /// </summary>
+        public static void NormalizeTimeRange(ref DateTime startDate, ref DateTime endDate, ref int period)
+        {
+            if (startDate > DateTime.MinValue && endDate > DateTime.MinValue)
+            {
+                if (endDate < startDate)
+                    endDate = startDate;
+                period = (int)(endDate - startDate).TotalDays + 1;
+            }
+            else if (startDate > DateTime.MinValue)
+            {
+                NormalizeTimeRange(ref startDate, ref period);
+                endDate = startDate.AddDays(period - 1);
+            }
+            else if (endDate > DateTime.MinValue)
+            {
+                period = -period;
+                NormalizeTimeRange(ref endDate, ref period);
+                startDate = endDate.AddDays(1 - period);
+            }
+            else
+            {
+                NormalizeTimeRange(ref startDate, ref period);
+                endDate = startDate.AddDays(period - 1);
             }
         }
     }

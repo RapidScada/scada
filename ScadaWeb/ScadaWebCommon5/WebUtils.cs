@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -32,39 +32,39 @@ using System.Web.Script.Serialization;
 namespace Scada.Web
 {
     /// <summary>
-    /// The class contains utility methods for web applications
-    /// <para>Класс, содержащий вспомогательные методы для веб-приложений</para>
+    /// The class contains utility methods for web applications.
+    /// <para>Класс, содержащий вспомогательные методы для веб-приложений.</para>
     /// </summary>
     public static partial class WebUtils
     {
         /// <summary>
-        /// Версия веб-приложения
+        /// Версия веб-приложения.
         /// </summary>
-        public const string AppVersion = "5.0.7.0";
+        public const string AppVersion = "5.0.7.1";
         /// <summary>
-        /// Шиблон для вставки стилей на веб-страницу
+        /// Шиблон для вставки стилей на веб-страницу.
         /// </summary>
         public const string StyleTemplate = "<link href=\"{0}\" rel=\"stylesheet\" type=\"text/css\" />";
         /// <summary>
-        /// Шиблон для вставки скрипта на веб-страницу
+        /// Шиблон для вставки скрипта на веб-страницу.
         /// </summary>
         public const string ScriptTemplate = "<script type=\"text/javascript\" src=\"{0}\"></script>";
         /// <summary>
-        /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты
+        /// Начало отчёта времени в Unix, которое используется в Javascript реализации даты.
         /// </summary>
         public static readonly DateTime UnixEpoch = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
         /// <summary>
-        /// Длительность хранения данных в кэше приложения
+        /// Длительность хранения данных в кэше приложения.
         /// </summary>
         public static readonly TimeSpan CacheExpiration = TimeSpan.FromMinutes(1);
         /// <summary>
-        /// Длительность хранения данных в cookies
+        /// Длительность хранения данных в cookies.
         /// </summary>
         public static readonly TimeSpan CookieExpiration = TimeSpan.FromDays(7);
 
 
         /// <summary>
-        /// Проверить HTTP-контекст и его основные свойства на null
+        /// Проверить HTTP-контекст и его основные свойства на null.
         /// </summary>
         public static void CheckHttpContext(HttpContext httpContext, bool checkCookies = false)
         {
@@ -89,7 +89,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Проверить, что выполняется AJAX-запрос
+        /// Проверить, что выполняется AJAX-запрос.
         /// </summary>
         public static bool IsAjaxRequest(HttpRequest request)
         {
@@ -97,7 +97,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Отключить кэширование страницы
+        /// Отключить кэширование страницы.
         /// </summary>
         public static void DisablePageCache(HttpResponse response)
         {
@@ -109,7 +109,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br"
+        /// Преобразовать строку для вывода на веб-страницу, заменив "\n" на тег "br".
         /// </summary>
         public static string HtmlEncodeWithBreak(object val)
         {
@@ -117,7 +117,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать словарь в объект JavaScript
+        /// Преобразовать словарь в объект JavaScript.
         /// </summary>
         public static string DictionaryToJs(Localization.Dict dict)
         {
@@ -138,7 +138,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить словарь по ключу и преобразовать в объект JavaScript
+        /// Получить словарь по ключу и преобразовать в объект JavaScript.
         /// </summary>
         public static string DictionaryToJs(string dictKey)
         {
@@ -148,7 +148,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Преобразовать дату в время в число миллисекунд для создания даты в JavaScript
+        /// Преобразовать дату в время в число миллисекунд для создания даты в JavaScript.
         /// </summary>
         public static long DateTimeToJs(DateTime dateTime)
         {
@@ -156,7 +156,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
+        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON.
         /// </summary>
         public static string GetErrorJson(this JavaScriptSerializer jsSerializer, Exception ex)
         {
