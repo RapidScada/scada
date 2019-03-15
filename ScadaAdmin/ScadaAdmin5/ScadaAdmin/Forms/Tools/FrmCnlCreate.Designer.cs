@@ -35,6 +35,12 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button5 = new System.Windows.Forms.Button();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.colDevice = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDll = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colInCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colOutCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAssign = new System.Windows.Forms.DataGridViewButtonColumn();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -95,10 +101,48 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.colDevice,
+            this.colObject,
+            this.colDll,
+            this.colInCnls,
+            this.colOutCnls,
+            this.colAssign});
             this.dataGridView1.Location = new System.Drawing.Point(12, 39);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(660, 381);
             this.dataGridView1.TabIndex = 6;
+            // 
+            // colDevice
+            // 
+            this.colDevice.HeaderText = "Device";
+            this.colDevice.Name = "colDevice";
+            this.colDevice.ReadOnly = true;
+            // 
+            // colObject
+            // 
+            this.colObject.HeaderText = "Object";
+            this.colObject.Name = "colObject";
+            // 
+            // colDll
+            // 
+            this.colDll.HeaderText = "DLL";
+            this.colDll.Name = "colDll";
+            // 
+            // colInCnls
+            // 
+            this.colInCnls.HeaderText = "Input Channels";
+            this.colInCnls.Name = "colInCnls";
+            // 
+            // colOutCnls
+            // 
+            this.colOutCnls.HeaderText = "Output Channels";
+            this.colOutCnls.Name = "colOutCnls";
+            // 
+            // colAssign
+            // 
+            this.colAssign.HeaderText = "Assign Channels";
+            this.colAssign.Name = "colAssign";
             // 
             // FrmCnlCreate
             // 
@@ -133,5 +177,11 @@
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button5;
         private System.Windows.Forms.DataGridView dataGridView1;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDevice;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colObject;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colDll;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colInCnls;
+        private System.Windows.Forms.DataGridViewTextBoxColumn colOutCnls;
+        private System.Windows.Forms.DataGridViewButtonColumn colAssign;
     }
 }
