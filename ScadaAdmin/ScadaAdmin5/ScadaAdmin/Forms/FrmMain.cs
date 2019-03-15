@@ -1249,17 +1249,17 @@ namespace Scada.Admin.App.Forms
 
         private void miToolsAddLine_Click(object sender, EventArgs e)
         {
-
+            new FrmLineAdd().ShowDialog();
         }
 
         private void miToolsAddDevice_Click(object sender, EventArgs e)
         {
-
+            new FrmDeviceAdd().ShowDialog();
         }
 
         private void miToolsCreateCnls_Click(object sender, EventArgs e)
         {
-
+            new FrmCnlCreate().ShowDialog();
         }
 
         private void miToolsCloneCnls_Click(object sender, EventArgs e)
