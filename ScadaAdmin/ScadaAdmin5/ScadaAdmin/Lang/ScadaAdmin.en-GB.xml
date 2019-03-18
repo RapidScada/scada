@@ -380,6 +380,11 @@
     <Phrase key="CloneInCnlsError">Error cloning input channels</Phrase>
     <Phrase key="CloneCtrlCnlsError">Error cloning output channels</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlCreate">
+    <Phrase key="CreateCnlsStep1">Step 1 of 3: select a device</Phrase>
+    <Phrase key="CreateCnlsStep2">Step 2 of 3: select an object of newly created channels</Phrase>
+    <Phrase key="CreateCnlsStep3">Step 3 of 3: assign channel numbers</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Channel Map</Phrase>
     <Phrase key="gbCnlKind">Channel Kind</Phrase>

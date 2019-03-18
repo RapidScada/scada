@@ -28,134 +28,114 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.colDevice = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colObject = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDll = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colInCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colOutCnls = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAssign = new System.Windows.Forms.DataGridViewButtonColumn();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.lblStep = new System.Windows.Forms.Label();
+            this.btnNext = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.btnBack = new System.Windows.Forms.Button();
+            this.btnCreate = new System.Windows.Forms.Button();
+            this.btnCnlMap = new System.Windows.Forms.Button();
+            this.ctrlCnlCreate3 = new Scada.Admin.App.Controls.Tools.CtrlCnlCreate3();
+            this.ctrlCnlCreate2 = new Scada.Admin.App.Controls.Tools.CtrlCnlCreate2();
+            this.ctrlCnlCreate1 = new Scada.Admin.App.Controls.Tools.CtrlCnlCreate1();
             this.SuspendLayout();
             // 
-            // comboBox1
+            // lblStep
             // 
-            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Location = new System.Drawing.Point(12, 12);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(498, 21);
-            this.comboBox1.TabIndex = 0;
+            this.lblStep.BackColor = System.Drawing.SystemColors.ActiveCaption;
+            this.lblStep.Dock = System.Windows.Forms.DockStyle.Top;
+            this.lblStep.Location = new System.Drawing.Point(0, 0);
+            this.lblStep.Name = "lblStep";
+            this.lblStep.Size = new System.Drawing.Size(384, 30);
+            this.lblStep.TabIndex = 0;
+            this.lblStep.Text = "Step 1 of 3: step description";
+            this.lblStep.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // button1
+            // btnNext
             // 
-            this.button1.Location = new System.Drawing.Point(516, 12);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Select All";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnNext.Location = new System.Drawing.Point(216, 240);
+            this.btnNext.Name = "btnNext";
+            this.btnNext.Size = new System.Drawing.Size(75, 23);
+            this.btnNext.TabIndex = 6;
+            this.btnNext.Text = "Next >";
+            this.btnNext.UseVisualStyleBackColor = true;
+            this.btnNext.Click += new System.EventHandler(this.btnNext_Click);
             // 
-            // button2
+            // btnCancel
             // 
-            this.button2.Location = new System.Drawing.Point(597, 12);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 23);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Deselect All";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(297, 240);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(75, 23);
+            this.btnCancel.TabIndex = 8;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // button3
+            // btnBack
             // 
-            this.button3.Location = new System.Drawing.Point(12, 426);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(120, 23);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Assign All Channels";
-            this.button3.UseVisualStyleBackColor = true;
+            this.btnBack.Location = new System.Drawing.Point(135, 240);
+            this.btnBack.Name = "btnBack";
+            this.btnBack.Size = new System.Drawing.Size(75, 23);
+            this.btnBack.TabIndex = 5;
+            this.btnBack.Text = "< Back";
+            this.btnBack.UseVisualStyleBackColor = true;
+            this.btnBack.Click += new System.EventHandler(this.btnBack_Click);
             // 
-            // button4
+            // btnCreate
             // 
-            this.button4.Location = new System.Drawing.Point(516, 426);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 23);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "OK";
-            this.button4.UseVisualStyleBackColor = true;
+            this.btnCreate.Location = new System.Drawing.Point(216, 240);
+            this.btnCreate.Name = "btnCreate";
+            this.btnCreate.Size = new System.Drawing.Size(75, 23);
+            this.btnCreate.TabIndex = 7;
+            this.btnCreate.Text = "Create";
+            this.btnCreate.UseVisualStyleBackColor = true;
+            this.btnCreate.Click += new System.EventHandler(this.btnCreate_Click);
             // 
-            // button5
+            // btnCnlMap
             // 
-            this.button5.Location = new System.Drawing.Point(597, 426);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 23);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Close";
-            this.button5.UseVisualStyleBackColor = true;
+            this.btnCnlMap.Location = new System.Drawing.Point(12, 240);
+            this.btnCnlMap.Name = "btnCnlMap";
+            this.btnCnlMap.Size = new System.Drawing.Size(100, 23);
+            this.btnCnlMap.TabIndex = 4;
+            this.btnCnlMap.Text = "Channel Map";
+            this.btnCnlMap.UseVisualStyleBackColor = true;
+            this.btnCnlMap.Click += new System.EventHandler(this.btnCnlMap_Click);
             // 
-            // dataGridView1
+            // ctrlCnlCreate3
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.colDevice,
-            this.colObject,
-            this.colDll,
-            this.colInCnls,
-            this.colOutCnls,
-            this.colAssign});
-            this.dataGridView1.Location = new System.Drawing.Point(12, 39);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(660, 381);
-            this.dataGridView1.TabIndex = 6;
+            this.ctrlCnlCreate3.Location = new System.Drawing.Point(12, 43);
+            this.ctrlCnlCreate3.Name = "ctrlCnlCreate3";
+            this.ctrlCnlCreate3.Size = new System.Drawing.Size(360, 181);
+            this.ctrlCnlCreate3.TabIndex = 3;
             // 
-            // colDevice
+            // ctrlCnlCreate2
             // 
-            this.colDevice.HeaderText = "Device";
-            this.colDevice.Name = "colDevice";
-            this.colDevice.ReadOnly = true;
+            this.ctrlCnlCreate2.Location = new System.Drawing.Point(12, 43);
+            this.ctrlCnlCreate2.Name = "ctrlCnlCreate2";
+            this.ctrlCnlCreate2.Size = new System.Drawing.Size(360, 100);
+            this.ctrlCnlCreate2.TabIndex = 2;
             // 
-            // colObject
+            // ctrlCnlCreate1
             // 
-            this.colObject.HeaderText = "Object";
-            this.colObject.Name = "colObject";
-            // 
-            // colDll
-            // 
-            this.colDll.HeaderText = "DLL";
-            this.colDll.Name = "colDll";
-            // 
-            // colInCnls
-            // 
-            this.colInCnls.HeaderText = "Input Channels";
-            this.colInCnls.Name = "colInCnls";
-            // 
-            // colOutCnls
-            // 
-            this.colOutCnls.HeaderText = "Output Channels";
-            this.colOutCnls.Name = "colOutCnls";
-            // 
-            // colAssign
-            // 
-            this.colAssign.HeaderText = "Assign Channels";
-            this.colAssign.Name = "colAssign";
+            this.ctrlCnlCreate1.Location = new System.Drawing.Point(12, 43);
+            this.ctrlCnlCreate1.Name = "ctrlCnlCreate1";
+            this.ctrlCnlCreate1.Size = new System.Drawing.Size(360, 181);
+            this.ctrlCnlCreate1.TabIndex = 1;
             // 
             // FrmCnlCreate
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(684, 461);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.comboBox1);
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(384, 275);
+            this.Controls.Add(this.btnCancel);
+            this.Controls.Add(this.btnCreate);
+            this.Controls.Add(this.btnNext);
+            this.Controls.Add(this.btnBack);
+            this.Controls.Add(this.btnCnlMap);
+            this.Controls.Add(this.ctrlCnlCreate3);
+            this.Controls.Add(this.ctrlCnlCreate2);
+            this.Controls.Add(this.ctrlCnlCreate1);
+            this.Controls.Add(this.lblStep);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -163,25 +143,21 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Create Channels";
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            this.Load += new System.EventHandler(this.FrmCnlCreate_Load);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDevice;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colObject;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colDll;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colInCnls;
-        private System.Windows.Forms.DataGridViewTextBoxColumn colOutCnls;
-        private System.Windows.Forms.DataGridViewButtonColumn colAssign;
+        private Controls.Tools.CtrlCnlCreate1 ctrlCnlCreate1;
+        private System.Windows.Forms.Label lblStep;
+        private System.Windows.Forms.Button btnNext;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.Button btnBack;
+        private System.Windows.Forms.Button btnCreate;
+        private Controls.Tools.CtrlCnlCreate2 ctrlCnlCreate2;
+        private System.Windows.Forms.Button btnCnlMap;
+        private Controls.Tools.CtrlCnlCreate3 ctrlCnlCreate3;
     }
 }

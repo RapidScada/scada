@@ -123,6 +123,24 @@
     <Compile Include="Controls\Deployment\CtrlTransferSettings.Designer.cs">
       <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate1.Designer.cs">
+      <DependentUpon>CtrlCnlCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate2.Designer.cs">
+      <DependentUpon>CtrlCnlCreate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate3.Designer.cs">
+      <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Deployment\FrmConnSettings.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -292,6 +310,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Deployment\CtrlTransferSettings.resx">
       <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate1.resx">
+      <DependentUpon>CtrlCnlCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate2.resx">
+      <DependentUpon>CtrlCnlCreate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate3.resx">
+      <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
       <DependentUpon>FrmConnSettings.cs</DependentUpon>

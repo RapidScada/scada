@@ -16,45 +16,46 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : Form for adding a device
+ * Summary  : Channel creation wizard. Step 1
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
  * Modified : 2019
  */
 
-using Scada.Admin.App.Code;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
 using System.Drawing;
+using System.Data;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Scada.Admin.App.Forms.Tools
+namespace Scada.Admin.App.Controls.Tools
 {
     /// <summary>
-    /// Form for adding a device.
-    /// <para>Форма для добавления КП.</para>
+    /// Channel creation wizard. Step 1.
+    /// <para>Мастер создания каналов. Шаг 1.</para>
     /// </summary>
-    public partial class FrmDeviceAdd : Form
+    public partial class CtrlCnlCreate1 : UserControl
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmDeviceAdd()
+        public CtrlCnlCreate1()
         {
             InitializeComponent();
-
-            txtName.MaxLength = ColumnLength.Name;
-            txtCallNum.MaxLength = ColumnLength.Default;
-            txtDescr.MaxLength = ColumnLength.Description;
         }
 
-        private void FrmDeviceAdd_Load(object sender, EventArgs e)
+        
+        /// <summary>
+        /// Sets the input focus.
+        /// </summary>
+        public void SetFocus()
         {
-
+            cbCommLine.Select();
         }
     }
 }
