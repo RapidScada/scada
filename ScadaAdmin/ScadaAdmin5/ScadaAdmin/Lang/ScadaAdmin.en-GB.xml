@@ -358,6 +358,19 @@
     <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
     <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
+    <Phrase key="this">Add Communication Line</Phrase>
+    <Phrase key="gbLine">Communication Line</Phrase>
+    <Phrase key="lblCommLineNum">Number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="gbComm">Communicator</Phrase>
+    <Phrase key="chkAddToComm">Add line to Communicator</Phrase>
+    <Phrase key="lblInstance">Instance</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="LineAlreadyExists">A communication line with the same number already exists.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
     <Phrase key="this">Clone Channels</Phrase>
     <Phrase key="gbCnlKind">Kind</Phrase>

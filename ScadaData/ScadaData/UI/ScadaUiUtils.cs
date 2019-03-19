@@ -115,7 +115,8 @@ namespace Scada.UI
         /// </summary>
         public static void ShowInfo(string message)
         {
-            MessageBox.Show(message, CommonPhrases.InfoCaption, MessageBoxButtons.OK, MessageBoxIcon.Information);
+            MessageBox.Show(message?.Trim(), CommonPhrases.InfoCaption, 
+                MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         /// <summary>
@@ -123,7 +124,8 @@ namespace Scada.UI
         /// </summary>
         public static void ShowError(string message)
         {
-            MessageBox.Show(message, CommonPhrases.ErrorCaption, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show(message?.Trim(), CommonPhrases.ErrorCaption, 
+                MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         /// <summary>
@@ -131,7 +133,8 @@ namespace Scada.UI
         /// </summary>
         public static void ShowWarning(string message)
         {
-            MessageBox.Show(message, CommonPhrases.WarningCaption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            MessageBox.Show(message?.Trim(), CommonPhrases.WarningCaption, 
+                MessageBoxButtons.OK, MessageBoxIcon.Warning);
         }
 
 

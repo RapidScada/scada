@@ -16,54 +16,57 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : State of application controls
+ * Summary  : Recently selected objects
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
+ * Created  : 2019
  * Modified : 2019
  */
 
 namespace Scada.Admin.App.Code
 {
     /// <summary>
-    /// State of application controls.
-    /// <para>Состояние элементов управления в приложении.</para>
+    /// Recently selected objects.
+    /// <para>Недавно выбранные объекты.</para>
     /// </summary>
-    public class AppState
+    public class RecentSelection
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public AppState()
+        public RecentSelection()
         {
-            SetToDefault();
+            InstanceName = "";
+            CommLineNum = 0;
+            KPNum = 0;
+            KPTypeID = 0;
+            ObjNum = 0;
         }
 
 
         /// <summary>
-        /// Gets the state of the main form controls.
+        /// Gets or sets the name of the recently selected instance.
         /// </summary>
-        public FormState MainFormState { get; private set; }
+        public string InstanceName { get; set; }
 
         /// <summary>
-        /// Gets or sets the directory of projects.
+        /// Gets or sets the number of the recently selected communication line.
         /// </summary>
-        public string ProjectDir { get; set; }
+        public int CommLineNum { get; set; }
 
         /// <summary>
-        /// Gets the recently selected objects.
+        /// Gets or sets the ID of the recently selected device.
         /// </summary>
-        public RecentSelection RecentSelection { get; private set; }
-
+        public int KPNum { get; set; }
 
         /// <summary>
-        /// Sets the default values.
+        /// Gets or sets the ID of the recently selected device type.
         /// </summary>
-        private void SetToDefault()
-        {
-            MainFormState = new FormState();
-            ProjectDir = ScadaUtils.IsRunningOnWin ? @"C:\SCADA\Projects\" : "";
-            RecentSelection = new RecentSelection();
-        }
+        public int KPTypeID { get; set; }
+
+        /// <summary>
+        /// Gets or sets the ID of the recently selected object.
+        /// </summary>
+        public int ObjNum { get; set; }
     }
 }

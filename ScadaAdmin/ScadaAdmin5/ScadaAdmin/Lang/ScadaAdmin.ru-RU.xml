@@ -22,7 +22,7 @@
     <Phrase key="Descr">Описание</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CommLineTable">
-    <Phrase key="CommLineNum">Number</Phrase>
+    <Phrase key="CommLineNum">Номер</Phrase>
     <Phrase key="Name">Наименование</Phrase>
     <Phrase key="Descr">Описание</Phrase>
   </Dictionary>
@@ -357,6 +357,19 @@
     <Phrase key="LoadCulturesError">Ошибка при загрузке культур</Phrase>
     <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
     <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
+    <Phrase key="this">Добавление линии связи</Phrase>
+    <Phrase key="gbLine">Линия связи</Phrase>
+    <Phrase key="lblCommLineNum">Номер</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="gbComm">Коммуникатор</Phrase>
+    <Phrase key="chkAddToComm">Добавить линию в Коммуникатор</Phrase>
+    <Phrase key="lblInstance">Экземпляр</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="LineAlreadyExists">Линия связи с таким номером уже существует.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
     <Phrase key="this">Клонирование каналов</Phrase>

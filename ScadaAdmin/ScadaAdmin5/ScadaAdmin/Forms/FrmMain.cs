@@ -121,7 +121,7 @@ namespace Scada.Admin.App.Forms
         {
             get
             {
-                return tvExplorer.Nodes[0];
+                return tvExplorer.Nodes.Count > 0 ? tvExplorer.Nodes[0] : null;
             }
         }
 
@@ -518,46 +518,11 @@ namespace Scada.Admin.App.Forms
                 liveInstance = null;
                 return false;
             }
+            else
             {
                 liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
                 return true;
             }
-        }
-
-        /// <summary>
-        /// Prepares data and fills the instance node.
-        /// </summary>
-        private void PrepareInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
-        {
-            Instance instance = liveInstance.Instance;
-
-            if (!instance.AppSettingsLoaded)
-            {
-                if (instance.LoadAppSettings(out string errMsg))
-                {
-                    IAgentClient agentClient = CreateAgentClient(instance);
-                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance, agentClient);
-                    liveInstance.CommEnvironment = CreateCommEnvironment(instance, agentClient);
-                    explorerBuilder.FillInstanceNode(instanceNode);
-                }
-                else
-                {
-                    appData.ProcError(errMsg);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Refreshes the content of the instance node.
-        /// </summary>
-        private void RefreshInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
-        {
-            Instance instance = liveInstance.Instance;
-
-            if (instance.AppSettingsLoaded)
-                explorerBuilder.FillInstanceNode(instanceNode);
-            else
-                PrepareInstanceNode(instanceNode, liveInstance);
         }
 
         /// <summary>
@@ -581,6 +546,68 @@ namespace Scada.Admin.App.Forms
             instanceNode = null;
             liveInstance = null;
             return false;
+        }
+
+        /// <summary>
+        /// Finds the instance and its node by name.
+        /// </summary>
+        private bool FindInstance(string instanceName, out TreeNode instanceNode, out LiveInstance liveInstance)
+        {
+            if (project != null &&
+                RootNode.FindFirst(AppNodeType.Instances) is TreeNode instancesNode)
+            {
+                foreach (TreeNode childNode in instancesNode.Nodes)
+                {
+                    if (childNode.Tag is TreeNodeTag tag && tag.RelatedObject is LiveInstance liveInst &&
+                        string.Equals(liveInst.Instance.Name, instanceName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        instanceNode = childNode;
+                        liveInstance = liveInst;
+                        return true;
+                    }
+                }
+            }
+
+            instanceNode = null;
+            liveInstance = null;
+            return false;
+        }
+
+        /// <summary>
+        /// Prepares data and fills the instance node.
+        /// </summary>
+        private void PrepareInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
+        {
+            Instance instance = liveInstance.Instance;
+
+            if (!instance.AppSettingsLoaded)
+            {
+                if (instance.LoadAppSettings(out string errMsg))
+                {
+                    LoadDeploymentSettings();
+                    IAgentClient agentClient = CreateAgentClient(instance);
+                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance, agentClient);
+                    liveInstance.CommEnvironment = CreateCommEnvironment(instance, agentClient);
+                    explorerBuilder.FillInstanceNode(instanceNode);
+                }
+                else
+                {
+                    appData.ProcError(errMsg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Refreshes the content of the instance node.
+        /// </summary>
+        private void RefreshInstanceNode(TreeNode instanceNode, LiveInstance liveInstance)
+        {
+            Instance instance = liveInstance.Instance;
+
+            if (instance.AppSettingsLoaded)
+                explorerBuilder.FillInstanceNode(instanceNode);
+            else
+                PrepareInstanceNode(instanceNode, liveInstance);
         }
 
         /// <summary>
@@ -872,7 +899,6 @@ namespace Scada.Admin.App.Forms
             else if (node.TagIs(AppNodeType.Instance))
             {
                 LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
-                LoadDeploymentSettings();
                 PrepareInstanceNode(node, liveInstance);
             }
             else if (node.TagIs(AppNodeType.WebApp))
@@ -1249,12 +1275,44 @@ namespace Scada.Admin.App.Forms
 
         private void miToolsAddLine_Click(object sender, EventArgs e)
         {
-            new FrmLineAdd().ShowDialog();
+            // show a line add form
+            if (project != null)
+            {
+                FrmLineAdd frmLineAdd = new FrmLineAdd(project, appData.AppState.RecentSelection);
+
+                if (frmLineAdd.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshBaseTables(typeof(CommLine));
+
+                    // add the communication line to the explorer
+                    if (frmLineAdd.CommLine != null && 
+                        FindInstance(frmLineAdd.InstanceName, out TreeNode instanceNode, out LiveInstance liveInstance))
+                    {
+                        PrepareInstanceNode(instanceNode, liveInstance);
+                        TreeNode commLinesNode = instanceNode.FindFirst(CommNodeType.CommLines);
+                        TreeNode commLineNode = commShell.CreateCommLineNode(frmLineAdd.CommLine,
+                            liveInstance.CommEnvironment);
+                        commLineNode.ContextMenuStrip = cmsCommLine;
+                        commLineNode.Expand();
+                        tvExplorer.Insert(commLinesNode, commLineNode);
+                        SaveCommSettigns(liveInstance);
+                    }
+                }
+            }
         }
 
         private void miToolsAddDevice_Click(object sender, EventArgs e)
         {
-            new FrmDeviceAdd().ShowDialog();
+            // show a device add form
+            if (project != null)
+            {
+                FrmDeviceAdd frmDeviceAdd = new FrmDeviceAdd(project, appData.AppState.RecentSelection);
+
+                if (frmDeviceAdd.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshBaseTables(typeof(KP));
+                }
+            }
         }
 
         private void miToolsCreateCnls_Click(object sender, EventArgs e)

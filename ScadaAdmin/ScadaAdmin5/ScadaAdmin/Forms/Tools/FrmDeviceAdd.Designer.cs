@@ -116,19 +116,9 @@
             // numAddress
             // 
             this.numAddress.Location = new System.Drawing.Point(13, 111);
-            this.numAddress.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
             this.numAddress.Name = "numAddress";
             this.numAddress.Size = new System.Drawing.Size(75, 20);
             this.numAddress.TabIndex = 7;
-            this.numAddress.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             // 
             // lblAddress
             // 
@@ -192,11 +182,6 @@
             // numKPNum
             // 
             this.numKPNum.Location = new System.Drawing.Point(13, 32);
-            this.numKPNum.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
             this.numKPNum.Minimum = new decimal(new int[] {
             1,
             0,
@@ -254,11 +239,13 @@
             // chkAddToComm
             // 
             this.chkAddToComm.AutoSize = true;
+            this.chkAddToComm.Checked = true;
+            this.chkAddToComm.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chkAddToComm.Location = new System.Drawing.Point(13, 19);
             this.chkAddToComm.Name = "chkAddToComm";
-            this.chkAddToComm.Size = new System.Drawing.Size(161, 17);
+            this.chkAddToComm.Size = new System.Drawing.Size(162, 17);
             this.chkAddToComm.TabIndex = 0;
-            this.chkAddToComm.Text = "Add device in Communicator";
+            this.chkAddToComm.Text = "Add device to Communicator";
             this.chkAddToComm.UseVisualStyleBackColor = true;
             // 
             // btnCancel

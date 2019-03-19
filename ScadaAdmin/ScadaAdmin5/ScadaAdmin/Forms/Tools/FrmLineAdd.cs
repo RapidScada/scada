@@ -24,11 +24,10 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Project;
+using Scada.Data.Entities;
+using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 
@@ -40,20 +39,163 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmLineAdd : Form
     {
+        private ScadaProject project;            // the project under development
+        private RecentSelection recentSelection; // the recently selected objects
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmLineAdd()
+        private FrmLineAdd()
         {
             InitializeComponent();
+        }
 
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public FrmLineAdd(ScadaProject project, RecentSelection recentSelection)
+            : this()
+        {
+            this.project = project ?? throw new ArgumentNullException("project");
+            this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
+            InstanceName = "";
+            CommLine = null;
+
+            numCommLineNum.Maximum = ushort.MaxValue;
             txtName.MaxLength = ColumnLength.Name;
             txtDescr.MaxLength = ColumnLength.Description;
         }
 
+
+        /// <summary>
+        /// Gets the name of the instance affected in Communicator.
+        /// </summary>
+        public string InstanceName { get; private set; }
+
+        /// <summary>
+        /// Gets a communication line added to Communicator.
+        /// </summary>
+        public Comm.Settings.CommLine CommLine { get; private set; }
+
+
+        /// <summary>
+        /// Fills the combo box with the instances.
+        /// </summary>
+        private void FillInstanceList()
+        {
+            try
+            {
+                cbInstance.BeginUpdate();
+                string selectedName = recentSelection.InstanceName;
+                int selectedIndex = 0;
+                int index = 0;
+
+                foreach (Instance instance in project.Instances)
+                {
+                    if (instance.Name == selectedName)
+                        selectedIndex = index;
+
+                    cbInstance.Items.Add(instance);
+                    index++;
+                }
+
+                if (cbInstance.Items.Count > 0)
+                    cbInstance.SelectedIndex = selectedIndex;
+            }
+            finally
+            {
+                cbInstance.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Validates the form fields.
+        /// </summary>
+        private bool ValidateFields()
+        {
+            StringBuilder sbError = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+                sbError.AppendError(lblName, CommonPhrases.NonemptyRequired);
+
+            if (chkAddToComm.Checked && cbInstance.SelectedItem == null)
+                sbError.AppendError(lblInstance, CommonPhrases.NonemptyRequired);
+
+            if (sbError.Length > 0)
+            {
+                sbError.Insert(0, AppPhrases.CorrectErrors + Environment.NewLine);
+                ScadaUiUtils.ShowError(sbError.ToString());
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Checks feasibility of adding a line.
+        /// </summary>
+        private bool CheckFeasibility()
+        {
+            int commLineNum = Convert.ToInt32(numCommLineNum.Value);
+
+            if (project.ConfigBase.CommLineTable.PkExists(commLineNum))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.LineAlreadyExists);
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+
         private void FrmLineAdd_Load(object sender, EventArgs e)
         {
+            Translator.TranslateForm(this, GetType().FullName);
+            FillInstanceList();
+            txtName.Select();
+        }
 
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            if (ValidateFields() && CheckFeasibility())
+            {
+                // create a new communication line
+                CommLine commLine = new CommLine
+                {
+                    CommLineNum = Convert.ToInt32(numCommLineNum.Value),
+                    Name = txtName.Text,
+                    Descr = txtDescr.Text
+                };
+
+                // insert the line in the configuration database
+                project.ConfigBase.CommLineTable.AddItem(commLine);
+                project.ConfigBase.CommLineTable.Modified = true;
+
+                // insert the line in the Communicator settings
+                if (chkAddToComm.Checked && cbInstance.SelectedItem is Instance instance)
+                {
+                    if (instance.CommApp.Enabled)
+                    {
+                        CommLine = new Comm.Settings.CommLine
+                        {
+                            Number = commLine.CommLineNum,
+                            Name = commLine.Name
+                        };
+
+                        instance.CommApp.Settings.CommLines.Add(CommLine);
+                    }
+
+                    InstanceName = recentSelection.InstanceName = instance.Name;
+                }
+
+                recentSelection.CommLineNum = commLine.CommLineNum;
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

@@ -110,6 +110,7 @@
     <Compile Include="Code\CommDirs.cs" />
     <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />
+    <Compile Include="Code\RecentSelection.cs" />
     <Compile Include="Code\ServerDirs.cs" />
     <Compile Include="Controls\Deployment\CtrlProfileSelector.cs">
       <SubType>UserControl</SubType>

@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             this.gbLine = new System.Windows.Forms.GroupBox();
-            this.lblLineNum = new System.Windows.Forms.Label();
-            this.numLineNum = new System.Windows.Forms.NumericUpDown();
-            this.lblName = new System.Windows.Forms.Label();
-            this.txtName = new System.Windows.Forms.TextBox();
-            this.lblDescr = new System.Windows.Forms.Label();
             this.txtDescr = new System.Windows.Forms.TextBox();
+            this.lblDescr = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.lblName = new System.Windows.Forms.Label();
+            this.numCommLineNum = new System.Windows.Forms.NumericUpDown();
+            this.lblCommLineNum = new System.Windows.Forms.Label();
             this.gbComm = new System.Windows.Forms.GroupBox();
-            this.chkAddToComm = new System.Windows.Forms.CheckBox();
-            this.lblInstance = new System.Windows.Forms.Label();
             this.cbInstance = new System.Windows.Forms.ComboBox();
+            this.lblInstance = new System.Windows.Forms.Label();
+            this.chkAddToComm = new System.Windows.Forms.CheckBox();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
             this.gbLine.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numLineNum)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCommLineNum)).BeginInit();
             this.gbComm.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -52,8 +52,8 @@
             this.gbLine.Controls.Add(this.lblDescr);
             this.gbLine.Controls.Add(this.txtName);
             this.gbLine.Controls.Add(this.lblName);
-            this.gbLine.Controls.Add(this.numLineNum);
-            this.gbLine.Controls.Add(this.lblLineNum);
+            this.gbLine.Controls.Add(this.numCommLineNum);
+            this.gbLine.Controls.Add(this.lblCommLineNum);
             this.gbLine.Location = new System.Drawing.Point(12, 12);
             this.gbLine.Name = "gbLine";
             this.gbLine.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -62,52 +62,12 @@
             this.gbLine.TabStop = false;
             this.gbLine.Text = "Communication Line";
             // 
-            // lblLineNum
+            // txtDescr
             // 
-            this.lblLineNum.AutoSize = true;
-            this.lblLineNum.Location = new System.Drawing.Point(10, 16);
-            this.lblLineNum.Name = "lblLineNum";
-            this.lblLineNum.Size = new System.Drawing.Size(44, 13);
-            this.lblLineNum.TabIndex = 0;
-            this.lblLineNum.Text = "Number";
-            // 
-            // numLineNum
-            // 
-            this.numLineNum.Location = new System.Drawing.Point(13, 32);
-            this.numLineNum.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
-            this.numLineNum.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.numLineNum.Name = "numLineNum";
-            this.numLineNum.Size = new System.Drawing.Size(75, 20);
-            this.numLineNum.TabIndex = 1;
-            this.numLineNum.Value = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            // 
-            // lblName
-            // 
-            this.lblName.AutoSize = true;
-            this.lblName.Location = new System.Drawing.Point(91, 16);
-            this.lblName.Name = "lblName";
-            this.lblName.Size = new System.Drawing.Size(35, 13);
-            this.lblName.TabIndex = 2;
-            this.lblName.Text = "Name";
-            // 
-            // txtName
-            // 
-            this.txtName.Location = new System.Drawing.Point(94, 32);
-            this.txtName.Name = "txtName";
-            this.txtName.Size = new System.Drawing.Size(253, 20);
-            this.txtName.TabIndex = 3;
+            this.txtDescr.Location = new System.Drawing.Point(13, 71);
+            this.txtDescr.Name = "txtDescr";
+            this.txtDescr.Size = new System.Drawing.Size(334, 20);
+            this.txtDescr.TabIndex = 5;
             // 
             // lblDescr
             // 
@@ -118,12 +78,47 @@
             this.lblDescr.TabIndex = 4;
             this.lblDescr.Text = "Description";
             // 
-            // txtDescr
+            // txtName
             // 
-            this.txtDescr.Location = new System.Drawing.Point(13, 71);
-            this.txtDescr.Name = "txtDescr";
-            this.txtDescr.Size = new System.Drawing.Size(334, 20);
-            this.txtDescr.TabIndex = 5;
+            this.txtName.Location = new System.Drawing.Point(94, 32);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(253, 20);
+            this.txtName.TabIndex = 3;
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Location = new System.Drawing.Point(91, 16);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(35, 13);
+            this.lblName.TabIndex = 2;
+            this.lblName.Text = "Name";
+            // 
+            // numCommLineNum
+            // 
+            this.numCommLineNum.Location = new System.Drawing.Point(13, 32);
+            this.numCommLineNum.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numCommLineNum.Name = "numCommLineNum";
+            this.numCommLineNum.Size = new System.Drawing.Size(75, 20);
+            this.numCommLineNum.TabIndex = 1;
+            this.numCommLineNum.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            // 
+            // lblCommLineNum
+            // 
+            this.lblCommLineNum.AutoSize = true;
+            this.lblCommLineNum.Location = new System.Drawing.Point(10, 16);
+            this.lblCommLineNum.Name = "lblCommLineNum";
+            this.lblCommLineNum.Size = new System.Drawing.Size(44, 13);
+            this.lblCommLineNum.TabIndex = 0;
+            this.lblCommLineNum.Text = "Number";
             // 
             // gbComm
             // 
@@ -138,15 +133,14 @@
             this.gbComm.TabStop = false;
             this.gbComm.Text = "Communicator";
             // 
-            // chkAddToComm
+            // cbInstance
             // 
-            this.chkAddToComm.AutoSize = true;
-            this.chkAddToComm.Location = new System.Drawing.Point(13, 19);
-            this.chkAddToComm.Name = "chkAddToComm";
-            this.chkAddToComm.Size = new System.Drawing.Size(145, 17);
-            this.chkAddToComm.TabIndex = 0;
-            this.chkAddToComm.Text = "Add line in Communicator";
-            this.chkAddToComm.UseVisualStyleBackColor = true;
+            this.cbInstance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbInstance.FormattingEnabled = true;
+            this.cbInstance.Location = new System.Drawing.Point(13, 55);
+            this.cbInstance.Name = "cbInstance";
+            this.cbInstance.Size = new System.Drawing.Size(334, 21);
+            this.cbInstance.TabIndex = 2;
             // 
             // lblInstance
             // 
@@ -157,14 +151,17 @@
             this.lblInstance.TabIndex = 1;
             this.lblInstance.Text = "Instance";
             // 
-            // cbInstance
+            // chkAddToComm
             // 
-            this.cbInstance.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbInstance.FormattingEnabled = true;
-            this.cbInstance.Location = new System.Drawing.Point(13, 55);
-            this.cbInstance.Name = "cbInstance";
-            this.cbInstance.Size = new System.Drawing.Size(334, 21);
-            this.cbInstance.TabIndex = 2;
+            this.chkAddToComm.AutoSize = true;
+            this.chkAddToComm.Checked = true;
+            this.chkAddToComm.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkAddToComm.Location = new System.Drawing.Point(13, 19);
+            this.chkAddToComm.Name = "chkAddToComm";
+            this.chkAddToComm.Size = new System.Drawing.Size(146, 17);
+            this.chkAddToComm.TabIndex = 0;
+            this.chkAddToComm.Text = "Add line to Communicator";
+            this.chkAddToComm.UseVisualStyleBackColor = true;
             // 
             // btnOK
             // 
@@ -174,6 +171,7 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
             // 
             // btnCancel
             // 
@@ -206,7 +204,7 @@
             this.Load += new System.EventHandler(this.FrmLineAdd_Load);
             this.gbLine.ResumeLayout(false);
             this.gbLine.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numLineNum)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numCommLineNum)).EndInit();
             this.gbComm.ResumeLayout(false);
             this.gbComm.PerformLayout();
             this.ResumeLayout(false);
@@ -216,8 +214,8 @@
         #endregion
 
         private System.Windows.Forms.GroupBox gbLine;
-        private System.Windows.Forms.Label lblLineNum;
-        private System.Windows.Forms.NumericUpDown numLineNum;
+        private System.Windows.Forms.Label lblCommLineNum;
+        private System.Windows.Forms.NumericUpDown numCommLineNum;
         private System.Windows.Forms.TextBox txtName;
         private System.Windows.Forms.Label lblName;
         private System.Windows.Forms.TextBox txtDescr;

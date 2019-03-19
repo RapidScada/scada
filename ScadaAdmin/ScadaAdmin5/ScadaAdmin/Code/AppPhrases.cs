@@ -137,6 +137,9 @@ namespace Scada.Admin.App.Code
         public static string CultureRequired { get; private set; }
         public static string CultureNotFound { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmLineAdd
+        public static string LineAlreadyExists { get; private set; }
+
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
         public static string FileNameInvalid { get; private set; }
@@ -284,6 +287,9 @@ namespace Scada.Admin.App.Code
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");
             CultureRequired = dict.GetPhrase("CultureRequired");
             CultureNotFound = dict.GetPhrase("CultureNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmLineAdd");
+            LineAlreadyExists = dict.GetPhrase("LineAlreadyExists");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCnlMap");
             InCnlByDevTitle = dict.GetPhrase("InCnlByDevTitle");
