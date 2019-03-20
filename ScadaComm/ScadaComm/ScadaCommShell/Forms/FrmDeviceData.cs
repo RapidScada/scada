@@ -168,23 +168,26 @@ namespace Scada.Comm.Shell.Forms
         private void btnDeviceProps_Click(object sender, EventArgs e)
         {
             // show the device properties if possible
-            string dllPath = Path.Combine(environment.AppDirs.KPDir, kp.Dll);
-            KPView kpView = environment.GetKPView(dllPath, kp.Number, 
-                new KPView.KPProperties(commLine.CustomParams, kp.CmdLine));
-
-            if (kpView.CanShowProps)
+            if (environment.TryGetKPView(kp, false, commLine.CustomParams, out KPView kpView, out string errMsg))
             {
-                kpView.ShowProps();
-
-                if (kpView.KPProps.Modified)
+                if (kpView.CanShowProps)
                 {
-                    kp.CmdLine = kpView.KPProps.CmdLine;
-                    ChildFormTag.SendMessage(this, CommMessage.UpdateLineParams);
+                    kpView.ShowProps();
+
+                    if (kpView.KPProps.Modified)
+                    {
+                        kp.CmdLine = kpView.KPProps.CmdLine;
+                        ChildFormTag.SendMessage(this, CommMessage.UpdateLineParams);
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
                 }
             }
             else
             {
-                ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
+                ScadaUiUtils.ShowError(errMsg);
             }
         }
 

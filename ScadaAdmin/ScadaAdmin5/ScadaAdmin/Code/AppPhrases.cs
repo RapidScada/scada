@@ -137,6 +137,10 @@ namespace Scada.Admin.App.Code
         public static string CultureRequired { get; private set; }
         public static string CultureNotFound { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmDeviceAdd
+        public static string DeviceAlreadyExists { get; private set; }
+        public static string CommLineNotFound { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmLineAdd
         public static string LineAlreadyExists { get; private set; }
 
@@ -287,6 +291,10 @@ namespace Scada.Admin.App.Code
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");
             CultureRequired = dict.GetPhrase("CultureRequired");
             CultureNotFound = dict.GetPhrase("CultureNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmDeviceAdd");
+            DeviceAlreadyExists = dict.GetPhrase("DeviceAlreadyExists");
+            CommLineNotFound = dict.GetPhrase("CommLineNotFound");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmLineAdd");
             LineAlreadyExists = dict.GetPhrase("LineAlreadyExists");

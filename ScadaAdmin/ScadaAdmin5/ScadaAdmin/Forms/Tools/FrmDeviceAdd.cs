@@ -25,10 +25,12 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Data;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tools
@@ -60,10 +62,11 @@ namespace Scada.Admin.App.Forms.Tools
             this.project = project ?? throw new ArgumentNullException("project");
             this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
             InstanceName = "";
+            KpSettings = null;
+            CommLineSettings = null;
 
             numKPNum.Maximum = ushort.MaxValue;
             txtName.MaxLength = ColumnLength.Name;
-            numAddress.Maximum = int.MaxValue;
             txtCallNum.MaxLength = ColumnLength.Default;
             txtDescr.MaxLength = ColumnLength.Description;
         }
@@ -73,6 +76,16 @@ namespace Scada.Admin.App.Forms.Tools
         /// Gets the name of the instance affected in Communicator.
         /// </summary>
         public string InstanceName { get; private set; }
+
+        /// <summary>
+        /// Gets a device added to Communicator.
+        /// </summary>
+        public Comm.Settings.KP KpSettings { get; private set; }
+
+        /// <summary>
+        /// Gets a communication line of the device added to Communicator.
+        /// </summary>
+        public Comm.Settings.CommLine CommLineSettings { get; private set; }
 
 
         /// <summary>
@@ -137,29 +150,88 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void FillInstanceList()
         {
+            cbInstance.DataSource = project.Instances;
+            cbInstance.DisplayMember = "Name";
+            cbInstance.ValueMember = "Name";
+
             try
             {
-                cbInstance.BeginUpdate();
-                string selectedName = recentSelection.InstanceName;
-                int selectedIndex = 0;
-                int index = 0;
+                if (!string.IsNullOrEmpty(recentSelection.InstanceName))
+                    cbInstance.SelectedValue = recentSelection.InstanceName;
+            }
+            catch
+            {
+                cbInstance.SelectedIndex = 0;
+            }
+        }
 
-                foreach (Instance instance in project.Instances)
+        /// <summary>
+        /// Validates the form fields.
+        /// </summary>
+        private bool ValidateFields()
+        {
+            StringBuilder sbError = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(txtName.Text))
+                sbError.AppendError(lblName, CommonPhrases.NonemptyRequired);
+
+            if ((int)cbKPType.SelectedValue <= 0)
+                sbError.AppendError(lblKPType, CommonPhrases.NonemptyRequired);
+
+            if (txtAddress.Text != "" && !int.TryParse(txtAddress.Text, out int address))
+                sbError.AppendError(lblAddress, CommonPhrases.IntegerRequired);
+
+            if (chkAddToComm.Checked && cbInstance.SelectedItem == null)
+                sbError.AppendError(lblInstance, CommonPhrases.NonemptyRequired);
+
+            if (sbError.Length > 0)
+            {
+                sbError.Insert(0, AppPhrases.CorrectErrors + Environment.NewLine);
+                ScadaUiUtils.ShowError(sbError.ToString());
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Checks feasibility of adding a device.
+        /// </summary>
+        private bool CheckFeasibility(out Comm.Settings.CommLine commLineSettings)
+        {
+            commLineSettings = null;
+            int kpNum = Convert.ToInt32(numKPNum.Value);
+            int commLineNum = (int)cbCommLine.SelectedValue;
+
+            if (project.ConfigBase.KPTable.PkExists(kpNum))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.DeviceAlreadyExists);
+                return false;
+            }
+
+            if (chkAddToComm.Checked && cbInstance.SelectedItem is Instance instance && instance.CommApp.Enabled)
+            {
+                // reverse search communication line
+                for (int i = instance.CommApp.Settings.CommLines.Count - 1; i >= 0; i--)
                 {
-                    if (instance.Name == selectedName)
-                        selectedIndex = index;
-
-                    cbInstance.Items.Add(instance);
-                    index++;
+                    Comm.Settings.CommLine commLine = instance.CommApp.Settings.CommLines[i];
+                    if (commLine.Number == commLineNum)
+                    {
+                        commLineSettings = commLine;
+                        break;
+                    }
                 }
 
-                if (cbInstance.Items.Count > 0)
-                    cbInstance.SelectedIndex = selectedIndex;
+                if (commLineSettings == null)
+                {
+                    ScadaUiUtils.ShowError(AppPhrases.CommLineNotFound);
+                    return false;
+                }
             }
-            finally
-            {
-                cbInstance.EndUpdate();
-            }
+
+            return true;
         }
 
 
@@ -170,6 +242,56 @@ namespace Scada.Admin.App.Forms.Tools
             FillCommLineList();
             FillInstanceList();
             txtName.Select();
+        }
+
+        private void btnOK_Click(object sender, EventArgs e)
+        {
+            if (ValidateFields() && CheckFeasibility(out Comm.Settings.CommLine commLineSettings))
+            {
+                // create a new device
+                int commLineNum = (int)cbCommLine.SelectedValue;
+                KP kpEntity = new KP
+                {
+                    KPNum = Convert.ToInt32(numKPNum.Value),
+                    Name = txtName.Text,
+                    KPTypeID = (int)cbKPType.SelectedValue,
+                    Address = txtAddress.Text == "" ? null : (int?)int.Parse(txtAddress.Text),
+                    CallNum = txtCallNum.Text,
+                    CommLineNum = commLineNum > 0 ? (int?)commLineNum : null,
+                    Descr = txtDescr.Text
+                };
+
+                // insert the device in the configuration database
+                project.ConfigBase.KPTable.AddItem(kpEntity);
+                project.ConfigBase.KPTable.Modified = true;
+
+                // insert the line in the Communicator settings
+                if (chkAddToComm.Checked && cbInstance.SelectedItem is Instance instance)
+                {
+                    if (instance.CommApp.Enabled)
+                    {
+                        KpSettings = new Comm.Settings.KP
+                        {
+                            Number = kpEntity.KPNum,
+                            Name = kpEntity.Name,
+                            Dll = (string)((DataRowView)cbKPType.SelectedItem)["DllFileName"],
+                            Address = kpEntity.Address ?? 0,
+                            CallNum = kpEntity.CallNum,
+                            Parent = commLineSettings
+                        };
+
+                        commLineSettings.ReqSequence.Add(KpSettings);
+                        CommLineSettings = commLineSettings;
+                    }
+
+                    InstanceName = recentSelection.InstanceName = instance.Name;
+                }
+
+                recentSelection.CommLineNum = commLineNum;
+                recentSelection.KPNum = kpEntity.KPNum;
+                recentSelection.KPTypeID = kpEntity.KPTypeID;
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Data.Models;
@@ -123,10 +123,7 @@ namespace Scada.Comm.Devices
             /// </summary>
             public KPProperties(SortedList<string, string> customParams, string cmdLine)
             {
-                if (customParams == null)
-                    throw new ArgumentNullException("customParams");
-
-                CustomParams = customParams;
+                CustomParams = customParams ?? throw new ArgumentNullException("customParams");
                 CmdLine = cmdLine ?? "";
                 Modified = false;
             }
@@ -152,7 +149,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Конструктор для настройки библиотеки КП
         /// </summary>
-        public KPView() 
+        public KPView()
             : this(0)
         {
         }

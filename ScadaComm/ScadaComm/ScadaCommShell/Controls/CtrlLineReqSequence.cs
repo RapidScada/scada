@@ -268,28 +268,6 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
-        /// Gets a user interface object for the device.
-        /// </summary>
-        private bool GetDeviceView(Settings.KP kp, bool common, out KPView kpView)
-        {
-            try
-            {
-                string dllPath = Path.Combine(Environment.AppDirs.KPDir, kp.Dll);
-                kpView = common ? 
-                    Environment.GetKPView(dllPath) : 
-                    Environment.GetKPView(dllPath, kp.Number, new KPView.KPProperties(CustomParams, kp.CmdLine));
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ScadaUiUtils.ShowError(ex.Message);
-                Environment.ErrLog.WriteException(ex);
-                kpView = null;
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Raises a SettingsChanged event.
         /// </summary>
         private void OnSettingsChanged()
@@ -552,7 +530,7 @@ namespace Scada.Comm.Shell.Controls
             }
         }
 
-        private void cbDeviceDll_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbDeviceDll_TextChanged(object sender, EventArgs e)
         {
             if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
@@ -637,17 +615,22 @@ namespace Scada.Comm.Shell.Controls
         private void btnResetReqParams_Click(object sender, EventArgs e)
         {
             // set the request parameters of the selected device by default
-            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) &&
-                GetDeviceView(kp, true, out KPView kpView))
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
-                KPReqParams reqParams = kpView.DefaultReqParams;
-                numDeviceTimeout.SetValue(reqParams.Timeout);
-                numDeviceDelay.SetValue(reqParams.Delay);
-                dtpDeviceTime.SetTime(reqParams.Time);
-                dtpDevicePeriod.SetTime(reqParams.Period);
-                txtDeviceCmdLine.Text = reqParams.CmdLine;
-
-                OnSettingsChanged();
+                if (Environment.TryGetKPView(kp, true, null, out KPView kpView, out string errMsg))
+                {
+                    KPReqParams reqParams = kpView.DefaultReqParams;
+                    numDeviceTimeout.SetValue(reqParams.Timeout);
+                    numDeviceDelay.SetValue(reqParams.Delay);
+                    dtpDeviceTime.SetTime(reqParams.Time);
+                    dtpDevicePeriod.SetTime(reqParams.Period);
+                    txtDeviceCmdLine.Text = reqParams.CmdLine;
+                    OnSettingsChanged();
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                }
             }
         }
 
@@ -659,23 +642,29 @@ namespace Scada.Comm.Shell.Controls
         private void btnDeviceProps_Click(object sender, EventArgs e)
         {
             // show the properties of the selected device
-            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) && 
-                GetDeviceView(kp, false, out KPView kpView) && kpView.CanShowProps)
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
-                if (kpView.CanShowProps)
+                if (Environment.TryGetKPView(kp, false, CustomParams, out KPView kpView, out string errMsg))
                 {
-                    kpView.ShowProps();
-
-                    if (kpView.KPProps.Modified)
+                    if (kpView.CanShowProps)
                     {
-                        txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
-                        OnCustomParamsChanged();
-                        OnSettingsChanged();
+                        kpView.ShowProps();
+
+                        if (kpView.KPProps.Modified)
+                        {
+                            txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
+                            OnCustomParamsChanged();
+                            OnSettingsChanged();
+                        }
+                    }
+                    else
+                    {
+                        ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
                     }
                 }
                 else
                 {
-                    ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }

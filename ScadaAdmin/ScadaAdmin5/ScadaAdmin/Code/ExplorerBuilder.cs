@@ -344,17 +344,7 @@ namespace Scada.Admin.App.Code
                     commNode.Nodes.AddRange(commShell.GetTreeNodes(
                         instance.CommApp.Settings, liveInstance.CommEnvironment));
 
-                    foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(commNode.Nodes))
-                    {
-                        if (treeNode.Tag is TreeNodeTag tag)
-                        {
-                            if (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine)
-                                treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
-                            else if (tag.NodeType == CommNodeType.Device)
-                                treeNode.ContextMenuStrip = contextMenus.DeviceMenu;
-                        }
-                    }
-
+                    SetContextMenus(commNode);
                     instanceNode.Nodes.Add(commNode);
                 }
 
@@ -492,6 +482,24 @@ namespace Scada.Admin.App.Code
         {
             if (treeNode.ImageKey.StartsWith("folder_"))
                 treeNode.SetImageKey(treeNode.IsExpanded ? "folder_open.png" : "folder_closed.png");
+        }
+
+        /// <summary>
+        /// Defines context menus of the node and its child nodes.
+        /// </summary>
+        /// <remarks>The method works for communication line.</remarks>
+        public void SetContextMenus(TreeNode parentNode)
+        {
+            foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(parentNode))
+            {
+                if (treeNode.Tag is TreeNodeTag tag)
+                {
+                    if (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine)
+                        treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
+                    else if (tag.NodeType == CommNodeType.Device)
+                        treeNode.ContextMenuStrip = contextMenus.DeviceMenu;
+                }
+            }
         }
     }
 }

@@ -41,26 +41,6 @@ namespace Scada.Comm.Shell.Code
     public class CommShell
     {
         /// <summary>
-        /// Creates a node that represents the device.
-        /// </summary>
-        private TreeNode CreateDeviceNode(Settings.KP kp, Settings.CommLine commLine, CommEnvironment environment)
-        {
-            return new TreeNode(string.Format(CommShellPhrases.DeviceNode, kp.Number, kp.Name))
-            {
-                ImageKey = "comm_device.png",
-                SelectedImageKey = "comm_device.png",
-                Tag = new TreeNodeTag()
-                {
-                    FormType = typeof(FrmDeviceData),
-                    FormArgs = new object[] { kp, commLine, environment },
-                    RelatedObject = kp,
-                    NodeType = CommNodeType.Device
-                }
-            };
-        }
-
-
-        /// <summary>
         /// Gets the images used by the explorer.
         /// </summary>
         public Dictionary<string, Image> GetTreeViewImages()
@@ -213,7 +193,7 @@ namespace Scada.Comm.Shell.Code
         }
 
         /// <summary>
-        /// Updates labels of the nodes that represent a communication line.
+        /// Updates the nodes that represent a communication line.
         /// </summary>
         public void UpdateCommLineNode(TreeNode commLineNode, CommEnvironment environment)
         {
@@ -236,6 +216,25 @@ namespace Scada.Comm.Shell.Code
             {
                 commLineNode.Nodes.Add(CreateDeviceNode(kp, commLine, environment));
             }
+        }
+
+        /// <summary>
+        /// Creates a node that represents the device.
+        /// </summary>
+        public TreeNode CreateDeviceNode(Settings.KP kp, Settings.CommLine commLine, CommEnvironment environment)
+        {
+            return new TreeNode(string.Format(CommShellPhrases.DeviceNode, kp.Number, kp.Name))
+            {
+                ImageKey = "comm_device.png",
+                SelectedImageKey = "comm_device.png",
+                Tag = new TreeNodeTag()
+                {
+                    FormType = typeof(FrmDeviceData),
+                    FormArgs = new object[] { kp, commLine, environment },
+                    RelatedObject = kp,
+                    NodeType = CommNodeType.Device
+                }
+            };
         }
     }
 }

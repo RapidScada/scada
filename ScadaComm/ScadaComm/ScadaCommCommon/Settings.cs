@@ -305,7 +305,7 @@ namespace Scada.Comm
                 Timeout = 0;
                 Delay = 0;
                 Time = DateTime.MinValue;
-                Period = new TimeSpan(0);
+                Period = TimeSpan.Zero;
                 CmdLine = "";
                 Parent = null;
             }
@@ -553,11 +553,13 @@ namespace Scada.Comm
         /// </summary>
         private CommLine LoadCommLine(XmlElement commLineElem)
         {
-            CommLine commLine = new CommLine();
-            commLine.Active = commLineElem.GetAttrAsBool("active");
-            commLine.Bind = commLineElem.GetAttrAsBool("bind");
-            commLine.Name = commLineElem.GetAttribute("name");
-            commLine.Number = commLineElem.GetAttrAsInt("number");
+            CommLine commLine = new CommLine
+            {
+                Active = commLineElem.GetAttrAsBool("active"),
+                Bind = commLineElem.GetAttrAsBool("bind"),
+                Name = commLineElem.GetAttribute("name"),
+                Number = commLineElem.GetAttrAsInt("number")
+            };
 
             // загрузка канала связи 
             XmlElement commChannelElem = commLineElem.SelectSingleNode("CommChannel") as XmlElement;
@@ -653,32 +655,27 @@ namespace Scada.Comm
                     string kpNumStr = kpElem.GetAttribute("number");
                     try
                     {
-                        KP kp = new KP();
-                        kp.Active = kpElem.GetAttrAsBool("active");
-                        kp.Bind = kpElem.GetAttrAsBool("bind");
-                        kp.Number = kpElem.GetAttrAsInt("number");
-                        kp.Name = kpElem.GetAttribute("name");
-                        kp.Dll = kpElem.GetAttribute("dll");
+                        KP kp = new KP
+                        {
+                            Active = kpElem.GetAttrAsBool("active"),
+                            Bind = kpElem.GetAttrAsBool("bind"),
+                            Number = kpElem.GetAttrAsInt("number"),
+                            Name = kpElem.GetAttribute("name"),
+                            Dll = kpElem.GetAttribute("dll"),
+                            Address = kpElem.GetAttrAsInt("address"),
+                            CallNum = kpElem.GetAttribute("callNum"),
+                            Timeout = kpElem.GetAttrAsInt("timeout"),
+                            Delay = kpElem.GetAttrAsInt("delay"),
+                            Time = kpElem.GetAttrAsDateTime("time"),
+                            Period = kpElem.GetAttrAsTimeSpan("period"),
+                            CmdLine = kpElem.GetAttribute("cmdLine"),
+                            Parent = commLine
+                        };
+
                         if (!kp.Dll.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                             kp.Dll += ".dll";
-                        kp.CallNum = kpElem.GetAttribute("callNum");
-                        kp.CmdLine = kpElem.GetAttribute("cmdLine");
+
                         commLine.ReqSequence.Add(kp);
-
-                        string address = kpElem.GetAttribute("address");
-                        if (address != "")
-                            kp.Address = kpElem.GetAttrAsInt("address");
-
-                        kp.Timeout = kpElem.GetAttrAsInt("timeout");
-                        kp.Delay = kpElem.GetAttrAsInt("delay");
-
-                        string time = kpElem.GetAttribute("time");
-                        if (time != "")
-                            kp.Time = kpElem.GetAttrAsDateTime("time");
-
-                        string period = kpElem.GetAttribute("period");
-                        if (period != "")
-                            kp.Period = kpElem.GetAttrAsTimeSpan("period");
                     }
                     catch (Exception ex)
                     {

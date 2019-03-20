@@ -161,7 +161,7 @@
             this.cbDeviceDll.Name = "cbDeviceDll";
             this.cbDeviceDll.Size = new System.Drawing.Size(120, 21);
             this.cbDeviceDll.TabIndex = 7;
-            this.cbDeviceDll.SelectedIndexChanged += new System.EventHandler(this.cbDeviceDll_SelectedIndexChanged);
+            this.cbDeviceDll.TextChanged += new System.EventHandler(this.cbDeviceDll_TextChanged);
             // 
             // txtDeviceCmdLine
             // 

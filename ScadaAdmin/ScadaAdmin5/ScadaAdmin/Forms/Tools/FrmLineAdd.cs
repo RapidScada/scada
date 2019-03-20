@@ -60,7 +60,7 @@ namespace Scada.Admin.App.Forms.Tools
             this.project = project ?? throw new ArgumentNullException("project");
             this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
             InstanceName = "";
-            CommLine = null;
+            CommLineSettings = null;
 
             numCommLineNum.Maximum = ushort.MaxValue;
             txtName.MaxLength = ColumnLength.Name;
@@ -76,7 +76,7 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Gets a communication line added to Communicator.
         /// </summary>
-        public Comm.Settings.CommLine CommLine { get; private set; }
+        public Comm.Settings.CommLine CommLineSettings { get; private set; }
 
 
         /// <summary>
@@ -84,28 +84,18 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void FillInstanceList()
         {
+            cbInstance.DataSource = project.Instances;
+            cbInstance.DisplayMember = "Name";
+            cbInstance.ValueMember = "Name";
+
             try
             {
-                cbInstance.BeginUpdate();
-                string selectedName = recentSelection.InstanceName;
-                int selectedIndex = 0;
-                int index = 0;
-
-                foreach (Instance instance in project.Instances)
-                {
-                    if (instance.Name == selectedName)
-                        selectedIndex = index;
-
-                    cbInstance.Items.Add(instance);
-                    index++;
-                }
-
-                if (cbInstance.Items.Count > 0)
-                    cbInstance.SelectedIndex = selectedIndex;
+                if (!string.IsNullOrEmpty(recentSelection.InstanceName))
+                    cbInstance.SelectedValue = recentSelection.InstanceName;
             }
-            finally
+            catch
             {
-                cbInstance.EndUpdate();
+                cbInstance.SelectedIndex = 0;
             }
         }
 
@@ -165,7 +155,7 @@ namespace Scada.Admin.App.Forms.Tools
             if (ValidateFields() && CheckFeasibility())
             {
                 // create a new communication line
-                CommLine commLine = new CommLine
+                CommLine commLineEntity = new CommLine
                 {
                     CommLineNum = Convert.ToInt32(numCommLineNum.Value),
                     Name = txtName.Text,
@@ -173,7 +163,7 @@ namespace Scada.Admin.App.Forms.Tools
                 };
 
                 // insert the line in the configuration database
-                project.ConfigBase.CommLineTable.AddItem(commLine);
+                project.ConfigBase.CommLineTable.AddItem(commLineEntity);
                 project.ConfigBase.CommLineTable.Modified = true;
 
                 // insert the line in the Communicator settings
@@ -181,19 +171,20 @@ namespace Scada.Admin.App.Forms.Tools
                 {
                     if (instance.CommApp.Enabled)
                     {
-                        CommLine = new Comm.Settings.CommLine
+                        CommLineSettings = new Comm.Settings.CommLine
                         {
-                            Number = commLine.CommLineNum,
-                            Name = commLine.Name
+                            Number = commLineEntity.CommLineNum,
+                            Name = commLineEntity.Name, 
+                            Parent = instance.CommApp.Settings
                         };
 
-                        instance.CommApp.Settings.CommLines.Add(CommLine);
+                        instance.CommApp.Settings.CommLines.Add(CommLineSettings);
                     }
 
                     InstanceName = recentSelection.InstanceName = instance.Name;
                 }
 
-                recentSelection.CommLineNum = commLine.CommLineNum;
+                recentSelection.CommLineNum = commLineEntity.CommLineNum;
                 DialogResult = DialogResult.OK;
             }
         }

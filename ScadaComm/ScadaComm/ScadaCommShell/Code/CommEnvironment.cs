@@ -109,9 +109,33 @@ namespace Scada.Comm.Shell.Code
         {
             KPView commonKpView = GetKPView(dllPath);
             KPView kpView = KPFactory.GetKPView(commonKpView.GetType(), kpNum);
-            kpView.KPProps = kpProps;
+            kpView.KPProps = kpProps ?? throw new ArgumentNullException("kpProps");
             kpView.AppDirs = AppDirs;
             return kpView;
+        }
+
+        /// <summary>
+        /// Gets a user interface object for the device.
+        /// </summary>
+        public bool TryGetKPView(Settings.KP kp, bool common, SortedList<string, string> customParams, 
+            out KPView kpView, out string errMsg)
+        {
+            try
+            {
+                string dllPath = Path.Combine(AppDirs.KPDir, kp.Dll);
+                kpView = common ?
+                    GetKPView(dllPath) :
+                    GetKPView(dllPath, kp.Number, new KPView.KPProperties(customParams, kp.CmdLine));
+                errMsg = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrLog.WriteException(ex);
+                kpView = null;
+                errMsg = ex.Message;
+                return false;
+            }
         }
     }
 }

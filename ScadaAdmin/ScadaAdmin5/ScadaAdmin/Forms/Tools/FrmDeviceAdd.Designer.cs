@@ -33,7 +33,6 @@
             this.lblCommLine = new System.Windows.Forms.Label();
             this.txtCallNum = new System.Windows.Forms.TextBox();
             this.lblCallNum = new System.Windows.Forms.Label();
-            this.numAddress = new System.Windows.Forms.NumericUpDown();
             this.lblAddress = new System.Windows.Forms.Label();
             this.cbKPType = new System.Windows.Forms.ComboBox();
             this.lblKPType = new System.Windows.Forms.Label();
@@ -49,8 +48,8 @@
             this.chkAddToComm = new System.Windows.Forms.CheckBox();
             this.btnCancel = new System.Windows.Forms.Button();
             this.btnOK = new System.Windows.Forms.Button();
+            this.txtAddress = new System.Windows.Forms.TextBox();
             this.gbDevice.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAddress)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKPNum)).BeginInit();
             this.gbComm.SuspendLayout();
             this.SuspendLayout();
@@ -61,7 +60,7 @@
             this.gbDevice.Controls.Add(this.lblCommLine);
             this.gbDevice.Controls.Add(this.txtCallNum);
             this.gbDevice.Controls.Add(this.lblCallNum);
-            this.gbDevice.Controls.Add(this.numAddress);
+            this.gbDevice.Controls.Add(this.txtAddress);
             this.gbDevice.Controls.Add(this.lblAddress);
             this.gbDevice.Controls.Add(this.cbKPType);
             this.gbDevice.Controls.Add(this.lblKPType);
@@ -112,13 +111,6 @@
             this.lblCallNum.Size = new System.Drawing.Size(62, 13);
             this.lblCallNum.TabIndex = 8;
             this.lblCallNum.Text = "Call number";
-            // 
-            // numAddress
-            // 
-            this.numAddress.Location = new System.Drawing.Point(13, 111);
-            this.numAddress.Name = "numAddress";
-            this.numAddress.Size = new System.Drawing.Size(75, 20);
-            this.numAddress.TabIndex = 7;
             // 
             // lblAddress
             // 
@@ -266,6 +258,14 @@
             this.btnOK.TabIndex = 2;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            // 
+            // txtAddress
+            // 
+            this.txtAddress.Location = new System.Drawing.Point(13, 111);
+            this.txtAddress.Name = "txtAddress";
+            this.txtAddress.Size = new System.Drawing.Size(75, 20);
+            this.txtAddress.TabIndex = 7;
             // 
             // FrmDeviceAdd
             // 
@@ -288,7 +288,6 @@
             this.Load += new System.EventHandler(this.FrmDeviceAdd_Load);
             this.gbDevice.ResumeLayout(false);
             this.gbDevice.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numAddress)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numKPNum)).EndInit();
             this.gbComm.ResumeLayout(false);
             this.gbComm.PerformLayout();
@@ -307,7 +306,6 @@
         private System.Windows.Forms.Label lblKPNum;
         private System.Windows.Forms.ComboBox cbKPType;
         private System.Windows.Forms.Label lblKPType;
-        private System.Windows.Forms.NumericUpDown numAddress;
         private System.Windows.Forms.Label lblAddress;
         private System.Windows.Forms.ComboBox cbCommLine;
         private System.Windows.Forms.Label lblCommLine;
@@ -319,5 +317,6 @@
         private System.Windows.Forms.CheckBox chkAddToComm;
         private System.Windows.Forms.Button btnCancel;
         private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.TextBox txtAddress;
     }
 }
