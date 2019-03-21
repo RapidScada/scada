@@ -25,6 +25,8 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Comm;
+using Scada.Comm.Shell.Code;
 using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.UI;
@@ -80,12 +82,12 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Gets a device added to Communicator.
         /// </summary>
-        public Comm.Settings.KP KpSettings { get; private set; }
+        public Settings.KP KpSettings { get; private set; }
 
         /// <summary>
         /// Gets a communication line of the device added to Communicator.
         /// </summary>
-        public Comm.Settings.CommLine CommLineSettings { get; private set; }
+        public Settings.CommLine CommLineSettings { get; private set; }
 
 
         /// <summary>
@@ -270,16 +272,8 @@ namespace Scada.Admin.App.Forms.Tools
                 {
                     if (instance.CommApp.Enabled)
                     {
-                        KpSettings = new Comm.Settings.KP
-                        {
-                            Number = kpEntity.KPNum,
-                            Name = kpEntity.Name,
-                            Dll = (string)((DataRowView)cbKPType.SelectedItem)["DllFileName"],
-                            Address = kpEntity.Address ?? 0,
-                            CallNum = kpEntity.CallNum,
-                            Parent = commLineSettings
-                        };
-
+                        KpSettings = SettingsConverter.CreateKP(kpEntity, project.ConfigBase.KPTypeTable);
+                        KpSettings.Parent = commLineSettings;
                         commLineSettings.ReqSequence.Add(KpSettings);
                         CommLineSettings = commLineSettings;
                     }

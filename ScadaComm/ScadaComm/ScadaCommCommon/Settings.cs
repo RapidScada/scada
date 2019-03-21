@@ -24,6 +24,7 @@
  */
 
 using Scada.Comm.Channels;
+using Scada.Comm.Devices;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -406,6 +407,17 @@ namespace Scada.Comm
                     CmdLine = CmdLine,
                     Parent = Parent
                 };
+            }
+            /// <summary>
+            /// Sets the request parameters.
+            /// </summary>
+            public void SetReqParams(KPReqParams reqParams)
+            {
+                Timeout = reqParams.Timeout;
+                Delay = reqParams.Delay;
+                Time = reqParams.Time;
+                Period = reqParams.Period;
+                CmdLine = reqParams.CmdLine;
             }
             /// <summary>
             /// Получить обозначение КП

@@ -232,6 +232,12 @@
     <Compile Include="Forms\Tools\FrmCnlCreate.Designer.cs">
       <DependentUpon>FrmCnlCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tools\FrmCommImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCommImport.Designer.cs">
+      <DependentUpon>FrmCommImport.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Tools\FrmDeviceAdd.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -365,6 +371,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\FrmCnlCreate.resx">
       <DependentUpon>FrmCnlCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCommImport.resx">
+      <DependentUpon>FrmCommImport.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tools\FrmDeviceAdd.resx">
       <DependentUpon>FrmDeviceAdd.cs</DependentUpon>

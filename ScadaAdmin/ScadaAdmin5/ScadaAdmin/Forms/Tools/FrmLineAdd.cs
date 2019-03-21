@@ -25,6 +25,8 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Comm;
+using Scada.Comm.Shell.Code;
 using Scada.Data.Entities;
 using Scada.UI;
 using System;
@@ -76,7 +78,7 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Gets a communication line added to Communicator.
         /// </summary>
-        public Comm.Settings.CommLine CommLineSettings { get; private set; }
+        public Settings.CommLine CommLineSettings { get; private set; }
 
 
         /// <summary>
@@ -171,13 +173,8 @@ namespace Scada.Admin.App.Forms.Tools
                 {
                     if (instance.CommApp.Enabled)
                     {
-                        CommLineSettings = new Comm.Settings.CommLine
-                        {
-                            Number = commLineEntity.CommLineNum,
-                            Name = commLineEntity.Name, 
-                            Parent = instance.CommApp.Settings
-                        };
-
+                        CommLineSettings = SettingsConverter.CreateCommLine(commLineEntity);
+                        CommLineSettings.Parent = instance.CommApp.Settings;
                         instance.CommApp.Settings.CommLines.Add(CommLineSettings);
                     }
 

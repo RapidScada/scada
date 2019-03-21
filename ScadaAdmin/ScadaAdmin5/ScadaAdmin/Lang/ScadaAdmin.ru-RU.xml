@@ -349,6 +349,13 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommImport">
+    <Phrase key="this">Импорт настроек Коммуникатора</Phrase>
+    <Phrase key="lblSelect">Выберите данные для импорта:</Phrase>
+    <Phrase key="btnImport">Импорт</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NoDataSelected">Данные не выбраны.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Язык</Phrase>
     <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>

@@ -65,6 +65,7 @@
     <Compile Include="Code\CommEnvironment.cs" />
     <Compile Include="Code\CommShellPhrases.cs" />
     <Compile Include="Code\CommShellUtils.cs" />
+    <Compile Include="Code\SettingsConverter.cs" />
     <Compile Include="Controls\CtrlLineCustomParams.cs">
       <SubType>UserControl</SubType>
     </Compile>

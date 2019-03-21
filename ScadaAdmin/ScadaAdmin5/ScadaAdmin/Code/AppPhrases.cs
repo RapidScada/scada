@@ -132,6 +132,9 @@ namespace Scada.Admin.App.Code
         public static string NoChannels { get; private set; }
         public static string GenerateCnlMapError { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmCommImport
+        public static string NoDataSelected { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmCulture
         public static string LoadCulturesError { get; private set; }
         public static string CultureRequired { get; private set; }
@@ -286,6 +289,9 @@ namespace Scada.Admin.App.Code
             CreateCnlsStep1 = dict.GetPhrase("CreateCnlsStep1");
             CreateCnlsStep2 = dict.GetPhrase("CreateCnlsStep2");
             CreateCnlsStep3 = dict.GetPhrase("CreateCnlsStep3");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCommImport");
+            NoDataSelected = dict.GetPhrase("NoDataSelected");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");

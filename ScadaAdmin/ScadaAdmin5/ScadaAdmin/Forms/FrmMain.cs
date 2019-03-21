@@ -1337,12 +1337,7 @@ namespace Scada.Admin.App.Forms
                         if (liveInstance.CommEnvironment.TryGetKPView(frmDeviceAdd.KpSettings, true, null, 
                             out KPView kpView, out string errMsg))
                         {
-                            KPReqParams reqParams = kpView.DefaultReqParams;
-                            kpSettings.Timeout = reqParams.Timeout;
-                            kpSettings.Delay = reqParams.Delay;
-                            kpSettings.Time = reqParams.Time;
-                            kpSettings.Period = reqParams.Period;
-                            kpSettings.CmdLine = reqParams.CmdLine;
+                            kpSettings.SetReqParams(kpView.DefaultReqParams);
                         }
                         else
                         {
@@ -1990,7 +1985,59 @@ namespace Scada.Admin.App.Forms
 
         private void miCommLineImport_Click(object sender, EventArgs e)
         {
+            // import Communicator settings
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                FrmCommImport frmCommImport = new FrmCommImport(project, liveInstance.Instance);
+                CommEnvironment commEnv = liveInstance.CommEnvironment;
+                TreeNode lastAddedNode = null;
+
+                if (selectedNode.TagIs(CommNodeType.CommLines))
+                {
+                    // import communication lines and devices
+                    if (frmCommImport.ShowDialog() == DialogResult.OK)
+                    {
+                        foreach (Comm.Settings.CommLine commLineSettings in frmCommImport.ImportedCommLines)
+                        {
+                            TreeNode commLineNode = commShell.CreateCommLineNode(commLineSettings, commEnv);
+                            selectedNode.Nodes.Add(commLineNode);
+                            lastAddedNode = commLineNode;
+                        }
+                    }
+                }
+                else if (selectedNode.TagIs(CommNodeType.CommLine))
+                {
+                    // import only devices
+                    Comm.Settings.CommLine commLineSettings =
+                        (Comm.Settings.CommLine)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+                    frmCommImport.CommLineSettings = commLineSettings;
+
+                    if (frmCommImport.ShowDialog() == DialogResult.OK)
+                    {
+                        foreach (Comm.Settings.KP kpSettings in frmCommImport.ImportedDevices)
+                        {
+                            if (commEnv.TryGetKPView(kpSettings, true, null, out KPView kpView, out string errMsg))
+                                kpSettings.SetReqParams(kpView.DefaultReqParams);
+
+                            TreeNode kpNode = commShell.CreateDeviceNode(kpSettings, commLineSettings, commEnv);
+                            selectedNode.Nodes.Add(kpNode);
+                            lastAddedNode = kpNode;
+                        }
+
+                        UpdateLineParams(lastAddedNode);
+                    }
+                }
+
+                if (lastAddedNode != null)
+                {
+                    explorerBuilder.SetContextMenus(selectedNode);
+                    tvExplorer.SelectedNode = lastAddedNode;
+                    SaveCommSettigns(liveInstance);
+                }
+            }
         }
 
         private void miCommLineSync_Click(object sender, EventArgs e)

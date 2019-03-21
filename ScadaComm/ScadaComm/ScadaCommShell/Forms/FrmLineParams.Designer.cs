@@ -56,6 +56,7 @@
             // ctrlLineReqSequence
             // 
             this.ctrlLineReqSequence.CommLine = null;
+            this.ctrlLineReqSequence.CustomParams = null;
             this.ctrlLineReqSequence.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ctrlLineReqSequence.Environment = null;
             this.ctrlLineReqSequence.Location = new System.Drawing.Point(150, 0);

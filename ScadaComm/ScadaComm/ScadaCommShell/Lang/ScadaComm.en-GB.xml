@@ -185,7 +185,6 @@
     <Phrase key="gbSelectedParam">Selected Parameter</Phrase>
     <Phrase key="lblParamName">Name</Phrase>
     <Phrase key="lblParamValue">Value</Phrase>
-    <Phrase key="btnImportDevice">Import</Phrase>
     <Phrase key="btnAddDevice">Add</Phrase>
     <Phrase key="btnMoveUpDevice">Move Up</Phrase>
     <Phrase key="btnMoveDownDevice">Move Down</Phrase>
@@ -219,8 +218,6 @@
     <Phrase key="lblDeviceTime">Time</Phrase>
     <Phrase key="lblDevicePeriod">Period</Phrase>
     <Phrase key="lblDeviceCmdLine">Command line</Phrase>
-    <Phrase key="btnSyncDeviceProps">Sync</Phrase>
-    <Phrase key="btnSyncDeviceProps.ToolTip">Set the device properties according to the configuration database</Phrase>
     <Phrase key="btnResetReqParams">Reset</Phrase>
     <Phrase key="btnResetReqParams.ToolTip">Set the device request parameters to default</Phrase>
     <Phrase key="btnDeviceProps">Properies</Phrase>

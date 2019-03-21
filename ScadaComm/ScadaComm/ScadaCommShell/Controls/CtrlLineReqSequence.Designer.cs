@@ -30,7 +30,6 @@
         {
             this.components = new System.ComponentModel.Container();
             this.gbSelectedDevice = new System.Windows.Forms.GroupBox();
-            this.btnSyncDeviceProps = new System.Windows.Forms.Button();
             this.btnDeviceProps = new System.Windows.Forms.Button();
             this.btnResetReqParams = new System.Windows.Forms.Button();
             this.cbDeviceDll = new System.Windows.Forms.ComboBox();
@@ -77,7 +76,6 @@
             this.btnCopyDevice = new System.Windows.Forms.Button();
             this.btnCutDevice = new System.Windows.Forms.Button();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.btnImportDevice = new System.Windows.Forms.Button();
             this.gbSelectedDevice.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceDelay)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numDeviceTimeout)).BeginInit();
@@ -88,7 +86,6 @@
             // gbSelectedDevice
             // 
             this.gbSelectedDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.gbSelectedDevice.Controls.Add(this.btnSyncDeviceProps);
             this.gbSelectedDevice.Controls.Add(this.btnDeviceProps);
             this.gbSelectedDevice.Controls.Add(this.btnResetReqParams);
             this.gbSelectedDevice.Controls.Add(this.cbDeviceDll);
@@ -118,37 +115,26 @@
             this.gbSelectedDevice.Name = "gbSelectedDevice";
             this.gbSelectedDevice.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbSelectedDevice.Size = new System.Drawing.Size(450, 234);
-            this.gbSelectedDevice.TabIndex = 9;
+            this.gbSelectedDevice.TabIndex = 8;
             this.gbSelectedDevice.TabStop = false;
             this.gbSelectedDevice.Text = "Selected Device";
             // 
-            // btnSyncDeviceProps
-            // 
-            this.btnSyncDeviceProps.Location = new System.Drawing.Point(13, 198);
-            this.btnSyncDeviceProps.Name = "btnSyncDeviceProps";
-            this.btnSyncDeviceProps.Size = new System.Drawing.Size(75, 23);
-            this.btnSyncDeviceProps.TabIndex = 22;
-            this.btnSyncDeviceProps.Text = "Sync";
-            this.toolTip.SetToolTip(this.btnSyncDeviceProps, "Set the device properties according to the configuration database");
-            this.btnSyncDeviceProps.UseVisualStyleBackColor = true;
-            this.btnSyncDeviceProps.Click += new System.EventHandler(this.btnSyncDeviceProps_Click);
-            // 
             // btnDeviceProps
             // 
-            this.btnDeviceProps.Location = new System.Drawing.Point(175, 198);
+            this.btnDeviceProps.Location = new System.Drawing.Point(94, 198);
             this.btnDeviceProps.Name = "btnDeviceProps";
             this.btnDeviceProps.Size = new System.Drawing.Size(75, 23);
-            this.btnDeviceProps.TabIndex = 24;
+            this.btnDeviceProps.TabIndex = 23;
             this.btnDeviceProps.Text = "Properies";
             this.btnDeviceProps.UseVisualStyleBackColor = true;
             this.btnDeviceProps.Click += new System.EventHandler(this.btnDeviceProps_Click);
             // 
             // btnResetReqParams
             // 
-            this.btnResetReqParams.Location = new System.Drawing.Point(94, 198);
+            this.btnResetReqParams.Location = new System.Drawing.Point(13, 198);
             this.btnResetReqParams.Name = "btnResetReqParams";
             this.btnResetReqParams.Size = new System.Drawing.Size(75, 23);
-            this.btnResetReqParams.TabIndex = 23;
+            this.btnResetReqParams.TabIndex = 22;
             this.btnResetReqParams.Text = "Reset";
             this.toolTip.SetToolTip(this.btnResetReqParams, "Set the device request parameters to default");
             this.btnResetReqParams.UseVisualStyleBackColor = true;
@@ -408,7 +394,7 @@
             this.lvReqSequence.Name = "lvReqSequence";
             this.lvReqSequence.ShowItemToolTips = true;
             this.lvReqSequence.Size = new System.Drawing.Size(679, 157);
-            this.lvReqSequence.TabIndex = 8;
+            this.lvReqSequence.TabIndex = 7;
             this.lvReqSequence.UseCompatibleStateImageBehavior = false;
             this.lvReqSequence.View = System.Windows.Forms.View.Details;
             this.lvReqSequence.SelectedIndexChanged += new System.EventHandler(this.lvReqSequence_SelectedIndexChanged);
@@ -484,40 +470,41 @@
             // 
             // btnAddDevice
             // 
-            this.btnAddDevice.Location = new System.Drawing.Point(90, 12);
+            this.btnAddDevice.Location = new System.Drawing.Point(9, 12);
+            this.btnAddDevice.Margin = new System.Windows.Forms.Padding(9, 12, 3, 3);
             this.btnAddDevice.Name = "btnAddDevice";
             this.btnAddDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnAddDevice.TabIndex = 1;
+            this.btnAddDevice.TabIndex = 0;
             this.btnAddDevice.Text = "Add";
             this.btnAddDevice.UseVisualStyleBackColor = true;
             this.btnAddDevice.Click += new System.EventHandler(this.btnAddDevice_Click);
             // 
             // btnMoveUpDevice
             // 
-            this.btnMoveUpDevice.Location = new System.Drawing.Point(171, 12);
+            this.btnMoveUpDevice.Location = new System.Drawing.Point(90, 12);
             this.btnMoveUpDevice.Name = "btnMoveUpDevice";
             this.btnMoveUpDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnMoveUpDevice.TabIndex = 2;
+            this.btnMoveUpDevice.TabIndex = 1;
             this.btnMoveUpDevice.Text = "Move Up";
             this.btnMoveUpDevice.UseVisualStyleBackColor = true;
             this.btnMoveUpDevice.Click += new System.EventHandler(this.btnMoveUpDevice_Click);
             // 
             // btnMoveDownDevice
             // 
-            this.btnMoveDownDevice.Location = new System.Drawing.Point(252, 12);
+            this.btnMoveDownDevice.Location = new System.Drawing.Point(171, 12);
             this.btnMoveDownDevice.Name = "btnMoveDownDevice";
             this.btnMoveDownDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnMoveDownDevice.TabIndex = 3;
+            this.btnMoveDownDevice.TabIndex = 2;
             this.btnMoveDownDevice.Text = "Move Down";
             this.btnMoveDownDevice.UseVisualStyleBackColor = true;
             this.btnMoveDownDevice.Click += new System.EventHandler(this.btnMoveDownDevice_Click);
             // 
             // btnDeleteDevice
             // 
-            this.btnDeleteDevice.Location = new System.Drawing.Point(333, 12);
+            this.btnDeleteDevice.Location = new System.Drawing.Point(252, 12);
             this.btnDeleteDevice.Name = "btnDeleteDevice";
             this.btnDeleteDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnDeleteDevice.TabIndex = 4;
+            this.btnDeleteDevice.TabIndex = 3;
             this.btnDeleteDevice.Text = "Delete";
             this.btnDeleteDevice.UseVisualStyleBackColor = true;
             this.btnDeleteDevice.Click += new System.EventHandler(this.btnDeleteDevice_Click);
@@ -529,7 +516,7 @@
             this.btnPasteDevice.Margin = new System.Windows.Forms.Padding(3, 3, 12, 3);
             this.btnPasteDevice.Name = "btnPasteDevice";
             this.btnPasteDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnPasteDevice.TabIndex = 7;
+            this.btnPasteDevice.TabIndex = 6;
             this.btnPasteDevice.Text = "Paste";
             this.btnPasteDevice.UseVisualStyleBackColor = true;
             this.btnPasteDevice.Click += new System.EventHandler(this.btnPasteDevice_Click);
@@ -540,7 +527,7 @@
             this.btnCopyDevice.Location = new System.Drawing.Point(532, 12);
             this.btnCopyDevice.Name = "btnCopyDevice";
             this.btnCopyDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnCopyDevice.TabIndex = 6;
+            this.btnCopyDevice.TabIndex = 5;
             this.btnCopyDevice.Text = "Copy";
             this.btnCopyDevice.UseVisualStyleBackColor = true;
             this.btnCopyDevice.Click += new System.EventHandler(this.btnCopyDevice_Click);
@@ -551,27 +538,15 @@
             this.btnCutDevice.Location = new System.Drawing.Point(451, 12);
             this.btnCutDevice.Name = "btnCutDevice";
             this.btnCutDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnCutDevice.TabIndex = 5;
+            this.btnCutDevice.TabIndex = 4;
             this.btnCutDevice.Text = "Cut";
             this.btnCutDevice.UseVisualStyleBackColor = true;
             this.btnCutDevice.Click += new System.EventHandler(this.btnCutDevice_Click);
-            // 
-            // btnImportDevice
-            // 
-            this.btnImportDevice.Location = new System.Drawing.Point(9, 12);
-            this.btnImportDevice.Margin = new System.Windows.Forms.Padding(9, 12, 3, 3);
-            this.btnImportDevice.Name = "btnImportDevice";
-            this.btnImportDevice.Size = new System.Drawing.Size(75, 23);
-            this.btnImportDevice.TabIndex = 0;
-            this.btnImportDevice.Text = "Import";
-            this.btnImportDevice.UseVisualStyleBackColor = true;
-            this.btnImportDevice.Click += new System.EventHandler(this.btnImportDevice_Click);
             // 
             // CtrlLineReqSequence
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Controls.Add(this.btnImportDevice);
             this.Controls.Add(this.btnPasteDevice);
             this.Controls.Add(this.btnCopyDevice);
             this.Controls.Add(this.btnCutDevice);
@@ -643,7 +618,5 @@
         private System.Windows.Forms.Button btnDeviceProps;
         private System.Windows.Forms.Button btnResetReqParams;
         internal System.Windows.Forms.ToolTip toolTip;
-        private System.Windows.Forms.Button btnImportDevice;
-        private System.Windows.Forms.Button btnSyncDeviceProps;
     }
 }
