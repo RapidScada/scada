@@ -303,7 +303,6 @@
             this.miDeploy.Name = "miDeploy";
             this.miDeploy.Size = new System.Drawing.Size(56, 20);
             this.miDeploy.Text = "&Deploy";
-            this.miDeploy.DropDownOpening += new System.EventHandler(this.miDeploy_DropDownOpening);
             // 
             // miDeployInstanceProfile
             // 
@@ -353,7 +352,6 @@
             this.miTools.Name = "miTools";
             this.miTools.Size = new System.Drawing.Size(47, 20);
             this.miTools.Text = "&Tools";
-            this.miTools.DropDownOpening += new System.EventHandler(this.miTools_DropDownOpening);
             // 
             // miToolsAddLine
             // 

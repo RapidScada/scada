@@ -204,20 +204,50 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Sets the initial state of menu items and tool buttons.
+        /// Enables or disables menu items and tool buttons.
         /// </summary>
-        private void InitMenuItems()
+        private void SetMenuItemsEnabled()
         {
+            bool projectIsOpen = project != null;
+
+            // file
             miFileSave.Enabled = btnFileSave.Enabled = false;
             miFileSaveAll.Enabled = btnFileSaveAll.Enabled = false;
+            miFileImportTable.Enabled = projectIsOpen;
+            miFileExportTable.Enabled = projectIsOpen;
+            miFileCloseProject.Enabled = projectIsOpen;
+
+            // deploy
+            SetDeployMenuItemsEnabled();
+
+            // tools
+            miToolsAddLine.Enabled = btnToolsAddLine.Enabled = projectIsOpen;
+            miToolsAddDevice.Enabled = btnToolsAddDevice.Enabled = projectIsOpen;
+            miToolsCreateCnls.Enabled = btnToolsCreateCnls.Enabled = projectIsOpen;
+            miToolsCloneCnls.Enabled = projectIsOpen;
+            miToolsCnlMap.Enabled = projectIsOpen;
+            miToolsCheckIntegrity.Enabled = projectIsOpen;
+            miToolsOptions.Enabled = false;
         }
 
         /// <summary>
-        /// Disables the Save All menu item and the corresponding tool button if all the forms are saved.
+        /// Enables or disables the deployment menu items and tool buttons.
+        /// </summary>
+        private void SetDeployMenuItemsEnabled()
+        {
+            bool instanceExists = project != null && project.Instances.Count > 0;
+            miDeployInstanceProfile.Enabled = btnDeployInstanceProfile.Enabled = instanceExists;
+            miDeployDownloadConfig.Enabled = btnDeployDownloadConfig.Enabled = instanceExists;
+            miDeployUploadConfig.Enabled = btnDeployUploadConfig.Enabled = instanceExists;
+            miDeployInstanceStatus.Enabled = btnDeployInstanceStatus.Enabled = instanceExists;
+        }
+
+        /// <summary>
+        /// Disables the Save All menu item and tool button if all data is saved.
         /// </summary>
         private void DisableSaveAll()
         {
-            if (miFileSaveAll.Enabled)
+            if (miFileSaveAll.Enabled && !project.ConfigBase.Modified)
             {
                 bool saveAllEnabled = false;
 
@@ -547,9 +577,10 @@ namespace Scada.Admin.App.Forms
         {
             if (project != null)
             {
-                instanceNode = project.Instances.Count == 1 ?
-                    RootNode.FindFirst(AppNodeType.Instance) :
-                    treeNode?.FindClosest(AppNodeType.Instance);
+                instanceNode = treeNode?.FindClosest(AppNodeType.Instance);
+
+                if (instanceNode == null && project.Instances.Count > 0)
+                    instanceNode = RootNode.FindFirst(AppNodeType.Instance);
 
                 if (instanceNode != null)
                 {
@@ -816,7 +847,7 @@ namespace Scada.Admin.App.Forms
                     project = null;
                     Text = AppPhrases.EmptyTitle;
                     wctrlMain.MessageText = AppPhrases.WelcomeMessage;
-                    InitMenuItems();
+                    SetMenuItemsEnabled();
                     tvExplorer.Nodes.Clear();
                 }
             }
@@ -827,7 +858,7 @@ namespace Scada.Admin.App.Forms
         {
             LocalizeForm();
             TakeExplorerImages();
-            InitMenuItems();
+            SetMenuItemsEnabled();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -848,17 +879,21 @@ namespace Scada.Admin.App.Forms
             // execute a node action on press Enter
             if (e.KeyCode == Keys.Enter && tvExplorer.SelectedNode != null)
             {
-                TreeNode node = tvExplorer.SelectedNode;
-                if (node.TagIs(AppNodeType.File))
-                    ExecOpenFileAction(node);
-                else if (node.Tag is TreeNodeTag tag && tag.FormType != null)
-                    ExecNodeAction(node);
-                else if (node.Nodes.Count > 0)
+                TreeNode selectedNode = tvExplorer.SelectedNode;
+                if (selectedNode.TagIs(AppNodeType.File))
                 {
-                    if (node.IsExpanded)
-                        node.Collapse(true);
+                    ExecOpenFileAction(selectedNode);
+                }
+                else if (selectedNode.Tag is TreeNodeTag tag && tag.FormType != null)
+                {
+                    ExecNodeAction(selectedNode);
+                }
+                else if (selectedNode.Nodes.Count > 0)
+                {
+                    if (selectedNode.IsExpanded)
+                        selectedNode.Collapse(true);
                     else
-                        node.Expand();
+                        selectedNode.Expand();
                 }
             }
         }
@@ -1019,12 +1054,7 @@ namespace Scada.Admin.App.Forms
 
         private void miFile_DropDownOpening(object sender, EventArgs e)
         {
-            // enable or disable the menu items
-            bool projectIsOpen = project != null;
             miFileClose.Enabled = wctrlMain.ActiveForm != null;
-            miFileCloseProject.Enabled = projectIsOpen;
-            miFileImportTable.Enabled = projectIsOpen;
-            miFileExportTable.Enabled = projectIsOpen;
         }
 
         private void miFileNewProject_Click(object sender, EventArgs e)
@@ -1041,7 +1071,7 @@ namespace Scada.Admin.App.Forms
                     LoadConfigBase();
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                     wctrlMain.MessageText = AppPhrases.SelectItemMessage;
-                    InitMenuItems();
+                    SetMenuItemsEnabled();
                     explorerBuilder.CreateNodes(project);
                 }
                 else
@@ -1069,7 +1099,7 @@ namespace Scada.Admin.App.Forms
                 LoadConfigBase();
                 Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                 wctrlMain.MessageText = AppPhrases.SelectItemMessage;
-                InitMenuItems();
+                SetMenuItemsEnabled();
                 explorerBuilder.CreateNodes(project);
             }
         }
@@ -1133,17 +1163,6 @@ namespace Scada.Admin.App.Forms
         private void miFileExit_Click(object sender, EventArgs e)
         {
             Close();
-        }
-
-        private void miDeploy_DropDownOpening(object sender, EventArgs e)
-        {
-            // enable or disable the menu items
-            bool deployInstanceFound = project != null && (project.Instances.Count == 1 ||
-                tvExplorer.SelectedNode?.FindClosest(AppNodeType.Instance) != null);
-            miDeployInstanceProfile.Enabled = deployInstanceFound;
-            miDeployDownloadConfig.Enabled = deployInstanceFound;
-            miDeployUploadConfig.Enabled = deployInstanceFound;
-            miDeployInstanceStatus.Enabled = deployInstanceFound;
         }
 
         private void miDeployInstanceProfile_Click(object sender, EventArgs e)
@@ -1274,18 +1293,6 @@ namespace Scada.Admin.App.Forms
                     UpdateAgentClient(liveInstance);
                 }
             }
-        }
-
-        private void miTools_DropDownOpening(object sender, EventArgs e)
-        {
-            bool projectIsOpen = project != null;
-            miToolsAddLine.Enabled = projectIsOpen;
-            miToolsAddDevice.Enabled = projectIsOpen;
-            miToolsCreateCnls.Enabled = projectIsOpen;
-            miToolsCloneCnls.Enabled = projectIsOpen;
-            miToolsCnlMap.Enabled = projectIsOpen;
-            miToolsCheckIntegrity.Enabled = projectIsOpen;
-            miToolsOptions.Enabled = false;
         }
 
         private void miToolsAddLine_Click(object sender, EventArgs e)
@@ -1505,8 +1512,8 @@ namespace Scada.Admin.App.Forms
         private void cmsDirectory_Opening(object sender, CancelEventArgs e)
         {
             // enable or disable the menu items
-            TreeNode treeNode = tvExplorer.SelectedNode;
-            bool isDirectoryNode = treeNode != null && treeNode.TagIs(AppNodeType.Directory);
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+            bool isDirectoryNode = selectedNode != null && selectedNode.TagIs(AppNodeType.Directory);
             miDirectoryDelete.Enabled = isDirectoryNode;
             miDirectoryRename.Enabled = isDirectoryNode;
         }
@@ -1774,18 +1781,18 @@ namespace Scada.Admin.App.Forms
         private void cmsInstance_Opening(object sender, CancelEventArgs e)
         {
             // enable or disable the menu items
-            TreeNode treeNode = tvExplorer.SelectedNode;
-            bool isInstanceNode = treeNode != null && treeNode.TagIs(AppNodeType.Instance);
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+            bool isInstanceNode = selectedNode != null && selectedNode.TagIs(AppNodeType.Instance);
+            bool instanceExists = project != null && project.Instances.Count > 0;
 
-            miInstanceMoveUp.Enabled = isInstanceNode && treeNode.PrevNode != null;
-            miInstanceMoveDown.Enabled = isInstanceNode && treeNode.NextNode != null;
+            miInstanceMoveUp.Enabled = isInstanceNode && selectedNode.PrevNode != null;
+            miInstanceMoveDown.Enabled = isInstanceNode && selectedNode.NextNode != null;
             miInstanceDelete.Enabled = isInstanceNode;
 
-            bool deployInstanceFound = isInstanceNode || project != null && project.Instances.Count == 1;
-            miInstanceProfile.Enabled = deployInstanceFound;
-            miInstanceDownloadConfig.Enabled = deployInstanceFound;
-            miInstanceUploadConfig.Enabled = deployInstanceFound;
-            miInstanceStatus.Enabled = deployInstanceFound;
+            miInstanceProfile.Enabled = instanceExists;
+            miInstanceDownloadConfig.Enabled = instanceExists;
+            miInstanceUploadConfig.Enabled = instanceExists;
+            miInstanceStatus.Enabled = instanceExists;
 
             miInstanceOpenInExplorer.Enabled = isInstanceNode;
             miInstanceRename.Enabled = isInstanceNode;
@@ -1821,6 +1828,7 @@ namespace Scada.Admin.App.Forms
                             TreeNode instanceNode = explorerBuilder.CreateInstanceNode(instance);
                             instanceNode.Expand();
                             tvExplorer.Insert(instancesNode, instanceNode, project.Instances, instance);
+                            SetDeployMenuItemsEnabled();
                             SaveProjectSettings();
                         }
                         else
@@ -1872,6 +1880,7 @@ namespace Scada.Admin.App.Forms
                 if (!liveInstance.Instance.DeleteInstanceFiles(out string errMsg))
                     appData.ProcError(errMsg);
 
+                SetDeployMenuItemsEnabled();
                 SaveProjectSettings();
             }
         }
@@ -1972,15 +1981,15 @@ namespace Scada.Admin.App.Forms
         private void cmsCommLine_Opening(object sender, CancelEventArgs e)
         {
             // enable or disable the menu items
-            TreeNode treeNode = tvExplorer.SelectedNode;
-            bool isLineNode = treeNode != null && treeNode.TagIs(CommNodeType.CommLine);
-            miCommLineMoveUp.Enabled = isLineNode && treeNode.PrevNode != null;
-            miCommLineMoveDown.Enabled = isLineNode && treeNode.NextNode != null;
-            miCommLineDelete.Enabled = isLineNode;
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+            bool isCommLineNode = selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine);
+            miCommLineMoveUp.Enabled = isCommLineNode && selectedNode.PrevNode != null;
+            miCommLineMoveDown.Enabled = isCommLineNode && selectedNode.NextNode != null;
+            miCommLineDelete.Enabled = isCommLineNode;
 
-            miCommLineStart.Enabled = isLineNode;
-            miCommLineStop.Enabled = isLineNode;
-            miCommLineRestart.Enabled = isLineNode;
+            miCommLineStart.Enabled = isCommLineNode;
+            miCommLineStop.Enabled = isCommLineNode;
+            miCommLineRestart.Enabled = isCommLineNode;
         }
 
         private void miCommLineImport_Click(object sender, EventArgs e)
