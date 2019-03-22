@@ -2042,7 +2042,43 @@ namespace Scada.Admin.App.Forms
 
         private void miCommLineSync_Click(object sender, EventArgs e)
         {
+            // synchronize Communicator settings
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null &&
+                (selectedNode.TagIs(CommNodeType.CommLines) || selectedNode.TagIs(CommNodeType.CommLine)) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                FrmCommSync frmCommSync = new FrmCommSync(project, liveInstance.Instance)
+                {
+                    CommLineSettings = ((TreeNodeTag)selectedNode.Tag).RelatedObject as Comm.Settings.CommLine
+                };
+
+                if (frmCommSync.ShowDialog() == DialogResult.OK)
+                {
+                    TreeNode commLinesNode = selectedNode.FindClosest(CommNodeType.CommLines);
+
+                    if (frmCommSync.CommLineSettings == null)
+                    {
+                        commShell.UpdateNodeText(commLinesNode);
+                        UpdateChildFormHints(commLinesNode);
+
+                        foreach (TreeNode commLineNode in commLinesNode.Nodes)
+                        {
+                            UpdateLineParams(commLineNode.FindFirst(CommNodeType.LineParams));
+                        }
+                    }
+                    else
+                    {
+                        TreeNode commLineNode = FindTreeNode(frmCommSync.CommLineSettings, commLinesNode);
+                        commShell.UpdateNodeText(commLineNode);
+                        UpdateChildFormHints(commLineNode);
+                        UpdateLineParams(commLineNode.FindFirst(CommNodeType.LineParams));
+                    }
+
+                    SaveCommSettigns(liveInstance);
+                }
+            }
         }
 
         private void miCommLineAdd_Click(object sender, EventArgs e)

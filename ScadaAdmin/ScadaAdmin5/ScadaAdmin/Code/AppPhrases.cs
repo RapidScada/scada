@@ -135,6 +135,9 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Forms.Tools.FrmCommImport
         public static string NoDataSelected { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmCommSync
+        public static string AllCommLines { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmCulture
         public static string LoadCulturesError { get; private set; }
         public static string CultureRequired { get; private set; }
@@ -292,6 +295,9 @@ namespace Scada.Admin.App.Code
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCommImport");
             NoDataSelected = dict.GetPhrase("NoDataSelected");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCommSync");
+            AllCommLines = dict.GetPhrase("AllCommLines");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCulture");
             LoadCulturesError = dict.GetPhrase("LoadCulturesError");

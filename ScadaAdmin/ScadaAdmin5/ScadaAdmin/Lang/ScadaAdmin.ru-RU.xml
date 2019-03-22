@@ -356,6 +356,19 @@
     <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="NoDataSelected">Данные не выбраны.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommSync">
+    <Phrase key="this">Синхронизация настроек Коммуникатора</Phrase>
+    <Phrase key="lblCommLine">Линия связи</Phrase>
+    <Phrase key="gbParams">Обновляемые параметры</Phrase>
+    <Phrase key="chkCommLineName">Наименование линии связи</Phrase>
+    <Phrase key="chkDeviceName">Наименование КП</Phrase>
+    <Phrase key="chkDeviceDriver">Драйвер КП</Phrase>
+    <Phrase key="chkDeviceAddress">Адрес КП</Phrase>
+    <Phrase key="chkDeviceCallNum">Позывной КП</Phrase>
+    <Phrase key="btnSync">Выполнить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Язык</Phrase>
     <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>

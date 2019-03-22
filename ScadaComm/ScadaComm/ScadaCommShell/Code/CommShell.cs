@@ -219,6 +219,26 @@ namespace Scada.Comm.Shell.Code
         }
 
         /// <summary>
+        /// Updates the text of the node and its subnodes.
+        /// </summary>
+        public void UpdateNodeText(TreeNode startNode)
+        {
+            if (startNode == null)
+                throw new ArgumentNullException("startNode");
+
+            foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(startNode))
+            {
+                if (treeNode.Tag is TreeNodeTag tag)
+                {
+                    if (tag.NodeType == CommNodeType.CommLine && tag.RelatedObject is Settings.CommLine commLine)
+                        treeNode.Text = string.Format(CommShellPhrases.CommLineNode, commLine.Number, commLine.Name);
+                    else if (tag.NodeType == CommNodeType.Device && tag.RelatedObject is Settings.KP kp)
+                        treeNode.Text = string.Format(CommShellPhrases.DeviceNode, kp.Number, kp.Name);
+                }
+            }
+        }
+
+        /// <summary>
         /// Creates a node that represents the device.
         /// </summary>
         public TreeNode CreateDeviceNode(Settings.KP kp, Settings.CommLine commLine, CommEnvironment environment)

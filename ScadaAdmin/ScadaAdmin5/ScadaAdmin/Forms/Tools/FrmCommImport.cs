@@ -96,17 +96,17 @@ namespace Scada.Admin.App.Forms.Tools
 
                 if (CommLineSettings == null)
                 {
-                    foreach (CommLine commLine in project.ConfigBase.CommLineTable.Items.Values)
+                    foreach (CommLine commLineEntity in project.ConfigBase.CommLineTable.Items.Values)
                     {
-                        AddCommLineNode(commLine);
+                        AddCommLineNode(commLineEntity);
                     }
                 }
                 else
                 {
                     if (project.ConfigBase.CommLineTable.Items.TryGetValue(CommLineSettings.Number, 
-                        out CommLine commLine))
+                        out CommLine commLineEntity))
                     {
-                        AddCommLineNode(commLine).Expand();
+                        AddCommLineNode(commLineEntity).Expand();
                     }
                 }
             }
@@ -119,16 +119,16 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Adds a node corresponding to the communication line.
         /// </summary>
-        private TreeNode AddCommLineNode(CommLine commLine)
+        private TreeNode AddCommLineNode(CommLine commLineEntity)
         {
             TreeNode commLineNode = new TreeNode(string.Format(CommShellPhrases.CommLineNode,
-                commLine.CommLineNum, commLine.Name))
+                commLineEntity.CommLineNum, commLineEntity.Name))
             {
-                Tag = commLine
+                Tag = commLineEntity
             };
 
             foreach (KP kp in project.ConfigBase.KPTable.SelectItems(
-                new TableFilter("CommLineNum", commLine.CommLineNum)))
+                new TableFilter("CommLineNum", commLineEntity.CommLineNum)))
             {
                 commLineNode.Nodes.Add(new TreeNode(string.Format(CommShellPhrases.DeviceNode, kp.KPNum, kp.Name))
                 {

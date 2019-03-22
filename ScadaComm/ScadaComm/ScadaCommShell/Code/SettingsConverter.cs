@@ -55,21 +55,27 @@ namespace Scada.Comm.Shell.Code
         /// </summary>
         public static Settings.KP CreateKP(Entities.KP kpEntity, BaseTable<Entities.KPType> kpTypeTable)
         {
-            if (kpEntity == null)
-                throw new ArgumentNullException("kpEntity");
+            Settings.KP kpSettings = new Settings.KP();
+            Copy(kpEntity, kpSettings, kpTypeTable);
+            return kpSettings;
+        }
 
-            string dll = kpTypeTable != null && 
-                kpTypeTable.Items.TryGetValue(kpEntity.KPTypeID, out Entities.KPType kpType) ?
+        /// <summary>
+        /// Copies properties from the device entity to the device settings.
+        /// </summary>
+        public static void Copy(Entities.KP srcKP, Settings.KP destKP, BaseTable<Entities.KPType> kpTypeTable)
+        {
+            if (srcKP == null)
+                throw new ArgumentNullException("srcKP");
+            if (destKP == null)
+                throw new ArgumentNullException("destKP");
+
+            destKP.Name = srcKP.Name;
+            destKP.Dll = kpTypeTable != null && 
+                kpTypeTable.Items.TryGetValue(srcKP.KPTypeID, out Entities.KPType kpType) ?
                 kpType.DllFileName : "";
-
-            return new Settings.KP
-            {
-                Number = kpEntity.KPNum,
-                Name = kpEntity.Name,
-                Dll = dll,
-                Address = kpEntity.Address ?? 0,
-                CallNum = kpEntity.CallNum,
-            };
+            destKP.Address = srcKP.Address ?? 0;
+            destKP.CallNum = srcKP.CallNum;
         }
     }
 }
