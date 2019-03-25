@@ -55,7 +55,10 @@ namespace Scada.Comm.Shell.Code
         /// </summary>
         public static Settings.KP CreateKP(Entities.KP kpEntity, BaseTable<Entities.KPType> kpTypeTable)
         {
-            Settings.KP kpSettings = new Settings.KP();
+            if (kpEntity == null)
+                throw new ArgumentNullException("kpEntity");
+
+            Settings.KP kpSettings = new Settings.KP() { Number = kpEntity.KPNum };
             Copy(kpEntity, kpSettings, kpTypeTable);
             return kpSettings;
         }

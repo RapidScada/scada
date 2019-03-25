@@ -28,10 +28,15 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing;
 using System.Data;
-using System.Linq;
 using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Scada.Admin.Project;
+using Scada.Admin.App.Code;
+using Scada.Data.Tables;
+using Scada.Data.Entities;
+using System.Collections;
 
 namespace Scada.Admin.App.Controls.Tools
 {
@@ -41,14 +46,66 @@ namespace Scada.Admin.App.Controls.Tools
     /// </summary>
     public partial class CtrlCnlCreate1 : UserControl
     {
+        private ScadaProject project;            // the project under development
+        private RecentSelection recentSelection; // the recently selected objects
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public CtrlCnlCreate1()
         {
             InitializeComponent();
+
+            cbDevice.DisplayMember = "Name";
+            cbDevice.ValueMember = "KPNum";
         }
 
+
+        /// <summary>
+        /// Gets the selected device.
+        /// </summary>
+        public KP SelectedDevice
+        {
+            get
+            {
+                return cbDevice.SelectedItem as KP;
+            }
+        }
+
+
+        /// <summary>
+        /// Fills the combo box with the communication lines.
+        /// </summary>
+        private void FillCommLineList()
+        {
+            DataTable commLineTable = project.ConfigBase.CommLineTable.ToDataTable();
+            commLineTable.AddEmptyRow(0, AppPhrases.AllCommLines);
+            commLineTable.DefaultView.Sort = "CommLineNum";
+
+            cbCommLine.DisplayMember = "Name";
+            cbCommLine.ValueMember = "CommLineNum";
+            cbCommLine.DataSource = commLineTable;
+
+            try
+            {
+                cbCommLine.SelectedValue = recentSelection.CommLineNum;
+            }
+            catch
+            {
+                cbCommLine.SelectedValue = 0;
+            }
+        }
+
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        public void Init(ScadaProject project, RecentSelection recentSelection)
+        {
+            this.project = project ?? throw new ArgumentNullException("project");
+            this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
+            FillCommLineList();
+        }
         
         /// <summary>
         /// Sets the input focus.
@@ -56,6 +113,31 @@ namespace Scada.Admin.App.Controls.Tools
         public void SetFocus()
         {
             cbCommLine.Select();
+        }
+
+
+        private void cbCommLine_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            // filter devices by the selected communication line
+            int commLineNum = (int)cbCommLine.SelectedValue;
+            IEnumerable kps = commLineNum > 0 ?
+                project.ConfigBase.KPTable.SelectItems(new TableFilter("CommLineNum", commLineNum)) :
+                project.ConfigBase.KPTable.EnumerateItems();
+            cbDevice.DataSource = kps.Cast<KP>().ToList();
+
+            try
+            {
+                cbDevice.SelectedValue = recentSelection.KPNum;
+            }
+            catch
+            {
+                cbDevice.SelectedValue = null;
+            }
+        }
+
+        private void cbDevice_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

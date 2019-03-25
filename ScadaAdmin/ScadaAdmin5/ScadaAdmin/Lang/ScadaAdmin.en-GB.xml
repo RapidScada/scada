@@ -186,6 +186,9 @@
     <Phrase key="chkIgnoreRegKeys">Registration keys</Phrase>
     <Phrase key="chkIgnoreWebStorage">Webstation storage</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms">
+    <Phrase key="AllCommLines">&lt;All communication lines&gt;</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
     <Phrase key="this">Connection Settings</Phrase>
     <Phrase key="lblProfileName">Profile name</Phrase>
@@ -367,7 +370,6 @@
     <Phrase key="chkDeviceCallNum">Device call number</Phrase>
     <Phrase key="btnSync">Sync</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="AllCommLines">&lt;All communication lines&gt;</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Language</Phrase>

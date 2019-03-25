@@ -47,6 +47,27 @@ namespace Scada.Admin.App.Controls.Tools
         public CtrlCnlCreate3()
         {
             InitializeComponent();
+
+            numStartInCnl.Maximum = ushort.MaxValue;
+            numEndInCnl.Maximum = int.MaxValue;
+            numStartOutCnl.Maximum = ushort.MaxValue;
+            numEndOutCnl.Maximum = int.MaxValue;
+        }
+
+
+        /// <summary>
+        /// Gets or sets the selected device name.
+        /// </summary>
+        public string DeviceName
+        {
+            get
+            {
+                return txtDevice.Text;
+            }
+            set
+            {
+                txtDevice.Text = value ?? "";
+            }
         }
 
 

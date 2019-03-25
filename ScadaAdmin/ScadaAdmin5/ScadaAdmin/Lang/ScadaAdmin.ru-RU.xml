@@ -186,6 +186,9 @@
     <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>
     <Phrase key="chkIgnoreWebStorage">Хранилище Вебстанции</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms">
+    <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
     <Phrase key="this">Настройки соединения</Phrase>
     <Phrase key="lblProfileName">Наименование профиля</Phrase>
@@ -367,7 +370,6 @@
     <Phrase key="chkDeviceCallNum">Позывной КП</Phrase>
     <Phrase key="btnSync">Выполнить</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
-    <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
     <Phrase key="this">Язык</Phrase>

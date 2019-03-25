@@ -42,8 +42,8 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCommImport : Form
     {
-        private ScadaProject project; // the project under development
-        private Instance instance;    // the import destination instance
+        private readonly ScadaProject project; // the project under development
+        private readonly Instance instance;    // the import destination instance
 
 
         /// <summary>

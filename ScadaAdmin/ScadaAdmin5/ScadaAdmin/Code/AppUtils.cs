@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Data;
 using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
@@ -74,11 +75,22 @@ namespace Scada.Admin.App.Code
 
             if (cell.OwningColumn is DataGridViewComboBoxColumn comboBoxColumn)
             {
-                comboBox.DataSource = comboBoxColumn.DataSource;
                 comboBox.DisplayMember = comboBoxColumn.DisplayMember;
                 comboBox.ValueMember = comboBoxColumn.ValueMember;
+                comboBox.DataSource = comboBoxColumn.DataSource;
                 comboBox.SelectedValue = cell.Value;
             }
+        }
+
+        /// <summary>
+        /// Adds an empty row to the table.
+        /// </summary>
+        public static void AddEmptyRow(this DataTable dataTable, int id = 0, string text = " ")
+        {
+            DataRow emptyRow = dataTable.NewRow();
+            emptyRow[0] = id;
+            emptyRow[1] = text;
+            dataTable.Rows.Add(emptyRow);
         }
 
         /// <summary>

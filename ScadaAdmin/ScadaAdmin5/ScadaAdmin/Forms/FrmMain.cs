@@ -661,7 +661,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private ServerEnvironment CreateServerEnvironment(Instance instance, IAgentClient agentClient)
         {
-            return new ServerEnvironment()
+            return new ServerEnvironment
             {
                 AppDirs = new ServerDirs(appData.AppSettings.ServerDir, instance),
                 ModuleViews = moduleViews,
@@ -675,7 +675,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private CommEnvironment CreateCommEnvironment(Instance instance, IAgentClient agentClient)
         {
-            return new CommEnvironment()
+            return new CommEnvironment
             {
                 AppDirs = new CommDirs(appData.AppSettings.CommDir, instance),
                 KPViews = kpViews,
@@ -1368,7 +1368,12 @@ namespace Scada.Admin.App.Forms
 
         private void miToolsCreateCnls_Click(object sender, EventArgs e)
         {
-            new FrmCnlCreate().ShowDialog();
+            // show a channel creation wizard
+            if (project != null)
+            {
+                FrmCnlCreate frmCnlCreate = new FrmCnlCreate(project, appData.AppState.RecentSelection);
+                frmCnlCreate.ShowDialog();
+            }
         }
 
         private void miToolsCloneCnls_Click(object sender, EventArgs e)

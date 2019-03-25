@@ -95,9 +95,9 @@ namespace Scada.Admin.App.Forms.Tools
             AddCustomRow(dataTable, "ObjNum", "Name", 0, " ");
             dataTable.DefaultView.Sort = "ObjNum";
 
-            cbReplaceObj.DataSource = dataTable;
             cbReplaceObj.ValueMember = "ObjNum";
             cbReplaceObj.DisplayMember = "Name";
+            cbReplaceObj.DataSource = dataTable;
             cbReplaceObj.SelectedValue = -1;
         }
 
@@ -111,9 +111,9 @@ namespace Scada.Admin.App.Forms.Tools
             AddCustomRow(dataTable, "KPNum", "Name", 0, " ");
             dataTable.DefaultView.Sort = "KPNum";
 
-            cbReplaceKP.DataSource = dataTable;
             cbReplaceKP.ValueMember = "KPNum";
             cbReplaceKP.DisplayMember = "Name";
+            cbReplaceKP.DataSource = dataTable;
             cbReplaceKP.SelectedValue = -1;
         }
 

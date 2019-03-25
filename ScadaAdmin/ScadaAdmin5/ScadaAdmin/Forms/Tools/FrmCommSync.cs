@@ -42,8 +42,8 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCommSync : Form
     {
-        private ScadaProject project; // the project under development
-        private Instance instance;    // the import destination instance
+        private readonly ScadaProject project; // the project under development
+        private readonly Instance instance;    // the import destination instance
 
 
         /// <summary>
@@ -81,9 +81,9 @@ namespace Scada.Admin.App.Forms.Tools
             List<Settings.CommLine> commLines = new List<Settings.CommLine>(instance.CommApp.Settings.CommLines);
             commLines.Insert(0, new Settings.CommLine { Number = 0, Name = AppPhrases.AllCommLines });
 
-            cbCommLine.DataSource = commLines;
             cbCommLine.ValueMember = "Number";
             cbCommLine.DisplayMember = "Name";
+            cbCommLine.DataSource = commLines;
             cbCommLine.SelectedValue = CommLineSettings == null ? 0 : CommLineSettings.Number;
         }
 

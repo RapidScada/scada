@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Project;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -43,16 +44,29 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCnlCreate : Form
     {
+        private readonly ScadaProject project;            // the project under development
+        private readonly RecentSelection recentSelection; // the recently selected objects
+
         private int step; // the current step of the wizard
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmCnlCreate()
+        private FrmCnlCreate()
         {
             InitializeComponent();
             step = 1;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public FrmCnlCreate(ScadaProject project, RecentSelection recentSelection)
+            : this()
+        {
+            this.project = project ?? throw new ArgumentNullException("project");
+            this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
         }
 
 
@@ -75,33 +89,38 @@ namespace Scada.Admin.App.Forms.Tools
                     ctrlCnlCreate1.Visible = true;
                     ctrlCnlCreate2.Visible = false;
                     ctrlCnlCreate3.Visible = false;
-                    ctrlCnlCreate1.SetFocus();
                     btnCnlMap.Visible = false;
                     btnBack.Visible = false;
                     btnNext.Visible = true;
                     btnCreate.Visible = false;
+
+                    ctrlCnlCreate1.SetFocus();
                     break;
                 case 2:
                     lblStep.Text = AppPhrases.CreateCnlsStep2;
                     ctrlCnlCreate1.Visible = false;
                     ctrlCnlCreate2.Visible = true;
                     ctrlCnlCreate3.Visible = false;
-                    ctrlCnlCreate2.SetFocus();
                     btnCnlMap.Visible = false;
                     btnBack.Visible = true;
                     btnNext.Visible = true;
                     btnCreate.Visible = false;
+
+                    ctrlCnlCreate2.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
+                    ctrlCnlCreate2.SetFocus();
                     break;
                 case 3:
                     lblStep.Text = AppPhrases.CreateCnlsStep3;
                     ctrlCnlCreate1.Visible = false;
                     ctrlCnlCreate2.Visible = false;
                     ctrlCnlCreate3.Visible = true;
-                    ctrlCnlCreate3.SetFocus();
                     btnCnlMap.Visible = true;
                     btnBack.Visible = true;
                     btnNext.Visible = false;
                     btnCreate.Visible = true;
+
+                    ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
+                    ctrlCnlCreate3.SetFocus();
                     break;
             }
         }
@@ -110,6 +129,8 @@ namespace Scada.Admin.App.Forms.Tools
         private void FrmCnlCreate_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
+            ctrlCnlCreate1.Init(project, recentSelection);
+            ctrlCnlCreate2.Init(project, recentSelection);
             ApplyStep(0);
         }
 

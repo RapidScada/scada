@@ -41,8 +41,8 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmLineAdd : Form
     {
-        private ScadaProject project;            // the project under development
-        private RecentSelection recentSelection; // the recently selected objects
+        private readonly ScadaProject project;            // the project under development
+        private readonly RecentSelection recentSelection; // the recently selected objects
 
 
         /// <summary>
@@ -86,9 +86,9 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void FillInstanceList()
         {
-            cbInstance.DataSource = project.Instances;
             cbInstance.DisplayMember = "Name";
             cbInstance.ValueMember = "Name";
+            cbInstance.DataSource = project.Instances;
 
             try
             {

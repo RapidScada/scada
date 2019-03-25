@@ -99,11 +99,6 @@
             0,
             0});
             this.numEndInCnl.Location = new System.Drawing.Point(144, 32);
-            this.numEndInCnl.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
             this.numEndInCnl.Name = "numEndInCnl";
             this.numEndInCnl.ReadOnly = true;
             this.numEndInCnl.Size = new System.Drawing.Size(122, 20);
@@ -121,11 +116,6 @@
             // numStartInCnl
             // 
             this.numStartInCnl.Location = new System.Drawing.Point(16, 32);
-            this.numStartInCnl.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
             this.numStartInCnl.Minimum = new decimal(new int[] {
             1,
             0,
@@ -181,11 +171,6 @@
             0,
             0});
             this.numEndOutCnl.Location = new System.Drawing.Point(144, 32);
-            this.numEndOutCnl.Maximum = new decimal(new int[] {
-            2147483647,
-            0,
-            0,
-            0});
             this.numEndOutCnl.Name = "numEndOutCnl";
             this.numEndOutCnl.ReadOnly = true;
             this.numEndOutCnl.Size = new System.Drawing.Size(122, 20);
@@ -203,11 +188,6 @@
             // numStartOutCnl
             // 
             this.numStartOutCnl.Location = new System.Drawing.Point(16, 32);
-            this.numStartOutCnl.Maximum = new decimal(new int[] {
-            65535,
-            0,
-            0,
-            0});
             this.numStartOutCnl.Minimum = new decimal(new int[] {
             1,
             0,

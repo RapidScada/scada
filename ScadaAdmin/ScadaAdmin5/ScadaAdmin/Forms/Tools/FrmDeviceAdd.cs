@@ -43,8 +43,8 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmDeviceAdd : Form
     {
-        private ScadaProject project;            // the project under development
-        private RecentSelection recentSelection; // the recently selected objects
+        private readonly ScadaProject project;            // the project under development
+        private readonly RecentSelection recentSelection; // the recently selected objects
 
 
         /// <summary>
@@ -91,28 +91,17 @@ namespace Scada.Admin.App.Forms.Tools
 
 
         /// <summary>
-        /// Adds an empty row to the table.
-        /// </summary>
-        private void AddEmptyRow(DataTable dataTable)
-        {
-            DataRow emptyRow = dataTable.NewRow();
-            emptyRow[0] = 0;
-            emptyRow[1] = " ";
-            dataTable.Rows.Add(emptyRow);
-        }
-
-        /// <summary>
         /// Fills the combo box with the device types.
         /// </summary>
         private void FillDeviceTypeList()
         {
             DataTable kpTypeTable = project.ConfigBase.KPTypeTable.ToDataTable();
-            AddEmptyRow(kpTypeTable);
+            kpTypeTable.AddEmptyRow();
             kpTypeTable.DefaultView.Sort = "KPTypeID";
 
-            cbKPType.DataSource = kpTypeTable;
             cbKPType.DisplayMember = "Name";
             cbKPType.ValueMember = "KPTypeID";
+            cbKPType.DataSource = kpTypeTable;
 
             try
             {
@@ -130,12 +119,12 @@ namespace Scada.Admin.App.Forms.Tools
         private void FillCommLineList()
         {
             DataTable commLineTable = project.ConfigBase.CommLineTable.ToDataTable();
-            AddEmptyRow(commLineTable);
+            commLineTable.AddEmptyRow();
             commLineTable.DefaultView.Sort = "CommLineNum";
 
-            cbCommLine.DataSource = commLineTable;
             cbCommLine.DisplayMember = "Name";
             cbCommLine.ValueMember = "CommLineNum";
+            cbCommLine.DataSource = commLineTable;
 
             try
             {
@@ -152,9 +141,9 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void FillInstanceList()
         {
-            cbInstance.DataSource = project.Instances;
             cbInstance.DisplayMember = "Name";
             cbInstance.ValueMember = "Name";
+            cbInstance.DataSource = project.Instances;
 
             try
             {

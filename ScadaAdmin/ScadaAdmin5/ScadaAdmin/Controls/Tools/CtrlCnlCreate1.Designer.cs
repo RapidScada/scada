@@ -55,6 +55,7 @@
             this.cbCommLine.Name = "cbCommLine";
             this.cbCommLine.Size = new System.Drawing.Size(360, 21);
             this.cbCommLine.TabIndex = 1;
+            this.cbCommLine.SelectedIndexChanged += new System.EventHandler(this.cbCommLine_SelectedIndexChanged);
             // 
             // lblDevice
             // 
@@ -73,6 +74,7 @@
             this.cbDevice.Name = "cbDevice";
             this.cbDevice.Size = new System.Drawing.Size(360, 21);
             this.cbDevice.TabIndex = 3;
+            this.cbDevice.SelectedIndexChanged += new System.EventHandler(this.cbDevice_SelectedIndexChanged);
             // 
             // txtInfo
             // 

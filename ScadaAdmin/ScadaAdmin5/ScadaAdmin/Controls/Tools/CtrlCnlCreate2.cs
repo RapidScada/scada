@@ -32,6 +32,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Scada.Admin.Project;
+using Scada.Admin.App.Code;
+using Scada.Data.Tables;
+using Scada.Data.Entities;
 
 namespace Scada.Admin.App.Controls.Tools
 {
@@ -41,6 +45,10 @@ namespace Scada.Admin.App.Controls.Tools
     /// </summary>
     public partial class CtrlCnlCreate2 : UserControl
     {
+        private ScadaProject project;            // the project under development
+        private RecentSelection recentSelection; // the recently selected objects
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -49,6 +57,66 @@ namespace Scada.Admin.App.Controls.Tools
             InitializeComponent();
         }
 
+
+        /// <summary>
+        /// Gets or sets the selected device name.
+        /// </summary>
+        public string DeviceName
+        {
+            get
+            {
+                return txtDevice.Text;
+            }
+            set
+            {
+                txtDevice.Text = value ?? "";
+            }
+        }
+        
+        /// <summary>
+        /// Gets the selected object.
+        /// </summary>
+        public Obj SelectedObject
+        {
+            get
+            {
+                return cbObj.SelectedItem as Obj;
+            }
+        }
+
+
+        /// <summary>
+        /// Fills the combo box with the device types.
+        /// </summary>
+        private void FillObjectList()
+        {
+            DataTable objTable = project.ConfigBase.ObjTable.ToDataTable();
+            objTable.AddEmptyRow();
+            objTable.DefaultView.Sort = "ObjNum";
+
+            cbObj.DataSource = objTable;
+            cbObj.DisplayMember = "Name";
+            cbObj.ValueMember = "ObjNum";
+
+            try
+            {
+                cbObj.SelectedValue = recentSelection.ObjNum;
+            }
+            catch
+            {
+                cbObj.SelectedValue = 0;
+            }
+        }
+
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        public void Init(ScadaProject project, RecentSelection recentSelection)
+        {
+            this.project = project ?? throw new ArgumentNullException("project");
+            this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
+            FillObjectList();
+        }
 
         /// <summary>
         /// Sets the input focus.
