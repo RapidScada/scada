@@ -391,7 +391,7 @@
     <Phrase key="lblCommLine">Линия связи</Phrase>
     <Phrase key="lblDescr">Описание</Phrase>
     <Phrase key="gbComm">Коммуникатор</Phrase>
-    <Phrase key="chkAddToComm">Добавить линию в Коммуникатор</Phrase>
+    <Phrase key="chkAddToComm">Добавить КП в Коммуникатор</Phrase>
     <Phrase key="lblInstance">Экземпляр</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>

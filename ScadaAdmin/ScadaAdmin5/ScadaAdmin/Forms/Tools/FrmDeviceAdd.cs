@@ -190,7 +190,7 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Checks feasibility of adding a device.
         /// </summary>
-        private bool CheckFeasibility(out Comm.Settings.CommLine commLineSettings)
+        private bool CheckFeasibility(out Settings.CommLine commLineSettings)
         {
             commLineSettings = null;
             int kpNum = Convert.ToInt32(numKPNum.Value);
@@ -204,10 +204,17 @@ namespace Scada.Admin.App.Forms.Tools
 
             if (chkAddToComm.Checked && cbInstance.SelectedItem is Instance instance && instance.CommApp.Enabled)
             {
+                // load instance settings
+                if (!instance.LoadAppSettings(out string errMsg))
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                    return false;
+                }
+
                 // reverse search communication line
                 for (int i = instance.CommApp.Settings.CommLines.Count - 1; i >= 0; i--)
                 {
-                    Comm.Settings.CommLine commLine = instance.CommApp.Settings.CommLines[i];
+                    Settings.CommLine commLine = instance.CommApp.Settings.CommLines[i];
                     if (commLine.Number == commLineNum)
                     {
                         commLineSettings = commLine;

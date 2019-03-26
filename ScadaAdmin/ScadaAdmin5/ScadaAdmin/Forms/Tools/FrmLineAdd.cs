@@ -131,17 +131,23 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private bool CheckFeasibility()
         {
-            int commLineNum = Convert.ToInt32(numCommLineNum.Value);
+            if (chkAddToComm.Checked && cbInstance.SelectedItem is Instance instance && instance.CommApp.Enabled)
+            {
+                // load instance settings
+                if (!instance.LoadAppSettings(out string errMsg))
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                    return false;
+                }
+            }
 
-            if (project.ConfigBase.CommLineTable.PkExists(commLineNum))
+            if (project.ConfigBase.CommLineTable.PkExists(Convert.ToInt32(numCommLineNum.Value)))
             {
                 ScadaUiUtils.ShowError(AppPhrases.LineAlreadyExists);
                 return false;
             }
-            else
-            {
-                return true;
-            }
+
+            return true;
         }
 
 

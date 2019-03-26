@@ -391,7 +391,7 @@
     <Phrase key="lblCommLine">Communication line</Phrase>
     <Phrase key="lblDescr">Description</Phrase>
     <Phrase key="gbComm">Communicator</Phrase>
-    <Phrase key="chkAddToComm">Add line to Communicator</Phrase>
+    <Phrase key="chkAddToComm">Add device to Communicator</Phrase>
     <Phrase key="lblInstance">Instance</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>

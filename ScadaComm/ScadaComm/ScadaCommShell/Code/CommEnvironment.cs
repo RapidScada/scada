@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent.Connector;
@@ -39,25 +39,38 @@ namespace Scada.Comm.Shell.Code
     public class CommEnvironment
     {
         /// <summary>
-        /// Gets or sets the application directories.
+        /// The user interface of the drivers accessed by full file name.
         /// </summary>
-        public AppDirs AppDirs { get; set; }
+        protected Dictionary<string, KPView> kpViews;
+
+        
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public CommEnvironment(AppDirs appDirs, Log errLog)
+        {
+            kpViews = new Dictionary<string, KPView>();
+
+            AppDirs = appDirs ?? throw new ArgumentNullException("appDirs");
+            ErrLog = errLog ?? throw new ArgumentNullException("errLog");
+        }
+
 
         /// <summary>
-        /// Gets or sets the user interface of the drivers accessed by full file name.
+        /// Gets the application directories.
         /// </summary>
-        public Dictionary<string, KPView> KPViews { get; set; }
+        public AppDirs AppDirs { get; protected set; }
+
+        /// <summary>
+        /// Gets the application error log.
+        /// </summary>
+        public Log ErrLog { get; protected set; }
 
         /// <summary>
         /// Gets or sets the client of the Agent service.
         /// </summary>
         /// <remarks>Null allowed.</remarks>
         public IAgentClient AgentClient { get; set; }
-
-        /// <summary>
-        /// Gets the application error log.
-        /// </summary>
-        public Log ErrLog { get; set; }
 
 
         /// <summary>
@@ -73,30 +86,15 @@ namespace Scada.Comm.Shell.Code
         }
 
         /// <summary>
-        /// Validates the environment and throws an exception if it is incorrect.
-        /// </summary>
-        public void Validate()
-        {
-            if (AppDirs == null)
-                throw new InvalidOperationException("AppDirs must not be null.");
-
-            if (KPViews == null)
-                throw new InvalidOperationException("KPViews must not be null.");
-
-            if (ErrLog == null)
-                throw new InvalidOperationException("ErrLog must not be null.");
-        }
-
-        /// <summary>
         /// Gets the user interface of the driver.
         /// </summary>
         public KPView GetKPView(string dllPath)
         {
-            if (!KPViews.TryGetValue(dllPath, out KPView kpView))
+            if (!kpViews.TryGetValue(dllPath, out KPView kpView))
             {
                 kpView = KPFactory.GetKPView(dllPath);
                 kpView.AppDirs = AppDirs;
-                KPViews[dllPath] = kpView;
+                kpViews[dllPath] = kpView;
             }
 
             return kpView;
