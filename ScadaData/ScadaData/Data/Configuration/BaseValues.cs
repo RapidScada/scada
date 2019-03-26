@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2017
+ * Modified : 2019
  */
 
 using System;
@@ -281,6 +281,14 @@ namespace Scada.Data.Configuration
         /// </summary>
         public static class Formats
         {
+            /// <summary>
+            /// Мин. идентификатор формата с фиксированной запятой
+            /// </summary>
+            public const int MinFixedID = 0;
+            /// <summary>
+            /// Макс. идентификатор формата с фиксированной запятой
+            /// </summary>
+            public const int MaxFixedID = 6;
             /// <summary>
             /// Текст из перечисления
             /// </summary>

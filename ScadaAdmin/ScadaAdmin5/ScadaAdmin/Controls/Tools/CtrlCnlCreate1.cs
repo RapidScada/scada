@@ -87,9 +87,15 @@ namespace Scada.Admin.App.Controls.Tools
 
 
         /// <summary>
-        /// Gets the selected device name.
+        /// Gets the selected object.
         /// </summary>
-        public string DeviceName { get; private set; }
+        public KP SelectedDevice
+        {
+            get
+            {
+                return cbDevice.SelectedItem as KP;
+            }
+        }
 
         /// <summary>
         /// Gets the channel prototypes.
@@ -179,9 +185,7 @@ namespace Scada.Admin.App.Controls.Tools
             this.project = project ?? throw new ArgumentNullException("project");
             this.appData = appData ?? throw new ArgumentNullException("appData");
 
-            DeviceName = "";
             CnlPrototypes = null;
-
             ScanCommSettings();
             FillCommLineList();
         }
@@ -225,7 +229,6 @@ namespace Scada.Admin.App.Controls.Tools
         private void cbDevice_SelectedIndexChanged(object sender, EventArgs e)
         {
             // create a user interface of the selected device
-            DeviceName = "";
             CnlPrototypes = null;
 
             if (cbDevice.SelectedItem is KP kp)
@@ -244,7 +247,6 @@ namespace Scada.Admin.App.Controls.Tools
                             deviceItem.KPView.AppDirs = commDirs;
                         }
 
-                        DeviceName = deviceItem.KPEntity.Name;
                         CnlPrototypes = deviceItem.KPView.DefaultCnls;
                         int inCnlCnt = CnlPrototypes == null ? 0 : CnlPrototypes.InCnls.Count;
                         int ctrlCnlCnt = CnlPrototypes == null ? 0 : CnlPrototypes.CtrlCnls.Count;

@@ -434,12 +434,31 @@
     <Phrase key="CloneCtrlCnlsError">Ошибка при клонировании каналов управления</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlCreate">
+    <Phrase key="this">Создание каналов</Phrase>
+    <Phrase key="lblCommLine">Линия связи</Phrase>
+    <Phrase key="lblDevice">КП</Phrase>
+    <Phrase key="lblObj">Объект</Phrase>
+    <Phrase key="gbInCnls">Входные каналы</Phrase>
+    <Phrase key="lblStartInCnl">Начальный</Phrase>
+    <Phrase key="lblEndInCnl">Конечный</Phrase>
+    <Phrase key="btnResetInCnls">Сброс</Phrase>
+    <Phrase key="gbOutCnls">Выходные каналы</Phrase>
+    <Phrase key="lblStartOutCnl">Начальный</Phrase>
+    <Phrase key="lblEndOutCnl">Конечный</Phrase>
+    <Phrase key="btnResetOutCnls">Сброс</Phrase>
+    <Phrase key="btnCnlMap">Карта каналов</Phrase>
+    <Phrase key="btnBack">Назад</Phrase>
+    <Phrase key="btnNext">Далее</Phrase>
+    <Phrase key="btnCreate">Создать</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="CreateCnlsStep1">Шаг 1 из 3: выберите КП</Phrase>
     <Phrase key="CreateCnlsStep2">Шаг 2 из 3: выберите объект вновь созданных каналов</Phrase>
     <Phrase key="CreateCnlsStep3">Шаг 3 из 3: назначьте номера каналов</Phrase>
     <Phrase key="DeviceInfo">Драйвер: {0}&#13;&#10;Экземпляр: {1}&#13;&#10;Входные каналы: {2}&#13;&#10;Каналы управления: {3}</Phrase>
     <Phrase key="DeviceNotFound">КП не найден в Коммуникаторе.</Phrase>
     <Phrase key="NoDeviceSelected">КП не выбран.</Phrase>
+    <Phrase key="CreateCnlsComplete">Создание каналов завершено успешно.&#13;&#10;Добавлено входных каналов: {0}.&#13;&#10;Добавлено каналов управления: {1}.</Phrase>
+    <Phrase key="CreateCnlsError">Ошибка при создании каналов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Карта каналов</Phrase>

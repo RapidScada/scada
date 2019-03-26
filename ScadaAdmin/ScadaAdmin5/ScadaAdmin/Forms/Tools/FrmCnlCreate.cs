@@ -26,15 +26,12 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.Comm.Devices;
+using Scada.Data.Configuration;
+using Scada.Data.Entities;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tools
@@ -45,6 +42,47 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCnlCreate : Form
     {
+        /// <summary>
+        /// Indexes for the dictionaries.
+        /// <para>Индексы для словарей.</para>
+        /// </summary>
+        private class DictIndexes
+        {
+            public DictIndexes(ConfigBase configBase)
+            {
+                CmdValByName = new Dictionary<string, int>();
+                ParamByName = new Dictionary<string, int>();
+                UnitByName = new Dictionary<string, int>();
+
+                foreach (CmdVal cmdVal in configBase.CmdValTable.EnumerateItems())
+                {
+                    if (cmdVal.Name != null)
+                        CmdValByName[cmdVal.Name] = cmdVal.CmdValID;
+                }
+
+                foreach (Param param in configBase.ParamTable.EnumerateItems())
+                {
+                    if (param.Name != null)
+                        ParamByName[param.Name] = param.ParamID;
+                }
+
+                foreach (Unit unit in configBase.UnitTable.EnumerateItems())
+                {
+                    if (unit.Name != null)
+                        UnitByName[unit.Name] = unit.UnitID;
+                }
+            }
+
+            public Dictionary<string, int> CmdValByName { get; private set; }
+            public Dictionary<string, int> ParamByName { get; private set; }
+            public Dictionary<string, int> UnitByName { get; private set; }
+
+            public int? GetID(Dictionary<string, int> dict, string name)
+            {
+                return name != null && dict.TryGetValue(name, out int id) ? (int?)id : null;
+            }
+        }
+
         private readonly ScadaProject project; // the project under development
         private readonly AppData appData;      // the common data of the application
 
@@ -108,7 +146,7 @@ namespace Scada.Admin.App.Forms.Tools
                     btnNext.Visible = true;
                     btnCreate.Visible = false;
 
-                    ctrlCnlCreate2.DeviceName = ctrlCnlCreate1.DeviceName;
+                    ctrlCnlCreate2.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
                     ctrlCnlCreate2.SetFocus();
                     break;
                 case 3:
@@ -121,7 +159,7 @@ namespace Scada.Admin.App.Forms.Tools
                     btnNext.Visible = false;
                     btnCreate.Visible = true;
 
-                    ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.DeviceName;
+                    ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
                     ctrlCnlCreate3.SetFocus();
                     break;
             }
@@ -132,12 +170,104 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private bool CreateChannels()
         {
-            List<KPView.InCnlPrototype> inCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.InCnls;
-            List<KPView.CtrlCnlPrototype> ctrlCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.CtrlCnls;
-            int inCnlNum = ctrlCnlCreate3.StartInCnl;
-            int ctrlCnlNum = ctrlCnlCreate3.StartOutCnl;
+            try
+            {
+                List<KPView.InCnlPrototype> inCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.InCnls;
+                List<KPView.CtrlCnlPrototype> ctrlCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.CtrlCnls;
+                int? objNum = ctrlCnlCreate2.ObjNum;
+                int kpNum = ctrlCnlCreate1.SelectedDevice.KPNum;
+                string cnlPrefix = ctrlCnlCreate1.SelectedDevice.Name + " - ";
+                int inCnlNum = ctrlCnlCreate3.StartInCnl;
+                int ctrlCnlNum = ctrlCnlCreate3.StartOutCnl;
+                BaseTable<InCnl> inCnlTable = project.ConfigBase.InCnlTable;
+                BaseTable<CtrlCnl> ctrlCnlTable = project.ConfigBase.CtrlCnlTable;
+                BaseTable<Format> formatTable = project.ConfigBase.FormatTable;
+                DictIndexes dictIndexes = new DictIndexes(project.ConfigBase);
 
-            return false;
+                // create output channels
+                foreach (KPView.CtrlCnlPrototype ctrlCnlPrototype in ctrlCnlPrototypes)
+                {
+                    ctrlCnlPrototype.CtrlCnlNum = ctrlCnlNum;
+
+                    CtrlCnl ctrlCnl = new CtrlCnl
+                    {
+                        CtrlCnlNum = ctrlCnlNum++,
+                        Active = ctrlCnlPrototype.Active,
+                        Name = cnlPrefix + ctrlCnlPrototype.CtrlCnlName,
+                        CmdTypeID = ctrlCnlPrototype.CmdTypeID,
+                        ObjNum = objNum,
+                        KPNum = kpNum,
+                        CmdNum = ctrlCnlPrototype.CmdNum > 0 ? (int?)ctrlCnlPrototype.CmdNum : null,
+                        CmdValID = dictIndexes.GetID(dictIndexes.CmdValByName, ctrlCnlPrototype.CmdVal),
+                        FormulaUsed = ctrlCnlPrototype.FormulaUsed,
+                        Formula = ctrlCnlPrototype.Formula,
+                        EvEnabled = ctrlCnlPrototype.EvEnabled
+                    };
+
+                    if (ctrlCnl.Name.Length > ColumnLength.Name)
+                        ctrlCnl.Name = ctrlCnl.Name.Substring(0, ColumnLength.Name);
+
+                    ctrlCnlTable.AddItem(ctrlCnl);
+                }
+
+                if (ctrlCnlPrototypes.Count > 0)
+                    ctrlCnlTable.Modified = true;
+
+                // create input channels
+                foreach (KPView.InCnlPrototype inCnlPrototype in inCnlPrototypes)
+                {
+                    int formatID = inCnlPrototype.ShowNumber ?
+                        Math.Min(inCnlPrototype.DecDigits, BaseValues.Formats.MaxFixedID) :
+                        BaseValues.Formats.EnumText;
+
+                    InCnl inCnl = new InCnl
+                    {
+                        CnlNum = inCnlNum++,
+                        Active = inCnlPrototype.Active,
+                        Name = cnlPrefix + inCnlPrototype.CnlName,
+                        CnlTypeID = inCnlPrototype.CnlTypeID,
+                        ObjNum = objNum,
+                        KPNum = kpNum,
+                        Signal = inCnlPrototype.Signal > 0 ? (int?)inCnlPrototype.Signal : null,
+                        FormulaUsed = inCnlPrototype.FormulaUsed,
+                        Formula = inCnlPrototype.Formula,
+                        Averaging = inCnlPrototype.Averaging,
+                        ParamID = dictIndexes.GetID(dictIndexes.ParamByName, inCnlPrototype.ParamName),
+                        FormatID = formatTable.PkExists(formatID) ? (int?)formatID : null,
+                        UnitID = dictIndexes.GetID(dictIndexes.UnitByName, inCnlPrototype.UnitName),
+                        CtrlCnlNum = inCnlPrototype.CtrlCnlProps?.CtrlCnlNum,
+                        EvEnabled = inCnlPrototype.EvEnabled,
+                        EvSound = inCnlPrototype.EvSound,
+                        EvOnChange = inCnlPrototype.EvOnChange,
+                        EvOnUndef = inCnlPrototype.EvOnUndef,
+                        LimLowCrash = double.IsNaN(inCnlPrototype.LimLowCrash) ?
+                            null : (double?)inCnlPrototype.LimLowCrash,
+                        LimLow = double.IsNaN(inCnlPrototype.LimLow) ?
+                            null : (double?)inCnlPrototype.LimLow,
+                        LimHigh = double.IsNaN(inCnlPrototype.LimHigh) ?
+                            null : (double?)inCnlPrototype.LimHigh,
+                        LimHighCrash = double.IsNaN(inCnlPrototype.LimHighCrash) ?
+                            null : (double?)inCnlPrototype.LimHighCrash
+                    };
+
+                    if (inCnl.Name.Length > ColumnLength.Name)
+                        inCnl.Name = inCnl.Name.Substring(0, ColumnLength.Name);
+
+                    inCnlTable.AddItem(inCnl);
+                }
+
+                if (inCnlPrototypes.Count > 0)
+                    inCnlTable.Modified = true;
+
+                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.CreateCnlsComplete, 
+                    inCnlPrototypes.Count, ctrlCnlPrototypes.Count));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                appData.ProcError(ex, AppPhrases.CreateCnlsError);
+                return false;
+            }
         }
 
 

@@ -434,12 +434,31 @@
     <Phrase key="CloneCtrlCnlsError">Error cloning output channels</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlCreate">
+    <Phrase key="this">Create Channels</Phrase>
+    <Phrase key="lblCommLine">Communication line</Phrase>
+    <Phrase key="lblDevice">Device</Phrase>
+    <Phrase key="lblObj">Object</Phrase>
+    <Phrase key="gbInCnls">Input Channels</Phrase>
+    <Phrase key="lblStartInCnl">Start</Phrase>
+    <Phrase key="lblEndInCnl">End</Phrase>
+    <Phrase key="btnResetInCnls">Reset</Phrase>
+    <Phrase key="gbOutCnls">Output Channels</Phrase>
+    <Phrase key="lblStartOutCnl">Start</Phrase>
+    <Phrase key="lblEndOutCnl">End</Phrase>
+    <Phrase key="btnResetOutCnls">Reset</Phrase>
+    <Phrase key="btnCnlMap">Channel Map</Phrase>
+    <Phrase key="btnBack">Back</Phrase>
+    <Phrase key="btnNext">Next</Phrase>
+    <Phrase key="btnCreate">Create</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="CreateCnlsStep1">Step 1 of 3: select a device</Phrase>
     <Phrase key="CreateCnlsStep2">Step 2 of 3: select an object of newly created channels</Phrase>
     <Phrase key="CreateCnlsStep3">Step 3 of 3: assign channel numbers</Phrase>
     <Phrase key="DeviceInfo">Driver: {0}&#13;&#10;Instance: {1}&#13;&#10;Input channels: {2}&#13;&#10;Output channels: {3}</Phrase>
     <Phrase key="DeviceNotFound">Device not found in Communicator.</Phrase>
     <Phrase key="NoDeviceSelected">No device selected.</Phrase>
+    <Phrase key="CreateCnlsComplete">Creation completed successfully.&#13;&#10;{0} input channel(s) added.&#13;&#10;{1} output channel(s) added.</Phrase>
+    <Phrase key="CreateCnlsError">Error creating channels</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Channel Map</Phrase>

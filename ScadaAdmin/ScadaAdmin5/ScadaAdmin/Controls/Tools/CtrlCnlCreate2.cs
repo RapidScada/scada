@@ -74,13 +74,14 @@ namespace Scada.Admin.App.Controls.Tools
         }
         
         /// <summary>
-        /// Gets the selected object.
+        /// Gets the selected object number.
         /// </summary>
-        public Obj SelectedObject
+        public int? ObjNum
         {
             get
             {
-                return cbObj.SelectedItem as Obj;
+                int objNum = (int)cbObj.SelectedValue;
+                return objNum > 0 ? (int?)objNum : null;
             }
         }
 

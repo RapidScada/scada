@@ -125,6 +125,8 @@ namespace Scada.Admin.App.Code
         public static string DeviceInfo { get; private set; }
         public static string DeviceNotFound { get; private set; }
         public static string NoDeviceSelected { get; private set; }
+        public static string CreateCnlsComplete { get; private set; }
+        public static string CreateCnlsError { get; private set; }
 
         // Scada.Admin.App.Forms.Tools.FrmCnlMap
         public static string InCnlByDevTitle { get; private set; }
@@ -301,6 +303,8 @@ namespace Scada.Admin.App.Code
             DeviceInfo = dict.GetPhrase("DeviceInfo");
             DeviceNotFound = dict.GetPhrase("DeviceNotFound");
             NoDeviceSelected = dict.GetPhrase("NoDeviceSelected");
+            CreateCnlsComplete = dict.GetPhrase("CreateCnlsComplete");
+            CreateCnlsError = dict.GetPhrase("CreateCnlsError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmCommImport");
             NoDataSelected = dict.GetPhrase("NoDataSelected");
