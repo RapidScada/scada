@@ -396,7 +396,7 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="DeviceAlreadyExists">A device with the same number already exists.</Phrase>
-    <Phrase key="CommLineNotFound">Communication file not found in Communicator.</Phrase>
+    <Phrase key="CommLineNotFound">Communication line not found in Communicator.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
     <Phrase key="this">Add Communication Line</Phrase>
@@ -437,6 +437,9 @@
     <Phrase key="CreateCnlsStep1">Step 1 of 3: select a device</Phrase>
     <Phrase key="CreateCnlsStep2">Step 2 of 3: select an object of newly created channels</Phrase>
     <Phrase key="CreateCnlsStep3">Step 3 of 3: assign channel numbers</Phrase>
+    <Phrase key="DeviceInfo">Driver: {0}&#13;&#10;Instance: {1}&#13;&#10;Input channels: {2}&#13;&#10;Output channels: {3}</Phrase>
+    <Phrase key="DeviceNotFound">Device not found in Communicator.</Phrase>
+    <Phrase key="NoDeviceSelected">No device selected.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Channel Map</Phrase>

@@ -64,7 +64,7 @@ namespace Scada.Admin.App.Forms.Tools
             this.project = project ?? throw new ArgumentNullException("project");
             this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
             InstanceName = "";
-            KpSettings = null;
+            KPSettings = null;
             CommLineSettings = null;
 
             numKPNum.Maximum = ushort.MaxValue;
@@ -82,7 +82,7 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Gets a device added to Communicator.
         /// </summary>
-        public Settings.KP KpSettings { get; private set; }
+        public Settings.KP KPSettings { get; private set; }
 
         /// <summary>
         /// Gets a communication line of the device added to Communicator.
@@ -268,9 +268,9 @@ namespace Scada.Admin.App.Forms.Tools
                 {
                     if (instance.CommApp.Enabled)
                     {
-                        KpSettings = SettingsConverter.CreateKP(kpEntity, project.ConfigBase.KPTypeTable);
-                        KpSettings.Parent = commLineSettings;
-                        commLineSettings.ReqSequence.Add(KpSettings);
+                        KPSettings = SettingsConverter.CreateKP(kpEntity, project.ConfigBase.KPTypeTable);
+                        KPSettings.Parent = commLineSettings;
+                        commLineSettings.ReqSequence.Add(KPSettings);
                         CommLineSettings = commLineSettings;
                     }
 

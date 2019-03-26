@@ -70,6 +70,28 @@ namespace Scada.Admin.App.Controls.Tools
             }
         }
 
+        /// <summary>
+        /// Gets the start input channel number.
+        /// </summary>
+        public int StartInCnl
+        {
+            get
+            {
+                return Convert.ToInt32(numStartInCnl.Value);
+            }
+        }
+
+        /// <summary>
+        /// Gets the start output channel number.
+        /// </summary>
+        public int StartOutCnl
+        {
+            get
+            {
+                return Convert.ToInt32(numStartOutCnl.Value);
+            }
+        }
+
 
         /// <summary>
         /// Sets the input focus.

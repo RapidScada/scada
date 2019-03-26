@@ -494,6 +494,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Resources\warning.png" />
+    <None Include="Resources\success.png" />
+    <None Include="Resources\error.png" />
     <None Include="Resources\file.png" />
     <None Include="Resources\chrome.png" />
     <None Include="Resources\ui.png" />

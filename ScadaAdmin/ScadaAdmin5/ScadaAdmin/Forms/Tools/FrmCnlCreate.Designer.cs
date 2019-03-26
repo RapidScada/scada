@@ -102,6 +102,7 @@
             // 
             // ctrlCnlCreate3
             // 
+            this.ctrlCnlCreate3.DeviceName = "";
             this.ctrlCnlCreate3.Location = new System.Drawing.Point(12, 43);
             this.ctrlCnlCreate3.Name = "ctrlCnlCreate3";
             this.ctrlCnlCreate3.Size = new System.Drawing.Size(360, 181);
@@ -109,6 +110,7 @@
             // 
             // ctrlCnlCreate2
             // 
+            this.ctrlCnlCreate2.DeviceName = "";
             this.ctrlCnlCreate2.Location = new System.Drawing.Point(12, 43);
             this.ctrlCnlCreate2.Name = "ctrlCnlCreate2";
             this.ctrlCnlCreate2.Size = new System.Drawing.Size(360, 100);
@@ -120,6 +122,7 @@
             this.ctrlCnlCreate1.Name = "ctrlCnlCreate1";
             this.ctrlCnlCreate1.Size = new System.Drawing.Size(360, 181);
             this.ctrlCnlCreate1.TabIndex = 1;
+            this.ctrlCnlCreate1.SelectedDeviceChanged += new System.EventHandler(this.ctrlCnlCreate1_SelectedDeviceChanged);
             // 
             // FrmCnlCreate
             // 

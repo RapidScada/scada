@@ -82,7 +82,7 @@
             this.txtInfo.Multiline = true;
             this.txtInfo.Name = "txtInfo";
             this.txtInfo.ReadOnly = true;
-            this.txtInfo.Size = new System.Drawing.Size(338, 45);
+            this.txtInfo.Size = new System.Drawing.Size(338, 88);
             this.txtInfo.TabIndex = 4;
             // 
             // pbStatus

@@ -1333,14 +1333,14 @@ namespace Scada.Admin.App.Forms
                 {
                     RefreshBaseTables(typeof(KP));
 
-                    if (frmDeviceAdd.KpSettings != null &&
+                    if (frmDeviceAdd.KPSettings != null &&
                         FindInstance(frmDeviceAdd.InstanceName, out TreeNode instanceNode, out LiveInstance liveInstance))
                     {
                         // add the device to the explorer
                         if (liveInstance.IsReady)
                         {
                             TreeNode commLineNode = FindTreeNode(frmDeviceAdd.CommLineSettings, instanceNode);
-                            TreeNode kpNode = commShell.CreateDeviceNode(frmDeviceAdd.KpSettings, 
+                            TreeNode kpNode = commShell.CreateDeviceNode(frmDeviceAdd.KPSettings, 
                                 frmDeviceAdd.CommLineSettings, liveInstance.CommEnvironment);
                             kpNode.ContextMenuStrip = cmsDevice;
                             commLineNode.Nodes.Add(kpNode);
@@ -1350,14 +1350,14 @@ namespace Scada.Admin.App.Forms
                         else
                         {
                             PrepareInstanceNode(instanceNode, liveInstance);
-                            tvExplorer.SelectedNode = FindTreeNode(frmDeviceAdd.KpSettings, instanceNode);
+                            tvExplorer.SelectedNode = FindTreeNode(frmDeviceAdd.KPSettings, instanceNode);
                         }
 
                         // set the device request parameters by default
-                        if (liveInstance.CommEnvironment.TryGetKPView(frmDeviceAdd.KpSettings, true, null,
+                        if (liveInstance.CommEnvironment.TryGetKPView(frmDeviceAdd.KPSettings, true, null,
                             out KPView kpView, out string errMsg))
                         {
-                            frmDeviceAdd.KpSettings.SetReqParams(kpView.DefaultReqParams);
+                            frmDeviceAdd.KPSettings.SetReqParams(kpView.DefaultReqParams);
                         }
                         else
                         {
@@ -1375,8 +1375,13 @@ namespace Scada.Admin.App.Forms
             // show a channel creation wizard
             if (project != null)
             {
-                FrmCnlCreate frmCnlCreate = new FrmCnlCreate(project, appData.AppState.RecentSelection);
-                frmCnlCreate.ShowDialog();
+                FrmCnlCreate frmCnlCreate = new FrmCnlCreate(project, appData.AppState.RecentSelection, appData);
+
+                if (frmCnlCreate.ShowDialog() == DialogResult.OK)
+                {
+                    RefreshBaseTables(typeof(InCnl));
+                    RefreshBaseTables(typeof(CtrlCnl));
+                }
             }
         }
 

@@ -437,6 +437,9 @@
     <Phrase key="CreateCnlsStep1">Шаг 1 из 3: выберите КП</Phrase>
     <Phrase key="CreateCnlsStep2">Шаг 2 из 3: выберите объект вновь созданных каналов</Phrase>
     <Phrase key="CreateCnlsStep3">Шаг 3 из 3: назначьте номера каналов</Phrase>
+    <Phrase key="DeviceInfo">Драйвер: {0}&#13;&#10;Экземпляр: {1}&#13;&#10;Входные каналы: {2}&#13;&#10;Каналы управления: {3}</Phrase>
+    <Phrase key="DeviceNotFound">КП не найден в Коммуникаторе.</Phrase>
+    <Phrase key="NoDeviceSelected">КП не выбран.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Карта каналов</Phrase>

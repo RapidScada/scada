@@ -25,6 +25,7 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
+using Scada.Comm.Devices;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -44,8 +45,8 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCnlCreate : Form
     {
-        private readonly ScadaProject project;            // the project under development
-        private readonly RecentSelection recentSelection; // the recently selected objects
+        private readonly ScadaProject project; // the project under development
+        private readonly AppData appData;      // the common data of the application
 
         private int step; // the current step of the wizard
 
@@ -62,11 +63,11 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmCnlCreate(ScadaProject project, RecentSelection recentSelection)
+        public FrmCnlCreate(ScadaProject project, RecentSelection recentSelection, AppData appData)
             : this()
         {
             this.project = project ?? throw new ArgumentNullException("project");
-            this.recentSelection = recentSelection ?? throw new ArgumentNullException("recentSelection");
+            this.appData = appData ?? throw new ArgumentNullException("appData");
         }
 
 
@@ -95,6 +96,7 @@ namespace Scada.Admin.App.Forms.Tools
                     btnCreate.Visible = false;
 
                     ctrlCnlCreate1.SetFocus();
+                    btnNext.Enabled = ctrlCnlCreate1.StatusOK;
                     break;
                 case 2:
                     lblStep.Text = AppPhrases.CreateCnlsStep2;
@@ -106,7 +108,7 @@ namespace Scada.Admin.App.Forms.Tools
                     btnNext.Visible = true;
                     btnCreate.Visible = false;
 
-                    ctrlCnlCreate2.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
+                    ctrlCnlCreate2.DeviceName = ctrlCnlCreate1.DeviceName;
                     ctrlCnlCreate2.SetFocus();
                     break;
                 case 3:
@@ -119,19 +121,38 @@ namespace Scada.Admin.App.Forms.Tools
                     btnNext.Visible = false;
                     btnCreate.Visible = true;
 
-                    ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
+                    ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.DeviceName;
                     ctrlCnlCreate3.SetFocus();
                     break;
             }
+        }
+
+        /// <summary>
+        /// Creates channels based on the prototypes.
+        /// </summary>
+        private bool CreateChannels()
+        {
+            List<KPView.InCnlPrototype> inCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.InCnls;
+            List<KPView.CtrlCnlPrototype> ctrlCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.CtrlCnls;
+            int inCnlNum = ctrlCnlCreate3.StartInCnl;
+            int ctrlCnlNum = ctrlCnlCreate3.StartOutCnl;
+
+            return false;
         }
 
 
         private void FrmCnlCreate_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
-            ctrlCnlCreate1.Init(project, recentSelection);
-            ctrlCnlCreate2.Init(project, recentSelection);
+            ctrlCnlCreate1.Init(project, appData);
+            ctrlCnlCreate2.Init(project, appData.AppState.RecentSelection);
             ApplyStep(0);
+        }
+
+        private void ctrlCnlCreate1_SelectedDeviceChanged(object sender, EventArgs e)
+        {
+            if (step == 1)
+                btnNext.Enabled = ctrlCnlCreate1.StatusOK;
         }
 
         private void btnCnlMap_Click(object sender, EventArgs e)
@@ -151,7 +172,10 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void btnCreate_Click(object sender, EventArgs e)
         {
-
+            if (ctrlCnlCreate1.StatusOK && CreateChannels())
+            {
+                DialogResult = DialogResult.OK;
+            }
         }
     }
 }
