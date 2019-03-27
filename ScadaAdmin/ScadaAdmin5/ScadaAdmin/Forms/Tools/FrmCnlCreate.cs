@@ -276,6 +276,7 @@ namespace Scada.Admin.App.Forms.Tools
             Translator.TranslateForm(this, GetType().FullName);
             ctrlCnlCreate1.Init(project, appData);
             ctrlCnlCreate2.Init(project, appData.AppState.RecentSelection);
+            ctrlCnlCreate3.Init(project);
             ApplyStep(0);
         }
 

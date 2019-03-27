@@ -32,6 +32,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Scada.Admin.Project;
 
 namespace Scada.Admin.App.Controls.Tools
 {
@@ -41,6 +42,9 @@ namespace Scada.Admin.App.Controls.Tools
     /// </summary>
     public partial class CtrlCnlCreate3 : UserControl
     {
+        private ScadaProject project; // the project under development
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -92,6 +96,22 @@ namespace Scada.Admin.App.Controls.Tools
             }
         }
 
+
+        /// <summary>
+        /// Sets the channel numbers by default.
+        /// </summary>
+        private void SetCnlNums()
+        {
+        }
+
+        /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        public void Init(ScadaProject project)
+        {
+            this.project = project ?? throw new ArgumentNullException("project");
+            SetCnlNums();
+        }
 
         /// <summary>
         /// Sets the input focus.

@@ -30,6 +30,7 @@ using Scada.Comm.Shell.Code;
 using Scada.Data.Entities;
 using Scada.UI;
 using System;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -102,6 +103,17 @@ namespace Scada.Admin.App.Forms.Tools
         }
 
         /// <summary>
+        /// Sets the communication line number by default.
+        /// </summary>
+        private void SetCommLineNum()
+        {
+            if (recentSelection.CommLineNum > 0)
+                numCommLineNum.SetValue(recentSelection.CommLineNum + 1);
+            else if (project.ConfigBase.CommLineTable.ItemCount > 0)
+                numCommLineNum.SetValue(project.ConfigBase.CommLineTable.Items.Values.Last().CommLineNum + 1);
+        }
+
+        /// <summary>
         /// Validates the form fields.
         /// </summary>
         private bool ValidateFields()
@@ -155,6 +167,7 @@ namespace Scada.Admin.App.Forms.Tools
         {
             Translator.TranslateForm(this, GetType().FullName);
             FillInstanceList();
+            SetCommLineNum();
             txtName.Select();
         }
 

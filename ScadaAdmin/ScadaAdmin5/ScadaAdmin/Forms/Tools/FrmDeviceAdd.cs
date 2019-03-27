@@ -32,6 +32,7 @@ using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Data;
+using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
@@ -155,6 +156,17 @@ namespace Scada.Admin.App.Forms.Tools
                 cbInstance.SelectedIndex = 0;
             }
         }
+        
+        /// <summary>
+        /// Sets the device number by default.
+        /// </summary>
+        private void SetDeviceNum()
+        {
+            if (recentSelection.KPNum > 0)
+                numKPNum.SetValue(recentSelection.KPNum + 1);
+            else if (project.ConfigBase.KPTable.ItemCount > 0)
+                numKPNum.SetValue(project.ConfigBase.KPTable.Items.Values.Last().KPNum + 1);
+        }
 
         /// <summary>
         /// Validates the form fields.
@@ -239,6 +251,7 @@ namespace Scada.Admin.App.Forms.Tools
             FillDeviceTypeList();
             FillCommLineList();
             FillInstanceList();
+            SetDeviceNum();
             txtName.Select();
         }
 
