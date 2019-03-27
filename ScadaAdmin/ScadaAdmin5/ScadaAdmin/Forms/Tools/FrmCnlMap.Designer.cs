@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.gbCnlKind = new System.Windows.Forms.GroupBox();
-            this.rbOutCnls = new System.Windows.Forms.RadioButton();
-            this.rbInCnls = new System.Windows.Forms.RadioButton();
+            this.chkOutCnls = new System.Windows.Forms.CheckBox();
+            this.chkInCnls = new System.Windows.Forms.CheckBox();
             this.gbGroupBy = new System.Windows.Forms.GroupBox();
             this.rbGroupByObjects = new System.Windows.Forms.RadioButton();
             this.rbGroupByDevices = new System.Windows.Forms.RadioButton();
@@ -42,8 +42,8 @@
             // 
             // gbCnlKind
             // 
-            this.gbCnlKind.Controls.Add(this.rbOutCnls);
-            this.gbCnlKind.Controls.Add(this.rbInCnls);
+            this.gbCnlKind.Controls.Add(this.chkOutCnls);
+            this.gbCnlKind.Controls.Add(this.chkInCnls);
             this.gbCnlKind.Location = new System.Drawing.Point(12, 12);
             this.gbCnlKind.Name = "gbCnlKind";
             this.gbCnlKind.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -52,27 +52,31 @@
             this.gbCnlKind.TabStop = false;
             this.gbCnlKind.Text = "Channel Kind";
             // 
-            // rbOutCnls
+            // chkOutCnls
             // 
-            this.rbOutCnls.AutoSize = true;
-            this.rbOutCnls.Location = new System.Drawing.Point(158, 19);
-            this.rbOutCnls.Name = "rbOutCnls";
-            this.rbOutCnls.Size = new System.Drawing.Size(103, 17);
-            this.rbOutCnls.TabIndex = 1;
-            this.rbOutCnls.Text = "Output channels";
-            this.rbOutCnls.UseVisualStyleBackColor = true;
+            this.chkOutCnls.AutoSize = true;
+            this.chkOutCnls.Checked = true;
+            this.chkOutCnls.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkOutCnls.Location = new System.Drawing.Point(158, 20);
+            this.chkOutCnls.Name = "chkOutCnls";
+            this.chkOutCnls.Size = new System.Drawing.Size(104, 17);
+            this.chkOutCnls.TabIndex = 1;
+            this.chkOutCnls.Text = "Output channels";
+            this.chkOutCnls.UseVisualStyleBackColor = true;
+            this.chkOutCnls.CheckedChanged += new System.EventHandler(this.chkCnls_CheckedChanged);
             // 
-            // rbInCnls
+            // chkInCnls
             // 
-            this.rbInCnls.AutoSize = true;
-            this.rbInCnls.Checked = true;
-            this.rbInCnls.Location = new System.Drawing.Point(13, 19);
-            this.rbInCnls.Name = "rbInCnls";
-            this.rbInCnls.Size = new System.Drawing.Size(95, 17);
-            this.rbInCnls.TabIndex = 0;
-            this.rbInCnls.TabStop = true;
-            this.rbInCnls.Text = "Input channels";
-            this.rbInCnls.UseVisualStyleBackColor = true;
+            this.chkInCnls.AutoSize = true;
+            this.chkInCnls.Checked = true;
+            this.chkInCnls.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkInCnls.Location = new System.Drawing.Point(13, 19);
+            this.chkInCnls.Name = "chkInCnls";
+            this.chkInCnls.Size = new System.Drawing.Size(96, 17);
+            this.chkInCnls.TabIndex = 0;
+            this.chkInCnls.Text = "Input channels";
+            this.chkInCnls.UseVisualStyleBackColor = true;
+            this.chkInCnls.CheckedChanged += new System.EventHandler(this.chkCnls_CheckedChanged);
             // 
             // gbGroupBy
             // 
@@ -159,11 +163,11 @@
 
         private System.Windows.Forms.GroupBox gbCnlKind;
         private System.Windows.Forms.GroupBox gbGroupBy;
-        private System.Windows.Forms.RadioButton rbInCnls;
-        private System.Windows.Forms.RadioButton rbOutCnls;
         private System.Windows.Forms.RadioButton rbGroupByObjects;
         private System.Windows.Forms.RadioButton rbGroupByDevices;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.CheckBox chkInCnls;
+        private System.Windows.Forms.CheckBox chkOutCnls;
     }
 }

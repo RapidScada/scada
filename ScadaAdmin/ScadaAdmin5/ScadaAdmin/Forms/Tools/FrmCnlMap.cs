@@ -25,13 +25,8 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
-using Scada.Data.Entities;
-using Scada.Data.Tables;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tools
@@ -67,101 +62,46 @@ namespace Scada.Admin.App.Forms.Tools
         {
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             this.appData = appData ?? throw new ArgumentNullException("appData");
-            InCnlsSelected = true;
+
+            IncludeInCnls = true;
+            IncludeOutCnls = true;
         }
 
 
         /// <summary>
-        /// Gets or sets a value indicating whether to select input channels by default.
+        /// Gets or sets a value indicating whether to include input channels in a map.
         /// </summary>
-        public bool InCnlsSelected { get; set; }
-
+        public bool IncludeInCnls { get; set; }
 
         /// <summary>
-        /// Generates a channel map.
+        /// Gets or sets a value indicating whether to include output channels in a map.
         /// </summary>
-        private void GenerateCnlMap(bool inCnlMap, bool groupByDevices)
-        {
-            try
-            {
-                string mapFileName = Path.Combine(appData.AppDirs.LogDir, MapFileName);
-
-                using (StreamWriter writer = new StreamWriter(mapFileName, false, Encoding.UTF8))
-                {
-                    string title = inCnlMap ? 
-                        (groupByDevices ? AppPhrases.InCnlByDevTitle : AppPhrases.InCnlByObjTitle) : 
-                        (groupByDevices ? AppPhrases.OutCnlByDevTitle : AppPhrases.OutCnlByObjTitle);
-                    writer.WriteLine(title);
-                    writer.WriteLine(new string('-', title.Length));
-
-                    IBaseTable cnlTable = inCnlMap ? (IBaseTable)configBase.InCnlTable : configBase.CtrlCnlTable;
-                    string indexedColumn = groupByDevices ? "KPNum" : "ObjNum";
-
-                    if (cnlTable.TryGetIndex(indexedColumn, out TableIndex index))
-                    {
-                        if (groupByDevices)
-                        {
-                            foreach (KP kp in configBase.KPTable.EnumerateItems())
-                            {
-                                writer.WriteLine(string.Format(AppPhrases.DeviceCaption, kp.KPNum, kp.Name));
-                                WriteCnls(writer, index, kp.KPNum);
-                                writer.WriteLine();
-                            }
-
-                            writer.WriteLine(AppPhrases.EmptyDevice);
-                            WriteCnls(writer, index, 0);
-                        }
-                        else
-                        {
-                            foreach (Obj obj in configBase.ObjTable.EnumerateItems())
-                            {
-                                writer.WriteLine(string.Format(AppPhrases.ObjectCaption, obj.ObjNum, obj.Name));
-                                WriteCnls(writer, index, obj.ObjNum);
-                                writer.WriteLine();
-                            }
-
-                            writer.WriteLine(AppPhrases.EmptyObject);
-                            WriteCnls(writer, index, 0);
-                        }
-                    }
-                    else
-                    {
-                        throw new ScadaException(AppPhrases.IndexNotFound);
-                    }
-                }
-
-                AppUtils.OpenTextFile(mapFileName);
-            }
-            catch (Exception ex)
-            {
-                appData.ProcError(ex, AppPhrases.GenerateCnlMapError);
-            }
-        }
-
-        /// <summary>
-        /// Writes input channels having the specified index key.
-        /// </summary>
-        private void WriteCnls(StreamWriter writer, TableIndex index, int indexKey)
-        {
-            writer.WriteLine("    " + 
-                (index.ItemGroups.TryGetValue(indexKey, out SortedDictionary<int, object> group) ?
-                    RangeUtils.RangeToStr(group.Keys) :
-                    AppPhrases.NoChannels));
-        }
+        public bool IncludeOutCnls { get; set; }
 
 
         private void FrmCnlMap_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
+            chkInCnls.Checked = IncludeInCnls;
+            chkOutCnls.Checked = IncludeOutCnls;
+        }
 
-            if (!InCnlsSelected)
-                rbOutCnls.Checked = true;
+        private void chkCnls_CheckedChanged(object sender, EventArgs e)
+        {
+            btnOK.Enabled = chkInCnls.Checked || chkOutCnls.Checked;
         }
 
         private void btnOK_Click(object sender, EventArgs e)
         {
-            GenerateCnlMap(rbInCnls.Checked, rbGroupByDevices.Checked);
-            InCnlsSelected = rbInCnls.Checked;
+            new CnlMap(configBase, appData)
+            {
+                IncludeInCnls = chkInCnls.Checked,
+                IncludeOutCnls = chkOutCnls.Checked,
+                GroupByDevices = rbGroupByDevices.Checked
+            }.Generate();
+
+            IncludeInCnls = chkInCnls.Checked;
+            IncludeOutCnls = chkOutCnls.Checked;
             DialogResult = DialogResult.OK;
         }
     }

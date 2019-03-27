@@ -90,6 +90,7 @@
             this.btnResetInCnls.TabIndex = 4;
             this.btnResetInCnls.Text = "Reset";
             this.btnResetInCnls.UseVisualStyleBackColor = true;
+            this.btnResetInCnls.Click += new System.EventHandler(this.btnResetInCnls_Click);
             // 
             // numEndInCnl
             // 
@@ -129,6 +130,7 @@
             0,
             0,
             0});
+            this.numStartInCnl.ValueChanged += new System.EventHandler(this.numStartInCnl_ValueChanged);
             // 
             // lblStartInCnl
             // 
@@ -162,6 +164,7 @@
             this.btnResetOutCnls.TabIndex = 4;
             this.btnResetOutCnls.Text = "Reset";
             this.btnResetOutCnls.UseVisualStyleBackColor = true;
+            this.btnResetOutCnls.Click += new System.EventHandler(this.btnResetOutCnls_Click);
             // 
             // numEndOutCnl
             // 
@@ -201,6 +204,7 @@
             0,
             0,
             0});
+            this.numStartOutCnl.ValueChanged += new System.EventHandler(this.numStartOutCnl_ValueChanged);
             // 
             // lblStartOutCnl
             // 

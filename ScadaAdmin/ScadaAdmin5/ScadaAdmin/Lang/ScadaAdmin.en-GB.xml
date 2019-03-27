@@ -4,6 +4,18 @@
     <Phrase key="IndexNotFound">Index not found.</Phrase>
     <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.CnlMap">
+    <Phrase key="CnlMapByDevice">Channels by Device</Phrase>
+    <Phrase key="CnlMapByObject">Channels by Object</Phrase>
+    <Phrase key="InCnlsCaption">Input channels  : </Phrase>
+    <Phrase key="OutCnlsCaption">Output channels : </Phrase>
+    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
+    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDevice">Empty device</Phrase>
+    <Phrase key="EmptyObject">Empty object</Phrase>
+    <Phrase key="NoChannels">No channels</Phrase>
+    <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
     <Phrase key="CmdTypeID">ID</Phrase>
     <Phrase key="Name">Name</Phrase>
@@ -463,23 +475,13 @@
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Channel Map</Phrase>
     <Phrase key="gbCnlKind">Channel Kind</Phrase>
-    <Phrase key="rbInCnls">Input channels</Phrase>
-    <Phrase key="rbOutCnls">Output channels</Phrase>
+    <Phrase key="chkInCnls">Input channels</Phrase>
+    <Phrase key="chkOutCnls">Output channels</Phrase>
     <Phrase key="gbGroupBy">Group By</Phrase>
     <Phrase key="rbGroupByDevices">Devices</Phrase>
     <Phrase key="rbGroupByObjects">Objects</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="InCnlByDevTitle">Input Channels by Device</Phrase>
-    <Phrase key="InCnlByObjTitle">Input Channels by Object</Phrase>
-    <Phrase key="OutCnlByDevTitle">Output Channels by Device</Phrase>
-    <Phrase key="OutCnlByObjTitle">Output Channels by Object</Phrase>
-    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
-    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
-    <Phrase key="EmptyDevice">Empty device</Phrase>
-    <Phrase key="EmptyObject">Empty object</Phrase>
-    <Phrase key="NoChannels">No channels</Phrase>
-    <Phrase key="GenerateCnlMapError">Error generating channel map</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>

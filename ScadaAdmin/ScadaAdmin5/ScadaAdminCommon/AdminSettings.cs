@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaAdminCommon
- * Summary  : The class contains utility methods for Administrator and its libraries
+ * Summary  : Administrator settings
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 namespace Scada.Admin
@@ -36,17 +36,7 @@ namespace Scada.Admin
         /// </summary>
         public AdminSettings()
         {
-            // TODO: load settings from file
-            if (ScadaUtils.IsRunningOnWin)
-            {
-                ServerDir = @"C:\SCADA\ScadaServer\";
-                CommDir = @"C:\SCADA\ScadaComm\";
-            }
-            else
-            {
-                ServerDir = "/opt/scada/ScadaServer/";
-                CommDir = "/opt/scada/ScadaComm/";
-            }
+            SetToDefault();
         }
 
 
@@ -59,5 +49,42 @@ namespace Scada.Admin
         /// Gets or sets the directory of the Communicator application.
         /// </summary>
         public string CommDir { get; set; }
+
+        /// <summary>
+        /// Gets or sets the multiplicity of the first channel of a device.
+        /// </summary>
+        public int CnlMult { get; set; }
+
+        /// <summary>
+        /// Gets or sets the shift of the first channel of a device.
+        /// </summary>
+        public int CnlShift { get; set; }
+
+        /// <summary>
+        /// Gets or sets the gap between channel numbers of different devices.
+        /// </summary>
+        public int CnlGap { get; set; }
+
+
+        /// <summary>
+        /// Sets the default values.
+        /// </summary>
+        private void SetToDefault()
+        {
+            if (ScadaUtils.IsRunningOnWin)
+            {
+                ServerDir = @"C:\SCADA\ScadaServer\";
+                CommDir = @"C:\SCADA\ScadaComm\";
+            }
+            else
+            {
+                ServerDir = "/opt/scada/ScadaServer/";
+                CommDir = "/opt/scada/ScadaComm/";
+            }
+
+            CnlMult = 100;
+            CnlShift = 1;
+            CnlGap = 10;
+        }
     }
 }

@@ -106,6 +106,7 @@ namespace Scada.Admin.App.Forms.Tools
         {
             this.project = project ?? throw new ArgumentNullException("project");
             this.appData = appData ?? throw new ArgumentNullException("appData");
+            step = 1;
         }
 
 
@@ -159,6 +160,17 @@ namespace Scada.Admin.App.Forms.Tools
                     btnNext.Visible = false;
                     btnCreate.Visible = true;
 
+                    if (ctrlCnlCreate1.StatusOK)
+                    {
+                        ctrlCnlCreate3.SetInCnlNums(ctrlCnlCreate1.CnlPrototypes.InCnls.Count);
+                        ctrlCnlCreate3.SetOutCnlNums(ctrlCnlCreate1.CnlPrototypes.CtrlCnls.Count);
+                        btnCreate.Enabled = true;
+                    }
+                    else
+                    {
+                        btnCreate.Enabled = false;
+                    }
+
                     ctrlCnlCreate3.DeviceName = ctrlCnlCreate1.SelectedDevice?.Name;
                     ctrlCnlCreate3.SetFocus();
                     break;
@@ -179,6 +191,8 @@ namespace Scada.Admin.App.Forms.Tools
                 string cnlPrefix = ctrlCnlCreate1.SelectedDevice.Name + " - ";
                 int inCnlNum = ctrlCnlCreate3.StartInCnl;
                 int ctrlCnlNum = ctrlCnlCreate3.StartOutCnl;
+                int inCnlsAdded = 0;
+                int ctrlCnlsAdded = 0;
                 BaseTable<InCnl> inCnlTable = project.ConfigBase.InCnlTable;
                 BaseTable<CtrlCnl> ctrlCnlTable = project.ConfigBase.CtrlCnlTable;
                 BaseTable<Format> formatTable = project.ConfigBase.FormatTable;
@@ -208,9 +222,13 @@ namespace Scada.Admin.App.Forms.Tools
                         ctrlCnl.Name = ctrlCnl.Name.Substring(0, ColumnLength.Name);
 
                     ctrlCnlTable.AddItem(ctrlCnl);
+                    ctrlCnlsAdded++;
+
+                    if (ctrlCnlNum > ushort.MaxValue)
+                        break;
                 }
 
-                if (ctrlCnlPrototypes.Count > 0)
+                if (ctrlCnlsAdded > 0)
                     ctrlCnlTable.Modified = true;
 
                 // create input channels
@@ -254,13 +272,16 @@ namespace Scada.Admin.App.Forms.Tools
                         inCnl.Name = inCnl.Name.Substring(0, ColumnLength.Name);
 
                     inCnlTable.AddItem(inCnl);
+                    inCnlsAdded++;
+
+                    if (inCnlNum > ushort.MaxValue)
+                        break;
                 }
 
-                if (inCnlPrototypes.Count > 0)
+                if (inCnlsAdded > 0)
                     inCnlTable.Modified = true;
 
-                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.CreateCnlsComplete, 
-                    inCnlPrototypes.Count, ctrlCnlPrototypes.Count));
+                ScadaUiUtils.ShowInfo(string.Format(AppPhrases.CreateCnlsComplete, inCnlsAdded, ctrlCnlsAdded));
                 return true;
             }
             catch (Exception ex)
@@ -276,7 +297,7 @@ namespace Scada.Admin.App.Forms.Tools
             Translator.TranslateForm(this, GetType().FullName);
             ctrlCnlCreate1.Init(project, appData);
             ctrlCnlCreate2.Init(project, appData.AppState.RecentSelection);
-            ctrlCnlCreate3.Init(project);
+            ctrlCnlCreate3.Init(project, appData.AppSettings);
             ApplyStep(0);
         }
 
@@ -288,7 +309,8 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void btnCnlMap_Click(object sender, EventArgs e)
         {
-
+            // generate channel map
+            new CnlMap(project.ConfigBase, appData).Generate();
         }
 
         private void btnBack_Click(object sender, EventArgs e)

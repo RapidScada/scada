@@ -1406,10 +1406,12 @@ namespace Scada.Admin.App.Forms
             // show a channel map form
             if (project != null)
             {
+                Type itemType = (wctrlMain.ActiveForm as FrmBaseTable)?.ItemType;
+
                 new FrmCnlMap(project.ConfigBase, appData)
                 {
-                    InCnlsSelected = !(wctrlMain.ActiveForm is FrmBaseTable frmBaseTable &&
-                        frmBaseTable.ItemType == typeof(CtrlCnl))
+                    IncludeInCnls = itemType != typeof(CtrlCnl),
+                    IncludeOutCnls = itemType != typeof(InCnl)
                 }
                 .ShowDialog();
             }

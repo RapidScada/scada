@@ -284,6 +284,17 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Returns an enumerable collection of the table primary keys.
+        /// </summary>
+        public IEnumerable<int> EnumerateKeys()
+        {
+            foreach (int key in Items.Keys)
+            {
+                yield return key;
+            }
+        }
+
+        /// <summary>
         /// Returns an enumerable collection of the table items.
         /// </summary>
         public IEnumerable EnumerateItems()

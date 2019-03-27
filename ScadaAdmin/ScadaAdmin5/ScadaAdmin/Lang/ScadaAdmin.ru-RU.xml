@@ -4,6 +4,18 @@
     <Phrase key="IndexNotFound">Индекс не найден.</Phrase>
     <Phrase key="CorrectErrors">Пожалуйста исправьте следующие ошибки.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.CnlMap">
+    <Phrase key="CnlMapByDevice">Каналы по КП</Phrase>
+    <Phrase key="CnlMapByObject">Каналы по объектам</Phrase>
+    <Phrase key="InCnlsCaption">Входные каналы    : </Phrase>
+    <Phrase key="OutCnlsCaption">Каналы управления : </Phrase>
+    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
+    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
+    <Phrase key="EmptyDevice">Пустой КП</Phrase>
+    <Phrase key="EmptyObject">Пустой объект</Phrase>
+    <Phrase key="NoChannels">Каналы отсутствуют</Phrase>
+    <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.CmdTypeTable">
     <Phrase key="CmdTypeID">Идент.</Phrase>
     <Phrase key="Name">Наименование</Phrase>
@@ -463,23 +475,13 @@
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlMap">
     <Phrase key="this">Карта каналов</Phrase>
     <Phrase key="gbCnlKind">Вид каналов</Phrase>
-    <Phrase key="rbInCnls">Входные каналы</Phrase>
-    <Phrase key="rbOutCnls">Каналы управления</Phrase>
+    <Phrase key="chkInCnls">Входные каналы</Phrase>
+    <Phrase key="chkOutCnls">Каналы управления</Phrase>
     <Phrase key="gbGroupBy">Группировать</Phrase>
     <Phrase key="rbGroupByDevices">По КП</Phrase>
     <Phrase key="rbGroupByObjects">По объектам</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="InCnlByDevTitle">Входные каналы по КП</Phrase>
-    <Phrase key="InCnlByObjTitle">Входные каналы по объектам</Phrase>
-    <Phrase key="OutCnlByDevTitle">Каналы управления по КП</Phrase>
-    <Phrase key="OutCnlByObjTitle">Каналы управления по объектам</Phrase>
-    <Phrase key="DeviceCaption">[{0}] {1}</Phrase>
-    <Phrase key="ObjectCaption">[{0}] {1}</Phrase>
-    <Phrase key="EmptyDevice">Пустой КП</Phrase>
-    <Phrase key="EmptyObject">Пустой объект</Phrase>
-    <Phrase key="NoChannels">Каналы отсутствуют</Phrase>
-    <Phrase key="GenerateCnlMapError">Ошибка при генерации карты каналов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>

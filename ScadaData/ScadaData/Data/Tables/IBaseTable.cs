@@ -132,6 +132,11 @@ namespace Scada.Data.Tables
         bool TryGetIndex(string columnName, out TableIndex index);
 
         /// <summary>
+        /// Returns an enumerable collection of the table primary keys.
+        /// </summary>
+        IEnumerable<int> EnumerateKeys();
+
+        /// <summary>
         /// Returns an enumerable collection of the table items.
         /// </summary>
         /// <returns></returns>
