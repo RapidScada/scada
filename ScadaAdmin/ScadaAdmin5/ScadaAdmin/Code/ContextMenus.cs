@@ -35,6 +35,8 @@ namespace Scada.Admin.App.Code
     {
         public ContextMenuStrip ProjectMenu { get; set; }
 
+        public ContextMenuStrip CnlTableMenu { get; set; }
+
         public ContextMenuStrip DirectoryMenu { get; set; }
 
         public ContextMenuStrip FileItemMenu { get; set; }

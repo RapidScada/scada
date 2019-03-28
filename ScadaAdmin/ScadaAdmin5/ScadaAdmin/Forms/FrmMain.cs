@@ -102,9 +102,9 @@ namespace Scada.Admin.App.Forms
             serverShell = new ServerShell();
             commShell = new CommShell();
             explorerBuilder = new ExplorerBuilder(appData, serverShell, commShell, tvExplorer, new ContextMenus() {
-                ProjectMenu = cmsProject, DirectoryMenu = cmsDirectory, FileItemMenu = cmsFileItem,
-                InstanceMenu = cmsInstance, ServerMenu = cmsServer, CommMenu = cmsComm, CommLineMenu = cmsCommLine,
-                DeviceMenu = cmsDevice });
+                ProjectMenu = cmsProject, CnlTableMenu = cmsCnlTable, DirectoryMenu = cmsDirectory,
+                FileItemMenu = cmsFileItem, InstanceMenu = cmsInstance, ServerMenu = cmsServer,
+                CommMenu = cmsComm, CommLineMenu = cmsCommLine, DeviceMenu = cmsDevice });
             project = null;
             preventNodeExpand = false;
         }
@@ -1522,6 +1522,25 @@ namespace Scada.Admin.App.Forms
                     SaveProjectSettings();
                 }
             }
+        }
+
+
+        private void cmsCnlTable_Opening(object sender, CancelEventArgs e)
+        {
+            // enable or disable the menu item
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+            miCnlTableComm.Enabled = selectedNode != null && selectedNode.Tag is TreeNodeTag tag && 
+                tag.RelatedObject is BaseTableItem baseTableItem && baseTableItem.KPNum > 0;
+        }
+
+        private void miCnlTableComm_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void miCnlTableRefresh_Click(object sender, EventArgs e)
+        {
+
         }
 
 

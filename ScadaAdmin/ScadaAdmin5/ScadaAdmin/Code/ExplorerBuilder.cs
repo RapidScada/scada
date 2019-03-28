@@ -84,6 +84,8 @@ namespace Scada.Admin.App.Code
 
             TreeNode inCnlTableNode = CreateBaseTableNode(configBase.InCnlTable);
             TreeNode ctrlCnlTableNode = CreateBaseTableNode(configBase.CtrlCnlTable);
+            inCnlTableNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+            ctrlCnlTableNode.ContextMenuStrip = contextMenus.CnlTableMenu;
             sysTableNode.Nodes.Add(inCnlTableNode);
             sysTableNode.Nodes.Add(ctrlCnlTableNode);
 
@@ -92,19 +94,23 @@ namespace Scada.Admin.App.Code
                 string nodeText = string.Format(AppPhrases.TableByDeviceNode, kp.KPNum, kp.Name);
 
                 TreeNode inCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                inCnlsByDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
                 inCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(kp));
                 inCnlTableNode.Nodes.Add(inCnlsByDeviceNode);
 
                 TreeNode ctrlCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                ctrlCnlsByDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
                 ctrlCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(kp));
                 ctrlCnlTableNode.Nodes.Add(ctrlCnlsByDeviceNode);
             }
 
             TreeNode inCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            inCnlsEmptyDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
             inCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(null));
             inCnlTableNode.Nodes.Add(inCnlsEmptyDeviceNode);
 
             TreeNode ctrlCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            ctrlCnlsEmptyDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
             ctrlCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(null));
             ctrlCnlTableNode.Nodes.Add(ctrlCnlsEmptyDeviceNode);
 
@@ -148,7 +154,7 @@ namespace Scada.Admin.App.Code
             {
                 FormType = typeof(FrmBaseTable),
                 FormArgs = new object[] { baseTable, tableFilter, project, appData },
-                RelatedObject = baseTable,
+                RelatedObject = new BaseTableItem(baseTable, tableFilter),
                 NodeType = AppNodeType.BaseTable
             };
         }
