@@ -111,18 +111,6 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
-        /// Gets the root node of the explorer.
-        /// </summary>
-        private TreeNode RootNode
-        {
-            get
-            {
-                return tvExplorer.Nodes.Count > 0 ? tvExplorer.Nodes[0] : null;
-            }
-        }
-
-
-        /// <summary>
         /// Applies localization to the form.
         /// </summary>
         private void LocalizeForm()
@@ -156,7 +144,7 @@ namespace Scada.Admin.App.Forms
                     cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine, cmsDevice);
                 Text = AppPhrases.EmptyTitle;
                 wctrlMain.MessageText = AppPhrases.WelcomeMessage;
-                ofdProject.Filter = AppPhrases.ProjectFileFilter;
+                ofdProject.SetFilter(AppPhrases.ProjectFileFilter);
             }
 
             ModPhrases.InitFromDictionaries();
@@ -457,9 +445,10 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Closes the child forms corresponding to the specified node and its children.
         /// </summary>
-        private void CloseChildForms(TreeNode treeNode, bool save = false)
+        private void CloseChildForms(TreeNode treeNode, bool save = false, bool skipRoot = false)
         {
-            foreach (TreeNode node in TreeViewUtils.IterateNodes(treeNode))
+            foreach (TreeNode node in 
+                skipRoot ? TreeViewUtils.IterateNodes(treeNode.Nodes) : TreeViewUtils.IterateNodes(treeNode))
             {
                 if (node.Tag is TreeNodeTag tag && tag.ExistingForm != null)
                 {
@@ -576,7 +565,7 @@ namespace Scada.Admin.App.Forms
                 instanceNode = treeNode?.FindClosest(AppNodeType.Instance);
 
                 if (instanceNode == null && project.Instances.Count > 0)
-                    instanceNode = RootNode.FindFirst(AppNodeType.Instance);
+                    instanceNode = explorerBuilder.InstancesNode.FindFirst(AppNodeType.Instance);
 
                 if (instanceNode != null)
                 {
@@ -595,15 +584,14 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private bool FindInstance(string instanceName, out TreeNode instanceNode, out LiveInstance liveInstance)
         {
-            if (project != null &&
-                RootNode.FindFirst(AppNodeType.Instances) is TreeNode instancesNode)
+            if (project != null)
             {
-                foreach (TreeNode childNode in instancesNode.Nodes)
+                foreach (TreeNode treeNode in explorerBuilder.InstancesNode.Nodes)
                 {
-                    if (childNode.Tag is TreeNodeTag tag && tag.RelatedObject is LiveInstance liveInst &&
+                    if (treeNode.Tag is TreeNodeTag tag && tag.RelatedObject is LiveInstance liveInst &&
                         string.Equals(liveInst.Instance.Name, instanceName, StringComparison.OrdinalIgnoreCase))
                     {
-                        instanceNode = childNode;
+                        instanceNode = treeNode;
                         liveInstance = liveInst;
                         return true;
                     }
@@ -638,6 +626,15 @@ namespace Scada.Admin.App.Forms
                     appData.ProcError(errMsg);
                 }
             }
+        }
+
+        /// <summary>
+        /// Prepares data and fills the instance node.
+        /// </summary>
+        private void PrepareInstanceNode(TreeNode instanceNode)
+        {
+            if (instanceNode.Tag is TreeNodeTag tag && tag.RelatedObject is LiveInstance liveInstance)
+                PrepareInstanceNode(instanceNode, liveInstance);
         }
 
         /// <summary>
@@ -934,18 +931,11 @@ namespace Scada.Admin.App.Forms
             TreeNode node = e.Node;
 
             if (node.TagIs(AppNodeType.Interface))
-            {
                 explorerBuilder.FillInterfaceNode(node);
-            }
             else if (node.TagIs(AppNodeType.Instance))
-            {
-                LiveInstance liveInstance = (LiveInstance)((TreeNodeTag)e.Node.Tag).RelatedObject;
-                PrepareInstanceNode(node, liveInstance);
-            }
+                PrepareInstanceNode(node);
             else if (node.TagIs(AppNodeType.WebApp))
-            {
                 explorerBuilder.FillWebstationNode(node);
-            }
         }
 
         private void tvExplorer_AfterExpand(object sender, TreeViewEventArgs e)
@@ -1209,19 +1199,15 @@ namespace Scada.Admin.App.Forms
 
                 if (frmDownloadConfig.BaseModified)
                 {
-                    TreeNode baseNode = RootNode.FindFirst(AppNodeType.Base);
-                    CloseChildForms(baseNode);
+                    CloseChildForms(explorerBuilder.BaseNode);
                     SaveConfigBase();
                 }
 
-                if (frmDownloadConfig.InterfaceModified)
+                if (frmDownloadConfig.InterfaceModified && 
+                    TryGetFilePath(explorerBuilder.InterfaceNode, out string path))
                 {
-                    TreeNode interfaceNode = RootNode.FindFirst(AppNodeType.Interface);
-                    if (TryGetFilePath(interfaceNode, out string path))
-                    {
-                        CloseChildForms(interfaceNode);
-                        explorerBuilder.FillFileNode(interfaceNode, path);
-                    }
+                    CloseChildForms(explorerBuilder.InterfaceNode);
+                    explorerBuilder.FillFileNode(explorerBuilder.InterfaceNode, path);
                 }
 
                 if (frmDownloadConfig.InstanceModified)
@@ -1535,12 +1521,48 @@ namespace Scada.Admin.App.Forms
 
         private void miCnlTableComm_Click(object sender, EventArgs e)
         {
+            // find a device tree node of Communicator
+            TreeNode selectedNode = tvExplorer.SelectedNode;
 
+            if (selectedNode != null && selectedNode.Tag is TreeNodeTag tag1 &&
+                tag1.RelatedObject is BaseTableItem baseTableItem && baseTableItem.KPNum > 0)
+            {
+                int kpNum = baseTableItem.KPNum;
+                bool nodeFound = false;
+
+                foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(explorerBuilder.InstancesNode.Nodes))
+                {
+                    if (treeNode.Tag is TreeNodeTag tag2)
+                    {
+                        if (tag2.NodeType == AppNodeType.Instance)
+                        {
+                            PrepareInstanceNode(treeNode);
+                        }
+                        else if (tag2.RelatedObject is Comm.Settings.KP kp && kp.Number == kpNum)
+                        {
+                            tvExplorer.SelectedNode = treeNode;
+                            nodeFound = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!nodeFound)
+                    ScadaUiUtils.ShowWarning(AppPhrases.DeviceNotFoundInComm);
+            }
         }
 
         private void miCnlTableRefresh_Click(object sender, EventArgs e)
         {
-
+            // refresh channel table subnodes
+            if (project != null)
+            {
+                TreeNode inCnlTableNode = explorerBuilder.BaseTableNodes[project.ConfigBase.InCnlTable.Name];
+                TreeNode ctrlCnlTableNode = explorerBuilder.BaseTableNodes[project.ConfigBase.CtrlCnlTable.Name];
+                CloseChildForms(inCnlTableNode, true, true);
+                CloseChildForms(ctrlCnlTableNode, true, true);
+                explorerBuilder.FillChannelTableNodes(inCnlTableNode, ctrlCnlTableNode, project.ConfigBase);
+            }
         }
 
 

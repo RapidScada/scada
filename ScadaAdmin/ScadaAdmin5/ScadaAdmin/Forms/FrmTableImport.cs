@@ -158,7 +158,7 @@ namespace Scada.Admin.App.Forms
         private void FrmTableImport_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
-            openFileDialog.Filter = AppPhrases.ImportTableFilter;
+            openFileDialog.SetFilter(AppPhrases.ImportTableFilter);
             FillTableList();
         }
 

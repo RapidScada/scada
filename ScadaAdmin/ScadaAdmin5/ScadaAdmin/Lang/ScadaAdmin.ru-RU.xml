@@ -566,6 +566,8 @@
     <Phrase key="miProjectOpenInExplorer">Открыть папку в проводнике</Phrase>
     <Phrase key="miProjectRename">Переименовать проект</Phrase>
     <Phrase key="miProjectProperties">Свойства</Phrase>
+    <Phrase key="miCnlTableComm">Перейти в Коммуникатор</Phrase>
+    <Phrase key="miCnlTableRefresh">Обновить</Phrase>
     <Phrase key="miDirectoryNewFile">Создать файл...</Phrase>
     <Phrase key="miDirectoryNewFolder">Создать папку...</Phrase>
     <Phrase key="miDirectoryDelete">Удалить</Phrase>
@@ -614,6 +616,7 @@
     <Phrase key="FileAlreadyExists">Файл уже существует.</Phrase>
     <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
     <Phrase key="SaveConfigBaseConfirm">База конфигурации была изменена. Сохранить изменения?</Phrase>
+    <Phrase key="DeviceNotFoundInComm">Устройство не найдено в Коммуникаторе.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">Новый проект</Phrase>

@@ -151,7 +151,7 @@ namespace Scada.Admin.App.Forms
         private void FrmTableExport_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
-            saveFileDialog.Filter = AppPhrases.ExportTableFilter;
+            saveFileDialog.SetFilter(AppPhrases.ExportTableFilter);
 
             FillTableList();
             cbFormat.SelectedIndex = 0;

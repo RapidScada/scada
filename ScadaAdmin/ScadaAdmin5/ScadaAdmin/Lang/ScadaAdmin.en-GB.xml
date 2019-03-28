@@ -566,6 +566,8 @@
     <Phrase key="miProjectOpenInExplorer">Open Folder in File Explorer</Phrase>
     <Phrase key="miProjectRename">Rename Project</Phrase>
     <Phrase key="miProjectProperties">Properties</Phrase>
+    <Phrase key="miCnlTableComm">Go to Communicator</Phrase>
+    <Phrase key="miCnlTableRefresh">Refresh</Phrase>
     <Phrase key="miDirectoryNewFile">New File...</Phrase>
     <Phrase key="miDirectoryNewFolder">New Folder...</Phrase>
     <Phrase key="miDirectoryDelete">Delete</Phrase>
@@ -614,6 +616,7 @@
     <Phrase key="FileAlreadyExists">File already exists.</Phrase>
     <Phrase key="InstanceAlreadyExists">An instance with the same name already exists.</Phrase>
     <Phrase key="SaveConfigBaseConfirm">The configuration database has been modified. Save the changes?</Phrase>
+    <Phrase key="DeviceNotFoundInComm">Device not found in Communicator.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">New Project</Phrase>
