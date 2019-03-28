@@ -51,6 +51,21 @@ namespace Scada.Admin
         public string CommDir { get; set; }
 
         /// <summary>
+        /// Gets or sets the full file name of Scheme Editor.
+        /// </summary>
+        public string SchemeEditorPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the full file name of Table Editor.
+        /// </summary>
+        public string TableEditorPath { get; set; }
+
+        /// <summary>
+        /// Gets or sets the full file name of a text editor.
+        /// </summary>
+        public string TextEditorPath { get; set; }
+
+        /// <summary>
         /// Gets or sets the multiplicity of the first channel of a device.
         /// </summary>
         public int CnlMult { get; set; }
@@ -75,11 +90,17 @@ namespace Scada.Admin
             {
                 ServerDir = @"C:\SCADA\ScadaServer\";
                 CommDir = @"C:\SCADA\ScadaComm\";
+                SchemeEditorPath = @"C:\SCADA\ScadaSchemeEditor\ScadaSchemeEditor.exe";
+                TableEditorPath = @"C:\SCADA\ScadaTableEditor\ScadaTableEditor.exe";
+                TextEditorPath = "";
             }
             else
             {
                 ServerDir = "/opt/scada/ScadaServer/";
                 CommDir = "/opt/scada/ScadaComm/";
+                SchemeEditorPath = "";
+                TableEditorPath = "";
+                TextEditorPath = "";
             }
 
             CnlMult = 100;
