@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Communicator Shell
- * Summary  : Form to send a telecontrol command.
+ * Summary  : Form to send a telecontrol command
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -38,11 +38,6 @@ namespace Scada.Comm.Shell.Forms
     /// </summary>
     public partial class FrmDeviceCommand : Form
     {
-        /// <summary>
-        /// The command sender specified in command files.
-        /// </summary>
-        private const string CommandSender = "ScadaCommShell";
-
         private readonly Settings.KP kp;              // the device that receives command
         private readonly CommEnvironment environment; // the application environment
 
@@ -161,7 +156,7 @@ namespace Scada.Comm.Shell.Forms
             // save the command to file
             if (cmdOK)
             {
-                if (CommUtils.SaveCmd(environment.AppDirs.CmdDir, CommandSender, cmd, out string msg))
+                if (CommUtils.SaveCmd(environment.AppDirs.CmdDir, CommShellUtils.CommandSender, cmd, out string msg))
                 {
                     DialogResult = DialogResult.OK;
                 }

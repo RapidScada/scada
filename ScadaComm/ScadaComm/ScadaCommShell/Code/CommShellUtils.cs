@@ -35,6 +35,11 @@ namespace Scada.Comm.Shell.Code
     public static class CommShellUtils
     {
         /// <summary>
+        /// The command sender specified in command files.
+        /// </summary>
+        public const string CommandSender = "ScadaCommShell";
+
+        /// <summary>
         /// Draws a list box item representing a tab.
         /// </summary>
         public static void DrawTabItem(this ListBox listBox, DrawItemEventArgs e)

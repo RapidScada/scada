@@ -118,25 +118,20 @@ namespace Scada.Comm.Engine
 
                 foreach (FileInfo fileInfo in fileInfoAr)
                 {
-                    string cmdType;
-                    Dictionary<string, string> cmdParams;
-                    Command cmd;
-
-                    if (LoadCmdFromFile(fileInfo.FullName, out cmdType, out cmdParams, out cmd))
+                    if (LoadCmdFromFile(fileInfo.FullName, 
+                        out string cmdType, out Dictionary<string, string> cmdParams, out Command cmd))
                     {
                         if (cmd == null)
                         {
-                            // команда не относится к КП
-                            string lineNumStr;
-                            int lineNum;
-                            if ((cmdType == "startline" || cmdType == "stopline" || cmdType == "restartline") &&
-                                cmdParams.TryGetValue("linenum", out lineNumStr) &&
-                                int.TryParse(lineNumStr, out lineNum))
+                            // команда относится не к КП, а к линии связи
+                            if (Enum.TryParse(cmdType, true, out CommLineCmd commLineCmd) &&
+                                cmdParams.TryGetValue("linenum", out string lineNumStr) &&
+                                int.TryParse(lineNumStr, out int lineNum))
                             {
                                 // запуск или остановка линии связи
-                                if (cmdType == "startline")
+                                if (commLineCmd == CommLineCmd.StartLine)
                                     mngr.StartCommLine(lineNum);
-                                else if (cmdType == "stopline")
+                                else if (commLineCmd == CommLineCmd.StopLine)
                                     mngr.StopCommLine(lineNum);
                                 else
                                     mngr.RestartCommLine(lineNum);
