@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
-  <Dictionary key="Scada.Admin.App">
+  <Dictionary key="Scada.Admin">
     <Phrase key="IndexNotFound">Index not found.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App">
     <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.CnlMap">
@@ -201,21 +203,6 @@
   <Dictionary key="Scada.Admin.App.Forms">
     <Phrase key="AllCommLines">&lt;All communication lines&gt;</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
-    <Phrase key="this">Connection Settings</Phrase>
-    <Phrase key="lblProfileName">Profile name</Phrase>
-    <Phrase key="lblHost">Server</Phrase>
-    <Phrase key="lblPort">Port</Phrase>
-    <Phrase key="lblUsername">Username</Phrase>
-    <Phrase key="lblPassword">Password</Phrase>
-    <Phrase key="lblSecretKey">Secret key</Phrase>
-    <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="EmptyFieldsNotAllowed">Empty field values are not allowed.</Phrase>
-    <Phrase key="ProfileNameDuplicated">A profile with this name already exists.</Phrase>
-    <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
     <Phrase key="this">Download Configuration</Phrase>
     <Phrase key="btnDownload">Download</Phrase>
@@ -251,6 +238,24 @@
     <Phrase key="ServiceRestarted">The service restarted sucсessfully.</Phrase>
     <Phrase key="UnableRestartService">Unable to restart the service.</Phrase>
     <Phrase key="ServiceRestartError">Error restarting the service</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmProfileEdit">
+    <Phrase key="this">Edit Profile</Phrase>
+    <Phrase key="gbProfileProps">Profile Properies</Phrase>
+    <Phrase key="lblProfileName">Profile name</Phrase>
+    <Phrase key="lblWebUrl">Webstation URL</Phrase>
+    <Phrase key="gbConnSettings">Connection Settings</Phrase>
+    <Phrase key="lblHost">Server</Phrase>
+    <Phrase key="lblPort">Port</Phrase>
+    <Phrase key="lblUsername">Username</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="lblSecretKey">Secret key</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Generate secret key</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="ValidUrlRequired">A valid URL is required.</Phrase>
+    <Phrase key="ProfileNameDuplicated">A profile with this name already exists.</Phrase>
+    <Phrase key="IncorrectSecretKey">Incorrect secret key.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
     <Phrase key="this">Upload Configuration</Phrase>
@@ -587,6 +592,7 @@
     <Phrase key="miInstanceUploadConfig">Upload Configuration...</Phrase>
     <Phrase key="miInstanceStatus">Instance Status...</Phrase>
     <Phrase key="miInstanceOpenInExplorer">Open Folder in File Explorer</Phrase>
+    <Phrase key="miInstanceOpenInBrowser">Open in Web Browser</Phrase>
     <Phrase key="miInstanceRename">Rename Instance</Phrase>
     <Phrase key="miInstanceProperties">Properties</Phrase>
     <Phrase key="miServerOpenInExplorer">Open Folder in File Explorer</Phrase>
@@ -617,6 +623,7 @@
     <Phrase key="InstanceAlreadyExists">An instance with the same name already exists.</Phrase>
     <Phrase key="SaveConfigBaseConfirm">The configuration database has been modified. Save the changes?</Phrase>
     <Phrase key="DeviceNotFoundInComm">Device not found in Communicator.</Phrase>
+    <Phrase key="WebUrlNotSet">Webstation URL is not specified in the deployment profile or incorrect.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">New Project</Phrase>

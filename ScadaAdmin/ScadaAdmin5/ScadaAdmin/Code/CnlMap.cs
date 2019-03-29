@@ -169,7 +169,7 @@ namespace Scada.Admin.App.Code
                     }
                     else
                     {
-                        throw new ScadaException(AppPhrases.IndexNotFound);
+                        throw new ScadaException(AdminPhrases.IndexNotFound);
                     }
                 }
 

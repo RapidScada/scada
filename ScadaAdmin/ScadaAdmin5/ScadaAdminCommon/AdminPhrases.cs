@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
@@ -33,6 +33,9 @@ namespace Scada.Admin
     /// </summary>
     public static class AdminPhrases
     {
+        // Scada.Admin
+        public static string IndexNotFound { get; private set; }
+
         // Scada.Admin.Deployment.DeploymentSettings
         public static string LoadDeploymentSettingsError { get; private set; }
         public static string SaveDeploymentSettingsError { get; private set; }
@@ -77,7 +80,10 @@ namespace Scada.Admin
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.Deployment.DeploymentSettings");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin");
+            IndexNotFound = dict.GetPhrase("IndexNotFound");
+
+            dict = Localization.GetDictionary("Scada.Admin.Deployment.DeploymentSettings");
             LoadDeploymentSettingsError = dict.GetPhrase("LoadDeploymentSettingsError");
             SaveDeploymentSettingsError = dict.GetPhrase("SaveDeploymentSettingsError");
 

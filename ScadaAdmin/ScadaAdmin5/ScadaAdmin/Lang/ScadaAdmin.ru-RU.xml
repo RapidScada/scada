@@ -1,7 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ScadaAdminDictionaries>
-  <Dictionary key="Scada.Admin.App">
+  <Dictionary key="Scada.Admin">
     <Phrase key="IndexNotFound">Индекс не найден.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App">
     <Phrase key="CorrectErrors">Пожалуйста исправьте следующие ошибки.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.CnlMap">
@@ -201,21 +203,6 @@
   <Dictionary key="Scada.Admin.App.Forms">
     <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmConnSettings">
-    <Phrase key="this">Настройки соединения</Phrase>
-    <Phrase key="lblProfileName">Наименование профиля</Phrase>
-    <Phrase key="lblHost">Сервер</Phrase>
-    <Phrase key="lblPort">Порт</Phrase>
-    <Phrase key="lblUsername">Пользователь</Phrase>
-    <Phrase key="lblPassword">Пароль</Phrase>
-    <Phrase key="lblSecretKey">Секретный ключ</Phrase>
-    <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="EmptyFieldsNotAllowed">Пустые значения полей не допускаются.</Phrase>
-    <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
-    <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
     <Phrase key="this">Скачивание конфигурации</Phrase>
     <Phrase key="btnDownload">Скачать</Phrase>
@@ -251,6 +238,24 @@
     <Phrase key="ServiceRestarted">Служба перезапущена успешно.</Phrase>
     <Phrase key="UnableRestartService">Не удалось перезапустить службу.</Phrase>
     <Phrase key="ServiceRestartError">Ошибка при перезапуске службы</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmProfileEdit">
+    <Phrase key="this">Редактирование профиля</Phrase>
+    <Phrase key="gbProfileProps">Свойства профиля</Phrase>
+    <Phrase key="lblProfileName">Наименование профиля</Phrase>
+    <Phrase key="lblWebUrl">Адрес Вебстанции</Phrase>
+    <Phrase key="gbConnSettings">Настройки соединения</Phrase>
+    <Phrase key="lblHost">Сервер</Phrase>
+    <Phrase key="lblPort">Порт</Phrase>
+    <Phrase key="lblUsername">Пользователь</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblSecretKey">Секретный ключ</Phrase>
+    <Phrase key="btnGenSecretKey.ToolTip">Генерировать секретный ключ</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ValidUrlRequired">Требуется корректный адрес.</Phrase>
+    <Phrase key="ProfileNameDuplicated">Профиль с таким наименованием уже существует.</Phrase>
+    <Phrase key="IncorrectSecretKey">Некорректный секретный ключ.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmUploadConfig">
     <Phrase key="this">Передача конфигурации</Phrase>
@@ -587,6 +592,7 @@
     <Phrase key="miInstanceUploadConfig">Передать конфигурацию...</Phrase>
     <Phrase key="miInstanceStatus">Статус экземпляра...</Phrase>
     <Phrase key="miInstanceOpenInExplorer">Открыть папку в проводнике</Phrase>
+    <Phrase key="miInstanceOpenInBrowser">Открыть в веб-браузере</Phrase>
     <Phrase key="miInstanceRename">Переименовать экземпляр</Phrase>
     <Phrase key="miInstanceProperties">Свойства</Phrase>
     <Phrase key="miServerOpenInExplorer">Открыть папку в проводнике</Phrase>
@@ -617,6 +623,7 @@
     <Phrase key="InstanceAlreadyExists">Экземпляр с таким наименованием уже существует.</Phrase>
     <Phrase key="SaveConfigBaseConfirm">База конфигурации была изменена. Сохранить изменения?</Phrase>
     <Phrase key="DeviceNotFoundInComm">Устройство не найдено в Коммуникаторе.</Phrase>
+    <Phrase key="WebUrlNotSet">Адрес Вебстанции не задан в профиле развёртывания или некорректен.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">Новый проект</Phrase>

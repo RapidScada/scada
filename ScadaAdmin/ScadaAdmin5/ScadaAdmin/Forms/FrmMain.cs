@@ -750,7 +750,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private void LoadDeploymentSettings()
         {
-            if (File.Exists(project.DeploymentSettings.FileName) &&
+            if (!project.DeploymentSettings.Loaded && File.Exists(project.DeploymentSettings.FileName) &&
                 !project.DeploymentSettings.Load(out string errMsg))
             {
                 appData.ProcError(errMsg);
@@ -1873,6 +1873,7 @@ namespace Scada.Admin.App.Forms
             miInstanceStatus.Enabled = instanceExists;
 
             miInstanceOpenInExplorer.Enabled = isInstanceNode;
+            miInstanceOpenInBrowser.Enabled = isInstanceNode;
             miInstanceRename.Enabled = isInstanceNode;
             miInstanceProperties.Enabled = isInstanceNode;
         }
@@ -1960,6 +1961,24 @@ namespace Scada.Admin.App.Forms
 
                 SetDeployMenuItemsEnabled();
                 SaveProjectSettings();
+            }
+        }
+
+        private void miInstanceOpenInBrowser_Click(object sender, EventArgs e)
+        {
+            // open the web application of the instance
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(AppNodeType.Instance) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                LoadDeploymentSettings();
+                DeploymentProfile profile = GetDeploymentProfile(liveInstance.Instance.DeploymentProfile);
+
+                if (profile != null && ScadaUtils.IsValidUrl(profile.WebUrl))
+                    Process.Start(profile.WebUrl);
+                else
+                    ScadaUiUtils.ShowWarning(AppPhrases.WebUrlNotSet);
             }
         }
 

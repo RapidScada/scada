@@ -41,6 +41,7 @@ namespace Scada.Admin.Deployment
         public DeploymentProfile()
         {
             Name = "";
+            WebUrl = "";
             ConnectionSettings = new ConnectionSettings() { ScadaInstance = "" } ;
             DownloadSettings = new TransferSettings();
             UploadSettings = new TransferSettings();
@@ -51,6 +52,11 @@ namespace Scada.Admin.Deployment
         /// Gets or sets the profile name.
         /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Gets or sets the web application address.
+        /// </summary>
+        public string WebUrl { get; set; }
 
         /// <summary>
         /// Gets the connection settings.
@@ -77,6 +83,7 @@ namespace Scada.Admin.Deployment
                 throw new ArgumentNullException("xmlNode");
 
             Name = xmlNode.GetChildAsString("Name");
+            WebUrl = xmlNode.GetChildAsString("WebUrl");
 
             XmlNode connectionSettingsNode = xmlNode.SelectSingleNode("ConnectionSettings");
             if (connectionSettingsNode != null)
@@ -100,6 +107,7 @@ namespace Scada.Admin.Deployment
                 throw new ArgumentNullException("xmlElem");
 
             xmlElem.AppendElem("Name", Name);
+            xmlElem.AppendElem("WebUrl", WebUrl);
             ConnectionSettings.SaveToXml(xmlElem.AppendElem("ConnectionSettings"));
             DownloadSettings.SaveToXml(xmlElem.AppendElem("DownloadSettings"));
             UploadSettings.SaveToXml(xmlElem.AppendElem("UploadSettings"));

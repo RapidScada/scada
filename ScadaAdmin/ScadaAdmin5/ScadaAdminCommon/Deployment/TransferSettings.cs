@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -48,6 +48,7 @@ namespace Scada.Admin.Deployment
             IncludeWeb = true;
             IgnoreRegKeys = false;
             IgnoreWebStorage = true;
+            ObjNums = new List<int>();
         }
 
 
@@ -86,6 +87,11 @@ namespace Scada.Admin.Deployment
         /// </summary>
         public bool IgnoreWebStorage { get; set; }
 
+        /// <summary>
+        /// Gets the object numbers to filter the uploaded configuration.
+        /// </summary>
+        public List<int> ObjNums { get; protected set; }
+
 
 
         /// <summary>
@@ -103,6 +109,8 @@ namespace Scada.Admin.Deployment
             IncludeWeb = xmlNode.GetChildAsBool("IncludeWeb");
             IgnoreRegKeys = xmlNode.GetChildAsBool("IgnoreRegKeys");
             IgnoreWebStorage = xmlNode.GetChildAsBool("IgnoreWebStorage");
+            ObjNums.Clear();
+            ObjNums.AddRange(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true));
         }
 
         /// <summary>
@@ -120,6 +128,7 @@ namespace Scada.Admin.Deployment
             xmlElem.AppendElem("IncludeWeb", IncludeWeb);
             xmlElem.AppendElem("IgnoreRegKeys", IgnoreRegKeys);
             xmlElem.AppendElem("IgnoreWebStorage", IgnoreWebStorage);
+            xmlElem.AppendElem("ObjNums", RangeUtils.RangeToStr(ObjNums));
         }
 
         /// <summary>

@@ -32,7 +32,6 @@ namespace Scada.Admin.App.Code
     internal static class AppPhrases
     {
         // Scada.Admin.App
-        public static string IndexNotFound { get; private set; }
         public static string CorrectErrors { get; private set; }
 
         // Scada.Admin.App.Code.CnlMap
@@ -78,11 +77,6 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Forms
         public static string AllCommLines { get; private set; }
 
-        // Scada.Admin.App.Forms.Deployment.FrmConnSettings
-        public static string EmptyFieldsNotAllowed { get; private set; }
-        public static string ProfileNameDuplicated { get; private set; }
-        public static string IncorrectSecretKey { get; private set; }
-
         // Scada.Admin.App.Forms.Deployment.FrmDownloadConfig
         public static string NothingToDownload { get; private set; }
         public static string DownloadConfigComplete { get; private set; }
@@ -100,6 +94,11 @@ namespace Scada.Admin.App.Code
         public static string ServiceRestarted { get; private set; }
         public static string UnableRestartService { get; private set; }
         public static string ServiceRestartError { get; private set; }
+
+        // Scada.Admin.App.Forms.Deployment.FrmProfileEdit
+        public static string ValidUrlRequired { get; private set; }
+        public static string ProfileNameDuplicated { get; private set; }
+        public static string IncorrectSecretKey { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmUploadConfig
         public static string NothingToUpload { get; private set; }
@@ -187,6 +186,7 @@ namespace Scada.Admin.App.Code
         public static string InstanceAlreadyExists { get; private set; }
         public static string SaveConfigBaseConfirm { get; private set; }
         public static string DeviceNotFoundInComm { get; private set; }
+        public static string WebUrlNotSet { get; private set; }
 
         // Scada.Admin.App.Forms.FrmProjectNew
         public static string ChooseProjectLocation { get; private set; }
@@ -211,7 +211,6 @@ namespace Scada.Admin.App.Code
         public static void Init()
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App");
-            IndexNotFound = dict.GetPhrase("IndexNotFound");
             CorrectErrors = dict.GetPhrase("CorrectErrors");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Code.CnlMap");
@@ -257,11 +256,6 @@ namespace Scada.Admin.App.Code
             dict = Localization.GetDictionary("Scada.Admin.App.Forms");
             AllCommLines = dict.GetPhrase("AllCommLines");
 
-            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmConnSettings");
-            EmptyFieldsNotAllowed = dict.GetPhrase("EmptyFieldsNotAllowed");
-            ProfileNameDuplicated = dict.GetPhrase("ProfileNameDuplicated");
-            IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey");
-
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
             NothingToDownload = dict.GetPhrase("NothingToDownload");
             DownloadConfigComplete = dict.GetPhrase("DownloadConfigComplete");
@@ -279,6 +273,11 @@ namespace Scada.Admin.App.Code
             ServiceRestarted = dict.GetPhrase("ServiceRestarted");
             UnableRestartService = dict.GetPhrase("UnableRestartService");
             ServiceRestartError = dict.GetPhrase("ServiceRestartError");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmProfileEdit");
+            ValidUrlRequired = dict.GetPhrase("ValidUrlRequired");
+            ProfileNameDuplicated = dict.GetPhrase("ProfileNameDuplicated");
+            IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmUploadConfig");
             NothingToUpload = dict.GetPhrase("NothingToUpload");
@@ -366,6 +365,7 @@ namespace Scada.Admin.App.Code
             InstanceAlreadyExists = dict.GetPhrase("InstanceAlreadyExists");
             SaveConfigBaseConfirm = dict.GetPhrase("SaveConfigBaseConfirm");
             DeviceNotFoundInComm = dict.GetPhrase("DeviceNotFoundInComm");
+            WebUrlNotSet = dict.GetPhrase("WebUrlNotSet");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmProjectNew");
             ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");

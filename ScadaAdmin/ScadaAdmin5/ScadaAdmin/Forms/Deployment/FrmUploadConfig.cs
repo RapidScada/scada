@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -181,7 +181,7 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
 
-        private void FrmDownloadConfig_Load(object sender, EventArgs e)
+        private void FrmUploadConfig_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, ctrlProfileSelector.GetType().FullName);
             Translator.TranslateForm(this, ctrlTransferSettings.GetType().FullName);

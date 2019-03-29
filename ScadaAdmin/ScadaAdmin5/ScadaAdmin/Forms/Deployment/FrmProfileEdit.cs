@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Administrator
- * Summary  : Connection settings form
+ * Summary  : Form for editing a deployment profile
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -29,20 +29,21 @@ using Scada.Agent.Connector;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Deployment
 {
     /// <summary>
-    /// Connection settings form.
-    /// <para>Форма настроек соединения.</para>
+    /// Form for editing a deployment profile.
+    /// <para>Форма для редактирования профиля развёртывания.</para>
     /// </summary>
-    public partial class FrmConnSettings : Form
+    public partial class FrmProfileEdit : Form
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmConnSettings()
+        public FrmProfileEdit()
         {
             InitializeComponent();
             Profile = null;
@@ -68,8 +69,10 @@ namespace Scada.Admin.App.Forms.Deployment
         {
             if (Profile != null)
             {
-                ConnectionSettings connSettings = Profile.ConnectionSettings;
                 txtProfileName.Text = Profile.Name;
+                txtWebUrl.Text = Profile.WebUrl;
+
+                ConnectionSettings connSettings = Profile.ConnectionSettings;
                 txtHost.Text = connSettings.Host;
                 numPort.SetValue(connSettings.Port);
                 txtUsername.Text = connSettings.Username;
@@ -85,8 +88,10 @@ namespace Scada.Admin.App.Forms.Deployment
         {
             if (Profile != null)
             {
-                ConnectionSettings connSettings = Profile.ConnectionSettings;
                 Profile.Name = txtProfileName.Text.Trim();
+                Profile.WebUrl = txtWebUrl.Text.Trim();
+
+                ConnectionSettings connSettings = Profile.ConnectionSettings;
                 connSettings.Host = txtHost.Text.Trim();
                 connSettings.Port = (int)numPort.Value;
                 connSettings.Username = txtUsername.Text.Trim();
@@ -100,13 +105,30 @@ namespace Scada.Admin.App.Forms.Deployment
         /// </summary>
         private bool ValidateFields()
         {
-            if (string.IsNullOrWhiteSpace(txtProfileName.Text) ||
-                string.IsNullOrWhiteSpace(txtHost.Text) ||
-                string.IsNullOrWhiteSpace(txtUsername.Text) ||
-                string.IsNullOrWhiteSpace(txtPassword.Text) ||
-                string.IsNullOrWhiteSpace(txtSecretKey.Text))
+            StringBuilder sbError = new StringBuilder();
+
+            if (string.IsNullOrWhiteSpace(txtProfileName.Text))
+                sbError.AppendError(lblProfileName, CommonPhrases.NonemptyRequired);
+
+            if (!string.IsNullOrWhiteSpace(txtWebUrl.Text) && !ScadaUtils.IsValidUrl(txtWebUrl.Text))
+                sbError.AppendError(lblWebUrl, AppPhrases.ValidUrlRequired);
+
+            if (string.IsNullOrWhiteSpace(txtHost.Text))
+                sbError.AppendError(lblHost, CommonPhrases.NonemptyRequired);
+
+            if (string.IsNullOrWhiteSpace(txtUsername.Text))
+                sbError.AppendError(lblUsername, CommonPhrases.NonemptyRequired);
+
+            if (string.IsNullOrWhiteSpace(txtPassword.Text))
+                sbError.AppendError(lblPassword, CommonPhrases.NonemptyRequired);
+
+            if (string.IsNullOrWhiteSpace(txtSecretKey.Text))
+                sbError.AppendError(lblSecretKey, CommonPhrases.NonemptyRequired);
+
+            if (sbError.Length > 0)
             {
-                ScadaUiUtils.ShowError(AppPhrases.EmptyFieldsNotAllowed);
+                sbError.Insert(0, AppPhrases.CorrectErrors + Environment.NewLine);
+                ScadaUiUtils.ShowError(sbError.ToString());
                 return false;
             }
 
@@ -126,7 +148,7 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
 
-        private void FrmConnSettings_Load(object sender, EventArgs e)
+        private void FrmProfileEdit_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName, toolTip);
             SettingsToControls();

@@ -26,8 +26,10 @@
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using Scada.Agent;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
@@ -149,6 +151,34 @@ namespace Scada.Admin
                     zipArchive.CreateEntryFromFile(fileInfo.FullName, entryName, CompressionLevel.Fastest);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a new table from the source table filtered by objects.
+        /// </summary>
+        private IBaseTable GetFilteredTable<T>(IBaseTable srcTable, List<int> objNums)
+        {
+            IBaseTable destTable = new BaseTable<T>(srcTable.Name, srcTable.PrimaryKey, srcTable.Title);
+
+            if (srcTable.TryGetIndex("ObjNum", out TableIndex index))
+            {
+                foreach (int objNum in objNums)
+                {
+                    if (index.ItemGroups.TryGetValue(objNum, out SortedDictionary<int, object> itemGroup))
+                    {
+                        foreach (object item in itemGroup.Values)
+                        {
+                            destTable.AddObject(item);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new ScadaException(AdminPhrases.IndexNotFound);
+            }
+
+            return destTable;
         }
 
 
@@ -278,6 +308,8 @@ namespace Scada.Admin
                 throw new ArgumentNullException("project");
             if (instance == null)
                 throw new ArgumentNullException("instance");
+            if (transferSettings == null)
+                throw new ArgumentNullException("transferSettings");
 
             FileStream fileStream = null;
             ZipArchive zipArchive = null;
@@ -291,6 +323,8 @@ namespace Scada.Admin
                 // add the configuration database to the archive
                 if (transferSettings.IncludeBase)
                 {
+                    bool filterByObj = transferSettings.ObjNums.Count > 0;
+
                     foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
                     {
                         string entryName = "BaseDAT/" + srcTable.Name.ToLowerInvariant() + ".dat";
@@ -298,9 +332,20 @@ namespace Scada.Admin
 
                         using (Stream entryStream = tableEntry.Open())
                         {
+                            // filter the source table by objects if needed
+                            IBaseTable baseTable = srcTable;
+
+                            if (filterByObj)
+                            {
+                                if (srcTable.ItemType == typeof(InCnl))
+                                    baseTable = GetFilteredTable<InCnl>(srcTable, transferSettings.ObjNums);
+                                else if (srcTable.ItemType == typeof(CtrlCnl))
+                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, transferSettings.ObjNums);
+                            }
+
                             // convert the table to DAT format
                             BaseAdapter baseAdapter = new BaseAdapter() { Stream = entryStream };
-                            baseAdapter.Update(srcTable);
+                            baseAdapter.Update(baseTable);
                         }
                     }
                 }

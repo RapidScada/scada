@@ -117,6 +117,7 @@
             this.miInstanceStatus = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.miInstanceOpenInExplorer = new System.Windows.Forms.ToolStripMenuItem();
+            this.miInstanceOpenInBrowser = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceRename = new System.Windows.Forms.ToolStripMenuItem();
             this.miInstanceProperties = new System.Windows.Forms.ToolStripMenuItem();
             this.cmsProject = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -833,10 +834,11 @@
             this.miInstanceStatus,
             this.miInstanceSep2,
             this.miInstanceOpenInExplorer,
+            this.miInstanceOpenInBrowser,
             this.miInstanceRename,
             this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
-            this.cmsInstance.Size = new System.Drawing.Size(219, 258);
+            this.cmsInstance.Size = new System.Drawing.Size(219, 280);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
             // 
             // miInstanceAdd
@@ -920,6 +922,14 @@
             this.miInstanceOpenInExplorer.Size = new System.Drawing.Size(218, 22);
             this.miInstanceOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miInstanceOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
+            // 
+            // miInstanceOpenInBrowser
+            // 
+            this.miInstanceOpenInBrowser.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceOpenInBrowser.Image")));
+            this.miInstanceOpenInBrowser.Name = "miInstanceOpenInBrowser";
+            this.miInstanceOpenInBrowser.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceOpenInBrowser.Text = "Open in Web Browser";
+            this.miInstanceOpenInBrowser.Click += new System.EventHandler(this.miInstanceOpenInBrowser_Click);
             // 
             // miInstanceRename
             // 
@@ -1153,7 +1163,7 @@
             this.miCnlTableComm,
             this.miCnlTableRefresh});
             this.cmsCnlTable.Name = "cmsChannels";
-            this.cmsCnlTable.Size = new System.Drawing.Size(188, 70);
+            this.cmsCnlTable.Size = new System.Drawing.Size(188, 48);
             this.cmsCnlTable.Opening += new System.ComponentModel.CancelEventHandler(this.cmsCnlTable_Opening);
             // 
             // miCnlTableComm
@@ -1334,6 +1344,7 @@
         private System.Windows.Forms.ContextMenuStrip cmsCnlTable;
         private System.Windows.Forms.ToolStripMenuItem miCnlTableRefresh;
         private System.Windows.Forms.ToolStripMenuItem miCnlTableComm;
+        private System.Windows.Forms.ToolStripMenuItem miInstanceOpenInBrowser;
     }
 }
 

@@ -144,11 +144,11 @@
     <Compile Include="Controls\Tools\CtrlCnlCreate3.Designer.cs">
       <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Deployment\FrmConnSettings.cs">
+    <Compile Include="Forms\Deployment\FrmProfileEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Deployment\FrmConnSettings.Designer.cs">
-      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    <Compile Include="Forms\Deployment\FrmProfileEdit.Designer.cs">
+      <DependentUpon>FrmProfileEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deployment\FrmInstanceProfile.cs">
       <SubType>Form</SubType>
@@ -335,8 +335,8 @@
     <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate3.resx">
       <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
-      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\Deployment\FrmProfileEdit.resx">
+      <DependentUpon>FrmProfileEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmInstanceProfile.resx">
       <DependentUpon>FrmInstanceProfile.cs</DependentUpon>
