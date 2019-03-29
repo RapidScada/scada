@@ -96,22 +96,6 @@ namespace Scada.Admin.App.Forms.Deployment
         
         
         /// <summary>
-        /// Validate the upload configuration settings.
-        /// </summary>
-        private bool ValidateUploadSettings()
-        {
-            if (ctrlTransferSettings.Empty)
-            {
-                ScadaUiUtils.ShowError(AppPhrases.NothingToUpload);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        
-        /// <summary>
         /// Save the deployments settings.
         /// </summary>
         private void SaveDeploymentSettings()
@@ -240,7 +224,7 @@ namespace Scada.Admin.App.Forms.Deployment
             // validate settings and upload
             DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
 
-            if (profile != null && ValidateUploadSettings())
+            if (profile != null && ctrlTransferSettings.ValidateFields())
             {
                 // save the settings changes
                 if (uploadSettingsModified)

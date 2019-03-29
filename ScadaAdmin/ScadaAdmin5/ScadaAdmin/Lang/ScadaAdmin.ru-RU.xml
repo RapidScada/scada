@@ -199,6 +199,9 @@
     <Phrase key="lblIgnore">Исключить:</Phrase>
     <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>
     <Phrase key="chkIgnoreWebStorage">Хранилище Вебстанции</Phrase>
+    <Phrase key="lblObjFilter">Фильтр объектов:</Phrase>
+    <Phrase key="ConfigNotSelected">Конфигурация не выбрана.</Phrase>
+    <Phrase key="IncorrectObjFilter">Некорректный фильтр объектов.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms">
     <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
@@ -261,7 +264,6 @@
     <Phrase key="this">Передача конфигурации</Phrase>
     <Phrase key="btnUpload">Передать</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
-    <Phrase key="NothingToUpload">Конфигурация для скачивания не выбрана.</Phrase>
     <Phrase key="UploadConfigComplete">Передача завершена успешно.&#13;&#10;Продолжительность: {0} с.&#13;&#10;Размер данных: {1} байт.</Phrase>
     <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
   </Dictionary>

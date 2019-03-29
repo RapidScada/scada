@@ -109,8 +109,7 @@ namespace Scada.Admin.Deployment
             IncludeWeb = xmlNode.GetChildAsBool("IncludeWeb");
             IgnoreRegKeys = xmlNode.GetChildAsBool("IgnoreRegKeys");
             IgnoreWebStorage = xmlNode.GetChildAsBool("IgnoreWebStorage");
-            ObjNums.Clear();
-            ObjNums.AddRange(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true));
+            SetObjNums(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true));
         }
 
         /// <summary>
@@ -129,6 +128,17 @@ namespace Scada.Admin.Deployment
             xmlElem.AppendElem("IgnoreRegKeys", IgnoreRegKeys);
             xmlElem.AppendElem("IgnoreWebStorage", IgnoreWebStorage);
             xmlElem.AppendElem("ObjNums", RangeUtils.RangeToStr(ObjNums));
+        }
+
+        /// <summary>
+        /// Sets the object numbers.
+        /// </summary>
+        public void SetObjNums(ICollection<int> objNums)
+        {
+            ObjNums.Clear();
+
+            if (objNums != null)
+                ObjNums.AddRange(objNums);
         }
 
         /// <summary>

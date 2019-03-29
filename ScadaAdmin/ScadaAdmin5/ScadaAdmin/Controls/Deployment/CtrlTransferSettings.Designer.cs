@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.txtObjFilter = new System.Windows.Forms.TextBox();
+            this.lblObjFilter = new System.Windows.Forms.Label();
             this.chkIgnoreWebStorage = new System.Windows.Forms.CheckBox();
             this.chkIgnoreRegKeys = new System.Windows.Forms.CheckBox();
             this.lblIgnore = new System.Windows.Forms.Label();
@@ -43,6 +45,8 @@
             // 
             // gbOptions
             // 
+            this.gbOptions.Controls.Add(this.txtObjFilter);
+            this.gbOptions.Controls.Add(this.lblObjFilter);
             this.gbOptions.Controls.Add(this.chkIgnoreWebStorage);
             this.gbOptions.Controls.Add(this.chkIgnoreRegKeys);
             this.gbOptions.Controls.Add(this.lblIgnore);
@@ -55,10 +59,27 @@
             this.gbOptions.Location = new System.Drawing.Point(0, 0);
             this.gbOptions.Name = "gbOptions";
             this.gbOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbOptions.Size = new System.Drawing.Size(469, 223);
+            this.gbOptions.Size = new System.Drawing.Size(469, 272);
             this.gbOptions.TabIndex = 3;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
+            // 
+            // txtObjFilter
+            // 
+            this.txtObjFilter.Location = new System.Drawing.Point(13, 239);
+            this.txtObjFilter.Name = "txtObjFilter";
+            this.txtObjFilter.Size = new System.Drawing.Size(443, 20);
+            this.txtObjFilter.TabIndex = 10;
+            this.txtObjFilter.TextChanged += new System.EventHandler(this.control_Changed);
+            // 
+            // lblObjFilter
+            // 
+            this.lblObjFilter.AutoSize = true;
+            this.lblObjFilter.Location = new System.Drawing.Point(10, 223);
+            this.lblObjFilter.Name = "lblObjFilter";
+            this.lblObjFilter.Size = new System.Drawing.Size(63, 13);
+            this.lblObjFilter.TabIndex = 9;
+            this.lblObjFilter.Text = "Object filter:";
             // 
             // chkIgnoreWebStorage
             // 
@@ -69,7 +90,7 @@
             this.chkIgnoreWebStorage.TabIndex = 8;
             this.chkIgnoreWebStorage.Text = "Webstation storage";
             this.chkIgnoreWebStorage.UseVisualStyleBackColor = true;
-            this.chkIgnoreWebStorage.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIgnoreWebStorage.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkIgnoreRegKeys
             // 
@@ -80,7 +101,7 @@
             this.chkIgnoreRegKeys.TabIndex = 7;
             this.chkIgnoreRegKeys.Text = "Registration keys";
             this.chkIgnoreRegKeys.UseVisualStyleBackColor = true;
-            this.chkIgnoreRegKeys.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIgnoreRegKeys.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblIgnore
             // 
@@ -109,7 +130,7 @@
             this.chkIncludeWeb.TabIndex = 5;
             this.chkIncludeWeb.Text = "Webstation";
             this.chkIncludeWeb.UseVisualStyleBackColor = true;
-            this.chkIncludeWeb.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIncludeWeb.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkIncludeComm
             // 
@@ -120,7 +141,7 @@
             this.chkIncludeComm.TabIndex = 4;
             this.chkIncludeComm.Text = "Communicator";
             this.chkIncludeComm.UseVisualStyleBackColor = true;
-            this.chkIncludeComm.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIncludeComm.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkIncludeServer
             // 
@@ -131,7 +152,7 @@
             this.chkIncludeServer.TabIndex = 3;
             this.chkIncludeServer.Text = "Server";
             this.chkIncludeServer.UseVisualStyleBackColor = true;
-            this.chkIncludeServer.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIncludeServer.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkIncludeInterface
             // 
@@ -142,7 +163,7 @@
             this.chkIncludeInterface.TabIndex = 2;
             this.chkIncludeInterface.Text = "Interface";
             this.chkIncludeInterface.UseVisualStyleBackColor = true;
-            this.chkIncludeInterface.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIncludeInterface.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkIncludeBase
             // 
@@ -153,7 +174,7 @@
             this.chkIncludeBase.TabIndex = 1;
             this.chkIncludeBase.Text = "Configuration database";
             this.chkIncludeBase.UseVisualStyleBackColor = true;
-            this.chkIncludeBase.CheckedChanged += new System.EventHandler(this.chk_CheckedChanged);
+            this.chkIncludeBase.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // CtrlTransferSettings
             // 
@@ -161,7 +182,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.Controls.Add(this.gbOptions);
             this.Name = "CtrlTransferSettings";
-            this.Size = new System.Drawing.Size(469, 223);
+            this.Size = new System.Drawing.Size(469, 272);
             this.gbOptions.ResumeLayout(false);
             this.gbOptions.PerformLayout();
             this.ResumeLayout(false);
@@ -180,5 +201,7 @@
         private System.Windows.Forms.CheckBox chkIncludeServer;
         private System.Windows.Forms.CheckBox chkIncludeInterface;
         private System.Windows.Forms.CheckBox chkIncludeBase;
+        private System.Windows.Forms.TextBox txtObjFilter;
+        private System.Windows.Forms.Label lblObjFilter;
     }
 }

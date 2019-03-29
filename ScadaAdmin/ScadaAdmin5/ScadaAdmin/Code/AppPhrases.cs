@@ -74,6 +74,10 @@ namespace Scada.Admin.App.Code
         public static string ProfileNotSet { get; private set; }
         public static string ConfirmDeleteProfile { get; private set; }
 
+        // Scada.Admin.App.Controls.Deployment.CtrlTransferSettings
+        public static string ConfigNotSelected { get; private set; }
+        public static string IncorrectObjFilter { get; private set; }
+
         // Scada.Admin.App.Forms
         public static string AllCommLines { get; private set; }
 
@@ -101,7 +105,6 @@ namespace Scada.Admin.App.Code
         public static string IncorrectSecretKey { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmUploadConfig
-        public static string NothingToUpload { get; private set; }
         public static string UploadConfigComplete { get; private set; }
         public static string UploadConfigError { get; private set; }
 
@@ -253,6 +256,10 @@ namespace Scada.Admin.App.Code
             ProfileNotSet = dict.GetPhrase("ProfileNotSet");
             ConfirmDeleteProfile = dict.GetPhrase("ConfirmDeleteProfile");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Controls.Deployment.CtrlTransferSettings");
+            ConfigNotSelected = dict.GetPhrase("ConfigNotSelected");
+            IncorrectObjFilter = dict.GetPhrase("IncorrectObjFilter");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms");
             AllCommLines = dict.GetPhrase("AllCommLines");
 
@@ -280,7 +287,6 @@ namespace Scada.Admin.App.Code
             IncorrectSecretKey = dict.GetPhrase("IncorrectSecretKey");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmUploadConfig");
-            NothingToUpload = dict.GetPhrase("NothingToUpload");
             UploadConfigComplete = dict.GetPhrase("UploadConfigComplete");
             UploadConfigError = dict.GetPhrase("UploadConfigError");
 

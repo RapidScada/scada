@@ -359,6 +359,16 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Gets the related object of the tree node.
+        /// </summary>
+        private T GetRelatedObject<T>(TreeNode treeNode, bool throwOnError = true) where T : class
+        {
+            return throwOnError ?
+                (T)((TreeNodeTag)treeNode.Tag).RelatedObject :
+                ((TreeNodeTag)treeNode.Tag).RelatedObject as T;
+        }
+
+        /// <summary>
         /// Updates hints of the child forms corresponding to the specified node and its children.
         /// </summary>
         private void UpdateChildFormHints(TreeNode treeNode)
@@ -571,7 +581,7 @@ namespace Scada.Admin.App.Forms
             }
             else
             {
-                liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
+                liveInstance = GetRelatedObject<LiveInstance>(instanceNode);
                 return true;
             }
         }
@@ -590,7 +600,7 @@ namespace Scada.Admin.App.Forms
 
                 if (instanceNode != null)
                 {
-                    liveInstance = (LiveInstance)((TreeNodeTag)instanceNode.Tag).RelatedObject;
+                    liveInstance = GetRelatedObject<LiveInstance>(instanceNode);
                     return true;
                 }
             }
@@ -2080,13 +2090,16 @@ namespace Scada.Admin.App.Forms
             // enable or disable the menu items
             TreeNode selectedNode = tvExplorer.SelectedNode;
             bool isCommLineNode = selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine);
+            bool isLocal = FindClosestInstance(selectedNode, out LiveInstance liveInstance) &&
+                liveInstance.CommEnvironment.AgentClient != null && liveInstance.CommEnvironment.AgentClient.IsLocal;
+
             miCommLineMoveUp.Enabled = isCommLineNode && selectedNode.PrevNode != null;
             miCommLineMoveDown.Enabled = isCommLineNode && selectedNode.NextNode != null;
             miCommLineDelete.Enabled = isCommLineNode;
 
-            miCommLineStart.Enabled = isCommLineNode;
-            miCommLineStop.Enabled = isCommLineNode;
-            miCommLineRestart.Enabled = isCommLineNode;
+            miCommLineStart.Enabled = isCommLineNode && isLocal;
+            miCommLineStop.Enabled = isCommLineNode && isLocal;
+            miCommLineRestart.Enabled = isCommLineNode && isLocal;
         }
 
         private void miCommLineImport_Click(object sender, EventArgs e)
@@ -2117,8 +2130,7 @@ namespace Scada.Admin.App.Forms
                 else if (selectedNode.TagIs(CommNodeType.CommLine))
                 {
                     // import only devices
-                    Comm.Settings.CommLine commLineSettings =
-                        (Comm.Settings.CommLine)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+                    Comm.Settings.CommLine commLineSettings = GetRelatedObject<Comm.Settings.CommLine>(selectedNode);
                     frmCommImport.CommLineSettings = commLineSettings;
 
                     if (frmCommImport.ShowDialog() == DialogResult.OK)
@@ -2157,7 +2169,7 @@ namespace Scada.Admin.App.Forms
             {
                 FrmCommSync frmCommSync = new FrmCommSync(project, liveInstance.Instance)
                 {
-                    CommLineSettings = ((TreeNodeTag)selectedNode.Tag).RelatedObject as Comm.Settings.CommLine
+                    CommLineSettings = GetRelatedObject<Comm.Settings.CommLine>(selectedNode, false)
                 };
 
                 if (frmCommSync.ShowDialog() == DialogResult.OK)
@@ -2247,6 +2259,31 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        private void miCommLineStartStop_Click(object sender, EventArgs e)
+        {
+            // start, stop or restart communication line
+            TreeNode selectedNode = tvExplorer.SelectedNode;
+
+            if (selectedNode != null && selectedNode.TagIs(CommNodeType.CommLine) &&
+                FindClosestInstance(selectedNode, out LiveInstance liveInstance))
+            {
+                Comm.Settings.CommLine commLine = GetRelatedObject<Comm.Settings.CommLine>(selectedNode);
+                CommLineCmd commLineCmd;
+
+                if (sender == miCommLineStart)
+                    commLineCmd = CommLineCmd.StartLine;
+                else if (sender == miCommLineStop)
+                    commLineCmd = CommLineCmd.StopLine;
+                else
+                    commLineCmd = CommLineCmd.RestartLine;
+
+                if (new CommLineCommand(commLine, liveInstance.CommEnvironment).Send(commLineCmd, out string msg))
+                    ScadaUiUtils.ShowInfo(msg);
+                else
+                    ScadaUiUtils.ShowError(msg);
+            }
+        }
+
 
         private void cmsDevice_Opening(object sender, CancelEventArgs e)
         {
@@ -2270,7 +2307,7 @@ namespace Scada.Admin.App.Forms
             if (selectedNode != null && selectedNode.TagIs(CommNodeType.Device) &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                Comm.Settings.KP kp = (Comm.Settings.KP)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+                Comm.Settings.KP kp = GetRelatedObject<Comm.Settings.KP>(selectedNode);
                 new FrmDeviceCommand(kp, liveInstance.CommEnvironment).ShowDialog();
             }
         }
@@ -2284,8 +2321,8 @@ namespace Scada.Admin.App.Forms
                 selectedNode.FindClosest(CommNodeType.CommLine) is TreeNode commLineNode &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                Comm.Settings.CommLine commLine = (Comm.Settings.CommLine)((TreeNodeTag)commLineNode.Tag).RelatedObject;
-                Comm.Settings.KP kp = (Comm.Settings.KP)((TreeNodeTag)selectedNode.Tag).RelatedObject;
+                Comm.Settings.CommLine commLine = GetRelatedObject<Comm.Settings.CommLine>(commLineNode);
+                Comm.Settings.KP kp = GetRelatedObject<Comm.Settings.KP>(selectedNode);
 
                 if (liveInstance.CommEnvironment.TryGetKPView(kp, false, commLine.CustomParams, 
                     out KPView kpView, out string errMsg))

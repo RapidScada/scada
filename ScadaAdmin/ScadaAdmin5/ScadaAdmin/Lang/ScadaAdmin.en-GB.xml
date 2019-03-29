@@ -199,6 +199,9 @@
     <Phrase key="lblIgnore">Ignore:</Phrase>
     <Phrase key="chkIgnoreRegKeys">Registration keys</Phrase>
     <Phrase key="chkIgnoreWebStorage">Webstation storage</Phrase>
+    <Phrase key="lblObjFilter">Object filter:</Phrase>
+    <Phrase key="ConfigNotSelected">Configuration is not selected.</Phrase>
+    <Phrase key="IncorrectObjFilter">Object filter is incorrect.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms">
     <Phrase key="AllCommLines">&lt;All communication lines&gt;</Phrase>
@@ -261,7 +264,6 @@
     <Phrase key="this">Upload Configuration</Phrase>
     <Phrase key="btnUpload">Upload</Phrase>
     <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="NothingToUpload">Configuration for upload is not selected.</Phrase>
     <Phrase key="UploadConfigComplete">Upload completed successfully.&#13;&#10;Duration: {0} sec.&#13;&#10;Data size: {1} bytes.</Phrase>
     <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
   </Dictionary>

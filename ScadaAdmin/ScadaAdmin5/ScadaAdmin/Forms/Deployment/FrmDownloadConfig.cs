@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -94,22 +94,6 @@ namespace Scada.Admin.App.Forms.Deployment
         /// </summary>
         public bool InstanceModified { get; protected set; }
         
-        
-        /// <summary>
-        /// Validate the download configuration settings.
-        /// </summary>
-        private bool ValidateDownloadSettings()
-        {
-            if (ctrlTransferSettings.Empty)
-            {
-                ScadaUiUtils.ShowError(AppPhrases.NothingToDownload);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
         
         /// <summary>
         /// Save the deployments settings.
@@ -242,7 +226,7 @@ namespace Scada.Admin.App.Forms.Deployment
             // validate settings and download
             DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
 
-            if (profile != null && ValidateDownloadSettings())
+            if (profile != null && ctrlTransferSettings.ValidateFields())
             {
                 // save the settings changes
                 if (downloadSettingsModified)
