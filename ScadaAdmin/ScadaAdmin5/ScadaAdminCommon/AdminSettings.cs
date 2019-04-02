@@ -51,12 +51,12 @@ namespace Scada.Admin
         public string CommDir { get; set; }
 
         /// <summary>
-        /// Gets or sets the full file name of Scheme Editor.
+        /// Gets or sets the full file name of a scheme editor.
         /// </summary>
         public string SchemeEditorPath { get; set; }
 
         /// <summary>
-        /// Gets or sets the full file name of Table Editor.
+        /// Gets or sets the full file name of a table editor.
         /// </summary>
         public string TableEditorPath { get; set; }
 

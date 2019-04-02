@@ -211,7 +211,6 @@ namespace Scada.Admin.App.Forms
             miToolsCloneCnls.Enabled = projectIsOpen;
             miToolsCnlMap.Enabled = projectIsOpen;
             miToolsCheckIntegrity.Enabled = projectIsOpen;
-            miToolsOptions.Enabled = false;
         }
 
         /// <summary>
@@ -1443,7 +1442,8 @@ namespace Scada.Admin.App.Forms
 
         private void miToolsOptions_Click(object sender, EventArgs e)
         {
-
+            // edit the application settings
+            new FrmSettings().ShowDialog();
         }
 
         private void miToolsCulture_Click(object sender, EventArgs e)
