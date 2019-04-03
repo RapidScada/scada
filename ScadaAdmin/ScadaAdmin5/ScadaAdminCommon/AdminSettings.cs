@@ -32,6 +32,12 @@ namespace Scada.Admin
     public class AdminSettings
     {
         /// <summary>
+        /// The default settings file name.
+        /// </summary>
+        public const string DefFileName = "ScadaAdminConfig.xml";
+
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public AdminSettings()
@@ -106,6 +112,24 @@ namespace Scada.Admin
             CnlMult = 100;
             CnlShift = 1;
             CnlGap = 10;
+        }
+
+        /// <summary>
+        /// Loads the settings from the specified file.
+        /// </summary>
+        public bool Load(string fileName, out string errMsg)
+        {
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Saves the settings to the specified file.
+        /// </summary>
+        public bool Save(string fileName, out string errMsg)
+        {
+            errMsg = "";
+            return true;
         }
     }
 }

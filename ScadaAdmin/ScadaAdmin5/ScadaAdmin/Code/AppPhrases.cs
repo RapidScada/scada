@@ -157,6 +157,11 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App.Forms.Tools.FrmLineAdd
         public static string LineAlreadyExists { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmSettings
+        public static string ExecutableFileFilter { get; private set; }
+        public static string ChooseServerDir { get; private set; }
+        public static string ChooseCommDir { get; private set; }
+
         // Scada.Admin.App.Forms.FrmFileNew
         public static string FileNameEmpty { get; private set; }
         public static string FileNameInvalid { get; private set; }
@@ -190,6 +195,7 @@ namespace Scada.Admin.App.Code
         public static string SaveConfigBaseConfirm { get; private set; }
         public static string DeviceNotFoundInComm { get; private set; }
         public static string WebUrlNotSet { get; private set; }
+        public static string ReopenProject { get; private set; }
 
         // Scada.Admin.App.Forms.FrmProjectNew
         public static string ChooseProjectLocation { get; private set; }
@@ -339,6 +345,11 @@ namespace Scada.Admin.App.Code
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmLineAdd");
             LineAlreadyExists = dict.GetPhrase("LineAlreadyExists");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmSettings");
+            ExecutableFileFilter = dict.GetPhrase("ExecutableFileFilter");
+            ChooseServerDir = dict.GetPhrase("ChooseServerDir");
+            ChooseCommDir = dict.GetPhrase("ChooseCommDir");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmFileNew");
             FileNameEmpty = dict.GetPhrase("FileNameEmpty");
             FileNameInvalid = dict.GetPhrase("FileNameInvalid");
@@ -372,6 +383,7 @@ namespace Scada.Admin.App.Code
             SaveConfigBaseConfirm = dict.GetPhrase("SaveConfigBaseConfirm");
             DeviceNotFoundInComm = dict.GetPhrase("DeviceNotFoundInComm");
             WebUrlNotSet = dict.GetPhrase("WebUrlNotSet");
+            ReopenProject = dict.GetPhrase("ReopenProject");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.FrmProjectNew");
             ChooseProjectLocation = dict.GetPhrase("ChooseProjectLocation");

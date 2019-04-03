@@ -1443,7 +1443,10 @@ namespace Scada.Admin.App.Forms
         private void miToolsOptions_Click(object sender, EventArgs e)
         {
             // edit the application settings
-            new FrmSettings().ShowDialog();
+            FrmSettings frmSettings = new FrmSettings(appData);
+
+            if (frmSettings.ShowDialog() == DialogResult.OK && frmSettings.ReopenNeeded)
+                ScadaUiUtils.ShowInfo(AppPhrases.ReopenProject);
         }
 
         private void miToolsCulture_Click(object sender, EventArgs e)

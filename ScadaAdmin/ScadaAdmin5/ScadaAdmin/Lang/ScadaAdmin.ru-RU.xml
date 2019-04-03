@@ -371,65 +371,6 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommImport">
-    <Phrase key="this">Импорт настроек Коммуникатора</Phrase>
-    <Phrase key="lblSelect">Выберите данные для импорта:</Phrase>
-    <Phrase key="btnImport">Импорт</Phrase>
-    <Phrase key="btnClose">Закрыть</Phrase>
-    <Phrase key="NoDataSelected">Данные не выбраны.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommSync">
-    <Phrase key="this">Синхронизация настроек Коммуникатора</Phrase>
-    <Phrase key="lblCommLine">Линия связи</Phrase>
-    <Phrase key="gbParams">Обновляемые параметры</Phrase>
-    <Phrase key="chkCommLineName">Наименование линии связи</Phrase>
-    <Phrase key="chkDeviceName">Наименование КП</Phrase>
-    <Phrase key="chkDeviceDriver">Драйвер КП</Phrase>
-    <Phrase key="chkDeviceAddress">Адрес КП</Phrase>
-    <Phrase key="chkDeviceCallNum">Позывной КП</Phrase>
-    <Phrase key="btnSync">Выполнить</Phrase>
-    <Phrase key="btnClose">Закрыть</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
-    <Phrase key="this">Язык</Phrase>
-    <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="LoadCulturesError">Ошибка при загрузке культур</Phrase>
-    <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
-    <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmDeviceAdd">
-    <Phrase key="this">Добавление КП</Phrase>
-    <Phrase key="gbDevice">КП</Phrase>
-    <Phrase key="lblKPNum">Номер</Phrase>
-    <Phrase key="lblName">Наименование</Phrase>
-    <Phrase key="lblKPType">Тип КП</Phrase>
-    <Phrase key="lblAddress">Адрес</Phrase>
-    <Phrase key="lblCallNum">Позывной</Phrase>
-    <Phrase key="lblCommLine">Линия связи</Phrase>
-    <Phrase key="lblDescr">Описание</Phrase>
-    <Phrase key="gbComm">Коммуникатор</Phrase>
-    <Phrase key="chkAddToComm">Добавить КП в Коммуникатор</Phrase>
-    <Phrase key="lblInstance">Экземпляр</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="DeviceAlreadyExists">КП с таким номером уже существует.</Phrase>
-    <Phrase key="CommLineNotFound">Линия связи не найдена в Коммуникаторе.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
-    <Phrase key="this">Добавление линии связи</Phrase>
-    <Phrase key="gbLine">Линия связи</Phrase>
-    <Phrase key="lblCommLineNum">Номер</Phrase>
-    <Phrase key="lblName">Наименование</Phrase>
-    <Phrase key="lblDescr">Описание</Phrase>
-    <Phrase key="gbComm">Коммуникатор</Phrase>
-    <Phrase key="chkAddToComm">Добавить линию в Коммуникатор</Phrase>
-    <Phrase key="lblInstance">Экземпляр</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-    <Phrase key="LineAlreadyExists">Линия связи с таким номером уже существует.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
     <Phrase key="this">Клонирование каналов</Phrase>
     <Phrase key="gbCnlKind">Вид каналов</Phrase>
@@ -489,6 +430,88 @@
     <Phrase key="rbGroupByObjects">По объектам</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommImport">
+    <Phrase key="this">Импорт настроек Коммуникатора</Phrase>
+    <Phrase key="lblSelect">Выберите данные для импорта:</Phrase>
+    <Phrase key="btnImport">Импорт</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="NoDataSelected">Данные не выбраны.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommSync">
+    <Phrase key="this">Синхронизация настроек Коммуникатора</Phrase>
+    <Phrase key="lblCommLine">Линия связи</Phrase>
+    <Phrase key="gbParams">Обновляемые параметры</Phrase>
+    <Phrase key="chkCommLineName">Наименование линии связи</Phrase>
+    <Phrase key="chkDeviceName">Наименование КП</Phrase>
+    <Phrase key="chkDeviceDriver">Драйвер КП</Phrase>
+    <Phrase key="chkDeviceAddress">Адрес КП</Phrase>
+    <Phrase key="chkDeviceCallNum">Позывной КП</Phrase>
+    <Phrase key="btnSync">Выполнить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
+    <Phrase key="this">Язык</Phrase>
+    <Phrase key="lblInfo">Изменения вступят в силу после перезапуска приложения.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="LoadCulturesError">Ошибка при загрузке культур</Phrase>
+    <Phrase key="CultureRequired">Пожалуйста, введите непустой язык.</Phrase>
+    <Phrase key="CultureNotFound">Указанная культура не найдена.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmDeviceAdd">
+    <Phrase key="this">Добавление КП</Phrase>
+    <Phrase key="gbDevice">КП</Phrase>
+    <Phrase key="lblKPNum">Номер</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="lblKPType">Тип КП</Phrase>
+    <Phrase key="lblAddress">Адрес</Phrase>
+    <Phrase key="lblCallNum">Позывной</Phrase>
+    <Phrase key="lblCommLine">Линия связи</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="gbComm">Коммуникатор</Phrase>
+    <Phrase key="chkAddToComm">Добавить КП в Коммуникатор</Phrase>
+    <Phrase key="lblInstance">Экземпляр</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="DeviceAlreadyExists">КП с таким номером уже существует.</Phrase>
+    <Phrase key="CommLineNotFound">Линия связи не найдена в Коммуникаторе.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
+    <Phrase key="this">Добавление линии связи</Phrase>
+    <Phrase key="gbLine">Линия связи</Phrase>
+    <Phrase key="lblCommLineNum">Номер</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="gbComm">Коммуникатор</Phrase>
+    <Phrase key="chkAddToComm">Добавить линию в Коммуникатор</Phrase>
+    <Phrase key="lblInstance">Экземпляр</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="LineAlreadyExists">Линия связи с таким номером уже существует.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmSettings">
+    <Phrase key="this">Настройки</Phrase>
+    <Phrase key="gbPathOptions">Пути</Phrase>
+    <Phrase key="lblServerDir">Директория Сервера</Phrase>
+    <Phrase key="btnBrowseServerDir">Обзор...</Phrase>
+    <Phrase key="lblCommDir">Директория Коммуникатора</Phrase>
+    <Phrase key="btnBrowseCommDir">Обзор...</Phrase>
+    <Phrase key="lblSchemeEditorPath">Редактор схем</Phrase>
+    <Phrase key="btnBrowseSchemeEditorPath">Обзор...</Phrase>
+    <Phrase key="lblTableEditorPath">Редактор таблиц</Phrase>
+    <Phrase key="btnBrowseTableEditorPath">Обзор...</Phrase>
+    <Phrase key="lblTextEditorPath">Текстовый редактор</Phrase>
+    <Phrase key="btnBrowseTextEditorPath">Обзор...</Phrase>
+    <Phrase key="gbCnlNumOptions">Нумерация каналов</Phrase>
+    <Phrase key="lblCnlMult">Кратность</Phrase>
+    <Phrase key="lblCnlShift">Смещение</Phrase>
+    <Phrase key="lblCnlGap">Промежуток</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="ExecutableFileFilter">Исполняемые файлы (*.exe)|*.exe|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="ChooseServerDir">Выберите директорию Сервера.</Phrase>
+    <Phrase key="ChooseCommDir">Выберите директорию Коммуникатора.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">Новый файл</Phrase>
@@ -626,6 +649,7 @@
     <Phrase key="SaveConfigBaseConfirm">База конфигурации была изменена. Сохранить изменения?</Phrase>
     <Phrase key="DeviceNotFoundInComm">Устройство не найдено в Коммуникаторе.</Phrase>
     <Phrase key="WebUrlNotSet">Адрес Вебстанции не задан в профиле развёртывания или некорректен.</Phrase>
+    <Phrase key="ReopenProject">Изменения вступят в силу после повторного открытия проекта.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">Новый проект</Phrase>

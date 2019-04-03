@@ -371,65 +371,6 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommImport">
-    <Phrase key="this">Import Communicator Settings</Phrase>
-    <Phrase key="lblSelect">Select data to import:</Phrase>
-    <Phrase key="btnImport">Import</Phrase>
-    <Phrase key="btnClose">Close</Phrase>
-    <Phrase key="NoDataSelected">No data selected.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommSync">
-    <Phrase key="this">Sync Communicator Settings</Phrase>
-    <Phrase key="lblCommLine">Communication line</Phrase>
-    <Phrase key="gbParams">Parameters to Update</Phrase>
-    <Phrase key="chkCommLineName">Communication line name</Phrase>
-    <Phrase key="chkDeviceName">Device name</Phrase>
-    <Phrase key="chkDeviceDriver">Device driver</Phrase>
-    <Phrase key="chkDeviceAddress">Device address</Phrase>
-    <Phrase key="chkDeviceCallNum">Device call number</Phrase>
-    <Phrase key="btnSync">Sync</Phrase>
-    <Phrase key="btnClose">Close</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
-    <Phrase key="this">Language</Phrase>
-    <Phrase key="lblInfo">Changes will take effect after restarting the application.</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="LoadCulturesError">Error loading cultures</Phrase>
-    <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
-    <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmDeviceAdd">
-    <Phrase key="this">Add Device</Phrase>
-    <Phrase key="gbDevice">Device</Phrase>
-    <Phrase key="lblKPNum">Number</Phrase>
-    <Phrase key="lblName">Name</Phrase>
-    <Phrase key="lblKPType">Device Type</Phrase>
-    <Phrase key="lblAddress">Address</Phrase>
-    <Phrase key="lblCallNum">Call number</Phrase>
-    <Phrase key="lblCommLine">Communication line</Phrase>
-    <Phrase key="lblDescr">Description</Phrase>
-    <Phrase key="gbComm">Communicator</Phrase>
-    <Phrase key="chkAddToComm">Add device to Communicator</Phrase>
-    <Phrase key="lblInstance">Instance</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="DeviceAlreadyExists">A device with the same number already exists.</Phrase>
-    <Phrase key="CommLineNotFound">Communication line not found in Communicator.</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
-    <Phrase key="this">Add Communication Line</Phrase>
-    <Phrase key="gbLine">Communication Line</Phrase>
-    <Phrase key="lblCommLineNum">Number</Phrase>
-    <Phrase key="lblName">Name</Phrase>
-    <Phrase key="lblDescr">Description</Phrase>
-    <Phrase key="gbComm">Communicator</Phrase>
-    <Phrase key="chkAddToComm">Add line to Communicator</Phrase>
-    <Phrase key="lblInstance">Instance</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="LineAlreadyExists">A communication line with the same number already exists.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCnlClone">
     <Phrase key="this">Clone Channels</Phrase>
     <Phrase key="gbCnlKind">Kind</Phrase>
@@ -489,6 +430,88 @@
     <Phrase key="rbGroupByObjects">Objects</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommImport">
+    <Phrase key="this">Import Communicator Settings</Phrase>
+    <Phrase key="lblSelect">Select data to import:</Phrase>
+    <Phrase key="btnImport">Import</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="NoDataSelected">No data selected.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCommSync">
+    <Phrase key="this">Sync Communicator Settings</Phrase>
+    <Phrase key="lblCommLine">Communication line</Phrase>
+    <Phrase key="gbParams">Parameters to Update</Phrase>
+    <Phrase key="chkCommLineName">Communication line name</Phrase>
+    <Phrase key="chkDeviceName">Device name</Phrase>
+    <Phrase key="chkDeviceDriver">Device driver</Phrase>
+    <Phrase key="chkDeviceAddress">Device address</Phrase>
+    <Phrase key="chkDeviceCallNum">Device call number</Phrase>
+    <Phrase key="btnSync">Sync</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmCulture">
+    <Phrase key="this">Language</Phrase>
+    <Phrase key="lblInfo">Changes will take effect after restarting the application.</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="LoadCulturesError">Error loading cultures</Phrase>
+    <Phrase key="CultureRequired">Please enter a non-empty language.</Phrase>
+    <Phrase key="CultureNotFound">The specified culture not found.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmDeviceAdd">
+    <Phrase key="this">Add Device</Phrase>
+    <Phrase key="gbDevice">Device</Phrase>
+    <Phrase key="lblKPNum">Number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblKPType">Device Type</Phrase>
+    <Phrase key="lblAddress">Address</Phrase>
+    <Phrase key="lblCallNum">Call number</Phrase>
+    <Phrase key="lblCommLine">Communication line</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="gbComm">Communicator</Phrase>
+    <Phrase key="chkAddToComm">Add device to Communicator</Phrase>
+    <Phrase key="lblInstance">Instance</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="DeviceAlreadyExists">A device with the same number already exists.</Phrase>
+    <Phrase key="CommLineNotFound">Communication line not found in Communicator.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
+    <Phrase key="this">Add Communication Line</Phrase>
+    <Phrase key="gbLine">Communication Line</Phrase>
+    <Phrase key="lblCommLineNum">Number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="gbComm">Communicator</Phrase>
+    <Phrase key="chkAddToComm">Add line to Communicator</Phrase>
+    <Phrase key="lblInstance">Instance</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="LineAlreadyExists">A communication line with the same number already exists.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmSettings">
+    <Phrase key="this">Options</Phrase>
+    <Phrase key="gbPathOptions">Paths</Phrase>
+    <Phrase key="lblServerDir">Server directory</Phrase>
+    <Phrase key="btnBrowseServerDir">Browse...</Phrase>
+    <Phrase key="lblCommDir">Communicator directory</Phrase>
+    <Phrase key="btnBrowseCommDir">Browse...</Phrase>
+    <Phrase key="lblSchemeEditorPath">Scheme editor</Phrase>
+    <Phrase key="btnBrowseSchemeEditorPath">Browse...</Phrase>
+    <Phrase key="lblTableEditorPath">Table editor</Phrase>
+    <Phrase key="btnBrowseTableEditorPath">Browse...</Phrase>
+    <Phrase key="lblTextEditorPath">Text editor</Phrase>
+    <Phrase key="btnBrowseTextEditorPath">Browse...</Phrase>
+    <Phrase key="gbCnlNumOptions">Channel Numbering</Phrase>
+    <Phrase key="lblCnlMult">Multiplicity</Phrase>
+    <Phrase key="lblCnlShift">Shift</Phrase>
+    <Phrase key="lblCnlGap">Gap</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="ExecutableFileFilter">Executable files (*.exe)|*.exe|All Files (*.*)|*.*</Phrase>
+    <Phrase key="ChooseServerDir">Choose the Server directory.</Phrase>
+    <Phrase key="ChooseCommDir">Choose the Communicator directory.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmFileNew">
     <Phrase key="this">New File</Phrase>
@@ -626,6 +649,7 @@
     <Phrase key="SaveConfigBaseConfirm">The configuration database has been modified. Save the changes?</Phrase>
     <Phrase key="DeviceNotFoundInComm">Device not found in Communicator.</Phrase>
     <Phrase key="WebUrlNotSet">Webstation URL is not specified in the deployment profile or incorrect.</Phrase>
+    <Phrase key="ReopenProject">Changes will take effect after reopening the project.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectNew">
     <Phrase key="this">New Project</Phrase>
