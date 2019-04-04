@@ -23,6 +23,10 @@
  * Modified : 2019
  */
 
+using System;
+using System.IO;
+using System.Xml;
+
 namespace Scada.Admin
 {
     /// <summary>
@@ -119,8 +123,72 @@ namespace Scada.Admin
         /// </summary>
         public bool Load(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            try
+            {
+                SetToDefault();
+
+                if (!File.Exists(fileName))
+                    throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
+
+                XmlDocument xmlDoc = new XmlDocument();
+                xmlDoc.Load(fileName);
+                XmlElement rootElem = xmlDoc.DocumentElement;
+
+                // load path options
+                if (rootElem.SelectSingleNode("PathOptions") is XmlNode pathOptionsNode)
+                {
+                    foreach (XmlElement paramElem in pathOptionsNode)
+                    {
+                        string name = paramElem.GetAttribute("name");
+                        string nameL = name.ToLowerInvariant();
+                        string val = paramElem.GetAttribute("value");
+
+                        if (nameL == "serverdir")
+                            ServerDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "commdir")
+                            CommDir = ScadaUtils.NormalDir(val);
+                        else if (nameL == "schemeeditorpath")
+                            SchemeEditorPath = val;
+                        else if (nameL == "tableeditorpath")
+                            TableEditorPath = val;
+                        else if (nameL == "texteditorpath")
+                            TextEditorPath = val;
+                    }
+                }
+
+                // load channel numbering options
+                if (rootElem.SelectSingleNode("CnlNumOptions") is XmlNode cnlNumOptionsNode)
+                {
+                    foreach (XmlElement paramElem in cnlNumOptionsNode)
+                    {
+                        string name = paramElem.GetAttribute("name");
+                        string nameL = name.ToLowerInvariant();
+                        string val = paramElem.GetAttribute("value");
+
+                        try
+                        {
+                            if (nameL == "cnlmult")
+                                CnlMult = int.Parse(val);
+                            else if (nameL == "cnlshift")
+                                CnlShift = int.Parse(val);
+                            else if (nameL == "cnlgap")
+                                CnlGap = int.Parse(val);
+                        }
+                        catch
+                        {
+                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
+                        }
+                    }
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommonPhrases.LoadAppSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
 
         /// <summary>
@@ -128,8 +196,53 @@ namespace Scada.Admin
         /// </summary>
         public bool Save(string fileName, out string errMsg)
         {
-            errMsg = "";
-            return true;
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("ScadaAdminConfig");
+                xmlDoc.AppendChild(rootElem);
+
+                // save path options
+                XmlElement pathOptionsElem = rootElem.AppendElem("PathOptions");
+                pathOptionsElem.AppendParamElem("ServerDir", ServerDir, 
+                    "Директория Сервера", 
+                    "Server directory");
+                pathOptionsElem.AppendParamElem("CommDir", CommDir, 
+                    "Директория Коммуникатора", 
+                    "Communicator directory");
+                pathOptionsElem.AppendParamElem("SchemeEditorPath", SchemeEditorPath,
+                    "Полное имя файла редактора схем",
+                    "Full file name of a scheme editor");
+                pathOptionsElem.AppendParamElem("TableEditorPath", TableEditorPath,
+                    "Полное имя файла редактора таблиц",
+                    "Full file name of a table editor");
+                pathOptionsElem.AppendParamElem("TextEditorPath", TextEditorPath,
+                    "Полное имя файла текстового редактора",
+                    "Full file name of a text editor");
+
+                // save channel numbering options
+                XmlElement cnlNumOptionsElem = rootElem.AppendElem("CnlNumOptions");
+                pathOptionsElem.AppendParamElem("CnlMult", CnlMult,
+                    "Кратность первого канала устройства", 
+                    "Multiplicity of the first channel of a device");
+                pathOptionsElem.AppendParamElem("CnlShift", CnlShift,
+                    "Смещение первого канала устройства", 
+                    "Shift of the first channel of a device");
+                pathOptionsElem.AppendParamElem("CnlGap", CnlGap,
+                    "Промежуток между номерами каналов разных устройств", 
+                    "Gap between channel numbers of different devices");
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = CommonPhrases.SaveAppSettingsError + ": " + ex.Message;
+                return false;
+            }
         }
     }
 }
