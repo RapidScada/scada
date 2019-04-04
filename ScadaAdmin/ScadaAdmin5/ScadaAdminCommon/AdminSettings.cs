@@ -225,16 +225,17 @@ namespace Scada.Admin
 
                 // save channel numbering options
                 XmlElement cnlNumOptionsElem = rootElem.AppendElem("CnlNumOptions");
-                pathOptionsElem.AppendParamElem("CnlMult", CnlMult,
+                cnlNumOptionsElem.AppendParamElem("CnlMult", CnlMult,
                     "Кратность первого канала устройства", 
                     "Multiplicity of the first channel of a device");
-                pathOptionsElem.AppendParamElem("CnlShift", CnlShift,
+                cnlNumOptionsElem.AppendParamElem("CnlShift", CnlShift,
                     "Смещение первого канала устройства", 
                     "Shift of the first channel of a device");
-                pathOptionsElem.AppendParamElem("CnlGap", CnlGap,
+                cnlNumOptionsElem.AppendParamElem("CnlGap", CnlGap,
                     "Промежуток между номерами каналов разных устройств", 
                     "Gap between channel numbers of different devices");
 
+                xmlDoc.Save(fileName);
                 errMsg = "";
                 return true;
             }

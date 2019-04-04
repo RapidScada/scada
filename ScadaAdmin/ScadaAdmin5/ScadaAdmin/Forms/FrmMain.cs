@@ -214,6 +214,18 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Loads the application settings.
+        /// </summary>
+        private void LoadAppSettings()
+        {
+            if (!appData.AppSettings.Load(Path.Combine(appData.AppDirs.ConfigDir, AdminSettings.DefFileName),
+                out string errMsg))
+            {
+                appData.ProcError(errMsg);
+            }
+        }
+
+        /// <summary>
         /// Enables or disables the deployment menu items and tool buttons.
         /// </summary>
         private void SetDeployMenuItemsEnabled()
@@ -877,6 +889,7 @@ namespace Scada.Admin.App.Forms
             LocalizeForm();
             TakeExplorerImages();
             SetMenuItemsEnabled();
+            LoadAppSettings();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
