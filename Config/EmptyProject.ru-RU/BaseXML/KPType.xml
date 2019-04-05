@@ -156,4 +156,22 @@
     <DllFileName>KpCE301.dll</DllFileName>
     <Descr>Электросчётчики CE30X, использующие стандарт IEC 61107-2011, производства АО "Концерн Энергомера"</Descr>
   </KPType>
+  <KPType>
+    <KPTypeID>227</KPTypeID>
+    <Name>DB Import</Name>
+    <DllFileName>KpDbImport.dll</DllFileName>
+    <Descr>Импорт из базы данных</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>228</KPTypeID>
+    <Name>Modbus YLC</Name>
+    <DllFileName>KpModbusYlc.dll</DllFileName>
+    <Descr>Расширяет драйвер Modbus в соответствии со спецификацией Coster Group</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>229</KPTypeID>
+    <Name>Modbus Slave</Name>
+    <DllFileName>KpModbusSlave.dll</DllFileName>
+    <Descr>Зарезервировано для драйвера Modbus Slave</Descr>
+  </KPType>
 </ArrayOfKPType>
