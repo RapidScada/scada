@@ -669,8 +669,10 @@ namespace Scada.Data.Tables
                     for (int i = 0; i < fieldCnt; i++)
                     {
                         PropertyDescriptor prop = props[i];
-                        FieldDef fieldDef = CreateFieldDef(prop.Name, prop.PropertyType,
-                            maxStrLenArr[i], prop.PropertyType.IsNullable(), ref recSize);
+                        bool isNullable = prop.PropertyType.IsNullable();
+                        FieldDef fieldDef = CreateFieldDef(prop.Name, 
+                            isNullable ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType,
+                            maxStrLenArr[i], isNullable || prop.PropertyType.IsClass, ref recSize);
                         fieldDefs[i] = fieldDef;
                         WriteFieldDef(fieldDef, writer);
                     }
