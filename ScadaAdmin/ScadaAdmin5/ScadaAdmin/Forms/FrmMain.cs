@@ -845,16 +845,16 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// Closes the project.
         /// </summary>
-        private void CloseProject(out bool cancel)
+        private bool CloseProject()
         {
             if (project == null)
             {
-                cancel = false;
+                return true;
             }
             else
             {
                 PrepareToCloseAll();
-                wctrlMain.CloseAllForms(out cancel);
+                wctrlMain.CloseAllForms(out bool cancel);
 
                 if (!cancel && project.ConfigBase.Modified)
                 {
@@ -872,13 +872,18 @@ namespace Scada.Admin.App.Forms
                     }
                 }
 
-                if (!cancel)
+                if (cancel)
+                {
+                    return false;
+                }
+                else
                 {
                     project = null;
                     Text = AppPhrases.EmptyTitle;
                     wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                     SetMenuItemsEnabled();
                     tvExplorer.Nodes.Clear();
+                    return true;
                 }
             }
         }
@@ -895,8 +900,7 @@ namespace Scada.Admin.App.Forms
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
         {
             // confirm saving the project before closing
-            CloseProject(out bool cancel);
-            e.Cancel = cancel;
+            e.Cancel = !CloseProject();
         }
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
@@ -1086,7 +1090,7 @@ namespace Scada.Admin.App.Forms
             // create a new project
             FrmProjectNew frmNewProject = new FrmProjectNew(appData);
 
-            if (frmNewProject.ShowDialog() == DialogResult.OK)
+            if (frmNewProject.ShowDialog() == DialogResult.OK && CloseProject())
             {
                 if (ScadaProject.Create(frmNewProject.ProjectName, frmNewProject.ProjectLocation,
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
@@ -1110,10 +1114,8 @@ namespace Scada.Admin.App.Forms
             // open project
             ofdProject.FileName = "";
 
-            if (ofdProject.ShowDialog() == DialogResult.OK)
+            if (ofdProject.ShowDialog() == DialogResult.OK && CloseProject())
             {
-                PrepareToCloseAll();
-                wctrlMain.CloseAllForms(out bool cancel);
                 ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
                 project = new ScadaProject();
 
@@ -1181,7 +1183,7 @@ namespace Scada.Admin.App.Forms
         private void miFileCloseProject_Click(object sender, EventArgs e)
         {
             // close the project
-            CloseProject(out bool cancel);
+            CloseProject();
         }
 
         private void miFileExit_Click(object sender, EventArgs e)
