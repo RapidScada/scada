@@ -95,13 +95,13 @@ namespace Scada.Admin.App.Controls.Deployment
         {
             if (Empty)
             {
-                ScadaUiUtils.ShowError("Configuration is not selected. Конфигурация не выбрана.");
+                ScadaUiUtils.ShowError(AppPhrases.ConfigNotSelected);
                 return false;
             }
 
             if (!RangeUtils.StrToRange(txtObjFilter.Text, true, out ICollection<int> collection))
             {
-                ScadaUiUtils.ShowError("Object filter is incorrect.");
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectObjFilter);
                 return false;
             }
 
