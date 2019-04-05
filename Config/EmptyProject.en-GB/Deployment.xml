@@ -2,6 +2,7 @@
 <DeploymentSettings>
   <DeploymentProfile>
     <Name>Default Profile</Name>
+    <WebUrl>http://localhost/scada</WebUrl>
     <ConnectionSettings>
       <Host>localhost</Host>
       <Port>10002</Port>
