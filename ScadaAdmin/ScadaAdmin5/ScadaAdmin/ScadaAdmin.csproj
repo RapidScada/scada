@@ -108,7 +108,7 @@
     <Compile Include="Code\FileCreator.cs" />
     <Compile Include="Code\FileItem.cs" />
     <Compile Include="Code\FormOperatingMode.cs" />
-    <Compile Include="Code\FormState.cs" />
+    <Compile Include="Code\MainFormState.cs" />
     <Compile Include="Code\CommDirs.cs" />
     <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />

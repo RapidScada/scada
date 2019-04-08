@@ -111,6 +111,22 @@ namespace Scada.Admin.App.Forms
 
 
         /// <summary>
+        /// Gets or sets the explorer width.
+        /// </summary>
+        public int ExplorerWidth
+        {
+            get
+            {
+                return pnlLeft.Width;
+            }
+            set
+            {
+                pnlLeft.Width = Math.Max(value, splVert.MinSize);
+            }
+        }
+
+
+        /// <summary>
         /// Applies localization to the form.
         /// </summary>
         private void LocalizeForm()
@@ -219,6 +235,37 @@ namespace Scada.Admin.App.Forms
         private void LoadAppSettings()
         {
             if (!appData.AppSettings.Load(Path.Combine(appData.AppDirs.ConfigDir, AdminSettings.DefFileName),
+                out string errMsg))
+            {
+                appData.ProcError(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Loads the application state.
+        /// </summary>
+        private void LoadAppState()
+        {
+            if (appData.AppState.Load(Path.Combine(appData.AppDirs.ConfigDir, AppState.DefFileName), 
+                out string errMsg))
+            {
+                appData.AppState.MainFormState.Apply(this);
+                ofdProject.InitialDirectory = appData.AppState.ProjectDir;
+            }
+            else
+            {
+                appData.ProcError(errMsg);
+            }
+        }
+
+        /// <summary>
+        /// Saves the application state.
+        /// </summary>
+        private void SaveAppState()
+        {
+            appData.AppState.MainFormState.Retrieve(this);
+
+            if (!appData.AppState.Save(Path.Combine(appData.AppDirs.ConfigDir, AppState.DefFileName),
                 out string errMsg))
             {
                 appData.ProcError(errMsg);
@@ -895,6 +942,7 @@ namespace Scada.Admin.App.Forms
             TakeExplorerImages();
             SetMenuItemsEnabled();
             LoadAppSettings();
+            LoadAppState();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -905,6 +953,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
+            SaveAppState();
             appData.FinalizeApp();
         }
 
@@ -1095,6 +1144,7 @@ namespace Scada.Admin.App.Forms
                 if (ScadaProject.Create(frmNewProject.ProjectName, frmNewProject.ProjectLocation,
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
                 {
+                    appData.AppState.AddRecentProject(newProject.FileName);
                     project = newProject;
                     LoadConfigBase();
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
@@ -1119,7 +1169,9 @@ namespace Scada.Admin.App.Forms
                 ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
                 project = new ScadaProject();
 
-                if (!project.Load(ofdProject.FileName, out string errMsg))
+                if (project.Load(ofdProject.FileName, out string errMsg))
+                    appData.AppState.AddRecentProject(project.FileName);
+                else
                     appData.ProcError(errMsg);
 
                 LoadConfigBase();

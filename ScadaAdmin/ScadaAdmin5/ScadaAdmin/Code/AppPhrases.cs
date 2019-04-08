@@ -34,6 +34,10 @@ namespace Scada.Admin.App.Code
         // Scada.Admin.App
         public static string CorrectErrors { get; private set; }
 
+        // Scada.Admin.App.Code.AppState
+        public static string LoadAppStateError { get; private set; }
+        public static string SaveAppStateError { get; private set; }
+
         // Scada.Admin.App.Code.CnlMap
         public static string CnlMapByDevice { get; private set; }
         public static string CnlMapByObject { get; private set; }
@@ -221,6 +225,10 @@ namespace Scada.Admin.App.Code
         {
             Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App");
             CorrectErrors = dict.GetPhrase("CorrectErrors");
+
+            dict = Localization.GetDictionary("Scada.Admin.App.Code.AppState");
+            LoadAppStateError = dict.GetPhrase("LoadAppStateError");
+            SaveAppStateError = dict.GetPhrase("SaveAppStateError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Code.CnlMap");
             CnlMapByDevice = dict.GetPhrase("CnlMapByDevice");

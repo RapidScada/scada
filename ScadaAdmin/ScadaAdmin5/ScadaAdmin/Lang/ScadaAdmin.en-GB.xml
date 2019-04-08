@@ -6,6 +6,10 @@
   <Dictionary key="Scada.Admin.App">
     <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.AppState">
+    <Phrase key="LoadAppStateError">Error loading application state</Phrase>
+    <Phrase key="SaveAppStateError">Error saving application state</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.CnlMap">
     <Phrase key="CnlMapByDevice">Channels by Device</Phrase>
     <Phrase key="CnlMapByObject">Channels by Object</Phrase>

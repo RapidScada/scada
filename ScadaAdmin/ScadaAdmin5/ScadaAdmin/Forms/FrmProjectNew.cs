@@ -280,7 +280,10 @@ namespace Scada.Admin.App.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (ValidateFields())
+            {
+                appData.AppState.ProjectDir = ProjectLocation;
                 DialogResult = DialogResult.OK;
+            }
         }
     }
 }
