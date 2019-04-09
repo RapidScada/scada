@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -134,9 +134,8 @@ namespace Scada.Admin.App.Forms
         private void ChildFormTag_MainFormMessage(object sender, FormMessageEventArgs e)
         {
             // update file name in case of renaming a file or its parent directory
-            if (e.Message == AppMessage.UpdateFileName &&
-                e.Arguments.TryGetValue("FileName", out object fileNameObj) &&
-                fileNameObj is string newFileName && !string.IsNullOrEmpty(newFileName))
+            if (e.Message == AppMessage.UpdateFileName && 
+                e.GetArgument("FileName") is string newFileName && newFileName != "")
             {
                 fileName = newFileName;
                 Text = Path.GetFileName(fileName);

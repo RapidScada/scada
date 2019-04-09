@@ -33,5 +33,7 @@ namespace Scada.Admin.App.Code
     {
         public const string RefreshData = "Admin.RefreshData";
         public const string UpdateFileName = "Admin.UpdateFileName";
+        public const string NewProject = "Admin.NewProject";
+        public const string OpenProject = "Admin.OpenProject";
     }
 }

@@ -80,6 +80,7 @@ namespace Scada.Admin.App.Forms
         private readonly CommShell commShell;             // the shell to edit Communicator settings
         private readonly ExplorerBuilder explorerBuilder; // the object to manipulate the explorer tree
         private ScadaProject project;                     // the project under development
+        private FrmStartPage frmStartPage;                // the start page
         private bool preventNodeExpand;                   // prevent a tree node from expanding or collapsing
 
 
@@ -106,6 +107,7 @@ namespace Scada.Admin.App.Forms
                 FileItemMenu = cmsFileItem, InstanceMenu = cmsInstance, ServerMenu = cmsServer,
                 CommMenu = cmsComm, CommLineMenu = cmsCommLine, DeviceMenu = cmsDevice });
             project = null;
+            frmStartPage = null;
             preventNodeExpand = false;
         }
 
@@ -890,6 +892,67 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Creates a new project.
+        /// </summary>
+        private void NewProject()
+        {
+            FrmProjectNew frmNewProject = new FrmProjectNew(appData);
+
+            if (frmNewProject.ShowDialog() == DialogResult.OK && CloseProject())
+            {
+                CloseStartPage();
+
+                if (ScadaProject.Create(frmNewProject.ProjectName, frmNewProject.ProjectLocation,
+                    frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
+                {
+                    appData.AppState.AddRecentProject(newProject.FileName);
+                    project = newProject;
+                    LoadConfigBase();
+                    Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                    wctrlMain.MessageText = AppPhrases.SelectItemMessage;
+                    SetMenuItemsEnabled();
+                    explorerBuilder.CreateNodes(project);
+                }
+                else
+                {
+                    appData.ProcError(errMsg);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Opens the project.
+        /// </summary>
+        private void OpenProject(string fileName = "")
+        {
+            if (string.IsNullOrEmpty(fileName))
+            {
+                ofdProject.FileName = "";
+
+                if (ofdProject.ShowDialog() == DialogResult.OK)
+                    fileName = ofdProject.FileName;
+            }
+
+            if (!string.IsNullOrEmpty(fileName) && CloseProject())
+            {
+                CloseStartPage();
+                ofdProject.InitialDirectory = Path.GetDirectoryName(fileName);
+                project = new ScadaProject();
+
+                if (project.Load(fileName, out string errMsg))
+                    appData.AppState.AddRecentProject(project.FileName);
+                else
+                    appData.ProcError(errMsg);
+
+                LoadConfigBase();
+                Text = string.Format(AppPhrases.ProjectTitle, project.Name);
+                wctrlMain.MessageText = AppPhrases.SelectItemMessage;
+                SetMenuItemsEnabled();
+                explorerBuilder.CreateNodes(project);
+            }
+        }
+
+        /// <summary>
         /// Closes the project.
         /// </summary>
         private bool CloseProject()
@@ -935,6 +998,30 @@ namespace Scada.Admin.App.Forms
             }
         }
 
+        /// <summary>
+        /// Shows the start page.
+        /// </summary>
+        private void ShowStartPage()
+        {
+            if (frmStartPage == null)
+            {
+                frmStartPage = new FrmStartPage(appData.AppState);
+                wctrlMain.AddForm(frmStartPage, "", miFileShowStartPage.Image, null);
+            }
+            else
+            {
+                wctrlMain.ActivateForm(frmStartPage);
+            }
+        }
+
+        /// <summary>
+        /// Closes the start page.
+        /// </summary>
+        private void CloseStartPage()
+        {
+            frmStartPage?.Close();
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -943,6 +1030,7 @@ namespace Scada.Admin.App.Forms
             SetMenuItemsEnabled();
             LoadAppSettings();
             LoadAppState();
+            ShowStartPage();
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -1070,6 +1158,10 @@ namespace Scada.Admin.App.Forms
             if (treeNode?.Tag is TreeNodeTag tag)
                 tag.ExistingForm = null;
 
+            // clear the pointer to the start page
+            if (e.ChildForm is FrmStartPage)
+                frmStartPage = null;
+
             // disable the Save All menu item if needed
             if (e.ChildForm is IChildForm childForm && childForm.ChildFormTag.Modified)
                 DisableSaveAll();
@@ -1079,7 +1171,15 @@ namespace Scada.Admin.App.Forms
         {
             TreeNode sourceNode = FindTreeNode(e.Source);
 
-            if (FindClosestInstance(sourceNode, out LiveInstance liveInstance))
+            if (e.Message == AppMessage.NewProject)
+            {
+                NewProject();
+            }
+            else if (e.Message == AppMessage.OpenProject)
+            {
+                OpenProject(e.GetArgument("Path") as string);
+            }
+            else if (FindClosestInstance(sourceNode, out LiveInstance liveInstance))
             {
                 if (e.Message == ServerMessage.SaveSettings)
                 {
@@ -1136,56 +1236,17 @@ namespace Scada.Admin.App.Forms
 
         private void miFileNewProject_Click(object sender, EventArgs e)
         {
-            // create a new project
-            FrmProjectNew frmNewProject = new FrmProjectNew(appData);
-
-            if (frmNewProject.ShowDialog() == DialogResult.OK && CloseProject())
-            {
-                if (ScadaProject.Create(frmNewProject.ProjectName, frmNewProject.ProjectLocation,
-                    frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
-                {
-                    appData.AppState.AddRecentProject(newProject.FileName);
-                    project = newProject;
-                    LoadConfigBase();
-                    Text = string.Format(AppPhrases.ProjectTitle, project.Name);
-                    wctrlMain.MessageText = AppPhrases.SelectItemMessage;
-                    SetMenuItemsEnabled();
-                    explorerBuilder.CreateNodes(project);
-                }
-                else
-                {
-                    appData.ProcError(errMsg);
-                }
-            }
+            NewProject();
         }
 
         private void miFileOpenProject_Click(object sender, EventArgs e)
         {
-            // open project
-            ofdProject.FileName = "";
-
-            if (ofdProject.ShowDialog() == DialogResult.OK && CloseProject())
-            {
-                ofdProject.InitialDirectory = Path.GetDirectoryName(ofdProject.FileName);
-                project = new ScadaProject();
-
-                if (project.Load(ofdProject.FileName, out string errMsg))
-                    appData.AppState.AddRecentProject(project.FileName);
-                else
-                    appData.ProcError(errMsg);
-
-                LoadConfigBase();
-                Text = string.Format(AppPhrases.ProjectTitle, project.Name);
-                wctrlMain.MessageText = AppPhrases.SelectItemMessage;
-                SetMenuItemsEnabled();
-                explorerBuilder.CreateNodes(project);
-            }
+            OpenProject();
         }
 
         private void miFileShowStartPage_Click(object sender, EventArgs e)
         {
-            // show start page
-            wctrlMain.AddForm(new FrmStartPage(), "", miFileShowStartPage.Image, null);
+            ShowStartPage();
         }
 
         private void miFileSave_Click(object sender, EventArgs e)
@@ -1235,8 +1296,8 @@ namespace Scada.Admin.App.Forms
 
         private void miFileCloseProject_Click(object sender, EventArgs e)
         {
-            // close the project
             CloseProject();
+            ShowStartPage();
         }
 
         private void miFileExit_Click(object sender, EventArgs e)

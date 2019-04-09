@@ -679,6 +679,13 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmStartPage">
+    <Phrase key="this">Start Page</Phrase>
+    <Phrase key="lblRecentProjects">Recent Projects</Phrase>
+    <Phrase key="lblNoRecentProjects">No recent projects</Phrase>
+    <Phrase key="btnNewProject">New Project</Phrase>
+    <Phrase key="btnOpenProject">Open Project</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmTableExport">
     <Phrase key="this">Export Table</Phrase>
     <Phrase key="lblTable">Table</Phrase>

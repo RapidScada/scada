@@ -672,16 +672,19 @@
     <Phrase key="ProjectTemplateEmpty">Создание проекта без шаблона не рекомендуется. Продолжить?</Phrase>
     <Phrase key="ProjectTemplateNotFound">Шаблон проекта не найден.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App.Forms.FrmTextEditor">
-    <Phrase key="OpenTextFileError">Ошибка при открытии файла</Phrase>
-    <Phrase key="SaveTextFileError">Ошибка при сохранении файла</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
     <Phrase key="this">Свойства проекта</Phrase>
     <Phrase key="lblName">Наименование проекта</Phrase>
     <Phrase key="lblDescr">Описание</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmStartPage">
+    <Phrase key="this">Стартовая страница</Phrase>
+    <Phrase key="lblRecentProjects">Недавние проекты</Phrase>
+    <Phrase key="lblNoRecentProjects">Недавние проекты отсутствуют</Phrase>
+    <Phrase key="btnNewProject">Новый проект</Phrase>
+    <Phrase key="btnOpenProject">Открыть проект</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmTableExport">
     <Phrase key="this">Экспорт таблицы</Phrase>
@@ -709,6 +712,10 @@
     <Phrase key="btnClose">Закрыть</Phrase>
     <Phrase key="ImportTableFilter">Таблицы (*.dat;*.xml)|*.dat;*.xml|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="ImportTableComplete">Импорт завершён успешно.&#13;&#10;Затронуто строк: {0}.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.FrmTextEditor">
+    <Phrase key="OpenTextFileError">Ошибка при открытии файла</Phrase>
+    <Phrase key="SaveTextFileError">Ошибка при сохранении файла</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.Deployment.DeploymentSettings">
     <Phrase key="LoadDeploymentSettingsError">Ошибка при загрузке настроек развёртывания</Phrase>

@@ -29,61 +29,37 @@
         private void InitializeComponent()
         {
             this.pnlContent = new System.Windows.Forms.Panel();
-            this.lblRecentProjects = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.lblNoRecentProjects = new System.Windows.Forms.Label();
             this.lbRecentProjects = new System.Windows.Forms.ListBox();
+            this.btnOpenProject = new System.Windows.Forms.Button();
+            this.btnNewProject = new System.Windows.Forms.Button();
+            this.lblRecentProjects = new System.Windows.Forms.Label();
             this.pnlContent.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlContent
             // 
             this.pnlContent.BackColor = System.Drawing.SystemColors.Window;
+            this.pnlContent.Controls.Add(this.lblNoRecentProjects);
             this.pnlContent.Controls.Add(this.lbRecentProjects);
-            this.pnlContent.Controls.Add(this.button2);
-            this.pnlContent.Controls.Add(this.button1);
+            this.pnlContent.Controls.Add(this.btnOpenProject);
+            this.pnlContent.Controls.Add(this.btnNewProject);
             this.pnlContent.Controls.Add(this.lblRecentProjects);
             this.pnlContent.Location = new System.Drawing.Point(0, 0);
             this.pnlContent.Name = "pnlContent";
             this.pnlContent.Size = new System.Drawing.Size(800, 400);
             this.pnlContent.TabIndex = 0;
             // 
-            // lblRecentProjects
+            // lblNoRecentProjects
             // 
-            this.lblRecentProjects.AutoSize = true;
-            this.lblRecentProjects.Font = new System.Drawing.Font("Verdana", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblRecentProjects.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblRecentProjects.Location = new System.Drawing.Point(15, 9);
-            this.lblRecentProjects.Name = "lblRecentProjects";
-            this.lblRecentProjects.Size = new System.Drawing.Size(198, 29);
-            this.lblRecentProjects.TabIndex = 0;
-            this.lblRecentProjects.Text = "Recent Projects";
-            // 
-            // button1
-            // 
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button1.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button1.Location = new System.Drawing.Point(580, 20);
-            this.button1.Margin = new System.Windows.Forms.Padding(10, 20, 20, 10);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(200, 40);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "New Project";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // button2
-            // 
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.button2.ForeColor = System.Drawing.SystemColors.Highlight;
-            this.button2.Location = new System.Drawing.Point(580, 80);
-            this.button2.Margin = new System.Windows.Forms.Padding(10, 10, 20, 10);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(200, 40);
-            this.button2.TabIndex = 3;
-            this.button2.Text = "Open Project";
-            this.button2.UseVisualStyleBackColor = true;
+            this.lblNoRecentProjects.AutoSize = true;
+            this.lblNoRecentProjects.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblNoRecentProjects.Location = new System.Drawing.Point(28, 59);
+            this.lblNoRecentProjects.Margin = new System.Windows.Forms.Padding(3, 10, 3, 0);
+            this.lblNoRecentProjects.Name = "lblNoRecentProjects";
+            this.lblNoRecentProjects.Size = new System.Drawing.Size(132, 16);
+            this.lblNoRecentProjects.TabIndex = 1;
+            this.lblNoRecentProjects.Text = "No recent projects";
             // 
             // lbRecentProjects
             // 
@@ -91,15 +67,61 @@
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbRecentProjects.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this.lbRecentProjects.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.lbRecentProjects.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbRecentProjects.FormattingEnabled = true;
             this.lbRecentProjects.IntegralHeight = false;
-            this.lbRecentProjects.ItemHeight = 40;
-            this.lbRecentProjects.Location = new System.Drawing.Point(20, 48);
-            this.lbRecentProjects.Margin = new System.Windows.Forms.Padding(20, 10, 10, 10);
+            this.lbRecentProjects.ItemHeight = 50;
+            this.lbRecentProjects.Location = new System.Drawing.Point(25, 59);
+            this.lbRecentProjects.Margin = new System.Windows.Forms.Padding(25, 10, 10, 10);
             this.lbRecentProjects.Name = "lbRecentProjects";
-            this.lbRecentProjects.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbRecentProjects.Size = new System.Drawing.Size(540, 342);
-            this.lbRecentProjects.TabIndex = 1;
+            this.lbRecentProjects.Size = new System.Drawing.Size(535, 331);
+            this.lbRecentProjects.TabIndex = 2;
+            this.lbRecentProjects.MouseClick += new System.Windows.Forms.MouseEventHandler(this.lbRecentProjects_MouseClick);
+            this.lbRecentProjects.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.lbRecentProjects_DrawItem);
+            this.lbRecentProjects.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lbRecentProjects_KeyDown);
+            this.lbRecentProjects.MouseLeave += new System.EventHandler(this.lbRecentProjects_MouseLeave);
+            this.lbRecentProjects.MouseMove += new System.Windows.Forms.MouseEventHandler(this.lbRecentProjects_MouseMove);
+            // 
+            // btnOpenProject
+            // 
+            this.btnOpenProject.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnOpenProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnOpenProject.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnOpenProject.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.btnOpenProject.Location = new System.Drawing.Point(580, 80);
+            this.btnOpenProject.Margin = new System.Windows.Forms.Padding(10, 10, 20, 10);
+            this.btnOpenProject.Name = "btnOpenProject";
+            this.btnOpenProject.Size = new System.Drawing.Size(200, 40);
+            this.btnOpenProject.TabIndex = 4;
+            this.btnOpenProject.Text = "Open Project";
+            this.btnOpenProject.UseVisualStyleBackColor = true;
+            this.btnOpenProject.Click += new System.EventHandler(this.btnOpenProject_Click);
+            // 
+            // btnNewProject
+            // 
+            this.btnNewProject.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.btnNewProject.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnNewProject.Font = new System.Drawing.Font("Verdana", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.btnNewProject.ForeColor = System.Drawing.SystemColors.Highlight;
+            this.btnNewProject.Location = new System.Drawing.Point(580, 20);
+            this.btnNewProject.Margin = new System.Windows.Forms.Padding(10, 20, 20, 10);
+            this.btnNewProject.Name = "btnNewProject";
+            this.btnNewProject.Size = new System.Drawing.Size(200, 40);
+            this.btnNewProject.TabIndex = 3;
+            this.btnNewProject.Text = "New Project";
+            this.btnNewProject.UseVisualStyleBackColor = true;
+            this.btnNewProject.Click += new System.EventHandler(this.btnNewProject_Click);
+            // 
+            // lblRecentProjects
+            // 
+            this.lblRecentProjects.AutoSize = true;
+            this.lblRecentProjects.Font = new System.Drawing.Font("Verdana", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblRecentProjects.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblRecentProjects.Location = new System.Drawing.Point(25, 20);
+            this.lblRecentProjects.Name = "lblRecentProjects";
+            this.lblRecentProjects.Size = new System.Drawing.Size(198, 29);
+            this.lblRecentProjects.TabIndex = 0;
+            this.lblRecentProjects.Text = "Recent Projects";
             // 
             // FrmStartPage
             // 
@@ -110,6 +132,7 @@
             this.Controls.Add(this.pnlContent);
             this.Name = "FrmStartPage";
             this.Text = "Start Page";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmStartPage_FormClosed);
             this.Load += new System.EventHandler(this.FrmStartPage_Load);
             this.Resize += new System.EventHandler(this.FrmStartPage_Resize);
             this.pnlContent.ResumeLayout(false);
@@ -122,8 +145,9 @@
 
         private System.Windows.Forms.Panel pnlContent;
         private System.Windows.Forms.Label lblRecentProjects;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnNewProject;
+        private System.Windows.Forms.Button btnOpenProject;
         private System.Windows.Forms.ListBox lbRecentProjects;
+        private System.Windows.Forms.Label lblNoRecentProjects;
     }
 }
