@@ -165,6 +165,10 @@ namespace Scada.Admin.App.Forms.Tables
             maxRowID = dataTable.DefaultView.Count > 0 ? 
                 (int)dataTable.DefaultView[dataTable.DefaultView.Count - 1][baseTable.PrimaryKey] : 0;
 
+            // set the binding source before creating grid columns in case of work on Mono
+            if (ScadaUtils.IsRunningOnMono)
+                bindingSource.DataSource = dataTable;
+
             // bind table events
             dataTable.TableNewRow += dataTable_TableNewRow;
             dataTable.RowChanged += dataTable_RowChanged;
@@ -185,7 +189,10 @@ namespace Scada.Admin.App.Forms.Tables
             if (tableFilter != null)
                 dataTable.Columns[tableFilter.ColumnName].DefaultValue = tableFilter.Value;
 
-            bindingSource.DataSource = dataTable;
+            // set the binding source
+            if (!ScadaUtils.IsRunningOnMono)
+                bindingSource.DataSource = dataTable;
+
             dataGridView.AutoSizeColumns();
             ChildFormTag.Modified = baseTable.Modified;
         }
