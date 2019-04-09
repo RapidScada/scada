@@ -138,11 +138,17 @@ namespace Scada.Admin.App.Forms.Deployment
                 agentClient.UploadConfig(configFileName, profile.UploadSettings.ToConfigOpions());
 
                 // restart the services
-                if (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeServer)
+                if (profile.UploadSettings.RestartServer &&
+                    (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeServer))
+                {
                     agentClient.ControlService(ServiceApp.Server, ServiceCommand.Restart);
+                }
 
-                if (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeComm)
+                if (profile.UploadSettings.RestartComm &&
+                    (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeComm))
+                {
                     agentClient.ControlService(ServiceApp.Comm, ServiceCommand.Restart);
+                }
 
                 // show result
                 Cursor = Cursors.Default;

@@ -64,21 +64,6 @@ namespace Scada.Admin.App.Controls.Deployment
             }
         }
 
-        /// <summary>
-        /// Gets or sets a value indicating whether the object filter is available for editing.
-        /// </summary>
-        public bool ObjFilterEnabled
-        {
-            get
-            {
-                return txtObjFilter.Enabled;
-            }
-            set
-            {
-                lblObjFilter.Enabled = txtObjFilter.Enabled = value;
-            }
-        }
-
 
         /// <summary>
         /// Raises a SettingsChanged event.
@@ -125,7 +110,26 @@ namespace Scada.Admin.App.Controls.Deployment
             chkIncludeWeb.Checked = transferSettings.IncludeWeb;
             chkIgnoreRegKeys.Checked = transferSettings.IgnoreRegKeys;
             chkIgnoreWebStorage.Checked = transferSettings.IgnoreWebStorage;
-            txtObjFilter.Text = ObjFilterEnabled ? RangeUtils.RangeToStr(transferSettings.ObjNums) : "";
+
+            if (transferSettings is UploadSettings uploadSettings)
+            {
+                chkRestartServer.Visible = true;
+                chkRestartComm.Visible = true;
+                lblObjFilter.Visible = true;
+                txtObjFilter.Visible = true;
+
+                chkRestartServer.Checked = uploadSettings.RestartServer;
+                chkRestartComm.Checked = uploadSettings.RestartComm;
+                txtObjFilter.Text = RangeUtils.RangeToStr(uploadSettings.ObjNums);
+            }
+            else
+            {
+                chkRestartServer.Visible = false;
+                chkRestartComm.Visible = false;
+                lblObjFilter.Visible = false;
+                txtObjFilter.Visible = false;
+            }
+
             changing = false;
         }
 
@@ -144,7 +148,13 @@ namespace Scada.Admin.App.Controls.Deployment
             transferSettings.IncludeWeb = chkIncludeWeb.Checked;
             transferSettings.IgnoreRegKeys = chkIgnoreRegKeys.Checked;
             transferSettings.IgnoreWebStorage = chkIgnoreWebStorage.Checked;
-            transferSettings.SetObjNums(ObjFilterEnabled ? RangeUtils.StrToRange(txtObjFilter.Text, true) : null);
+
+            if (transferSettings is UploadSettings uploadSettings)
+            {
+                uploadSettings.RestartServer = chkRestartServer.Checked;
+                uploadSettings.RestartComm = chkRestartComm.Checked;
+                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true));
+            }
         }
 
         /// <summary>

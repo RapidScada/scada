@@ -300,7 +300,7 @@ namespace Scada.Admin
         /// Exports the configuration to the specified archive.
         /// </summary>
         public void ExportToArchive(string destFileName, ScadaProject project, Instance instance, 
-            TransferSettings transferSettings)
+            UploadSettings uploadSettings)
         {
             if (destFileName == null)
                 throw new ArgumentNullException("destFileName");
@@ -308,7 +308,7 @@ namespace Scada.Admin
                 throw new ArgumentNullException("project");
             if (instance == null)
                 throw new ArgumentNullException("instance");
-            if (transferSettings == null)
+            if (uploadSettings == null)
                 throw new ArgumentNullException("transferSettings");
 
             FileStream fileStream = null;
@@ -318,12 +318,12 @@ namespace Scada.Admin
             {
                 fileStream = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
                 zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
-                bool ignoreRegKeys = transferSettings.IgnoreRegKeys;
+                bool ignoreRegKeys = uploadSettings.IgnoreRegKeys;
 
                 // add the configuration database to the archive
-                if (transferSettings.IncludeBase)
+                if (uploadSettings.IncludeBase)
                 {
-                    bool filterByObj = transferSettings.ObjNums.Count > 0;
+                    bool filterByObj = uploadSettings.ObjNums.Count > 0;
 
                     foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
                     {
@@ -338,9 +338,9 @@ namespace Scada.Admin
                             if (filterByObj)
                             {
                                 if (srcTable.ItemType == typeof(InCnl))
-                                    baseTable = GetFilteredTable<InCnl>(srcTable, transferSettings.ObjNums);
+                                    baseTable = GetFilteredTable<InCnl>(srcTable, uploadSettings.ObjNums);
                                 else if (srcTable.ItemType == typeof(CtrlCnl))
-                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, transferSettings.ObjNums);
+                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, uploadSettings.ObjNums);
                             }
 
                             // convert the table to DAT format
@@ -351,33 +351,33 @@ namespace Scada.Admin
                 }
 
                 // add the interface files to the archive
-                if (transferSettings.IncludeInterface)
+                if (uploadSettings.IncludeInterface)
                 {
                     PackDirectory(zipArchive, project.Interface.InterfaceDir, 
                         DirectoryBuilder.GetDirectory(ConfigParts.Interface, '/'), ignoreRegKeys);
                 }
 
                 // add the Server settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, instance.ServerApp.AppDir,
                         DirectoryBuilder.GetDirectory(ConfigParts.Server, '/'), ignoreRegKeys);
                 }
 
                 // add the Communicator settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, instance.CommApp.AppDir,
                         DirectoryBuilder.GetDirectory(ConfigParts.Comm, '/'), ignoreRegKeys);
                 }
 
                 // add the Webstation settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "config"),
                         DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Config, '/'), ignoreRegKeys);
 
-                    if (!transferSettings.IgnoreWebStorage)
+                    if (!uploadSettings.IgnoreWebStorage)
                     {
                         PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "storage"),
                             DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Storage, '/'), ignoreRegKeys);

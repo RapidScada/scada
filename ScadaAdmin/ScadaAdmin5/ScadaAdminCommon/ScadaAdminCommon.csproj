@@ -71,7 +71,9 @@
     <Compile Include="BaseTableFormat.cs" />
     <Compile Include="Deployment\DeploymentProfile.cs" />
     <Compile Include="Deployment\DeploymentSettings.cs" />
+    <Compile Include="Deployment\DownloadSettings.cs" />
     <Compile Include="Deployment\TransferSettings.cs" />
+    <Compile Include="Deployment\UploadSettings.cs" />
     <Compile Include="ImportExport.cs" />
     <Compile Include="Project\ConfigBase.cs" />
     <Compile Include="Project\Interface.cs" />

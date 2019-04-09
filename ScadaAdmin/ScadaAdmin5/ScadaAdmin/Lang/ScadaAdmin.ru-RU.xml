@@ -198,7 +198,9 @@
     <Phrase key="chkIncludeBase">База конфигурации</Phrase>
     <Phrase key="chkIncludeInterface">Интерфейс</Phrase>
     <Phrase key="chkIncludeServer">Сервер</Phrase>
+    <Phrase key="chkRestartServer">Перезапустить Сервер</Phrase>
     <Phrase key="chkIncludeComm">Коммуникатор</Phrase>
+    <Phrase key="chkRestartComm">Перезапустить Коммуникатор</Phrase>
     <Phrase key="chkIncludeWeb">Вебстанция</Phrase>
     <Phrase key="lblIgnore">Исключить:</Phrase>
     <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>

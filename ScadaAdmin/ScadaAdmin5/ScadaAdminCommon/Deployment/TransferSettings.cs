@@ -34,7 +34,7 @@ namespace Scada.Admin.Deployment
     /// Configuration transfer settings.
     /// <para>Настройки передачи конфигурации.</para>
     /// </summary>
-    public class TransferSettings
+    public abstract class TransferSettings
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -48,7 +48,6 @@ namespace Scada.Admin.Deployment
             IncludeWeb = true;
             IgnoreRegKeys = false;
             IgnoreWebStorage = true;
-            ObjNums = new List<int>();
         }
 
 
@@ -87,17 +86,11 @@ namespace Scada.Admin.Deployment
         /// </summary>
         public bool IgnoreWebStorage { get; set; }
 
-        /// <summary>
-        /// Gets the object numbers to filter the uploaded configuration.
-        /// </summary>
-        public List<int> ObjNums { get; protected set; }
-
-
 
         /// <summary>
         /// Loads the settings from the XML node.
         /// </summary>
-        public void LoadFromXml(XmlNode xmlNode)
+        public virtual void LoadFromXml(XmlNode xmlNode)
         {
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
@@ -109,13 +102,12 @@ namespace Scada.Admin.Deployment
             IncludeWeb = xmlNode.GetChildAsBool("IncludeWeb");
             IgnoreRegKeys = xmlNode.GetChildAsBool("IgnoreRegKeys");
             IgnoreWebStorage = xmlNode.GetChildAsBool("IgnoreWebStorage");
-            SetObjNums(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true));
         }
 
         /// <summary>
         /// Saves the settings into the XML node.
         /// </summary>
-        public void SaveToXml(XmlElement xmlElem)
+        public virtual void SaveToXml(XmlElement xmlElem)
         {
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");
@@ -127,18 +119,6 @@ namespace Scada.Admin.Deployment
             xmlElem.AppendElem("IncludeWeb", IncludeWeb);
             xmlElem.AppendElem("IgnoreRegKeys", IgnoreRegKeys);
             xmlElem.AppendElem("IgnoreWebStorage", IgnoreWebStorage);
-            xmlElem.AppendElem("ObjNums", RangeUtils.RangeToStr(ObjNums));
-        }
-
-        /// <summary>
-        /// Sets the object numbers.
-        /// </summary>
-        public void SetObjNums(ICollection<int> objNums)
-        {
-            ObjNums.Clear();
-
-            if (objNums != null)
-                ObjNums.AddRange(objNums);
         }
 
         /// <summary>

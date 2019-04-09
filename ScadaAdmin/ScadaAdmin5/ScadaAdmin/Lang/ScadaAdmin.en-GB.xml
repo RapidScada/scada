@@ -198,7 +198,9 @@
     <Phrase key="chkIncludeBase">Configuration database</Phrase>
     <Phrase key="chkIncludeInterface">Interface</Phrase>
     <Phrase key="chkIncludeServer">Server</Phrase>
+    <Phrase key="chkRestartServer">Restart Server</Phrase>
     <Phrase key="chkIncludeComm">Communicator</Phrase>
+    <Phrase key="chkRestartComm">Restart Communicator</Phrase>
     <Phrase key="chkIncludeWeb">Webstation</Phrase>
     <Phrase key="lblIgnore">Ignore:</Phrase>
     <Phrase key="chkIgnoreRegKeys">Registration keys</Phrase>

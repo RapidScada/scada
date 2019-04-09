@@ -103,8 +103,8 @@ namespace Scada.Admin.App.Controls.Deployment
             deploymentSettings.Profiles.Add(profile.Name, profile);
 
             // add to the combo box
-            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name);
-            if (index >= 0)
+            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name) + 1;
+            if (index > 0)
             {
                 cbProfile.Items.Insert(index, profile);
                 cbProfile.SelectedIndex = index;

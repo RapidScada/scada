@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gbOptions = new System.Windows.Forms.GroupBox();
+            this.chkRestartComm = new System.Windows.Forms.CheckBox();
+            this.chkRestartServer = new System.Windows.Forms.CheckBox();
             this.txtObjFilter = new System.Windows.Forms.TextBox();
             this.lblObjFilter = new System.Windows.Forms.Label();
             this.chkIgnoreWebStorage = new System.Windows.Forms.CheckBox();
@@ -45,6 +47,8 @@
             // 
             // gbOptions
             // 
+            this.gbOptions.Controls.Add(this.chkRestartComm);
+            this.gbOptions.Controls.Add(this.chkRestartServer);
             this.gbOptions.Controls.Add(this.txtObjFilter);
             this.gbOptions.Controls.Add(this.lblObjFilter);
             this.gbOptions.Controls.Add(this.chkIgnoreWebStorage);
@@ -60,16 +64,36 @@
             this.gbOptions.Name = "gbOptions";
             this.gbOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbOptions.Size = new System.Drawing.Size(469, 272);
-            this.gbOptions.TabIndex = 3;
+            this.gbOptions.TabIndex = 0;
             this.gbOptions.TabStop = false;
             this.gbOptions.Text = "Options";
+            // 
+            // chkRestartComm
+            // 
+            this.chkRestartComm.AutoSize = true;
+            this.chkRestartComm.Location = new System.Drawing.Point(150, 101);
+            this.chkRestartComm.Name = "chkRestartComm";
+            this.chkRestartComm.Size = new System.Drawing.Size(130, 17);
+            this.chkRestartComm.TabIndex = 6;
+            this.chkRestartComm.Text = "Restart Communicator";
+            this.chkRestartComm.UseVisualStyleBackColor = true;
+            // 
+            // chkRestartServer
+            // 
+            this.chkRestartServer.AutoSize = true;
+            this.chkRestartServer.Location = new System.Drawing.Point(150, 78);
+            this.chkRestartServer.Name = "chkRestartServer";
+            this.chkRestartServer.Size = new System.Drawing.Size(94, 17);
+            this.chkRestartServer.TabIndex = 4;
+            this.chkRestartServer.Text = "Restart Server";
+            this.chkRestartServer.UseVisualStyleBackColor = true;
             // 
             // txtObjFilter
             // 
             this.txtObjFilter.Location = new System.Drawing.Point(13, 239);
             this.txtObjFilter.Name = "txtObjFilter";
             this.txtObjFilter.Size = new System.Drawing.Size(443, 20);
-            this.txtObjFilter.TabIndex = 10;
+            this.txtObjFilter.TabIndex = 12;
             this.txtObjFilter.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblObjFilter
@@ -78,7 +102,7 @@
             this.lblObjFilter.Location = new System.Drawing.Point(10, 223);
             this.lblObjFilter.Name = "lblObjFilter";
             this.lblObjFilter.Size = new System.Drawing.Size(63, 13);
-            this.lblObjFilter.TabIndex = 9;
+            this.lblObjFilter.TabIndex = 11;
             this.lblObjFilter.Text = "Object filter:";
             // 
             // chkIgnoreWebStorage
@@ -87,7 +111,7 @@
             this.chkIgnoreWebStorage.Location = new System.Drawing.Point(13, 193);
             this.chkIgnoreWebStorage.Name = "chkIgnoreWebStorage";
             this.chkIgnoreWebStorage.Size = new System.Drawing.Size(118, 17);
-            this.chkIgnoreWebStorage.TabIndex = 8;
+            this.chkIgnoreWebStorage.TabIndex = 10;
             this.chkIgnoreWebStorage.Text = "Webstation storage";
             this.chkIgnoreWebStorage.UseVisualStyleBackColor = true;
             this.chkIgnoreWebStorage.CheckedChanged += new System.EventHandler(this.control_Changed);
@@ -98,7 +122,7 @@
             this.chkIgnoreRegKeys.Location = new System.Drawing.Point(13, 170);
             this.chkIgnoreRegKeys.Name = "chkIgnoreRegKeys";
             this.chkIgnoreRegKeys.Size = new System.Drawing.Size(107, 17);
-            this.chkIgnoreRegKeys.TabIndex = 7;
+            this.chkIgnoreRegKeys.TabIndex = 9;
             this.chkIgnoreRegKeys.Text = "Registration keys";
             this.chkIgnoreRegKeys.UseVisualStyleBackColor = true;
             this.chkIgnoreRegKeys.CheckedChanged += new System.EventHandler(this.control_Changed);
@@ -109,7 +133,7 @@
             this.lblIgnore.Location = new System.Drawing.Point(10, 154);
             this.lblIgnore.Name = "lblIgnore";
             this.lblIgnore.Size = new System.Drawing.Size(40, 13);
-            this.lblIgnore.TabIndex = 6;
+            this.lblIgnore.TabIndex = 8;
             this.lblIgnore.Text = "Ignore:";
             // 
             // lblInclude
@@ -127,7 +151,7 @@
             this.chkIncludeWeb.Location = new System.Drawing.Point(13, 124);
             this.chkIncludeWeb.Name = "chkIncludeWeb";
             this.chkIncludeWeb.Size = new System.Drawing.Size(80, 17);
-            this.chkIncludeWeb.TabIndex = 5;
+            this.chkIncludeWeb.TabIndex = 7;
             this.chkIncludeWeb.Text = "Webstation";
             this.chkIncludeWeb.UseVisualStyleBackColor = true;
             this.chkIncludeWeb.CheckedChanged += new System.EventHandler(this.control_Changed);
@@ -138,7 +162,7 @@
             this.chkIncludeComm.Location = new System.Drawing.Point(13, 101);
             this.chkIncludeComm.Name = "chkIncludeComm";
             this.chkIncludeComm.Size = new System.Drawing.Size(93, 17);
-            this.chkIncludeComm.TabIndex = 4;
+            this.chkIncludeComm.TabIndex = 5;
             this.chkIncludeComm.Text = "Communicator";
             this.chkIncludeComm.UseVisualStyleBackColor = true;
             this.chkIncludeComm.CheckedChanged += new System.EventHandler(this.control_Changed);
@@ -203,5 +227,7 @@
         private System.Windows.Forms.CheckBox chkIncludeBase;
         private System.Windows.Forms.TextBox txtObjFilter;
         private System.Windows.Forms.Label lblObjFilter;
+        private System.Windows.Forms.CheckBox chkRestartComm;
+        private System.Windows.Forms.CheckBox chkRestartServer;
     }
 }

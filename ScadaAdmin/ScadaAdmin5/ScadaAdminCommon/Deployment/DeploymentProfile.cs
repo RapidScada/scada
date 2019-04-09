@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent.Connector;
@@ -43,8 +43,8 @@ namespace Scada.Admin.Deployment
             Name = "";
             WebUrl = "";
             ConnectionSettings = new ConnectionSettings() { ScadaInstance = "" } ;
-            DownloadSettings = new TransferSettings();
-            UploadSettings = new TransferSettings();
+            DownloadSettings = new DownloadSettings();
+            UploadSettings = new UploadSettings();
         }
 
 
@@ -66,12 +66,12 @@ namespace Scada.Admin.Deployment
         /// <summary>
         /// Gets the download settings.
         /// </summary>
-        public TransferSettings DownloadSettings { get; protected set; }
+        public DownloadSettings DownloadSettings { get; protected set; }
 
         /// <summary>
         /// Gets the upload settings.
         /// </summary>
-        public TransferSettings UploadSettings { get; protected set; }
+        public UploadSettings UploadSettings { get; protected set; }
         
         
         /// <summary>
@@ -85,16 +85,13 @@ namespace Scada.Admin.Deployment
             Name = xmlNode.GetChildAsString("Name");
             WebUrl = xmlNode.GetChildAsString("WebUrl");
 
-            XmlNode connectionSettingsNode = xmlNode.SelectSingleNode("ConnectionSettings");
-            if (connectionSettingsNode != null)
+            if (xmlNode.SelectSingleNode("ConnectionSettings") is XmlNode connectionSettingsNode)
                 ConnectionSettings.LoadFromXml(connectionSettingsNode);
 
-            XmlNode downloadSettingsNode = xmlNode.SelectSingleNode("DownloadSettings");
-            if (downloadSettingsNode != null)
+            if (xmlNode.SelectSingleNode("DownloadSettings") is XmlNode downloadSettingsNode)
                 DownloadSettings.LoadFromXml(downloadSettingsNode);
 
-            XmlNode uploadSettingsNode = xmlNode.SelectSingleNode("UploadSettings");
-            if (uploadSettingsNode != null)
+            if (xmlNode.SelectSingleNode("UploadSettings") is XmlNode uploadSettingsNode)
                 UploadSettings.LoadFromXml(uploadSettingsNode);
         }
 

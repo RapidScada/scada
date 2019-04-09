@@ -58,7 +58,6 @@
             // 
             this.ctrlTransferSettings.Location = new System.Drawing.Point(12, 131);
             this.ctrlTransferSettings.Name = "ctrlTransferSettings";
-            this.ctrlTransferSettings.ObjFilterEnabled = false;
             this.ctrlTransferSettings.Size = new System.Drawing.Size(469, 272);
             this.ctrlTransferSettings.TabIndex = 1;
             this.ctrlTransferSettings.SettingsChanged += new System.EventHandler(this.ctrlTransferSettings_SettingsChanged);
