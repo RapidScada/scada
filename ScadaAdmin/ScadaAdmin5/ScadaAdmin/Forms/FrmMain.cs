@@ -1184,7 +1184,8 @@ namespace Scada.Admin.App.Forms
 
         private void miFileShowStartPage_Click(object sender, EventArgs e)
         {
-
+            // show start page
+            wctrlMain.AddForm(new FrmStartPage(), "", miFileShowStartPage.Image, null);
         }
 
         private void miFileSave_Click(object sender, EventArgs e)

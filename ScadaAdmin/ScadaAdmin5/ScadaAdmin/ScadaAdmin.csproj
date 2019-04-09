@@ -180,6 +180,12 @@
     <Compile Include="Forms\FrmAbout.designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmStartPage.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmStartPage.Designer.cs">
+      <DependentUpon>FrmStartPage.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmTableImport.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -358,6 +364,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmStartPage.resx">
+      <DependentUpon>FrmStartPage.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmTableImport.resx">
       <DependentUpon>FrmTableImport.cs</DependentUpon>
