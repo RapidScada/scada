@@ -152,7 +152,6 @@ namespace Scada.Admin.App.Forms
 
             // read phrases from the dictionaries
             CommonPhrases.Init();
-
             AdminPhrases.Init();
             AppPhrases.Init();
 
