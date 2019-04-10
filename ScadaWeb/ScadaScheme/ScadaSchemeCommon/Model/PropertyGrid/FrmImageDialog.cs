@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.UI;
@@ -32,80 +32,88 @@ using System.Windows.Forms;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Form for editing image dictionary
-    /// <para>Форма редактирования словаря изображений</para>
+    /// Form for editing image dictionary.
+    /// <para>Форма редактирования словаря изображений.</para>
     /// </summary>
     internal partial class FrmImageDialog : Form
     {
-        private Dictionary<string, Image> images; // словарь изображений схемы
-        IObservableItem observableItem;           // элемент, изменения которого отслеживаются
+        private readonly Dictionary<string, Image> images; // словарь изображений схемы
+        private readonly IObservableItem observableItem;   // элемент, изменения которого отслеживаются
+        private readonly CtrlSvgViewer ctrlSvgViewer;      // the control for displaying SVG
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта без параметров.
         /// </summary>
         private FrmImageDialog()
         {
             InitializeComponent();
-            ImageDir = "";
+
+            if (ScadaUtils.IsRunningOnWin)
+            {
+                ctrlSvgViewer = new CtrlSvgViewer()
+                {
+                    Location = pictureBox.Location,
+                    Size = pictureBox.Size,
+                    TabStop = false
+                };
+                Controls.Add(ctrlSvgViewer);
+            }
+            else
+            {
+                ctrlSvgViewer = null;
+            }
         }
 
         /// <summary>
-        /// Конструктор для режима редактирования словаря изображений
+        /// Конструктор для режима редактирования словаря изображений.
         /// </summary>
         public FrmImageDialog(Dictionary<string, Image> images, IObservableItem observableItem)
             : this()
         {
-            if (images == null)
-                throw new ArgumentNullException("images");
-            if (observableItem == null)
-                throw new ArgumentNullException("observableItem");
+            this.images = images ?? throw new ArgumentNullException("images");
+            this.observableItem = observableItem ?? throw new ArgumentNullException("observableItem");
 
-            this.images = images;
-            this.observableItem = observableItem;
             SelectedImageName = "";
             CanSelectImage = false;
+            ImageDir = "";
 
             btnSelectEmpty.Visible = false;
             btnSelect.Visible = false;
         }
 
         /// <summary>
-        /// Конструктор для режима выбора изображения
+        /// Конструктор для режима выбора изображения.
         /// </summary>
         public FrmImageDialog(string imageName, Dictionary<string, Image> images, IObservableItem observableItem)
             : this()
         {
-            if (images == null)
-                throw new ArgumentNullException("images");
-            if (observableItem == null)
-                throw new ArgumentNullException("observableItem");
+            this.images = images ?? throw new ArgumentNullException("images");
+            this.observableItem = observableItem ?? throw new ArgumentNullException("observableItem");
 
-            this.images = images;
-            this.observableItem = observableItem;
             SelectedImageName = imageName;
             CanSelectImage = true;
         }
 
 
         /// <summary>
-        /// Получить признак, что форма позволяет выбирать изображение
+        /// Получить признак, что форма позволяет выбирать изображение.
         /// </summary>
         public bool CanSelectImage { get; private set; }
 
         /// <summary>
-        /// Получить наименование выбранного изображения
+        /// Получить наименование выбранного изображения.
         /// </summary>
         public string SelectedImageName { get; private set; }
 
         /// <summary>
-        /// Получить или установить директорию, из которой открывались изображения
+        /// Получить или установить директорию, из которой открывались изображения.
         /// </summary>
         public string ImageDir { get; set; }
 
 
         /// <summary>
-        /// Заполнить список изображений
+        /// Заполнить список изображений.
         /// </summary>
         private void FillImageList()
         {
@@ -132,7 +140,27 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Установить доступность кнопок
+        /// Makes the appropriate image viewer visible.
+        /// </summary>
+        private void ChooseImageViewer(ImageListItem imageInfo)
+        {
+            if (ctrlSvgViewer != null)
+            {
+                if (imageInfo != null && imageInfo.IsSvg)
+                {
+                    pictureBox.Visible = false;
+                    ctrlSvgViewer.Visible = true;
+                }
+                else
+                {
+                    pictureBox.Visible = true;
+                    ctrlSvgViewer.Visible = false;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Установить доступность кнопок.
         /// </summary>
         private void SetBtnsEnabled()
         {
@@ -141,7 +169,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Проверить уникальность наименования изображения
+        /// Проверить уникальность наименования изображения.
         /// </summary>
         private bool ImageNameIsUnique(string name)
         {
@@ -149,7 +177,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Загрузить изображение из файла
+        /// Загрузить изображение из файла.
         /// </summary>
         private bool LoadImage(string fileName, out Image image)
         {
@@ -175,7 +203,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Сохранить изображение в файле
+        /// Сохранить изображение в файле.
         /// </summary>
         private void SaveImage(string fileName, ImageListItem imageInfo)
         {
@@ -198,7 +226,8 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Scheme.Model.PropertyGrid.FrmImageDialog");
-            openFileDialog.Filter = saveFileDialog.Filter = SchemePhrases.ImageFileFilter;
+            openFileDialog.SetFilter(SchemePhrases.ImageFileFilter);
+            saveFileDialog.SetFilter(SchemePhrases.ImageFileFilter);
 
             // установка начальной директории изображений
             openFileDialog.InitialDirectory = ImageDir;
@@ -214,6 +243,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             // вывод выбранного изображения
             ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
+            ChooseImageViewer(imageInfo);
 
             if (imageInfo == null)
             {
@@ -223,14 +253,20 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 try
                 {
+                    // display image in the picture box anyway
                     pictureBox.Image = imageInfo.Source;
                     pictureBox.SizeMode =
                         imageInfo.ImageSize.Width <= pictureBox.Width &&
                         imageInfo.ImageSize.Height <= pictureBox.Height ?
                         PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
+
+                    // display SVG
+                    if (ctrlSvgViewer != null && ctrlSvgViewer.Visible)
+                        ctrlSvgViewer.ShowImage(imageInfo.Image.Data);
                 }
                 catch (Exception ex)
                 {
+                    ChooseImageViewer(null);
                     pictureBox.Image = null;
                     ScadaUiUtils.ShowError(SchemePhrases.DisplayImageError + ":\n" + ex.Message);
                 }
@@ -286,9 +322,8 @@ namespace Scada.Scheme.Model.PropertyGrid
             if (openFileDialog.ShowDialog() == DialogResult.OK)
             {
                 ImageDir = openFileDialog.InitialDirectory = Path.GetDirectoryName(openFileDialog.FileName);
-                Image image;
 
-                if (LoadImage(openFileDialog.FileName, out image))
+                if (LoadImage(openFileDialog.FileName, out Image image))
                 {
                     string name = Path.GetFileName(openFileDialog.FileName);
                     image.Name = images.ContainsKey(name) ? "image" + (images.Count + 1) : name;
@@ -306,9 +341,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnSave_Click(object sender, EventArgs e)
         {
             // сохранение изображения в выбранный файл
-            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
-
-            if (imageInfo != null && imageInfo.Image != null)
+            if (lbImages.SelectedItem is ImageListItem imageInfo && imageInfo.Image != null)
             {
                 saveFileDialog.FileName = imageInfo.Name;
                 saveFileDialog.DefaultExt = imageInfo.Format.ToLowerInvariant();
@@ -321,11 +354,9 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnDel_Click(object sender, EventArgs e)
         {
             // удаление изображения из словаря изображений схемы
-            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
-            int selInd = lbImages.SelectedIndex;
-
-            if (imageInfo != null)
+            if (lbImages.SelectedItem is ImageListItem imageInfo)
             {
+                int selInd = lbImages.SelectedIndex;
                 images.Remove(imageInfo.Name);
                 lbImages.Items.RemoveAt(selInd);
                 int itemCnt = lbImages.Items.Count;
@@ -349,8 +380,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         private void btnSelect_Click(object sender, EventArgs e)
         {
             // установка выбранного изображения
-            ImageListItem imageInfo = lbImages.SelectedItem as ImageListItem;
-            SelectedImageName = imageInfo == null ? "" : imageInfo.Name;
+            SelectedImageName = lbImages.SelectedItem is ImageListItem imageInfo ? imageInfo.Name : "";
             DialogResult = DialogResult.OK;
         }
     }

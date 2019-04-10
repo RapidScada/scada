@@ -90,6 +90,12 @@
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\CtrlSvgViewer.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\CtrlSvgViewer.Designer.cs">
+      <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\PropertyGrid\ExpandableObjectConverter.cs" />
     <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
     <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
@@ -140,6 +146,9 @@
     <Compile Include="SchemePhrases.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Model\PropertyGrid\CtrlSvgViewer.resx">
+      <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmCnlFilterDialog.resx">
       <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
     </EmbeddedResource>
