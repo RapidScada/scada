@@ -108,8 +108,8 @@ namespace Scada.Admin
             {
                 ServerDir = "/opt/scada/ScadaServer/";
                 CommDir = "/opt/scada/ScadaComm/";
-                SchemeEditorPath = "";
-                TableEditorPath = "";
+                SchemeEditorPath = "/opt/scada/ScadaSchemeEditor/ScadaSchemeEditor.exe";
+                TableEditorPath = "/opt/scada/ScadaTableEditor/ScadaTableEditor.exe";
                 TextEditorPath = "";
             }
 
