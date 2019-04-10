@@ -5,7 +5,7 @@
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmMain">
     <Phrase key="miFile">&amp;File</Phrase>
-    <Phrase key="miFileNew">Create</Phrase>
+    <Phrase key="miFileNew">New</Phrase>
     <Phrase key="miFileOpen">Open...</Phrase>
     <Phrase key="miFileSave">Save</Phrase>
     <Phrase key="miFileSaveAs">Save As...</Phrase>
@@ -24,7 +24,7 @@
     <Phrase key="miToolsOptions">Options...</Phrase>
     <Phrase key="miHelp">&amp;Help</Phrase>
     <Phrase key="miHelpAbout">About</Phrase>
-    <Phrase key="btnFileNew.ToolTip">Create new scheme (Ctrl+N)</Phrase>
+    <Phrase key="btnFileNew.ToolTip">New scheme (Ctrl+N)</Phrase>
     <Phrase key="btnFileOpen.ToolTip">Open scheme (Ctrl+O)</Phrase>
     <Phrase key="btnFileSave.ToolTip">Save scheme (Ctrl+S)</Phrase>
     <Phrase key="miFileSaveAs2">Save As...</Phrase>

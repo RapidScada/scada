@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System.Reflection;
@@ -28,22 +28,22 @@ using System.Reflection;
 namespace Scada.Scheme
 {
     /// <summary>
-    /// The class contains utility methods for the schemes
-    /// <para>Класс, содержащий вспомогательные методы для схем</para>
+    /// The class contains utility methods for the schemes.
+    /// <para>Класс, содержащий вспомогательные методы для схем.</para>
     /// </summary>
     public static class SchemeUtils
     {
         /// <summary>
-        /// Версия схем
+        /// The schemes version.
         /// </summary>
-        public const string SchemeVersion = "5.2.2.0";
+        public const string SchemeVersion = "5.2.3.0";
         /// <summary>
-        /// Цвет, устанавливаемый в зависимости от статуса входного канала
+        /// The color name which means that color depends on channel status.
         /// </summary>
         public const string StatusColor = "Status";
 
         /// <summary>
-        /// Получить признак, что запущен Редактор схем
+        /// Gets a value indicating that the current application is Scheme Editor.
         /// </summary>
         public static bool EditorMode
         {
@@ -55,7 +55,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Проверить, что метки представления соответствуют друг другу
+        /// Checks that the view stamps are matched.
         /// </summary>
         public static bool ViewStampsMatched(long browserViewStamp, long serverViewStamp)
         {
