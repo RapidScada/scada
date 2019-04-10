@@ -44,7 +44,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Высота панели инструментов браузера (на примере Chrome).
         /// </summary>
-        private const int BrowserToolbarHeight = 65;
+        private const int BrowserToolbarHeight = 70;
         /// <summary>
         /// Имя файла настроек по умолчанию.
         /// </summary>

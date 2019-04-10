@@ -76,7 +76,9 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void SetToDefault()
         {
-            WebDir = @"C:\SCADA\ScadaWeb\";
+            WebDir = ScadaUtils.IsRunningOnWin ? 
+                @"C:\SCADA\ScadaWeb\" : 
+                "/opt/scada/ScadaWeb/";
             Browser = Browsers.Default;
         }
 
