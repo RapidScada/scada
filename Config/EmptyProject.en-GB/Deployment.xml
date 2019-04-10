@@ -28,6 +28,9 @@
       <IncludeWeb>true</IncludeWeb>
       <IgnoreRegKeys>false</IgnoreRegKeys>
       <IgnoreWebStorage>true</IgnoreWebStorage>
+      <RestartServer>true</RestartServer>
+      <RestartComm>true</RestartComm>
+      <ObjNums />
     </UploadSettings>
   </DeploymentProfile>
 </DeploymentSettings>
