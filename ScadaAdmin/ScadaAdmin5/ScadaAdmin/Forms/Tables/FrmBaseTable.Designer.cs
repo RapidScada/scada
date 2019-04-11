@@ -115,14 +115,14 @@
             this.btnAddNew.Name = "btnAddNew";
             this.btnAddNew.RightToLeftAutoMirrorImage = true;
             this.btnAddNew.Size = new System.Drawing.Size(23, 22);
-            this.btnAddNew.Text = "Add new";
+            this.btnAddNew.Text = "Add New";
             // 
             // lblCount
             // 
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(35, 22);
             this.lblCount.Text = "of {0}";
-            this.lblCount.ToolTipText = "Total number of items";
+            this.lblCount.ToolTipText = "Total Number of Items";
             // 
             // btnMoveFirst
             // 
@@ -131,7 +131,7 @@
             this.btnMoveFirst.Name = "btnMoveFirst";
             this.btnMoveFirst.RightToLeftAutoMirrorImage = true;
             this.btnMoveFirst.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveFirst.Text = "Move first";
+            this.btnMoveFirst.Text = "Move First";
             // 
             // btnMovePrevious
             // 
@@ -140,7 +140,7 @@
             this.btnMovePrevious.Name = "btnMovePrevious";
             this.btnMovePrevious.RightToLeftAutoMirrorImage = true;
             this.btnMovePrevious.Size = new System.Drawing.Size(23, 22);
-            this.btnMovePrevious.Text = "Move previous";
+            this.btnMovePrevious.Text = "Move Previous";
             // 
             // sep1
             // 
@@ -154,7 +154,7 @@
             this.txtPosition.Name = "txtPosition";
             this.txtPosition.Size = new System.Drawing.Size(50, 23);
             this.txtPosition.Text = "0";
-            this.txtPosition.ToolTipText = "Current position";
+            this.txtPosition.ToolTipText = "Current Position";
             // 
             // sep2
             // 
@@ -168,7 +168,7 @@
             this.btnMoveNext.Name = "btnMoveNext";
             this.btnMoveNext.RightToLeftAutoMirrorImage = true;
             this.btnMoveNext.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveNext.Text = "Move next";
+            this.btnMoveNext.Text = "Move Next";
             // 
             // btnMoveLast
             // 
@@ -177,7 +177,7 @@
             this.btnMoveLast.Name = "btnMoveLast";
             this.btnMoveLast.RightToLeftAutoMirrorImage = true;
             this.btnMoveLast.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveLast.Text = "Move last";
+            this.btnMoveLast.Text = "Move Last";
             // 
             // sep3
             // 
@@ -191,7 +191,7 @@
             this.btnApplyEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnApplyEdit.Name = "btnApplyEdit";
             this.btnApplyEdit.Size = new System.Drawing.Size(23, 22);
-            this.btnApplyEdit.Text = "Apply edit operation";
+            this.btnApplyEdit.Text = "Apply Edit Operation";
             this.btnApplyEdit.Click += new System.EventHandler(this.btnApplyEdit_Click);
             // 
             // btnCancelEdit
@@ -201,7 +201,7 @@
             this.btnCancelEdit.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnCancelEdit.Name = "btnCancelEdit";
             this.btnCancelEdit.Size = new System.Drawing.Size(23, 22);
-            this.btnCancelEdit.Text = "Cancel edit operation";
+            this.btnCancelEdit.Text = "Cancel Edit Operation";
             this.btnCancelEdit.Click += new System.EventHandler(this.btnCancelEdit_Click);
             // 
             // btnRefresh
@@ -211,7 +211,7 @@
             this.btnRefresh.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnRefresh.Name = "btnRefresh";
             this.btnRefresh.Size = new System.Drawing.Size(23, 22);
-            this.btnRefresh.Text = "Refresh data";
+            this.btnRefresh.Text = "Refresh Data";
             this.btnRefresh.Click += new System.EventHandler(this.btnRefresh_Click);
             // 
             // btnDelete
@@ -231,7 +231,7 @@
             this.btnClear.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnClear.Name = "btnClear";
             this.btnClear.Size = new System.Drawing.Size(23, 22);
-            this.btnClear.Text = "Clear table";
+            this.btnClear.Text = "Clear Table";
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
             // sep4
@@ -291,7 +291,7 @@
             this.btnAutoSizeColumns.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnAutoSizeColumns.Name = "btnAutoSizeColumns";
             this.btnAutoSizeColumns.Size = new System.Drawing.Size(23, 22);
-            this.btnAutoSizeColumns.Text = "Autofit column widths";
+            this.btnAutoSizeColumns.Text = "Autofit Column Widths";
             this.btnAutoSizeColumns.Click += new System.EventHandler(this.btnAutoSizeColumns_Click);
             // 
             // btnProperties
