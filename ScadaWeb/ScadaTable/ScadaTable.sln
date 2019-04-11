@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgTableCommon", "PlgTableC
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgTable", "PlgTable\PlgTable.csproj", "{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TableEditor", "TableEditor\TableEditor.csproj", "{94470605-3222-4C31-949F-E59C9A6E7DFB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ScadaTableEditor", "ScadaTableEditor\ScadaTableEditor.csproj", "{94470605-3222-4C31-949F-E59C9A6E7DFB}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
