@@ -44,15 +44,16 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="RepBuilder">
+    <Reference Include="RepBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaData">
+    <Reference Include="ScadaData, Version=5.1.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    <Reference Include="ScadaWebCommon">
+      <HintPath>..\..\ScadaWeb\ScadaWebCommon\bin\Release\ScadaWebCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />

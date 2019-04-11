@@ -35,7 +35,8 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaData">
+    <Reference Include="ScadaData, Version=5.1.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
     <Reference Include="System" />
