@@ -38,8 +38,8 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5">
-      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    <Reference Include="ScadaWebCommon">
+      <HintPath>..\..\ScadaWeb\ScadaWebCommon\bin\Release\ScadaWebCommon.dll</HintPath>
     </Reference>
     <Reference Include="Svg">
       <HintPath>..\..\..\..\dll\Svg.dll</HintPath>
