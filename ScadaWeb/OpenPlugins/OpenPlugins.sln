@@ -1,11 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.489
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgConfig", "PlgConfig\PlgConfig.csproj", "{BA16503A-0E79-42C1-94C7-F690A0DA145E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgTable", "PlgTable\PlgTable.csproj", "{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgChart", "PlgChart\PlgChart.csproj", "{72AFAED2-953D-4939-A828-8EC8A63AB19F}"
 EndProject
@@ -14,8 +12,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgChartCommon", "PlgChartCommon\PlgChartCommon.csproj", "{827AC062-9C5E-429F-ABBF-368E84CEC9B7}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgMonitor", "PlgMonitor\PlgMonitor.csproj", "{3A48FD69-7F01-4562-B9D7-E4984DA03BA9}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PlgTableCommon", "PlgTableCommon\PlgTableCommon.csproj", "{F0DD8F7E-F741-47B3-925C-10B05F0112A7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -27,10 +23,6 @@ Global
 		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BA16503A-0E79-42C1-94C7-F690A0DA145E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}.Release|Any CPU.Build.0 = Release|Any CPU
 		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{72AFAED2-953D-4939-A828-8EC8A63AB19F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -47,12 +39,11 @@ Global
 		{3A48FD69-7F01-4562-B9D7-E4984DA03BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3A48FD69-7F01-4562-B9D7-E4984DA03BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3A48FD69-7F01-4562-B9D7-E4984DA03BA9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F0DD8F7E-F741-47B3-925C-10B05F0112A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F0DD8F7E-F741-47B3-925C-10B05F0112A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F0DD8F7E-F741-47B3-925C-10B05F0112A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F0DD8F7E-F741-47B3-925C-10B05F0112A7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {ADD9BB66-4263-4CEB-B170-687CC41ADB8E}
 	EndGlobalSection
 EndGlobal
