@@ -86,6 +86,7 @@
             this.btnToolsAddDevice = new System.Windows.Forms.ToolStripButton();
             this.btnToolsCreateCnls = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
+            this.lblSelectedInstance = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
             this.ilExplorer = new System.Windows.Forms.ImageList(this.components);
@@ -149,8 +150,10 @@
             this.cmsCnlTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miCnlTableComm = new System.Windows.Forms.ToolStripMenuItem();
             this.miCnlTableRefresh = new System.Windows.Forms.ToolStripMenuItem();
+            this.lblSelectedProfile = new System.Windows.Forms.ToolStripStatusLabel();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
+            this.ssMain.SuspendLayout();
             this.pnlLeft.SuspendLayout();
             this.pnlRight.SuspendLayout();
             this.cmsCommLine.SuspendLayout();
@@ -362,7 +365,7 @@
             // 
             this.miToolsAddLine.Image = ((System.Drawing.Image)(resources.GetObject("miToolsAddLine.Image")));
             this.miToolsAddLine.Name = "miToolsAddLine";
-            this.miToolsAddLine.Size = new System.Drawing.Size(180, 22);
+            this.miToolsAddLine.Size = new System.Drawing.Size(169, 22);
             this.miToolsAddLine.Text = "Add Line...";
             this.miToolsAddLine.Click += new System.EventHandler(this.miToolsAddLine_Click);
             // 
@@ -370,7 +373,7 @@
             // 
             this.miToolsAddDevice.Image = ((System.Drawing.Image)(resources.GetObject("miToolsAddDevice.Image")));
             this.miToolsAddDevice.Name = "miToolsAddDevice";
-            this.miToolsAddDevice.Size = new System.Drawing.Size(180, 22);
+            this.miToolsAddDevice.Size = new System.Drawing.Size(169, 22);
             this.miToolsAddDevice.Text = "Add Device...";
             this.miToolsAddDevice.Click += new System.EventHandler(this.miToolsAddDevice_Click);
             // 
@@ -378,53 +381,53 @@
             // 
             this.miToolsCreateCnls.Image = ((System.Drawing.Image)(resources.GetObject("miToolsCreateCnls.Image")));
             this.miToolsCreateCnls.Name = "miToolsCreateCnls";
-            this.miToolsCreateCnls.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCreateCnls.Size = new System.Drawing.Size(169, 22);
             this.miToolsCreateCnls.Text = "Create Channels...";
             this.miToolsCreateCnls.Click += new System.EventHandler(this.miToolsCreateCnls_Click);
             // 
             // miToolsSep1
             // 
             this.miToolsSep1.Name = "miToolsSep1";
-            this.miToolsSep1.Size = new System.Drawing.Size(177, 6);
+            this.miToolsSep1.Size = new System.Drawing.Size(166, 6);
             // 
             // miToolsCloneCnls
             // 
             this.miToolsCloneCnls.Name = "miToolsCloneCnls";
-            this.miToolsCloneCnls.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCloneCnls.Size = new System.Drawing.Size(169, 22);
             this.miToolsCloneCnls.Text = "Clone Channels...";
             this.miToolsCloneCnls.Click += new System.EventHandler(this.miToolsCloneCnls_Click);
             // 
             // miToolsCnlMap
             // 
             this.miToolsCnlMap.Name = "miToolsCnlMap";
-            this.miToolsCnlMap.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCnlMap.Size = new System.Drawing.Size(169, 22);
             this.miToolsCnlMap.Text = "Channel Map...";
             this.miToolsCnlMap.Click += new System.EventHandler(this.miToolsCnlMap_Click);
             // 
             // miToolsCheckIntegrity
             // 
             this.miToolsCheckIntegrity.Name = "miToolsCheckIntegrity";
-            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCheckIntegrity.Size = new System.Drawing.Size(169, 22);
             this.miToolsCheckIntegrity.Text = "Check Integrity";
             this.miToolsCheckIntegrity.Click += new System.EventHandler(this.miToolsCheckIntegrity_Click);
             // 
             // miToolsSep2
             // 
             this.miToolsSep2.Name = "miToolsSep2";
-            this.miToolsSep2.Size = new System.Drawing.Size(177, 6);
+            this.miToolsSep2.Size = new System.Drawing.Size(166, 6);
             // 
             // miToolsOptions
             // 
             this.miToolsOptions.Image = ((System.Drawing.Image)(resources.GetObject("miToolsOptions.Image")));
             this.miToolsOptions.Name = "miToolsOptions";
-            this.miToolsOptions.Size = new System.Drawing.Size(180, 22);
+            this.miToolsOptions.Size = new System.Drawing.Size(169, 22);
             this.miToolsOptions.Text = "Options...";
             this.miToolsOptions.Click += new System.EventHandler(this.miToolsOptions_Click);
             // 
             // miToolsCulture
             // 
             this.miToolsCulture.Name = "miToolsCulture";
-            this.miToolsCulture.Size = new System.Drawing.Size(180, 22);
+            this.miToolsCulture.Size = new System.Drawing.Size(169, 22);
             this.miToolsCulture.Text = "Language...";
             this.miToolsCulture.Click += new System.EventHandler(this.miToolsCulture_Click);
             // 
@@ -644,10 +647,19 @@
             // 
             // ssMain
             // 
-            this.ssMain.Location = new System.Drawing.Point(0, 389);
+            this.ssMain.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.lblSelectedInstance,
+            this.lblSelectedProfile});
+            this.ssMain.Location = new System.Drawing.Point(0, 387);
             this.ssMain.Name = "ssMain";
-            this.ssMain.Size = new System.Drawing.Size(684, 22);
+            this.ssMain.Size = new System.Drawing.Size(684, 24);
             this.ssMain.TabIndex = 2;
+            // 
+            // lblSelectedInstance
+            // 
+            this.lblSelectedInstance.Name = "lblSelectedInstance";
+            this.lblSelectedInstance.Size = new System.Drawing.Size(108, 19);
+            this.lblSelectedInstance.Text = "lblSelectedInstance";
             // 
             // pnlLeft
             // 
@@ -655,7 +667,7 @@
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 49);
             this.pnlLeft.Name = "pnlLeft";
-            this.pnlLeft.Size = new System.Drawing.Size(250, 340);
+            this.pnlLeft.Size = new System.Drawing.Size(250, 338);
             this.pnlLeft.TabIndex = 3;
             // 
             // tvExplorer
@@ -668,12 +680,13 @@
             this.tvExplorer.Name = "tvExplorer";
             this.tvExplorer.SelectedImageIndex = 0;
             this.tvExplorer.ShowRootLines = false;
-            this.tvExplorer.Size = new System.Drawing.Size(250, 340);
+            this.tvExplorer.Size = new System.Drawing.Size(250, 338);
             this.tvExplorer.TabIndex = 0;
             this.tvExplorer.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeCollapse);
             this.tvExplorer.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterCollapse);
             this.tvExplorer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvExplorer_BeforeExpand);
             this.tvExplorer.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterExpand);
+            this.tvExplorer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvExplorer_AfterSelect);
             this.tvExplorer.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseClick);
             this.tvExplorer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvExplorer_NodeMouseDoubleClick);
             this.tvExplorer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvExplorer_KeyDown);
@@ -691,7 +704,7 @@
             this.splVert.MinExtra = 100;
             this.splVert.MinSize = 100;
             this.splVert.Name = "splVert";
-            this.splVert.Size = new System.Drawing.Size(3, 340);
+            this.splVert.Size = new System.Drawing.Size(3, 338);
             this.splVert.TabIndex = 4;
             this.splVert.TabStop = false;
             // 
@@ -701,7 +714,7 @@
             this.pnlRight.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pnlRight.Location = new System.Drawing.Point(253, 49);
             this.pnlRight.Name = "pnlRight";
-            this.pnlRight.Size = new System.Drawing.Size(431, 340);
+            this.pnlRight.Size = new System.Drawing.Size(431, 338);
             this.pnlRight.TabIndex = 5;
             // 
             // wctrlMain
@@ -716,7 +729,7 @@
             this.wctrlMain.SaveReqNo = "&No";
             this.wctrlMain.SaveReqQuestion = "Save changes to the following items?";
             this.wctrlMain.SaveReqYes = "&Yes";
-            this.wctrlMain.Size = new System.Drawing.Size(431, 340);
+            this.wctrlMain.Size = new System.Drawing.Size(431, 338);
             this.wctrlMain.TabIndex = 0;
             this.wctrlMain.ActiveFormChanged += new System.EventHandler(this.wctrlMain_ActiveFormChanged);
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
@@ -841,7 +854,7 @@
             this.miInstanceRename,
             this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
-            this.cmsInstance.Size = new System.Drawing.Size(219, 302);
+            this.cmsInstance.Size = new System.Drawing.Size(219, 280);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
             // 
             // miInstanceAdd
@@ -1185,6 +1198,13 @@
             this.miCnlTableRefresh.Text = "Refresh";
             this.miCnlTableRefresh.Click += new System.EventHandler(this.miCnlTableRefresh_Click);
             // 
+            // lblSelectedProfile
+            // 
+            this.lblSelectedProfile.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.lblSelectedProfile.Name = "lblSelectedProfile";
+            this.lblSelectedProfile.Size = new System.Drawing.Size(102, 19);
+            this.lblSelectedProfile.Text = "lblSelectedProfile";
+            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1211,6 +1231,8 @@
             this.msMain.PerformLayout();
             this.tsMain.ResumeLayout(false);
             this.tsMain.PerformLayout();
+            this.ssMain.ResumeLayout(false);
+            this.ssMain.PerformLayout();
             this.pnlLeft.ResumeLayout(false);
             this.pnlRight.ResumeLayout(false);
             this.cmsCommLine.ResumeLayout(false);
@@ -1348,6 +1370,8 @@
         private System.Windows.Forms.ToolStripMenuItem miCnlTableRefresh;
         private System.Windows.Forms.ToolStripMenuItem miCnlTableComm;
         private System.Windows.Forms.ToolStripMenuItem miInstanceOpenInBrowser;
+        private System.Windows.Forms.ToolStripStatusLabel lblSelectedInstance;
+        private System.Windows.Forms.ToolStripStatusLabel lblSelectedProfile;
     }
 }
 

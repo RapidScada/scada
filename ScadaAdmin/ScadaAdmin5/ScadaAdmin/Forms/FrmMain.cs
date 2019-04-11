@@ -992,6 +992,7 @@ namespace Scada.Admin.App.Forms
                     wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                     SetMenuItemsEnabled();
                     tvExplorer.Nodes.Clear();
+                    ShowStatus(null);
                     return true;
                 }
             }
@@ -1021,6 +1022,25 @@ namespace Scada.Admin.App.Forms
             frmStartPage?.Close();
         }
 
+        /// <summary>
+        /// Shows information in the status bar.
+        /// </summary>
+        private void ShowStatus(Instance instance)
+        {
+            if (instance == null)
+            {
+                lblSelectedInstance.Text = "";
+                lblSelectedProfile.Text = "";
+                lblSelectedProfile.Visible = false;
+            }
+            else
+            {
+                lblSelectedInstance.Text = instance.Name;
+                lblSelectedProfile.Text = instance.DeploymentProfile;
+                lblSelectedProfile.Visible = !string.IsNullOrEmpty(instance.DeploymentProfile);
+            }
+        }
+
 
         private void FrmMain_Load(object sender, EventArgs e)
         {
@@ -1030,6 +1050,7 @@ namespace Scada.Admin.App.Forms
             LoadAppSettings();
             LoadAppState();
             ShowStartPage();
+            ShowStatus(null);
         }
 
         private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
@@ -1139,6 +1160,20 @@ namespace Scada.Admin.App.Forms
         private void tvExplorer_AfterCollapse(object sender, TreeViewEventArgs e)
         {
             explorerBuilder.SetFolderImage(e.Node);
+        }
+
+        private void tvExplorer_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            // show information about the selected instance
+            if (FindInstanceForDeploy(tvExplorer.SelectedNode,
+                out TreeNode instanceNode, out LiveInstance liveInstance))
+            {
+                ShowStatus(liveInstance.Instance);
+            }
+            else
+            {
+                ShowStatus(null);
+            }
         }
 
 
