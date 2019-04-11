@@ -77,6 +77,7 @@
             this.chkRestartComm.TabIndex = 6;
             this.chkRestartComm.Text = "Restart Communicator";
             this.chkRestartComm.UseVisualStyleBackColor = true;
+            this.chkRestartComm.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // chkRestartServer
             // 
@@ -87,6 +88,7 @@
             this.chkRestartServer.TabIndex = 4;
             this.chkRestartServer.Text = "Restart Server";
             this.chkRestartServer.UseVisualStyleBackColor = true;
+            this.chkRestartServer.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // txtObjFilter
             // 
