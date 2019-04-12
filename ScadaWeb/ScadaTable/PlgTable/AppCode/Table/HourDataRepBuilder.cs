@@ -24,10 +24,9 @@
  */
 
 using Scada.Client;
-using Scada.Data.Models;
 using Scada.Data.Tables;
+using Scada.Table;
 using System;
-using System.Collections.Generic;
 using System.Xml;
 using Utils.Report;
 
@@ -180,7 +179,7 @@ namespace Scada.Web.Plugins.Table
                 throw new Exception(WebPhrases.IncorrectRepTemplate);
 
             // перевод наименования листа
-            workbook.Worksheets[0].Name = PlgPhrases.HourDataWorksheet;
+            workbook.Worksheets[0].Name = TablePhrases.HourDataWorksheet;
 
             // удаление лишних атрибутов таблицы
             Table table = itemRowTemplate.ParentTable;
@@ -220,18 +219,18 @@ namespace Scada.Web.Plugins.Table
 
             if (valName == "Title")
             {
-                nodeText = string.Format(PlgPhrases.HourDataTitle, 
+                nodeText = string.Format(TablePhrases.HourDataTitle, 
                     tableView.Title, 
                     date.ToLocalizedDateString(), 
                     WFrmTable.GetLocalizedHour(startHour) + " - " + WFrmTable.GetLocalizedHour(endHour));
             }
             else if (valName == "Gen")
             {
-                nodeText = PlgPhrases.HourDataGen + genDT.ToLocalizedString();
+                nodeText = TablePhrases.HourDataGen + genDT.ToLocalizedString();
             }
             else if (valName == "ItemCol")
             {
-                nodeText = PlgPhrases.ItemCol;
+                nodeText = TablePhrases.ItemCol;
             }
             else if (valName.StartsWith("H"))
             {

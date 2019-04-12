@@ -23,6 +23,7 @@
  * Modified : 2019
  */
 
+using Scada.Table;
 using System;
 using Utils.Report;
 

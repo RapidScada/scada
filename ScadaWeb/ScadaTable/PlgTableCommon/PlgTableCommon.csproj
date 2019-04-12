@@ -45,7 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="PlgPhrases.cs" />
+    <Compile Include="TablePhrases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TableUtils.cs" />
     <Compile Include="TableView.cs" />

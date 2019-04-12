@@ -1,5 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgTableDictionaries>
+  <Dictionary key="Scada.Table.TableView">
+    <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
+    <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
     <Phrase key="EventsWorksheet">События</Phrase>
     <Phrase key="AllEventsTitle">Все события, {0}</Phrase>
@@ -20,10 +24,6 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">События</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.Plugins.Table.TableView">
-    <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
-    <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
     <Phrase key="this">Команда - Rapid SCADA</Phrase>

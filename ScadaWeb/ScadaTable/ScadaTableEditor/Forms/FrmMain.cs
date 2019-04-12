@@ -60,7 +60,7 @@ namespace Scada.Table.Editor.Forms
 
         private void miHelpAbout_Click(object sender, EventArgs e)
         {
-
+            //FrmAbout.ShowAbout();
         }
     }
 }

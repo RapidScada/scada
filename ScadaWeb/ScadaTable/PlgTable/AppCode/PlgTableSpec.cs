@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2019
  */
 
+using Scada.Table;
 using Scada.Web.Plugins.Table;
 using Scada.Web.Shell;
 using System.Collections.Generic;
@@ -131,7 +132,7 @@ namespace Scada.Web.Plugins
         {
             dictUpdater = new DictUpdater(
                 string.Format("{0}Table{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar), 
-                "PlgTable", PlgPhrases.Init, Log);
+                "PlgTable", TablePhrases.Init, Log);
         }
 
         /// <summary>

@@ -23,16 +23,16 @@
  * Modified : 2018
  */
 
-namespace Scada.Web.Plugins.Table
+namespace Scada.Table
 {
     /// <summary>
-    /// The class contains utility methods for the tables
-    /// <para>Класс, содержащий вспомогательные методы для таблиц</para>
+    /// The class contains utility methods for the tables.
+    /// <para>Класс, содержащий вспомогательные методы для таблиц.</para>
     /// </summary>
     public static class TableUtils
     {
         /// <summary>
-        /// Версия таблиц
+        /// The tables version.
         /// </summary>
         public const string TableVersion = "5.0.3.0";
     }

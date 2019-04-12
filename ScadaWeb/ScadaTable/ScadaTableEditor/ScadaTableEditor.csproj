@@ -36,6 +36,12 @@
     <ApplicationIcon>edit.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -43,6 +49,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Forms\FrmAbout.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmAbout.designer.cs">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -51,6 +63,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\FrmAbout.resx">
+      <DependentUpon>FrmAbout.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -81,7 +96,29 @@
     <Folder Include="Code\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.en-GB.xml">
+      <Link>Lang\ScadaData.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
+      <Link>Lang\ScadaData.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PlgTable\plugins\Table\lang\PlgTable.en-GB.xml">
+      <Link>Lang\PlgTable.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\PlgTable\plugins\Table\lang\PlgTable.ru-RU.xml">
+      <Link>Lang\PlgTable.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="edit.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlgTableCommon\PlgTableCommon.csproj">
+      <Project>{F0DD8F7E-F741-47B3-925C-10B05F0112A7}</Project>
+      <Name>PlgTableCommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

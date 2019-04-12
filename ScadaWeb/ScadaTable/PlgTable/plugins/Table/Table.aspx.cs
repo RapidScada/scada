@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Models;
+using Scada.Table;
 using Scada.UI;
 using Scada.Web.Shell;
 using System;
@@ -66,7 +67,7 @@ namespace Scada.Web.Plugins.Table
         internal static string GetLocalizedHour(int hour)
         {
             return 
-                (hour >= 0 ? "" : PlgPhrases.PrevDayItem) + 
+                (hour >= 0 ? "" : TablePhrases.PrevDayItem) + 
                 DateTime.MinValue.AddHours(hour >= 0 ? hour : hour + 24).ToString("t", Localization.Culture);
         }
 
@@ -94,9 +95,9 @@ namespace Scada.Web.Plugins.Table
             sbHtml.Append("<select id='").Append(elemID).AppendLine("'>");
 
             if (addPrevDay)
-                AppendOptGroup(sbHtml, PlgPhrases.PreviousDay, -24, -1, selectedHour);
+                AppendOptGroup(sbHtml, TablePhrases.PreviousDay, -24, -1, selectedHour);
 
-            AppendOptGroup(sbHtml, PlgPhrases.SelectedDay, 0, 23, selectedHour);
+            AppendOptGroup(sbHtml, TablePhrases.SelectedDay, 0, 23, selectedHour);
             sbHtml.AppendLine("</select>");
             return sbHtml.ToString();
         }
@@ -147,8 +148,8 @@ namespace Scada.Web.Plugins.Table
 
             // заголовок таблицы
             sbHtml.AppendLine("<tr class='hdr'>");
-            AppendCell(sbHtml, "cap", "<span>" + PlgPhrases.ItemCol + "</span>");
-            AppendCell(sbHtml, "cur", "<span>" + PlgPhrases.CurCol + "</span>");
+            AppendCell(sbHtml, "cap", "<span>" + TablePhrases.ItemCol + "</span>");
+            AppendCell(sbHtml, "cur", "<span>" + TablePhrases.CurCol + "</span>");
             for (int hour = FirstHour, hourInd = 0; hour <= LastHour; hour++, hourInd++)
             {
                 AppendCell(sbHtml, timeFrom <= hour && hour <= timeTo ? "hour" : "hour hidden", 
@@ -191,21 +192,21 @@ namespace Scada.Web.Plugins.Table
                     // всплывающая подсказка
                     sbCapHtml.Append("<span class='hint'>");
                     if (cnlNum > 0)
-                        AppendHint(sbCapHtml, false, PlgPhrases.InCnlHint, cnlNum, 
+                        AppendHint(sbCapHtml, false, TablePhrases.InCnlHint, cnlNum, 
                             cnlProps == null ? "" : cnlProps.CnlName);
                     if (ctrlCnlNum > 0)
-                        AppendHint(sbCapHtml, cnlNum > 0, PlgPhrases.CtrlCnlHint, ctrlCnlNum,
+                        AppendHint(sbCapHtml, cnlNum > 0, TablePhrases.CtrlCnlHint, ctrlCnlNum,
                           item.CtrlCnlProps == null ? "" : item.CtrlCnlProps.CtrlCnlName);
                     if (cnlProps != null)
                     {
                         if (cnlProps.ObjNum > 0)
-                            AppendHint(sbCapHtml, true, PlgPhrases.ObjectHint, cnlProps.ObjNum, cnlProps.ObjName);
+                            AppendHint(sbCapHtml, true, TablePhrases.ObjectHint, cnlProps.ObjNum, cnlProps.ObjName);
                         if (cnlProps.KPNum > 0)
-                            AppendHint(sbCapHtml, true, PlgPhrases.DeviceHint, cnlProps.KPNum, cnlProps.KPName);
+                            AppendHint(sbCapHtml, true, TablePhrases.DeviceHint, cnlProps.KPNum, cnlProps.KPName);
                         if (cnlProps.ParamID > 0)
-                            AppendHint(sbCapHtml, true, PlgPhrases.QuantityHint, 0, cnlProps.ParamName);
+                            AppendHint(sbCapHtml, true, TablePhrases.QuantityHint, 0, cnlProps.ParamName);
                         if (cnlProps.UnitID > 0 && cnlProps.ShowNumber)
-                            AppendHint(sbCapHtml, true, PlgPhrases.UnitHint, 0, cnlProps.UnitSign);
+                            AppendHint(sbCapHtml, true, TablePhrases.UnitHint, 0, cnlProps.UnitSign);
                     }
                     sbCapHtml.Append("</span>");
 

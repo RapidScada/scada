@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,15 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Client;
 using Scada.Data.Models;
 using Scada.Data.Tables;
+using Scada.Table;
 using System;
 using System.Collections.Generic;
-using System.Xml;
 using Utils.Report;
 
 namespace Scada.Web.Plugins.Table
@@ -123,7 +123,7 @@ namespace Scada.Web.Plugins.Table
                 throw new Exception(WebPhrases.IncorrectRepTemplate);
 
             // перевод наименования листа
-            workbook.Worksheets[0].Name = PlgPhrases.EventsWorksheet;
+            workbook.Worksheets[0].Name = TablePhrases.EventsWorksheet;
 
             // удаление лишних атрибутов таблицы
             Table table = eventRowTemplate.ParentTable;
@@ -162,40 +162,40 @@ namespace Scada.Web.Plugins.Table
             if (valName == "Title")
             {
                 nodeText = view == null ?
-                    string.Format(PlgPhrases.AllEventsTitle, date.ToLocalizedDateString()) :
-                    string.Format(PlgPhrases.EventsByViewTitle, view.Title, date.ToLocalizedDateString());
+                    string.Format(TablePhrases.AllEventsTitle, date.ToLocalizedDateString()) :
+                    string.Format(TablePhrases.EventsByViewTitle, view.Title, date.ToLocalizedDateString());
             }
             else if (valName == "Gen")
             {
-                nodeText = PlgPhrases.EventsGen + DateTime.Now.ToLocalizedString();
+                nodeText = TablePhrases.EventsGen + DateTime.Now.ToLocalizedString();
             }
             else if (valName == "NumCol")
             {
-                nodeText = PlgPhrases.NumCol;
+                nodeText = TablePhrases.NumCol;
             }
             else if (valName == "TimeCol")
             {
-                nodeText = PlgPhrases.TimeCol;
+                nodeText = TablePhrases.TimeCol;
             }
             else if (valName == "ObjCol")
             {
-                nodeText = PlgPhrases.ObjCol;
+                nodeText = TablePhrases.ObjCol;
             }
             else if (valName == "DevCol")
             {
-                nodeText = PlgPhrases.DevCol;
+                nodeText = TablePhrases.DevCol;
             }
             else if (valName == "CnlCol")
             {
-                nodeText = PlgPhrases.CnlCol;
+                nodeText = TablePhrases.CnlCol;
             }
             else if (valName == "TextCol")
             {
-                nodeText = PlgPhrases.TextCol;
+                nodeText = TablePhrases.TextCol;
             }
             else if (valName == "AckCol")
             {
-                nodeText = PlgPhrases.AckCol;
+                nodeText = TablePhrases.AckCol;
             }
             else if (dispEvent != null)
             {

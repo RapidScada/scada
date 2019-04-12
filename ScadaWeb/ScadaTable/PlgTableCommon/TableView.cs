@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -31,11 +31,11 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-namespace Scada.Web.Plugins.Table
+namespace Scada.Table
 {
     /// <summary>
-    /// Table view
-    /// <para>Табличное представление</para>
+    /// Table view.
+    /// <para>Табличное представление.</para>
     /// </summary>
     public class TableView : BaseView
     {
@@ -256,7 +256,7 @@ namespace Scada.Web.Plugins.Table
             }
             catch (Exception ex)
             {
-                errMsg = PlgPhrases.LoadTableViewError + ": " + ex.Message;
+                errMsg = TablePhrases.LoadTableViewError + ": " + ex.Message;
                 return false;
             }
         }
@@ -297,7 +297,7 @@ namespace Scada.Web.Plugins.Table
             }
             catch (Exception ex)
             {
-                errMsg = PlgPhrases.SaveTableViewError + ": " + ex.Message;
+                errMsg = TablePhrases.SaveTableViewError + ": " + ex.Message;
                 return false;
             }
         }
