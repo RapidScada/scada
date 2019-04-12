@@ -22,7 +22,7 @@ namespace Scada.Scheme.Editor
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
             AppData.GetAppData().Log.WriteException(e.Exception, CommonPhrases.UnhandledException);
-            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":\r\n" + e.Exception.Message);
+            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":" + Environment.NewLine + e.Exception.Message);
         }
     }
 }
