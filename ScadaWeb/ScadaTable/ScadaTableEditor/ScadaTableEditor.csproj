@@ -104,12 +104,12 @@
       <Link>Lang\ScadaData.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\PlgTable\plugins\Table\lang\PlgTable.en-GB.xml">
-      <Link>Lang\PlgTable.en-GB.xml</Link>
+    <Content Include="..\PlgTable\plugins\Table\lang\ScadaTable.en-GB.xml">
+      <Link>Lang\ScadaTable.en-GB.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="..\PlgTable\plugins\Table\lang\PlgTable.ru-RU.xml">
-      <Link>Lang\PlgTable.ru-RU.xml</Link>
+    <Content Include="..\PlgTable\plugins\Table\lang\ScadaTable.ru-RU.xml">
+      <Link>Lang\ScadaTable.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="edit.ico" />
