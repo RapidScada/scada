@@ -7,7 +7,11 @@
   <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
     <Phrase key="EditorTitle">{0} - Редактор таблиц</Phrase>
     <Phrase key="DefaultTableTitle">Заголовок таблицы</Phrase>
+    <Phrase key="TableFileFilter">Табличные представления (*.tbl)|*.tbl|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveTableConfirm">Табличное представление было изменено. Сохранить изменения?</Phrase>
+    <Phrase key="BaseNotFound">База конфигурации не найдена</Phrase>
+    <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
+    <Phrase key="FillCnlTreeError">Ошибка при заполнении дерева каналов</Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">

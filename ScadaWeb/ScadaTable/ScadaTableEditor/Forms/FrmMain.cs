@@ -23,6 +23,9 @@
  * Modified : 2019
  */
 
+using Scada.Data.Entities;
+using Scada.Data.Tables;
+using Scada.Table.Editor.Code;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -47,6 +50,10 @@ namespace Scada.Table.Editor.Forms
         /// Short name of the application error log file.
         /// </summary>
         private const string ErrFileName = "ScadaTableEditor.err";
+        /// <summary>
+        /// The pattern to search the configuration database directory.
+        /// </summary>
+        private const string BaseDirPattern = "BaseXML";
 
         private readonly string exeDir;  // the directory of the executable file
         private readonly string langDir; // the directory of language files
@@ -54,6 +61,9 @@ namespace Scada.Table.Editor.Forms
         private TableView tableView;     // the edited table
         private string fileName;         // the table file name
         private bool modified;           // the table was modified
+
+        private string baseDir;          // the configuration database directory
+        private BaseTables baseTables;   // the configuration database tables
 
 
         /// <summary>
@@ -71,6 +81,9 @@ namespace Scada.Table.Editor.Forms
             tableView = null;
             fileName = "";
             modified = false;
+
+            baseDir = "";
+            baseTables = null;
         }
 
 
@@ -109,6 +122,8 @@ namespace Scada.Table.Editor.Forms
             if (tableDictLoaded)
             {
                 Translator.TranslateForm(this, GetType().FullName);
+                ofdTable.SetFilter(TablePhrases.TableFileFilter);
+                sfdTable.SetFilter(TablePhrases.TableFileFilter);
             }
         }
 
@@ -117,8 +132,11 @@ namespace Scada.Table.Editor.Forms
         /// </summary>
         private void NewTable()
         {
+            bsTable.DataSource = null;
             fileName = "";
             tableView = new TableView() { Title = TablePhrases.DefaultTableTitle };
+
+            RefreshBase();
             DisplayTable();
             Modified = false;
         }
@@ -128,12 +146,14 @@ namespace Scada.Table.Editor.Forms
         /// </summary>
         private void OpenTable(string fileName)
         {
+            bsTable.DataSource = null;
             this.fileName = fileName;
             tableView = new TableView();
 
             if (!tableView.LoadFromFile(fileName, out string errMsg))
                 ProcError(errMsg);
 
+            RefreshBase();
             DisplayTable();
             Modified = false;
         }
@@ -172,7 +192,15 @@ namespace Scada.Table.Editor.Forms
                 sfdTable.FileName = Path.GetFileName(fileName);
             }
 
-            return sfdTable.ShowDialog() == DialogResult.OK && SaveTable(sfdTable.FileName);
+            if (sfdTable.ShowDialog() == DialogResult.OK && SaveTable(sfdTable.FileName))
+            {
+                RefreshBase();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -264,8 +292,7 @@ namespace Scada.Table.Editor.Forms
             btnMoveUpItem.Enabled = selRowCnt == 1 && selRowInd > 0;
             btnMoveDownItem.Enabled = selRowCnt == 1 && selRowInd < dgvTable.Rows.Count - 1;
             btnDeleteItem.Enabled = selRowCnt > 0;
-            // TODO: baseLoaded
-            //btnItemInfo.Enabled = selRowCnt == 1 && baseLoaded;
+            btnItemInfo.Enabled = selRowCnt == 1 && baseTables != null;
         }
 
         /// <summary>
@@ -290,6 +317,28 @@ namespace Scada.Table.Editor.Forms
             }
 
             return string.IsNullOrEmpty(errMsg);
+        }
+
+        /// <summary>
+        /// Gets the selected row.
+        /// </summary>
+        private bool GetSelectedRow(out DataGridViewRow row)
+        {
+            if (dgvTable.SelectedRows.Count == 1)
+            {
+                row = dgvTable.SelectedRows[0];
+                return true;
+            }
+            else if (dgvTable.CurrentRow != null)
+            {
+                row = dgvTable.CurrentRow;
+                return true;
+            }
+            else
+            {
+                row = null;
+                return false;
+            }
         }
         
         /// <summary>
@@ -349,12 +398,136 @@ namespace Scada.Table.Editor.Forms
         }
 
         /// <summary>
+        /// Finds the configuration database, relative to the table file name.
+        /// </summary>
+        private bool FindConfigBase()
+        {
+            if (!string.IsNullOrEmpty(fileName))
+            {
+                DirectoryInfo dirInfo = new DirectoryInfo(Path.GetDirectoryName(fileName));
+
+                while (dirInfo.Parent != null)
+                {
+                    dirInfo = dirInfo.Parent;
+
+                    foreach (DirectoryInfo parentDirInfo in 
+                        dirInfo.EnumerateDirectories(BaseDirPattern, SearchOption.TopDirectoryOnly))
+                    {
+                        baseDir = ScadaUtils.NormalDir(parentDirInfo.FullName);
+                        return true;
+                    }
+                }
+            }
+
+            baseDir = "";
+            return false;
+        }
+
+        /// <summary>
+        /// Loads the configuration database.
+        /// </summary>
+        private void LoadConfigBase()
+        {
+            try
+            {
+                if (FindConfigBase())
+                {
+                    baseTables = new BaseTables();
+                    baseTables.Load(baseDir);
+                }
+                else
+                {
+                    baseTables = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                baseTables = null;
+                ProcError(ex, TablePhrases.LoadConfigBaseError);
+            }
+        }
+
+        /// <summary>
+        /// Fills the channel tree view.
+        /// </summary>
+        private void FillCnlTree()
+        {
+            try
+            {
+                tvCnl.BeginUpdate();
+                tvCnl.Nodes.Clear();
+
+                if (baseTables != null)
+                {
+                    bool inCnls = cbCnlKind.SelectedIndex == 0;
+
+                    foreach (KP kp in baseTables.KPTable.EnumerateItems())
+                    {
+                        string nodeText = string.Format("[{0}] {1}", kp.KPNum, kp.Name);
+                        TreeNode deviceNode = TreeViewUtils.CreateNode(nodeText, "device.png");
+                        tvCnl.Nodes.Add(deviceNode);
+
+                        TableFilter tableFilter = new TableFilter("KPNum", kp.KPNum);
+
+                        if (inCnls)
+                        {
+                            foreach (InCnl inCnl in baseTables.InCnlTable.SelectItems(tableFilter))
+                            {
+                                nodeText = string.Format("[{0}] {1}", inCnl.CnlNum, inCnl.Name);
+                                TreeNode inCnlNode = TreeViewUtils.CreateNode(nodeText, "in_cnl.png");
+                                deviceNode.Nodes.Add(inCnlNode);
+                            }
+                        }
+                        else
+                        {
+                            foreach (CtrlCnl ctrlCnl in baseTables.CtrlCnlTable.SelectItems(tableFilter))
+                            {
+                                nodeText = string.Format("[{0}] {1}", ctrlCnl.CtrlCnlNum, ctrlCnl.Name);
+                                TreeNode ctrlCnlNode = TreeViewUtils.CreateNode(nodeText, "ctrl_cnl.png");
+                                deviceNode.Nodes.Add(ctrlCnlNode);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ProcError(ex, TablePhrases.FillCnlTreeError);
+            }
+            finally
+            {
+                tvCnl.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Refreshes an displays the configuration database.
+        /// </summary>
+        private void RefreshBase()
+        {
+            LoadConfigBase();
+            FillCnlTree();
+            lblBaseDir.Text = string.IsNullOrEmpty(baseDir) ? TablePhrases.BaseNotFound : baseDir;
+        }
+
+        /// <summary>
         /// Writes the error to the log and displays a error message.
         /// </summary>
         private void ProcError(string message)
         {
             errLog.WriteError(message);
             ScadaUiUtils.ShowError(message);
+        }
+
+        /// <summary>
+        /// Writes the error to the log and displays a error message.
+        /// </summary>
+        private void ProcError(Exception ex, string message = null)
+        {
+            errLog.WriteException(ex, message);
+            ScadaUiUtils.ShowError(string.IsNullOrEmpty(message) ?
+                ex.Message :
+                message + ":" + Environment.NewLine + ex.Message);
         }
 
 
@@ -367,6 +540,10 @@ namespace Scada.Table.Editor.Forms
         private void FrmMain_Load(object sender, EventArgs e)
         {
             LocalizeForm();
+
+            cbCnlKind.SelectedIndexChanged -= cbCnlKind_SelectedIndexChanged;
+            cbCnlKind.SelectedIndex = 0;
+            cbCnlKind.SelectedIndexChanged += cbCnlKind_SelectedIndexChanged;
 
             string[] args = Environment.GetCommandLineArgs();
             OpenOrCreateTable(args.Length > 1 ? args[1] : "");
@@ -427,7 +604,7 @@ namespace Scada.Table.Editor.Forms
 
         private void btnRefreshBase_Click(object sender, EventArgs e)
         {
-
+            RefreshBase();
         }
 
         private void btnAddItem_Click(object sender, EventArgs e)
@@ -443,11 +620,9 @@ namespace Scada.Table.Editor.Forms
         private void btnMoveUpDownItem_Click(object sender, EventArgs e)
         {
             // move selected table item up or down
-            DataGridViewSelectedRowCollection selRows = dgvTable.SelectedRows;
-
-            if (selRows.Count == 1 || dgvTable.CurrentRow != null)
+            if (GetSelectedRow(out DataGridViewRow row))
             {
-                int curInd = selRows.Count > 0 ? selRows[0].Index : dgvTable.CurrentRow.Index;
+                int curInd = row.Index;
                 List<TableView.Item> items = tableView.Items;
 
                 if (sender == btnMoveUpItem && curInd > 0 ||
@@ -502,13 +677,15 @@ namespace Scada.Table.Editor.Forms
 
         private void btnItemInfo_Click(object sender, EventArgs e)
         {
-
+            // show selected item information
+            if (baseTables != null && GetSelectedRow(out DataGridViewRow row))
+                new FrmItemInfo(tableView.Items[row.Index], baseTables).ShowDialog();
         }
 
 
-        private void cbCnlGrouping_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbCnlKind_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            FillCnlTree();
         }
 
         private void txtTableTitle_TextChanged(object sender, EventArgs e)

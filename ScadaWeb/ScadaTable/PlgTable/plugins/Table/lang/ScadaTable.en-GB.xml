@@ -7,7 +7,11 @@
   <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
     <Phrase key="EditorTitle">{0} - Table Editor</Phrase>
     <Phrase key="DefaultTableTitle">Table Title</Phrase>
+    <Phrase key="TableFileFilter">Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveTableConfirm">The table view has been modified. Save the changes?</Phrase>
+    <Phrase key="BaseNotFound">The configuration database not found</Phrase>
+    <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+    <Phrase key="FillCnlTreeError">Error filling channel tree</Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">

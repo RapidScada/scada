@@ -57,12 +57,12 @@
             this.btnDeleteItem = new System.Windows.Forms.ToolStripButton();
             this.btnItemInfo = new System.Windows.Forms.ToolStripButton();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblBaseDir = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.pnlHint = new System.Windows.Forms.Panel();
             this.lblHint = new System.Windows.Forms.Label();
             this.tvCnl = new System.Windows.Forms.TreeView();
-            this.cbCnlGrouping = new System.Windows.Forms.ComboBox();
+            this.cbCnlKind = new System.Windows.Forms.ComboBox();
             this.splVert = new System.Windows.Forms.Splitter();
             this.pnlRight = new System.Windows.Forms.Panel();
             this.dgvTable = new System.Windows.Forms.DataGridView();
@@ -70,10 +70,10 @@
             this.colItemCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colItemCaption = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colItemHidden = new System.Windows.Forms.DataGridViewCheckBoxColumn();
-            this.bsTable = new System.Windows.Forms.BindingSource(this.components);
             this.txtTableTitle = new System.Windows.Forms.TextBox();
             this.ofdTable = new System.Windows.Forms.OpenFileDialog();
             this.sfdTable = new System.Windows.Forms.SaveFileDialog();
+            this.bsTable = new System.Windows.Forms.BindingSource(this.components);
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -306,24 +306,24 @@
             // statusStrip
             // 
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
+            this.lblBaseDir});
             this.statusStrip.Location = new System.Drawing.Point(0, 489);
             this.statusStrip.Name = "statusStrip";
             this.statusStrip.Size = new System.Drawing.Size(734, 22);
             this.statusStrip.TabIndex = 2;
             this.statusStrip.Text = "statusStrip1";
             // 
-            // toolStripStatusLabel1
+            // lblBaseDir
             // 
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(59, 17);
-            this.toolStripStatusLabel1.Text = "lblBaseDir";
+            this.lblBaseDir.Name = "lblBaseDir";
+            this.lblBaseDir.Size = new System.Drawing.Size(59, 17);
+            this.lblBaseDir.Text = "lblBaseDir";
             // 
             // pnlLeft
             // 
             this.pnlLeft.Controls.Add(this.pnlHint);
             this.pnlLeft.Controls.Add(this.tvCnl);
-            this.pnlLeft.Controls.Add(this.cbCnlGrouping);
+            this.pnlLeft.Controls.Add(this.cbCnlKind);
             this.pnlLeft.Dock = System.Windows.Forms.DockStyle.Left;
             this.pnlLeft.Location = new System.Drawing.Point(0, 49);
             this.pnlLeft.Name = "pnlLeft";
@@ -361,20 +361,20 @@
             this.tvCnl.Size = new System.Drawing.Size(250, 363);
             this.tvCnl.TabIndex = 1;
             // 
-            // cbCnlGrouping
+            // cbCnlKind
             // 
-            this.cbCnlGrouping.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.cbCnlKind.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.cbCnlGrouping.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbCnlGrouping.FormattingEnabled = true;
-            this.cbCnlGrouping.Items.AddRange(new object[] {
-            "Group by devices",
-            "Group by objects"});
-            this.cbCnlGrouping.Location = new System.Drawing.Point(0, 0);
-            this.cbCnlGrouping.Name = "cbCnlGrouping";
-            this.cbCnlGrouping.Size = new System.Drawing.Size(250, 21);
-            this.cbCnlGrouping.TabIndex = 0;
-            this.cbCnlGrouping.SelectedIndexChanged += new System.EventHandler(this.cbCnlGrouping_SelectedIndexChanged);
+            this.cbCnlKind.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCnlKind.FormattingEnabled = true;
+            this.cbCnlKind.Items.AddRange(new object[] {
+            "Input channels",
+            "Output channels"});
+            this.cbCnlKind.Location = new System.Drawing.Point(0, 0);
+            this.cbCnlKind.Name = "cbCnlKind";
+            this.cbCnlKind.Size = new System.Drawing.Size(250, 21);
+            this.cbCnlKind.TabIndex = 0;
+            this.cbCnlKind.SelectedIndexChanged += new System.EventHandler(this.cbCnlKind_SelectedIndexChanged);
             // 
             // splVert
             // 
@@ -471,10 +471,6 @@
             this.colItemHidden.Name = "colItemHidden";
             this.colItemHidden.Width = 60;
             // 
-            // bsTable
-            // 
-            this.bsTable.AllowNew = false;
-            // 
             // txtTableTitle
             // 
             this.txtTableTitle.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -494,6 +490,10 @@
             // 
             this.sfdTable.DefaultExt = "*.tbl";
             this.sfdTable.Filter = "Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*";
+            // 
+            // bsTable
+            // 
+            this.bsTable.AllowNew = false;
             // 
             // FrmMain
             // 
@@ -549,11 +549,11 @@
         private System.Windows.Forms.ToolStripButton btnFileOpen;
         private System.Windows.Forms.ToolStripButton btnFileSave;
         private System.Windows.Forms.StatusStrip statusStrip;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.ToolStripStatusLabel lblBaseDir;
         private System.Windows.Forms.Panel pnlLeft;
         private System.Windows.Forms.Splitter splVert;
         private System.Windows.Forms.Panel pnlRight;
-        private System.Windows.Forms.ComboBox cbCnlGrouping;
+        private System.Windows.Forms.ComboBox cbCnlKind;
         private System.Windows.Forms.TreeView tvCnl;
         private System.Windows.Forms.Panel pnlHint;
         private System.Windows.Forms.Label lblHint;
