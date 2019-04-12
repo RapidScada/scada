@@ -4,6 +4,12 @@
     <Phrase key="LoadTableViewError">Error loading table view from file</Phrase>
     <Phrase key="SaveTableViewError">Error saving table view to file</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="EditorTitle">{0} - Table Editor</Phrase>
+    <Phrase key="DefaultTableTitle">Table Title</Phrase>
+    <Phrase key="SaveTableConfirm">The table view has been modified. Save the changes?</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
     <Phrase key="EventsWorksheet">Events</Phrase>
     <Phrase key="AllEventsTitle">All Events, {0}</Phrase>

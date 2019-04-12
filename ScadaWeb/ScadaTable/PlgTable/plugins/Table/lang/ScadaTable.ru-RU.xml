@@ -4,6 +4,12 @@
     <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
     <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="EditorTitle">{0} - Редактор таблиц</Phrase>
+    <Phrase key="DefaultTableTitle">Заголовок таблицы</Phrase>
+    <Phrase key="SaveTableConfirm">Табличное представление было изменено. Сохранить изменения?</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
     <Phrase key="EventsWorksheet">События</Phrase>
     <Phrase key="AllEventsTitle">Все события, {0}</Phrase>

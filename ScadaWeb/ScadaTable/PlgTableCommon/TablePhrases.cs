@@ -37,6 +37,11 @@ namespace Scada.Table
         public static string LoadTableViewError { get; private set; }
         public static string SaveTableViewError { get; private set; }
 
+        // Scada.Table.Editor.Forms.FrmMain
+        public static string EditorTitle { get; private set; }
+        public static string DefaultTableTitle { get; private set; }
+        public static string SaveTableConfirm { get; private set; }
+
         // Scada.Web.Plugins.Table.EventsRepBuilder
         public static string EventsWorksheet { get; private set; }
         public static string AllEventsTitle { get; private set; }
@@ -76,6 +81,11 @@ namespace Scada.Table
             Localization.Dict dict = Localization.GetDictionary("Scada.Table.TableView");
             LoadTableViewError = dict.GetPhrase("LoadTableViewError");
             SaveTableViewError = dict.GetPhrase("SaveTableViewError");
+
+            dict = Localization.GetDictionary("Scada.Table.Editor.Forms.FrmMain");
+            EditorTitle = dict.GetPhrase("EditorTitle");
+            DefaultTableTitle = dict.GetPhrase("DefaultTableTitle");
+            SaveTableConfirm = dict.GetPhrase("SaveTableConfirm");
 
             dict = Localization.GetDictionary("Scada.Web.Plugins.Table.EventsRepBuilder");
             EventsWorksheet = dict.GetPhrase("EventsWorksheet", "EventsWorksheet"); // the default phrase must comply with Excel restrictions

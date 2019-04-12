@@ -62,13 +62,12 @@
             this.lblVersionRu.BackColor = System.Drawing.Color.White;
             this.lblVersionRu.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(204)));
             this.lblVersionRu.ForeColor = System.Drawing.Color.Black;
-            this.lblVersionRu.Location = new System.Drawing.Point(227, 77);
+            this.lblVersionRu.Location = new System.Drawing.Point(271, 77);
             this.lblVersionRu.Margin = new System.Windows.Forms.Padding(0);
             this.lblVersionRu.Name = "lblVersionRu";
             this.lblVersionRu.Size = new System.Drawing.Size(80, 12);
             this.lblVersionRu.TabIndex = 0;
             this.lblVersionRu.Text = "Версия 5.0.0.0";
-            this.lblVersionRu.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this.lblVersionRu.Click += new System.EventHandler(this.FrmAbout_Click);
             // 
             // pbAboutEn
@@ -86,7 +85,7 @@
             this.lblVersionEn.BackColor = System.Drawing.Color.White;
             this.lblVersionEn.Font = new System.Drawing.Font("Arial", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Pixel, ((byte)(204)));
             this.lblVersionEn.ForeColor = System.Drawing.Color.Black;
-            this.lblVersionEn.Location = new System.Drawing.Point(266, 77);
+            this.lblVersionEn.Location = new System.Drawing.Point(257, 77);
             this.lblVersionEn.Margin = new System.Windows.Forms.Padding(0);
             this.lblVersionEn.Name = "lblVersionEn";
             this.lblVersionEn.Size = new System.Drawing.Size(80, 12);
