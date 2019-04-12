@@ -358,8 +358,7 @@ namespace Scada.Admin.App.Forms
                     else if (fileType == KnownFileType.TableView && File.Exists(appData.AppSettings.TableEditorPath))
                     {
                         // run Table Editor
-                        Process.Start(appData.AppSettings.TableEditorPath, 
-                            string.Format("\"{0}\", \"{1}\"", fileItem.Path, project.ConfigBase.BaseDir));
+                        Process.Start(appData.AppSettings.TableEditorPath, string.Format("\"{0}\"", fileItem.Path));
                     }
                     else if (fileType != KnownFileType.None && File.Exists(appData.AppSettings.TextEditorPath))
                     {
