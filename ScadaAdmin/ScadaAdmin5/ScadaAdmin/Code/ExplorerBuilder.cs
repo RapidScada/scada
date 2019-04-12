@@ -184,7 +184,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         private void FillCnlTableNodes(TreeNode inCnlTableNode, TreeNode ctrlCnlTableNode, ConfigBase configBase)
         {
-            foreach (KP kp in configBase.KPTable.Items.Values)
+            foreach (KP kp in configBase.KPTable.EnumerateItems())
             {
                 string nodeText = string.Format(AppPhrases.TableByDeviceNode, kp.KPNum, kp.Name);
 
