@@ -308,7 +308,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Selects the items that match the specified filter.
         /// </summary>
-        public IEnumerable SelectItems(TableFilter tableFilter)
+        public IEnumerable SelectItems(TableFilter tableFilter, bool indexRequired = false)
         {
             if (tableFilter == null)
                 throw new ArgumentNullException("tableFilter");
@@ -327,6 +327,10 @@ namespace Scada.Data.Tables
                 {
                     yield return item;
                 }
+            }
+            else if (indexRequired)
+            {
+                throw new ScadaException("Index not found.");
             }
             else
             {

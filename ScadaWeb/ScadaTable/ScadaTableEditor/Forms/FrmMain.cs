@@ -58,12 +58,14 @@ namespace Scada.Table.Editor.Forms
         private readonly string exeDir;  // the directory of the executable file
         private readonly string langDir; // the directory of language files
         private readonly Log errLog;     // the application error log
+
         private TableView tableView;     // the edited table
         private string fileName;         // the table file name
         private bool modified;           // the table was modified
 
         private string baseDir;          // the configuration database directory
         private BaseTables baseTables;   // the configuration database tables
+        private bool preventNodeExpand;  // prevent a tree node from expanding or collapsing
 
 
         /// <summary>
@@ -84,6 +86,7 @@ namespace Scada.Table.Editor.Forms
 
             baseDir = "";
             baseTables = null;
+            preventNodeExpand = false;
         }
 
 
@@ -289,6 +292,7 @@ namespace Scada.Table.Editor.Forms
                 selRowInd = dgvTable.CurrentRow.Index;
             }
 
+            btnAddItem.Enabled = tvCnl.SelectedNode != null;
             btnMoveUpItem.Enabled = selRowCnt == 1 && selRowInd > 0;
             btnMoveDownItem.Enabled = selRowCnt == 1 && selRowInd < dgvTable.Rows.Count - 1;
             btnDeleteItem.Enabled = selRowCnt > 0;
@@ -398,6 +402,22 @@ namespace Scada.Table.Editor.Forms
         }
 
         /// <summary>
+        /// Creates and inserts an item in the table.
+        /// </summary>
+        private void InsertTableItem(TreeNode node)
+        {
+            if (node != null)
+            {
+                if (node.Tag is KP kp)
+                    InsertTableItem(new TableView.Item(0, 0, false, kp.Name));
+                else if (node.Tag is InCnl inCnl)
+                    InsertTableItem(new TableView.Item(inCnl.CnlNum, 0, false, inCnl.Name));
+                else if (node.Tag is CtrlCnl ctrlCnl)
+                    InsertTableItem(new TableView.Item(0, ctrlCnl.CtrlCnlNum, false, ctrlCnl.Name));
+            }
+        }
+
+        /// <summary>
         /// Finds the configuration database, relative to the table file name.
         /// </summary>
         private bool FindConfigBase()
@@ -459,34 +479,62 @@ namespace Scada.Table.Editor.Forms
 
                 if (baseTables != null)
                 {
-                    bool inCnls = cbCnlKind.SelectedIndex == 0;
-
                     foreach (KP kp in baseTables.KPTable.EnumerateItems())
                     {
                         string nodeText = string.Format("[{0}] {1}", kp.KPNum, kp.Name);
                         TreeNode deviceNode = TreeViewUtils.CreateNode(nodeText, "device.png");
+                        deviceNode.ContextMenuStrip = cmsDevice;
+                        deviceNode.Tag = kp;
+                        deviceNode.Nodes.Add(TreeViewUtils.CreateNode("Empty", "empty.png"));
                         tvCnl.Nodes.Add(deviceNode);
+                    }
 
-                        TableFilter tableFilter = new TableFilter("KPNum", kp.KPNum);
+                    TreeNode emptyDeviceNode = TreeViewUtils.CreateNode(TablePhrases.EmptyDeviceNode, "device.png");
+                    emptyDeviceNode.ContextMenuStrip = cmsDevice;
+                    emptyDeviceNode.Tag = new KP() { KPNum = 0, Name = TablePhrases.EmptyDeviceNode };
+                    emptyDeviceNode.Nodes.Add(TreeViewUtils.CreateNode("Empty", "empty.png"));
+                    tvCnl.Nodes.Add(emptyDeviceNode);
+                }
+            }
+            catch (Exception ex)
+            {
+                ProcError(ex, TablePhrases.FillCnlTreeError);
+            }
+            finally
+            {
+                tvCnl.EndUpdate();
+            }
+        }
 
-                        if (inCnls)
-                        {
-                            foreach (InCnl inCnl in baseTables.InCnlTable.SelectItems(tableFilter))
-                            {
-                                nodeText = string.Format("[{0}] {1}", inCnl.CnlNum, inCnl.Name);
-                                TreeNode inCnlNode = TreeViewUtils.CreateNode(nodeText, "in_cnl.png");
-                                deviceNode.Nodes.Add(inCnlNode);
-                            }
-                        }
-                        else
-                        {
-                            foreach (CtrlCnl ctrlCnl in baseTables.CtrlCnlTable.SelectItems(tableFilter))
-                            {
-                                nodeText = string.Format("[{0}] {1}", ctrlCnl.CtrlCnlNum, ctrlCnl.Name);
-                                TreeNode ctrlCnlNode = TreeViewUtils.CreateNode(nodeText, "ctrl_cnl.png");
-                                deviceNode.Nodes.Add(ctrlCnlNode);
-                            }
-                        }
+        /// <summary>
+        /// Fills the device node by channel nodes.
+        /// </summary>
+        private void FillDeviceNode(TreeNode deviceNode, KP kp)
+        {
+            try
+            {
+                tvCnl.BeginUpdate();
+                deviceNode.Nodes.Clear();
+                TableFilter tableFilter = new TableFilter("KPNum", kp.KPNum);
+
+                if (cbCnlKind.SelectedIndex == 0)
+                {
+                    foreach (InCnl inCnl in baseTables.InCnlTable.SelectItems(tableFilter, true))
+                    {
+                        string nodeText = string.Format("[{0}] {1}", inCnl.CnlNum, inCnl.Name);
+                        TreeNode inCnlNode = TreeViewUtils.CreateNode(nodeText, "in_cnl.png");
+                        inCnlNode.Tag = inCnl;
+                        deviceNode.Nodes.Add(inCnlNode);
+                    }
+                }
+                else
+                {
+                    foreach (CtrlCnl ctrlCnl in baseTables.CtrlCnlTable.SelectItems(tableFilter, true))
+                    {
+                        string nodeText = string.Format("[{0}] {1}", ctrlCnl.CtrlCnlNum, ctrlCnl.Name);
+                        TreeNode ctrlCnlNode = TreeViewUtils.CreateNode(nodeText, "out_cnl.png");
+                        ctrlCnlNode.Tag = ctrlCnl;
+                        deviceNode.Nodes.Add(ctrlCnlNode);
                     }
                 }
             }
@@ -498,6 +546,15 @@ namespace Scada.Table.Editor.Forms
             {
                 tvCnl.EndUpdate();
             }
+        }
+
+        /// <summary>
+        /// Fills the device node, it hasn't been filled yet.
+        /// </summary>
+        private void FillDeviceNodeIfNeeded(TreeNode deviceNode)
+        {
+            if (deviceNode.Tag is KP kp && deviceNode.Nodes.Count > 0 && deviceNode.Nodes[0].Tag == null)
+                FillDeviceNode(deviceNode, kp);
         }
 
         /// <summary>
@@ -601,7 +658,6 @@ namespace Scada.Table.Editor.Forms
             FrmAbout.ShowAbout(exeDir);
         }
 
-
         private void btnRefreshBase_Click(object sender, EventArgs e)
         {
             RefreshBase();
@@ -609,7 +665,7 @@ namespace Scada.Table.Editor.Forms
 
         private void btnAddItem_Click(object sender, EventArgs e)
         {
-
+            InsertTableItem(tvCnl.SelectedNode);
         }
 
         private void btnAddEmptyItem_Click(object sender, EventArgs e)
@@ -682,11 +738,106 @@ namespace Scada.Table.Editor.Forms
                 new FrmItemInfo(tableView.Items[row.Index], baseTables).ShowDialog();
         }
 
+        private void miDeviceAddItems_Click(object sender, EventArgs e)
+        {
+            // insert table items for selected device and related channels
+            if (tvCnl.SelectedNode is TreeNode selectedNode && selectedNode.Tag is KP)
+            {
+                FillDeviceNodeIfNeeded(selectedNode);
+                InsertTableItem(selectedNode);
+
+                foreach (TreeNode cnlNode in selectedNode.Nodes)
+                {
+                    InsertTableItem(cnlNode);
+                }
+            }
+        }
+
 
         private void cbCnlKind_SelectedIndexChanged(object sender, EventArgs e)
         {
             FillCnlTree();
         }
+
+        private void tvCnl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter && tvCnl.SelectedNode is TreeNode node)
+            {
+                InsertTableItem(node);
+
+                // select the next node
+                if (node.Nodes.Count > 0)
+                {
+                    node.Expand(); // may fill channels on expand
+
+                    if (node.Nodes.Count > 0)
+                        tvCnl.SelectedNode = node.Nodes[0];
+                    else if (node.NextNode != null)
+                        tvCnl.SelectedNode = node.NextNode;
+                }
+                else if (node.NextNode != null)
+                {
+                    tvCnl.SelectedNode = node.NextNode;
+                }
+                else if (node.Parent != null && node.Parent.NextNode != null)
+                {
+                    tvCnl.SelectedNode = node.Parent.NextNode;
+                }
+            }
+        }
+
+        private void tvCnl_MouseDown(object sender, MouseEventArgs e)
+        {
+            // check whether to prevent a node from expanding
+            if (e.Button == MouseButtons.Left && e.Clicks == 2)
+            {
+                TreeNode node = tvCnl.GetNodeAt(e.Location);
+                preventNodeExpand = node != null && node.Nodes.Count > 0;
+            }
+        }
+
+        private void tvCnl_NodeMouseClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            // select a tree node on right click
+            if (e.Button == MouseButtons.Right && e.Node != null)
+                tvCnl.SelectedNode = e.Node;
+        }
+
+        private void tvCnl_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                InsertTableItem(e.Node);
+        }
+
+        private void tvCnl_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            // prevent the node from expanding
+            if (preventNodeExpand)
+            {
+                e.Cancel = true;
+                preventNodeExpand = false;
+                return;
+            }
+
+            // fill node on demand
+            FillDeviceNodeIfNeeded(e.Node);
+        }
+
+        private void tvCnl_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
+        {
+            // prevent the node from collapsing
+            if (preventNodeExpand)
+            {
+                e.Cancel = true;
+                preventNodeExpand = false;
+            }
+        }
+
+        private void tvCnl_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+            btnAddItem.Enabled = tvCnl.SelectedNode != null;
+        }
+
 
         private void txtTableTitle_TextChanged(object sender, EventArgs e)
         {
@@ -694,7 +845,6 @@ namespace Scada.Table.Editor.Forms
             tableView.Title = txtTableTitle.Text;
             Modified = true;
         }
-
 
         private void dgvTable_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {

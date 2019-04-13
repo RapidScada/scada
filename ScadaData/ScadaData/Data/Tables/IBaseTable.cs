@@ -145,7 +145,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Selects the items that match the specified filter.
         /// </summary>
-        IEnumerable SelectItems(TableFilter tableFilter);
+        IEnumerable SelectItems(TableFilter tableFilter, bool indexRequired = false);
 
         /// <summary>
         /// Loads the table from the specified file.

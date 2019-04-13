@@ -30,9 +30,9 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle7 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle9 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle8 = new System.Windows.Forms.DataGridViewCellStyle();
             this.menuStrip = new System.Windows.Forms.MenuStrip();
             this.miFile = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileNew = new System.Windows.Forms.ToolStripMenuItem();
@@ -62,6 +62,7 @@
             this.pnlHint = new System.Windows.Forms.Panel();
             this.lblHint = new System.Windows.Forms.Label();
             this.tvCnl = new System.Windows.Forms.TreeView();
+            this.ilTree = new System.Windows.Forms.ImageList(this.components);
             this.cbCnlKind = new System.Windows.Forms.ComboBox();
             this.splVert = new System.Windows.Forms.Splitter();
             this.pnlRight = new System.Windows.Forms.Panel();
@@ -70,10 +71,12 @@
             this.colItemCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colItemCaption = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colItemHidden = new System.Windows.Forms.DataGridViewCheckBoxColumn();
+            this.bsTable = new System.Windows.Forms.BindingSource(this.components);
             this.txtTableTitle = new System.Windows.Forms.TextBox();
             this.ofdTable = new System.Windows.Forms.OpenFileDialog();
             this.sfdTable = new System.Windows.Forms.SaveFileDialog();
-            this.bsTable = new System.Windows.Forms.BindingSource(this.components);
+            this.cmsDevice = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miDeviceAddItems = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.toolStrip.SuspendLayout();
             this.statusStrip.SuspendLayout();
@@ -82,6 +85,7 @@
             this.pnlRight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsTable)).BeginInit();
+            this.cmsDevice.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip
@@ -348,18 +352,39 @@
             this.lblHint.Name = "lblHint";
             this.lblHint.Size = new System.Drawing.Size(240, 42);
             this.lblHint.TabIndex = 0;
-            this.lblHint.Text = "Press Enter or double-click a node to add it to the table.";
+            this.lblHint.Text = "Press Enter or double-click a node to add it to the table. Right-click a device n" +
+    "ode to display the context menu.";
             // 
             // tvCnl
             // 
             this.tvCnl.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.tvCnl.HideSelection = false;
+            this.tvCnl.ImageIndex = 0;
+            this.tvCnl.ImageList = this.ilTree;
             this.tvCnl.Location = new System.Drawing.Point(0, 24);
             this.tvCnl.Margin = new System.Windows.Forms.Padding(0);
             this.tvCnl.Name = "tvCnl";
+            this.tvCnl.SelectedImageIndex = 0;
             this.tvCnl.Size = new System.Drawing.Size(250, 363);
             this.tvCnl.TabIndex = 1;
+            this.tvCnl.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCnl_BeforeCollapse);
+            this.tvCnl.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCnl_BeforeExpand);
+            this.tvCnl.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvCnl_AfterSelect);
+            this.tvCnl.NodeMouseClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvCnl_NodeMouseClick);
+            this.tvCnl.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvCnl_NodeMouseDoubleClick);
+            this.tvCnl.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvCnl_KeyDown);
+            this.tvCnl.MouseDown += new System.Windows.Forms.MouseEventHandler(this.tvCnl_MouseDown);
+            // 
+            // ilTree
+            // 
+            this.ilTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTree.ImageStream")));
+            this.ilTree.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTree.Images.SetKeyName(0, "empty.png");
+            this.ilTree.Images.SetKeyName(1, "device.png");
+            this.ilTree.Images.SetKeyName(2, "in_cnl.png");
+            this.ilTree.Images.SetKeyName(3, "out_cnl.png");
             // 
             // cbCnlKind
             // 
@@ -403,14 +428,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvTable.AutoGenerateColumns = false;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle7.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle7.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle7.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle7.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle7.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle7.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle7.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvTable.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle7;
             this.dgvTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvTable.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colItemCnlNum,
@@ -418,14 +443,14 @@
             this.colItemCaption,
             this.colItemHidden});
             this.dgvTable.DataSource = this.bsTable;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvTable.DefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle9.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle9.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle9.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle9.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle9.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle9.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle9.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvTable.DefaultCellStyle = dataGridViewCellStyle9;
             this.dgvTable.Location = new System.Drawing.Point(0, 24);
             this.dgvTable.Margin = new System.Windows.Forms.Padding(0);
             this.dgvTable.Name = "dgvTable";
@@ -457,9 +482,9 @@
             // 
             this.colItemCaption.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
             this.colItemCaption.DataPropertyName = "Caption";
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.colItemCaption.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle8.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle8.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.colItemCaption.DefaultCellStyle = dataGridViewCellStyle8;
             this.colItemCaption.HeaderText = "Caption";
             this.colItemCaption.Name = "colItemCaption";
             this.colItemCaption.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
@@ -470,6 +495,10 @@
             this.colItemHidden.HeaderText = "Hidden";
             this.colItemHidden.Name = "colItemHidden";
             this.colItemHidden.Width = 60;
+            // 
+            // bsTable
+            // 
+            this.bsTable.AllowNew = false;
             // 
             // txtTableTitle
             // 
@@ -491,9 +520,20 @@
             this.sfdTable.DefaultExt = "*.tbl";
             this.sfdTable.Filter = "Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*";
             // 
-            // bsTable
+            // cmsDevice
             // 
-            this.bsTable.AllowNew = false;
+            this.cmsDevice.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miDeviceAddItems});
+            this.cmsDevice.Name = "cmsDevice";
+            this.cmsDevice.Size = new System.Drawing.Size(146, 26);
+            // 
+            // miDeviceAddItems
+            // 
+            this.miDeviceAddItems.Image = ((System.Drawing.Image)(resources.GetObject("miDeviceAddItems.Image")));
+            this.miDeviceAddItems.Name = "miDeviceAddItems";
+            this.miDeviceAddItems.Size = new System.Drawing.Size(145, 22);
+            this.miDeviceAddItems.Text = "Add All Items";
+            this.miDeviceAddItems.Click += new System.EventHandler(this.miDeviceAddItems_Click);
             // 
             // FrmMain
             // 
@@ -527,6 +567,7 @@
             this.pnlRight.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvTable)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.bsTable)).EndInit();
+            this.cmsDevice.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -575,6 +616,9 @@
         private System.Windows.Forms.BindingSource bsTable;
         private System.Windows.Forms.OpenFileDialog ofdTable;
         private System.Windows.Forms.SaveFileDialog sfdTable;
+        private System.Windows.Forms.ImageList ilTree;
+        private System.Windows.Forms.ContextMenuStrip cmsDevice;
+        private System.Windows.Forms.ToolStripMenuItem miDeviceAddItems;
     }
 }
 

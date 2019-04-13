@@ -43,6 +43,7 @@ namespace Scada.Table
         public static string TableFileFilter { get; private set; }
         public static string SaveTableConfirm { get; private set; }
         public static string BaseNotFound { get; private set; }
+        public static string EmptyDeviceNode { get; private set; }
         public static string LoadConfigBaseError { get; private set; }
         public static string FillCnlTreeError { get; private set; }
 
@@ -92,6 +93,7 @@ namespace Scada.Table
             TableFileFilter = dict.GetPhrase("TableFileFilter");
             SaveTableConfirm = dict.GetPhrase("SaveTableConfirm");
             BaseNotFound = dict.GetPhrase("BaseNotFound");
+            EmptyDeviceNode = dict.GetPhrase("EmptyDeviceNode");
             LoadConfigBaseError = dict.GetPhrase("LoadConfigBaseError");
             FillCnlTreeError = dict.GetPhrase("FillCnlTreeError");
 

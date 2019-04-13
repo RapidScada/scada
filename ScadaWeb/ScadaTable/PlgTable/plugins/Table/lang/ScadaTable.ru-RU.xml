@@ -10,6 +10,7 @@
     <Phrase key="TableFileFilter">Табличные представления (*.tbl)|*.tbl|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveTableConfirm">Табличное представление было изменено. Сохранить изменения?</Phrase>
     <Phrase key="BaseNotFound">База конфигурации не найдена</Phrase>
+    <Phrase key="EmptyDeviceNode">Пустой КП</Phrase>
     <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
     <Phrase key="FillCnlTreeError">Ошибка при заполнении дерева каналов</Phrase>
     <Phrase key=""></Phrase>

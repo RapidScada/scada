@@ -10,6 +10,7 @@
     <Phrase key="TableFileFilter">Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveTableConfirm">The table view has been modified. Save the changes?</Phrase>
     <Phrase key="BaseNotFound">The configuration database not found</Phrase>
+    <Phrase key="EmptyDeviceNode">Empty device</Phrase>
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
     <Phrase key="FillCnlTreeError">Error filling channel tree</Phrase>
     <Phrase key=""></Phrase>
