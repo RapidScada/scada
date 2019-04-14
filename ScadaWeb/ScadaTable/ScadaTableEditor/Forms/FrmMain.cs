@@ -30,6 +30,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 using Utils;
@@ -298,9 +299,12 @@ namespace Scada.Table.Editor.Forms
         /// </summary>
         private void DisplayTitle()
         {
-            Text = string.Format(TablePhrases.EditorTitle,
-                (string.IsNullOrEmpty(fileName) ? DefTableFileName : Path.GetFileName(fileName)) +
-                (Modified ? "*" : ""));
+            if (tableView != null)
+            {
+                Text = string.Format(TablePhrases.EditorTitle,
+                    (string.IsNullOrEmpty(fileName) ? DefTableFileName : Path.GetFileName(fileName)) +
+                    (Modified ? "*" : ""));
+            }
         }
 
         /// <summary>
@@ -314,6 +318,13 @@ namespace Scada.Table.Editor.Forms
 
             bsTable.DataSource = tableView.Items;
             SetActionBtnsEnabled();
+
+            if (ScadaUtils.IsRunningOnMono)
+            {
+                DataGridViewColumn[] columns = dgvTable.Columns.Cast<DataGridViewColumn>().ToArray();
+                dgvTable.Columns.Clear();
+                dgvTable.Columns.AddRange(columns);
+            }
         }
 
         /// <summary>
