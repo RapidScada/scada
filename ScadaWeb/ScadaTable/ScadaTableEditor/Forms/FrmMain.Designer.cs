@@ -39,7 +39,7 @@
             this.miFileOpen = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSave = new System.Windows.Forms.ToolStripMenuItem();
             this.miFileSaveAs = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.miFileSep = new System.Windows.Forms.ToolStripSeparator();
             this.miFileExit = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelp = new System.Windows.Forms.ToolStripMenuItem();
             this.miHelpAbout = new System.Windows.Forms.ToolStripMenuItem();
@@ -47,9 +47,9 @@
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
             this.btnFileSave = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolSep1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnRefreshBase = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolSep2 = new System.Windows.Forms.ToolStripSeparator();
             this.btnAddItem = new System.Windows.Forms.ToolStripButton();
             this.btnAddEmptyItem = new System.Windows.Forms.ToolStripButton();
             this.btnMoveUpItem = new System.Windows.Forms.ToolStripButton();
@@ -106,7 +106,7 @@
             this.miFileOpen,
             this.miFileSave,
             this.miFileSaveAs,
-            this.toolStripMenuItem1,
+            this.miFileSep,
             this.miFileExit});
             this.miFile.Name = "miFile";
             this.miFile.Size = new System.Drawing.Size(37, 20);
@@ -117,7 +117,7 @@
             this.miFileNew.Image = ((System.Drawing.Image)(resources.GetObject("miFileNew.Image")));
             this.miFileNew.Name = "miFileNew";
             this.miFileNew.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.N)));
-            this.miFileNew.Size = new System.Drawing.Size(180, 22);
+            this.miFileNew.Size = new System.Drawing.Size(155, 22);
             this.miFileNew.Text = "New";
             this.miFileNew.Click += new System.EventHandler(this.miFileNew_Click);
             // 
@@ -126,7 +126,7 @@
             this.miFileOpen.Image = ((System.Drawing.Image)(resources.GetObject("miFileOpen.Image")));
             this.miFileOpen.Name = "miFileOpen";
             this.miFileOpen.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.O)));
-            this.miFileOpen.Size = new System.Drawing.Size(180, 22);
+            this.miFileOpen.Size = new System.Drawing.Size(155, 22);
             this.miFileOpen.Text = "Open...";
             this.miFileOpen.Click += new System.EventHandler(this.miFileOpen_Click);
             // 
@@ -135,7 +135,7 @@
             this.miFileSave.Image = ((System.Drawing.Image)(resources.GetObject("miFileSave.Image")));
             this.miFileSave.Name = "miFileSave";
             this.miFileSave.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
-            this.miFileSave.Size = new System.Drawing.Size(180, 22);
+            this.miFileSave.Size = new System.Drawing.Size(155, 22);
             this.miFileSave.Text = "Save";
             this.miFileSave.Click += new System.EventHandler(this.miFileSave_Click);
             // 
@@ -143,20 +143,20 @@
             // 
             this.miFileSaveAs.Image = ((System.Drawing.Image)(resources.GetObject("miFileSaveAs.Image")));
             this.miFileSaveAs.Name = "miFileSaveAs";
-            this.miFileSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.miFileSaveAs.Size = new System.Drawing.Size(155, 22);
             this.miFileSaveAs.Text = "Save As...";
             this.miFileSaveAs.Click += new System.EventHandler(this.miFileSaveAs_Click);
             // 
-            // toolStripMenuItem1
+            // miFileSep
             // 
-            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-            this.toolStripMenuItem1.Size = new System.Drawing.Size(177, 6);
+            this.miFileSep.Name = "miFileSep";
+            this.miFileSep.Size = new System.Drawing.Size(152, 6);
             // 
             // miFileExit
             // 
             this.miFileExit.Image = ((System.Drawing.Image)(resources.GetObject("miFileExit.Image")));
             this.miFileExit.Name = "miFileExit";
-            this.miFileExit.Size = new System.Drawing.Size(180, 22);
+            this.miFileExit.Size = new System.Drawing.Size(155, 22);
             this.miFileExit.Text = "Exit";
             this.miFileExit.Click += new System.EventHandler(this.miFileExit_Click);
             // 
@@ -172,7 +172,7 @@
             // 
             this.miHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("miHelpAbout.Image")));
             this.miHelpAbout.Name = "miHelpAbout";
-            this.miHelpAbout.Size = new System.Drawing.Size(180, 22);
+            this.miHelpAbout.Size = new System.Drawing.Size(107, 22);
             this.miHelpAbout.Text = "About";
             this.miHelpAbout.Click += new System.EventHandler(this.miHelpAbout_Click);
             // 
@@ -182,9 +182,9 @@
             this.btnFileNew,
             this.btnFileOpen,
             this.btnFileSave,
-            this.toolStripSeparator1,
+            this.toolSep1,
             this.btnRefreshBase,
-            this.toolStripSeparator2,
+            this.toolSep2,
             this.btnAddItem,
             this.btnAddEmptyItem,
             this.btnMoveUpItem,
@@ -227,10 +227,10 @@
             this.btnFileSave.Text = "Save Table (Ctrl+S)";
             this.btnFileSave.Click += new System.EventHandler(this.miFileSave_Click);
             // 
-            // toolStripSeparator1
+            // toolSep1
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            this.toolSep1.Name = "toolSep1";
+            this.toolSep1.Size = new System.Drawing.Size(6, 25);
             // 
             // btnRefreshBase
             // 
@@ -242,10 +242,10 @@
             this.btnRefreshBase.ToolTipText = "Refresh Configuration Database";
             this.btnRefreshBase.Click += new System.EventHandler(this.btnRefreshBase_Click);
             // 
-            // toolStripSeparator2
+            // toolSep2
             // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
+            this.toolSep2.Name = "toolSep2";
+            this.toolSep2.Size = new System.Drawing.Size(6, 25);
             // 
             // btnAddItem
             // 
@@ -340,7 +340,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pnlHint.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pnlHint.Controls.Add(this.lblHint);
-            this.pnlHint.Location = new System.Drawing.Point(0, 375);
+            this.pnlHint.Location = new System.Drawing.Point(0, 380);
             this.pnlHint.Name = "pnlHint";
             this.pnlHint.Size = new System.Drawing.Size(250, 60);
             this.pnlHint.TabIndex = 2;
@@ -367,7 +367,7 @@
             this.tvCnl.Margin = new System.Windows.Forms.Padding(0);
             this.tvCnl.Name = "tvCnl";
             this.tvCnl.SelectedImageIndex = 0;
-            this.tvCnl.Size = new System.Drawing.Size(250, 348);
+            this.tvCnl.Size = new System.Drawing.Size(250, 353);
             this.tvCnl.TabIndex = 1;
             this.tvCnl.BeforeCollapse += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCnl_BeforeCollapse);
             this.tvCnl.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvCnl_BeforeExpand);
@@ -581,7 +581,7 @@
         private System.Windows.Forms.ToolStripMenuItem miFileOpen;
         private System.Windows.Forms.ToolStripMenuItem miFileSave;
         private System.Windows.Forms.ToolStripMenuItem miFileSaveAs;
-        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripSeparator miFileSep;
         private System.Windows.Forms.ToolStripMenuItem miFileExit;
         private System.Windows.Forms.ToolStripMenuItem miHelp;
         private System.Windows.Forms.ToolStripMenuItem miHelpAbout;
@@ -604,14 +604,14 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn colItemCtrlCnlNum;
         private System.Windows.Forms.DataGridViewTextBoxColumn colItemCaption;
         private System.Windows.Forms.DataGridViewCheckBoxColumn colItemHidden;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolSep1;
         private System.Windows.Forms.ToolStripButton btnAddItem;
         private System.Windows.Forms.ToolStripButton btnAddEmptyItem;
         private System.Windows.Forms.ToolStripButton btnMoveUpItem;
         private System.Windows.Forms.ToolStripButton btnMoveDownItem;
         private System.Windows.Forms.ToolStripButton btnDeleteItem;
         private System.Windows.Forms.ToolStripButton btnItemInfo;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolSep2;
         private System.Windows.Forms.ToolStripButton btnRefreshBase;
         private System.Windows.Forms.BindingSource bsTable;
         private System.Windows.Forms.OpenFileDialog ofdTable;
