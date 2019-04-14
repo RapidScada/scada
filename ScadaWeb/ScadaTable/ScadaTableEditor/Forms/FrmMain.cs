@@ -141,7 +141,7 @@ namespace Scada.Table.Editor.Forms
 
             if (tableDictLoaded)
             {
-                Translator.TranslateForm(this, GetType().FullName);
+                Translator.TranslateForm(this, GetType().FullName, null, cmsDevice);
                 ofdTable.SetFilter(TablePhrases.TableFileFilter);
                 sfdTable.SetFilter(TablePhrases.TableFileFilter);
             }
