@@ -13,6 +13,8 @@
     <Phrase key="EmptyDeviceNode">Пустой КП</Phrase>
     <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
     <Phrase key="FillCnlTreeError">Ошибка при заполнении дерева каналов</Phrase>
+    <Phrase key="LoadFormStateError">Ошибка при загрузке состояния формы</Phrase>
+    <Phrase key="SaveFormStateError">Ошибка при сохранении состояния формы</Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">

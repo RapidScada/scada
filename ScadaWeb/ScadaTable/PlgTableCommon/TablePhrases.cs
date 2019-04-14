@@ -46,6 +46,8 @@ namespace Scada.Table
         public static string EmptyDeviceNode { get; private set; }
         public static string LoadConfigBaseError { get; private set; }
         public static string FillCnlTreeError { get; private set; }
+        public static string LoadFormStateError { get; private set; }
+        public static string SaveFormStateError { get; private set; }
 
         // Scada.Web.Plugins.Table.EventsRepBuilder
         public static string EventsWorksheet { get; private set; }
@@ -96,6 +98,8 @@ namespace Scada.Table
             EmptyDeviceNode = dict.GetPhrase("EmptyDeviceNode");
             LoadConfigBaseError = dict.GetPhrase("LoadConfigBaseError");
             FillCnlTreeError = dict.GetPhrase("FillCnlTreeError");
+            LoadFormStateError = dict.GetPhrase("LoadFormStateError");
+            SaveFormStateError = dict.GetPhrase("SaveFormStateError");
 
             dict = Localization.GetDictionary("Scada.Web.Plugins.Table.EventsRepBuilder");
             EventsWorksheet = dict.GetPhrase("EventsWorksheet", "EventsWorksheet"); // the default phrase must comply with Excel restrictions

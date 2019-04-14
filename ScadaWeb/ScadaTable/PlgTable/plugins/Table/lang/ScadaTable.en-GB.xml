@@ -13,6 +13,8 @@
     <Phrase key="EmptyDeviceNode">Empty device</Phrase>
     <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
     <Phrase key="FillCnlTreeError">Error filling channel tree</Phrase>
+    <Phrase key="LoadFormStateError">Error loading form state</Phrase>
+    <Phrase key="SaveFormStateError">Error saving form state</Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">

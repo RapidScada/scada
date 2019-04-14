@@ -55,17 +55,18 @@ namespace Scada.Table.Editor.Forms
         /// </summary>
         private const string BaseDirPattern = "BaseXML";
 
-        private readonly string exeDir;  // the directory of the executable file
-        private readonly string langDir; // the directory of language files
-        private readonly Log errLog;     // the application error log
+        private readonly string exeDir;    // the directory of the executable file
+        private readonly string configDir; // the directory of of the application configuration
+        private readonly string langDir;   // the directory of language files
+        private readonly Log errLog;       // the application error log
 
-        private TableView tableView;     // the edited table
-        private string fileName;         // the table file name
-        private bool modified;           // the table was modified
+        private TableView tableView;       // the edited table
+        private string fileName;           // the table file name
+        private bool modified;             // the table was modified
 
-        private string baseDir;          // the configuration database directory
-        private BaseTables baseTables;   // the configuration database tables
-        private bool preventNodeExpand;  // prevent a tree node from expanding or collapsing
+        private string baseDir;            // the configuration database directory
+        private BaseTables baseTables;     // the configuration database tables
+        private bool preventNodeExpand;    // prevent a tree node from expanding or collapsing
 
 
         /// <summary>
@@ -76,6 +77,7 @@ namespace Scada.Table.Editor.Forms
             InitializeComponent();
 
             exeDir = Path.GetDirectoryName(Application.ExecutablePath);
+            configDir = Path.Combine(exeDir, "Config");
             langDir = Path.Combine(exeDir, "Lang");
             errLog = new Log(Log.Formats.Full) { FileName = Path.Combine(exeDir, "Log", ErrFileName) } ;
             Application.ThreadException += Application_ThreadException;
@@ -106,6 +108,21 @@ namespace Scada.Table.Editor.Forms
             }
         }
 
+        /// <summary>
+        /// Gets or sets the explorer width.
+        /// </summary>
+        public int ExplorerWidth
+        {
+            get
+            {
+                return pnlLeft.Width;
+            }
+            set
+            {
+                pnlLeft.Width = Math.Max(value, splVert.MinSize);
+            }
+        }
+
 
         /// <summary>
         /// Applies localization to the form.
@@ -128,6 +145,31 @@ namespace Scada.Table.Editor.Forms
                 ofdTable.SetFilter(TablePhrases.TableFileFilter);
                 sfdTable.SetFilter(TablePhrases.TableFileFilter);
             }
+        }
+
+        /// <summary>
+        /// Loads the form state.
+        /// </summary>
+        private void LoadFormState()
+        {
+            FormState formState = new FormState();
+
+            if (formState.Load(Path.Combine(configDir, FormState.DefFileName), out string errMsg))
+                formState.Apply(this);
+            else
+                ProcError(errMsg);
+        }
+
+        /// <summary>
+        /// Saves the form state.
+        /// </summary>
+        private void SaveFormState()
+        {
+            FormState formState = new FormState();
+            formState.Retrieve(this);
+
+            if (!formState.Save(Path.Combine(configDir, FormState.DefFileName), out string errMsg))
+                ProcError(errMsg);
         }
 
         /// <summary>
@@ -597,6 +639,7 @@ namespace Scada.Table.Editor.Forms
         private void FrmMain_Load(object sender, EventArgs e)
         {
             LocalizeForm();
+            LoadFormState();
 
             cbCnlKind.SelectedIndexChanged -= cbCnlKind_SelectedIndexChanged;
             cbCnlKind.SelectedIndex = 0;
@@ -614,7 +657,7 @@ namespace Scada.Table.Editor.Forms
 
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
-
+            SaveFormState();
         }
 
 

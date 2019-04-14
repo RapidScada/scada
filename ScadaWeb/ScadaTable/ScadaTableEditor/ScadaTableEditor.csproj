@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\BaseTables.cs" />
+    <Compile Include="Code\FormState.cs" />
     <Compile Include="Forms\FrmAbout.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -115,10 +116,12 @@
     <Content Include="..\PlgTable\plugins\Table\lang\ScadaTable.en-GB.xml">
       <Link>Lang\ScadaTable.en-GB.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="..\PlgTable\plugins\Table\lang\ScadaTable.ru-RU.xml">
       <Link>Lang\ScadaTable.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
     <Content Include="edit.ico" />
   </ItemGroup>
