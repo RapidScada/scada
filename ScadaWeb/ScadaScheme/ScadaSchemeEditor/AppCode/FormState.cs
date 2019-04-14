@@ -46,7 +46,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private const int BrowserToolbarHeight = 70;
         /// <summary>
-        /// Имя файла настроек по умолчанию.
+        /// Имя файла состояния по умолчанию.
         /// </summary>
         public const string DefFileName = "ScadaSchemeEditorState.xml";
 
@@ -204,7 +204,6 @@ namespace Scada.Scheme.Editor
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-
                 XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
                 xmlDoc.AppendChild(xmlDecl);
 
