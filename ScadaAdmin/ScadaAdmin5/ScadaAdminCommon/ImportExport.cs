@@ -55,9 +55,12 @@ namespace Scada.Admin
                 {
                     foreach (ZipArchiveEntry zipEntry in zipArchive.Entries)
                     {
-                        string destFileName = Path.Combine(destDir, zipEntry.FullName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(destFileName));
-                        zipEntry.ExtractToFile(destFileName, true);
+                        string entryName = zipEntry.FullName.Replace('/', Path.DirectorySeparatorChar);
+                        string absPath = Path.Combine(destDir, entryName);
+                        Directory.CreateDirectory(Path.GetDirectoryName(absPath));
+
+                        if (entryName[entryName.Length - 1] == Path.DirectorySeparatorChar)
+                            zipEntry.ExtractToFile(absPath, true);
                     }
                 }
             }
