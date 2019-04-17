@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.gbDirs = new System.Windows.Forms.GroupBox();
+            this.btnSetToDefaultLinux = new System.Windows.Forms.Button();
+            this.btnSetToDefaultWin = new System.Windows.Forms.Button();
             this.btnBrowseArcCopyDir = new System.Windows.Forms.Button();
             this.btnBrowseArcDir = new System.Windows.Forms.Button();
             this.btnBrowseItfDir = new System.Windows.Forms.Button();
@@ -58,6 +60,8 @@
             // 
             // gbDirs
             // 
+            this.gbDirs.Controls.Add(this.btnSetToDefaultLinux);
+            this.gbDirs.Controls.Add(this.btnSetToDefaultWin);
             this.gbDirs.Controls.Add(this.btnBrowseArcCopyDir);
             this.gbDirs.Controls.Add(this.btnBrowseArcDir);
             this.gbDirs.Controls.Add(this.btnBrowseItfDir);
@@ -73,10 +77,30 @@
             this.gbDirs.Location = new System.Drawing.Point(12, 138);
             this.gbDirs.Name = "gbDirs";
             this.gbDirs.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbDirs.Size = new System.Drawing.Size(500, 182);
+            this.gbDirs.Size = new System.Drawing.Size(500, 211);
             this.gbDirs.TabIndex = 2;
             this.gbDirs.TabStop = false;
             this.gbDirs.Text = "Directories";
+            // 
+            // btnSetToDefaultLinux
+            // 
+            this.btnSetToDefaultLinux.Location = new System.Drawing.Point(139, 175);
+            this.btnSetToDefaultLinux.Name = "btnSetToDefaultLinux";
+            this.btnSetToDefaultLinux.Size = new System.Drawing.Size(120, 23);
+            this.btnSetToDefaultLinux.TabIndex = 13;
+            this.btnSetToDefaultLinux.Text = "Default for Linux";
+            this.btnSetToDefaultLinux.UseVisualStyleBackColor = true;
+            this.btnSetToDefaultLinux.Click += new System.EventHandler(this.btnSetToDefault_Click);
+            // 
+            // btnSetToDefaultWin
+            // 
+            this.btnSetToDefaultWin.Location = new System.Drawing.Point(13, 175);
+            this.btnSetToDefaultWin.Name = "btnSetToDefaultWin";
+            this.btnSetToDefaultWin.Size = new System.Drawing.Size(120, 23);
+            this.btnSetToDefaultWin.TabIndex = 12;
+            this.btnSetToDefaultWin.Text = "Default for Windows";
+            this.btnSetToDefaultWin.UseVisualStyleBackColor = true;
+            this.btnSetToDefaultWin.Click += new System.EventHandler(this.btnSetToDefault_Click);
             // 
             // btnBrowseArcCopyDir
             // 
@@ -332,5 +356,7 @@
         private System.Windows.Forms.GroupBox gbLog;
         private System.Windows.Forms.CheckBox chkDetailedLog;
         private System.Windows.Forms.FolderBrowserDialog fbdDir;
+        private System.Windows.Forms.Button btnSetToDefaultLinux;
+        private System.Windows.Forms.Button btnSetToDefaultWin;
     }
 }

@@ -44,6 +44,8 @@
     <Phrase key="gbConn">Соединение</Phrase>
     <Phrase key="lblTcpPort">TCP-порт</Phrase>
     <Phrase key="lblLdapPath">Контроллер домена</Phrase>
+    <Phrase key="gbLog">Журнал</Phrase>
+    <Phrase key="chkDetailedLog">Подробный журнал</Phrase>
     <Phrase key="gbDirs">Директории</Phrase>
     <Phrase key="lblBaseDATDir">База конфигурации в формате DAT</Phrase>
     <Phrase key="btnBrowseBaseDATDir">Обзор...</Phrase>
@@ -53,7 +55,8 @@
     <Phrase key="btnBrowseArcDir">Обзор...</Phrase>
     <Phrase key="lblArcCopyDir">Копия архива в формате DAT</Phrase>
     <Phrase key="btnBrowseArcCopyDir">Обзор...</Phrase>
-    <Phrase key="chkDetailedLog">Подробный журнал</Phrase>
+    <Phrase key="btnSetToDefaultWin">Для Windows</Phrase>
+    <Phrase key="btnSetToDefaultLinux">Для Linux</Phrase>
     <Phrase key="ChooseItfDir">Выберите директорию интерфейса.</Phrase>
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>

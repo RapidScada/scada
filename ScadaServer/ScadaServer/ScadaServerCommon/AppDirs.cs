@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System.IO;
@@ -28,13 +28,13 @@ using System.IO;
 namespace Scada.Server
 {
     /// <summary>
-    /// Application directories
-    /// <para>Директории приложения</para>
+    /// Application directories.
+    /// <para>Директории приложения.</para>
     /// </summary>
     public class AppDirs
     {
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
         public AppDirs()
         {
@@ -47,32 +47,32 @@ namespace Scada.Server
 
 
         /// <summary>
-        /// Получить директорию исполняемого файла
+        /// Gets the directory of the executable file.
         /// </summary>
         public string ExeDir { get; protected set; }
-        
+
         /// <summary>
-        /// Получить директорию конфигурации
+        /// Gets the directory of the application configuration.
         /// </summary>
         public string ConfigDir { get; protected set; }
-        
+
         /// <summary>
-        /// Получить директорию языковых файлов
+        /// Gets the directory of language files.
         /// </summary>
         public string LangDir { get; protected set; }
-        
+
         /// <summary>
-        /// Получить директорию журналов
+        /// Gets the directory of log files.
         /// </summary>
         public string LogDir { get; protected set; }
 
         /// <summary>
-        /// Получить директорию подключаемых модулей
+        /// Gets the modules directory.
         /// </summary>
         public string ModDir { get; protected set; }
         
         /// <summary>
-        /// Проверить существование директорий
+        /// Checks that the directories exist.
         /// </summary>
         public bool Exist
         {
@@ -92,7 +92,7 @@ namespace Scada.Server
 
 
         /// <summary>
-        /// Инициализировать директории на основе директории исполняемого файла приложения
+        /// Initializes the directories based on the directory of the executable file.
         /// </summary>
         public void Init(string exeDir)
         {
@@ -104,7 +104,7 @@ namespace Scada.Server
         }
 
         /// <summary>
-        /// Получить необходимые директории
+        /// Gets the directories required for Server.
         /// </summary>
         public string[] GetRequiredDirs()
         {

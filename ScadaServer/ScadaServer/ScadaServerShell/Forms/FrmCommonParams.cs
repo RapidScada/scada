@@ -111,6 +111,20 @@ namespace Scada.Server.Shell.Forms
         }
 
         /// <summary>
+        /// Sets the default directories.
+        /// </summary>
+        private void SetDirectoriesToDefault(bool windows)
+        {
+            string scadaDir = windows ? @"C:\SCADA\" : "/opt/scada/";
+            string sepChar = windows ? "\\" : "/";
+
+            txtBaseDATDir.Text = scadaDir + "BaseDAT" + sepChar;
+            txtItfDir.Text = scadaDir + "Interface" + sepChar;
+            txtArcDir.Text = scadaDir + "ArchiveDAT" + sepChar;
+            txtArcCopyDir.Text = scadaDir + "ArchiveDATCopy" + sepChar;
+        }
+
+        /// <summary>
         /// Saves the settings.
         /// </summary>
         public void Save()
@@ -170,6 +184,11 @@ namespace Scada.Server.Shell.Forms
                 if (fbdDir.ShowDialog() == DialogResult.OK)
                     textBox.Text = ScadaUtils.NormalDir(fbdDir.SelectedPath);
             }
+        }
+
+        private void btnSetToDefault_Click(object sender, EventArgs e)
+        {
+            SetDirectoriesToDefault(sender == btnSetToDefaultWin);
         }
     }
 }

@@ -44,6 +44,8 @@
     <Phrase key="gbConn">Connection</Phrase>
     <Phrase key="lblTcpPort">TCP port</Phrase>
     <Phrase key="lblLdapPath">Domain controller</Phrase>
+    <Phrase key="gbLog">Logging</Phrase>
+    <Phrase key="chkDetailedLog">Detailed log</Phrase>
     <Phrase key="gbDirs">Directories</Phrase>
     <Phrase key="lblBaseDATDir">Configuration database in DAT format</Phrase>
     <Phrase key="btnBrowseBaseDATDir">Browse...</Phrase>
@@ -53,7 +55,8 @@
     <Phrase key="btnBrowseArcDir">Browse...</Phrase>
     <Phrase key="lblArcCopyDir">Archive copy in DAT format</Phrase>
     <Phrase key="btnBrowseArcCopyDir">Browse...</Phrase>
-    <Phrase key="chkDetailedLog">Detailed log</Phrase>
+    <Phrase key="btnSetToDefaultWin">Default for Windows</Phrase>
+    <Phrase key="btnSetToDefaultLinux">Default for Linux</Phrase>
     <Phrase key="ChooseItfDir">Choose the interface directory.</Phrase>
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
