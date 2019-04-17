@@ -59,7 +59,7 @@ namespace Scada.Admin
                         string absPath = Path.Combine(destDir, entryName);
                         Directory.CreateDirectory(Path.GetDirectoryName(absPath));
 
-                        if (entryName[entryName.Length - 1] == Path.DirectorySeparatorChar)
+                        if (entryName[entryName.Length - 1] != Path.DirectorySeparatorChar)
                             zipEntry.ExtractToFile(absPath, true);
                     }
                 }
