@@ -174,5 +174,13 @@ namespace Scada.Admin.App.Code
                 RecentProjects.RemoveAt(0);
             }
         }
+
+        /// <summary>
+        /// Removes the recent project from the list.
+        /// </summary>
+        public void RemoveRecentProject(string path)
+        {
+            RecentProjects.Remove(path);
+        }
     }
 }

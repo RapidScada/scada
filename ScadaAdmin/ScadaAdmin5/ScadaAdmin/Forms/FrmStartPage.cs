@@ -28,6 +28,7 @@ using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Windows.Forms;
 using WinControl;
 
@@ -131,8 +132,17 @@ namespace Scada.Admin.App.Forms
         {
             if (!item.IsEmpty)
             {
-                ChildFormTag.SendMessage(this, AppMessage.OpenProject,
-                    new Dictionary<string, object> { { "Path", item.Path } });
+                if (File.Exists(item.Path))
+                {
+                    ChildFormTag.SendMessage(this, AppMessage.OpenProject,
+                        new Dictionary<string, object> { { "Path", item.Path } });
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(string.Format(CommonPhrases.NamedFileNotFound, item.Path));
+                    lbRecentProjects.Items.Remove(item);
+                    appState.RemoveRecentProject(item.Path);
+                }
             }
         }
 
