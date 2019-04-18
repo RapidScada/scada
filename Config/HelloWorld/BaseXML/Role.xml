@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRole xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Role>
+    <RoleID>0</RoleID>
+    <Name>Disabled</Name>
+    <Descr>Access to the system is denied</Descr>
+  </Role>
+  <Role>
+    <RoleID>1</RoleID>
+    <Name>Administrator</Name>
+    <Descr>Full access</Descr>
+  </Role>
+  <Role>
+    <RoleID>2</RoleID>
+    <Name>Dispatcher</Name>
+    <Descr>Viewing information, sending commands</Descr>
+  </Role>
+  <Role>
+    <RoleID>3</RoleID>
+    <Name>Guest</Name>
+    <Descr>Viewing information</Descr>
+  </Role>
+  <Role>
+    <RoleID>4</RoleID>
+    <Name>Application</Name>
+    <Descr>Interacting with the server</Descr>
+  </Role>
+  <Role>
+    <RoleID>11</RoleID>
+    <Name>My Role 1</Name>
+    <Descr>Example of a custom role</Descr>
+  </Role>
+  <Role>
+    <RoleID>12</RoleID>
+    <Name>My Role 2</Name>
+    <Descr>Example of a custom role</Descr>
+  </Role>
+</ArrayOfRole>

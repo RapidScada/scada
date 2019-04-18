@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfKP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KP>
+    <KPNum>1</KPNum>
+    <Name>Simulator</Name>
+    <KPTypeID>230</KPTypeID>
+    <Address xsi:nil="true" />
+    <CallNum />
+    <CommLineNum>1</CommLineNum>
+    <Descr />
+  </KP>
+</ArrayOfKP>
