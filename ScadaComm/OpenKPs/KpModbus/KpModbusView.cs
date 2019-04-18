@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Device library user interface
+ * Summary  : Device driver user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
@@ -33,8 +33,8 @@ using System.IO;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device library user interface.
-    /// <para>Пользовательский интерфейс библиотеки КП.</para>
+    /// Device driver user interface.
+    /// <para>Пользовательский интерфейс драйвера КП.</para>
     /// </summary>
     public class KpModbusView : KPView
     {
