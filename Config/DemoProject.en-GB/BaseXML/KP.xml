@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfKP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KP>
+    <KPNum>11</KPNum>
+    <Name>ADAM-6015 Server room</Name>
+    <KPTypeID>214</KPTypeID>
+    <Address>1</Address>
+    <CallNum>127.0.0.1</CallNum>
+    <CommLineNum>1</CommLineNum>
+    <Descr>Use a real device or install Modbus PLC Simulator http://www.plcsimulator.org/downloads</Descr>
+  </KP>
+  <KP>
+    <KPNum>21</KPNum>
+    <Name>OPC Demo</Name>
+    <KPTypeID>215</KPTypeID>
+    <Address xsi:nil="true" />
+    <CommLineNum>2</CommLineNum>
+    <Descr>Install MatrikonOPC Explorer http://www.matrikonopc.com/products/opc-desktop-tools/</Descr>
+  </KP>
+  <KP>
+    <KPNum>31</KPNum>
+    <Name>Cinterion MC52iT</Name>
+    <KPTypeID>205</KPTypeID>
+    <Address xsi:nil="true" />
+    <CallNum>+01234567890</CallNum>
+    <CommLineNum>3</CommLineNum>
+    <Descr>GSM terminal which supports AT commands</Descr>
+  </KP>
+  <KP>
+    <KPNum>41</KPNum>
+    <Name>Email sender</Name>
+    <KPTypeID>221</KPTypeID>
+    <Address xsi:nil="true" />
+    <CommLineNum>4</CommLineNum>
+    <Descr>Sends email notifications. Requires external email account</Descr>
+  </KP>
+  <KP>
+    <KPNum>51</KPNum>
+    <Name>Local PC</Name>
+    <KPTypeID>220</KPTypeID>
+    <Address xsi:nil="true" />
+    <CallNum>127.0.0.1</CallNum>
+    <CommLineNum>5</CommLineNum>
+    <Descr>Monitors the computer state</Descr>
+  </KP>
+</ArrayOfKP>

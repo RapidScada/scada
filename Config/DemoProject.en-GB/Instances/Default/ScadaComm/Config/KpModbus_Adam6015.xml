@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DevTemplate>
+  <ElemGroups>
+    <ElemGroup name="Temperature" tableType="HoldingRegisters" address="0">
+      <Elem name="t0" type="ushort" />
+      <Elem name="t1" type="ushort" />
+      <Elem name="t2" type="ushort" />
+      <Elem name="t3" type="ushort" />
+      <Elem name="t4" type="ushort" />
+      <Elem name="t5" type="ushort" />
+      <Elem name="t6" type="ushort" />
+    </ElemGroup>
+    <ElemGroup name="State" tableType="Coils" address="120">
+      <Elem name="Burnout0" />
+      <Elem name="Burnout1" />
+      <Elem name="Burnout2" />
+      <Elem name="Burnout3" />
+      <Elem name="Burnout4" />
+      <Elem name="Burnout5" />
+      <Elem name="Burnout6" />
+    </ElemGroup>
+    <ElemGroup name="Average Temperature" tableType="HoldingRegisters" address="8">
+      <Elem name="t_avg" type="ushort" />
+    </ElemGroup>
+    <ElemGroup name="Max. Temperature" tableType="HoldingRegisters" address="10">
+      <Elem name="t0_max" type="ushort" />
+      <Elem name="t1_max" type="ushort" />
+      <Elem name="t2_max" type="ushort" />
+      <Elem name="t3_max" type="ushort" />
+      <Elem name="t4_max" type="ushort" />
+      <Elem name="t5_max" type="ushort" />
+      <Elem name="t6_max" type="ushort" />
+    </ElemGroup>
+    <ElemGroup name="Min. Temperature" tableType="HoldingRegisters" address="20">
+      <Elem name="t0_min" type="ushort" />
+      <Elem name="t1_min" type="ushort" />
+      <Elem name="t2_min" type="ushort" />
+      <Elem name="t3_min" type="ushort" />
+      <Elem name="t4_min" type="ushort" />
+      <Elem name="t5_min" type="ushort" />
+      <Elem name="t6_min" type="ushort" />
+    </ElemGroup>
+  </ElemGroups>
+  <Cmds>
+    <Cmd name="Reset t0_max" tableType="Coils" multiple="false" address="100" elemCnt="1" cmdNum="1" />
+    <Cmd name="Reset t1_max" tableType="Coils" multiple="false" address="101" elemCnt="1" cmdNum="2" />
+    <Cmd name="Reset t2_max" tableType="Coils" multiple="false" address="102" elemCnt="1" cmdNum="3" />
+    <Cmd name="Reset t3_max" tableType="Coils" multiple="false" address="103" elemCnt="1" cmdNum="4" />
+    <Cmd name="Reset t4_max" tableType="Coils" multiple="false" address="104" elemCnt="1" cmdNum="5" />
+    <Cmd name="Reset t5_max" tableType="Coils" multiple="false" address="105" elemCnt="1" cmdNum="6" />
+    <Cmd name="Reset t6_max" tableType="Coils" multiple="false" address="106" elemCnt="1" cmdNum="7" />
+    <Cmd name="Reset t0_min" tableType="Coils" multiple="false" address="110" elemCnt="1" cmdNum="11" />
+    <Cmd name="Reset t1_min" tableType="Coils" multiple="false" address="111" elemCnt="1" cmdNum="12" />
+    <Cmd name="Reset t2_min" tableType="Coils" multiple="false" address="112" elemCnt="1" cmdNum="13" />
+    <Cmd name="Reset t3_min" tableType="Coils" multiple="false" address="113" elemCnt="1" cmdNum="14" />
+    <Cmd name="Reset t4_min" tableType="Coils" multiple="false" address="114" elemCnt="1" cmdNum="15" />
+    <Cmd name="Reset t5_min" tableType="Coils" multiple="false" address="115" elemCnt="1" cmdNum="16" />
+    <Cmd name="Reset t6_min" tableType="Coils" multiple="false" address="116" elemCnt="1" cmdNum="17" />
+  </Cmds>
+</DevTemplate>

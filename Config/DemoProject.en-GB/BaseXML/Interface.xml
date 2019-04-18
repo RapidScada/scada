@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfInterface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Interface>
+    <ItfID>1</ItfID>
+    <Name>Servers\</Name>
+    <Descr>Server equipment</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>2</ItfID>
+    <Name>Servers\ServerRoom.sch</Name>
+    <Descr>Server room scheme</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>3</ItfID>
+    <Name>Servers\ServerRoom.tbl</Name>
+    <Descr>Server room table</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>11</ItfID>
+    <Name>DemoViews\</Name>
+    <Descr>Demo</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>12</ItfID>
+    <Name>DemoViews\Notifications.tbl</Name>
+    <Descr>Notifications</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>13</ItfID>
+    <Name>DemoViews\OpcDemo.tbl</Name>
+    <Descr>OPC demo</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>14</ItfID>
+    <Name>DemoViews\SnmpDemo.tbl</Name>
+    <Descr>SNMP demo</Descr>
+  </Interface>
+</ArrayOfInterface>

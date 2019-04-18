@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Param>
+    <ParamID>1</ParamID>
+    <Name>Voltage</Name>
+    <Sign>V</Sign>
+    <IconFileName>u.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>2</ParamID>
+    <Name>Current</Name>
+    <Sign>I</Sign>
+    <IconFileName>i.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>3</ParamID>
+    <Name>Power</Name>
+    <Sign>P</Sign>
+    <IconFileName>p.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>4</ParamID>
+    <Name>Complex power</Name>
+    <Sign>S</Sign>
+    <IconFileName>s.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>5</ParamID>
+    <Name>Active power</Name>
+    <Sign>P</Sign>
+    <IconFileName>pa.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>6</ParamID>
+    <Name>Reactive power</Name>
+    <Sign>Q</Sign>
+    <IconFileName>pr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>7</ParamID>
+    <Name>Active power meter</Name>
+    <Sign>Wa</Sign>
+    <IconFileName>ca.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>8</ParamID>
+    <Name>Rective power meter</Name>
+    <Sign>Wr</Sign>
+    <IconFileName>cr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>9</ParamID>
+    <Name>Active power consumption</Name>
+    <Sign>Wa</Sign>
+    <IconFileName>wa.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>10</ParamID>
+    <Name>Reactive power consumption</Name>
+    <Sign>Wr</Sign>
+    <IconFileName>wr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>11</ParamID>
+    <Name>Frequency</Name>
+    <Sign>f</Sign>
+    <IconFileName>f.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>12</ParamID>
+    <Name>Power factor</Name>
+    <Sign>cos φ</Sign>
+    <IconFileName>fi.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>13</ParamID>
+    <Name>State</Name>
+    <IconFileName>lamp.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>14</ParamID>
+    <Name>Relay state</Name>
+    <IconFileName>switch.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>21</ParamID>
+    <Name>Mass</Name>
+    <Sign>m</Sign>
+    <IconFileName>m.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>22</ParamID>
+    <Name>Volume</Name>
+    <Sign>V</Sign>
+    <IconFileName>v.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>23</ParamID>
+    <Name>Temperature</Name>
+    <Sign>T</Sign>
+    <IconFileName>temp.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>24</ParamID>
+    <Name>Flow</Name>
+    <Sign>Q</Sign>
+    <IconFileName>g.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>25</ParamID>
+    <Name>Heat</Name>
+    <Sign>Q</Sign>
+    <IconFileName>q.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>26</ParamID>
+    <Name>Pressure</Name>
+    <Sign>p</Sign>
+    <IconFileName>p.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>27</ParamID>
+    <Name>Humidity</Name>
+    <IconFileName>water.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>31</ParamID>
+    <Name>Connection</Name>
+    <IconFileName>conn.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>32</ParamID>
+    <Name>Operation time</Name>
+    <IconFileName>clock.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>34</ParamID>
+    <Name>Event</Name>
+    <IconFileName>event.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>35</ParamID>
+    <Name>Security alarm state</Name>
+    <IconFileName>guard.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>36</ParamID>
+    <Name>Fire alarm state</Name>
+    <IconFileName>fire.png</IconFileName>
+  </Param>
+</ArrayOfParam>
