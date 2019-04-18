@@ -174,4 +174,10 @@
     <DllFileName>KpModbusSlave.dll</DllFileName>
     <Descr>Reserved for the Modbus Slave driver</Descr>
   </KPType>
+  <KPType>
+    <KPTypeID>230</KPTypeID>
+    <Name>Simulator</Name>
+    <DllFileName>KpSimulator.dll</DllFileName>
+    <Descr>Device simulator</Descr>
+  </KPType>
 </ArrayOfKPType>
