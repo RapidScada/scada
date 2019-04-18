@@ -5,6 +5,7 @@
     <Phrase key="LoadModSettingsError">Ошибка при загрузке настроек модуля</Phrase>
     <Phrase key="SaveModSettingsError">Ошибка при сохранении настроек модуля</Phrase>
     <Phrase key="ConfigureModule">Сконфигурируйте модуль и перезапустите службу SCADA-Сервера</Phrase>
+    <Phrase key="CmdSentSuccessfully">Команда отправлена успешно.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Modules.ModFactory">
     <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса модуля из библиотеки {0}: {1}</Phrase>
