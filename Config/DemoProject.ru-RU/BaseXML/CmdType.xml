@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCmdType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CmdType>
+    <CmdTypeID>0</CmdTypeID>
+    <Name>Стандартная</Name>
+    <Descr>Стандартная команда (ТУ). Параметр команды - вещественное число</Descr>
+  </CmdType>
+  <CmdType>
+    <CmdTypeID>1</CmdTypeID>
+    <Name>Бинарная</Name>
+    <Descr>Бинарная команда. Параметры команды - произвольные данные</Descr>
+  </CmdType>
+  <CmdType>
+    <CmdTypeID>2</CmdTypeID>
+    <Name>Опрос</Name>
+    <Descr>Внеочередной опрос КП</Descr>
+  </CmdType>
+</ArrayOfCmdType>

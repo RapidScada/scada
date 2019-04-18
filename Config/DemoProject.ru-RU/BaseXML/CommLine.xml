@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCommLine xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CommLine>
+    <CommLineNum>1</CommLineNum>
+    <Name>Modbus</Name>
+    <Descr>Ethernet</Descr>
+  </CommLine>
+  <CommLine>
+    <CommLineNum>2</CommLineNum>
+    <Name>OPC</Name>
+    <Descr />
+  </CommLine>
+  <CommLine>
+    <CommLineNum>3</CommLineNum>
+    <Name>GSM</Name>
+    <Descr>RS-232</Descr>
+  </CommLine>
+  <CommLine>
+    <CommLineNum>4</CommLineNum>
+    <Name>Email</Name>
+    <Descr />
+  </CommLine>
+  <CommLine>
+    <CommLineNum>5</CommLineNum>
+    <Name>SNMP</Name>
+    <Descr />
+  </CommLine>
+</ArrayOfCommLine>

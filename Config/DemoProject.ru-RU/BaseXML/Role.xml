@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfRole xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Role>
+    <RoleID>0</RoleID>
+    <Name>Отключен</Name>
+    <Descr>Доступ к системе запрещен</Descr>
+  </Role>
+  <Role>
+    <RoleID>1</RoleID>
+    <Name>Администратор</Name>
+    <Descr>Полный доступ</Descr>
+  </Role>
+  <Role>
+    <RoleID>2</RoleID>
+    <Name>Диспетчер</Name>
+    <Descr>Просмотр информации, отправка команд</Descr>
+  </Role>
+  <Role>
+    <RoleID>3</RoleID>
+    <Name>Гость</Name>
+    <Descr>Просмотр информации</Descr>
+  </Role>
+  <Role>
+    <RoleID>4</RoleID>
+    <Name>Приложение</Name>
+    <Descr>Взаимодействие с сервером</Descr>
+  </Role>
+  <Role>
+    <RoleID>11</RoleID>
+    <Name>Моя роль 1</Name>
+    <Descr>Пример пользовательской роли</Descr>
+  </Role>
+  <Role>
+    <RoleID>12</RoleID>
+    <Name>Моя роль 2</Name>
+    <Descr>Пример пользовательской роли</Descr>
+  </Role>
+</ArrayOfRole>

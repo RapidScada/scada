@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableView title="Уведомления">
+  <Param>SMS</Param>
+  <Param cnlNum="301">Связь</Param>
+  <Param cnlNum="302">Кол-во событий</Param>
+  <Param />
+  <Param>Эл. почта</Param>
+  <Param cnlNum="401">Отправлено писем</Param>
+</TableView>

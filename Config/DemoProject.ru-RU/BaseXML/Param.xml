@@ -1,0 +1,151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfParam xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Param>
+    <ParamID>1</ParamID>
+    <Name>Напряжение</Name>
+    <Sign>U</Sign>
+    <IconFileName>u.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>2</ParamID>
+    <Name>Ток</Name>
+    <Sign>I</Sign>
+    <IconFileName>i.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>3</ParamID>
+    <Name>Мощность</Name>
+    <Sign>P</Sign>
+    <IconFileName>p.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>4</ParamID>
+    <Name>Мощность полная</Name>
+    <Sign>S</Sign>
+    <IconFileName>s.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>5</ParamID>
+    <Name>Мощность активная</Name>
+    <Sign>P</Sign>
+    <IconFileName>pa.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>6</ParamID>
+    <Name>Мощность реактивная</Name>
+    <Sign>Q</Sign>
+    <IconFileName>pr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>7</ParamID>
+    <Name>Счётчик активный</Name>
+    <Sign>Wa</Sign>
+    <IconFileName>ca.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>8</ParamID>
+    <Name>Счётчик реактивный</Name>
+    <Sign>Wr</Sign>
+    <IconFileName>cr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>9</ParamID>
+    <Name>Энергия активная</Name>
+    <Sign>Wa</Sign>
+    <IconFileName>wa.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>10</ParamID>
+    <Name>Энергия реактивная</Name>
+    <Sign>Wr</Sign>
+    <IconFileName>wr.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>11</ParamID>
+    <Name>Частота</Name>
+    <Sign>F</Sign>
+    <IconFileName>f.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>12</ParamID>
+    <Name>Коэф. активной мощности</Name>
+    <Sign>cos</Sign>
+    <IconFileName>fi.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>13</ParamID>
+    <Name>Состояние</Name>
+    <IconFileName>lamp.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>14</ParamID>
+    <Name>Состояние реле</Name>
+    <IconFileName>switch.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>21</ParamID>
+    <Name>Масса</Name>
+    <Sign>m</Sign>
+    <IconFileName>m.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>22</ParamID>
+    <Name>Объём</Name>
+    <Sign>V</Sign>
+    <IconFileName>v.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>23</ParamID>
+    <Name>Температура</Name>
+    <Sign>t</Sign>
+    <IconFileName>temp.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>24</ParamID>
+    <Name>Расход</Name>
+    <Sign>G</Sign>
+    <IconFileName>g.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>25</ParamID>
+    <Name>Количество теплоты</Name>
+    <Sign>Q</Sign>
+    <IconFileName>q.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>26</ParamID>
+    <Name>Давление</Name>
+    <Sign>P</Sign>
+    <IconFileName>p.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>27</ParamID>
+    <Name>Влажность</Name>
+    <IconFileName>water.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>31</ParamID>
+    <Name>Связь</Name>
+    <IconFileName>conn.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>32</ParamID>
+    <Name>Время работы</Name>
+    <IconFileName>clock.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>34</ParamID>
+    <Name>Событие</Name>
+    <IconFileName>event.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>35</ParamID>
+    <Name>Состояние охраны</Name>
+    <IconFileName>guard.png</IconFileName>
+  </Param>
+  <Param>
+    <ParamID>36</ParamID>
+    <Name>Состояние пожарное</Name>
+    <IconFileName>fire.png</IconFileName>
+  </Param>
+</ArrayOfParam>

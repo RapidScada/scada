@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFormat xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Format>
+    <FormatID>0</FormatID>
+    <Name>D</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>1</FormatID>
+    <Name>D.D</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>1</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>2</FormatID>
+    <Name>D.DD</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>2</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>3</FormatID>
+    <Name>D.DDD</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>3</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>4</FormatID>
+    <Name>D.DDDD</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>4</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>5</FormatID>
+    <Name>D.DDDDD</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>5</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>6</FormatID>
+    <Name>D.DDDDDD</Name>
+    <ShowNumber>true</ShowNumber>
+    <DecDigits>6</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>10</FormatID>
+    <Name>Текст перечисления</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>11</FormatID>
+    <Name>Текст ASCII</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>12</FormatID>
+    <Name>Текст Unicode</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>13</FormatID>
+    <Name>Дата и время</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>14</FormatID>
+    <Name>Дата</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+  <Format>
+    <FormatID>15</FormatID>
+    <Name>Время</Name>
+    <ShowNumber>false</ShowNumber>
+    <DecDigits>0</DecDigits>
+  </Format>
+</ArrayOfFormat>
