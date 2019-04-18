@@ -45,11 +45,11 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// The period of square waves in minutes.
         /// </summary>
-        private const int SquarePeriod = 30;
+        private const int SquarePeriod = 15;
         /// <summary>
         /// The period of triangular waves in minutes.
         /// </summary>
-        private const int TrianglePeriod = 15;
+        private const int TrianglePeriod = 30;
 
 
         /// <summary>
@@ -92,8 +92,8 @@ namespace Scada.Comm.Devices
         {
             double x = DateTime.Now.TimeOfDay.TotalMinutes;
             double y1 = Math.Sin(2 * Math.PI * x / SinePeriod);
-            double y2 = x / SquarePeriod <= 0.5 ? 1 : 0;
-            double y3 = x / TrianglePeriod <= 0.5 ? x % TrianglePeriod : TrianglePeriod - x % TrianglePeriod;
+            double y2 = Frac(x / SquarePeriod) <= 0.5 ? 1 : 0;
+            double y3 = Frac(x / TrianglePeriod) <= 0.5 ? x % TrianglePeriod : TrianglePeriod - x % TrianglePeriod;
 
             WriteToLog(KPTags[0].Name + " = " + y1);
             WriteToLog(KPTags[1].Name + " = " + y2);
@@ -102,6 +102,14 @@ namespace Scada.Comm.Devices
             SetCurData(0, y1, BaseValues.CnlStatuses.Defined);
             SetCurData(1, y2, BaseValues.CnlStatuses.Defined);
             SetCurData(2, y3, BaseValues.CnlStatuses.Defined);
+        }
+
+        /// <summary>
+        /// Gets the fractional part of double.
+        /// </summary>
+        private double Frac(double d)
+        {
+            return d - Math.Truncate(d);
         }
 
         /// <summary>
