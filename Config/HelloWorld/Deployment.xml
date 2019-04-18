@@ -25,7 +25,7 @@
       <IncludeInterface>true</IncludeInterface>
       <IncludeServer>true</IncludeServer>
       <IncludeComm>true</IncludeComm>
-      <IncludeWeb>false</IncludeWeb>
+      <IncludeWeb>true</IncludeWeb>
       <IgnoreRegKeys>false</IgnoreRegKeys>
       <IgnoreWebStorage>true</IgnoreWebStorage>
       <RestartServer>true</RestartServer>
