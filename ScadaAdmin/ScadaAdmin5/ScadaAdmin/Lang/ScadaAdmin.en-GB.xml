@@ -234,9 +234,13 @@
     <Phrase key="btnConnect">Connect</Phrase>
     <Phrase key="btnDisconnect">Disconnect</Phrase>
     <Phrase key="gbStatus">Status</Phrase>
-    <Phrase key="lblServerStatus">Server service</Phrase>
+    <Phrase key="lblServerStatus">Server</Phrase>
+    <Phrase key="btnStartServer">Start</Phrase>
+    <Phrase key="btnStopServer">Stop</Phrase>
     <Phrase key="btnRestartServer">Restart</Phrase>
-    <Phrase key="lblCommStatus">Communicator service</Phrase>
+    <Phrase key="lblCommStatus">Communicator</Phrase>
+    <Phrase key="btnStartComm">Start</Phrase>
+    <Phrase key="btnStopComm">Stop</Phrase>
     <Phrase key="btnRestartComm">Restart</Phrase>
     <Phrase key="lblUpdateTime">Update time</Phrase>
     <Phrase key="btnClose">Close</Phrase>
@@ -244,9 +248,9 @@
     <Phrase key="StoppedSvcStatus">Stopped</Phrase>
     <Phrase key="ErrorSvcStatus">Error</Phrase>
     <Phrase key="UndefinedSvcStatus">Undefined</Phrase>
-    <Phrase key="ServiceRestarted">The service restarted sucсessfully.</Phrase>
-    <Phrase key="UnableRestartService">Unable to restart the service.</Phrase>
-    <Phrase key="ServiceRestartError">Error restarting the service</Phrase>
+    <Phrase key="ServiceCommandComplete">Service command completed successfully.</Phrase>
+    <Phrase key="UnableControlService">Unable to execute service command.</Phrase>
+    <Phrase key="ControlServiceError">Error sending service command.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmProfileEdit">
     <Phrase key="this">Edit Profile</Phrase>

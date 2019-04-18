@@ -99,9 +99,9 @@ namespace Scada.Admin.App.Code
         public static string StoppedSvcStatus { get; private set; }
         public static string ErrorSvcStatus { get; private set; }
         public static string UndefinedSvcStatus { get; private set; }
-        public static string ServiceRestarted { get; private set; }
-        public static string UnableRestartService { get; private set; }
-        public static string ServiceRestartError { get; private set; }
+        public static string ServiceCommandComplete { get; private set; }
+        public static string UnableControlService { get; private set; }
+        public static string ControlServiceError { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmProfileEdit
         public static string ValidUrlRequired { get; private set; }
@@ -291,9 +291,9 @@ namespace Scada.Admin.App.Code
             StoppedSvcStatus = dict.GetPhrase("StoppedSvcStatus");
             ErrorSvcStatus = dict.GetPhrase("ErrorSvcStatus");
             UndefinedSvcStatus = dict.GetPhrase("UndefinedSvcStatus");
-            ServiceRestarted = dict.GetPhrase("ServiceRestarted");
-            UnableRestartService = dict.GetPhrase("UnableRestartService");
-            ServiceRestartError = dict.GetPhrase("ServiceRestartError");
+            ServiceCommandComplete = dict.GetPhrase("ServiceCommandComplete");
+            UnableControlService = dict.GetPhrase("UnableControlService");
+            ControlServiceError = dict.GetPhrase("ControlServiceError");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmProfileEdit");
             ValidUrlRequired = dict.GetPhrase("ValidUrlRequired");
