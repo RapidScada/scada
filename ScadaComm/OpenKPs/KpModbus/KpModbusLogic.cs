@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Device communication logic
+ * Summary  : Device driver communication logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
@@ -35,8 +35,8 @@ using System.Threading;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device communication logic.
-    /// <para>Логика работы КП.</para>
+    /// Device driver communication logic.
+    /// <para>Логика работы драйвера КП.</para>
     /// </summary>
     public class KpModbusLogic : KPLogic
     {
