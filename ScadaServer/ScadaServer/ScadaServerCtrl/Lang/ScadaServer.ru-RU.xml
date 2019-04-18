@@ -5,5 +5,6 @@
     <Phrase key="LoadModSettingsError">Ошибка при загрузке настроек модуля</Phrase>
     <Phrase key="SaveModSettingsError">Ошибка при сохранении настроек модуля</Phrase>
     <Phrase key="ConfigureModule">Сконфигурируйте модуль и перезапустите службу SCADA-Сервера</Phrase>
+    <Phrase key="CmdSentSuccessfully">Команда отправлена успешно.</Phrase>
   </Dictionary>
 </ScadaServerDictionaries>

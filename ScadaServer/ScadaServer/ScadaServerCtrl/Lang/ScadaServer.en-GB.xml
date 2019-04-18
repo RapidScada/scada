@@ -256,5 +256,6 @@
     <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
     <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="ConfigureModule">Configure the module and restart SCADA-Server service</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
 </ScadaServerDictionaries>
