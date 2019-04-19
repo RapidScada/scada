@@ -52,6 +52,9 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="Script\scadacomm" />
+    <None Include="Script\svc_restart.sh" />
+    <None Include="Script\svc_start.sh" />
+    <None Include="Script\svc_stop.sh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaCommCommon\ScadaCommCommon.csproj">

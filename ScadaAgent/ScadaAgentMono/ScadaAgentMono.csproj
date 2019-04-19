@@ -49,6 +49,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Script\scadaagent" />
+    <None Include="Script\svc_restart.sh" />
+    <None Include="Script\svc_start.sh" />
+    <None Include="Script\svc_stop.sh" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">
@@ -77,5 +81,6 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
