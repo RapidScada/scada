@@ -87,6 +87,7 @@
             this.btnToolsCreateCnls = new System.Windows.Forms.ToolStripButton();
             this.ssMain = new System.Windows.Forms.StatusStrip();
             this.lblSelectedInstance = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblSelectedProfile = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlLeft = new System.Windows.Forms.Panel();
             this.tvExplorer = new System.Windows.Forms.TreeView();
             this.ilExplorer = new System.Windows.Forms.ImageList(this.components);
@@ -150,7 +151,6 @@
             this.cmsCnlTable = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.miCnlTableComm = new System.Windows.Forms.ToolStripMenuItem();
             this.miCnlTableRefresh = new System.Windows.Forms.ToolStripMenuItem();
-            this.lblSelectedProfile = new System.Windows.Forms.ToolStripStatusLabel();
             this.msMain.SuspendLayout();
             this.tsMain.SuspendLayout();
             this.ssMain.SuspendLayout();
@@ -661,6 +661,13 @@
             this.lblSelectedInstance.Size = new System.Drawing.Size(108, 19);
             this.lblSelectedInstance.Text = "lblSelectedInstance";
             // 
+            // lblSelectedProfile
+            // 
+            this.lblSelectedProfile.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
+            this.lblSelectedProfile.Name = "lblSelectedProfile";
+            this.lblSelectedProfile.Size = new System.Drawing.Size(102, 19);
+            this.lblSelectedProfile.Text = "lblSelectedProfile";
+            // 
             // pnlLeft
             // 
             this.pnlLeft.Controls.Add(this.tvExplorer);
@@ -735,6 +742,11 @@
             this.wctrlMain.ChildFormClosed += new System.EventHandler<WinControl.ChildFormClosedEventArgs>(this.wctrlMain_ChildFormClosed);
             this.wctrlMain.ChildFormMessage += new System.EventHandler<WinControl.FormMessageEventArgs>(this.wctrlMain_ChildFormMessage);
             this.wctrlMain.ChildFormModifiedChanged += new System.EventHandler<WinControl.ChildFormEventArgs>(this.wctrlMain_ChildFormModifiedChanged);
+            // 
+            // ofdProject
+            // 
+            this.ofdProject.DefaultExt = "*.rsproj";
+            this.ofdProject.Filter = "Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*";
             // 
             // cmsCommLine
             // 
@@ -1197,13 +1209,6 @@
             this.miCnlTableRefresh.Size = new System.Drawing.Size(187, 22);
             this.miCnlTableRefresh.Text = "Refresh";
             this.miCnlTableRefresh.Click += new System.EventHandler(this.miCnlTableRefresh_Click);
-            // 
-            // lblSelectedProfile
-            // 
-            this.lblSelectedProfile.BorderSides = System.Windows.Forms.ToolStripStatusLabelBorderSides.Left;
-            this.lblSelectedProfile.Name = "lblSelectedProfile";
-            this.lblSelectedProfile.Size = new System.Drawing.Size(102, 19);
-            this.lblSelectedProfile.Text = "lblSelectedProfile";
             // 
             // FrmMain
             // 

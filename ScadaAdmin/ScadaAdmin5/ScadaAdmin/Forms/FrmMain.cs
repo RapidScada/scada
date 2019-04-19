@@ -158,7 +158,8 @@ namespace Scada.Admin.App.Forms
             if (adminDictLoaded)
             {
                 Translator.TranslateForm(this, GetType().FullName, null,
-                    cmsProject, cmsDirectory, cmsFileItem, cmsInstance, cmsServer, cmsComm, cmsCommLine, cmsDevice);
+                    cmsProject, cmsCnlTable, cmsDirectory, cmsFileItem, cmsInstance, 
+                    cmsServer, cmsComm, cmsCommLine, cmsDevice);
                 Text = AppPhrases.EmptyTitle;
                 wctrlMain.MessageText = AppPhrases.WelcomeMessage;
                 ofdProject.SetFilter(AppPhrases.ProjectFileFilter);

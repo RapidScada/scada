@@ -647,7 +647,7 @@
     <Phrase key="ProjectTitle">{0} - Administrator</Phrase>
     <Phrase key="WelcomeMessage">Create a new project or&#13;&#10;open an existing project.</Phrase>
     <Phrase key="SelectItemMessage">Select an item in the project explorer.</Phrase>
-    <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*.</Phrase>
+    <Phrase key="ProjectFileFilter">Projects (*.rsproj)|*.rsproj|All Files (*.*)|*.*</Phrase>
     <Phrase key="ConfirmDeleteDirectory">Are you sure you want to delete the folder?</Phrase>
     <Phrase key="ConfirmDeleteFile">Are you sure you want to delete the file?</Phrase>
     <Phrase key="ConfirmDeleteInstance">Are you sure you want to delete the instance?</Phrase>
