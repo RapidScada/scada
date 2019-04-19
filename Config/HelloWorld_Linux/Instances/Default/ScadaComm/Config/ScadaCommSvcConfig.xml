@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaCommSvcConfig>
+  <!--Common Parameters-->
+  <CommonParams>
+    <Param name="ServerUse" value="true" descr="Use SCADA-Server" />
+    <Param name="ServerHost" value="localhost" descr="SCADA-Server host or IP address" />
+    <Param name="ServerPort" value="10000" descr="SCADA-Server TCP port number" />
+    <Param name="ServerUser" value="ScadaComm" descr="User name for the connection to SCADA-Server" />
+    <Param name="ServerPwd" value="12345" descr="User password for the connection to SCADA-Server" />
+    <Param name="ServerTimeout" value="10000" descr="SCADA-Server response timeout, ms" />
+    <Param name="WaitForStop" value="10000" descr="Wait for communication lines termination, ms" />
+    <Param name="SendModData" value="true" descr="Send only modified device tags" />
+    <Param name="SendAllDataPer" value="60" descr="Period of sending all device tags, sec" />
+  </CommonParams>
+  <!--Communication Lines-->
+  <CommLines>
+    <!--Line 1-->
+    <CommLine active="true" bind="true" number="1" name="My Line">
+      <CommChannel type="" />
+      <LineParams>
+        <Param name="ReqTriesCnt" value="3" descr="Device request retries count on error" />
+        <Param name="CycleDelay" value="0" descr="Delay after request cycle, ms" />
+        <Param name="CmdEnabled" value="true" descr="Commands enabled" />
+        <Param name="ReqAfterCmd" value="false" descr="Request device after command" />
+        <Param name="DetailedLog" value="true" descr="Write detailed information to the log" />
+      </LineParams>
+      <CustomParams />
+      <ReqSequence>
+        <KP active="true" bind="true" number="1" name="Simulator" dll="KpSimulator.dll" address="0" callNum="" timeout="0" delay="1000" time="00:00:00" period="00:00:00" cmdLine="" />
+      </ReqSequence>
+    </CommLine>
+  </CommLines>
+</ScadaCommSvcConfig>

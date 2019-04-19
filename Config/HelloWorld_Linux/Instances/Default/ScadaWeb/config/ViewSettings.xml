@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ViewSettings>
+  <!-- These settings are used if ViewsFromBase parameter is false in WebSettings.xml -->
+  <ViewItem text="Test group">
+    <ViewItem viewID="1" text="Test view 1" alarmCnlNum="101" />
+    <ViewItem viewID="2" text="Test view 2" alarmCnlNum="102" />
+  </ViewItem>
+  <ViewItem viewID="3" text="Test view 3" alarmCnlNum="103" />
+</ViewSettings>
