@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Script\Common\make_executable.sh" />
     <None Include="Script\Common\restart_apache.sh" />
     <None Include="Script\Common\restart_xsp.sh" />
     <None Include="Script\Common\scadarestart.sh" />
