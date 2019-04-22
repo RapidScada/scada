@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 using System;
@@ -32,30 +32,30 @@ using System.Xml;
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Form state
-    /// <para>Состояние формы</para>
+    /// Form state.
+    /// <para>Состояние формы.</para>
     /// </summary>
     internal class FormState
     {
         /// <summary>
-        /// Расстояние притягивания к краям экрана
+        /// Расстояние притягивания к краям экрана.
         /// </summary>
         private const int PullDistance = 10;
         /// <summary>
-        /// Высота панели инструментов браузера (на примере Chrome)
+        /// Высота панели инструментов браузера (на примере Chrome).
         /// </summary>
-        private const int BrowserToolbarHeight = 65;
+        private const int BrowserToolbarHeight = 70;
         /// <summary>
-        /// Имя файла настроек по умолчанию
+        /// Имя файла состояния по умолчанию.
         /// </summary>
-        public const string DefFileName = "ScadaSchemeEditor_FormState.xml";
+        public const string DefFileName = "ScadaSchemeEditorState.xml";
 
         public int screenWidth; // ширина экрана
         public int formAdj;     // поправка позиции и размера формы
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public FormState()
         {
@@ -63,7 +63,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public FormState(Form form, bool correct = false)
         {
@@ -100,43 +100,43 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Получить признак, что состояние формы не заполнено
+        /// Получить признак, что состояние формы не заполнено.
         /// </summary>
         public bool IsEmpty { get; private set; }
 
         /// <summary>
-        /// Получить или установить позицию по горизонтали
+        /// Получить или установить позицию по горизонтали.
         /// </summary>
         public int Left { get; set; }
 
         /// <summary>
-        /// Получить или установить позицию по вертикали
+        /// Получить или установить позицию по вертикали.
         /// </summary>
         public int Top { get; set; }
 
         /// <summary>
-        /// Получить или установить ширину
+        /// Получить или установить ширину.
         /// </summary>
         public int Width { get; set; }
 
         /// <summary>
-        /// Получить или установить высоту
+        /// Получить или установить высоту.
         /// </summary>
         public int Height { get; set; }
 
         /// <summary>
-        /// Получить или установить директорию, из которой открывались схемы
+        /// Получить или установить директорию, из которой открывались схемы.
         /// </summary>
         public string SchemeDir { get; set; }
 
         /// <summary>
-        /// Получить или установить директорию, из которой открывались изображения
+        /// Получить или установить директорию, из которой открывались изображения.
         /// </summary>
         public string ImageDir { get; set; }
 
 
         /// <summary>
-        /// Установить значения по умолчанию
+        /// Установить значения по умолчанию.
         /// </summary>
         private void SetToDefault()
         {
@@ -153,7 +153,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Рассчитать поправку позиции и размера формы
+        /// Рассчитать поправку позиции и размера формы.
         /// </summary>
         private static int CalcFormAdj(Form form)
         {
@@ -164,16 +164,14 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Загрузить состояние формы из файла
+        /// Загрузить состояние формы из файла.
         /// </summary>
         public bool Load(string fileName, out string errMsg)
         {
-            // установка значений по умолчанию
-            SetToDefault();
-
-            // загрузка настроек
             try
             {
+                SetToDefault();
+
                 if (File.Exists(fileName))
                 {
                     XmlDocument xmlDoc = new XmlDocument();
@@ -199,18 +197,17 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Сохранить состояние формы в файле
+        /// Сохранить состояние формы в файле.
         /// </summary>
         public bool Save(string fileName, out string errMsg)
         {
             try
             {
                 XmlDocument xmlDoc = new XmlDocument();
-
                 XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
                 xmlDoc.AppendChild(xmlDecl);
 
-                XmlElement rootElem = xmlDoc.CreateElement("FormState");
+                XmlElement rootElem = xmlDoc.CreateElement("ScadaSchemeEditorState");
                 xmlDoc.AppendChild(rootElem);
 
                 rootElem.AppendElem("Left", Left);
@@ -232,7 +229,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Применить состояние к заданной форме
+        /// Применить состояние к заданной форме.
         /// </summary>
         public void Apply(Form form)
         {
@@ -257,7 +254,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Притянуть форму к левому или правому краю экрана
+        /// Притянуть форму к левому или правому краю экрана.
         /// </summary>
         public bool PullToEdge(Form form)
         {
@@ -290,7 +287,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить состояние формы для передачи
+        /// Получить состояние формы для передачи.
         /// </summary>
         public FormStateDTO GetFormStateDTO(bool formDisplayed)
         {

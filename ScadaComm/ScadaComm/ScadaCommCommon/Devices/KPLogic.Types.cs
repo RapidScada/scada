@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Tables;
@@ -93,16 +93,22 @@ namespace Scada.Comm.Devices
             public KPTag(int signal, string name)
             {
                 Signal = signal;
+                Index = -1;
                 Name = name;
                 CnlNum = 0;
                 ObjNum = 0;
                 ParamID = 0;
+                Aux = null;
             }
 
             /// <summary>
             /// Получить или установить сигнал (номер тега)
             /// </summary>
             public int Signal { get; set; }
+            /// <summary>
+            /// Gets or sets the tag index.
+            /// </summary>
+            public int Index { get; set; }
             /// <summary>
             /// Получить или установить наименование
             /// </summary>
@@ -120,6 +126,10 @@ namespace Scada.Comm.Devices
             /// </summary>
             /// <remarks>Необходим для событий КП</remarks>
             public int ParamID { get; set; }
+            /// <summary>
+            /// Gets or sets the auxiliary object that contains data about the tag.
+            /// </summary>
+            public object Aux { get; set; }
         }
 
         /// <summary>
@@ -151,6 +161,16 @@ namespace Scada.Comm.Devices
             /// Получить список тегов КП, входящих в группу
             /// </summary>
             public List<KPTag> KPTags { get; protected set; }
+
+            /// <summary>
+            /// Creates and adds a new tag to the group.
+            /// </summary>
+            public KPTag AddNewTag(int signal, string name, object aux = null)
+            {
+                KPTag kpTag = new KPTag(signal, name) { Aux = aux };
+                KPTags.Add(kpTag);
+                return kpTag;
+            }
         }
 
         /// <summary>

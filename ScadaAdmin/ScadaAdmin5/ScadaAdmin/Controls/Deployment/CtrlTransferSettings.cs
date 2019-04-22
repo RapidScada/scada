@@ -25,7 +25,9 @@
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Deployment;
+using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -53,7 +55,7 @@ namespace Scada.Admin.App.Controls.Deployment
         /// <summary>
         /// Gets a value indicating whether none of the options are selected.
         /// </summary>
-        public bool Empty
+        private bool Empty
         {
             get
             {
@@ -72,6 +74,26 @@ namespace Scada.Admin.App.Controls.Deployment
         }
 
         /// <summary>
+        /// Validates the form fields.
+        /// </summary>
+        public bool ValidateFields()
+        {
+            if (Empty)
+            {
+                ScadaUiUtils.ShowError(AppPhrases.ConfigNotSelected);
+                return false;
+            }
+
+            if (!RangeUtils.StrToRange(txtObjFilter.Text, true, out ICollection<int> collection))
+            {
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectObjFilter);
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
         /// Setup the controls according to the settings.
         /// </summary>
         public void SettingsToControls(TransferSettings transferSettings)
@@ -80,6 +102,7 @@ namespace Scada.Admin.App.Controls.Deployment
                 throw new ArgumentNullException("transferSettings");
 
             changing = true;
+            gbOptions.Enabled = true;
             chkIncludeBase.Checked = transferSettings.IncludeBase;
             chkIncludeInterface.Checked = transferSettings.IncludeInterface;
             chkIncludeServer.Checked = transferSettings.IncludeServer;
@@ -87,7 +110,26 @@ namespace Scada.Admin.App.Controls.Deployment
             chkIncludeWeb.Checked = transferSettings.IncludeWeb;
             chkIgnoreRegKeys.Checked = transferSettings.IgnoreRegKeys;
             chkIgnoreWebStorage.Checked = transferSettings.IgnoreWebStorage;
-            gbOptions.Enabled = true;
+
+            if (transferSettings is UploadSettings uploadSettings)
+            {
+                chkRestartServer.Visible = true;
+                chkRestartComm.Visible = true;
+                lblObjFilter.Visible = true;
+                txtObjFilter.Visible = true;
+
+                chkRestartServer.Checked = uploadSettings.RestartServer;
+                chkRestartComm.Checked = uploadSettings.RestartComm;
+                txtObjFilter.Text = RangeUtils.RangeToStr(uploadSettings.ObjNums);
+            }
+            else
+            {
+                chkRestartServer.Visible = false;
+                chkRestartComm.Visible = false;
+                lblObjFilter.Visible = false;
+                txtObjFilter.Visible = false;
+            }
+
             changing = false;
         }
 
@@ -106,6 +148,13 @@ namespace Scada.Admin.App.Controls.Deployment
             transferSettings.IncludeWeb = chkIncludeWeb.Checked;
             transferSettings.IgnoreRegKeys = chkIgnoreRegKeys.Checked;
             transferSettings.IgnoreWebStorage = chkIgnoreWebStorage.Checked;
+
+            if (transferSettings is UploadSettings uploadSettings)
+            {
+                uploadSettings.RestartServer = chkRestartServer.Checked;
+                uploadSettings.RestartComm = chkRestartComm.Checked;
+                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true));
+            }
         }
 
         /// <summary>
@@ -133,7 +182,7 @@ namespace Scada.Admin.App.Controls.Deployment
         public event EventHandler SettingsChanged;
 
 
-        private void chk_CheckedChanged(object sender, EventArgs e)
+        private void control_Changed(object sender, EventArgs e)
         {
             if (!changing)
                 OnSettingsChanged();

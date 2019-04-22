@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices;
@@ -102,13 +102,7 @@ namespace Scada.Comm.Shell.Forms
                 lbDrivers.BeginUpdate();
                 lbDrivers.Items.Clear();
 
-                DirectoryInfo dirInfo = new DirectoryInfo(environment.AppDirs.KPDir);
-
-                FileInfo[] fileInfoArr = dirInfo.Exists ?
-                    dirInfo.GetFiles("Kp*.dll", SearchOption.TopDirectoryOnly) :
-                    new FileInfo[0];
-
-                foreach (FileInfo fileInfo in fileInfoArr)
+                foreach (FileInfo fileInfo in environment.GetDrivers())
                 {
                     lbDrivers.Items.Add(new DriverItem()
                     {
@@ -170,7 +164,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmDrivers_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDrivers");
+            Translator.TranslateForm(this, GetType().FullName);
             FillDriverList();
             SetButtonEnabled();
         }

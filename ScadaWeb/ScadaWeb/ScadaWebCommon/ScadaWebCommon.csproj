@@ -1,0 +1,101 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BAF45C4F-1BE3-4810-9EA6-3B53894E32BF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scada.Web</RootNamespace>
+    <AssemblyName>ScadaWebCommon</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\ScadaWebCommon.xml</DocumentationFile>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppData.cs" />
+    <Compile Include="AppDirs.cs" />
+    <Compile Include="DataTransferObject.cs" />
+    <Compile Include="ClientApiSvc.cs" />
+    <Compile Include="DictUpdater.cs" />
+    <Compile Include="Plugins\ReportSpec.cs" />
+    <Compile Include="Plugins\DataWndSpec.cs" />
+    <Compile Include="Plugins\PluginSpec.cs" />
+    <Compile Include="Plugins\ContentSpec.cs" />
+    <Compile Include="Plugins\UiObjSpec.cs" />
+    <Compile Include="RepUtils.cs" />
+    <Compile Include="Shell\ContentItem.cs" />
+    <Compile Include="Shell\DataWndItem.cs" />
+    <Compile Include="Shell\ReportItem.cs" />
+    <Compile Include="Shell\ScriptPaths.cs" />
+    <Compile Include="Plugins\ViewSpec.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SettingsUpdater.cs" />
+    <Compile Include="Shell\IWebTreeNode.cs" />
+    <Compile Include="Shell\RememberMe.cs" />
+    <Compile Include="Shell\SortOrders.cs" />
+    <Compile Include="Shell\Stats.cs" />
+    <Compile Include="Shell\TreeViewRenderer.cs" />
+    <Compile Include="Shell\UrlTemplates.cs" />
+    <Compile Include="Shell\UserContent.cs" />
+    <Compile Include="Shell\UserMenu.cs" />
+    <Compile Include="Shell\UserViews.cs" />
+    <Compile Include="Shell\ViewNode.cs" />
+    <Compile Include="UserShot.cs" />
+    <Compile Include="WebUtils.cs" />
+    <Compile Include="Shell\MenuItem.cs" />
+    <Compile Include="Shell\StandardMenuItems.cs" />
+    <Compile Include="UserData.cs" />
+    <Compile Include="UserMonitor.cs" />
+    <Compile Include="UserRights.cs" />
+    <Compile Include="WebPhrases.cs" />
+    <Compile Include="ViewSettings.cs" />
+    <Compile Include="WebSettings.cs" />
+    <Compile Include="Storage.cs" />
+    <Compile Include="WebUtils.Forms.cs" />
+    <Compile Include="WebUtils.QueryString.cs" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

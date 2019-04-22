@@ -147,7 +147,7 @@
             this.cbDeviceDll.Name = "cbDeviceDll";
             this.cbDeviceDll.Size = new System.Drawing.Size(120, 21);
             this.cbDeviceDll.TabIndex = 7;
-            this.cbDeviceDll.SelectedIndexChanged += new System.EventHandler(this.cbDeviceDll_SelectedIndexChanged);
+            this.cbDeviceDll.TextChanged += new System.EventHandler(this.cbDeviceDll_TextChanged);
             // 
             // txtDeviceCmdLine
             // 
@@ -301,9 +301,9 @@
             this.lblDeviceDll.AutoSize = true;
             this.lblDeviceDll.Location = new System.Drawing.Point(314, 39);
             this.lblDeviceDll.Name = "lblDeviceDll";
-            this.lblDeviceDll.Size = new System.Drawing.Size(27, 13);
+            this.lblDeviceDll.Size = new System.Drawing.Size(35, 13);
             this.lblDeviceDll.TabIndex = 6;
-            this.lblDeviceDll.Text = "DLL";
+            this.lblDeviceDll.Text = "Driver";
             // 
             // lblDeviceName
             // 
@@ -393,7 +393,7 @@
             this.lvReqSequence.MultiSelect = false;
             this.lvReqSequence.Name = "lvReqSequence";
             this.lvReqSequence.ShowItemToolTips = true;
-            this.lvReqSequence.Size = new System.Drawing.Size(579, 157);
+            this.lvReqSequence.Size = new System.Drawing.Size(679, 157);
             this.lvReqSequence.TabIndex = 7;
             this.lvReqSequence.UseCompatibleStateImageBehavior = false;
             this.lvReqSequence.View = System.Windows.Forms.View.Details;
@@ -512,7 +512,7 @@
             // btnPasteDevice
             // 
             this.btnPasteDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnPasteDevice.Location = new System.Drawing.Point(513, 12);
+            this.btnPasteDevice.Location = new System.Drawing.Point(613, 12);
             this.btnPasteDevice.Margin = new System.Windows.Forms.Padding(3, 3, 12, 3);
             this.btnPasteDevice.Name = "btnPasteDevice";
             this.btnPasteDevice.Size = new System.Drawing.Size(75, 23);
@@ -524,7 +524,7 @@
             // btnCopyDevice
             // 
             this.btnCopyDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCopyDevice.Location = new System.Drawing.Point(432, 12);
+            this.btnCopyDevice.Location = new System.Drawing.Point(532, 12);
             this.btnCopyDevice.Name = "btnCopyDevice";
             this.btnCopyDevice.Size = new System.Drawing.Size(75, 23);
             this.btnCopyDevice.TabIndex = 5;
@@ -535,7 +535,7 @@
             // btnCutDevice
             // 
             this.btnCutDevice.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCutDevice.Location = new System.Drawing.Point(351, 12);
+            this.btnCutDevice.Location = new System.Drawing.Point(451, 12);
             this.btnCutDevice.Name = "btnCutDevice";
             this.btnCutDevice.Size = new System.Drawing.Size(75, 23);
             this.btnCutDevice.TabIndex = 4;
@@ -557,7 +557,7 @@
             this.Controls.Add(this.gbSelectedDevice);
             this.Controls.Add(this.lvReqSequence);
             this.Name = "CtrlLineReqSequence";
-            this.Size = new System.Drawing.Size(600, 450);
+            this.Size = new System.Drawing.Size(700, 450);
             this.Load += new System.EventHandler(this.CtrlLineReqSequence_Load);
             this.gbSelectedDevice.ResumeLayout(false);
             this.gbSelectedDevice.PerformLayout();

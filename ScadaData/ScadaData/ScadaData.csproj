@@ -92,8 +92,13 @@
     <Compile Include="Data\Models\UiObjProps.cs" />
     <Compile Include="Data\Configuration\ConfDAO.cs" />
     <Compile Include="Data\Tables\BaseTable.cs" />
+    <Compile Include="Data\Tables\BaseTableFactory.cs" />
+    <Compile Include="Data\Tables\CsvConverter.cs" />
     <Compile Include="Data\Tables\IBaseTable.cs" />
-    <Compile Include="Data\Tables\BaseTableConverter.cs" />
+    <Compile Include="Data\Tables\TableConverter.cs" />
+    <Compile Include="Data\Tables\TableFilter.cs" />
+    <Compile Include="Data\Tables\TableIndex.cs" />
+    <Compile Include="Data\Tables\TableRelation.cs" />
     <Compile Include="FileListener.cs" />
     <Compile Include="Data\Tables\BaseAdapter.cs" />
     <Compile Include="Data\Configuration\BaseValues.cs" />
@@ -104,6 +109,7 @@
     <Compile Include="Localization.cs" />
     <Compile Include="Data\Models\InCnlProps.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RangeUtils.cs" />
     <Compile Include="ScadaException.cs" />
     <Compile Include="ScadaUtils.Crypto.cs" />
     <Compile Include="ScadaUtils.cs" />

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2016
+ * Modified : 2019
  */
 
 using System;
@@ -33,8 +33,8 @@ using System.Xml;
 namespace Utils.Report
 {
     /// <summary>
-    /// The base class for building reports in SpreadsheetML (Microsoft Excel 2003) format
-    /// <para>Базовый класс для построения отчётов в формате SpreadsheetML (Microsoft Excel 2003)</para>
+    /// The base class for building reports in SpreadsheetML (Microsoft Excel 2003) format.
+    /// <para>Базовый класс для построения отчётов в формате SpreadsheetML (Microsoft Excel 2003).</para>
     /// </summary>
     public abstract class ExcelRepBuilder : RepBuilder
     {
@@ -231,11 +231,12 @@ namespace Utils.Report
 
 
             /// <summary>
-            /// Установить цвет объекта, создав при необходимости новый стиль
+            /// Sets the object color, creating a new style if necessary.
             /// </summary>
-            /// <param name="targetNode">Ссылка на XML-узел объекта, которому устанавливается цвет</param>
-            /// <param name="color">Устанавливаемый цвет</param>
-            public void SetColor(XmlNode targetNode, string color)
+            /// <param name="targetNode">Reference to the XML node of the object which color is set.</param>
+            /// <param name="backColor">Background color to set.</param>
+            /// <param name="fontColor">Font color to set.</param>
+            public void SetColor(XmlNode targetNode, string backColor, string fontColor)
             {
                 XmlDocument xmlDoc = targetNode.OwnerDocument;
                 string namespaceURI = targetNode.NamespaceURI;
@@ -248,16 +249,18 @@ namespace Utils.Report
                 }
 
                 string oldStyleID = styleAttr == null ? "" : styleAttr.Value;
-                string newStyleID = oldStyleID + "_" + color;
+                string newStyleID = oldStyleID + "_" + 
+                    (string.IsNullOrEmpty(backColor) ? "none" : backColor) + "_" +
+                    (string.IsNullOrEmpty(fontColor) ? "none" : fontColor);
 
                 if (styles.ContainsKey(newStyleID))
                 {
-                    // установка созданного ранее стиля с заданным цветом
+                    // set the previously created style having the specified color
                     styleAttr.Value = newStyleID;
                 }
                 else
                 {
-                    // создание нового стиля
+                    // create a new style
                     Style newStyle;
                     if (styleAttr == null)
                     {
@@ -266,33 +269,54 @@ namespace Utils.Report
                         newStyle = new Style(newStyleNode);
                     }
                     else
+                    {
                         newStyle = styles[oldStyleID].Clone();
+                    }
                     newStyle.ID = newStyleID;
 
-                    // уставнока цвета в созданном стиле
-                    XmlNode interNode = newStyle.Node.FirstChild;
-                    while (interNode != null && interNode.Name != "Interior")
-                        interNode = interNode.NextSibling;
-
-                    if (interNode == null)
+                    // set background color of the style
+                    if (!string.IsNullOrEmpty(backColor))
                     {
-                        interNode = xmlDoc.CreateNode(XmlNodeType.Element, "Interior", namespaceURI);
-                        newStyle.Node.AppendChild(interNode);
+                        XmlNode interNode = newStyle.Node.SelectSingleNode("Interior");
+                        if (interNode == null)
+                        {
+                            interNode = xmlDoc.CreateNode(XmlNodeType.Element, "Interior", namespaceURI);
+                            newStyle.Node.AppendChild(interNode);
+                        }
+                        else
+                        {
+                            interNode.Attributes.RemoveNamedItem("ss:Color");
+                            interNode.Attributes.RemoveNamedItem("ss:Pattern");
+                        }
+
+                        XmlAttribute xmlAttr = xmlDoc.CreateAttribute("ss", "Color", namespaceURI);
+                        xmlAttr.Value = backColor;
+                        interNode.Attributes.Append(xmlAttr);
+                        xmlAttr = xmlDoc.CreateAttribute("ss", "Pattern", namespaceURI);
+                        xmlAttr.Value = "Solid";
+                        interNode.Attributes.Append(xmlAttr);
                     }
-                    else
+
+                    // set font color of the style
+                    if (!string.IsNullOrEmpty(fontColor))
                     {
-                        interNode.Attributes.RemoveNamedItem("ss:Color");
-                        interNode.Attributes.RemoveNamedItem("ss:Pattern");
+                        XmlNode fontNode = newStyle.Node.SelectSingleNode("Font");
+                        if (fontNode == null)
+                        {
+                            fontNode = xmlDoc.CreateNode(XmlNodeType.Element, "Font", namespaceURI);
+                            newStyle.Node.AppendChild(fontNode);
+                        }
+                        else
+                        {
+                            fontNode.Attributes.RemoveNamedItem("ss:Color");
+                        }
+
+                        XmlAttribute xmlAttr = xmlDoc.CreateAttribute("ss", "Color", namespaceURI);
+                        xmlAttr.Value = fontColor;
+                        fontNode.Attributes.Append(xmlAttr);
                     }
 
-                    XmlAttribute xmlAttr = xmlDoc.CreateAttribute("ss", "Color", namespaceURI);
-                    xmlAttr.Value = color;
-                    interNode.Attributes.Append(xmlAttr);
-                    xmlAttr = xmlDoc.CreateAttribute("ss", "Pattern", namespaceURI);
-                    xmlAttr.Value = "Solid";
-                    interNode.Attributes.Append(xmlAttr);
-
-                    // установка нового стиля объекту и добавление стиля в книгу
+                    // set the new style to the node and add the style to the workbook
                     styleAttr.Value = newStyleID;
                     styles.Add(newStyleID, newStyle);
                     stylesNode.AppendChild(newStyle.Node);

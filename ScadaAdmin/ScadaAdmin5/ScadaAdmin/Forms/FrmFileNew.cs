@@ -137,7 +137,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmFileNew_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmFileNew");
+            Translator.TranslateForm(this, GetType().FullName);
             txtFileName.Text = DefaultFileName;
             lbFileType.SelectedIndex = 0;
         }

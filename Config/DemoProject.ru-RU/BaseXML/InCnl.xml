@@ -1,0 +1,958 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfInCnl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <InCnl>
+    <CnlNum>101</CnlNum>
+    <Active>true</Active>
+    <Name>t0</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>102</CnlNum>
+    <Active>true</Active>
+    <Name>t1</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>103</CnlNum>
+    <Active>true</Active>
+    <Name>t2</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>3</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>104</CnlNum>
+    <Active>true</Active>
+    <Name>t3</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>4</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>105</CnlNum>
+    <Active>true</Active>
+    <Name>t4</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>5</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>106</CnlNum>
+    <Active>true</Active>
+    <Name>t5</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>6</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>107</CnlNum>
+    <Active>true</Active>
+    <Name>t6</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>7</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>108</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout0</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>8</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>109</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout1</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>9</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>110</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout2</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>10</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>111</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout3</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>11</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>112</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout4</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>12</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>113</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout5</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>13</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>114</CnlNum>
+    <Active>true</Active>
+    <Name>Burnout6</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>14</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>10</FormatID>
+    <UnitID>16</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>115</CnlNum>
+    <Active>true</Active>
+    <Name>t_avg</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>15</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh>27</LimHigh>
+    <LimHighCrash>30</LimHighCrash>
+  </InCnl>
+  <InCnl>
+    <CnlNum>116</CnlNum>
+    <Active>true</Active>
+    <Name>t0_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>16</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>101</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>117</CnlNum>
+    <Active>true</Active>
+    <Name>t1_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>17</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>102</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>118</CnlNum>
+    <Active>true</Active>
+    <Name>t2_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>18</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>103</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>119</CnlNum>
+    <Active>true</Active>
+    <Name>t3_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>19</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>104</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>120</CnlNum>
+    <Active>true</Active>
+    <Name>t4_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>20</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>105</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>121</CnlNum>
+    <Active>true</Active>
+    <Name>t5_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>21</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>106</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>122</CnlNum>
+    <Active>true</Active>
+    <Name>t6_max</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>22</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>107</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>123</CnlNum>
+    <Active>true</Active>
+    <Name>t0_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>23</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>108</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>124</CnlNum>
+    <Active>true</Active>
+    <Name>t1_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>24</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>109</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>125</CnlNum>
+    <Active>true</Active>
+    <Name>t2_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>25</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>110</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>126</CnlNum>
+    <Active>true</Active>
+    <Name>t3_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>26</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>111</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>127</CnlNum>
+    <Active>true</Active>
+    <Name>t4_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>27</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>112</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>128</CnlNum>
+    <Active>true</Active>
+    <Name>t5_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>28</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>113</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>129</CnlNum>
+    <Active>true</Active>
+    <Name>t6_min</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <Signal>29</Signal>
+    <FormulaUsed>true</FormulaUsed>
+    <Formula>Cnl*200/65536 - 40</Formula>
+    <Averaging>false</Averaging>
+    <ParamID>23</ParamID>
+    <FormatID>1</FormatID>
+    <UnitID>24</UnitID>
+    <CtrlCnlNum>114</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>201</CnlNum>
+    <Active>true</Active>
+    <Name>Tag 1</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>21</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>202</CnlNum>
+    <Active>true</Active>
+    <Name>Tag 2</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>21</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>203</CnlNum>
+    <Active>true</Active>
+    <Name>Tag 3</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>21</KPNum>
+    <Signal>3</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>301</CnlNum>
+    <Active>true</Active>
+    <Name>Связь</Name>
+    <CnlTypeID>1</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>31</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Averaging>false</Averaging>
+    <ParamID>31</ParamID>
+    <FormatID>10</FormatID>
+    <UnitID>31</UnitID>
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>true</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>true</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>302</CnlNum>
+    <Active>true</Active>
+    <Name>Кол-во событий</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>31</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Averaging>false</Averaging>
+    <ParamID>34</ParamID>
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum>301</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>401</CnlNum>
+    <Active>true</Active>
+    <Name>Отправлено писем</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>41</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID>35</UnitID>
+    <CtrlCnlNum>401</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>501</CnlNum>
+    <Active>true</Active>
+    <Name>sysDescr</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>51</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>11</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>502</CnlNum>
+    <Active>true</Active>
+    <Name>sysUpTime</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>51</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>503</CnlNum>
+    <Active>true</Active>
+    <Name>sysName</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>51</KPNum>
+    <Signal>3</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>11</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>504</CnlNum>
+    <Active>true</Active>
+    <Name>sysServices</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>51</KPNum>
+    <Signal>4</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>505</CnlNum>
+    <Active>true</Active>
+    <Name>snmpInPkts</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>51</KPNum>
+    <Signal>5</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+</ArrayOfInCnl>

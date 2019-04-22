@@ -107,7 +107,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmInstanceName_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmItemName");
+            Translator.TranslateForm(this, GetType().FullName);
             Modified = false;
         }
 

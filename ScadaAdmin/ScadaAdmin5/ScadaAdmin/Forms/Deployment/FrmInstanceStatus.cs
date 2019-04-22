@@ -173,11 +173,32 @@ namespace Scada.Admin.App.Forms.Deployment
             });
         }
 
+        /// <summary>
+        /// Sends the command to the service.
+        /// </summary>
+        private void ControlService(ServiceApp serviceApp, ServiceCommand command)
+        {
+            if (agentClient != null)
+            {
+                try
+                {
+                    if (agentClient.ControlService(serviceApp, command))
+                        ScadaUiUtils.ShowInfo(AppPhrases.ServiceCommandComplete);
+                    else
+                        ScadaUiUtils.ShowError(AppPhrases.UnableControlService);
+                }
+                catch (Exception ex)
+                {
+                    appData.ProcError(ex, AppPhrases.ControlServiceError);
+                }
+            }
+        }
+
 
         private void FrmInstanceStatus_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmInstanceStatus");
+            Translator.TranslateForm(this, ctrlProfileSelector.GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName);
 
             if (ScadaUtils.IsRunningOnMono)
                 ctrlProfileSelector.Width = gbStatus.Width;
@@ -224,42 +245,34 @@ namespace Scada.Admin.App.Forms.Deployment
             Disconnect();
         }
 
+        private void btnStartServer_Click(object sender, EventArgs e)
+        {
+            ControlService(ServiceApp.Server, ServiceCommand.Start);
+        }
+
+        private void btnStopServer_Click(object sender, EventArgs e)
+        {
+            ControlService(ServiceApp.Server, ServiceCommand.Stop);
+        }
+
         private void btnRestartServer_Click(object sender, EventArgs e)
         {
-            // restart the Server service
-            if (agentClient != null)
-            {
-                try
-                {
-                    if (agentClient.ControlService(ServiceApp.Server, ServiceCommand.Restart))
-                        ScadaUiUtils.ShowInfo(AppPhrases.ServiceRestarted);
-                    else
-                        ScadaUiUtils.ShowError(AppPhrases.UnableRestartService);
-                }
-                catch (Exception ex)
-                {
-                    appData.ProcError(ex, AppPhrases.ServiceRestartError);
-                }
-            }
+            ControlService(ServiceApp.Server, ServiceCommand.Restart);
+        }
+
+        private void btnStartComm_Click(object sender, EventArgs e)
+        {
+            ControlService(ServiceApp.Comm, ServiceCommand.Start);
+        }
+
+        private void btnStopComm_Click(object sender, EventArgs e)
+        {
+            ControlService(ServiceApp.Comm, ServiceCommand.Stop);
         }
 
         private void btnRestartComm_Click(object sender, EventArgs e)
         {
-            // restart the Communicator service
-            if (agentClient != null)
-            {
-                try
-                {
-                    if (agentClient.ControlService(ServiceApp.Comm, ServiceCommand.Restart))
-                        ScadaUiUtils.ShowInfo(AppPhrases.ServiceRestarted);
-                    else
-                        ScadaUiUtils.ShowError(AppPhrases.UnableRestartService);
-                }
-                catch (Exception ex)
-                {
-                    appData.ProcError(ex, AppPhrases.ServiceRestartError);
-                }
-            }
+            ControlService(ServiceApp.Comm, ServiceCommand.Restart);
         }
 
         private async void timer_Tick(object sender, EventArgs e)

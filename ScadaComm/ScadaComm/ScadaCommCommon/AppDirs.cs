@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2019
  */
 
 using System.IO;
@@ -77,6 +77,25 @@ namespace Scada.Comm
         /// </summary>
         public string CmdDir { get; protected set; }
 
+        /// <summary>
+        /// Проверить существование директорий
+        /// </summary>
+        public bool Exist
+        {
+            get
+            {
+                string[] dirs = GetRequiredDirs();
+
+                foreach (string dir in dirs)
+                {
+                    if (!Directory.Exists(dir))
+                        return false;
+                }
+
+                return true;
+            }
+        }
+
 
         /// <summary>
         /// Инициализировать директории на основе директории исполняемого файла приложения
@@ -89,6 +108,14 @@ namespace Scada.Comm
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
             KPDir = ExeDir + "KP" + Path.DirectorySeparatorChar;
             CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
+        }
+
+        /// <summary>
+        /// Получить необходимые директории
+        /// </summary>
+        public string[] GetRequiredDirs()
+        {
+            return new string[] { ConfigDir, LangDir, LogDir, KPDir, CmdDir };
         }
     }
 }

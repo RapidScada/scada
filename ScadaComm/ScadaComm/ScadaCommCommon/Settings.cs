@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,15 +15,16 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Control
- * Summary  : SCADA-Communicator settings
+ * Module   : ScadaCommCommon
+ * Summary  : Communicator settings
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
+using Scada.Comm.Devices;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -34,8 +35,8 @@ using System.Xml;
 namespace Scada.Comm
 {
     /// <summary>
-    /// SCADA-Communicator settings
-    /// <para>Настройки SCADA-Коммуникатора</para>
+    /// Communicator settings.
+    /// <para>Настройки Коммуникатора</para>
     /// </summary>
     public class Settings : ITreeNode
     {
@@ -81,6 +82,10 @@ namespace Scada.Comm
             /// </summary>
             public int WaitForStop { get; set; }
             /// <summary>
+            /// Получить или установить признак передачи данных только изменившихся тегов КП
+            /// </summary>
+            public bool SendModData { get; set; }
+            /// <summary>
             /// Получить или установить период передачи на сервер всех данных КП, с
             /// </summary>
             public int SendAllDataPer { get; set; }
@@ -97,6 +102,7 @@ namespace Scada.Comm
                 ServerPwd = "12345";
                 ServerTimeout = 10000;
                 WaitForStop = 1000;
+                SendModData = true;
                 SendAllDataPer = 60;
             }
             /// <summary>
@@ -104,16 +110,18 @@ namespace Scada.Comm
             /// </summary>
             public CommonParams Clone()
             {
-                CommonParams commonParams = new CommonParams();
-                commonParams.ServerUse = ServerUse;
-                commonParams.ServerHost = ServerHost;
-                commonParams.ServerPort = ServerPort;
-                commonParams.ServerUser = ServerUser;
-                commonParams.ServerPwd = ServerPwd;
-                commonParams.ServerTimeout = ServerTimeout;
-                commonParams.WaitForStop = WaitForStop;
-                commonParams.SendAllDataPer = SendAllDataPer;
-                return commonParams;
+                return new CommonParams
+                {
+                    ServerUse = ServerUse,
+                    ServerHost = ServerHost,
+                    ServerPort = ServerPort,
+                    ServerUser = ServerUser,
+                    ServerPwd = ServerPwd,
+                    ServerTimeout = ServerTimeout,
+                    WaitForStop = WaitForStop,
+                    SendModData = SendModData,
+                    SendAllDataPer = SendAllDataPer
+                };
             }
         }
 
@@ -137,7 +145,7 @@ namespace Scada.Comm
 
                 ReqTriesCnt = 3;
                 CycleDelay = 0;
-                CmdEnabled = false;
+                CmdEnabled = true;
                 ReqAfterCmd = false;
                 DetailedLog = true;
 
@@ -298,7 +306,7 @@ namespace Scada.Comm
                 Timeout = 0;
                 Delay = 0;
                 Time = DateTime.MinValue;
-                Period = new TimeSpan(0);
+                Period = TimeSpan.Zero;
                 CmdLine = "";
                 Parent = null;
             }
@@ -401,7 +409,18 @@ namespace Scada.Comm
                 };
             }
             /// <summary>
-            /// Получить обозначение линии связи
+            /// Sets the request parameters.
+            /// </summary>
+            public void SetReqParams(KPReqParams reqParams)
+            {
+                Timeout = reqParams.Timeout;
+                Delay = reqParams.Delay;
+                Time = reqParams.Time;
+                Period = reqParams.Period;
+                CmdLine = reqParams.CmdLine;
+            }
+            /// <summary>
+            /// Получить обозначение КП
             /// </summary>
             public static string GetCaption(int number, object name)
             {
@@ -502,6 +521,8 @@ namespace Scada.Comm
                             Params.ServerTimeout = int.Parse(val);
                         else if (nameL == "waitforstop")
                             Params.WaitForStop = int.Parse(val);
+                        else if (nameL == "sendmoddata")
+                            Params.SendModData = bool.Parse(val);
                         else if (nameL == "sendalldataper")
                             Params.SendAllDataPer = int.Parse(val);
                     }
@@ -544,11 +565,13 @@ namespace Scada.Comm
         /// </summary>
         private CommLine LoadCommLine(XmlElement commLineElem)
         {
-            CommLine commLine = new CommLine();
-            commLine.Active = commLineElem.GetAttrAsBool("active");
-            commLine.Bind = commLineElem.GetAttrAsBool("bind");
-            commLine.Name = commLineElem.GetAttribute("name");
-            commLine.Number = commLineElem.GetAttrAsInt("number");
+            CommLine commLine = new CommLine
+            {
+                Active = commLineElem.GetAttrAsBool("active"),
+                Bind = commLineElem.GetAttrAsBool("bind"),
+                Name = commLineElem.GetAttribute("name"),
+                Number = commLineElem.GetAttrAsInt("number")
+            };
 
             // загрузка канала связи 
             XmlElement commChannelElem = commLineElem.SelectSingleNode("CommChannel") as XmlElement;
@@ -644,32 +667,27 @@ namespace Scada.Comm
                     string kpNumStr = kpElem.GetAttribute("number");
                     try
                     {
-                        KP kp = new KP();
-                        kp.Active = kpElem.GetAttrAsBool("active");
-                        kp.Bind = kpElem.GetAttrAsBool("bind");
-                        kp.Number = kpElem.GetAttrAsInt("number");
-                        kp.Name = kpElem.GetAttribute("name");
-                        kp.Dll = kpElem.GetAttribute("dll");
+                        KP kp = new KP
+                        {
+                            Active = kpElem.GetAttrAsBool("active"),
+                            Bind = kpElem.GetAttrAsBool("bind"),
+                            Number = kpElem.GetAttrAsInt("number"),
+                            Name = kpElem.GetAttribute("name"),
+                            Dll = kpElem.GetAttribute("dll"),
+                            Address = kpElem.GetAttrAsInt("address"),
+                            CallNum = kpElem.GetAttribute("callNum"),
+                            Timeout = kpElem.GetAttrAsInt("timeout"),
+                            Delay = kpElem.GetAttrAsInt("delay"),
+                            Time = kpElem.GetAttrAsDateTime("time"),
+                            Period = kpElem.GetAttrAsTimeSpan("period"),
+                            CmdLine = kpElem.GetAttribute("cmdLine"),
+                            Parent = commLine
+                        };
+
                         if (!kp.Dll.EndsWith(".dll", StringComparison.OrdinalIgnoreCase))
                             kp.Dll += ".dll";
-                        kp.CallNum = kpElem.GetAttribute("callNum");
-                        kp.CmdLine = kpElem.GetAttribute("cmdLine");
+
                         commLine.ReqSequence.Add(kp);
-
-                        string address = kpElem.GetAttribute("address");
-                        if (address != "")
-                            kp.Address = kpElem.GetAttrAsInt("address");
-
-                        kp.Timeout = kpElem.GetAttrAsInt("timeout");
-                        kp.Delay = kpElem.GetAttrAsInt("delay");
-
-                        string time = kpElem.GetAttribute("time");
-                        if (time != "")
-                            kp.Time = kpElem.GetAttrAsDateTime("time");
-
-                        string period = kpElem.GetAttribute("period");
-                        if (period != "")
-                            kp.Period = kpElem.GetAttrAsTimeSpan("period");
                     }
                     catch (Exception ex)
                     {
@@ -799,9 +817,11 @@ namespace Scada.Comm
                 paramsElem.AppendParamElem("ServerTimeout", Params.ServerTimeout,
                     "Таймаут ожидания ответа SCADA-Сервера, мс", "SCADA-Server response timeout, ms");
                 paramsElem.AppendParamElem("WaitForStop", Params.WaitForStop,
-                    "Ожидание остановки линий связи, мс", "Waiting for the communication lines temrination, ms");
+                    "Ожидание остановки линий связи, мс", "Wait for communication lines termination, ms");
+                paramsElem.AppendParamElem("SendModData", Params.SendModData,
+                    "Передавать только изменившиеся теги КП", "Send only modified device tags");
                 paramsElem.AppendParamElem("SendAllDataPer", Params.SendAllDataPer,
-                    "Период передачи всех данных КП, с", "Sending all device data period, sec");
+                    "Период передачи всех тегов КП, с", "Period of sending all device tags, sec");
 
                 // Линии связи
                 rootElem.AppendChild(xmlDoc.CreateComment(

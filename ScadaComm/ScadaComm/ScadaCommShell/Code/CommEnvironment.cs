@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent.Connector;
 using Scada.Comm.Devices;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using Utils;
 
 namespace Scada.Comm.Shell.Code
@@ -38,14 +39,32 @@ namespace Scada.Comm.Shell.Code
     public class CommEnvironment
     {
         /// <summary>
-        /// Gets or sets the application directories.
+        /// The user interface of the drivers accessed by full file name.
         /// </summary>
-        public AppDirs AppDirs { get; set; }
+        protected Dictionary<string, KPView> kpViews;
+
+        
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        public CommEnvironment(AppDirs appDirs, Log errLog)
+        {
+            kpViews = new Dictionary<string, KPView>();
+
+            AppDirs = appDirs ?? throw new ArgumentNullException("appDirs");
+            ErrLog = errLog ?? throw new ArgumentNullException("errLog");
+        }
+
 
         /// <summary>
-        /// Gets or sets the user interface of the drivers accessed by full file name.
+        /// Gets the application directories.
         /// </summary>
-        public Dictionary<string, KPView> KPViews { get; set; }
+        public AppDirs AppDirs { get; protected set; }
+
+        /// <summary>
+        /// Gets the application error log.
+        /// </summary>
+        public Log ErrLog { get; protected set; }
 
         /// <summary>
         /// Gets or sets the client of the Agent service.
@@ -53,25 +72,17 @@ namespace Scada.Comm.Shell.Code
         /// <remarks>Null allowed.</remarks>
         public IAgentClient AgentClient { get; set; }
 
-        /// <summary>
-        /// Gets the application error log.
-        /// </summary>
-        public Log ErrLog { get; set; }
-
 
         /// <summary>
-        /// Validates the environment and throws an exception if it is incorrect.
+        /// Gets information about available driver files.
         /// </summary>
-        public void Validate()
+        internal FileInfo[] GetDrivers()
         {
-            if (AppDirs == null)
-                throw new InvalidOperationException("AppDirs must not be null.");
+            DirectoryInfo dirInfo = new DirectoryInfo(AppDirs.KPDir);
 
-            if (KPViews == null)
-                throw new InvalidOperationException("KPViews must not be null.");
-
-            if (ErrLog == null)
-                throw new InvalidOperationException("ErrLog must not be null.");
+            return dirInfo.Exists ?
+                dirInfo.GetFiles("Kp*.dll", SearchOption.TopDirectoryOnly) :
+                new FileInfo[0];
         }
 
         /// <summary>
@@ -79,14 +90,50 @@ namespace Scada.Comm.Shell.Code
         /// </summary>
         public KPView GetKPView(string dllPath)
         {
-            if (!KPViews.TryGetValue(dllPath, out KPView kpView))
+            if (!kpViews.TryGetValue(dllPath, out KPView kpView))
             {
                 kpView = KPFactory.GetKPView(dllPath);
                 kpView.AppDirs = AppDirs;
-                KPViews[dllPath] = kpView;
+                kpViews[dllPath] = kpView;
             }
 
             return kpView;
+        }
+
+        /// <summary>
+        /// Gets the user interface of the particular device.
+        /// </summary>
+        public KPView GetKPView(string dllPath, int kpNum, KPView.KPProperties kpProps)
+        {
+            KPView commonKpView = GetKPView(dllPath);
+            KPView kpView = KPFactory.GetKPView(commonKpView.GetType(), kpNum);
+            kpView.KPProps = kpProps ?? throw new ArgumentNullException("kpProps");
+            kpView.AppDirs = AppDirs;
+            return kpView;
+        }
+
+        /// <summary>
+        /// Gets a user interface object for the device.
+        /// </summary>
+        public bool TryGetKPView(Settings.KP kp, bool common, SortedList<string, string> customParams, 
+            out KPView kpView, out string errMsg)
+        {
+            try
+            {
+                string dllPath = Path.Combine(AppDirs.KPDir, kp.Dll);
+                kpView = common ?
+                    GetKPView(dllPath) :
+                    GetKPView(dllPath, kp.Number, new KPView.KPProperties(customParams, kp.CmdLine));
+                errMsg = null;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ErrLog.WriteException(ex);
+                kpView = null;
+                errMsg = ex.Message;
+                return false;
+            }
         }
     }
 }

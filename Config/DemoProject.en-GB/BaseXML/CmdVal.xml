@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCmdVal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CmdVal>
+    <CmdValID>1</CmdValID>
+    <Name>Off</Name>
+    <Val>Off</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>2</CmdValID>
+    <Name>On</Name>
+    <Val>; On</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>3</CmdValID>
+    <Name>Off - On</Name>
+    <Val>Off; On</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>4</CmdValID>
+    <Name>Execute</Name>
+    <Val>; Execute</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>5</CmdValID>
+    <Name>Disarm - Arm</Name>
+    <Val>Disarm; Arm</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>6</CmdValID>
+    <Name>Alarm commands 1</Name>
+    <Val>Disarm; Arm; Off; On; Reset; Start</Val>
+  </CmdVal>
+</ArrayOfCmdVal>

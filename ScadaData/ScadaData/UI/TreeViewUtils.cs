@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -163,6 +163,43 @@ namespace Scada.UI
         }
 
         /// <summary>
+        /// Найти узел дерева заданного типа среди узлов одного уровня
+        /// </summary>
+        public static TreeNode FindSibling(this TreeNode treeNode, Type tagType)
+        {
+            if (tagType == null)
+                throw new ArgumentNullException("tagType");
+
+            if (treeNode != null && treeNode.Parent != null)
+            {
+                foreach (TreeNode childNode in treeNode.Parent.Nodes)
+                {
+                    if (tagType.IsInstanceOfType(childNode.Tag))
+                        return childNode;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// Найти узел дерева заданного типа среди узлов одного уровня
+        /// </summary>
+        public static TreeNode FindSibling(this TreeNode treeNode, string nodeType)
+        {
+            if (treeNode != null && treeNode.Parent != null)
+            {
+                foreach (TreeNode childNode in treeNode.Parent.Nodes)
+                {
+                    if (childNode.Tag is TreeNodeTag tag && tag.NodeType == nodeType)
+                        return childNode;
+                }
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Проверить, имеет ли тег узла дерева указанный тип
         /// </summary>
         public static bool TagIs(this TreeNode treeNode, string nodeType)
@@ -240,6 +277,7 @@ namespace Scada.UI
             if (GetRelatedObject(parentNode) is ITreeNode parentObj &&
                 GetRelatedObject(nodeToAdd) is ITreeNode objToAdd)
             {
+                objToAdd.Parent = parentObj;
                 treeView.Add(parentNode, nodeToAdd, parentObj.Children, objToAdd);
             }
         }
@@ -281,6 +319,7 @@ namespace Scada.UI
             if (GetRelatedObject(parentNode) is ITreeNode parentObj &&
                 GetRelatedObject(nodeToInsert) is ITreeNode objToInsert)
             {
+                objToInsert.Parent = parentObj;
                 treeView.Insert(parentNode, nodeToInsert, parentObj.Children, objToInsert);
             }
         }

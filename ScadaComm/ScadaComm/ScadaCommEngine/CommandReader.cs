@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
+ * Module   : ScadaCommEngine
  * Summary  : Receive commands via TCP and files
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2008
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -36,16 +36,16 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Receive commands via TCP and files
-    /// <para>Приём команд по протоколу TCP и через файлы</para>
+    /// Receive commands via TCP and files.
+    /// <para>Приём команд по протоколу TCP и через файлы.</para>
     /// </summary>
     internal sealed class CommandReader
     {
-        private Manager mngr;            // менеджер, управляющий работой программы
-        private ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
-        private string cmdDir;           // директория команд
-        private Log log;                 // ссылка на основной log-файл программы
-        private Thread thread;           // поток приёма команд
+        private readonly Manager mngr;            // менеджер, управляющий работой программы
+        private readonly ServerCommEx serverComm; // ссылка на объект обмена данными со SCADA-Сервером
+        private readonly string cmdDir;           // директория команд
+        private readonly Log log;                 // ссылка на основной log-файл программы
+        private Thread thread;                    // поток приёма команд
 
 
         /// <summary>
@@ -53,10 +53,7 @@ namespace Scada.Comm.Engine
         /// </summary>
         public CommandReader(Manager mngr)
         {
-            if (mngr == null)
-                throw new ArgumentNullException("mngr");
-
-            this.mngr = mngr;
+            this.mngr = mngr ?? throw new ArgumentNullException("mngr");
             serverComm = mngr.ServerComm;
             cmdDir = mngr.AppDirs.CmdDir;
             log = mngr.AppLog;
@@ -121,25 +118,20 @@ namespace Scada.Comm.Engine
 
                 foreach (FileInfo fileInfo in fileInfoAr)
                 {
-                    string cmdType;
-                    Dictionary<string, string> cmdParams;
-                    Command cmd;
-
-                    if (LoadCmdFromFile(fileInfo.FullName, out cmdType, out cmdParams, out cmd))
+                    if (LoadCmdFromFile(fileInfo.FullName, 
+                        out string cmdType, out Dictionary<string, string> cmdParams, out Command cmd))
                     {
                         if (cmd == null)
                         {
-                            // команда не относится к КП
-                            string lineNumStr;
-                            int lineNum;
-                            if ((cmdType == "startline" || cmdType == "stopline" || cmdType == "restartline") &&
-                                cmdParams.TryGetValue("linenum", out lineNumStr) &&
-                                int.TryParse(lineNumStr, out lineNum))
+                            // команда относится не к КП, а к линии связи
+                            if (Enum.TryParse(cmdType, true, out CommLineCmd commLineCmd) &&
+                                cmdParams.TryGetValue("linenum", out string lineNumStr) &&
+                                int.TryParse(lineNumStr, out int lineNum))
                             {
                                 // запуск или остановка линии связи
-                                if (cmdType == "startline")
+                                if (commLineCmd == CommLineCmd.StartLine)
                                     mngr.StartCommLine(lineNum);
-                                else if (cmdType == "stopline")
+                                else if (commLineCmd == CommLineCmd.StopLine)
                                     mngr.StopCommLine(lineNum);
                                 else
                                     mngr.RestartCommLine(lineNum);

@@ -1,0 +1,222 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCtrlCnl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CtrlCnl>
+    <CtrlCnlNum>101</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t0_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>1</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>102</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t1_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>2</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>103</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t2_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>3</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>104</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t3_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>4</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>105</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t4_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>5</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>106</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t5_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>6</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>107</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t6_max</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>7</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>108</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t0_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>11</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>109</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t1_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>12</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>110</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t2_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>13</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>111</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t3_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>14</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>112</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t4_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>15</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>113</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t5_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>16</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>114</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Reset t6_min</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>11</KPNum>
+    <CmdNum>17</CmdNum>
+    <CmdValID>4</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>301</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Send message</Name>
+    <CmdTypeID>1</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>31</KPNum>
+    <CmdNum>1</CmdNum>
+    <CmdValID xsi:nil="true" />
+    <FormulaUsed>false</FormulaUsed>
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>302</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>AT command</Name>
+    <CmdTypeID>1</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>31</KPNum>
+    <CmdNum>2</CmdNum>
+    <CmdValID xsi:nil="true" />
+    <FormulaUsed>false</FormulaUsed>
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>401</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Send email</Name>
+    <CmdTypeID>1</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>41</KPNum>
+    <CmdNum>1</CmdNum>
+    <CmdValID xsi:nil="true" />
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+</ArrayOfCtrlCnl>

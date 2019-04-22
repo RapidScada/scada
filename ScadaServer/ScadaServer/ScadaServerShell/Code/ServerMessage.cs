@@ -25,7 +25,7 @@
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
 
-namespace Scada.Comm.Shell.Code
+namespace Scada.Server.Shell.Code
 {
     /// <summary>
     /// Messages sent by Server forms.

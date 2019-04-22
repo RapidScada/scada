@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Comm.Shell.Code;
 using Scada.Server.Modules;
 using Scada.Server.Shell.Code;
 using Scada.UI;
@@ -179,20 +178,11 @@ namespace Scada.Server.Shell.Forms
 
                 try
                 {
-                    if (environment.ModuleViews.TryGetValue(moduleItem.FilePath, out ModView modView))
+                    if (File.Exists(moduleItem.FilePath))
                     {
+                        ModView modView = environment.GetModuleView(moduleItem.FilePath);
                         moduleItem.Descr = CorrectItemDescr(modView.Descr);
                         moduleItem.ModView = modView;
-                    }
-                    else if (File.Exists(moduleItem.FilePath))
-                    {
-                        modView = ModFactory.GetModView(moduleItem.FilePath);
-                        modView.AppDirs = environment.AppDirs;
-
-                        moduleItem.Descr = CorrectItemDescr(modView.Descr);
-                        moduleItem.ModView = modView;
-
-                        environment.ModuleViews[moduleItem.FilePath] = modView;
                     }
                     else
                     {
@@ -265,7 +255,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmModules_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmModules");
+            Translator.TranslateForm(this, GetType().FullName);
             SettingsToControls();
             FillUnusedModules();
             SetButtonsEnabled();

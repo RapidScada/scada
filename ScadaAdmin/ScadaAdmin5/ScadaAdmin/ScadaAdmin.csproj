@@ -94,6 +94,13 @@
     <Compile Include="Code\AppNodeType.cs" />
     <Compile Include="Code\AppPhrases.cs" />
     <Compile Include="Code\AppState.cs" />
+    <Compile Include="Code\AppUtils.cs" />
+    <Compile Include="Code\BaseTableItem.cs" />
+    <Compile Include="Code\CnlMap.cs" />
+    <Compile Include="Code\ColumnKind.cs" />
+    <Compile Include="Code\ColumnLength.cs" />
+    <Compile Include="Code\ColumnOptions.cs" />
+    <Compile Include="Code\IntegrityCheck.cs" />
     <Compile Include="Code\ColumnBuilder.cs" />
     <Compile Include="Code\AppMessage.cs" />
     <Compile Include="Code\ContextMenus.cs" />
@@ -101,10 +108,11 @@
     <Compile Include="Code\FileCreator.cs" />
     <Compile Include="Code\FileItem.cs" />
     <Compile Include="Code\FormOperatingMode.cs" />
-    <Compile Include="Code\FormState.cs" />
+    <Compile Include="Code\MainFormState.cs" />
     <Compile Include="Code\CommDirs.cs" />
     <Compile Include="Code\KnownFileType.cs" />
     <Compile Include="Code\LiveInstance.cs" />
+    <Compile Include="Code\RecentSelection.cs" />
     <Compile Include="Code\ServerDirs.cs" />
     <Compile Include="Controls\Deployment\CtrlProfileSelector.cs">
       <SubType>UserControl</SubType>
@@ -118,11 +126,29 @@
     <Compile Include="Controls\Deployment\CtrlTransferSettings.Designer.cs">
       <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\Deployment\FrmConnSettings.cs">
+    <Compile Include="Controls\Tools\CtrlCnlCreate1.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate1.Designer.cs">
+      <DependentUpon>CtrlCnlCreate1.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate2.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate2.Designer.cs">
+      <DependentUpon>CtrlCnlCreate2.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate3.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\Tools\CtrlCnlCreate3.Designer.cs">
+      <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmProfileEdit.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\Deployment\FrmConnSettings.Designer.cs">
-      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    <Compile Include="Forms\Deployment\FrmProfileEdit.Designer.cs">
+      <DependentUpon>FrmProfileEdit.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Deployment\FrmInstanceProfile.cs">
       <SubType>Form</SubType>
@@ -154,14 +180,95 @@
     <Compile Include="Forms\FrmAbout.designer.cs">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmBaseTable.cs">
+    <Compile Include="Forms\FrmStartPage.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\FrmBaseTable.Designer.cs">
+    <Compile Include="Forms\FrmStartPage.Designer.cs">
+      <DependentUpon>FrmStartPage.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmTableImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTableImport.Designer.cs">
+      <DependentUpon>FrmTableImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmTableExport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmTableExport.Designer.cs">
+      <DependentUpon>FrmTableExport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmBaseTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmBaseTable.Designer.cs">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\FrmBaseTableGeneric.cs">
+    <Compile Include="Forms\Tables\FrmColorSelect.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmColorSelect.designer.cs">
+      <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmFind.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmFind.designer.cs">
+      <DependentUpon>FrmFind.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmCtrlCnlProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmCtrlCnlProps.designer.cs">
+      <DependentUpon>FrmCtrlCnlProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmInCnlProps.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmInCnlProps.designer.cs">
+      <DependentUpon>FrmInCnlProps.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmSourceCode.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmSourceCode.designer.cs">
+      <DependentUpon>FrmSourceCode.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlCreate.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlCreate.Designer.cs">
+      <DependentUpon>FrmCnlCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCommImport.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCommImport.Designer.cs">
+      <DependentUpon>FrmCommImport.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCommSync.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCommSync.Designer.cs">
+      <DependentUpon>FrmCommSync.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmDeviceAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmDeviceAdd.Designer.cs">
+      <DependentUpon>FrmDeviceAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlClone.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlClone.Designer.cs">
+      <DependentUpon>FrmCnlClone.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCulture.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCulture.Designer.cs">
+      <DependentUpon>FrmCulture.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmFileNew.cs">
       <SubType>Form</SubType>
@@ -205,6 +312,24 @@
     <Compile Include="Forms\FrmTextEditor.Designer.cs">
       <DependentUpon>FrmTextEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Tools\FrmCnlMap.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmCnlMap.Designer.cs">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmLineAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmLineAdd.Designer.cs">
+      <DependentUpon>FrmLineAdd.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tools\FrmSettings.Designer.cs">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Controls\Deployment\CtrlProfileSelector.resx">
@@ -213,8 +338,17 @@
     <EmbeddedResource Include="Controls\Deployment\CtrlTransferSettings.resx">
       <DependentUpon>CtrlTransferSettings.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\Deployment\FrmConnSettings.resx">
-      <DependentUpon>FrmConnSettings.cs</DependentUpon>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate1.resx">
+      <DependentUpon>CtrlCnlCreate1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate2.resx">
+      <DependentUpon>CtrlCnlCreate2.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate3.resx">
+      <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmProfileEdit.resx">
+      <DependentUpon>FrmProfileEdit.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmInstanceProfile.resx">
       <DependentUpon>FrmInstanceProfile.cs</DependentUpon>
@@ -231,8 +365,50 @@
     <EmbeddedResource Include="Forms\FrmAbout.resx">
       <DependentUpon>FrmAbout.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\FrmBaseTable.resx">
+    <EmbeddedResource Include="Forms\FrmStartPage.resx">
+      <DependentUpon>FrmStartPage.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTableImport.resx">
+      <DependentUpon>FrmTableImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmTableExport.resx">
+      <DependentUpon>FrmTableExport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmBaseTable.resx">
       <DependentUpon>FrmBaseTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmColorSelect.resx">
+      <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmFind.resx">
+      <DependentUpon>FrmFind.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmCtrlCnlProps.resx">
+      <DependentUpon>FrmCtrlCnlProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmInCnlProps.resx">
+      <DependentUpon>FrmInCnlProps.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmSourceCode.resx">
+      <DependentUpon>FrmSourceCode.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCnlCreate.resx">
+      <DependentUpon>FrmCnlCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCommImport.resx">
+      <DependentUpon>FrmCommImport.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCommSync.resx">
+      <DependentUpon>FrmCommSync.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmDeviceAdd.resx">
+      <DependentUpon>FrmDeviceAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCnlClone.resx">
+      <DependentUpon>FrmCnlClone.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCulture.resx">
+      <DependentUpon>FrmCulture.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmFileNew.resx">
       <DependentUpon>FrmFileNew.cs</DependentUpon>
@@ -254,6 +430,15 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmTextEditor.resx">
       <DependentUpon>FrmTextEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmCnlMap.resx">
+      <DependentUpon>FrmCnlMap.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmLineAdd.resx">
+      <DependentUpon>FrmLineAdd.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tools\FrmSettings.resx">
+      <DependentUpon>FrmSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -327,7 +512,11 @@
     </Content>
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </Content>
+    <None Include="Resources\warning.png" />
+    <None Include="Resources\success.png" />
+    <None Include="Resources\error.png" />
     <None Include="Resources\file.png" />
     <None Include="Resources\chrome.png" />
     <None Include="Resources\ui.png" />

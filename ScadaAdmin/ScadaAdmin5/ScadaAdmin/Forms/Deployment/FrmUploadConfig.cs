@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -96,22 +96,6 @@ namespace Scada.Admin.App.Forms.Deployment
         
         
         /// <summary>
-        /// Validate the upload configuration settings.
-        /// </summary>
-        private bool ValidateUploadSettings()
-        {
-            if (ctrlTransferSettings.Empty)
-            {
-                ScadaUiUtils.ShowError(AppPhrases.NothingToUpload);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-        }
-        
-        /// <summary>
         /// Save the deployments settings.
         /// </summary>
         private void SaveDeploymentSettings()
@@ -154,11 +138,17 @@ namespace Scada.Admin.App.Forms.Deployment
                 agentClient.UploadConfig(configFileName, profile.UploadSettings.ToConfigOpions());
 
                 // restart the services
-                if (profile.UploadSettings.IncludeServer)
+                if (profile.UploadSettings.RestartServer &&
+                    (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeServer))
+                {
                     agentClient.ControlService(ServiceApp.Server, ServiceCommand.Restart);
+                }
 
-                if (profile.UploadSettings.IncludeComm)
+                if (profile.UploadSettings.RestartComm &&
+                    (profile.UploadSettings.IncludeBase || profile.UploadSettings.IncludeComm))
+                {
                     agentClient.ControlService(ServiceApp.Comm, ServiceCommand.Restart);
+                }
 
                 // show result
                 Cursor = Cursors.Default;
@@ -181,11 +171,11 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
 
-        private void FrmDownloadConfig_Load(object sender, EventArgs e)
+        private void FrmUploadConfig_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlProfileSelector");
-            Translator.TranslateForm(this, "Scada.Admin.App.Controls.Deployment.CtrlTransferSettings");
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.Deployment.FrmUploadConfig");
+            Translator.TranslateForm(this, ctrlProfileSelector.GetType().FullName);
+            Translator.TranslateForm(this, ctrlTransferSettings.GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName);
 
             if (ScadaUtils.IsRunningOnMono)
             {
@@ -240,7 +230,7 @@ namespace Scada.Admin.App.Forms.Deployment
             // validate settings and upload
             DeploymentProfile profile = ctrlProfileSelector.SelectedProfile;
 
-            if (profile != null && ValidateUploadSettings())
+            if (profile != null && ctrlTransferSettings.ValidateFields())
             {
                 // save the settings changes
                 if (uploadSettingsModified)

@@ -177,7 +177,7 @@ namespace Scada.Server.Modules.DBExport
             byte[] cmdData = Encoding.Default.GetBytes(cmdDataStr);
 
             if (ServerComm.SendBinaryCommand(0, ctrlCnlNum, cmdData, out result))
-                ScadaUiUtils.ShowInfo(CommonPhrases.CmdSentSuccessfully);
+                ScadaUiUtils.ShowInfo(ModPhrases.CmdSentSuccessfully);
             else
                 ScadaUiUtils.ShowError(ServerComm.ErrMsg);
         }

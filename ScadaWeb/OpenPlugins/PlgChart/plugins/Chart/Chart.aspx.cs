@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -52,7 +52,7 @@ namespace Scada.Web.Plugins.Chart
             // получение параметров запроса
             int cnlNum = Request.QueryString.GetParamAsInt("cnlNum");
             int viewID = Request.QueryString.GetParamAsInt("viewID");
-            DateTime startDate = Request.QueryString.GetParamAsDate();
+            DateTime startDate = Request.QueryString.GetParamAsDate(DateTime.Today);
 
             // проверка входа в систему и прав
             if (!userData.LoggedOn)

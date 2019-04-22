@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Table.TableView">
+    <Phrase key="LoadTableViewError">Ошибка при загрузке табличного представления из файла</Phrase>
+    <Phrase key="SaveTableViewError">Ошибка при сохранении табличного представления в файле</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmItemInfo">
+    <Phrase key="this">Информация об элементе</Phrase>
+    <Phrase key="gbInCnl">Входной канал</Phrase>
+    <Phrase key="lblInCnl">Канал</Phrase>
+    <Phrase key="lblInCnlObj">Объект</Phrase>
+    <Phrase key="lblInCnlKP">КП</Phrase>
+    <Phrase key="gbCtrlCnl">Канал управления</Phrase>
+    <Phrase key="lblCtrlCnl">Канал</Phrase>
+    <Phrase key="lblCtrlCnlObj">Объект</Phrase>
+    <Phrase key="lblCtrlCnlKP">КП</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="miFile">&amp;Файл</Phrase>
+    <Phrase key="miFileNew">Новый</Phrase>
+    <Phrase key="miFileOpen">Открыть...</Phrase>
+    <Phrase key="miFileSave">Сохранить</Phrase>
+    <Phrase key="miFileSaveAs">Сохранить как...</Phrase>
+    <Phrase key="miFileExit">Выход</Phrase>
+    <Phrase key="miHelp">&amp;Справка</Phrase>
+    <Phrase key="miHelpAbout">О программе</Phrase>
+    <Phrase key="btnFileNew.ToolTip">Новая таблица (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Открыть таблицу (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Сохранить таблицу (Ctrl+S)</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Обновить базу конфигурации</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Добавить элемент</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Добавить пустой элемент</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Переместить элемент вверх</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Переместить элемент вниз</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Удалить выбранные элементы</Phrase>
+    <Phrase key="btnItemInfo.ToolTip">Показать информацию об элементе</Phrase>
+    <Phrase key="miDeviceAddItems">Добавить все элементы</Phrase>
+    <Phrase key="cbCnlKind.Items[0]">Входные каналы</Phrase>
+    <Phrase key="cbCnlKind.Items[1]">Каналы управления</Phrase>
+    <Phrase key="lblHint">Нажмите Enter или дважды щелкните узел, чтобы добавить его в таблицу. Щелкните правой кнопкой мыши узел КП, чтобы отобразить контекстное меню.</Phrase>
+    <Phrase key="colItemCnlNum">Входной канал</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Канал управления</Phrase>
+    <Phrase key="colItemCaption">Обозначение</Phrase>
+    <Phrase key="colItemHidden">Скрыть</Phrase>
+    <Phrase key="EditorTitle">{0} - Редактор таблиц</Phrase>
+    <Phrase key="DefaultTableTitle">Заголовок таблицы</Phrase>
+    <Phrase key="TableFileFilter">Табличные представления (*.tbl)|*.tbl|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="SaveTableConfirm">Табличное представление было изменено. Сохранить изменения?</Phrase>
+    <Phrase key="BaseNotFound">База конфигурации не найдена</Phrase>
+    <Phrase key="EmptyDeviceNode">Пустой КП</Phrase>
+    <Phrase key="LoadConfigBaseError">Ошибка при загрузке базы конфигурации</Phrase>
+    <Phrase key="FillCnlTreeError">Ошибка при заполнении дерева каналов</Phrase>
+    <Phrase key="LoadFormStateError">Ошибка при загрузке состояния формы</Phrase>
+    <Phrase key="SaveFormStateError">Ошибка при сохранении состояния формы</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">События</Phrase>
+    <Phrase key="AllEventsTitle">Все события, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="EventsGen">Получено </Phrase>
+    <Phrase key="NumCol">Номер</Phrase>
+    <Phrase key="TimeCol">Дата и время</Phrase>
+    <Phrase key="ObjCol">Объект</Phrase>
+    <Phrase key="DevCol">КП</Phrase>
+    <Phrase key="CnlCol">Канал</Phrase>
+    <Phrase key="TextCol">Описание</Phrase>
+    <Phrase key="AckCol">Квит</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Часовые данные</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Получено </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">События</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Команда - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Канал управления {0} не найден.</Phrase>
+    <Phrase key="lblWrongPwd">Неверный пароль.</Phrase>
+    <Phrase key="lblNoRights">Недостаточно прав.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Некорректное значение команды.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Некорректные данные команды.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Канал упр.:</Phrase>
+    <Phrase key="lblObjCaption">Объект:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="lblCmdVal">Значение</Phrase>
+    <Phrase key="lblCommand">Команда</Phrase>
+    <Phrase key="lblCmdData">Данные</Phrase>
+    <Phrase key="lblStr">Строка</Phrase>
+    <Phrase key="lblHex">16-ричные данные</Phrase>
+    <Phrase key="lblCmdEnqueded">Команда поставлена в очередь на выполнение.</Phrase>
+    <Phrase key="lblCloseAfter">Окно будет закрыто через</Phrase>
+    <Phrase key="lblSec">с.</Phrase>
+    <Phrase key="lblCmdNotSent">Невозможно отправить команду. Сервер недоступен.</Phrase>
+    <Phrase key="lblCmdRejected">Команда отклонена сервером.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Квитирование события - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Событие не найдено.</Phrase>
+    <Phrase key="lblAckNotSent">Невозможно отправить команду квитирования. Сервер недоступен.</Phrase>
+    <Phrase key="lblAckRejected">Команда квитирования отклонена сервером.</Phrase>
+    <Phrase key="lblNumCaption">Номер:</Phrase>
+    <Phrase key="lblTimeCaption">Дата и время:</Phrase>
+    <Phrase key="lblObjCaption">Объект:</Phrase>
+    <Phrase key="lblDevCaption">КП:</Phrase>
+    <Phrase key="lblCnlCaption">Канал:</Phrase>
+    <Phrase key="lblTextCaption">Описание:</Phrase>
+    <Phrase key="lblAckCaption">Квитирование:</Phrase>
+    <Phrase key="lblByUser">пользователем {0}</Phrase>
+    <Phrase key="lblTip">Нажмите кнопку OK, чтобы квитировать событие.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Все события</Phrase>
+    <Phrase key="lblEventsByViewBtn">По представлению</Phrase>
+    <Phrase key="lblNumCol">Номер</Phrase>
+    <Phrase key="lblTimeCol">Дата и время</Phrase>
+    <Phrase key="lblObjCol">Объект</Phrase>
+    <Phrase key="lblDevCol">КП</Phrase>
+    <Phrase key="lblCnlCol">Канал</Phrase>
+    <Phrase key="lblTextCol">Описание</Phrase>
+    <Phrase key="lblAckCol">Квит</Phrase>
+    <Phrase key="lblNoEvents">Нет событий</Phrase>
+    <Phrase key="lblLoading">Загрузка...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Ошибка при обновлении событий</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">Выбранные сутки:</Phrase>
+    <Phrase key="PreviousDay">Предыдущие сутки:</Phrase>
+    <Phrase key="PrevDayItem">Пред. </Phrase>
+    <Phrase key="ItemCol">Элемент</Phrase>
+    <Phrase key="CurCol">Текущие</Phrase>
+    <Phrase key="InCnlHint">Вх. канал: </Phrase>
+    <Phrase key="CtrlCnlHint">Канал упр.: </Phrase>
+    <Phrase key="ObjectHint">Объект: </Phrase>
+    <Phrase key="DeviceHint">КП: </Phrase>
+    <Phrase key="QuantityHint">Величина: </Phrase>
+    <Phrase key="UnitHint">Размерность: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Ошибка при обновлении текущих данных</Phrase>
+    <Phrase key="UpdateHourDataError">Ошибка при обновлении часовых данных</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

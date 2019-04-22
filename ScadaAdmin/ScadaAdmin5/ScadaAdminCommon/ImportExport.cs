@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,16 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using Scada.Agent;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.IO;
@@ -53,9 +55,12 @@ namespace Scada.Admin
                 {
                     foreach (ZipArchiveEntry zipEntry in zipArchive.Entries)
                     {
-                        string destFileName = Path.Combine(destDir, zipEntry.FullName);
-                        Directory.CreateDirectory(Path.GetDirectoryName(destFileName));
-                        zipEntry.ExtractToFile(destFileName, true);
+                        string entryName = zipEntry.FullName.Replace('/', Path.DirectorySeparatorChar);
+                        string absPath = Path.Combine(destDir, entryName);
+                        Directory.CreateDirectory(Path.GetDirectoryName(absPath));
+
+                        if (entryName[entryName.Length - 1] != Path.DirectorySeparatorChar)
+                            zipEntry.ExtractToFile(absPath, true);
                     }
                 }
             }
@@ -149,6 +154,34 @@ namespace Scada.Admin
                     zipArchive.CreateEntryFromFile(fileInfo.FullName, entryName, CompressionLevel.Fastest);
                 }
             }
+        }
+
+        /// <summary>
+        /// Gets a new table from the source table filtered by objects.
+        /// </summary>
+        private IBaseTable GetFilteredTable<T>(IBaseTable srcTable, List<int> objNums)
+        {
+            IBaseTable destTable = new BaseTable<T>(srcTable.Name, srcTable.PrimaryKey, srcTable.Title);
+
+            if (srcTable.TryGetIndex("ObjNum", out TableIndex index))
+            {
+                foreach (int objNum in objNums)
+                {
+                    if (index.ItemGroups.TryGetValue(objNum, out SortedDictionary<int, object> itemGroup))
+                    {
+                        foreach (object item in itemGroup.Values)
+                        {
+                            destTable.AddObject(item);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new ScadaException(AdminPhrases.IndexNotFound);
+            }
+
+            return destTable;
         }
 
 
@@ -270,7 +303,7 @@ namespace Scada.Admin
         /// Exports the configuration to the specified archive.
         /// </summary>
         public void ExportToArchive(string destFileName, ScadaProject project, Instance instance, 
-            TransferSettings transferSettings)
+            UploadSettings uploadSettings)
         {
             if (destFileName == null)
                 throw new ArgumentNullException("destFileName");
@@ -278,6 +311,8 @@ namespace Scada.Admin
                 throw new ArgumentNullException("project");
             if (instance == null)
                 throw new ArgumentNullException("instance");
+            if (uploadSettings == null)
+                throw new ArgumentNullException("transferSettings");
 
             FileStream fileStream = null;
             ZipArchive zipArchive = null;
@@ -286,11 +321,13 @@ namespace Scada.Admin
             {
                 fileStream = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
                 zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
-                bool ignoreRegKeys = transferSettings.IgnoreRegKeys;
+                bool ignoreRegKeys = uploadSettings.IgnoreRegKeys;
 
                 // add the configuration database to the archive
-                if (transferSettings.IncludeBase)
+                if (uploadSettings.IncludeBase)
                 {
+                    bool filterByObj = uploadSettings.ObjNums.Count > 0;
+
                     foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
                     {
                         string entryName = "BaseDAT/" + srcTable.Name.ToLowerInvariant() + ".dat";
@@ -298,41 +335,52 @@ namespace Scada.Admin
 
                         using (Stream entryStream = tableEntry.Open())
                         {
+                            // filter the source table by objects if needed
+                            IBaseTable baseTable = srcTable;
+
+                            if (filterByObj)
+                            {
+                                if (srcTable.ItemType == typeof(InCnl))
+                                    baseTable = GetFilteredTable<InCnl>(srcTable, uploadSettings.ObjNums);
+                                else if (srcTable.ItemType == typeof(CtrlCnl))
+                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, uploadSettings.ObjNums);
+                            }
+
                             // convert the table to DAT format
                             BaseAdapter baseAdapter = new BaseAdapter() { Stream = entryStream };
-                            baseAdapter.Update(srcTable);
+                            baseAdapter.Update(baseTable);
                         }
                     }
                 }
 
                 // add the interface files to the archive
-                if (transferSettings.IncludeInterface)
+                if (uploadSettings.IncludeInterface)
                 {
                     PackDirectory(zipArchive, project.Interface.InterfaceDir, 
                         DirectoryBuilder.GetDirectory(ConfigParts.Interface, '/'), ignoreRegKeys);
                 }
 
                 // add the Server settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, instance.ServerApp.AppDir,
                         DirectoryBuilder.GetDirectory(ConfigParts.Server, '/'), ignoreRegKeys);
                 }
 
                 // add the Communicator settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, instance.CommApp.AppDir,
                         DirectoryBuilder.GetDirectory(ConfigParts.Comm, '/'), ignoreRegKeys);
                 }
 
                 // add the Webstation settings to the archive
-                if (transferSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
                 {
                     PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "config"),
                         DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Config, '/'), ignoreRegKeys);
 
-                    if (!transferSettings.IgnoreWebStorage)
+                    if (!uploadSettings.IgnoreWebStorage)
                     {
                         PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "storage"),
                             DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Storage, '/'), ignoreRegKeys);
@@ -347,6 +395,118 @@ namespace Scada.Admin
             {
                 zipArchive?.Dispose();
                 fileStream?.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Exports the configuration database table to the file.
+        /// </summary>
+        public void ImportBaseTable(string srcFileName, BaseTableFormat format, IBaseTable baseTable,
+            int srcStartID, int srcEndID, int destStartID, out int affectedRows)
+        {
+            if (srcFileName == null)
+                throw new ArgumentNullException("destFileName");
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            affectedRows = 0;
+            if (srcStartID > srcEndID)
+                return;
+
+            // open the source table
+            IBaseTable srcTable = BaseTableFactory.GetBaseTable(baseTable);
+
+            switch (format)
+            {
+                case BaseTableFormat.DAT:
+                    new BaseAdapter() { FileName = srcFileName }.Fill(srcTable, true);
+                    break;
+                case BaseTableFormat.XML:
+                    srcTable.Load(srcFileName);
+                    break;
+                default: // BaseTableFormat.CSV
+                    throw new ScadaException("Format is not supported.");
+            }
+
+            // copy data from the source table to the destination
+            int shiftID = destStartID - srcStartID;
+
+            foreach (object item in srcTable.EnumerateItems())
+            {
+                int itemID = srcTable.GetPkValue(item);
+                if (srcStartID <= itemID && itemID <= srcEndID)
+                {
+                    if (shiftID > 0)
+                    {
+                        int newItemID = itemID + shiftID;
+                        if (newItemID <= AdminUtils.MaxCnlNum)
+                        {
+                            srcTable.SetPkValue(item, newItemID);
+                            baseTable.AddObject(item);
+                            affectedRows++;
+                        }
+                    }
+                    else
+                    {
+                        baseTable.AddObject(item);
+                        affectedRows++;
+                    }
+                }
+                else if (itemID > srcEndID)
+                {
+                    break;
+                }
+            }
+
+            if (affectedRows > 0)
+                baseTable.Modified = true;
+        }
+
+        /// <summary>
+        /// Exports the configuration database table to the file.
+        /// </summary>
+        public void ExportBaseTable(string destFileName, BaseTableFormat format, IBaseTable baseTable, 
+            int startID, int endID)
+        {
+            if (destFileName == null)
+                throw new ArgumentNullException("destFileName");
+            if (baseTable == null)
+                throw new ArgumentNullException("baseTable");
+
+            IBaseTable destTable;
+            if (0 < startID || endID < int.MaxValue)
+            {
+                // filter data
+                destTable = BaseTableFactory.GetBaseTable(baseTable);
+
+                if (startID <= endID)
+                {
+                    foreach (object item in baseTable.EnumerateItems())
+                    {
+                        int itemID = baseTable.GetPkValue(item);
+                        if (startID <= itemID && itemID <= endID)
+                            destTable.AddObject(item);
+                        else if (itemID > endID)
+                            break;
+                    }
+                }
+            }
+            else
+            {
+                destTable = baseTable;
+            }
+
+            switch (format)
+            {
+                case BaseTableFormat.DAT:
+                    new BaseAdapter() { FileName = destFileName }.Update(destTable);
+                    break;
+                case BaseTableFormat.XML:
+                    destTable.Save(destFileName);
+                    break;
+                default: // BaseTableFormat.CSV
+                    new CsvConverter(destFileName).ConvertToCsv(destTable);
+                    break;
             }
         }
     }

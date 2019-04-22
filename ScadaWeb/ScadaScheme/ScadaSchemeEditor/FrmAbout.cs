@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Scheme Editor
+ * Module   : Scheme Editor
  * Summary  : About form
  * 
  * Author   : Mikhail Shiryaev

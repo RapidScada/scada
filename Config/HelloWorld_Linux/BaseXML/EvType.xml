@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfEvType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <EvType>
+    <CnlStatus>0</CnlStatus>
+    <Name>Undefined</Name>
+    <Color>Black</Color>
+    <Descr>Channel value is undefined</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>1</CnlStatus>
+    <Name>Defined</Name>
+    <Color>Black</Color>
+    <Descr>Channel value is defined</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>2</CnlStatus>
+    <Name>Archival</Name>
+    <Color>Green</Color>
+    <Descr>Channel value has been received by the server as archival</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>3</CnlStatus>
+    <Name>Formula error</Name>
+    <Color>Silver</Color>
+    <Descr>Error calculating channel value using the formula</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>4</CnlStatus>
+    <Name>Changed</Name>
+    <Color>Black</Color>
+    <Descr>Channel value has been changed and it is defined</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>5</CnlStatus>
+    <Name>Unreliable</Name>
+    <Color>Silver</Color>
+    <Descr>Channel value is defined but unreliable</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>11</CnlStatus>
+    <Name>Alarm low</Name>
+    <Color>Blue</Color>
+    <Descr>Channel value is less than the lower alarm limit</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>12</CnlStatus>
+    <Name>Low</Name>
+    <Color>Cyan</Color>
+    <Descr>Channel value is less than the lower limit</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>13</CnlStatus>
+    <Name>Normal</Name>
+    <Color>Black</Color>
+    <Descr>Channel value is inside the limits</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>14</CnlStatus>
+    <Name>High</Name>
+    <Color>Orange</Color>
+    <Descr>Channel value is greater than the upper limit</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>15</CnlStatus>
+    <Name>Alarm high</Name>
+    <Color>Red</Color>
+    <Descr>Channel value is greater than the upper alarm limit</Descr>
+  </EvType>
+  <EvType>
+    <CnlStatus>101</CnlStatus>
+    <Name>Input permitted</Name>
+    <Color>Green</Color>
+  </EvType>
+  <EvType>
+    <CnlStatus>102</CnlStatus>
+    <Name>Output permitted</Name>
+    <Color>Orange</Color>
+    <Descr />
+  </EvType>
+  <EvType>
+    <CnlStatus>103</CnlStatus>
+    <Name>Access denied</Name>
+    <Color>Red</Color>
+  </EvType>
+  <EvType>
+    <CnlStatus>111</CnlStatus>
+    <Name>Wire break</Name>
+    <Color>Orange</Color>
+  </EvType>
+  <EvType>
+    <CnlStatus>112</CnlStatus>
+    <Name>Disarmed</Name>
+    <Color>Navy</Color>
+  </EvType>
+  <EvType>
+    <CnlStatus>113</CnlStatus>
+    <Name>Armed</Name>
+    <Color>Green</Color>
+  </EvType>
+  <EvType>
+    <CnlStatus>114</CnlStatus>
+    <Name>Alarm</Name>
+    <Color>Red</Color>
+  </EvType>
+</ArrayOfEvType>

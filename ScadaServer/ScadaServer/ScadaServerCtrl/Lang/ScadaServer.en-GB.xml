@@ -221,6 +221,10 @@
     <Phrase key="IncorrectCmdVal">The command value is incorrect.</Phrase>
     <Phrase key="IncorrectHexCmdData">The hexadecimal command data are incorrect.</Phrase>
     <Phrase key="CmdDataRequired">Command data are required.</Phrase>
+    <Phrase key="DataSentSuccessfully">Data sent successfully.</Phrase>
+    <Phrase key="EventSentSuccessfully">Event sent successfully.</Phrase>
+    <Phrase key="EventCheckSentSuccessfully">Event check command sent successfully.</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Ctrl.FrmSrezTableEdit">
     <Phrase key="btnMoveFirst1.ToolTip">Move first</Phrase>
@@ -252,5 +256,6 @@
     <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
     <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="ConfigureModule">Configure the module and restart SCADA-Server service</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
 </ScadaServerDictionaries>

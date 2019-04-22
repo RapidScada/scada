@@ -111,6 +111,7 @@
             this.Controls.Add(this.chkPause);
             this.Name = "FrmStats";
             this.Text = "Stats";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmStats_FormClosed);
             this.Load += new System.EventHandler(this.FrmStats_Load);
             this.VisibleChanged += new System.EventHandler(this.FrmStats_VisibleChanged);
             this.ResumeLayout(false);

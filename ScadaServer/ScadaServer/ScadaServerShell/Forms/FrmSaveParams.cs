@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Comm.Shell.Code;
+using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
 using System.Windows.Forms;
@@ -159,7 +159,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmSaveParams_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmSaveParams");
+            Translator.TranslateForm(this, GetType().FullName);
             SettingsToControls();
         }
 

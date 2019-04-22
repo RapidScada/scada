@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2019
  */
 
+using Scada.Client;
 using Scada.Data.Models;
 
 namespace Scada.Comm.Devices
@@ -37,6 +38,12 @@ namespace Scada.Comm.Devices
         /// Получить номер линии связи
         /// </summary>
         int Number { get; }
+
+        /// <summary>
+        /// Gets the client to communicate with Server.
+        /// </summary>
+        ServerComm ServerComm { get; }
+
 
         /// <summary>
         /// Найти КП на линии связи по адресу и позывному

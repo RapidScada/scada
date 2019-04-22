@@ -1,0 +1,296 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{7AE30E67-D10E-44B9-AC7A-81E21C8839E8}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scada.Web</RootNamespace>
+    <AssemblyName>PlgTable</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <Use64BitIISExpress />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="RepBuilder, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\Report\RepBuilder\bin\Release\RepBuilder.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData, Version=5.1.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaWebCommon">
+      <HintPath>..\..\ScadaWeb\ScadaWebCommon\bin\Release\ScadaWebCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ClientApiSvc.svc" />
+    <Content Include="config\CommSettings.xml" />
+    <Content Include="config\WebSettings.xml" />
+    <Content Include="css\controls\notifier.css">
+      <DependentUpon>notifier.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\notifier.min.css">
+      <DependentUpon>notifier.css</DependentUpon>
+    </Content>
+    <Content Include="css\controls\tableheader.css">
+      <DependentUpon>tableheader.less</DependentUpon>
+    </Content>
+    <Content Include="css\controls\tableheader.min.css">
+      <DependentUpon>tableheader.css</DependentUpon>
+    </Content>
+    <Content Include="js\api\ajaxqueue.js" />
+    <Content Include="js\api\clientapi.js" />
+    <Content Include="js\api\eventtypes.js" />
+    <Content Include="js\api\notiftypes.js" />
+    <Content Include="js\api\utils.js" />
+    <Content Include="js\api\viewhub.js" />
+    <Content Include="js\controls\notifier.js" />
+    <Content Include="js\controls\popup.js" />
+    <Content Include="js\controls\tableheader.js" />
+    <Content Include="lib\font-awesome\css\font-awesome.css" />
+    <Content Include="lib\font-awesome\css\font-awesome.min.css" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.svg" />
+    <Content Include="lib\jquery\jquery.min.js" />
+    <Content Include="plugins\Table\Command.aspx" />
+    <Content Include="plugins\Table\css\command.css">
+      <DependentUpon>command.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\command.min.css">
+      <DependentUpon>command.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\eventack.css">
+      <DependentUpon>eventack.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\eventack.min.css">
+      <DependentUpon>eventack.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\events.css">
+      <DependentUpon>events.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\events.min.css">
+      <DependentUpon>events.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\table.css">
+      <DependentUpon>table.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\table.min.css">
+      <DependentUpon>table.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\tablecommon.css">
+      <DependentUpon>tablecommon.less</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\css\tablecommon.min.css">
+      <DependentUpon>tablecommon.css</DependentUpon>
+    </Content>
+    <Content Include="plugins\Table\EventAck.aspx" />
+    <Content Include="plugins\Table\Events.aspx" />
+    <Content Include="plugins\Table\EventsRepOut.aspx" />
+    <Content Include="plugins\Table\HourDataRepOut.aspx" />
+    <Content Include="plugins\Table\images\quantityicons\ca.png" />
+    <Content Include="plugins\Table\images\quantityicons\clock.png" />
+    <Content Include="plugins\Table\images\quantityicons\conn.png" />
+    <Content Include="plugins\Table\images\quantityicons\cr.png" />
+    <Content Include="plugins\Table\images\quantityicons\event.png" />
+    <Content Include="plugins\Table\images\quantityicons\f.png" />
+    <Content Include="plugins\Table\images\quantityicons\fi.png" />
+    <Content Include="plugins\Table\images\quantityicons\fire.png" />
+    <Content Include="plugins\Table\images\quantityicons\g.png" />
+    <Content Include="plugins\Table\images\quantityicons\guard.png" />
+    <Content Include="plugins\Table\images\quantityicons\h.png" />
+    <Content Include="plugins\Table\images\quantityicons\i.png" />
+    <Content Include="plugins\Table\images\quantityicons\k.png" />
+    <Content Include="plugins\Table\images\quantityicons\l.png" />
+    <Content Include="plugins\Table\images\quantityicons\lamp.png" />
+    <Content Include="plugins\Table\images\quantityicons\m.png" />
+    <Content Include="plugins\Table\images\quantityicons\n.png" />
+    <Content Include="plugins\Table\images\quantityicons\p.png" />
+    <Content Include="plugins\Table\images\quantityicons\pa.png" />
+    <Content Include="plugins\Table\images\quantityicons\pr.png" />
+    <Content Include="plugins\Table\images\quantityicons\q.png" />
+    <Content Include="plugins\Table\images\quantityicons\quantity.png" />
+    <Content Include="plugins\Table\images\quantityicons\s.png" />
+    <Content Include="plugins\Table\images\quantityicons\switch.png" />
+    <Content Include="plugins\Table\images\quantityicons\t.png" />
+    <Content Include="plugins\Table\images\quantityicons\temp.png" />
+    <Content Include="plugins\Table\images\quantityicons\u.png" />
+    <Content Include="plugins\Table\images\quantityicons\v.png" />
+    <Content Include="plugins\Table\images\quantityicons\wa.png" />
+    <Content Include="plugins\Table\images\quantityicons\water.png" />
+    <Content Include="plugins\Table\images\quantityicons\wr.png" />
+    <Content Include="plugins\Table\images\tableicon.png" />
+    <Content Include="plugins\Table\js\cmddialog.js" />
+    <Content Include="plugins\Table\js\command.js" />
+    <Content Include="plugins\Table\js\eventack.js" />
+    <Content Include="plugins\Table\js\eventackdialog.js" />
+    <Content Include="plugins\Table\js\events.js" />
+    <Content Include="plugins\Table\js\tablecommon.js" />
+    <Content Include="plugins\Table\js\table.js" />
+    <Content Include="plugins\Table\lang\ScadaTable.ru-RU.xml" />
+    <Content Include="plugins\Table\lang\ScadaTable.en-GB.xml" />
+    <Content Include="plugins\Table\sounds\event.mp3" />
+    <Content Include="plugins\Table\Table.aspx" />
+    <Content Include="plugins\Table\templates\EventsRep.xml" />
+    <Content Include="plugins\Table\templates\HourDataRep.xml" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AppCode\Table\HourDataRepBuilder.cs" />
+    <Compile Include="AppCode\Table\EventsRepBuilder.cs" />
+    <Compile Include="AppCode\Table\SampleWndSpec.cs" />
+    <Compile Include="AppCode\Table\EventsWndSpec.cs" />
+    <Compile Include="AppCode\PlgTableSpec.cs" />
+    <Compile Include="AppCode\Table\TableViewSpec.cs" />
+    <Compile Include="plugins\Table\Command.aspx.cs">
+      <DependentUpon>Command.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Command.aspx.designer.cs">
+      <DependentUpon>Command.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\EventAck.aspx.cs">
+      <DependentUpon>EventAck.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\EventAck.aspx.designer.cs">
+      <DependentUpon>EventAck.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\Events.aspx.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Events.aspx.designer.cs">
+      <DependentUpon>Events.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\EventsRepOut.aspx.cs">
+      <DependentUpon>EventsRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\EventsRepOut.aspx.designer.cs">
+      <DependentUpon>EventsRepOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\HourDataRepOut.aspx.cs">
+      <DependentUpon>HourDataRepOut.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\HourDataRepOut.aspx.designer.cs">
+      <DependentUpon>HourDataRepOut.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="plugins\Table\Table.aspx.cs">
+      <DependentUpon>Table.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="plugins\Table\Table.aspx.designer.cs">
+      <DependentUpon>Table.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="plugins\Table\css\table.less" />
+    <None Include="compilerconfig.json" />
+    <None Include="compilerconfig.json.defaults">
+      <DependentUpon>compilerconfig.json</DependentUpon>
+    </None>
+    <Content Include="css\controls\notifier.less" />
+    <Content Include="css\common\globalvar.less" />
+    <Content Include="plugins\Table\css\tablecommon.less" />
+    <Content Include="plugins\Table\css\events.less" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.eot" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.ttf" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff" />
+    <Content Include="lib\font-awesome\fonts\fontawesome-webfont.woff2" />
+    <Content Include="lib\font-awesome\fonts\FontAwesome.otf" />
+    <Content Include="css\controls\tableheader.less" />
+    <Content Include="plugins\Table\css\command.less" />
+    <Content Include="plugins\Table\css\eventack.less" />
+    <Content Include="css\common\modalform.less" />
+    <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="log\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\PlgTableCommon\PlgTableCommon.csproj">
+      <Project>{f0dd8f7e-f741-47b3-925c-10b05f0112a7}</Project>
+      <Name>PlgTableCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64113</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:64113/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

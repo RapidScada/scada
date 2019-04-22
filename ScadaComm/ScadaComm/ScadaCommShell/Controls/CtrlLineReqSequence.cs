@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -61,6 +61,7 @@ namespace Scada.Comm.Shell.Controls
             deviceBuf = null;
             CommLine = null;
             Environment = null;
+            CustomParams = null;
         }
 
 
@@ -79,6 +80,21 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public SortedList<string, string> CustomParams { get; set; }
 
+
+        /// <summary>
+        /// Validates the required control properties.
+        /// </summary>
+        private void ValidateProps()
+        {
+            if (CommLine == null)
+                throw new InvalidOperationException("CommLine must not be null.");
+
+            if (Environment == null)
+                throw new InvalidOperationException("Environment must not be null.");
+
+            if (CustomParams == null)
+                throw new InvalidOperationException("CustomParams must not be null.");
+        }
 
         /// <summary>
         /// Sets the column names for the translation.
@@ -123,6 +139,27 @@ namespace Scada.Comm.Shell.Controls
                 btnCutDevice.Enabled = false;
                 btnCopyDevice.Enabled = false;
                 gbSelectedDevice.Enabled = false;
+            }
+        }
+
+        /// <summary>
+        /// Fills the combo box that specifies a device driver.
+        /// </summary>
+        private void FillDriverComboBox()
+        {
+            try
+            {
+                cbDeviceDll.BeginUpdate();
+                cbDeviceDll.Items.Clear();
+
+                foreach (FileInfo fileInfo in Environment.GetDrivers())
+                {
+                    cbDeviceDll.Items.Add(fileInfo.Name);
+                }
+            }
+            finally
+            {
+                cbDeviceDll.EndUpdate();
             }
         }
 
@@ -231,38 +268,6 @@ namespace Scada.Comm.Shell.Controls
         }
 
         /// <summary>
-        /// Gets a user interface object for the device.
-        /// </summary>
-        private bool GetDeviceView(Settings.KP kp, bool common, out KPView kpView)
-        {
-            try
-            {
-                string dllPath = Path.Combine(Environment.AppDirs.KPDir, kp.Dll);
-                KPView commonKpView = Environment.GetKPView(dllPath);
-
-                if (common)
-                {
-                    kpView = commonKpView;
-                }
-                else
-                {
-                    kpView = KPFactory.GetKPView(commonKpView.GetType(), kp.Number);
-                    kpView.KPProps = new KPView.KPProperties(CustomParams, kp.CmdLine);
-                    kpView.AppDirs = Environment.AppDirs;
-                }
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                ScadaUiUtils.ShowError(ex.Message);
-                Environment.ErrLog.WriteException(ex);
-                kpView = null;
-                return false;
-            }
-        }
-
-        /// <summary>
         /// Raises a SettingsChanged event.
         /// </summary>
         private void OnSettingsChanged()
@@ -284,8 +289,8 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public void SettingsToControls()
         {
-            if (CommLine == null)
-                throw new InvalidOperationException("CommLine must not be null.");
+            ValidateProps();
+            FillDriverComboBox();
 
             try
             {
@@ -312,9 +317,7 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         public void ControlsToSettings()
         {
-            if (CommLine == null)
-                throw new InvalidOperationException("CommLine must not be null.");
-
+            ValidateProps();
             CommLine.ReqSequence.Clear();
 
             foreach (ListViewItem item in lvReqSequence.Items)
@@ -522,7 +525,7 @@ namespace Scada.Comm.Shell.Controls
             }
         }
 
-        private void cbDeviceDll_SelectedIndexChanged(object sender, EventArgs e)
+        private void cbDeviceDll_TextChanged(object sender, EventArgs e)
         {
             if (!changing && GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
@@ -607,33 +610,51 @@ namespace Scada.Comm.Shell.Controls
         private void btnResetReqParams_Click(object sender, EventArgs e)
         {
             // set the request parameters of the selected device by default
-            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) &&
-                GetDeviceView(kp, true, out KPView kpView))
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
-                KPReqParams reqParams = kpView.DefaultReqParams;
-                numDeviceTimeout.SetValue(reqParams.Timeout);
-                numDeviceDelay.SetValue(reqParams.Delay);
-                dtpDeviceTime.SetTime(reqParams.Time);
-                dtpDevicePeriod.SetTime(reqParams.Period);
-                txtDeviceCmdLine.Text = reqParams.CmdLine;
-
-                OnSettingsChanged();
+                if (Environment.TryGetKPView(kp, true, null, out KPView kpView, out string errMsg))
+                {
+                    KPReqParams reqParams = kpView.DefaultReqParams;
+                    numDeviceTimeout.SetValue(reqParams.Timeout);
+                    numDeviceDelay.SetValue(reqParams.Delay);
+                    dtpDeviceTime.SetTime(reqParams.Time);
+                    dtpDevicePeriod.SetTime(reqParams.Period);
+                    txtDeviceCmdLine.Text = reqParams.CmdLine;
+                    OnSettingsChanged();
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(errMsg);
+                }
             }
         }
 
         private void btnDeviceProps_Click(object sender, EventArgs e)
         {
             // show the properties of the selected device
-            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp) && 
-                GetDeviceView(kp, false, out KPView kpView) && kpView.CanShowProps)
+            if (GetSelectedItem(out ListViewItem item, out Settings.KP kp))
             {
-                kpView.ShowProps();
-
-                if (kpView.KPProps.Modified)
+                if (Environment.TryGetKPView(kp, false, CustomParams, out KPView kpView, out string errMsg))
                 {
-                    txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
-                    OnCustomParamsChanged();
-                    OnSettingsChanged();
+                    if (kpView.CanShowProps)
+                    {
+                        kpView.ShowProps();
+
+                        if (kpView.KPProps.Modified)
+                        {
+                            txtDeviceCmdLine.Text = kpView.KPProps.CmdLine;
+                            OnCustomParamsChanged();
+                            OnSettingsChanged();
+                        }
+                    }
+                    else
+                    {
+                        ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(errMsg);
                 }
             }
         }

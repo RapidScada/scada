@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,12 +15,12 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : SCADA-Communicator Service
- * Summary  : Communication with SCADA-Server adapted for SCADA-Communicator
+ * Module   : ScadaCommEngine
+ * Summary  : Implements communication with Server within the Communicator application
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -33,25 +33,18 @@ using Utils;
 namespace Scada.Comm.Engine
 {
     /// <summary>
-    /// Communication with SCADA-Server adapted for SCADA-Communicator
-    /// <para>Обмен данными со SCADA-Сервером, адаптированный для SCADA-Коммуникатора</para>
+    /// Implements communication with Server within the Communicator application.
+    /// <para>Реализует обмен данными с Сервером в приложении Коммуникатор.</para>
     /// </summary>
-    sealed class ServerCommEx : ServerComm
+    internal sealed class ServerCommEx : ServerComm
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        private ServerCommEx()
-        {
-        }
-
-        /// <summary>
-        /// Конструктор с установкой общих параметров конфигурации и log-файла
-        /// </summary>
         public ServerCommEx(Settings.CommonParams commonParams, Log log)
             : base()
         {
-            this.commSettings = new CommSettings(commonParams.ServerHost, commonParams.ServerPort, 
+            commSettings = new CommSettings(commonParams.ServerHost, commonParams.ServerPort, 
                 commonParams.ServerUser, commonParams.ServerPwd, commonParams.ServerTimeout);
             this.log = log;
         }
@@ -101,9 +94,8 @@ namespace Scada.Comm.Engine
         /// </summary>
         public bool SendSrez(KPLogic.TagSrez curSrez)
         {
-            bool result;
             SrezTableLight.Srez srez = ConvertSrez(curSrez);
-            return srez == null || SendSrez(srez, out result) && result;
+            return srez == null || SendSrez(srez, out bool result) && result;
         }
 
         /// <summary>
@@ -111,9 +103,8 @@ namespace Scada.Comm.Engine
         /// </summary>
         public bool SendArchive(KPLogic.TagSrez arcSrez)
         {
-            bool result;
             SrezTableLight.Srez srez = ConvertSrez(arcSrez);
-            return srez == null || SendArchive(srez, out result) && result;
+            return srez == null || SendArchive(srez, out bool result) && result;
         }
 
         /// <summary>
@@ -127,24 +118,25 @@ namespace Scada.Comm.Engine
             }
             else
             {
-                EventTableLight.Event ev = new EventTableLight.Event();
-                ev.Number = kpEvent.KPNum;
-                ev.DateTime = kpEvent.DateTime;
-                ev.ObjNum = kpEvent.KPTag.ObjNum;
-                ev.KPNum = kpEvent.KPNum;
-                ev.ParamID = kpEvent.KPTag.ParamID;
-                ev.CnlNum = kpEvent.KPTag.CnlNum;
-                ev.OldCnlVal = kpEvent.OldData.Val;
-                ev.OldCnlStat = kpEvent.OldData.Stat;
-                ev.NewCnlVal = kpEvent.NewData.Val;
-                ev.NewCnlStat = kpEvent.NewData.Stat;
-                ev.Checked = kpEvent.Checked;
-                ev.UserID = kpEvent.UserID;
-                ev.Descr = kpEvent.Descr;
-                ev.Data = kpEvent.Data;
+                EventTableLight.Event ev = new EventTableLight.Event
+                {
+                    Number = kpEvent.KPNum,
+                    DateTime = kpEvent.DateTime,
+                    ObjNum = kpEvent.KPTag.ObjNum,
+                    KPNum = kpEvent.KPNum,
+                    ParamID = kpEvent.KPTag.ParamID,
+                    CnlNum = kpEvent.KPTag.CnlNum,
+                    OldCnlVal = kpEvent.OldData.Val,
+                    OldCnlStat = kpEvent.OldData.Stat,
+                    NewCnlVal = kpEvent.NewData.Val,
+                    NewCnlStat = kpEvent.NewData.Stat,
+                    Checked = kpEvent.Checked,
+                    UserID = kpEvent.UserID,
+                    Descr = kpEvent.Descr,
+                    Data = kpEvent.Data
+                };
 
-                bool result;
-                return SendEvent(ev, out result) && result;
+                return SendEvent(ev, out bool result) && result;
             }
         }
     }

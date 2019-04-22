@@ -54,5 +54,6 @@ function addContents(context) {
     addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
     addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
     addArticle(context, "version-history/webstation-plugins-history.html", "History of Webstation Plugins", 1);
+    addArticle(context, "version-history/table-editor-history.html", "Table Editor History", 1);
     addArticle(context, "version-history/scheme-editor-history.html", "Scheme Editor History", 1);
 }

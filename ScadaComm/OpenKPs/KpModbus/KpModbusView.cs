@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,13 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Device library user interface
+ * Summary  : Device driver user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Comm.Devices.Modbus;
 using Scada.Comm.Devices.Modbus.Protocol;
 using Scada.Comm.Devices.Modbus.UI;
 using Scada.Data.Configuration;
@@ -34,8 +33,8 @@ using System.IO;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// Device driver user interface.
+    /// <para>Пользовательский интерфейс драйвера КП.</para>
     /// </summary>
     public class KpModbusView : KPView
     {
@@ -106,7 +105,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Gets the default device request parameters.
+        /// Gets the channel prototypes.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
@@ -114,13 +113,13 @@ namespace Scada.Comm.Devices
             {
                 // загрузка шаблона устройства
                 string fileName = KPProps == null ? "" : KPProps.CmdLine.Trim();
-                string filePath = Path.IsPathRooted(fileName) ?
-                    fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                if (!File.Exists(filePath))
+                if (fileName == "")
                     return null;
 
+                string filePath = Path.IsPathRooted(fileName) ? fileName : Path.Combine(AppDirs.ConfigDir, fileName);
                 DeviceTemplate deviceTemplate = GetUiCustomization().TemplateFactory.CreateDeviceTemplate();
+
                 if (!deviceTemplate.Load(filePath, out string errMsg))
                     throw new ScadaException(errMsg);
 
@@ -188,10 +187,10 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected virtual void Localize()
         {
-            if (Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
-                KpPhrases.Init();
-            else
+            if (!Localization.LoadDictionaries(AppDirs.LangDir, "KpModbus", out string errMsg))
                 ScadaUiUtils.ShowError(errMsg);
+
+            KpPhrases.Init();
         }
 
         /// <summary>

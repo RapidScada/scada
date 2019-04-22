@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,9 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Comm.Shell.Code;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
@@ -112,6 +111,20 @@ namespace Scada.Server.Shell.Forms
         }
 
         /// <summary>
+        /// Sets the default directories.
+        /// </summary>
+        private void SetDirectoriesToDefault(bool windows)
+        {
+            string scadaDir = windows ? @"C:\SCADA\" : "/opt/scada/";
+            string sepChar = windows ? "\\" : "/";
+
+            txtBaseDATDir.Text = scadaDir + "BaseDAT" + sepChar;
+            txtItfDir.Text = scadaDir + "Interface" + sepChar;
+            txtArcDir.Text = scadaDir + "ArchiveDAT" + sepChar;
+            txtArcCopyDir.Text = scadaDir + "ArchiveDATCopy" + sepChar;
+        }
+
+        /// <summary>
         /// Saves the settings.
         /// </summary>
         public void Save()
@@ -125,7 +138,7 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmCommonParams_Load(object sender, System.EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmCommonParams");
+            Translator.TranslateForm(this, GetType().FullName);
             SettingsToControls();
         }
 
@@ -171,6 +184,11 @@ namespace Scada.Server.Shell.Forms
                 if (fbdDir.ShowDialog() == DialogResult.OK)
                     textBox.Text = ScadaUtils.NormalDir(fbdDir.SelectedPath);
             }
+        }
+
+        private void btnSetToDefault_Click(object sender, EventArgs e)
+        {
+            SetDirectoriesToDefault(sender == btnSetToDefaultWin);
         }
     }
 }

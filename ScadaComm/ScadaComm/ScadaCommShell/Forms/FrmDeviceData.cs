@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,17 +20,20 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
 using Scada.Agent.UI;
+using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinControl;
 
 namespace Scada.Comm.Shell.Forms
 {
@@ -38,9 +41,10 @@ namespace Scada.Comm.Shell.Forms
     /// Form to monitor a device.
     /// <para>Форма для мониторинга устройства.</para>
     /// </summary>
-    public partial class FrmDeviceData : Form
+    public partial class FrmDeviceData : Form, IChildForm
     {
         private readonly Settings.KP kp;              // the device to control
+        private readonly Settings.CommLine commLine;  // the communication line that contains the device
         private readonly CommEnvironment environment; // the application environment
         private RemoteLogBox dataBox;                 // object to refresh device data
         private FrmDeviceCommand frmDeviceCommand;    // the form to send command
@@ -57,14 +61,21 @@ namespace Scada.Comm.Shell.Forms
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmDeviceData(Settings.KP kp, CommEnvironment environment)
+        public FrmDeviceData(Settings.KP kp, Settings.CommLine commLine, CommEnvironment environment)
             : this()
         {
             this.kp = kp ?? throw new ArgumentNullException("kp");
+            this.commLine = commLine ?? throw new ArgumentNullException("commLine");
             this.environment = environment ?? throw new ArgumentNullException("environment");
             dataBox = new RemoteLogBox(lbDeviceData) { FullLogView = true };
             frmDeviceCommand = null;
         }
+
+
+        /// <summary>
+        /// Gets or sets the object associated with the form.
+        /// </summary>
+        public ChildFormTag ChildFormTag { get; set; }
 
 
         /// <summary>
@@ -76,7 +87,7 @@ namespace Scada.Comm.Shell.Forms
 
             if (dataBox.AgentClient == null)
             {
-                dataBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
+                dataBox.SetFirstLine(CommShellPhrases.SetProfile);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
                 btnSendCommand.Enabled = false;
                 lblCommandInfo.Visible = false;
@@ -103,12 +114,26 @@ namespace Scada.Comm.Shell.Forms
             }
         }
 
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public void Save()
+        {
+            // do nothing
+        }
+
 
         private void FrmDeviceData_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmDeviceData");
+            Translator.TranslateForm(this, GetType().FullName);
+            Text = string.Format(Text, kp.Number);
             InitRefresh();
             tmrRefresh.Start();
+        }
+
+        private void FrmDeviceData_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
         }
 
         private void FrmDeviceData_VisibleChanged(object sender, EventArgs e)
@@ -140,9 +165,35 @@ namespace Scada.Comm.Shell.Forms
             }
         }
 
+        private void btnDeviceProps_Click(object sender, EventArgs e)
+        {
+            // show the device properties if possible
+            if (environment.TryGetKPView(kp, false, commLine.CustomParams, out KPView kpView, out string errMsg))
+            {
+                if (kpView.CanShowProps)
+                {
+                    kpView.ShowProps();
+
+                    if (kpView.KPProps.Modified)
+                    {
+                        kp.CmdLine = kpView.KPProps.CmdLine;
+                        ChildFormTag.SendMessage(this, CommMessage.UpdateLineParams);
+                    }
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(CommShellPhrases.NoDeviceProps);
+                }
+            }
+            else
+            {
+                ScadaUiUtils.ShowError(errMsg);
+            }
+        }
+
         private void btnSendCommand_Click(object sender, EventArgs e)
         {
-            // show the command form
+            // show the device command form
             if (frmDeviceCommand == null)
                 frmDeviceCommand = new FrmDeviceCommand(kp, environment);
 

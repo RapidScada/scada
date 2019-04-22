@@ -240,7 +240,7 @@ scada.scheme.Dragging.prototype.startDragging = function (captCompJqObj, selComp
             elem.data("start-size", component.renderer.getSize(component));
         }
     });
-}
+};
 
 // Continue dragging
 scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
@@ -298,7 +298,7 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
             }
         }
     }
-}
+};
 
 // Stop dragging.
 // callback is a function (dx, dy, w, h)
@@ -316,7 +316,7 @@ scada.scheme.Dragging.prototype.stopDragging = function (callback) {
     if ((this.moved || this.resized) && typeof callback === "function") {
         callback(this.lastDx, this.lastDy, this.lastW, this.lastH);
     }
-}
+};
 
 // Get status of dragging
 scada.scheme.Dragging.prototype.getStatus = function () {
@@ -336,7 +336,7 @@ scada.scheme.Dragging.prototype.getStatus = function () {
             return locationStr + ", W: " + size.width + ", H: " + size.height;
         }
     }
-}
+};
 
 /********** Editable Scheme **********/
 
@@ -497,7 +497,7 @@ scada.scheme.EditableScheme.prototype._processSelection = function (selCompIDs) 
     }
 
     this.selComponentIDs = Array.isArray(selCompIDs) ? selCompIDs : [];
-}
+};
 
 // Proccess mode of the editor
 scada.scheme.EditableScheme.prototype._processMode = function (mode) {
@@ -512,7 +512,7 @@ scada.scheme.EditableScheme.prototype._processMode = function (mode) {
 
         this.newComponentMode = mode;
     }
-}
+};
 
 // Proccess editor title
 scada.scheme.EditableScheme.prototype._processTitle = function (editorTitle) {
@@ -571,7 +571,7 @@ scada.scheme.EditableScheme.prototype._processFormState = function (opt_formStat
 // Get the main div element of the scheme
 scada.scheme.EditableScheme.prototype._getSchemeDiv = function () {
     return this.dom ? this.dom.first() : $();
-}
+};
 
 // Send a request to add a new component to the scheme
 scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
@@ -587,13 +587,13 @@ scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
         dataType: "json",
         cache: false
     })
-    .done(function () {
-        scada.utils.logSuccessfulRequest(operation);
-    })
-    .fail(function (jqXHR) {
-        scada.utils.logFailedRequest(operation, jqXHR);
-    });
-}
+        .done(function () {
+            scada.utils.logSuccessfulRequest(operation);
+        })
+        .fail(function (jqXHR) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+        });
+};
 
 // Send a request to change scheme component selection
 scada.scheme.EditableScheme.prototype._changeSelection = function (action, opt_componentID) {
@@ -609,13 +609,13 @@ scada.scheme.EditableScheme.prototype._changeSelection = function (action, opt_c
         dataType: "json",
         cache: false
     })
-    .done(function () {
-        scada.utils.logSuccessfulRequest(operation);
-    })
-    .fail(function (jqXHR) {
-        scada.utils.logFailedRequest(operation, jqXHR);
-    });
-}
+        .done(function () {
+            scada.utils.logSuccessfulRequest(operation);
+        })
+        .fail(function (jqXHR) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+        });
+};
 
 // Send a request to move and resize selected scheme components
 scada.scheme.EditableScheme.prototype._moveResize = function (dx, dy, w, h) {
@@ -633,13 +633,13 @@ scada.scheme.EditableScheme.prototype._moveResize = function (dx, dy, w, h) {
         dataType: "json",
         cache: false
     })
-    .done(function () {
-        scada.utils.logSuccessfulRequest(operation);
-    })
-    .fail(function (jqXHR) {
-        scada.utils.logFailedRequest(operation, jqXHR);
-    });
-}
+        .done(function () {
+            scada.utils.logSuccessfulRequest(operation);
+        })
+        .fail(function (jqXHR) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+        });
+};
 
 // Send a request to perform action of the main form
 scada.scheme.EditableScheme.prototype._formAction = function (action) {
@@ -654,13 +654,13 @@ scada.scheme.EditableScheme.prototype._formAction = function (action) {
         dataType: "json",
         cache: false
     })
-    .done(function () {
-        scada.utils.logSuccessfulRequest(operation);
-    })
-    .fail(function (jqXHR) {
-        scada.utils.logFailedRequest(operation, jqXHR);
-    });
-}
+        .done(function () {
+            scada.utils.logSuccessfulRequest(operation);
+        })
+        .fail(function (jqXHR) {
+            scada.utils.logFailedRequest(operation, jqXHR);
+        });
+};
 
 // Create DOM content of the scheme
 scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
@@ -744,7 +744,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
         })
         .on("selectstart", ".comp-wrapper", false)
         .on("dragstart", false);
-}
+};
 
 // Iteration of getting scheme changes
 // callback is a function (result)
@@ -758,7 +758,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
             "?editorID=" + this.editorID +
             "&viewStamp=" + this.viewStamp +
             "&changeStamp=" + this.lastChangeStamp +
-            "&status=" + encodeURIComponent(this.status),
+            "&status=" + encodeURIComponent(this.status ? this.status : " "), // space needed by Mono
         method: "GET",
         dataType: "json",
         cache: false
@@ -864,4 +864,4 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
     }
 
     return false;
-}
+};

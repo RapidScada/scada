@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System.Windows.Forms;
@@ -35,12 +35,20 @@ namespace Scada.Admin.App.Code
     {
         public ContextMenuStrip ProjectMenu { get; set; }
 
+        public ContextMenuStrip CnlTableMenu { get; set; }
+
         public ContextMenuStrip DirectoryMenu { get; set; }
 
         public ContextMenuStrip FileItemMenu { get; set; }
 
         public ContextMenuStrip InstanceMenu { get; set; }
 
+        public ContextMenuStrip ServerMenu { get; set; }
+
+        public ContextMenuStrip CommMenu { get; set; }
+
         public ContextMenuStrip CommLineMenu { get; set; }
+
+        public ContextMenuStrip DeviceMenu { get; set; }
     }
 }

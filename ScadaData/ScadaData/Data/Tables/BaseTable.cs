@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
 
@@ -57,7 +57,11 @@ namespace Scada.Data.Tables
             PrimaryKey = primaryKey;
             Title = title;
             Items = new SortedDictionary<int, T>();
+            Indexes = new Dictionary<string, TableIndex>();
+            DependsOn = new List<TableRelation>();
+            Dependent = new List<TableRelation>();
             Modified = false;
+            IndexesEnabled = true;
         }
 
 
@@ -80,7 +84,7 @@ namespace Scada.Data.Tables
                 if (string.IsNullOrEmpty(value))
                     throw new ArgumentException("The primary key can not be empty.");
 
-                PropertyDescriptor prop = TypeDescriptor.GetProperties(ItemType)[value];
+                PropertyDescriptor prop = TypeDescriptor.GetProperties(typeof(T))[value];
 
                 if (prop == null)
                     throw new ArgumentException("The primary key property not found.");
@@ -121,23 +125,46 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Gets the number of table items.
+        /// </summary>
+        public int ItemCount
+        {
+            get
+            {
+                return Items.Count;
+            }
+        }
+
+        /// <summary>
         /// Gets the table items sorted by primary key.
         /// </summary>
+        /// <remarks>Do not change items directly to avoid data corruption.</remarks>
         public SortedDictionary<int, T> Items { get; protected set; }
+
+        /// <summary>
+        /// Gets the table indexes accessed by column name.
+        /// </summary>
+        public Dictionary<string, TableIndex> Indexes { get; protected set; }
+
+        /// <summary>
+        /// Gets the tables that this table depends on (foreign keys).
+        /// </summary>
+        public List<TableRelation> DependsOn { get; protected set; }
+
+        /// <summary>
+        /// Gets the tables that depend on this table.
+        /// </summary>
+        public List<TableRelation> Dependent { get; protected set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether the table was modified.
         /// </summary>
         public bool Modified { get; set; }
 
-
         /// <summary>
-        /// Gets the primary key value of the item.
+        /// Gets or sets a value indicating whether all indexes of the table are maintained up to date.
         /// </summary>
-        protected int GetPkValue(T item)
-        {
-            return (int)primaryKeyProp.GetValue(item);
-        }
+        public bool IndexesEnabled { get; set; }
 
 
         /// <summary>
@@ -145,7 +172,17 @@ namespace Scada.Data.Tables
         /// </summary>
         public void AddItem(T item)
         {
-            Items[GetPkValue(item)] = item;
+            int itemKey = GetPkValue(item);
+            Items[itemKey] = item;
+
+            if (IndexesEnabled)
+            {
+                foreach (TableIndex index in Indexes.Values)
+                {
+                    if (index.IsReady)
+                        index.AddToIndex(item, itemKey);
+                }
+            }
         }
 
         /// <summary>
@@ -158,13 +195,153 @@ namespace Scada.Data.Tables
         }
 
         /// <summary>
+        /// Removes an item with the specified primary key.
+        /// </summary>
+        public void RemoveItem(int key)
+        {
+            if (IndexesEnabled && Items.TryGetValue(key, out T item))
+            {
+                foreach (TableIndex index in Indexes.Values)
+                {
+                    if (index.IsReady)
+                        index.RemoveFromIndex(item, key);
+                }
+            }
+
+            Items.Remove(key);
+        }
+
+        /// <summary>
+        /// Removes all items.
+        /// </summary>
+        public void ClearItems()
+        {
+            Items.Clear();
+
+            foreach (TableIndex index in Indexes.Values)
+            {
+                index.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Gets the primary key value of the item.
+        /// </summary>
+        public int GetPkValue(object item)
+        {
+            return (int)primaryKeyProp.GetValue(item);
+        }
+
+        /// <summary>
+        /// Sets the primary key value of the item.
+        /// </summary>
+        public void SetPkValue(object item, int key)
+        {
+            primaryKeyProp.SetValue(item, key);
+        }
+
+        /// <summary>
+        /// Checks if there is an item with the specified primary key.
+        /// </summary>
+        public bool PkExists(int key)
+        {
+            return Items.ContainsKey(key);
+        }
+
+        /// <summary>
+        /// Adds a new index.
+        /// </summary>
+        public TableIndex AddIndex(string columnName)
+        {
+            TableIndex index = new TableIndex(columnName, ItemType);
+            Indexes.Add(columnName, index);
+            return index;
+        }
+
+        /// <summary>
+        /// Gets an index by the column name, populating it if necessary.
+        /// </summary>
+        public bool TryGetIndex(string columnName, out TableIndex index)
+        {
+            if (Indexes.TryGetValue(columnName, out index))
+            {
+                if (!index.IsReady)
+                {
+                    index.IsReady = true;
+                    foreach (KeyValuePair<int, T> pair in Items)
+                    {
+                        index.AddToIndex(pair.Value, pair.Key);
+                    }
+                }
+
+                return true;
+            }
+            else
+            {
+                index = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Returns an enumerable collection of the table primary keys.
+        /// </summary>
+        public IEnumerable<int> EnumerateKeys()
+        {
+            foreach (int key in Items.Keys)
+            {
+                yield return key;
+            }
+        }
+
+        /// <summary>
         /// Returns an enumerable collection of the table items.
         /// </summary>
-        public IEnumerable<object> EnumerateItems()
+        public IEnumerable EnumerateItems()
         {
             foreach (T item in Items.Values)
             {
                 yield return item;
+            }
+        }
+
+        /// <summary>
+        /// Selects the items that match the specified filter.
+        /// </summary>
+        public IEnumerable SelectItems(TableFilter tableFilter, bool indexRequired = false)
+        {
+            if (tableFilter == null)
+                throw new ArgumentNullException("tableFilter");
+
+            // find the property used by the filter
+            PropertyDescriptor filterProp = TypeDescriptor.GetProperties(ItemType)[tableFilter.ColumnName];
+            if (filterProp == null)
+                throw new ArgumentException("The filter property not found.");
+
+            // get the matched items
+            if (TryGetIndex(tableFilter.ColumnName, out TableIndex index))
+            {
+                int indexKey = tableFilter.Value == null ? 0 : (int)tableFilter.Value;
+
+                foreach (object item in index.SelectItems(indexKey))
+                {
+                    yield return item;
+                }
+            }
+            else if (indexRequired)
+            {
+                throw new ScadaException("Index not found.");
+            }
+            else
+            {
+                object filterVal = tableFilter.Value;
+
+                foreach (T item in Items.Values)
+                {
+                    object val = filterProp.GetValue(item);
+                    if (Equals(val, filterVal))
+                        yield return item;
+                }
             }
         }
 

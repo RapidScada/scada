@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfFormula xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Formula>
+    <FormulaID>1</FormulaID>
+    <Name>DayBeg</Name>
+    <Source>bool DayBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if ((nowDT.Hour == 0 &amp;&amp; nowDT.Minute &gt; 0 || nowDT.Hour == 1) &amp;&amp;
+        (!DayBegDict.TryGetValue(CnlNum, out execDT) || execDT.Date &lt; nowDT.Date))
+    {
+        DayBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Returns true once at the beginning of the day for the calculated channel</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>2</FormulaID>
+    <Name>DayBegDict</Name>
+    <Source>Dictionary&lt;int, DateTime&gt; DayBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Dictionary of the calling DayBeg function time for each channel</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>3</FormulaID>
+    <Name>DecodeDate</Name>
+    <Source>DateTime DecodeDate(double dateTime)
+{
+  return ScadaUtils.DecodeDateTime(dateTime);
+}</Source>
+    <Descr>Returns date and time by decoding the value of double type</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>4</FormulaID>
+    <Name>EncodeAscii</Name>
+    <Source>double EncodeAscii(string s)
+{
+  return ScadaUtils.EncodeAscii(s);
+}</Source>
+    <Descr>Returns a number by packing first 8 characters of the ASCII string</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>5</FormulaID>
+    <Name>EncodeDate</Name>
+    <Source>double EncodeDate(DateTime dateTime)
+{
+  return ScadaUtils.EncodeDateTime(dateTime);
+}</Source>
+    <Descr>Returns a number as a result of date and time encoding</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>6</FormulaID>
+    <Name>EncodeUnicode</Name>
+    <Source>double EncodeUnicode(string s)
+{
+  return ScadaUtils.EncodeUnicode(s);
+}</Source>
+    <Descr>Returns a number by packing first 4 characters of the Unicode string</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>7</FormulaID>
+    <Name>GetBit</Name>
+    <Source>double GetBit(double val, int n)
+{
+    UInt64 uintVal = (UInt64)val;
+    return (uintVal &gt;&gt; n) &amp; 1;
+}</Source>
+    <Descr>Returns the n-th bit of the specified value</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>8</FormulaID>
+    <Name>GetByte</Name>
+    <Source>double GetByte(double val, int n)
+{
+    UInt64 uintVal = (UInt64)val;
+    return (uintVal &gt;&gt; (n * 8)) &amp; 0xFF;
+}</Source>
+    <Descr>Returns the n-th byte of the specified value</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>9</FormulaID>
+    <Name>HourBeg</Name>
+    <Source>bool HourBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if (nowDT.Minute == 1 &amp;&amp; (!HourBegDict.TryGetValue(CnlNum, out execDT) || 
+        execDT &lt; new DateTime(nowDT.Year, nowDT.Month, nowDT.Day, nowDT.Hour, 0, 0)))
+    {
+        HourBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Returns true once at the beginning of the hour for the calculated channel</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>10</FormulaID>
+    <Name>HourBegDict</Name>
+    <Source>Dictionary&lt;int, DateTime&gt; HourBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Dictionary of the calling HourBeg function time for each channel</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>11</FormulaID>
+    <Name>MonthBeg</Name>
+    <Source>bool MonthBeg()
+{
+    DateTime nowDT = DateTime.Now;
+    DateTime execDT;
+    if (nowDT.Day == 1 &amp;&amp; (nowDT.Hour == 0 &amp;&amp; nowDT.Minute &gt; 0 || nowDT.Hour == 1) &amp;&amp;
+        (!MonthBegDict.TryGetValue(CnlNum, out execDT) || execDT.Date &lt; nowDT.Date))
+    {
+        MonthBegDict[CnlNum] = nowDT;
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}</Source>
+    <Descr>Returns true once at the beginning of the month for the calculated channel</Descr>
+  </Formula>
+  <Formula>
+    <FormulaID>12</FormulaID>
+    <Name>MonthBegDict</Name>
+    <Source>Dictionary&lt;int, DateTime&gt; MonthBegDict = new Dictionary&lt;int, DateTime&gt;();</Source>
+    <Descr>Dictionary of the calling MonthBeg function time for each channel</Descr>
+  </Formula>
+</ArrayOfFormula>

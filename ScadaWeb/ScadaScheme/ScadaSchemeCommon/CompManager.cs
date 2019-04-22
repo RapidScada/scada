@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model;
@@ -36,21 +36,21 @@ using Utils;
 namespace Scada.Scheme
 {
     /// <summary>
-    /// Manages scheme components
-    /// <para>Менеджер, управляющий компонентами схемы</para>
+    /// Manages scheme components.
+    /// <para>Менеджер, управляющий компонентами схемы.</para>
     /// </summary>
     public sealed class CompManager
     {
         /// <summary>
-        /// Маска для поиска файлов библиотек компонентов
+        /// Маска для поиска файлов библиотек компонентов.
         /// </summary>
-        private const string CompLibMask = "plgsch*comp.dll";
+        private const string CompLibMask = "PlgSch*Comp.dll";
         /// <summary>
-        /// Стандартные типы компонентов, ключ - полное имя типа
+        /// Стандартные типы компонентов, ключ - полное имя типа.
         /// </summary>
         private static readonly Dictionary<string, Type> StandardCompTypes;
         /// <summary>
-        /// Экземпляр объекта менеджера
+        /// Экземпляр объекта менеджера.
         /// </summary>
         private static readonly CompManager instance;
 
@@ -63,7 +63,7 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Статический конструктор
+        /// Статический конструктор.
         /// </summary>
         static CompManager()
         {
@@ -79,7 +79,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта из других классов
+        /// Конструктор, ограничивающий создание объекта из других классов.
         /// </summary>
         private CompManager()
         {
@@ -94,7 +94,7 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Получить ошибки при загрузке библиотек
+        /// Получить ошибки при загрузке библиотек.
         /// </summary>
         public List<string> LoadErrors { get; private set; }
 
@@ -111,16 +111,15 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Добавить компоненты в словари
+        /// Добавить компоненты в словари.
         /// </summary>
         private bool AddComponents(ISchemeComp schemeComp, AttrTranslator attrTranslator)
         {
             CompLibSpec compLibSpec = schemeComp.CompLibSpec;
-            string errMsg;
 
             if (compLibSpec != null)
             {
-                if (compLibSpec.Validate(out errMsg) && compLibSpec.CompFactory != null)
+                if (compLibSpec.Validate(out string errMsg) && compLibSpec.CompFactory != null)
                 {
                     allSpecs.Add(compLibSpec);
                     factsByPrefix[compLibSpec.XmlPrefix] = compLibSpec.CompFactory;
@@ -147,7 +146,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Проверить, что тип компонента относится к стандартным типам
+        /// Проверить, что тип компонента относится к стандартным типам.
         /// </summary>
         private bool TypeIsStrandard(Type compType)
         {
@@ -157,7 +156,7 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Инициализировать менеджер компонентов
+        /// Инициализировать менеджер компонентов.
         /// </summary>
         public void Init(AppDirs appDirs, ILog log)
         {
@@ -166,7 +165,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Загрузить компоненты из файлов
+        /// Загрузить компоненты из файлов.
         /// </summary>
         public void LoadCompFromFiles()
         {
@@ -229,7 +228,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Извлечь компоненты из загруженных плагинов
+        /// Извлечь компоненты из загруженных плагинов.
         /// </summary>
         public void RetrieveCompFromPlugins(List<PluginSpec> pluginSpecs)
         {
@@ -261,7 +260,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Создать компонент на основе XML-узла
+        /// Создать компонент на основе XML-узла.
         /// </summary>
         public BaseComponent CreateComponent(XmlNode compNode, out string errMsg)
         {
@@ -316,7 +315,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Создать компонент заданного типа
+        /// Создать компонент заданного типа.
         /// </summary>
         public BaseComponent CreateComponent(string compTypeName)
         {
@@ -365,7 +364,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Получить спецификацию библиотеки по типу компонента
+        /// Получить спецификацию библиотеки по типу компонента.
         /// </summary>
         public CompLibSpec GetSpecByType(Type compType)
         {
@@ -387,7 +386,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Получить спецификации библиотек, отсортированные по заголовкам групп
+        /// Получить спецификации библиотек, отсортированные по заголовкам групп.
         /// </summary>
         public CompLibSpec[] GetSortedSpecs()
         {
@@ -410,7 +409,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Получить объединённый список стилей компонентов
+        /// Получить объединённый список стилей компонентов.
         /// </summary>
         public List<string> GetAllStyles()
         {
@@ -428,7 +427,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Получить объединённый список скриптов компонентов
+        /// Получить объединённый список скриптов компонентов.
         /// </summary>
         public List<string> GetAllScripts()
         {
@@ -447,7 +446,7 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Получить единственный экземпляр менеджера
+        /// Получить единственный экземпляр менеджера.
         /// </summary>
         public static CompManager GetInstance()
         {

@@ -85,8 +85,10 @@
     <Compile Include="Channels\SerialConnection.cs" />
     <Compile Include="Channels\TcpConnection.cs" />
     <Compile Include="Channels\UdpConnection.cs" />
+    <Compile Include="CommLineCmd.cs" />
     <Compile Include="CommPhrases.cs" />
     <Compile Include="CommUtils.cs" />
+    <Compile Include="ConfigBaseSubset.cs" />
     <Compile Include="Devices\ICommLineService.cs" />
     <Compile Include="Devices\KPFactory.cs" />
     <Compile Include="Devices\KPLogic.cs" />

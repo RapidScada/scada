@@ -44,6 +44,7 @@ namespace Scada.Server.Modules
         public static string LoadModSettingsError { get; private set; }
         public static string SaveModSettingsError { get; private set; }
         public static string ConfigureModule { get; private set; }
+        public static string CmdSentSuccessfully { get; private set; }
 
         // Словарь Scada.Server.Modules.ModFactory
         public static string GetViewTypeError { get; private set; }
@@ -99,6 +100,7 @@ namespace Scada.Server.Modules
                 LoadModSettingsError = dict.GetPhrase("LoadModSettingsError", LoadModSettingsError);
                 SaveModSettingsError = dict.GetPhrase("SaveModSettingsError", SaveModSettingsError);
                 ConfigureModule = dict.GetPhrase("ConfigureModule", ConfigureModule);
+                CmdSentSuccessfully = dict.GetPhrase("CmdSentSuccessfully", CmdSentSuccessfully);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Server.Modules.ModFactory", out dict))

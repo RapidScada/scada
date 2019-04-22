@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -77,8 +77,8 @@ namespace Scada.Server.Shell.Forms
 
             if (agentClient == null)
             {
-                stateBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
-                logBox.SetFirstLine(ServerShellPhrases.ConnectionUndefined);
+                stateBox.SetFirstLine(ServerShellPhrases.SetProfile);
+                logBox.SetFirstLine(ServerShellPhrases.SetProfile);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else
@@ -104,9 +104,14 @@ namespace Scada.Server.Shell.Forms
 
         private void FrmStats_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Server.Shell.Forms.FrmStats");
+            Translator.TranslateForm(this, GetType().FullName);
             InitRefresh();
             tmrRefresh.Start();
+        }
+
+        private void FrmStats_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
         }
 
         private void FrmStats_VisibleChanged(object sender, EventArgs e)

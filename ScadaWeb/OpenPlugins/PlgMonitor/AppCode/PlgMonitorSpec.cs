@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Web.Shell;
@@ -34,6 +34,12 @@ namespace Scada.Web.Plugins
     /// </summary>
     public class PlgMonitorSpec : PluginSpec
     {
+        /// <summary>
+        /// Версия плагина
+        /// </summary>
+        internal const string PlgVersion = "5.0.0.0";
+
+
         /// <summary>
         /// Получить наименование плагина
         /// </summary>
@@ -67,7 +73,7 @@ namespace Scada.Web.Plugins
         {
             get
             {
-                return "5.0.0.0";
+                return PlgVersion;
             }
         }
 

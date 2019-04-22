@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Shell.Code;
@@ -83,7 +83,9 @@ namespace Scada.Comm.Shell.Forms
 
             // runtime options
             numWaitForStop.SetValue(commonParams.WaitForStop);
+            chkSendModData.Checked = commonParams.SendModData;
             numSendAllDataPer.SetValue(commonParams.SendAllDataPer);
+            numSendAllDataPer.Enabled = chkSendModData.Checked;
 
             changing = false;
         }
@@ -103,6 +105,7 @@ namespace Scada.Comm.Shell.Forms
 
             // runtime options
             commonParams.WaitForStop = decimal.ToInt32(numWaitForStop.Value);
+            commonParams.SendModData = chkSendModData.Checked;
             commonParams.SendAllDataPer = decimal.ToInt32(numSendAllDataPer.Value);
         }
 
@@ -120,7 +123,7 @@ namespace Scada.Comm.Shell.Forms
 
         private void FrmCommonParams_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmCommonParams");
+            Translator.TranslateForm(this, GetType().FullName);
             SettingsToControls();
         }
 
@@ -128,6 +131,15 @@ namespace Scada.Comm.Shell.Forms
         {
             if (!changing)
                 ChildFormTag.Modified = true;
+        }
+
+        private void chkSendModData_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing)
+            {
+                numSendAllDataPer.Enabled = chkSendModData.Checked;
+                ChildFormTag.Modified = true;
+            }
         }
     }
 }

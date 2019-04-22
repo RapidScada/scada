@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCtrlCnl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CtrlCnl>
+    <CtrlCnlNum>101</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Simulator - Set Relay State</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <CmdNum>4</CmdNum>
+    <CmdValID>3</CmdValID>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+  <CtrlCnl>
+    <CtrlCnlNum>102</CtrlCnlNum>
+    <Active>true</Active>
+    <Name>Simulator - Set Analog Output</Name>
+    <CmdTypeID>0</CmdTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <CmdNum>5</CmdNum>
+    <CmdValID xsi:nil="true" />
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <EvEnabled>false</EvEnabled>
+  </CtrlCnl>
+</ArrayOfCtrlCnl>

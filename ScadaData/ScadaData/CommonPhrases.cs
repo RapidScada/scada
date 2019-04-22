@@ -107,10 +107,6 @@ namespace Scada
         public static string StoppedSvcState { get; private set; }
         public static string StopPendingSvcState { get; private set; }
         public static string NotInstalledSvcState { get; private set; }
-        public static string DataSentSuccessfully { get; private set; }
-        public static string EventSentSuccessfully { get; private set; }
-        public static string EventCheckSentSuccessfully { get; private set; }
-        public static string CmdSentSuccessfully { get; private set; }
 
         private static void SetToDefault()
         {
@@ -183,10 +179,6 @@ namespace Scada
             StoppedSvcState = Localization.Dict.GetEmptyPhrase("StoppedSvcState");
             StopPendingSvcState = Localization.Dict.GetEmptyPhrase("StopPendingSvcState");
             NotInstalledSvcState = Localization.Dict.GetEmptyPhrase("NotInstalledSvcState");
-            DataSentSuccessfully = Localization.Dict.GetEmptyPhrase("DataSentSuccessfully");
-            EventSentSuccessfully = Localization.Dict.GetEmptyPhrase("EventSentSuccessfully");
-            EventCheckSentSuccessfully = Localization.Dict.GetEmptyPhrase("EventCheckSentSuccessfully");
-            CmdSentSuccessfully = Localization.Dict.GetEmptyPhrase("CmdSentSuccessfully");
         }
 
         public static void Init()
@@ -261,10 +253,6 @@ namespace Scada
                 StoppedSvcState = dict.GetPhrase("StoppedSvcState", StoppedSvcState);
                 StopPendingSvcState = dict.GetPhrase("StopPendingSvcState", StopPendingSvcState);
                 NotInstalledSvcState = dict.GetPhrase("NotInstalledSvcState", NotInstalledSvcState);
-                DataSentSuccessfully = dict.GetPhrase("DataSentSuccessfully", DataSentSuccessfully);
-                EventSentSuccessfully = dict.GetPhrase("EventSentSuccessfully", EventSentSuccessfully);
-                EventCheckSentSuccessfully = dict.GetPhrase("EventCheckSentSuccessfully", EventCheckSentSuccessfully);
-                CmdSentSuccessfully = dict.GetPhrase("CmdSentSuccessfully", CmdSentSuccessfully);
             }
         }
     }

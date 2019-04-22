@@ -693,6 +693,7 @@ namespace Scada.Comm.Ctrl
             txtServerUser.Text = modSettings.Params.ServerUser;
             txtServerPwd.Text = modSettings.Params.ServerPwd;
             numWaitForStop.SetValue(modSettings.Params.WaitForStop);
+            chkSendModData.Checked = modSettings.Params.SendModData;
             numSendAllDataPer.SetValue(modSettings.Params.SendAllDataPer);
 
             changing = false;
@@ -1780,6 +1781,15 @@ namespace Scada.Comm.Ctrl
             if (!changing)
             {
                 modSettings.Params.WaitForStop = decimal.ToInt32(numWaitForStop.Value);
+                SetModified();
+            }
+        }
+
+        private void chkSendModData_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!changing)
+            {
+                modSettings.Params.SendModData = chkSendModData.Checked;
                 SetModified();
             }
         }

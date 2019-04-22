@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -241,9 +241,9 @@ namespace Scada.Admin.App.Forms
         private void FrmNewProject_Load(object sender, EventArgs e)
         {
             // translate the form
-            Translator.TranslateForm(this, "Scada.Admin.App.Forms.FrmProjectNew");
+            Translator.TranslateForm(this, GetType().FullName);
             fbdLocation.Description = AppPhrases.ChooseProjectLocation;
-            ofdTemplate.Filter = AppPhrases.ProjectFileFilter;
+            ofdTemplate.SetFilter(AppPhrases.ProjectFileFilter);
 
             // setup the controls
             txtName.Text = ScadaProject.DefaultName;
@@ -280,7 +280,10 @@ namespace Scada.Admin.App.Forms
         private void btnOK_Click(object sender, EventArgs e)
         {
             if (ValidateFields())
+            {
+                appData.AppState.ProjectDir = ProjectLocation;
                 DialogResult = DialogResult.OK;
+            }
         }
     }
 }

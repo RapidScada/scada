@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -103,8 +103,8 @@ namespace Scada.Admin.App.Controls.Deployment
             deploymentSettings.Profiles.Add(profile.Name, profile);
 
             // add to the combo box
-            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name);
-            if (index >= 0)
+            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name) + 1;
+            if (index > 0)
             {
                 cbProfile.Items.Insert(index, profile);
                 cbProfile.SelectedIndex = index;
@@ -161,13 +161,13 @@ namespace Scada.Admin.App.Controls.Deployment
             // create a new profile
             DeploymentProfile profile = new DeploymentProfile();
 
-            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            FrmProfileEdit frmProfileEdit = new FrmProfileEdit()
             {
                 Profile = profile,
                 ExistingProfileNames = deploymentSettings.GetExistingProfileNames()
             };
 
-            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            if (frmProfileEdit.ShowDialog() == DialogResult.OK)
             {
                 AddProfileToLists(profile);
                 SaveDeploymentSettings();
@@ -180,13 +180,13 @@ namespace Scada.Admin.App.Controls.Deployment
             DeploymentProfile profile = SelectedProfile;
             string oldName = profile.Name;
 
-            FrmConnSettings frmConnSettings = new FrmConnSettings()
+            FrmProfileEdit frmProfileEdit = new FrmProfileEdit()
             {
                 Profile = profile,
                 ExistingProfileNames = deploymentSettings.GetExistingProfileNames(oldName)
             };
 
-            if (frmConnSettings.ShowDialog() == DialogResult.OK)
+            if (frmProfileEdit.ShowDialog() == DialogResult.OK)
             {
                 // update the profile name if it changed
                 if (oldName != profile.Name)

@@ -5,6 +5,7 @@
     <Phrase key="LoadModSettingsError">Ошибка при загрузке настроек модуля</Phrase>
     <Phrase key="SaveModSettingsError">Ошибка при сохранении настроек модуля</Phrase>
     <Phrase key="ConfigureModule">Сконфигурируйте модуль и перезапустите службу SCADA-Сервера</Phrase>
+    <Phrase key="CmdSentSuccessfully">Команда отправлена успешно.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Modules.ModFactory">
     <Phrase key="GetViewTypeError">Ошибка при получении типа интерфейса модуля из библиотеки {0}: {1}</Phrase>
@@ -23,14 +24,29 @@
     <Phrase key="StatsNode">Статистика</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Соединение не определено.</Phrase>
+    <Phrase key="SetProfile">Установите профиль развертывания экземпляра.</Phrase>
     <Phrase key="Loading">Загрузка...</Phrase>
+    <Phrase key="CsvFileFilter">Comma-separated values (*.csv)|*.csv|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="ExportToCsvError">Ошибка при экспорте данных в CSV</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmArchive">
+    <Phrase key="btnView">Просмотреть</Phrase>
+    <Phrase key="btnEdit">Редактировать</Phrase>
+    <Phrase key="cbDataKind.Items[0]">Основные</Phrase>
+    <Phrase key="cbDataKind.Items[1]">Копии</Phrase>
+    <Phrase key="CurDataTitle">Текущие данные</Phrase>
+    <Phrase key="MinDataTitle">Минутные данные</Phrase>
+    <Phrase key="HourDataTitle">Часовые данные</Phrase>
+    <Phrase key="EventsTitle">События</Phrase>
+    <Phrase key="ArcLocal">Просмотр архива доступен только локально.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Общие параметры</Phrase>
     <Phrase key="gbConn">Соединение</Phrase>
     <Phrase key="lblTcpPort">TCP-порт</Phrase>
     <Phrase key="lblLdapPath">Контроллер домена</Phrase>
+    <Phrase key="gbLog">Журнал</Phrase>
+    <Phrase key="chkDetailedLog">Подробный журнал</Phrase>
     <Phrase key="gbDirs">Директории</Phrase>
     <Phrase key="lblBaseDATDir">База конфигурации в формате DAT</Phrase>
     <Phrase key="btnBrowseBaseDATDir">Обзор...</Phrase>
@@ -40,10 +56,31 @@
     <Phrase key="btnBrowseArcDir">Обзор...</Phrase>
     <Phrase key="lblArcCopyDir">Копия архива в формате DAT</Phrase>
     <Phrase key="btnBrowseArcCopyDir">Обзор...</Phrase>
-    <Phrase key="chkDetailedLog">Подробный журнал</Phrase>
+    <Phrase key="btnSetToDefaultWin">Для Windows</Phrase>
+    <Phrase key="btnSetToDefaultLinux">Для Linux</Phrase>
     <Phrase key="ChooseItfDir">Выберите директорию интерфейса.</Phrase>
     <Phrase key="ChooseArcDir">Выберите директорию архива в формате DAT.</Phrase>
     <Phrase key="ChooseArcCopyDir">Выберите директорию копии архива в формате DAT.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmEventTable">
+    <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount">из {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
+    <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnExportToCsv">Экспорт в CSV</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ViewEventsTitle">{0} - Просмотр событий</Phrase>
+    <Phrase key="EditEventsTitle">{0} - Редактирование событий</Phrase>
+    <Phrase key="SaveEventsConfirm">Таблица событий была изменена.&#13;&#10;Сохранить изменения?</Phrase>
+    <Phrase key="IncorrectEventFilter">Некорректный фильтр событий.</Phrase>
+    <Phrase key="LoadEventTableError">Ошибка при загрузке таблицы событий</Phrase>
+    <Phrase key="SaveEventTableError">Ошибка при сохранении таблицы событий</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
     <Phrase key="this">Генерация команды</Phrase>
@@ -61,6 +98,22 @@
     <Phrase key="btnSend">Отправить</Phrase>
     <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenData">
+    <Phrase key="this">Генерация данных</Phrase>
+    <Phrase key="rbCurData">Текущие данные</Phrase>
+    <Phrase key="rbArcData">Архивные данные</Phrase>
+    <Phrase key="lblCnlNum">Канал</Phrase>
+    <Phrase key="lblCnlVal">Значение</Phrase>
+    <Phrase key="btnValOff">Откл.</Phrase>
+    <Phrase key="btnValOn">Вкл.</Phrase>
+    <Phrase key="lblCnlStat">Статус</Phrase>
+    <Phrase key="btnStatZero">0</Phrase>
+    <Phrase key="btnStatOne">1</Phrase>
+    <Phrase key="btnSend">Отправить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="IncorrectCnlNum">Некорректный номер канала.</Phrase>
+    <Phrase key="IncorrectCnlVal">Некорректное значение канала.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
     <Phrase key="this">Генератор</Phrase>
     <Phrase key="gbServerConn">Связь с Сервером</Phrase>
@@ -73,7 +126,27 @@
     <Phrase key="btnGenerateData">Данные</Phrase>
     <Phrase key="btnGenerateEvent">Событие</Phrase>
     <Phrase key="btnGenerateCmd">Команда</Phrase>
-    <Phrase key="lblProfileWarn">Установите профиль развертывания экземпляра.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenEvent">
+    <Phrase key="this">Генерация события</Phrase>
+    <Phrase key="lblDate">Дата</Phrase>
+    <Phrase key="lblTime">Время</Phrase>
+    <Phrase key="btnSetCurTime">Текущее</Phrase>
+    <Phrase key="lblObjNum">Объект</Phrase>
+    <Phrase key="lblKPNum">КП</Phrase>
+    <Phrase key="lblParamID">Параметр</Phrase>
+    <Phrase key="lblCnlNum">Канал</Phrase>
+    <Phrase key="lblOldCnlVal">Ст. значение</Phrase>
+    <Phrase key="lblOldCnlStat">Ст. статус</Phrase>
+    <Phrase key="lblNewCnlVal">Нов. значение</Phrase>
+    <Phrase key="lblNewCnlStat">Нов. статус</Phrase>
+    <Phrase key="lblUserID">Пользователь</Phrase>
+    <Phrase key="lblDescr">Описание</Phrase>
+    <Phrase key="lblData">Данные</Phrase>
+    <Phrase key="btnSend">Отправить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="IncorrectOldCnlVal">Некорректное старое значение канала.</Phrase>
+    <Phrase key="IncorrectNewCnlVal">Некорректное новое значение канала.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Модули</Phrase>
@@ -139,6 +212,33 @@
     <Phrase key="lblStoreEvPer">Период хранения, дней</Phrase>
     <Phrase key="chkWriteEv">Запись данных</Phrase>
     <Phrase key="chkWriteEvCopy">Запись копии данных</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmSnapshotTable">
+    <Phrase key="btnMoveFirst1.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev1.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition1.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount1">из {0}</Phrase>
+    <Phrase key="lblCount1.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext1.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast1.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Обновить данные</Phrase>
+    <Phrase key="btnMoveFirst2.ToolTip">Переместиться в начало</Phrase>
+    <Phrase key="btnMovePrev2.ToolTip">Переместиться на предыдущую строку</Phrase>
+    <Phrase key="txtPosition2.ToolTip">Текущая строка</Phrase>
+    <Phrase key="lblCount2">из {0}</Phrase>
+    <Phrase key="lblCount2.ToolTip">Всего строк</Phrase>
+    <Phrase key="btnMoveNext2.ToolTip">Переместиться на следующую строку</Phrase>
+    <Phrase key="btnMoveLast2.ToolTip">Переместиться в конец</Phrase>
+    <Phrase key="lblFilter">SQL-фильтр:</Phrase>
+    <Phrase key="btnExportToCsv">Экспорт в CSV</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ViewSnapshotsTitle">{0} - Просмотр срезов</Phrase>
+    <Phrase key="EditSnapshotsTitle">{0} - Редактирование срезов</Phrase>
+    <Phrase key="SaveSnapshotsConfirm">Таблица срезов была изменена.&#13;&#10;Сохранить изменения?</Phrase>
+    <Phrase key="IncorrectSnapshotFilter">Некорректный фильтр срезов.</Phrase>
+    <Phrase key="LoadSnapshotTableError">Ошибка при загрузке таблицы срезов</Phrase>
+    <Phrase key="SaveSnapshotTableError">Ошибка при сохранении таблицы срезов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
     <Phrase key="this">Статистика</Phrase>

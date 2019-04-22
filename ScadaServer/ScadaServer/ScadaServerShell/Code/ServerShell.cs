@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Server.Shell.Forms;
@@ -69,8 +69,6 @@ namespace Scada.Server.Shell.Code
             if (environment == null)
                 throw new ArgumentNullException("environment");
 
-            environment.Validate();
-
             // create nodes
             return new TreeNode[]
             {
@@ -113,8 +111,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.CurData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.MinDataNode)
@@ -123,8 +121,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.MinData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.HourDataNode)
@@ -133,8 +131,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_data.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.HourData }
                             }
                         },
                         new TreeNode(ServerShellPhrases.EventsNode)
@@ -143,8 +141,8 @@ namespace Scada.Server.Shell.Code
                             SelectedImageKey = "server_event.png",
                             Tag = new TreeNodeTag()
                             {
-                                FormType = null,
-                                FormArgs = null
+                                FormType = typeof(FrmArchive),
+                                FormArgs = new object[] { settings, environment, ArcType.Events }
                             }
                         }
                     })

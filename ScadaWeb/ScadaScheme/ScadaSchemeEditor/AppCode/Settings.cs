@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -30,13 +30,13 @@ using System.Xml;
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Application settings
-    /// <para>Настройки приложения</para>
+    /// Application settings.
+    /// <para>Настройки приложения.</para>
     /// </summary>
     internal class Settings
     {
         /// <summary>
-        /// Браузеры для редактирования схемы
+        /// Браузеры для редактирования схемы.
         /// </summary>
         public enum Browsers
         {
@@ -46,7 +46,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Имя файла настроек по умолчанию
+        /// Имя файла настроек по умолчанию.
         /// </summary>
         public const string DefFileName = "ScadaSchemeEditorConfig.xml";
 
@@ -61,36 +61,36 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Получить или установить директорию веб-приложения
+        /// Получить или установить директорию веб-приложения.
         /// </summary>
         public string WebDir { get; set; }
 
         /// <summary>
-        /// Получить или установить браузер
+        /// Получить или установить браузер.
         /// </summary>
         public Browsers Browser { get; set; }
 
 
         /// <summary>
-        /// Установить настройки приложения по умолчанию
+        /// Установить настройки приложения по умолчанию.
         /// </summary>
         private void SetToDefault()
         {
-            WebDir = @"C:\SCADA\ScadaWeb\";
+            WebDir = ScadaUtils.IsRunningOnWin ? 
+                @"C:\SCADA\ScadaWeb\" : 
+                "/opt/scada/ScadaWeb/";
             Browser = Browsers.Default;
         }
 
         /// <summary>
-        /// Загрузить настройки приложения из файла
+        /// Загрузить настройки приложения из файла.
         /// </summary>
         public bool Load(string fileName, out string errMsg)
         {
-            // установка значений по умолчанию
-            SetToDefault();
-
-            // загрузка настроек
             try
             {
+                SetToDefault();
+
                 if (!File.Exists(fileName))
                     throw new FileNotFoundException(string.Format(CommonPhrases.NamedFileNotFound, fileName));
 
@@ -128,7 +128,7 @@ namespace Scada.Scheme.Editor
         }
         
         /// <summary>
-        /// Сохранить настройки приложения в файле
+        /// Сохранить настройки приложения в файле.
         /// </summary>
         public bool Save(string fileName, out string errMsg)
         {

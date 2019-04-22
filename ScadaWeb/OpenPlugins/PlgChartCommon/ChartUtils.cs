@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -39,6 +39,10 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     public static class ChartUtils
     {
+        /// <summary>
+        /// Версия графиков
+        /// </summary>
+        public const string ChartVersion = "5.0.0.2";
         /// <summary>
         /// Количество графиков, выше которого могут быть проблемы с производительностью
         /// </summary>

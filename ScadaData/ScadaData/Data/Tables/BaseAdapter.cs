@@ -477,7 +477,7 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Заполнить таблицу baseTable из файла или потока
         /// </summary>
-        public void Fill<T>(BaseTable<T> baseTable, bool allowNulls)
+        public void Fill(IBaseTable baseTable, bool allowNulls)
         {
             if (baseTable == null)
                 throw new ArgumentNullException("baseTable");
@@ -485,17 +485,27 @@ namespace Scada.Data.Tables
             Stream stream = null;
             BinaryReader reader = null;
 
-            baseTable.Items.Clear();
-            PropertyDescriptorCollection props = TypeDescriptor.GetProperties(typeof(T));
+            baseTable.ClearItems();
+            baseTable.IndexesEnabled = false;
 
             try
             {
                 stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new BinaryReader(stream);
                 FieldDef[] fieldDefs = ReadFieldDefs(stream, reader, out int recSize);
+                int fieldCnt = fieldDefs.Length;
 
-                if (fieldDefs.Length > 0)
+                if (fieldCnt > 0)
                 {
+                    // получение свойств, соответствующих определениям полей
+                    PropertyDescriptorCollection props = TypeDescriptor.GetProperties(baseTable.ItemType);
+                    PropertyDescriptor[] propArr = new PropertyDescriptor[fieldCnt];
+
+                    for (int i = 0; i < fieldCnt; i++)
+                    {
+                        propArr[i] = props[fieldDefs[i].Name];
+                    }
+
                     // считывание строк
                     byte[] rowBuf = new byte[recSize];
 
@@ -507,13 +517,14 @@ namespace Scada.Data.Tables
                         // заполение строки таблицы из буфера
                         if (readSize == recSize)
                         {
-                            T item = Activator.CreateInstance<T>();
+                            object item = Activator.CreateInstance(baseTable.ItemType);
                             int bufInd = 2;
 
-                            foreach (FieldDef fieldDef in fieldDefs)
+                            for (int fieldInd = 0; fieldInd < fieldCnt; fieldInd++)
                             {
+                                FieldDef fieldDef = fieldDefs[fieldInd];
+                                PropertyDescriptor prop = propArr[fieldInd];
                                 bool isNull = fieldDef.AllowNull ? rowBuf[bufInd++] > 0 : false;
-                                PropertyDescriptor prop = props[fieldDef.Name];
 
                                 if (prop != null)
                                 {
@@ -525,7 +536,7 @@ namespace Scada.Data.Tables
                                 bufInd += fieldDef.DataSize;
                             }
 
-                            baseTable.AddItem(item);
+                            baseTable.AddObject(item);
                         }
                     }
                 }
@@ -541,6 +552,8 @@ namespace Scada.Data.Tables
                     reader?.Close();
                     stream?.Close();
                 }
+
+                baseTable.IndexesEnabled = true;
             }
         }
 
@@ -656,8 +669,10 @@ namespace Scada.Data.Tables
                     for (int i = 0; i < fieldCnt; i++)
                     {
                         PropertyDescriptor prop = props[i];
-                        FieldDef fieldDef = CreateFieldDef(prop.Name, prop.PropertyType,
-                            maxStrLenArr[i], prop.PropertyType.IsNullable(), ref recSize);
+                        bool isNullable = prop.PropertyType.IsNullable();
+                        FieldDef fieldDef = CreateFieldDef(prop.Name, 
+                            isNullable ? Nullable.GetUnderlyingType(prop.PropertyType) : prop.PropertyType,
+                            maxStrLenArr[i], isNullable || prop.PropertyType.IsClass, ref recSize);
                         fieldDefs[i] = fieldDef;
                         WriteFieldDef(fieldDef, writer);
                     }
@@ -687,14 +702,6 @@ namespace Scada.Data.Tables
                     stream?.Close();
                 }
             }
-        }
-
-        /// <summary>
-        /// Записать таблицу baseTable в файл или поток
-        /// </summary>
-        public void Update<T>(BaseTable<T> baseTable)
-        {
-            Update((IBaseTable)baseTable);
         }
     }
 }

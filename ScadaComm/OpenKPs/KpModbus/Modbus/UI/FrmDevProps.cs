@@ -103,7 +103,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevProps", toolTip);
-            openFileDialog.Filter = KpPhrases.TemplateFileFilter;
+            openFileDialog.SetFilter(KpPhrases.TemplateFileFilter);
 
             // вывод заголовка
             Text = string.Format(Text, kpNum);

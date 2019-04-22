@@ -31,6 +31,10 @@
             this.components = new System.ComponentModel.Container();
             this.ctrlProfileSelector = new Scada.Admin.App.Controls.Deployment.CtrlProfileSelector();
             this.gbStatus = new System.Windows.Forms.GroupBox();
+            this.btnStopComm = new System.Windows.Forms.Button();
+            this.btnStartComm = new System.Windows.Forms.Button();
+            this.btnStopServer = new System.Windows.Forms.Button();
+            this.btnStartServer = new System.Windows.Forms.Button();
             this.txtUpdateTime = new System.Windows.Forms.TextBox();
             this.lblUpdateTime = new System.Windows.Forms.Label();
             this.btnRestartComm = new System.Windows.Forms.Button();
@@ -58,6 +62,10 @@
             // 
             // gbStatus
             // 
+            this.gbStatus.Controls.Add(this.btnStopComm);
+            this.gbStatus.Controls.Add(this.btnStartComm);
+            this.gbStatus.Controls.Add(this.btnStopServer);
+            this.gbStatus.Controls.Add(this.btnStartServer);
             this.gbStatus.Controls.Add(this.txtUpdateTime);
             this.gbStatus.Controls.Add(this.lblUpdateTime);
             this.gbStatus.Controls.Add(this.btnRestartComm);
@@ -74,13 +82,53 @@
             this.gbStatus.TabStop = false;
             this.gbStatus.Text = "Status";
             // 
+            // btnStopComm
+            // 
+            this.btnStopComm.Location = new System.Drawing.Point(330, 48);
+            this.btnStopComm.Name = "btnStopComm";
+            this.btnStopComm.Size = new System.Drawing.Size(60, 23);
+            this.btnStopComm.TabIndex = 8;
+            this.btnStopComm.Text = "Stop";
+            this.btnStopComm.UseVisualStyleBackColor = true;
+            this.btnStopComm.Click += new System.EventHandler(this.btnStopComm_Click);
+            // 
+            // btnStartComm
+            // 
+            this.btnStartComm.Location = new System.Drawing.Point(264, 48);
+            this.btnStartComm.Name = "btnStartComm";
+            this.btnStartComm.Size = new System.Drawing.Size(60, 23);
+            this.btnStartComm.TabIndex = 7;
+            this.btnStartComm.Text = "Start";
+            this.btnStartComm.UseVisualStyleBackColor = true;
+            this.btnStartComm.Click += new System.EventHandler(this.btnStartComm_Click);
+            // 
+            // btnStopServer
+            // 
+            this.btnStopServer.Location = new System.Drawing.Point(330, 19);
+            this.btnStopServer.Name = "btnStopServer";
+            this.btnStopServer.Size = new System.Drawing.Size(60, 23);
+            this.btnStopServer.TabIndex = 3;
+            this.btnStopServer.Text = "Stop";
+            this.btnStopServer.UseVisualStyleBackColor = true;
+            this.btnStopServer.Click += new System.EventHandler(this.btnStopServer_Click);
+            // 
+            // btnStartServer
+            // 
+            this.btnStartServer.Location = new System.Drawing.Point(264, 19);
+            this.btnStartServer.Name = "btnStartServer";
+            this.btnStartServer.Size = new System.Drawing.Size(60, 23);
+            this.btnStartServer.TabIndex = 2;
+            this.btnStartServer.Text = "Start";
+            this.btnStartServer.UseVisualStyleBackColor = true;
+            this.btnStartServer.Click += new System.EventHandler(this.btnStartServer_Click);
+            // 
             // txtUpdateTime
             // 
-            this.txtUpdateTime.Location = new System.Drawing.Point(150, 78);
+            this.txtUpdateTime.Location = new System.Drawing.Point(118, 78);
             this.txtUpdateTime.Name = "txtUpdateTime";
             this.txtUpdateTime.ReadOnly = true;
-            this.txtUpdateTime.Size = new System.Drawing.Size(200, 20);
-            this.txtUpdateTime.TabIndex = 7;
+            this.txtUpdateTime.Size = new System.Drawing.Size(140, 20);
+            this.txtUpdateTime.TabIndex = 11;
             // 
             // lblUpdateTime
             // 
@@ -88,52 +136,52 @@
             this.lblUpdateTime.Location = new System.Drawing.Point(13, 82);
             this.lblUpdateTime.Name = "lblUpdateTime";
             this.lblUpdateTime.Size = new System.Drawing.Size(64, 13);
-            this.lblUpdateTime.TabIndex = 6;
+            this.lblUpdateTime.TabIndex = 10;
             this.lblUpdateTime.Text = "Update time";
             // 
             // btnRestartComm
             // 
-            this.btnRestartComm.Location = new System.Drawing.Point(356, 48);
+            this.btnRestartComm.Location = new System.Drawing.Point(396, 48);
             this.btnRestartComm.Name = "btnRestartComm";
-            this.btnRestartComm.Size = new System.Drawing.Size(100, 23);
-            this.btnRestartComm.TabIndex = 5;
+            this.btnRestartComm.Size = new System.Drawing.Size(60, 23);
+            this.btnRestartComm.TabIndex = 9;
             this.btnRestartComm.Text = "Restart";
             this.btnRestartComm.UseVisualStyleBackColor = true;
             this.btnRestartComm.Click += new System.EventHandler(this.btnRestartComm_Click);
             // 
             // txtCommStatus
             // 
-            this.txtCommStatus.Location = new System.Drawing.Point(150, 49);
+            this.txtCommStatus.Location = new System.Drawing.Point(118, 49);
             this.txtCommStatus.Name = "txtCommStatus";
             this.txtCommStatus.ReadOnly = true;
-            this.txtCommStatus.Size = new System.Drawing.Size(200, 20);
-            this.txtCommStatus.TabIndex = 4;
+            this.txtCommStatus.Size = new System.Drawing.Size(140, 20);
+            this.txtCommStatus.TabIndex = 6;
             // 
             // lblCommStatus
             // 
             this.lblCommStatus.AutoSize = true;
             this.lblCommStatus.Location = new System.Drawing.Point(13, 53);
             this.lblCommStatus.Name = "lblCommStatus";
-            this.lblCommStatus.Size = new System.Drawing.Size(111, 13);
-            this.lblCommStatus.TabIndex = 3;
-            this.lblCommStatus.Text = "Communicator service";
+            this.lblCommStatus.Size = new System.Drawing.Size(74, 13);
+            this.lblCommStatus.TabIndex = 5;
+            this.lblCommStatus.Text = "Communicator";
             // 
             // btnRestartServer
             // 
-            this.btnRestartServer.Location = new System.Drawing.Point(356, 19);
+            this.btnRestartServer.Location = new System.Drawing.Point(396, 19);
             this.btnRestartServer.Name = "btnRestartServer";
-            this.btnRestartServer.Size = new System.Drawing.Size(100, 23);
-            this.btnRestartServer.TabIndex = 2;
+            this.btnRestartServer.Size = new System.Drawing.Size(60, 23);
+            this.btnRestartServer.TabIndex = 4;
             this.btnRestartServer.Text = "Restart";
             this.btnRestartServer.UseVisualStyleBackColor = true;
             this.btnRestartServer.Click += new System.EventHandler(this.btnRestartServer_Click);
             // 
             // txtServerStatus
             // 
-            this.txtServerStatus.Location = new System.Drawing.Point(150, 20);
+            this.txtServerStatus.Location = new System.Drawing.Point(118, 20);
             this.txtServerStatus.Name = "txtServerStatus";
             this.txtServerStatus.ReadOnly = true;
-            this.txtServerStatus.Size = new System.Drawing.Size(200, 20);
+            this.txtServerStatus.Size = new System.Drawing.Size(140, 20);
             this.txtServerStatus.TabIndex = 1;
             // 
             // lblServerStatus
@@ -141,9 +189,9 @@
             this.lblServerStatus.AutoSize = true;
             this.lblServerStatus.Location = new System.Drawing.Point(13, 24);
             this.lblServerStatus.Name = "lblServerStatus";
-            this.lblServerStatus.Size = new System.Drawing.Size(75, 13);
+            this.lblServerStatus.Size = new System.Drawing.Size(38, 13);
             this.lblServerStatus.TabIndex = 0;
-            this.lblServerStatus.Text = "Server service";
+            this.lblServerStatus.Text = "Server";
             // 
             // gbAction
             // 
@@ -179,6 +227,7 @@
             // 
             // btnClose
             // 
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnClose.Location = new System.Drawing.Point(406, 309);
             this.btnClose.Name = "btnClose";
             this.btnClose.Size = new System.Drawing.Size(75, 23);
@@ -234,5 +283,9 @@
         private System.Windows.Forms.Button btnConnect;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Timer timer;
+        private System.Windows.Forms.Button btnStopServer;
+        private System.Windows.Forms.Button btnStartServer;
+        private System.Windows.Forms.Button btnStopComm;
+        private System.Windows.Forms.Button btnStartComm;
     }
 }

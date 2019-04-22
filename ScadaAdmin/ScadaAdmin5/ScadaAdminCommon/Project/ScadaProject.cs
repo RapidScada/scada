@@ -104,6 +104,17 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Gets the project directory.
+        /// </summary>
+        public string ProjectDir
+        {
+            get
+            {
+                return Path.GetDirectoryName(FileName);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
@@ -370,7 +381,7 @@ namespace Scada.Admin.Project
         {
             try
             {
-                // validate argumants
+                // validate arguments
                 if (!AdminUtils.NameIsValid(name))
                     throw new ArgumentException(AdminPhrases.IncorrectProjectName);
 

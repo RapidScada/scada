@@ -62,8 +62,8 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5">
-      <HintPath>..\..\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
+    <Reference Include="ScadaWebCommon">
+      <HintPath>..\..\ScadaWeb\ScadaWebCommon\bin\Release\ScadaWebCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -194,6 +194,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="paintbrush.ico" />
+    <None Include="Resources\comp_dp.png" />
+    <None Include="Resources\comp_dt.png" />
+    <None Include="Resources\comp_sp.png" />
+    <None Include="Resources\comp_st.png" />
+    <None Include="Resources\pointer.png" />
+    <None Include="Resources\component.png" />
     <Content Include="Web\js\api\ajaxqueue.js">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

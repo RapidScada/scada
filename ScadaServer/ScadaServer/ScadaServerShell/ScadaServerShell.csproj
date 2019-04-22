@@ -60,15 +60,29 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\ArcType.cs" />
+    <Compile Include="Code\ServerShellUtils.cs" />
     <Compile Include="Code\ServerMessage.cs" />
     <Compile Include="Code\ServerEnvironment.cs" />
     <Compile Include="Code\ServerShell.cs" />
     <Compile Include="Code\ServerShellPhrases.cs" />
+    <Compile Include="Forms\FrmArchive.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmArchive.Designer.cs">
+      <DependentUpon>FrmArchive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmCommonParams.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmCommonParams.Designer.cs">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmEventTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmEventTable.designer.cs">
+      <DependentUpon>FrmEventTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmGenCommand.cs">
       <SubType>Form</SubType>
@@ -76,11 +90,23 @@
     <Compile Include="Forms\FrmGenCommand.designer.cs">
       <DependentUpon>FrmGenCommand.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FrmGenData.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenData.Designer.cs">
+      <DependentUpon>FrmGenData.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FrmGenerator.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\FrmGenerator.Designer.cs">
       <DependentUpon>FrmGenerator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmGenEvent.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmGenEvent.Designer.cs">
+      <DependentUpon>FrmGenEvent.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\FrmModules.cs">
       <SubType>Form</SubType>
@@ -99,6 +125,12 @@
     </Compile>
     <Compile Include="Forms\FrmStats.Designer.cs">
       <DependentUpon>FrmStats.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FrmSnapshotTable.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FrmSnapshotTable.designer.cs">
+      <DependentUpon>FrmSnapshotTable.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -131,14 +163,26 @@
     <None Include="Resources\server_data.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Forms\FrmArchive.resx">
+      <DependentUpon>FrmArchive.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmCommonParams.resx">
       <DependentUpon>FrmCommonParams.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmEventTable.resx">
+      <DependentUpon>FrmEventTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGenCommand.resx">
       <DependentUpon>FrmGenCommand.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenData.resx">
+      <DependentUpon>FrmGenData.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmGenerator.resx">
       <DependentUpon>FrmGenerator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmGenEvent.resx">
+      <DependentUpon>FrmGenEvent.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmModules.resx">
       <DependentUpon>FrmModules.cs</DependentUpon>
@@ -148,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FrmStats.resx">
       <DependentUpon>FrmStats.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FrmSnapshotTable.resx">
+      <DependentUpon>FrmSnapshotTable.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

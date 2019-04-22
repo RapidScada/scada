@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.App.Code;
@@ -54,8 +54,7 @@ namespace Scada.Admin
 
         private static void Application_ThreadException(object sender, ThreadExceptionEventArgs e)
         {
-            appData.ErrLog.WriteException(e.Exception, CommonPhrases.UnhandledException);
-            ScadaUiUtils.ShowError(CommonPhrases.UnhandledException + ":" + Environment.NewLine + e.Exception.Message);
+            appData.ProcError(e.Exception, CommonPhrases.UnhandledException);
         }
     }
 }

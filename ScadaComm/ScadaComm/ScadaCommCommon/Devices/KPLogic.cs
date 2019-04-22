@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
@@ -37,8 +37,8 @@ using Utils;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// The base class for device communication logic
-    /// <para>Родительский класс логики взаимодействия с КП</para>
+    /// The base class for device communication logic.
+    /// <para>Родительский класс логики взаимодействия с КП.</para>
     /// </summary>
     public abstract partial class KPLogic
     {
@@ -73,6 +73,10 @@ namespace Scada.Comm.Devices
         /// Признаки изменения текущих данных с момента передачи
         /// </summary>
         protected bool[] curDataModified;
+        /// <summary>
+        /// All device tags with access by signals.
+        /// </summary>
+        protected Dictionary<int, KPTag> tagsBySignal;
         /// <summary>
         /// Список не переданных архивных срезов КП
         /// </summary>
@@ -130,6 +134,7 @@ namespace Scada.Comm.Devices
             // protected fields
             curData = new SrezTableLight.CnlData[0];
             curDataModified = new bool[0];
+            tagsBySignal = new Dictionary<int, KPTag>();
             arcSrezList = new List<TagSrez>();
             eventList = new List<KPEvent>();
             lastArcSrezList = new List<TagSrez>();
@@ -139,7 +144,7 @@ namespace Scada.Comm.Devices
             kpStats.Reset();
 
             // public properties
-            Bind = false;
+            Bound = false;
             Number = number;
             Name = "";
             Dll = Assembly.GetCallingAssembly().GetName().Name;
@@ -163,9 +168,9 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Получить или установить признак привязки к SCADA-Серверу
+        /// Gets or sets a value indicating whether the device is bound to Server.
         /// </summary>
-        public bool Bind { get; set; }
+        public bool Bound { get; set; }
 
         /// <summary>
         /// Получить номер КП
@@ -562,7 +567,7 @@ namespace Scada.Comm.Devices
                     {
                         KPTag kpTag = KPTags[paramInd];
                         colName[i] = kpTag.Name;
-                        colVal[i] = ConvertTagDataToStr(kpTag.Signal, curData[paramInd]);
+                        colVal[i] = ConvertTagDataToStr(kpTag, curData[paramInd]);
                         paramInd++;
                     }
                 }
@@ -817,6 +822,14 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Converts the tag data to string.
+        /// </summary>
+        protected virtual string ConvertTagDataToStr(KPTag kpTag, SrezTableLight.CnlData tagData)
+        {
+            return ConvertTagDataToStr(kpTag.Signal, tagData);
+        }
+
+        /// <summary>
         /// Инициализировать группы тегов, теги КП, их текущие данные и признаки изменения
         /// </summary>
         /// <remarks>В результате работы метода элементы списков TagGroups и KPTags не могут быть null</remarks>
@@ -838,6 +851,7 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagsBySignal.Clear();
             tagTable = null;
 
             int groupCnt = TagGroups.Length;
@@ -852,7 +866,15 @@ namespace Scada.Comm.Devices
                 else
                 {
                     foreach (KPTag kpTag in tagGroup.KPTags)
-                        KPTags[tagIndex++] = kpTag == null ? new KPTag() : kpTag;
+                    {
+                        KPTag destTag = kpTag ?? new KPTag();
+                        destTag.Index = tagIndex;
+                        KPTags[tagIndex] = destTag;
+                        tagIndex++;
+
+                        if (destTag.Signal > 0)
+                            tagsBySignal[destTag.Signal] = destTag;
+                    }
                 }
             }
 
@@ -877,11 +899,20 @@ namespace Scada.Comm.Devices
             KPTags = new KPTag[tagCnt];
             curData = new SrezTableLight.CnlData[tagCnt];
             curDataModified = new bool[tagCnt];
+            tagsBySignal.Clear();
             tagTable = null;
 
             int tagIndex = 0;
-            foreach (KPTag kpTag in srcKPTags)
-                KPTags[tagIndex++] = kpTag == null ? new KPTag() : kpTag;
+            foreach (KPTag srcTag in srcKPTags)
+            {
+                KPTag destTag = srcTag ?? new KPTag();
+                destTag.Index = tagIndex;
+                KPTags[tagIndex] = destTag;
+                tagIndex++;
+
+                if (destTag.Signal > 0)
+                    tagsBySignal[destTag.Signal] = destTag;
+            }
 
             for (int i = 0; i < tagCnt; i++)
             {
@@ -961,10 +992,13 @@ namespace Scada.Comm.Devices
             {
                 // добавление среза в список не переданных срезов
                 arcSrezList.Add(tagSrez);
+                
                 // добавление среза в список последних срезов
                 lastArcSrezList.Add(tagSrez);
                 while (lastArcSrezList.Count > LastSrezListSize)
+                {
                     lastArcSrezList.RemoveAt(0);
+                }
             }
         }
 
@@ -977,10 +1011,13 @@ namespace Scada.Comm.Devices
             {
                 // добавление события в список не переданных событий
                 eventList.Add(kpEvent);
+
                 // добавление события в список последних событий
                 lastEventList.Add(kpEvent);
                 while (lastEventList.Count > LastSrezListSize)
+                {
                     lastEventList.RemoveAt(0);
+                }
             }
         }
 
@@ -1160,13 +1197,20 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Binds the device to the configuration database.
+        /// </summary>
+        public virtual void Bind(ConfigBaseSubset configBase)
+        {
+        }
+
+        /// <summary>
         /// Привязать тег КП к входному каналу базы конфигурации
         /// </summary>
         public virtual void BindTag(int signal, int cnlNum, int objNum, int paramID)
         {
             if (cnlNum > 0)
             {
-                KPTag boundKPTag = null;
+                KPTag tagToBind = null;
 
                 if (signal > 0)
                 {
@@ -1175,41 +1219,20 @@ namespace Scada.Comm.Devices
                     {
                         KPTag kpTag = KPTags[signal - 1];
                         if (kpTag.Signal == signal)
-                            boundKPTag = kpTag;
+                            tagToBind = kpTag;
                     }
 
                     // поиск тега КП по сигналу при их произвольной нумерации
-                    if (boundKPTag == null)
-                    {
-                        foreach (KPTag kpTag in KPTags)
-                        {
-                            if (kpTag.Signal == signal)
-                            {
-                                boundKPTag = kpTag;
-                                break;
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    // поиск тега КП по номеру канала
-                    foreach (KPTag kpTag in KPTags)
-                    {
-                        if (kpTag.CnlNum == cnlNum)
-                        {
-                            boundKPTag = kpTag;
-                            break;
-                        }
-                    }
+                    if (tagToBind == null)
+                        tagsBySignal.TryGetValue(signal, out tagToBind);
                 }
 
                 // привязка тега КП
-                if (boundKPTag != null)
+                if (tagToBind != null)
                 {
-                    boundKPTag.CnlNum = cnlNum;
-                    boundKPTag.ObjNum = objNum;
-                    boundKPTag.ParamID = paramID;
+                    tagToBind.CnlNum = cnlNum;
+                    tagToBind.ObjNum = objNum;
+                    tagToBind.ParamID = paramID;
                 }
             }
         }
@@ -1301,79 +1324,84 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Копировать текущие данные и признаки изменения тегов КП, 
-        /// затем сбросить признаки изменения
+        /// Gets the current data of the device and clears the modification flags.
         /// </summary>
-        public void CopyCurData(SrezTableLight.CnlData[] destCurData, bool[] destCurDataModified)
+        public virtual TagSrez GetCurData(bool allTags)
         {
-            if (destCurData == null)
-                throw new ArgumentNullException("destCurData");
-            if (destCurDataModified == null)
-                throw new ArgumentNullException("destCurDataModified");
-
-            try
+            lock (curData)
             {
-                lock (curData)
+                TagSrez curSrez = null;
+                int tagCnt = curData.Length;
+
+                if (tagCnt > 0)
                 {
-                    int tagCnt = curData.Length;
-                    Array.Copy(curData, destCurData, tagCnt);
-                    Array.Copy(curDataModified, destCurDataModified, tagCnt);
+                    if (allTags)
+                    {
+                        curSrez = new TagSrez(tagCnt);
+                        for (int i = 0; i < tagCnt; i++)
+                        {
+                            curSrez.KPTags[i] = KPTags[i];
+                            curSrez.TagData[i] = curData[i];
+                        }
+                    }
+                    else
+                    {
+                        int modTagCnt = 0; // number of modified tags
+                        for (int i = 0; i < tagCnt; i++)
+                        {
+                            if (curDataModified[i])
+                                modTagCnt++;
+                        }
+
+                        if (modTagCnt > 0)
+                        {
+                            curSrez = new TagSrez(modTagCnt);
+                            for (int i = 0, j = 0; i < tagCnt; i++)
+                            {
+                                if (curDataModified[i])
+                                {
+                                    curSrez.KPTags[j] = KPTags[i];
+                                    curSrez.TagData[j] = curData[i];
+                                    j++;
+                                }
+                            }
+                        }
+                    }
+
                     Array.Clear(curDataModified, 0, tagCnt);
                 }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при копировании текущих данных тегов КП: " :
-                    "Error copying current data of device tags: ") + ex.Message);
+
+                return curSrez;
             }
         }
 
         /// <summary>
-        /// Переместить существующие архивные срезы КП
+        /// Moves existing archives from the internal list to the destination.
         /// </summary>
-        public void MoveArcSrez(List<TagSrez> destSrezList)
+        public void MoveArcData(List<TagSrez> destSrezList)
         {
             if (destSrezList == null)
                 throw new ArgumentNullException("destSrezList");
 
-            try
+            lock (arcSrezList)
             {
-                lock (arcSrezList)
-                {
-                    destSrezList.AddRange(arcSrezList);
-                    arcSrezList.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при перемещении существующих архивных срезов КП: " :
-                    "Error moving existing device archive data: ") + ex.Message);
+                destSrezList.AddRange(arcSrezList);
+                arcSrezList.Clear();
             }
         }
 
         /// <summary>
-        /// Переместить существующие события КП
+        /// Moves existing events from the internal list to the destination.
         /// </summary>
         public void MoveEvents(List<KPEvent> destEventList)
         {
             if (destEventList == null)
                 throw new ArgumentNullException("destEventList");
 
-            try
+            lock (eventList)
             {
-                lock (arcSrezList)
-                {
-                    destEventList.AddRange(eventList);
-                    eventList.Clear();
-                }
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при перемещении существующих событий КП: " :
-                    "Error moving existing device events: ") + ex.Message);
+                destEventList.AddRange(eventList);
+                eventList.Clear();
             }
         }
     }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Svg;
@@ -33,17 +33,17 @@ using System.IO;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Image list item
-    /// <para>Элемент списка изображений</para>
+    /// Image list item.
+    /// <para>Элемент списка изображений.</para>
     /// </summary>
     public class ImageListItem : IUniqueItem
     {
-        private const string ImageCat = "Image";            // наименование категории изображения
-        private Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
-        private System.Drawing.Image source;                // источник данных изображения
+        private const string ImageCat = "Image"; // наименование категории изображения
+        private readonly Func<string, bool> imageNameIsUniqueMethod; // метод проверки наименования на уникальность
+        private System.Drawing.Image source;     // источник данных изображения
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта без параметров.
         /// </summary>
         private ImageListItem()
         {
@@ -54,15 +54,11 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// </summary>
         public ImageListItem(Image image, Func<string, bool> imageNameIsUniqueMethod)
         {
-            if (image == null)
-                throw new ArgumentNullException("image");
-            if (imageNameIsUniqueMethod == null)
+            this.imageNameIsUniqueMethod = imageNameIsUniqueMethod ?? 
                 throw new ArgumentNullException("imageNameIsUniqueMethod");
-
-            this.imageNameIsUniqueMethod = imageNameIsUniqueMethod;
             source = null;
 
-            Image = image;
+            Image = image ?? throw new ArgumentNullException("image");
             Name = image.Name;
             DataSize = 0;
             ImageSize = Size.Empty;
@@ -71,7 +67,7 @@ namespace Scada.Scheme.Model.PropertyGrid
 
 
         /// <summary>
-        /// Получить изображение
+        /// Получить изображение.
         /// </summary>
         #region Attributes
         [Browsable(false)]
@@ -79,7 +75,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         public Image Image { get; private set; }
 
         /// <summary>
-        /// Получить источник данных изображения
+        /// Получить источник данных изображения.
         /// </summary>
         #region Attributes
         [Browsable(false)]
@@ -95,7 +91,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Получить или установить наименование изображения
+        /// Получить или установить наименование изображения.
         /// </summary>
         #region Attributes
         [DisplayName("Name"), Category(ImageCat)]
@@ -104,7 +100,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         public string Name { get; set; }
 
         /// <summary>
-        /// Получить размер данных изображения
+        /// Получить размер данных изображения.
         /// </summary>
         #region Attributes
         [DisplayName("Data size"), Category(ImageCat)]
@@ -112,7 +108,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         public int DataSize { get; private set; }
 
         /// <summary>
-        /// Получить размер изображения
+        /// Получить размер изображения.
         /// </summary>
         #region Attributes
         [DisplayName("Size"), Category(ImageCat)]
@@ -120,16 +116,30 @@ namespace Scada.Scheme.Model.PropertyGrid
         public Size ImageSize { get; private set; }
 
         /// <summary>
-        /// Получить формат данных изображения
+        /// Получить формат данных изображения.
         /// </summary>
         #region Attributes
         [DisplayName("Format"), Category(ImageCat)]
         #endregion
         public string Format { get; private set; }
 
+        /// <summary>
+        /// Gets a value indicating whether the image is in SVG format.
+        /// </summary>
+        #region Attributes
+        [Browsable(false)]
+        #endregion
+        public bool IsSvg
+        {
+            get
+            {
+                return Name != null && Name.EndsWith(".svg", StringComparison.OrdinalIgnoreCase);
+            }
+        }
+
 
         /// <summary>
-        /// Загрузить изображение из его данных
+        /// Загрузить изображение из его данных.
         /// </summary>
         private void LoadImage()
         {
@@ -137,7 +147,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 source = null;
             }
-            else if (Name != null && Name.EndsWith(".svg", StringComparison.OrdinalIgnoreCase))
+            else if (IsSvg)
             {
                 using (MemoryStream memStream = new MemoryStream(Image.Data))
                 {
@@ -170,7 +180,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Проверить наименование на уникальность
+        /// Проверить наименование на уникальность.
         /// </summary>
         public bool KeyIsUnique(string key)
         {
@@ -178,7 +188,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         }
 
         /// <summary>
-        /// Получить строковое представление объекта
+        /// Получить строковое представление объекта.
         /// </summary>
         public override string ToString()
         {

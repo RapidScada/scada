@@ -44,8 +44,15 @@ namespace Scada.Comm.Shell.Code
         public static string StatsNode { get; private set; }
 
         // Scada.Comm.Shell.Forms
-        public static string ConnectionUndefined { get; private set; }
+        public static string SetProfile { get; private set; }
         public static string Loading { get; private set; }
+        public static string NoDeviceProps { get; private set; }
+
+        // Scada.Comm.Shell.Forms.FrmLineParams
+        public static string LineParamsTitle { get; private set; }
+
+        // Scada.Comm.Shell.Forms.FrmLineStats
+        public static string LineStatsTitle { get; private set; }
 
         public static void Init()
         {
@@ -60,8 +67,15 @@ namespace Scada.Comm.Shell.Code
             StatsNode = dict.GetPhrase("StatsNode");
 
             dict = Localization.GetDictionary("Scada.Comm.Shell.Forms");
-            ConnectionUndefined = dict.GetPhrase("ConnectionUndefined");
+            SetProfile = dict.GetPhrase("SetProfile");
             Loading = dict.GetPhrase("Loading");
+            NoDeviceProps = dict.GetPhrase("NoDeviceProps");
+
+            dict = Localization.GetDictionary("Scada.Comm.Shell.Forms.FrmLineParams");
+            LineParamsTitle = dict.GetPhrase("LineParamsTitle");
+
+            dict = Localization.GetDictionary("Scada.Comm.Shell.Forms.FrmLineStats");
+            LineStatsTitle = dict.GetPhrase("LineStatsTitle");
         }
     }
 }

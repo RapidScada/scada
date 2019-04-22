@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableView title="Simulator">
+  <Param>Simulator</Param>
+  <Param cnlNum="101">Simulator - Sine</Param>
+  <Param cnlNum="102">Simulator - Square</Param>
+  <Param cnlNum="103">Simulator - Triangle</Param>
+  <Param cnlNum="104">Simulator - Relay State</Param>
+  <Param cnlNum="105">Simulator - Analog Output</Param>
+</TableView>

@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfInterface xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Interface>
+    <ItfID>1</ItfID>
+    <Name>Servers\</Name>
+    <Descr>Серверная</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>2</ItfID>
+    <Name>Servers\ServerRoom.sch</Name>
+    <Descr>Серверная схема</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>3</ItfID>
+    <Name>Servers\ServerRoom.tbl</Name>
+    <Descr>Серверная таблица</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>11</ItfID>
+    <Name>DemoViews\</Name>
+    <Descr>Демо</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>12</ItfID>
+    <Name>DemoViews\Notifications.tbl</Name>
+    <Descr>Уведомления</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>13</ItfID>
+    <Name>DemoViews\OpcDemo.tbl</Name>
+    <Descr>OPC демо</Descr>
+  </Interface>
+  <Interface>
+    <ItfID>14</ItfID>
+    <Name>DemoViews\SnmpDemo.tbl</Name>
+    <Descr>SNMP демо</Descr>
+  </Interface>
+</ArrayOfInterface>

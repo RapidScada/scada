@@ -1,0 +1,74 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          scadaagent
+# Required-Start:    $remote_fs $network $time
+# Required-Stop:     $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Short-Description: SCADA-Agent daemon
+### END INIT INFO
+
+# This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev and Mikhail Shiryaev
+
+SERVICE_NAME=SCADA-Agent
+EXE_DIR=/opt/scada/ScadaAgent/
+EXE_NAME=ScadaAgentMono.exe
+STOP_FILE_PATH=./Cmd/agentstop
+PID_FILE_PATH=/tmp/scadaagent
+MAX_DELAY=12
+
+do_start()
+{
+    if [ ! -f $PID_FILE_PATH ]; then
+        cd $EXE_DIR
+        if [ -f $STOP_FILE_PATH ]; then
+            echo "Delete $STOP_FILE_PATH"
+            rm $STOP_FILE_PATH
+        fi
+
+        echo "Sending start $SERVICE_NAME command..."
+        mono $EXE_NAME & echo $! > $PID_FILE_PATH
+        echo "Start $SERVICE_NAME command is sent"
+    else
+        echo "$SERVICE_NAME is already running"
+    fi
+}
+
+do_stop()
+{
+    if [ -f $PID_FILE_PATH ]; then
+        echo "Sending stop $SERVICE_NAME command..."
+        cd $EXE_DIR
+        touch $STOP_FILE_PATH
+        for i in $(seq 1 $MAX_DELAY); do
+            sleep 1
+            if [ ! -f $STOP_FILE_PATH ]; then
+                break;
+            fi
+        done
+
+        if [ -f $STOP_FILE_PATH ]; then
+            echo "Kill $SERVICE_NAME"
+            PID=$(cat $PID_FILE_PATH);
+            kill $PID;
+        fi
+
+        echo "$SERVICE_NAME must've been stopped"
+        rm $PID_FILE_PATH
+    else
+        echo "$SERVICE_NAME is not running"
+    fi
+}
+
+case $1 in
+    start)
+        do_start
+    ;;
+    stop)
+        do_stop
+    ;;
+    restart)
+        do_stop
+        do_start
+    ;;
+esac

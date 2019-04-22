@@ -44,13 +44,14 @@ namespace Scada.Admin.App.Code
             Instance = instance ?? throw new ArgumentNullException("instance");
             ServerEnvironment = null;
             CommEnvironment = null;
+            IsReady = false;
         }
 
 
         /// <summary>
-        /// Gets or sets the system instance.
+        /// Gets the system instance.
         /// </summary>
-        public Instance Instance { get; set; }
+        public Instance Instance { get; private set; }
         
         /// <summary>
         /// Gets or sets the Server environment.
@@ -61,5 +62,10 @@ namespace Scada.Admin.App.Code
         /// Gets or sets the Communicator environment.
         /// </summary>
         public CommEnvironment CommEnvironment { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this object is not ready to use.
+        /// </summary>
+        public bool IsReady { get; set; }
     }
 }

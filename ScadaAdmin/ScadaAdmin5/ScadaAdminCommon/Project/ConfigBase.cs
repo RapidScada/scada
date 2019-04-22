@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Entities;
@@ -41,29 +41,8 @@ namespace Scada.Admin.Project
         /// </summary>
         public ConfigBase()
         {
-            AllTables = new IBaseTable[]
-            {
-                CmdTypeTable = new BaseTable<CmdType>("CmdType", "CmdTypeID", CommonPhrases.CmdTypeTable),
-                CmdValTable = new BaseTable<CmdVal>("CmdVal", "CmdValID", CommonPhrases.CmdValTable),
-                CnlTypeTable = new BaseTable<CnlType>("CnlType", "CnlTypeID", CommonPhrases.CnlTypeTable),
-                CommLineTable = new BaseTable<CommLine>("CommLine", "CommLineNum", CommonPhrases.CommLineTable),
-                CtrlCnlTable = new BaseTable<CtrlCnl>("CtrlCnl", "CtrlCnlNum", CommonPhrases.CtrlCnlTable),
-                EvTypeTable = new BaseTable<EvType>("EvType", "CnlStatus", CommonPhrases.EvTypeTable),
-                FormatTable = new BaseTable<Format>("Format", "FormatID", CommonPhrases.FormatTable),
-                FormulaTable = new BaseTable<Formula>("Formula", "FormulaID", CommonPhrases.FormulaTable),
-                InCnlTable = new BaseTable<InCnl>("InCnl", "CnlNum", CommonPhrases.InCnlTable),
-                InterfaceTable = new BaseTable<Data.Entities.Interface>("Interface", "ItfID", 
-                    CommonPhrases.InterfaceTable),
-                KPTable = new BaseTable<KP>("KP", "KPNum", CommonPhrases.KPTable),
-                KPTypeTable = new BaseTable<KPType>("KPType", "KPTypeID", CommonPhrases.KPTypeTable),
-                ObjTable = new BaseTable<Obj>("Obj", "ObjNum", CommonPhrases.ObjTable),
-                ParamTable = new BaseTable<Param>("Param", "ParamID", CommonPhrases.ParamTable),
-                RightTable = new BaseTable<Right>("Right", "RightID", CommonPhrases.RightTable),
-                RoleTable = new BaseTable<Role>("Role", "RoleID", CommonPhrases.RoleTable),
-                UnitTable = new BaseTable<Unit>("Unit", "UnitID", CommonPhrases.UnitTable),
-                UserTable = new BaseTable<User>("User", "UserID", CommonPhrases.UserTable)
-            };
-
+            CreateAllTables();
+            AddRelations();
             BaseDir = "";
             Loaded = false;
         }
@@ -175,6 +154,90 @@ namespace Scada.Admin.Project
         /// </summary>
         public bool Loaded { get; protected set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether at least one table was modified.
+        /// </summary>
+        public bool Modified
+        {
+            get
+            {
+                foreach (IBaseTable baseTable in AllTables)
+                {
+                    if (baseTable.Modified)
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+
+        /// <summary>
+        /// Creates all tables of the configuration database.
+        /// </summary>
+        private void CreateAllTables()
+        {
+            AllTables = new IBaseTable[]
+            {
+                CmdTypeTable = new BaseTable<CmdType>("CmdType", "CmdTypeID", CommonPhrases.CmdTypeTable),
+                CmdValTable = new BaseTable<CmdVal>("CmdVal", "CmdValID", CommonPhrases.CmdValTable),
+                CnlTypeTable = new BaseTable<CnlType>("CnlType", "CnlTypeID", CommonPhrases.CnlTypeTable),
+                CommLineTable = new BaseTable<CommLine>("CommLine", "CommLineNum", CommonPhrases.CommLineTable),
+                CtrlCnlTable = new BaseTable<CtrlCnl>("CtrlCnl", "CtrlCnlNum", CommonPhrases.CtrlCnlTable),
+                EvTypeTable = new BaseTable<EvType>("EvType", "CnlStatus", CommonPhrases.EvTypeTable),
+                FormatTable = new BaseTable<Format>("Format", "FormatID", CommonPhrases.FormatTable),
+                FormulaTable = new BaseTable<Formula>("Formula", "FormulaID", CommonPhrases.FormulaTable),
+                InCnlTable = new BaseTable<InCnl>("InCnl", "CnlNum", CommonPhrases.InCnlTable),
+                InterfaceTable = new BaseTable<Data.Entities.Interface>("Interface", "ItfID",
+                    CommonPhrases.InterfaceTable),
+                KPTable = new BaseTable<KP>("KP", "KPNum", CommonPhrases.KPTable),
+                KPTypeTable = new BaseTable<KPType>("KPType", "KPTypeID", CommonPhrases.KPTypeTable),
+                ObjTable = new BaseTable<Obj>("Obj", "ObjNum", CommonPhrases.ObjTable),
+                ParamTable = new BaseTable<Param>("Param", "ParamID", CommonPhrases.ParamTable),
+                RightTable = new BaseTable<Right>("Right", "RightID", CommonPhrases.RightTable),
+                RoleTable = new BaseTable<Role>("Role", "RoleID", CommonPhrases.RoleTable),
+                UnitTable = new BaseTable<Unit>("Unit", "UnitID", CommonPhrases.UnitTable),
+                UserTable = new BaseTable<User>("User", "UserID", CommonPhrases.UserTable)
+            };
+        }
+
+        /// <summary>
+        /// Adds relations between the tables.
+        /// </summary>
+        private void AddRelations()
+        {
+            AddRelation(KPTypeTable, KPTable, "KPTypeID");
+            AddRelation(CommLineTable, KPTable, "CommLineNum");
+
+            AddRelation(CnlTypeTable, InCnlTable, "CnlTypeID");
+            AddRelation(ObjTable, InCnlTable, "ObjNum");
+            AddRelation(KPTable, InCnlTable, "KPNum");
+            AddRelation(ParamTable, InCnlTable, "ParamID");
+            AddRelation(FormatTable, InCnlTable, "FormatID");
+            AddRelation(UnitTable, InCnlTable, "UnitID");
+
+            AddRelation(CmdTypeTable, CtrlCnlTable, "CmdTypeID");
+            AddRelation(ObjTable, CtrlCnlTable, "ObjNum");
+            AddRelation(KPTable, CtrlCnlTable, "KPNum");
+            AddRelation(CmdValTable, CtrlCnlTable, "CmdValID");
+
+            AddRelation(RoleTable, UserTable, "RoleID");
+
+            AddRelation(InterfaceTable, RightTable, "ItfID");
+            AddRelation(RoleTable, RightTable, "RoleID");
+        }
+
+        /// <summary>
+        /// Adds a relation to the configuration database.
+        /// </summary>
+        private void AddRelation(IBaseTable parentTable, IBaseTable childTable, string childColumn)
+        {
+            TableRelation relation = new TableRelation(parentTable, childTable, childColumn);
+            childTable.AddIndex(childColumn);
+            childTable.DependsOn.Add(relation);
+            parentTable.Dependent.Add(relation);
+        }
+
 
         /// <summary>
         /// Loads the configuration database if needed.
@@ -255,7 +318,7 @@ namespace Scada.Admin.Project
         /// <summary>
         /// Saves the specified table of the configuration database.
         /// </summary>
-        public bool SaveTable<T>(BaseTable<T> baseTable, out string errMsg)
+        public bool SaveTable(IBaseTable baseTable, out string errMsg)
         {
             try
             {

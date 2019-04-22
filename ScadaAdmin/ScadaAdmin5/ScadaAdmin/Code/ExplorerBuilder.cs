@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,16 +20,18 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
-using Scada.Admin.App.Forms;
+using Scada.Admin.App.Forms.Tables;
 using Scada.Admin.Project;
 using Scada.Comm.Shell.Code;
+using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.Server.Shell.Code;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Forms;
 
@@ -61,7 +63,39 @@ namespace Scada.Admin.App.Code
             this.treeView = treeView ?? throw new ArgumentNullException("treeView");
             this.contextMenus = contextMenus ?? throw new ArgumentNullException("contextMenus");
             project = null;
+
+            ProjectNode = null;
+            BaseNode = null;
+            BaseTableNodes = null;
+            InterfaceNode = null;
+            InstancesNode = null;
         }
+
+
+        /// <summary>
+        /// Gets the project node.
+        /// </summary>
+        public TreeNode ProjectNode { get; private set; }
+
+        /// <summary>
+        /// Gets the configuration database node.
+        /// </summary>
+        public TreeNode BaseNode { get; private set; }
+
+        /// <summary>
+        /// Gets the configuration database table nodes by names.
+        /// </summary>
+        public Dictionary<string, TreeNode> BaseTableNodes { get; private set; }
+
+        /// <summary>
+        /// Gets the interface node.
+        /// </summary>
+        public TreeNode InterfaceNode { get; private set; }
+
+        /// <summary>
+        /// Gets the instances node.
+        /// </summary>
+        public TreeNode InstancesNode { get; private set; }
 
 
         /// <summary>
@@ -80,8 +114,15 @@ namespace Scada.Admin.App.Code
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.ObjTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CommLineTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.KPTable));
-            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InCnlTable));
-            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.CtrlCnlTable));
+
+            TreeNode inCnlTableNode = CreateBaseTableNode(configBase.InCnlTable);
+            TreeNode ctrlCnlTableNode = CreateBaseTableNode(configBase.CtrlCnlTable);
+            inCnlTableNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+            ctrlCnlTableNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+            sysTableNode.Nodes.Add(inCnlTableNode);
+            sysTableNode.Nodes.Add(ctrlCnlTableNode);
+            FillCnlTableNodes(inCnlTableNode, ctrlCnlTableNode, configBase);
+
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
@@ -106,17 +147,67 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a node that represents the table of the configuration database.
         /// </summary>
-        private TreeNode CreateBaseTableNode<T>(BaseTable<T> baseTable)
+        private TreeNode CreateBaseTableNode(IBaseTable baseTable)
         {
             TreeNode baseTableNode = TreeViewUtils.CreateNode(baseTable.Title, "table.png");
-            baseTableNode.Tag = new TreeNodeTag
+            baseTableNode.Tag = CreateBaseTableTag(baseTable);
+            BaseTableNodes.Add(baseTable.Name, baseTableNode);
+            return baseTableNode;
+        }
+
+        /// <summary>
+        /// Creates a tag to associate with a tree node representing a table.
+        /// </summary>
+        private TreeNodeTag CreateBaseTableTag(IBaseTable baseTable, TableFilter tableFilter = null)
+        {
+            return new TreeNodeTag
             {
-                FormType = typeof(FrmBaseTableGeneric<T>),
-                FormArgs = new object[] { appData, project, baseTable },
-                RelatedObject = baseTable,
+                FormType = typeof(FrmBaseTable),
+                FormArgs = new object[] { baseTable, tableFilter, project, appData },
+                RelatedObject = new BaseTableItem(baseTable, tableFilter),
                 NodeType = AppNodeType.BaseTable
             };
-            return baseTableNode;
+        }
+
+        /// <summary>
+        /// Creates a table filter for filtering by device.
+        /// </summary>
+        private TableFilter CreateFilterByDevice(KP kp)
+        {
+            return kp == null ?
+                new TableFilter("KPNum", null) { Title = AppPhrases.EmptyDeviceFilter } :
+                new TableFilter("KPNum", kp.KPNum) { Title = string.Format(AppPhrases.DeviceFilter, kp.KPNum)};
+        }
+
+        /// <summary>
+        /// Fills the channel table nodes.
+        /// </summary>
+        private void FillCnlTableNodes(TreeNode inCnlTableNode, TreeNode ctrlCnlTableNode, ConfigBase configBase)
+        {
+            foreach (KP kp in configBase.KPTable.EnumerateItems())
+            {
+                string nodeText = string.Format(AppPhrases.TableByDeviceNode, kp.KPNum, kp.Name);
+
+                TreeNode inCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                inCnlsByDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+                inCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(kp));
+                inCnlTableNode.Nodes.Add(inCnlsByDeviceNode);
+
+                TreeNode ctrlCnlsByDeviceNode = TreeViewUtils.CreateNode(nodeText, "table.png");
+                ctrlCnlsByDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+                ctrlCnlsByDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(kp));
+                ctrlCnlTableNode.Nodes.Add(ctrlCnlsByDeviceNode);
+            }
+
+            TreeNode inCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            inCnlsEmptyDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+            inCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.InCnlTable, CreateFilterByDevice(null));
+            inCnlTableNode.Nodes.Add(inCnlsEmptyDeviceNode);
+
+            TreeNode ctrlCnlsEmptyDeviceNode = TreeViewUtils.CreateNode(AppPhrases.EmptyDeviceNode, "table.png");
+            ctrlCnlsEmptyDeviceNode.ContextMenuStrip = contextMenus.CnlTableMenu;
+            ctrlCnlsEmptyDeviceNode.Tag = CreateBaseTableTag(configBase.CtrlCnlTable, CreateFilterByDevice(null));
+            ctrlCnlTableNode.Nodes.Add(ctrlCnlsEmptyDeviceNode);
         }
 
         /// <summary>
@@ -178,52 +269,57 @@ namespace Scada.Admin.App.Code
         public void CreateNodes(ScadaProject project)
         {
             this.project = project ?? throw new ArgumentNullException("project");
+            ProjectNode = null;
+            BaseNode = null;
+            BaseTableNodes = new Dictionary<string, TreeNode>();
+            InterfaceNode = null;
+            InstancesNode = null;
 
             try
             {
                 treeView.BeginUpdate();
                 treeView.Nodes.Clear();
 
-                TreeNode projectNode = TreeViewUtils.CreateNode(project.Name, "project.png", true);
-                projectNode.ContextMenuStrip = contextMenus.ProjectMenu;
-                projectNode.Tag = new TreeNodeTag
+                ProjectNode = TreeViewUtils.CreateNode(project.Name, "project.png", true);
+                ProjectNode.ContextMenuStrip = contextMenus.ProjectMenu;
+                ProjectNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project,
                     NodeType = AppNodeType.Project
                 };
-                treeView.Nodes.Add(projectNode);
+                treeView.Nodes.Add(ProjectNode);
 
-                TreeNode baseNode = CreateBaseNode(project.ConfigBase);
-                projectNode.Nodes.Add(baseNode);
+                BaseNode = CreateBaseNode(project.ConfigBase);
+                ProjectNode.Nodes.Add(BaseNode);
 
-                TreeNode interfaceNode = TreeViewUtils.CreateNode(AppPhrases.InterfaceNode, "ui.png");
-                interfaceNode.ContextMenuStrip = contextMenus.DirectoryMenu;
-                interfaceNode.Tag = new TreeNodeTag
+                InterfaceNode = TreeViewUtils.CreateNode(AppPhrases.InterfaceNode, "ui.png");
+                InterfaceNode.ContextMenuStrip = contextMenus.DirectoryMenu;
+                InterfaceNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project.Interface,
                     NodeType = AppNodeType.Interface
                 };
-                projectNode.Nodes.Add(interfaceNode);
+                ProjectNode.Nodes.Add(InterfaceNode);
 
                 TreeNode emptyNode = TreeViewUtils.CreateNode(AppPhrases.EmptyNode, "empty.png");
-                interfaceNode.Nodes.Add(emptyNode);
+                InterfaceNode.Nodes.Add(emptyNode);
 
-                TreeNode instancesNode = TreeViewUtils.CreateNode(AppPhrases.InstancesNode, "instances.png");
-                instancesNode.ContextMenuStrip = contextMenus.InstanceMenu;
-                instancesNode.Tag = new TreeNodeTag
+                InstancesNode = TreeViewUtils.CreateNode(AppPhrases.InstancesNode, "instances.png");
+                InstancesNode.ContextMenuStrip = contextMenus.InstanceMenu;
+                InstancesNode.Tag = new TreeNodeTag
                 {
                     RelatedObject = project.Instances,
                     NodeType = AppNodeType.Instances
                 };
-                projectNode.Nodes.Add(instancesNode);
+                ProjectNode.Nodes.Add(InstancesNode);
 
                 foreach (Instance instance in project.Instances)
                 {
-                    instancesNode.Nodes.Add(CreateInstanceNode(instance));
+                    InstancesNode.Nodes.Add(CreateInstanceNode(instance));
                 }
 
-                projectNode.Expand();
-                instancesNode.Expand();
+                ProjectNode.Expand();
+                InstancesNode.Expand();
             }
             finally
             {
@@ -251,11 +347,29 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
+        /// Fills the channel table nodes, creating child nodes.
+        /// </summary>
+        public void FillChannelTableNodes(TreeNode inCnlTableNode, TreeNode ctrlCnlTableNode, ConfigBase configBase)
+        {
+            try
+            {
+                treeView.BeginUpdate();
+                inCnlTableNode.Nodes.Clear();
+                ctrlCnlTableNode.Nodes.Clear();
+                FillCnlTableNodes(inCnlTableNode, ctrlCnlTableNode, configBase);
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
+        }
+
+        /// <summary>
         /// Fills the interface node, creating child nodes.
         /// </summary>
         public void FillInterfaceNode(TreeNode interfaceNode)
         {
-            Interface interfaceObj = (Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
+            Project.Interface interfaceObj = (Project.Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
             FillFileNode(interfaceNode, interfaceObj.InterfaceDir);
         }
 
@@ -276,6 +390,7 @@ namespace Scada.Admin.App.Code
                 if (instance.ServerApp.Enabled)
                 {
                     TreeNode serverNode = TreeViewUtils.CreateNode(AppPhrases.ServerNode, "server.png");
+                    serverNode.ContextMenuStrip = contextMenus.ServerMenu;
                     serverNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.ServerApp,
@@ -290,6 +405,7 @@ namespace Scada.Admin.App.Code
                 if (instance.CommApp.Enabled)
                 {
                     TreeNode commNode = TreeViewUtils.CreateNode(AppPhrases.CommNode, "comm.png");
+                    commNode.ContextMenuStrip = contextMenus.CommMenu;
                     commNode.Tag = new TreeNodeTag
                     {
                         RelatedObject = instance.CommApp,
@@ -298,15 +414,7 @@ namespace Scada.Admin.App.Code
                     commNode.Nodes.AddRange(commShell.GetTreeNodes(
                         instance.CommApp.Settings, liveInstance.CommEnvironment));
 
-                    foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(commNode.Nodes))
-                    {
-                        if (treeNode.Tag is TreeNodeTag tag && 
-                            (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine))
-                        {
-                            treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
-                        }
-                    }
-
+                    SetContextMenus(commNode);
                     instanceNode.Nodes.Add(commNode);
                 }
 
@@ -444,6 +552,24 @@ namespace Scada.Admin.App.Code
         {
             if (treeNode.ImageKey.StartsWith("folder_"))
                 treeNode.SetImageKey(treeNode.IsExpanded ? "folder_open.png" : "folder_closed.png");
+        }
+
+        /// <summary>
+        /// Defines context menus of the node and its child nodes.
+        /// </summary>
+        /// <remarks>The method works for communication line.</remarks>
+        public void SetContextMenus(TreeNode parentNode)
+        {
+            foreach (TreeNode treeNode in TreeViewUtils.IterateNodes(parentNode))
+            {
+                if (treeNode.Tag is TreeNodeTag tag)
+                {
+                    if (tag.NodeType == CommNodeType.CommLines || tag.NodeType == CommNodeType.CommLine)
+                        treeNode.ContextMenuStrip = contextMenus.CommLineMenu;
+                    else if (tag.NodeType == CommNodeType.Device)
+                        treeNode.ContextMenuStrip = contextMenus.DeviceMenu;
+                }
+            }
         }
     }
 }

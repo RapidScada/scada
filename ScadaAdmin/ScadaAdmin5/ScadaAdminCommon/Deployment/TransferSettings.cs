@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -34,7 +34,7 @@ namespace Scada.Admin.Deployment
     /// Configuration transfer settings.
     /// <para>Настройки передачи конфигурации.</para>
     /// </summary>
-    public class TransferSettings
+    public abstract class TransferSettings
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -87,11 +87,10 @@ namespace Scada.Admin.Deployment
         public bool IgnoreWebStorage { get; set; }
 
 
-
         /// <summary>
         /// Loads the settings from the XML node.
         /// </summary>
-        public void LoadFromXml(XmlNode xmlNode)
+        public virtual void LoadFromXml(XmlNode xmlNode)
         {
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
@@ -108,7 +107,7 @@ namespace Scada.Admin.Deployment
         /// <summary>
         /// Saves the settings into the XML node.
         /// </summary>
-        public void SaveToXml(XmlElement xmlElem)
+        public virtual void SaveToXml(XmlElement xmlElem)
         {
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");

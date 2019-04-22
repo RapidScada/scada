@@ -59,12 +59,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Code\CommLineCommand.cs" />
     <Compile Include="Code\CommMessage.cs" />
     <Compile Include="Code\CommNodeType.cs" />
     <Compile Include="Code\CommShell.cs" />
     <Compile Include="Code\CommEnvironment.cs" />
     <Compile Include="Code\CommShellPhrases.cs" />
     <Compile Include="Code\CommShellUtils.cs" />
+    <Compile Include="Code\SettingsConverter.cs" />
     <Compile Include="Controls\CtrlLineCustomParams.cs">
       <SubType>UserControl</SubType>
     </Compile>

@@ -5,6 +5,7 @@
     <Phrase key="LoadModSettingsError">Error loading module settings</Phrase>
     <Phrase key="SaveModSettingsError">Error saving module settings</Phrase>
     <Phrase key="ConfigureModule">Configure the module and restart SCADA-Server service</Phrase>
+    <Phrase key="CmdSentSuccessfully">Command sent successfully.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Modules.ModFactory">
     <Phrase key="GetViewTypeError">Error getting module interface type from the library {0}: {1}</Phrase>
@@ -23,14 +24,29 @@
     <Phrase key="StatsNode">Stats</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms">
-    <Phrase key="ConnectionUndefined">Connection is not defined.</Phrase>
+    <Phrase key="SetProfile">Set the instance deployment profile.</Phrase>
     <Phrase key="Loading">Loading...</Phrase>
+    <Phrase key="CsvFileFilter">Comma-separated values (*.csv)|*.csv|All Files (*.*)|*.*</Phrase>
+    <Phrase key="ExportToCsvError">Error exporting data to CSV</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmArchive">
+    <Phrase key="btnView">View</Phrase>
+    <Phrase key="btnEdit">Edit</Phrase>
+    <Phrase key="cbDataKind.Items[0]">Main</Phrase>
+    <Phrase key="cbDataKind.Items[1]">Copy</Phrase>
+    <Phrase key="CurDataTitle">Current Data</Phrase>
+    <Phrase key="MinDataTitle">Minute Data</Phrase>
+    <Phrase key="HourDataTitle">Hourly Data</Phrase>
+    <Phrase key="EventsTitle">Events</Phrase>
+    <Phrase key="ArcLocal">Browsing archive is available only locally.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmCommonParams">
     <Phrase key="this">Common Parameters</Phrase>
     <Phrase key="gbConn">Connection</Phrase>
     <Phrase key="lblTcpPort">TCP port</Phrase>
     <Phrase key="lblLdapPath">Domain controller</Phrase>
+    <Phrase key="gbLog">Logging</Phrase>
+    <Phrase key="chkDetailedLog">Detailed log</Phrase>
     <Phrase key="gbDirs">Directories</Phrase>
     <Phrase key="lblBaseDATDir">Configuration database in DAT format</Phrase>
     <Phrase key="btnBrowseBaseDATDir">Browse...</Phrase>
@@ -40,10 +56,31 @@
     <Phrase key="btnBrowseArcDir">Browse...</Phrase>
     <Phrase key="lblArcCopyDir">Archive copy in DAT format</Phrase>
     <Phrase key="btnBrowseArcCopyDir">Browse...</Phrase>
-    <Phrase key="chkDetailedLog">Detailed log</Phrase>
+    <Phrase key="btnSetToDefaultWin">Default for Windows</Phrase>
+    <Phrase key="btnSetToDefaultLinux">Default for Linux</Phrase>
     <Phrase key="ChooseItfDir">Choose the interface directory.</Phrase>
     <Phrase key="ChooseArcDir">Choose the archive in DAT format directory.</Phrase>
     <Phrase key="ChooseArcCopyDir">Choose the archive copy in DAT format directory.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmEventTable">
+    <Phrase key="btnMoveFirst.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount">of {0}</Phrase>
+    <Phrase key="lblCount.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast.ToolTip">Move last</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
+    <Phrase key="lblFilter">SQL filter:</Phrase>
+    <Phrase key="btnExportToCsv">Export to CSV</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ViewEventsTitle">{0} - View Events</Phrase>
+    <Phrase key="EditEventsTitle">{0} - Edit Events</Phrase>
+    <Phrase key="SaveEventsConfirm">The event table has been modified.&#13;&#10;Save the changes?</Phrase>
+    <Phrase key="IncorrectEventFilter">Incorrect event filter.</Phrase>
+    <Phrase key="LoadEventTableError">Error loading event table</Phrase>
+    <Phrase key="SaveEventTableError">Error saving event table</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenCommand">
     <Phrase key="this">Generate Command</Phrase>
@@ -61,6 +98,22 @@
     <Phrase key="btnSend">Send</Phrase>
     <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenData">
+    <Phrase key="this">Generate Data</Phrase>
+    <Phrase key="rbCurData">Current data</Phrase>
+    <Phrase key="rbArcData">Archive data</Phrase>
+    <Phrase key="lblCnlNum">Channel</Phrase>
+    <Phrase key="lblCnlVal">Value</Phrase>
+    <Phrase key="btnValOff">Off</Phrase>
+    <Phrase key="btnValOn">On</Phrase>
+    <Phrase key="lblCnlStat">Status</Phrase>
+    <Phrase key="btnStatZero">0</Phrase>
+    <Phrase key="btnStatOne">1</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="IncorrectCnlNum">Incorrect channel number.</Phrase>
+    <Phrase key="IncorrectCnlVal">Incorrect channel value.</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmGenerator">
     <Phrase key="this">Generator</Phrase>
     <Phrase key="gbServerConn">Server Connection</Phrase>
@@ -74,6 +127,27 @@
     <Phrase key="btnGenerateEvent">Event</Phrase>
     <Phrase key="btnGenerateCmd">Command</Phrase>
     <Phrase key="lblProfileWarn">Set the instance deployment profile.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmGenEvent">
+    <Phrase key="this">Generate Event</Phrase>
+    <Phrase key="lblDate">Date</Phrase>
+    <Phrase key="lblTime">Time</Phrase>
+    <Phrase key="btnSetCurTime">Set Current</Phrase>
+    <Phrase key="lblObjNum">Object</Phrase>
+    <Phrase key="lblKPNum">Device</Phrase>
+    <Phrase key="lblParamID">Parameter</Phrase>
+    <Phrase key="lblCnlNum">Channel</Phrase>
+    <Phrase key="lblOldCnlVal">Old value</Phrase>
+    <Phrase key="lblOldCnlStat">Old status</Phrase>
+    <Phrase key="lblNewCnlVal">New value</Phrase>
+    <Phrase key="lblNewCnlStat">New status</Phrase>
+    <Phrase key="lblUserID">User</Phrase>
+    <Phrase key="lblDescr">Description</Phrase>
+    <Phrase key="lblData">Data</Phrase>
+    <Phrase key="btnSend">Send</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="IncorrectOldCnlVal">Incorrect old channel value.</Phrase>
+    <Phrase key="IncorrectNewCnlVal">Incorrect new channel value.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmModules">
     <Phrase key="this">Modules</Phrase>
@@ -138,6 +212,33 @@
     <Phrase key="lblStoreEvPer">Storing period, days</Phrase>
     <Phrase key="chkWriteEv">Write data</Phrase>
     <Phrase key="chkWriteEvCopy">Write data copy</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Server.Shell.Forms.FrmSnapshotTable">
+    <Phrase key="btnMoveFirst1.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev1.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition1.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount1">of {0}</Phrase>
+    <Phrase key="lblCount1.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext1.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast1.ToolTip">Move last</Phrase>
+    <Phrase key="btnRefresh.ToolTip">Refresh data</Phrase>
+    <Phrase key="btnMoveFirst2.ToolTip">Move first</Phrase>
+    <Phrase key="btnMovePrev2.ToolTip">Move previous</Phrase>
+    <Phrase key="txtPosition2.ToolTip">Current position</Phrase>
+    <Phrase key="lblCount2">of {0}</Phrase>
+    <Phrase key="lblCount2.ToolTip">Total number of rows</Phrase>
+    <Phrase key="btnMoveNext2.ToolTip">Move next</Phrase>
+    <Phrase key="btnMoveLast2.ToolTip">Move last</Phrase>
+    <Phrase key="lblFilter">SQL filter:</Phrase>
+    <Phrase key="btnExportToCsv">Export to CSV</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ViewSnapshotsTitle">{0} - View Snapshots</Phrase>
+    <Phrase key="EditSnapshotsTitle">{0} - Edit Snapshots</Phrase>
+    <Phrase key="SaveSnapshotsConfirm">The snapshot table has been modified.&#13;&#10;Save the changes?</Phrase>
+    <Phrase key="IncorrectSnapshotFilter">Incorrect snapshot filter.</Phrase>
+    <Phrase key="LoadSnapshotTableError">Error loading snapshot table</Phrase>
+    <Phrase key="SaveSnapshotTableError">Error saving snapshot table</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Server.Shell.Forms.FrmStats">
     <Phrase key="this">Stats</Phrase>

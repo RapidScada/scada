@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent.Connector;
@@ -38,14 +38,32 @@ namespace Scada.Server.Shell.Code
     public class ServerEnvironment
     {
         /// <summary>
-        /// Gets or sets the application directories.
+        /// The user interface of the modules accessed by full file name.
         /// </summary>
-        public AppDirs AppDirs { get; set; }
+        protected Dictionary<string, ModView> moduleViews;
+
 
         /// <summary>
-        /// Gets or sets the user interface of the modules accessed by full file name.
+        /// Initializes a new instance of the class.
         /// </summary>
-        public Dictionary<string, ModView> ModuleViews { get; set; }
+        public ServerEnvironment(AppDirs appDirs, Log errLog)
+        {
+            moduleViews = new Dictionary<string, ModView>();
+
+            AppDirs = appDirs ?? throw new ArgumentNullException("appDirs");
+            ErrLog = errLog ?? throw new ArgumentNullException("errLog");
+        }
+
+
+        /// <summary>
+        /// Gets the application directories.
+        /// </summary>
+        public AppDirs AppDirs { get; protected set; }
+
+        /// <summary>
+        /// Gets the application error log.
+        /// </summary>
+        public Log ErrLog { get; protected set; }
 
         /// <summary>
         /// Gets or sets the client of the Agent service.
@@ -53,25 +71,20 @@ namespace Scada.Server.Shell.Code
         /// <remarks>Null allowed.</remarks>
         public IAgentClient AgentClient { get; set; }
 
-        /// <summary>
-        /// Gets the application error log.
-        /// </summary>
-        public Log ErrLog { get; set; }
-
 
         /// <summary>
-        /// Validates the environment and throws an exception if it is incorrect.
+        /// Gets the user interface of the driver.
         /// </summary>
-        public void Validate()
+        public ModView GetModuleView(string dllPath)
         {
-            if (AppDirs == null)
-                throw new InvalidOperationException("AppDirs must not be null.");
+            if (!moduleViews.TryGetValue(dllPath, out ModView modView))
+            {
+                modView = ModFactory.GetModView(dllPath);
+                modView.AppDirs = AppDirs;
+                moduleViews[dllPath] = modView;
+            }
 
-            if (ModuleViews == null)
-                throw new InvalidOperationException("ModuleViews must not be null.");
-
-            if (ErrLog == null)
-                throw new InvalidOperationException("ErrLog must not be null.");
+            return modView;
         }
     }
 }

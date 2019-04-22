@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Device communication logic
+ * Summary  : Device driver communication logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices.Modbus;
@@ -35,8 +35,8 @@ using System.Threading;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// Device driver communication logic.
+    /// <para>Логика работы драйвера КП.</para>
     /// </summary>
     public class KpModbusLogic : KPLogic
     {
@@ -63,7 +63,11 @@ namespace Scada.Comm.Devices
         private List<ElemGroup> elemGroups;         // активные запрашиваемые группы элементов
         private int elemGroupCnt;                   // количество активных групп элементов
         private HashSet<int> floatSignals;          // множество сигналов, форматируемых как вещественное число
-        protected DeviceTemplate deviceTemplate;    // шаблон устройства, используемый данным КП
+
+        /// <summary>
+        /// Шаблон устройства, используемый данным КП
+        /// </summary>
+        protected DeviceTemplate deviceTemplate;
 
 
         /// <summary>
@@ -82,18 +86,18 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                return "ModbusTemplates";
+                return "Modbus.Templates";
             }
         }
 
 
         /// <summary>
-        /// Gets the template dictionary from the common properties or creates it.
+        /// Gets or creates the template dictionary from the common line properties.
         /// </summary>
-        private Dictionary<string, DeviceTemplate> GetTemplateDictionary()
+        private TemplateDict GetTemplateDictionary()
         {
-            Dictionary<string, DeviceTemplate> templateDict = CommonProps.ContainsKey(TemplateDictKey) ?
-                CommonProps[TemplateDictKey] as Dictionary<string, DeviceTemplate> : null;
+            TemplateDict templateDict = CommonProps.ContainsKey(TemplateDictKey) ? 
+                CommonProps[TemplateDictKey] as TemplateDict : null;
 
             if (templateDict == null)
             {
@@ -109,38 +113,41 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void PrepareTemplate(string fileName)
         {
-            if (fileName == "")
+            deviceTemplate = null;
+
+            if (string.IsNullOrEmpty(fileName))
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "{0} Ошибка: Не задан шаблон устройства для {1}" :
                     "{0} Error: Template is undefined for the {1}", CommUtils.GetNowDT(), Caption));
-                deviceTemplate = null;
             }
             else
             {
-                deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
-                Dictionary<string, DeviceTemplate> templates = GetTemplateDictionary();
+                TemplateDict templateDict = GetTemplateDictionary();
 
-                if (templates.ContainsKey(fileName))
+                if (templateDict.TryGetValue(fileName, out DeviceTemplate existingTemplate))
                 {
-                    // копирование свойств шаблона, загруженного ранее
-                    deviceTemplate.CopyFrom(templates[fileName]);
+                    if (existingTemplate != null)
+                    {
+                        deviceTemplate = GetTemplateFactory().CreateDeviceTemplate();
+                        deviceTemplate.CopyFrom(existingTemplate);
+                    }
                 }
                 else
                 {
+                    DeviceTemplate newTemplate = GetTemplateFactory().CreateDeviceTemplate();
                     WriteToLog(string.Format(Localization.UseRussian ?
                         "{0} Загрузка шаблона устройства из файла {1}" :
                         "{0} Load device template from file {1}", CommUtils.GetNowDT(), fileName));
                     string filePath = Path.IsPathRooted(fileName) ?
                         fileName : Path.Combine(AppDirs.ConfigDir, fileName);
 
-                    if (!deviceTemplate.Load(filePath, out string errMsg))
-                    {
+                    if (newTemplate.Load(filePath, out string errMsg))
+                        deviceTemplate = newTemplate;
+                    else
                         WriteToLog(errMsg);
-                        deviceTemplate = null;
-                    }
 
-                    templates.Add(fileName, deviceTemplate);
+                    templateDict.Add(fileName, deviceTemplate);
                 }
             }
         }
@@ -222,9 +229,9 @@ namespace Scada.Comm.Devices
                     foreach (Elem elem in elemGroup.Elems)
                     {
                         int signal = ++tagInd;
-                        tagGroup.KPTags.Add(new KPTag(signal, elem.Name));
+                        tagGroup.AddNewTag(signal, elem.Name);
 
-                        if (elem.ElemType == ElemType.Float)
+                        if (elem.ElemType == ElemType.Float || elem.ElemType == ElemType.Double)
                             floatSignals.Add(signal);
                     }
                 }

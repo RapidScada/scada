@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCmdVal xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CmdVal>
+    <CmdValID>1</CmdValID>
+    <Name>Откл</Name>
+    <Val>Отключить</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>2</CmdValID>
+    <Name>Вкл</Name>
+    <Val>; Включить</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>3</CmdValID>
+    <Name>Откл - Вкл</Name>
+    <Val>Отключить; Включить</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>4</CmdValID>
+    <Name>Выполнить</Name>
+    <Val>; Выполнить</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>5</CmdValID>
+    <Name>Снять - Взять</Name>
+    <Val>Снять; Взять</Val>
+  </CmdVal>
+  <CmdVal>
+    <CmdValID>6</CmdValID>
+    <Name>Команды ОПС1</Name>
+    <Val>Снять; Взять; Откл. авт.; Вкл. авт.; Сброс пуска АСПТ; Пуск АСПТ</Val>
+  </CmdVal>
+</ArrayOfCmdVal>

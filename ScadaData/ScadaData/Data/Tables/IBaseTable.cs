@@ -24,6 +24,7 @@
  */
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace Scada.Data.Tables
@@ -58,11 +59,36 @@ namespace Scada.Data.Tables
         /// Gets the type of the table items.
         /// </summary>
         Type ItemType { get; }
-        
+
+        /// <summary>
+        /// Gets the number of table items.
+        /// </summary>
+        int ItemCount { get; }
+
+        /// <summary>
+        /// Gets the table indexes accessed by column name.
+        /// </summary>
+        Dictionary<string, TableIndex> Indexes { get; }
+
+        /// <summary>
+        /// Gets the tables that this table depends on (foreign keys).
+        /// </summary>
+        List<TableRelation> DependsOn { get; }
+
+        /// <summary>
+        /// Gets the tables that depend on this table.
+        /// </summary>
+        List<TableRelation> Dependent { get; }
+
         /// <summary>
         /// Gets or sets a value indicating whether the table was modified.
         /// </summary>
         bool Modified { get; set; }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether all indexes of the table are maintained up to date.
+        /// </summary>
+        bool IndexesEnabled { get; set; }
 
 
         /// <summary>
@@ -71,10 +97,55 @@ namespace Scada.Data.Tables
         void AddObject(object obj);
 
         /// <summary>
+        /// Removes an item with the specified primary key.
+        /// </summary>
+        void RemoveItem(int key);
+
+        /// <summary>
+        /// Removes all items.
+        /// </summary>
+        void ClearItems();
+
+        /// <summary>
+        /// Gets the primary key value of the item.
+        /// </summary>
+        int GetPkValue(object item);
+
+        /// <summary>
+        /// Sets the primary key value of the item.
+        /// </summary>
+        void SetPkValue(object item, int key);
+
+        /// <summary>
+        /// Checks if there is an item with the specified primary key.
+        /// </summary>
+        bool PkExists(int key);
+
+        /// <summary>
+        /// Adds a new index.
+        /// </summary>
+        TableIndex AddIndex(string columnName);
+
+        /// <summary>
+        /// Gets an index by the column name, populating it if necessary.
+        /// </summary>
+        bool TryGetIndex(string columnName, out TableIndex index);
+
+        /// <summary>
+        /// Returns an enumerable collection of the table primary keys.
+        /// </summary>
+        IEnumerable<int> EnumerateKeys();
+
+        /// <summary>
         /// Returns an enumerable collection of the table items.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<object> EnumerateItems();
+        IEnumerable EnumerateItems();
+
+        /// <summary>
+        /// Selects the items that match the specified filter.
+        /// </summary>
+        IEnumerable SelectItems(TableFilter tableFilter, bool indexRequired = false);
 
         /// <summary>
         /// Loads the table from the specified file.

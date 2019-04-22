@@ -23,7 +23,7 @@
  * Modified : 2018
  */
 
-namespace Scada.Comm.Shell.Code
+namespace Scada.Admin.App.Code
 {
     /// <summary>
     /// Messages sent by the application forms.
@@ -31,6 +31,9 @@ namespace Scada.Comm.Shell.Code
     /// </summary>
     internal static class AppMessage
     {
+        public const string RefreshData = "Admin.RefreshData";
         public const string UpdateFileName = "Admin.UpdateFileName";
+        public const string NewProject = "Admin.NewProject";
+        public const string OpenProject = "Admin.OpenProject";
     }
 }

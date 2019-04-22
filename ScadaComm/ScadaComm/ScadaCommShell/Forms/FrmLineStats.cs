@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent;
@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WinControl;
 
 namespace Scada.Comm.Shell.Forms
 {
@@ -40,7 +41,7 @@ namespace Scada.Comm.Shell.Forms
     /// Form for displaying communication line stats.
     /// <para>Форма для отображения статистики линии связи.</para>
     /// </summary>
-    public partial class FrmLineStats : Form
+    public partial class FrmLineStats : Form, IChildForm
     {
         private readonly Settings.CommLine commLine;  // the communication line settings to edit
         private readonly CommEnvironment environment; // the application environment
@@ -72,6 +73,12 @@ namespace Scada.Comm.Shell.Forms
 
 
         /// <summary>
+        /// Gets or sets the object associated with the form.
+        /// </summary>
+        public ChildFormTag ChildFormTag { get; set; }
+
+
+        /// <summary>
         /// Initializes the log refresh process.
         /// </summary>
         private void InitRefresh()
@@ -82,8 +89,8 @@ namespace Scada.Comm.Shell.Forms
 
             if (agentClient == null)
             {
-                stateBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
-                logBox.SetFirstLine(CommShellPhrases.ConnectionUndefined);
+                stateBox.SetFirstLine(CommShellPhrases.SetProfile);
+                logBox.SetFirstLine(CommShellPhrases.SetProfile);
                 tmrRefresh.Interval = ScadaUiUtils.LogRemoteRefreshInterval;
             }
             else
@@ -108,13 +115,53 @@ namespace Scada.Comm.Shell.Forms
             }
         }
 
+        /// <summary>
+        /// Saves the settings.
+        /// </summary>
+        public void Save()
+        {
+            // do nothing
+        }
+
 
         private void FrmLineStats_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, "Scada.Comm.Shell.Forms.FrmLineStats");
+            Translator.TranslateForm(this, GetType().FullName);
+            Text = string.Format(CommShellPhrases.LineStatsTitle, commLine.Number);
+
+            ChildFormTag.MainFormMessage += ChildFormTag_MainFormMessage;
             lbTabs.SelectedIndex = 0;
             InitRefresh();
             tmrRefresh.Start();
+        }
+
+        private void FrmLineStats_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            tmrRefresh.Stop();
+        }
+
+        private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
+        {
+            if (Visible)
+            {
+                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
+                    ScadaUiUtils.LogLocalRefreshInterval :
+                    ScadaUiUtils.LogRemoteRefreshInterval;
+            }
+            else
+            {
+                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
+            }
+        }
+
+        private void ChildFormTag_MainFormMessage(object sender, FormMessageEventArgs e)
+        {
+            // update log file names
+            if (e.Message == CommMessage.UpdateFileName)
+            {
+                Text = string.Format(CommShellPhrases.LineStatsTitle, commLine.Number);
+                InitRefresh();
+            }
         }
 
         private void lbTabs_DrawItem(object sender, DrawItemEventArgs e)
@@ -138,20 +185,6 @@ namespace Scada.Comm.Shell.Forms
                 chkPause.Enabled = true;
                 lbState.Visible = false;
                 lbLog.Visible = true;
-            }
-        }
-
-        private void FrmLineStats_VisibleChanged(object sender, EventArgs e)
-        {
-            if (Visible)
-            {
-                tmrRefresh.Interval = stateBox.AgentClient != null && stateBox.AgentClient.IsLocal ?
-                    ScadaUiUtils.LogLocalRefreshInterval :
-                    ScadaUiUtils.LogRemoteRefreshInterval;
-            }
-            else
-            {
-                tmrRefresh.Interval = ScadaUiUtils.LogInactiveTimerInterval;
             }
         }
 

@@ -76,7 +76,7 @@ namespace Scada.Server.Engine
             appLog.WriteBreak();
             appLog.WriteAction(string.Format(Localization.UseRussian ? 
                 "Служба ScadaServerService {0} запущена" :
-                "ScadaServerService {0} is started", ServerUtils.AppVersion), Log.ActTypes.Action);
+                "ScadaServerService {0} is started", ServerUtils.AppVersion));
 
             if (mainLogic.AppDirs.Exist)
             {

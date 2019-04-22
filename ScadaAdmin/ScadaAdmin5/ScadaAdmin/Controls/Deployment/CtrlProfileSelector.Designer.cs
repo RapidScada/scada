@@ -49,7 +49,7 @@
             this.gbProfile.Name = "gbProfile";
             this.gbProfile.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbProfile.Size = new System.Drawing.Size(469, 55);
-            this.gbProfile.TabIndex = 2;
+            this.gbProfile.TabIndex = 1;
             this.gbProfile.TabStop = false;
             this.gbProfile.Text = "Profile";
             // 
@@ -100,7 +100,7 @@
             this.gbInstance.Name = "gbInstance";
             this.gbInstance.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbInstance.Size = new System.Drawing.Size(469, 52);
-            this.gbInstance.TabIndex = 3;
+            this.gbInstance.TabIndex = 0;
             this.gbInstance.TabStop = false;
             this.gbInstance.Text = "Instance";
             // 

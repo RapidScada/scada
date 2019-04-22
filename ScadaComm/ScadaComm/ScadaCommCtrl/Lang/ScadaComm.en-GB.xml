@@ -28,8 +28,9 @@
     <Phrase key="lblServerUser">User</Phrase>
     <Phrase key="lblServerPwd">Password</Phrase>
     <Phrase key="gbPerformance">Performance</Phrase>
-    <Phrase key="lblWaitForStop">Waiting for the communication lines temrination, ms</Phrase>
-    <Phrase key="lblRefrParams">Sending all device data period, sec</Phrase>
+    <Phrase key="lblWaitForStop">Wait for communication lines termination, ms</Phrase>
+    <Phrase key="lblSendModData">Send only modified device tags</Phrase>
+    <Phrase key="lblSendAllDataPer">Period of sending all device tags, sec</Phrase>
     <Phrase key="pageKpDlls">Device Libraries</Phrase>
     <Phrase key="lblKpDllDescr">Description</Phrase>
     <Phrase key="btnKpDllProps">Properties</Phrase>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
+using Scada.Scheme.Editor.Properties;
 using Scada.Scheme.Model;
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
@@ -37,13 +38,13 @@ using Utils;
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Main form of the application
-    /// <para>Главная форма приложения</para>
+    /// Main form of the application.
+    /// <para>Главная форма приложения.</para>
     /// </summary>
     public partial class FrmMain : Form, IMainForm
     {
         /// <summary>
-        /// Ключ иконки компонента по умолчанию
+        /// Ключ иконки компонента по умолчанию.
         /// </summary>
         private const string DefCompIcon = "component.png";
 
@@ -59,7 +60,7 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public FrmMain()
         {
@@ -85,36 +86,34 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Локализовать форму
+        /// Локализовать форму.
         /// </summary>
         private void LocalizeForm()
         {
-            string errMsg;
-
-            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out errMsg))
-                CommonPhrases.Init();
-            else
+            if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaData", out string errMsg))
                 log.WriteError(errMsg);
 
-            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaScheme", out errMsg))
-                SchemePhrases.Init();
-            else
+            if (!Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaScheme", out errMsg))
                 log.WriteError(errMsg);
 
-            if (Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg))
+            bool appDictLoaded = Localization.LoadDictionaries(appData.AppDirs.LangDir, "ScadaSchemeEditor", out errMsg);
+            if (!appDictLoaded)
+                log.WriteError(errMsg);
+
+            CommonPhrases.Init();
+            SchemePhrases.Init();
+            AppPhrases.Init();
+
+            if (appDictLoaded)
             {
                 Translator.TranslateForm(this, "Scada.Scheme.Editor.FrmMain");
-                AppPhrases.Init();
-                ofdScheme.Filter = sfdScheme.Filter = AppPhrases.SchemeFileFilter;
-            }
-            else
-            {
-                log.WriteError(errMsg);
+                ofdScheme.SetFilter(AppPhrases.SchemeFileFilter);
+                sfdScheme.SetFilter(AppPhrases.SchemeFileFilter);
             }
         }
 
         /// <summary>
-        /// Локализовать атрибуты для отображения свойств компонентов
+        /// Локализовать атрибуты для отображения свойств компонентов.
         /// </summary>
         private void LocalizeAttributes()
         {
@@ -142,14 +141,13 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Проверить, что запущена вторая копия приложения
+        /// Проверить, что запущена вторая копия приложения.
         /// </summary>
         private bool SecondInstanceExists()
         {
             try
             {
-                bool createdNew;
-                mutex = new Mutex(true, "ScadaSchemeEditorMutex", out createdNew);
+                mutex = new Mutex(true, "ScadaSchemeEditorMutex", out bool createdNew);
                 return !createdNew;
             }
             catch (Exception ex)
@@ -160,9 +158,29 @@ namespace Scada.Scheme.Editor
                 return false;
             }
         }
+        
+        /// <summary>
+        /// Sets the standard component images.
+        /// </summary>
+        private void SetComponentImages()
+        {
+            // loading images from resources instead of storing in image list prevents them from corruption
+            ilCompTypes.Images.Add("pointer.png", Resources.pointer);
+            ilCompTypes.Images.Add("comp_st.png", Resources.comp_st);
+            ilCompTypes.Images.Add("comp_dt.png", Resources.comp_dt);
+            ilCompTypes.Images.Add("comp_sp.png", Resources.comp_sp);
+            ilCompTypes.Images.Add("comp_dp.png", Resources.comp_dp);
+            ilCompTypes.Images.Add("component.png", Resources.component);
+
+            lvCompTypes.Items[0].ImageKey = "pointer.png";
+            lvCompTypes.Items[1].ImageKey = "comp_st.png";
+            lvCompTypes.Items[2].ImageKey = "comp_dt.png";
+            lvCompTypes.Items[3].ImageKey = "comp_sp.png";
+            lvCompTypes.Items[4].ImageKey = "comp_dp.png";
+        }
 
         /// <summary>
-        /// Заполнить список типов компонентов
+        /// Заполнить список типов компонентов.
         /// </summary>
         private void FillComponentTypes()
         {
@@ -213,7 +231,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Открыть браузер со страницей редактора
+        /// Открыть браузер со страницей редактора.
         /// </summary>
         private void OpenBrowser()
         {
@@ -253,7 +271,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Инициализировать схему, создав новую или загрузив из файла
+        /// Инициализировать схему, создав новую или загрузив из файла.
         /// </summary>
         private void InitScheme(string fileName = "")
         {
@@ -283,13 +301,13 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Сохранить схему
+        /// Сохранить схему.
         /// </summary>
         private bool SaveScheme(bool saveAs)
         {
             bool result = false;
-            bool refrPropGrid = propertyGrid.SelectedObject is SchemeDocument &&
-                ((SchemeDocument)propertyGrid.SelectedObject).Version != SchemeUtils.SchemeVersion;
+            bool refrPropGrid = propertyGrid.SelectedObject is SchemeDocument document &&
+                document.Version != SchemeUtils.SchemeVersion;
 
             if (string.IsNullOrEmpty(editor.FileName))
             {
@@ -298,14 +316,14 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                sfdScheme.FileName = editor.FileName;
+                sfdScheme.InitialDirectory = Path.GetDirectoryName(editor.FileName);
+                sfdScheme.FileName = Path.GetFileName(editor.FileName);
             }
 
             if (!saveAs || sfdScheme.ShowDialog() == DialogResult.OK)
             {
                 // сохранение схемы
-                string errMsg;
-                if (editor.SaveSchemeToFile(sfdScheme.FileName, out errMsg))
+                if (editor.SaveSchemeToFile(sfdScheme.FileName, out string errMsg))
                 {
                     result = true;
                 }
@@ -324,7 +342,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Подтвердить возможность закрыть схему
+        /// Подтвердить возможность закрыть схему.
         /// </summary>
         private bool ConfirmCloseScheme()
         {
@@ -348,7 +366,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Заполнить выпадающий список компонентов схемы
+        /// Заполнить выпадающий список компонентов схемы.
         /// </summary>
         private void FillSchemeComponents()
         {
@@ -377,7 +395,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Отобразить свойства выбранных компонентов схемы
+        /// Отобразить свойства выбранных компонентов схемы.
         /// </summary>
         private void ShowSchemeSelection()
         {
@@ -412,7 +430,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Подписаться на изменения схемы
+        /// Подписаться на изменения схемы.
         /// </summary>
         private void SubscribeToSchemeChanges()
         {
@@ -428,7 +446,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Установить доступность кнопок панели инструментов
+        /// Установить доступность кнопок панели инструментов.
         /// </summary>
         private void SetButtonsEnabled()
         {
@@ -440,7 +458,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Выполнить метод потокобезопасно
+        /// Выполнить метод потокобезопасно.
         /// </summary>
         private void ExecuteAction(Action action)
         {
@@ -451,7 +469,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Обновить объект состояния формы
+        /// Обновить объект состояния формы.
         /// </summary>
         private void UpdateFormStateDTO(FormState formState)
         {
@@ -459,7 +477,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Обновить объект состояния формы
+        /// Обновить объект состояния формы.
         /// </summary>
         private void UpdateFormStateDTO()
         {
@@ -468,7 +486,7 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Выполнить заданное действие
+        /// Выполнить заданное действие.
         /// </summary>
         public void PerformAction(FormActions formAction)
         {
@@ -513,7 +531,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить состояние формы
+        /// Получить состояние формы.
         /// </summary>
         public FormStateDTO GetFormState()
         {
@@ -636,14 +654,14 @@ namespace Scada.Scheme.Editor
             }
 
             // загрузка настроек приложения
-            string errMsg;
-            if (!settings.Load(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+            if (!settings.Load(appData.AppDirs.ConfigDir + Settings.DefFileName, out string errMsg))
             {
                 log.WriteError(errMsg);
                 ScadaUiUtils.ShowError(errMsg);
             }
 
             // загрузка компонентов
+            SetComponentImages();
             appData.LoadComponents();
 
             // настройка элментов управления
@@ -651,8 +669,9 @@ namespace Scada.Scheme.Editor
             lblStatus.Text = "";
             FillComponentTypes();
 
-            // создание новой схемы
-            InitScheme();
+            // создание новой или загрузка существующей схемы
+            string[] args = Environment.GetCommandLineArgs();
+            InitScheme(args.Length > 1 ? args[1] : "");
 
             // загрузка состояния формы
             FormState formState = new FormState();
@@ -691,12 +710,13 @@ namespace Scada.Scheme.Editor
         private void FrmMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             // сохранение состояния формы
-            FormState formState = new FormState(this);
-            formState.SchemeDir = ofdScheme.InitialDirectory;
-            formState.ImageDir = ImageEditor.ImageDir;
-            string errMsg;
+            FormState formState = new FormState(this)
+            {
+                SchemeDir = ofdScheme.InitialDirectory,
+                ImageDir = ImageEditor.ImageDir
+            };
 
-            if (!formState.Save(appData.AppDirs.ConfigDir + FormState.DefFileName, out errMsg))
+            if (!formState.Save(appData.AppDirs.ConfigDir + FormState.DefFileName, out string errMsg))
             {
                 log.WriteError(errMsg);
                 ScadaUiUtils.ShowError(errMsg);
@@ -839,11 +859,9 @@ namespace Scada.Scheme.Editor
         private void miToolsOptions_Click(object sender, EventArgs e)
         {
             // отображение формы настроек
-            bool restartNeeded;
-            if (FrmSettings.ShowDialog(settings, out restartNeeded))
+            if (FrmSettings.ShowDialog(settings, out bool restartNeeded))
             {
-                string errMsg;
-                if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                if (settings.Save(appData.AppDirs.ConfigDir + Settings.DefFileName, out string errMsg))
                 {
                     if (restartNeeded)
                         ScadaUiUtils.ShowInfo(AppPhrases.RestartNeeded);
@@ -888,12 +906,11 @@ namespace Scada.Scheme.Editor
         {
             // отображение свойств объекта, выбранного в выпадающем списке
             schCompChanging = true;
-            BaseComponent component = cbSchComp.SelectedItem as BaseComponent;
 
-            if (component == null)
-                editor.DeselectAll();
-            else
+            if (cbSchComp.SelectedItem is BaseComponent component)
                 editor.SelectComponent(component.ID);
+            else
+                editor.DeselectAll();
 
             schCompChanging = false;
         }
@@ -907,10 +924,10 @@ namespace Scada.Scheme.Editor
 
                 foreach (object selObj in propertyGrid.SelectedObjects)
                 {
-                    if (selObj is SchemeDocument)
-                        ((SchemeDocument)selObj).OnItemChanged(SchemeChangeTypes.SchemeDocChanged, selObj);
-                    else if (selObj is BaseComponent)
-                        ((BaseComponent)selObj).OnItemChanged(SchemeChangeTypes.ComponentChanged, selObj);
+                    if (selObj is SchemeDocument document)
+                        document.OnItemChanged(SchemeChangeTypes.SchemeDocChanged, selObj);
+                    else if (selObj is BaseComponent component)
+                        component.OnItemChanged(SchemeChangeTypes.ComponentChanged, selObj);
                 }
 
                 editor.History.EndPoint();
