@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,13 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Agent.Engine;
 using Scada.Agent.Net;
 using System;
+using System.IO;
 using System.Threading;
 
 namespace Scada.Agent.Mono
@@ -54,7 +55,7 @@ namespace Scada.Agent.Mono
             Console.WriteLine("Press 'x' or create 'agentstop' file to stop Agent");
 
             // остановка службы при нажатии 'x' или обнаружении файла остановки
-            FileListener stopFileListener = new FileListener(AppData.GetInstance().AppDirs.ConfigDir + "serverstop");
+            FileListener stopFileListener = new FileListener(Path.Combine(AppData.GetInstance().AppDirs.CmdDir, "agentstop"));
 
             while (!(Console.KeyAvailable && Console.ReadKey(true).Key == ConsoleKey.X || stopFileListener.FileFound))
             {
