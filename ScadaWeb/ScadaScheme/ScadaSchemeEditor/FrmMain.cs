@@ -308,6 +308,7 @@ namespace Scada.Scheme.Editor
             bool result = false;
             bool refrPropGrid = propertyGrid.SelectedObject is SchemeDocument document &&
                 document.Version != SchemeUtils.SchemeVersion;
+            string fileName = "";
 
             if (string.IsNullOrEmpty(editor.FileName))
             {
@@ -316,14 +317,18 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                sfdScheme.InitialDirectory = Path.GetDirectoryName(editor.FileName);
-                sfdScheme.FileName = Path.GetFileName(editor.FileName);
+                fileName = editor.FileName;
+                sfdScheme.InitialDirectory = Path.GetDirectoryName(fileName);
+                sfdScheme.FileName = Path.GetFileName(fileName);
             }
 
-            if (!saveAs || sfdScheme.ShowDialog() == DialogResult.OK)
+            if (saveAs && sfdScheme.ShowDialog() == DialogResult.OK)
+                fileName = sfdScheme.FileName;
+
+            if (!string.IsNullOrEmpty(fileName))
             {
                 // сохранение схемы
-                if (editor.SaveSchemeToFile(sfdScheme.FileName, out string errMsg))
+                if (editor.SaveSchemeToFile(fileName, out string errMsg))
                 {
                     result = true;
                 }
