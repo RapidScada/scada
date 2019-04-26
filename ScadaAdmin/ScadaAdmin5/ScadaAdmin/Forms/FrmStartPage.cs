@@ -195,19 +195,22 @@ namespace Scada.Admin.App.Forms
 
         private void lbRecentProjects_DrawItem(object sender, DrawItemEventArgs e)
         {
-            const int PaddingLeft = 5;
-            ProjectItem item = (ProjectItem)lbRecentProjects.Items[e.Index];
+            if (e.Index >= 0)
+            {
+                const int PaddingLeft = 5;
+                ProjectItem item = (ProjectItem)lbRecentProjects.Items[e.Index];
 
-            e.Graphics.FillRectangle(e.Index == hoverItemIndex ? 
-                SystemBrushes.ControlLight: SystemBrushes.Window, e.Bounds);
+                e.Graphics.FillRectangle(e.Index == hoverItemIndex ?
+                    SystemBrushes.ControlLight : SystemBrushes.Window, e.Bounds);
 
-            e.Graphics.DrawString(item.FileName, itemMainFont, SystemBrushes.WindowText,
-                e.Bounds.Left + PaddingLeft, e.Bounds.Top + 9);
+                e.Graphics.DrawString(item.FileName, itemMainFont, SystemBrushes.WindowText,
+                    e.Bounds.Left + PaddingLeft, e.Bounds.Top + 9);
 
-            e.Graphics.DrawString(item.Directory, itemHintFont, SystemBrushes.GrayText,
-                e.Bounds.Left + PaddingLeft, e.Bounds.Top + 27);
+                e.Graphics.DrawString(item.Directory, itemHintFont, SystemBrushes.GrayText,
+                    e.Bounds.Left + PaddingLeft, e.Bounds.Top + 27);
 
-            e.DrawFocusRectangle();
+                e.DrawFocusRectangle();
+            }
         }
 
         private void lbRecentProjects_MouseClick(object sender, MouseEventArgs e)
