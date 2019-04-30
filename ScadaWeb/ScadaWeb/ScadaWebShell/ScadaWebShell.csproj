@@ -250,6 +250,9 @@
     <Content Include="ClientApiSvc.svc" />
     <Content Include="NoView.aspx" />
     <Content Include="Reports.aspx" />
+    <Content Include="sounds\notif_info.mp3" />
+    <Content Include="sounds\notif_warning.mp3" />
+    <Content Include="sounds\notif_error.mp3" />
     <Content Include="User.aspx" />
     <Content Include="View.aspx" />
     <Content Include="ViewPopup.aspx" />
