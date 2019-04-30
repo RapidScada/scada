@@ -200,7 +200,7 @@ scada.NotifPanel.prototype._displayMuteState = function (muted) {
 };
 
 // Initialize the panel based on the given element
-scada.NotifPanel.prototype.init = function (panelID, bellID) {
+scada.NotifPanel.prototype.init = function (rootPath, panelID, bellID) {
     var thisObj = this;
 
     // get elements
@@ -212,9 +212,10 @@ scada.NotifPanel.prototype.init = function (panelID, bellID) {
     this._muteElem = $("<div class='notif-mute'><i class='fa'></i><span></span></div>").appendTo(this.panelElem);
     this._displayMuteState(this._getMuted());
 
-    this._infoAudio = $("<audio preload src='sounds/notif_info.mp3' />").appendTo(this.panelElem);
-    this._warningAudio = $("<audio preload loop src='sounds/notif_warning.mp3' />").appendTo(this.panelElem);
-    this._errorAudio = $("<audio preload loop src='sounds/notif_error.mp3' />").appendTo(this.panelElem);
+    var soundPath = rootPath + "/sounds/";
+    this._infoAudio = $("<audio preload src='" + soundPath + "notif_info.mp3' />").appendTo(this.panelElem);
+    this._warningAudio = $("<audio preload loop src='" + soundPath + "notif_warning.mp3' />").appendTo(this.panelElem);
+    this._errorAudio = $("<audio preload loop src='" + soundPath + "notif_error.mp3' />").appendTo(this.panelElem);
 
     // set appearance
     if (scada.utils.isSmallScreen()) {

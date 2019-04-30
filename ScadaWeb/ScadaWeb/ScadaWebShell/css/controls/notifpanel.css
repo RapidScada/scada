@@ -6,7 +6,7 @@
   opacity: 0.97;
   overflow-x: hidden;
   overflow-y: auto;
-  padding: 10px 15px;
+  padding: 30px 15px 10px;
   position: fixed;
   right: 0;
   width: 50%;
@@ -15,6 +15,7 @@
 .notif-panel.mobile {
   width: 75%;
 }
+/* Notification */
 .notif-panel .notif {
   margin-bottom: 5px;
 }
@@ -50,6 +51,26 @@
 .notif-panel .notif-msg {
   margin-left: 20px;
 }
+/* Mute */
+.notif-panel .notif-mute {
+  color: #9ca1a6;
+  cursor: pointer;
+  font-size: 13px;
+  line-height: 30px;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+.notif-panel .notif-mute:hover {
+  color: #00b9eb;
+}
+.notif-panel .notif-mute i {
+  font-size: 19px;
+  margin-right: 10px;
+  position: relative;
+  top: 2px;
+}
+/* Bell */
 .notif-bell {
   color: #9ca1a6;
 }
