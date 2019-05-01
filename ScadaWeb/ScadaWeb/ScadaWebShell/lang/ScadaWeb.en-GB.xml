@@ -13,6 +13,19 @@
     <Phrase key="this">Confirmation</Phrase>
     <Phrase key="lblConfirm">Are you sure?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Js.ModalButtons">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Yes</Phrase>
+    <Phrase key="no">No</Phrase>
+    <Phrase key="execute">Execute</Phrase>
+    <Phrase key="cancel">Cancel</Phrase>
+    <Phrase key="close">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Js.NotifPanel">
+    <Phrase key="unmute">Unmute</Phrase>
+    <Phrase key="mute">Mute</Phrase>
+    <Phrase key="emptyNotif">No notifications</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lblMainNotifBtn.ToolTip">Notifications</Phrase>
     <Phrase key="lbtnMainLogout">Logout</Phrase>
@@ -20,16 +33,7 @@
     <Phrase key="lblMainMenuTab">Main Menu</Phrase>
     <Phrase key="lblMainExplorerTab">Views</Phrase>
     <Phrase key="lblMainCollapseMenu">Collapse menu</Phrase>
-    <Phrase key="lblEmptyNotif">No notifications</Phrase>
     <Phrase key="lblMainNormalViewBtn.ToolTip">Normal View</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.ModalButtons.Js">
-    <Phrase key="ok">OK</Phrase>
-    <Phrase key="yes">Yes</Phrase>
-    <Phrase key="no">No</Phrase>
-    <Phrase key="execute">Execute</Phrase>
-    <Phrase key="cancel">Cancel</Phrase>
-    <Phrase key="close">Close</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Report">
     <Phrase key="GenReport">Generate &quot;{0}&quot; report by the user {1}</Phrase>

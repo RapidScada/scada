@@ -19,7 +19,7 @@
     opacity: @panel-opacity;
     overflow-x: hidden;
     overflow-y: auto;
-    padding: 10px 15px;
+    padding: 30px 15px 10px;
     position: fixed;
     right: 0;
     width: @panel-width;
@@ -30,6 +30,7 @@
     width: @panel-width-mobile;
 }
 
+/* Notification */
 .notif-panel .notif {
     margin-bottom: 5px;
 }
@@ -75,6 +76,30 @@
     margin-left: 20px;
 }
 
+
+/* Mute */
+.notif-panel .notif-mute {
+    color: @menu-fore-color-dark;
+    cursor: pointer;
+    font-size: 13px;
+    line-height: 30px;
+    position: absolute;
+    top: 0;
+    width: 100%
+}
+
+.notif-panel .notif-mute:hover {
+    color: @menu-item-hover-fore-color;
+}
+
+.notif-panel .notif-mute i {
+    font-size: 19px;
+    margin-right: 10px;
+    position: relative;
+    top: 2px;
+}
+
+/* Bell */
 .notif-bell {
     color: @menu-fore-color-dark;
 }
