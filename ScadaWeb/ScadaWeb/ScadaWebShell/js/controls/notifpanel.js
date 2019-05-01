@@ -171,7 +171,7 @@ scada.NotifPanel.prototype._continueSounds = function () {
 // Get a value indicating whether sound is muted
 scada.NotifPanel.prototype._getMuted = function () {
     var muted = sessionStorage.getItem(this._MUTE_NOTIF_KEY);
-    return muted == null ? false : !!muted;
+    return muted === null ? false : !!muted;
 };
 
 // Mute notification sound
@@ -212,7 +212,7 @@ scada.NotifPanel.prototype.init = function (rootPath, panelID, bellID) {
     this._muteElem = $("<div class='notif-mute'><i class='fa'></i><span></span></div>").appendTo(this.panelElem);
     this._displayMuteState(this._getMuted());
 
-    var soundPath = rootPath + "/sounds/";
+    var soundPath = rootPath + "sounds/";
     this._infoAudio = $("<audio preload src='" + soundPath + "notif_info.mp3' />").appendTo(this.panelElem);
     this._warningAudio = $("<audio preload loop src='" + soundPath + "notif_warning.mp3' />").appendTo(this.panelElem);
     this._errorAudio = $("<audio preload loop src='" + soundPath + "notif_error.mp3' />").appendTo(this.panelElem);
@@ -249,7 +249,7 @@ scada.NotifPanel.prototype.show = function (opt_animate, opt_ifNewer) {
         if (opt_ifNewer) {
             var hiddenNotifKey = sessionStorage.getItem(this._HIDDEN_NOTIF_KEY);
             var lastNotifKey = this._getLastNotifKey();
-            cancel = hiddenNotifKey !== null && lastNotifKey !== null && hiddenNotifKey == lastNotifKey;
+            cancel = hiddenNotifKey !== null && lastNotifKey !== null && hiddenNotifKey === lastNotifKey.toString();
         }
 
         if (!cancel) {
@@ -286,7 +286,7 @@ scada.NotifPanel.prototype.addNotification = function (notification) {
     this._emptyNotif.detach();
     this.panelElem.prepend(this._createNotifElem(notification));
     this._incNotifCounter(notification.notifType);
-    this.showBell();
+    this.showBell(true);
     return notification.id;
 };
 
@@ -325,6 +325,7 @@ scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
         if (existingNotifCnt > 0) {
             var i = 0;
             var j = 0;
+            var playInfoSound = false;
 
             while (i < existingNotifCnt || j < newNotifCnt) {
                 var newNotif = j < newNotifCnt ? notifications[j] : null;
@@ -354,6 +355,7 @@ scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
 
                     this._incNotifCounter(newNotif.notifType);
                     j++;
+                    playInfoSound = true;
                     continue;
                 } else {
                     i++;
@@ -361,7 +363,7 @@ scada.NotifPanel.prototype.replaceNotifications = function (notifications) {
                 }
             }
 
-            this.showBell();
+            this.showBell(playInfoSound);
         } else {
             this.appendNotifications(notifications);
         }
@@ -377,25 +379,30 @@ scada.NotifPanel.prototype.appendNotifications = function (notifications) {
         var lastNotifKey = this._getLastNotifKey();
 
         for (var notif of notifications) {
-            if (lastNotifKey == null || notif.key > lastNotifKey) {
+            if (lastNotifKey === null || notif.key > lastNotifKey) {
                 notif.id = ++this._lastNotifID;
                 this.panelElem.prepend(this._createNotifElem(notif));
                 this._incNotifCounter(notif.notifType);
             }
         }
 
-        this.showBell();
+        this.showBell(true);
     }
 };
 
 // Show the bell and play sound
-scada.NotifPanel.prototype.showBell = function () {
+scada.NotifPanel.prototype.showBell = function (opt_playInfoSound) {
     this.bellElem.removeClass("hidden empty info warning error");
 
     switch (this._notifType) {
         case scada.NotifTypes.INFO:
             this.bellElem.addClass("info");
-            this._playInfoSound();
+
+            if (opt_playInfoSound) {
+                this._playInfoSound();
+            } else {
+                this._stopSounds();
+            }
             break;
         case scada.NotifTypes.WARNING:
             this.bellElem.addClass("warning");
