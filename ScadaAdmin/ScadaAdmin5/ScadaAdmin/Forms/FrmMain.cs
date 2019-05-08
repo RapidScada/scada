@@ -1357,6 +1357,7 @@ namespace Scada.Admin.App.Forms
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                    ShowStatus(liveInstance.Instance);
                 }
                 else if (frmInstanceProfile.ConnSettingsModified)
                 {
@@ -1384,6 +1385,7 @@ namespace Scada.Admin.App.Forms
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                    ShowStatus(liveInstance.Instance);
                 }
                 else if (frmDownloadConfig.ConnSettingsModified)
                 {
@@ -1430,6 +1432,7 @@ namespace Scada.Admin.App.Forms
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                    ShowStatus(liveInstance.Instance);
                 }
                 else if (frmUploadConfig.ConnSettingsModified)
                 {
@@ -1457,6 +1460,7 @@ namespace Scada.Admin.App.Forms
                 {
                     UpdateAgentClient(liveInstance);
                     SaveProjectSettings();
+                    ShowStatus(liveInstance.Instance);
                 }
                 else if (frmInstanceStatus.ConnSettingsModified)
                 {
