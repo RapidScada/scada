@@ -14,3 +14,4 @@ sudo chmod +x /opt/scada/ScadaComm/svc_stop.sh
 sudo chmod +x /opt/scada/ScadaServer/svc_restart.sh
 sudo chmod +x /opt/scada/ScadaServer/svc_start.sh
 sudo chmod +x /opt/scada/ScadaServer/svc_stop.sh
+#
