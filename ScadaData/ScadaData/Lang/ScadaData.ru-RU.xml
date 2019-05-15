@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaDataDictionaries>
   <Dictionary key="Common">
+    <Phrase key="ProductName">Rapid SCADA</Phrase>
     <Phrase key="InfoCaption">Информация</Phrase>
     <Phrase key="QuestionCaption">Вопрос</Phrase>
     <Phrase key="ErrorCaption">Ошибка</Phrase>
