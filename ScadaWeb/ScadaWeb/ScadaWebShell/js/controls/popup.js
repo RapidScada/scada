@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * Requires:
  * - jquery
@@ -89,7 +89,7 @@ scada.Popup.prototype._getOffset = function (elem) {
     // add coordinates of the parent frames
     do {
         var parentWnd = wnd.parent;
-        if (wnd != parentWnd) {
+        if (wnd !== parentWnd) {
             if (parentWnd.$) {
                 var frame = parentWnd.$(wnd.frameElement);
                 if (frame.length > 0) {
@@ -103,7 +103,7 @@ scada.Popup.prototype._getOffset = function (elem) {
             }
             wnd = parentWnd;
         }
-    } while (wnd != this._holderWindow && wnd != wnd.parent);
+    } while (wnd !== this._holderWindow && wnd !== wnd.parent);
 
     return { left: left, top: top };
 };
@@ -119,9 +119,9 @@ scada.Popup.prototype._genModalButtonsHtml = function (buttons) {
     var html = "";
 
     for (var btn of buttons) {
-        var subclass = btn == scada.ModalButtons.OK || btn == scada.ModalButtons.YES ? "btn-primary" :
-            (btn == scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
-        var dismiss = btn == scada.ModalButtons.CANCEL || btn == scada.ModalButtons.CLOSE ?
+        var subclass = btn === scada.ModalButtons.OK || btn === scada.ModalButtons.YES ? "btn-primary" :
+            (btn === scada.ModalButtons.EXEC ? "btn-danger" : "btn-default");
+        var dismiss = btn === scada.ModalButtons.CANCEL || btn === scada.ModalButtons.CLOSE ?
             " data-dismiss='modal'" : "";
 
         html += "<button type='button' class='btn " + subclass + "' data-result='" + btn + "'" + dismiss + ">" +
@@ -175,7 +175,7 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
 
     // remove the popup on press Escape key in the parent window
     var removePopupOnEscapeFunc = function (event) {
-        if (event.which == 27 /*Escape*/) {
+        if (event.which === 27 /*Escape*/) {
             thisObj._cancelDropdown(popupElem);
         }
     }
@@ -272,9 +272,9 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
 
     var size = opt_options ? opt_options.size : scada.ModalSizes.NORMAL;
     var sizeClass = "";
-    if (size == scada.ModalSizes.SMALL) {
+    if (size === scada.ModalSizes.SMALL) {
         sizeClass = " modal-sm";
-    } else if (size == scada.ModalSizes.LARGE) {
+    } else if (size === scada.ModalSizes.LARGE) {
         sizeClass = " modal-lg";
     }
 
@@ -307,7 +307,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
 
     // create a function that hides the modal on press Escape key
     var hideModalOnEscapeFunc = function (event) {
-        if (event.which == 27 /*Escape*/) {
+        if (event.which === 27 /*Escape*/) {
             modalElem.modal("hide");
         }
     }
@@ -448,7 +448,7 @@ scada.popupLocator = {
             if (wnd.popup) {
                 return wnd.popup;
             }
-            wnd = wnd == window.top ? null : window.parent;
+            wnd = wnd === window.top ? null : wnd.parent;
         }
         return null;
     }
