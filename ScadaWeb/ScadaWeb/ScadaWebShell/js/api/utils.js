@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * No dependencies
  */
