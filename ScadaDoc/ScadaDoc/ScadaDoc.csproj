@@ -163,6 +163,7 @@
     <Content Include="content\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\ru\installation-and-run\module-installation.html" />
     <Content Include="content\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
+    <Content Include="content\ru\js\contents.js" />
     <Content Include="content\ru\modules\index.html" />
     <Content Include="content\ru\modules\kp-telegram-files\bot_father.png" />
     <Content Include="content\en\modules\kp-telegram-files\kp_telegram_config_en.png" />
@@ -281,6 +282,7 @@
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application.html" />
     <Content Include="content\ru\use-cases\index.html" />
+    <Content Include="content\ru\use-cases\modbus-protocol2.html" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_commline_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_create_cnls_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_ru.png" />
@@ -337,6 +339,7 @@
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="js\contents-ru.js" />
+    <Content Include="js\scadadoc2.js" />
     <Content Include="js\scadadoc.js" />
     <Content Include="js\contents-en.js" />
     <Content Include="js\jquery.min.js" />
