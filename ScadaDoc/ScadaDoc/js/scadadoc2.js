@@ -110,7 +110,7 @@ function addArticle(context, link, title, level) {
     var url = context.docRoot + link;
     var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
     var levClass = level ? " level" + level : "";
-    var selClass = link && url == location.href.split("#")[0] ? " selected" : "";
+    var selClass = link && url === location.href.split("#")[0] ? " selected" : "";
 
     var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
     context.contents.append(contentsItem);
@@ -131,12 +131,12 @@ function copyContentsToArticle() {
         selItem.nextAll().each(function () {
             var curClass = $(this).attr("class");
 
-            if (curClass == reqClass) {
+            if (curClass === reqClass) {
                 var linkElem = $(this).find("a");
                 if (linkElem.length) {
                     $("<p>").append(linkElem.clone()).appendTo(divArticle);
                 }
-            } else if (curClass == stopClass) {
+            } else if (curClass === stopClass) {
                 return false;
             }
         });
