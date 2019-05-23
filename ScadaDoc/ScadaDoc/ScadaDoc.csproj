@@ -345,10 +345,18 @@
     <Content Include="js\jquery.min.js" />
     <Content Include="lib\prism\prism.css" />
     <Content Include="lib\prism\prism.js" />
+    <Content Include="Print.aspx" />
     <Content Include="robots.txt" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Print.aspx.cs">
+      <DependentUpon>Print.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Print.aspx.designer.cs">
+      <DependentUpon>Print.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Sitemap.ashx.cs">
       <DependentUpon>Sitemap.ashx</DependentUpon>
