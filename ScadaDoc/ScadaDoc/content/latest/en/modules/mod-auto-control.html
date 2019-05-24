@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Automatic Control Module - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Automatic Control Module</h1>
+    <h2>Overview</h2>
+    <p>Automatic Control Module allows to automatically send commands depending on certain conditions. Unless you register the module, it works in the demo mode. The duration of a full functional demo is limited to 10 minutes after restart. The module works under control of the Server application. The form shown below is designed to configure the module.</p>
+    <p class="sd-article-image">
+        <img src="mod-auto-control-files/mod_auto_control_en.png" alt="The module configuration form" /><br />
+    </p>
+    <p>Conditions required for sending commands specified as triggers of several types:</p>
+    <ul>
+        <li>Channel data trigger. The trigger fires if value or status of the input channel satisfies the condition.</li>
+        <li>Event trigger. The trigger fires if an event satisfies the condition occurs.</li>
+        <li>Time trigger. The trigger fires on the specified dates and times.</li>
+        <li>Command trigger. The trigger fires if the Server application receives the specified command.</li>
+    </ul>
+    <p>Each trigger contains a set of commands which are sent if the trigger fires. The information about firing of the triggers is accessible on the <em>Log</em> page or directly from the ModAutoControl.log file. This file is located in Server logs directory C:\SCADA\ScadaServer\Log</p>
+
+    <h2>Installation</h2>
+    <p>Automatic Control Module is installed in accordance with <a href="../installation-and-run/module-installation.html#modules">the general sequence of installing Server modules</a>. The module library file is ModAutoControl.dll. After adding the module, you need to perform several additional actions:</p>
+    <ol>
+        <li>Click the <em>Properties</em> button to open the module configuration form </li>
+        <li>Go to the <em>Registration</em> page and register the module using the hyperlinks on the form.</li>
+        <li>Configure the module by creating triggers and commands.</li>
+        <li>Save the module configuration.</li>
+        <li>Restart the Server service by clicking <img src="../../common-images/restart.png" />.</li>
+    </ol>
+
+    <h2>Variables of Telecontrol Commands</h2>
+    <p>String data of telecontrol command, which are send on trigger firing, can contain variables. Variables are written in braces.</p>
+    <p>The following variables are supported:</p>
+    <table class="sd-article-table">
+        <tr>
+            <th>Variable</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>{n}</td>
+            <td>The current value of the input channel n with a unit, where n is a channel number, n = 0 is the channel specified in the data trigger</td>
+        </tr>
+        <tr>
+            <td>{Now}</td>
+            <td>The current date and time on the server</td>
+        </tr>
+        <tr>
+            <td>{CnlNum}, {CnlName}</td>
+            <td>Parameters of the data trigger: input channel number and name</td>
+        </tr>
+        <tr>
+            <td>{CnlVal}, {CnlStat}</td>
+            <td>Value and status of the input channel those caused the trigger firing</td>
+        </tr>
+        <tr>
+            <td>{EvNum}, {EvTime}, {EvObj}, {EvDev}, {EvCnl}, {EvText}</td>
+            <td>Parameters of the event that caused the trigger firing: number, date and time, object, device, channel and description</td>
+        </tr>
+        <tr>
+            <td>{CtrlCnlNum}, {CtrlCnlName}</td>
+            <td>Parameters of the command trigger: output channel number and name</td>
+        </tr>
+        <tr>
+            <td>{CmdVal}, {CmdDataStr}, {CmdDataHex}</td>
+            <td>Parameters of the command that caused the trigger firing: value, data as a string, data in hexadecimal representation</td>
+        </tr>
+    </table>
+</body>
+</html>

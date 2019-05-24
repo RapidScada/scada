@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Установка вручную - Документация Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Установка вручную</h1>
+
+    <p>Установка Rapid SCADA вручную позволяет сохранять полный контроль в процессе установки, обновлении и удалении программного комплекса. В том числе, ручная установка может использоваться при установке Rapid SCADA на устаревшие ОС, такие как Windows XP и Windows Server 2003, которые официально не поддерживаются.</p>
+
+    <p>Последовательность установки вручную:</p>
+
+    <ol>
+        <li>Установить Microsoft Internet Information Services (IIS) путём выбора соответствующих компонентов Windows. Для Windows 7: <em>Панель управления &gt; Программы &gt; Включение или отключение компонентов Windows</em>.</li>
+        <li>Установить Microsoft .NET Framework 4+ (обязательно после установки IIS).</li>
+        <li>Разархивировать файлы из папки Arc дистрибутива в директорию установки SCADA. Рекомендуется C:\SCADA</li>
+        <li>Открыть консоль управления веб-сервером. Для Windows 7: <em>Панель управления &gt; Система и безопасность &gt; Администрирование &gt; Диспетчер служб IIS</em>.</li>
+        <li>Добавить приложение в дереве сайтов. Для этого в Windows 7 необходимо щёлкнуть правой кнопкой мыши по нужному сайту, например <em>Default Web Site</em>, выбрать пункт контекстного меню <em>Добавить приложение</em>.</li>
+        <li>Убедиться, что пул приложений использует версию среды .NET 4.0 и встроенный режим конвейера. Указать физический путь к файлам веб-приложения C:\SCADA\ScadaWeb</li>
+        <li>Зарегистрировать службу ScadaServerService, запустив ScadaServer\svc_install.bat от имени администратора.</li>
+        <li>Зарегистрировать службу ScadaCommService, запустив ScadaComm\svc_install.bat от имени администратора.</li>
+        <li>При необходимости создать ярлыки приложений на рабочем столе.</li>
+        <li>Для работы Редактора схем установить Microsoft Silverlight.</li>
+        <li><a href="run-applications.html">Запустить приложения</a>.</li>
+    </ol>
+
+    <p>Последовательность удаления вручную:</p>
+
+    <ol>
+        <li>Через Диспетчер служб IIS удалить веб-приложение Scada.</li>
+        <li>Остановить службы ScadaServerService и ScadaCommService, закрыть все приложения комплекса.</li>
+        <li>Удалить регистрацию службы ScadaServerService, запустив ScadaServer\svc_uninstall.bat от имени администратора.</li>
+        <li>Удалить регистрацию службы ScadaCommService, запустив ScadaComm\svc_uninstall.bat от имени администратора.</li>
+        <li>Удалить папку SCADA с жёсткого диска и ярлыки с рабочего стола.</li>
+    </ol>
+</body>
+</html>

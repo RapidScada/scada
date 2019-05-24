@@ -49,6 +49,16 @@ namespace ScadaDoc
         }
 
 
+        /// <summary>
+        /// The home link to skip.
+        /// </summary>
+        private const string HomeLink = "../../../";
+        /// <summary>
+        /// The symbol of the latest version.
+        /// </summary>
+        private const string LatestVersion = "latest";
+
+        private string ver;          // the version specified in the query string
         private string lang;         // the language specified in the query string
         private string articleDir;   // the top directory of the articles
         protected string articleUrl; // the URL of the top directory
@@ -166,7 +176,7 @@ namespace ScadaDoc
         /// </summary>
         protected void GenerateDoc()
         {
-            Response.Write("<h1>Rapid SCADA</h1>");
+            Response.Write(string.Format("<h1>Rapid SCADA {0}</h1>", ver == LatestVersion ? "" : ver));
 
             if (string.IsNullOrEmpty(lang))
             {
@@ -174,7 +184,7 @@ namespace ScadaDoc
             }
             else
             {
-                articleDir = Path.Combine(Server.MapPath("~"), "content", lang);
+                articleDir = Path.Combine(Server.MapPath("~"), "content", ver, lang);
 
                 if (Directory.Exists(articleDir))
                 {
@@ -184,7 +194,7 @@ namespace ScadaDoc
                     {
                         foreach (Article article in articles)
                         {
-                            if (article.Link != "../../" && !article.Link.StartsWith("version-history"))
+                            if (article.Link != HomeLink && !article.Link.StartsWith("version-history"))
                                 WriteArticle(article);
                         }
                     }
@@ -203,8 +213,9 @@ namespace ScadaDoc
 
         protected void Page_Load(object sender, EventArgs e)
         {
+            ver = Request.QueryString["ver"] ?? LatestVersion;
             lang = Request.QueryString["lang"];
-            articleUrl = VirtualPathUtility.ToAbsolute("~/content/" + lang + "/");
+            articleUrl = VirtualPathUtility.ToAbsolute(string.Format("~/content/{0}/{1}/", ver, lang));
         }
     }
 }

@@ -73,21 +73,20 @@ function createContents() {
 
 function createContext() {
     var siteRoot = location.origin + "/";
-    var docRoot = siteRoot + "content/en/";
+    var docRoot = siteRoot + "content/latest/en/";
     var lang = "en";
 
     var href = location.href;
-    var i1 = href.indexOf("/content/");
+    var contentIdx = href.indexOf("/content/") + 1;
 
-    if (i1 >= 0) {
-        siteRoot = href.substring(0, i1 + 1);
-        docRoot = siteRoot + "content/en/";
-        var i2 = i1 + "/content/".length;
-        var i3 = href.indexOf("/", i2);
+    if (contentIdx > 0) {
+        siteRoot = href.substring(0, contentIdx);
+        var parts = href.substring(contentIdx).split("/");
 
-        if (i3 >= 0) {
-            lang = href.substring(i2, i3);
-            docRoot = siteRoot + "content/" + lang + "/";
+        if (parts.length >= 3) {
+            var ver = parts[1];
+            lang = parts[2];
+            docRoot = siteRoot + "content/" + ver + "/" + lang + "/";
         }
     }
 
