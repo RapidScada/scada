@@ -10,6 +10,11 @@
   transform: translate(-50%, -50%);
   text-align: center;
 }
+.print-version {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+}
 .sd-article {
   height: 100%;
 }

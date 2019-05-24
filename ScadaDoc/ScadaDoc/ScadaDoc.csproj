@@ -282,7 +282,6 @@
     <Content Include="content\ru\software-overview\applications\webstation-application-files\scada_web_table_en.png" />
     <Content Include="content\ru\software-overview\applications\webstation-application.html" />
     <Content Include="content\ru\use-cases\index.html" />
-    <Content Include="content\ru\use-cases\modbus-protocol2.html" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_commline_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_create_cnls_ru.png" />
     <Content Include="content\ru\use-cases\modbus-protocol-files\modbus_data_ru.png" />
@@ -344,12 +343,10 @@
     </Content>
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
-    <Content Include="js\contents-ru.js" />
     <Content Include="js\print.js" />
-    <Content Include="js\scadadoc2.js" />
     <Content Include="js\scadadoc.js" />
-    <Content Include="js\contents-en.js" />
-    <Content Include="js\jquery.min.js" />
+    <Content Include="content\en\js\contents.js" />
+    <Content Include="lib\jquery\jquery.min.js" />
     <Content Include="lib\prism\prism.css" />
     <Content Include="lib\prism\prism.js" />
     <Content Include="Print.aspx" />

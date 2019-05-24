@@ -1,26 +1,37 @@
 ﻿var articleUrl = articleUrl || "";
 
-function FixImages() {
-    $("img").each(function () {
+function FixArticles() {
+    $(".print-article").each(function () {
         var divArticle = $(this).closest(".print-article");
-        var link = divArticle.data("link");
-        var lastSlashInd = link.lastIndexOf("/");
+        var articleLink = divArticle.data("link");
+        var articleDir = articleLink.substring(0, articleLink.lastIndexOf("/") + 1);
 
-        if (lastSlashInd > 0) {
-            var dir = link.substring(0, lastSlashInd + 1);
-            var src = $(this).attr("src");
-            $(this).attr("src", articleUrl + dir + src);
+        if (articleDir) {
+            var urlPrefix = articleUrl + articleDir;
+
+            // fix images of the article
+            divArticle.find("img").each(function () {
+                var src = $(this).attr("src");
+                $(this).attr("src", urlPrefix + src);
+            });
+
+            // fix hyperlinks of the article
+            divArticle.find("a").each(function () {
+                var href = $(this).attr("href");
+
+                if (!href.startsWith("http://") && !href.startsWith("https://")) {
+                    $(this).attr({
+                        href: urlPrefix + href,
+                        target: "_blank"
+                    });
+                }
+            });
         }
     });
 }
 
-function FixLinks() {
-
-}
-
 $(document).ready(function () {
-    FixImages();
-    FixLinks();
+    FixArticles();
 
     setTimeout(function () {
         console.log('The above "Image not found" errors are normal.');
