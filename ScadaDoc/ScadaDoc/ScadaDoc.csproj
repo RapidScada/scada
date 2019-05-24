@@ -330,6 +330,12 @@
     <Content Include="css\cover.min.css">
       <DependentUpon>cover.css</DependentUpon>
     </Content>
+    <Content Include="css\print.css">
+      <DependentUpon>print.less</DependentUpon>
+    </Content>
+    <Content Include="css\print.min.css">
+      <DependentUpon>print.css</DependentUpon>
+    </Content>
     <Content Include="css\scadadoc.css">
       <DependentUpon>scadadoc.less</DependentUpon>
     </Content>
@@ -339,6 +345,7 @@
     <Content Include="favicon.ico" />
     <Content Include="index.html" />
     <Content Include="js\contents-ru.js" />
+    <Content Include="js\print.js" />
     <Content Include="js\scadadoc2.js" />
     <Content Include="js\scadadoc.js" />
     <Content Include="js\contents-en.js" />
@@ -376,6 +383,7 @@
     <Content Include="css\cover.less" />
     <Content Include="css\variables.less" />
     <Content Include="Sitemap.ashx" />
+    <Content Include="css\print.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

@@ -106,10 +106,10 @@ function createCounter() {
     }
 }
 
-function addArticle(context, link, title, level) {
+function addArticle(context, link, title, opt_level) {
     var url = context.docRoot + link;
     var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
-    var levClass = level ? " level" + level : "";
+    var levClass = opt_level ? " level" + opt_level : "";
     var selClass = link && url === location.href.split("#")[0] ? " selected" : "";
 
     var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");

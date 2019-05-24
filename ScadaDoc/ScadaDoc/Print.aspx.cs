@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 
 namespace ScadaDoc
 {
@@ -47,12 +48,50 @@ namespace ScadaDoc
         }
 
 
+        private string articleDir; // the top directory of the articles
+
+
         /// <summary>
         /// Parses the JavaScript contents file.
         /// </summary>
         private List<Article> ParseArticles(string fileName)
         {
             List<Article> articles = new List<Article>();
+
+            if (File.Exists(fileName))
+            {
+                using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+                {
+                    using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                    {
+                        while (!reader.EndOfStream)
+                        {
+                            string line = reader.ReadLine();
+
+                            const string FuncBegin = "addArticle(";
+                            int begIdx = line.IndexOf(FuncBegin);
+
+                            if (begIdx >= 0)
+                            {
+                                begIdx += FuncBegin.Length;
+                                int endIdx = line.IndexOf(");", begIdx);
+
+                                if (endIdx >= 0)
+                                {
+                                    string[] args = line.Substring(begIdx, endIdx - begIdx).Split(',');
+                                    articles.Add(new Article
+                                    {
+                                        Link = args[1].Trim(' ', '"'),
+                                        Title = args[2].Trim(' ', '"'),
+                                        Level = args.Length <= 3 ? 0 : int.Parse(args[3])
+                                    });
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             return articles;
         }
 
@@ -61,7 +100,62 @@ namespace ScadaDoc
         /// </summary>
         private void WriteArticle(Article article)
         {
-            Response.Write(string.Format("<div>{0}</div>", article.Title));
+            Response.Write("<div>");
+
+            try
+            {
+                if (article.Link.EndsWith("/"))
+                {
+                    Response.Write(string.Format("<h1>{0}</h1>", article.Title));
+                }
+                else if (article.Link.EndsWith(".html"))
+                {
+                    string absPath = Path.Combine(articleDir, article.Link.Replace('/', Path.DirectorySeparatorChar));
+                    WriteArticleBody(absPath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Response.Write(string.Format("<div class='exception'>{0}</div>", ex.ToString()));
+            }
+            finally
+            {
+                Response.Write("</div>");
+            }
+        }
+
+        /// <summary>
+        /// Writes the HTML body of the article.
+        /// </summary>
+        private void WriteArticleBody(string fileName)
+        {
+            using (FileStream stream = new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
+            {
+                using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+                {
+                    bool bodyFound = false;
+
+                    while (!reader.EndOfStream)
+                    {
+                        string line = reader.ReadLine();
+                        string lineTrimmed = line.Trim();
+
+                        if (lineTrimmed == "</body>")
+                        {
+                            break;
+                        }
+                        else if (bodyFound)
+                        {
+                            Response.Write(line);
+                            Response.Write(Environment.NewLine);
+                        }
+                        else if (lineTrimmed == "<body>")
+                        {
+                            bodyFound = true;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -77,17 +171,18 @@ namespace ScadaDoc
             }
             else
             {
-                string topDir = Path.Combine(Server.MapPath("~"), "content", lang);
+                articleDir = Path.Combine(Server.MapPath("~"), "content", lang);
 
-                if (Directory.Exists(topDir))
+                if (Directory.Exists(articleDir))
                 {
-                    List<Article> articles = ParseArticles(Path.Combine(topDir, "js", "contents.js"));
+                    List<Article> articles = ParseArticles(Path.Combine(articleDir, "js", "contents.js"));
 
                     if (articles.Count > 0)
                     {
                         foreach (Article article in articles)
                         {
-                            WriteArticle(article);
+                            if (article.Link != "../../" && !article.Link.StartsWith("version-history"))
+                                WriteArticle(article);
                         }
                     }
                     else
@@ -101,6 +196,7 @@ namespace ScadaDoc
                 }
             }
         }
+
 
         protected void Page_Load(object sender, EventArgs e)
         {
