@@ -1,0 +1,57 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Плагин Дэшборды - Документация Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
+</head>
+<body>
+    <h1>Плагин Дэшборды</h1>
+    <h2>Обзор</h2>
+    <p>Плагин Дэшборды отображает полезные виджеты на дэшбордах: графики, текущие данные и произвольные фреймы, например, изображение с камеры видео-наблюдения. Настройки каждого дэшборда позволяют задать количество столбцов и соотношение сторон виджетов.</p>
+
+    <h2>Установка</h2>
+    <p>Сначала необходимо выполнить <a href="../installation-and-run/module-installation.html#plugins">общую последовательность установки плагинов</a>, а затем выполнить несколько дополнительных действий:</p>
+    <ol>
+        <li>Перейти на страницу <em>Главное меню &gt; Регистрация &gt; Дэшборды</em>.</li>
+        <li>Зарегистрировать плагин, используя гиперссылки, размещённые на странице.</li>
+    </ol>
+
+    <h2>Конфигурирование</h2>
+    <p>Конфигурация каждого дэшборда сохраняется в отдельном файле формата XML. При установке плагина также устанавливается пример дэшборда:</p>
+    <p>C:\SCADA\ScadaWeb\storage\AllUsers\Dashboard\DashboardExample1.xml</p>
+    <p>Чтобы создать свой дэшборд, необходимо скопировать файл примера под новым именем, а затем отредактировать в любом текстовом редакторе. Имя файла конфигурации дэшборда – произвольное, расширение файла – XML. Файлы конфигурации дэшбордов могут располагаться в следующих директориях:</p>
+    <p>C:\SCADA\ScadaWeb\storage\allusers\Dashboard\ - дэшборды, доступные всем пользователям;<br />
+        C:\SCADA\ScadaWeb\storage\myuser\Dashboard\ - дэшборды, доступные пользователю MyUser.</p>
+    <p>Рассмотрим содержимое файла конфигурации дэшборда:</p>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;DashboardConfig&gt;
+  &lt;DashboardOptions&gt;
+    &lt;Name&gt;Dashboard Example 1&lt;/Name&gt;
+    &lt;ColumnCount&gt;2&lt;/ColumnCount&gt;
+    &lt;AspectRatio&gt;1.33&lt;/AspectRatio&gt;
+  &lt;/DashboardOptions&gt;
+  &lt;Widgets&gt;
+    &lt;Widget type="Chart" cnlNums="101,102" viewIDs="2,2" period="2" /&gt;
+    &lt;Widget type="CurData" cnlNums="101,102,103,104,105,106,107,115" viewIDs="2,2,2,2,2,2,2,2" /&gt;
+    &lt;Widget type="CustomUrl" url="https://www.youtube.com/embed/xs8Tqkr-Gn4" /&gt;
+  &lt;/Widgets&gt;
+&lt;/DashboardConfig&gt;</code></pre>
+
+    <p>Секция <strong>DashboardOptions</strong> содержит общие параметры дэшборда:<br />
+        Name - наименование дэшборда,<br />
+        ColumnCount - количество колонок от 1 до 4 (на небольших экранах мобильных устройств виджеты в любом случае располагаются в одной колонке),<br />
+        AspectRatio - отношение ширины виджетов к высоте.</p>
+    <p>Секция <strong>Widgets</strong> содержит список виджетов, которые отображаются на дэшборде. Количество виджетов произвольное. Однако слишком большое количество виджетов на одном дэшборде может снизить быстродействие веб-приложения.</p>
+    <p>Поддерживаются виджеты следующих типов:<br />
+        Chart - график заданных входных каналов,<br />
+        CurData - таблица текущих значений заданных входных каналов,<br />
+        CustomUrl - произвольная веб-страница.</p>
+    <p>Для виджетов типа Chart и CurData нужно не только указать номера входных каналов, используемых виджетом, но также указать идентификаторы представлений, которые содержат эти входные каналы. Идентификаторы представлений необходимы для контроля прав доступа пользователя.</p>
+</body>
+</html>

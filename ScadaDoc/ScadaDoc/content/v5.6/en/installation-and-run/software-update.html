@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Software Update - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Software Update</h1>
+    <p>Updating Rapid SCADA to new versions has to be performed on the test environment first. Carefully read <a href="../version-history/scada-history.html">the list of changes were made in the new version</a>. If the configuration database structure is changed or the archive or configuration files formats are changed, special utility is required to convert data.</p>
+    <p>Only being sure that the new version of Rapid SCADA is operates properly on the test environment, installation on the production server is allowed.</p>
+    <p>Updating software sequence:</p>
+    <ol>
+        <li>Make a backup copy of the all files of Rapid SCADA which located in C:\SCADA directory by default.</li>
+        <li>Uninstall Rapid SCADA using the installer application ScadaSetup.exe.</li>
+        <li>Install a new version of Rapid SCADA and <a href="migrate-configuration.html">migrate the configuration</a> from the backup copy.</li>
+        <li>Clear the browser cache or refresh the web application pages by pressing Shift + F5.</li>
+    </ol>
+</body>
+</html>

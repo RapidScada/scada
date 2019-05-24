@@ -81,7 +81,7 @@ namespace ScadaDoc
                         {
                             string line = reader.ReadLine();
 
-                            const string FuncBegin = "addArticle(";
+                            const string FuncBegin = "  addArticle(";
                             int begIdx = line.IndexOf(FuncBegin);
 
                             if (begIdx >= 0)

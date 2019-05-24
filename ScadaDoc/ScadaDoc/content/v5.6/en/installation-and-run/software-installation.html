@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Software Installation - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Software Installation</h1>
+    <h2>Before Installation</h2>
+    <p>Rapid SCADA requires certain Windows components to be installed. Go to <em>Control Panel &gt; Programs &gt; Turn Windows features on or off</em>. The required compontns of Microsoft .NET Framework are shown in Figures 1 and 3. Pay attention that Windows Communication Foundation child components of Microsoft .NET Framework <strong>3.5</strong> must be turned off.</p>
+    <p>The Webstation application requires Internet Information Services (IIS) that is a one of Windows features. Webstation would be inoperable unless the set of certain IIS features were turned on. Figures 2 and 4 show what features have to be installed. During the web application setup the availability of these features is checked by the installer.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win7_features_dotnet_en.png" alt="Windows 7 .NET components" /><br />
+        Figure 1. Windows 7 .NET components
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win7_features_iis_en.png" alt="Компоненты IIS для Windows 7" /><br />
+        Figure 2. Windows 7 IIS components
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win10_features_dotnet_en.png" alt="Windows 10 .NET components" /><br />
+        Figure 3. Windows 10 .NET components
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win10_features_iis_en.png" alt="Windows 10 IIS components" /><br />
+        Figure 4. Windows 10 IIS components
+    </p>
+    <h2>Installation</h2>
+    <p>Execute <em>ScadaSetup.exe</em> to start installation. A user account that has administrative rights should be used. The installer is shown in Figure 5.</p>
+    <p>Microsoft .NET Framework 4.0 is required to run Rapid SCADA. It will be installed automatically during the installation process if necessary. In case of using outdated operating system such as Windows XP or Windows Server 2003, Microsoft .NET Framework 3.5 SP1 has to be downloaded and installed first.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/scada_setup_en.png" alt="Rapid SCADA installer" /><br />
+        Figure 5. Rapid SCADA installer
+    </p>
+    <p>Before the installation starts, user is asked for choosing the applications and the installation directory (see Figures 5 and 6). This directory specifies the location of the entire software. The installer creates subdirectories required for the chosen applications. The default directory <em>C:\SCADA</em> is recommended due to simplifying configuring the applications.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/install_dir_en.png" alt="Choosing the installation directory" /><br />
+        Figure 6. Choosing the installation directory
+    </p>
+    <p>The web application installation options (see Figure 7) are agreed with a system administrator. If there are no specific requirements for the web application, you should use the default values.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/web_params_en.png" alt="Web application installation options" /><br />
+        Figure 7. Web application installation options
+    </p>
+    <p>When installation is completed, it is recommended to check that the <em>Scada</em> web application uses an application pool having .NET 4.0 runtime version and integrated pipeline mode. IIS management console path is <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Internet Information Services (IIS) Manager</em>.</p>
+</body>
+</html>

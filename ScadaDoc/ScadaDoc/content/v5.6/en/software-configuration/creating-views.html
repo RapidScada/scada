@@ -1,0 +1,31 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Creating Views - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Creating Views</h1>
+
+    <p>View is a form of data representation in the Webstation application. There are 2 types of views supported by default: table views and schemes. Support other types of views can be added by installing additional plugins.</p>
+
+    <p>Special editors are designed to create views: <a href="../software-overview/applications/table-editor-application.html">Table Editor</a> and <a href="../software-overview/applications/scheme-editor-application.html">Scheme editor</a>. Views are stored in files which must be located in the interface directory (or its subdirectory) that is specified in the settings of the Server application. The default interface directory is C:\SCADA\Interface\</p>
+
+    <p>Examples of view files:<br />
+        C:\SCADA\Interface\Servers\ServerRoom.sch - scheme,<br />
+        C:\SCADA\Interface\Servers\ServerRoom.tbl - table view.</p>
+
+    <p>When view files are created, they must be defined in the <em>Interface</em> table of the configuration database by the <em>Administrator</em> application as shown in Figure 1. View ID is an arbitrary unique number. View path is relative to the interface directory. View title is shown in the explorer tree of Webstation.</p>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/scada_admin_itf_en.png" alt="Editing the Interface table" /><br />
+        Figure 1. Editing the Interface table
+    </p>
+
+    <p>To apply the changes, send the database to Server by the <img src="../../common-images/pass.gif" /> button, restart the Server service by the <img src="../../common-images/restart_blue.gif" /> button, then logout and login again the web application.</p>
+</body>
+</html>

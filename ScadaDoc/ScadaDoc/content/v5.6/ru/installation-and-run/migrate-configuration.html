@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Перенос конфигурации на новый сервер - Документация Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Перенос конфигурации на новый сервер</h1>
+    <p>Типичные задачи, при которых необходим перенос конфигурации Rapid SCADA на другой сервер:</p>
+    <ul>
+        <li>запуск новой системы на рабочем сервере после создания конфигурации на компьютере разработчика;</li>
+        <li>замена сервера.</li>
+    </ul>
+    <p>Последовательность действий для переноса конфигурации:</p>
+    <ol>
+        <li>Убедиться, что настроены подключения нового сервера к опрашиваемым устройствам: существуют необходимые последовательные порты, промышленные контроллеры доступны по локальной сети и т.п.</li>
+        <li>Установить Rapid SCADA на новом сервере, не запуская службы Сервера и Коммуникатора.</li>
+        <li>На старом сервере остановить службы Сервера и Коммуникатора и перевести их на ручной тип запуска (службы ScadaCommService и ScadaServerService).</li>
+        <li>Со старого сервера на новый скопировать содержимое директорий конфигурации (приведены директории по умолчанию):<br />
+            C:\SCADA\BaseDAT<br />
+            C:\SCADA\BaseSDF<br />
+            C:\SCADA\Interface<br />
+            C:\SCADA\ScadaComm\Config<br />
+            C:\SCADA\ScadaServer\Config<br />
+            C:\SCADA\ScadaWeb\config</li>
+        <li>Со старого сервера на новый скопировать архив, расположенный в директориях:<br />
+            C:\SCADA\ArchiveDAT<br />
+            C:\SCADA\ArchiveDATCopy</li>
+        <li>На новом сервере запустить службы Сервера и Коммуникатора.</li>
+    </ol>
+</body>
+</html>

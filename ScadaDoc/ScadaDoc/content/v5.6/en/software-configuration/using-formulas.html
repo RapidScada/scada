@@ -1,0 +1,180 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Using Formulas - Rapid SCADA Documentatio</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Using Formulas</h1>
+
+    <p>Formulas are used for calculating values and statuses of input channels and calculating values of commands. Formulas processing is performed by the Server application.</p>
+
+    <p>Formulas are contained by the <em>Input channels</em> and <em>Output channels</em> tables of the configuration database. To enable the formula, tick the appropriate checkbox in the <em>Formula used</em> column. The <em>Formulas</em> table stores additional functions and data structures which can be used in formulas for input and output channels.</p>
+
+    <p>The general rules of using formulas:</p>
+
+    <ol>
+        <li>Formulas use the expressions syntax of C# language. Many of Microsoft .NET classes are accessible, for example, Math and DateTime classes.</li>
+        <li>New constants, fields, properties and methods can be added and used in formulas.</li>
+        <li>If at least one formula contains an error, Server operation is impossible. Information about errors in formulas is written in the Server application log.</li>
+    </ol>
+
+    <p>The rules of using formulas for input channels:</p>
+
+    <ol>
+        <li>For channels of types <em>Discrete</em> and <em>Real</em> calculation starts when the channels data are received by Server. Use these channel types if formula does not refer to data of other channels.</li>
+        <li>For channels of types <em>Calculated *</em> and <em>Switching counter</em> calculations are performed permanent and ordered by channel numbers. A formula of a calculated channel usually refers to data of other channels.</li>
+        <li>For channels of types <em>Minute *</em> and <em>Hourly *</em> calculation starts periodically once per minute or once per hour. Use these channel types to create accumulated values, for example, energy consumption or operating time.</li>
+        <li>For channels of types <em>Discrete</em> and <em>Real</em> statuses of the channels after calculating are equal to the statuses of these channels received by Server if status calculation does not specified explicitly.</li>
+        <li>For channels of the other types the statuses set to <em>Defined</em> if status calculation does not specified explicitly.</li>
+        <li>An input channel formula that does not contain &quot;;&quot; (semicolon) symbol calculates the input channel value only.</li>
+        <li>If an input channel formula contains &quot;;&quot;, the formula calculates the input channel value and status. The first part before semicolon is a formula for value calculation and the second part after semicolon calculates status.</li>
+    </ol>
+
+    <p>The rules of using formulas for output channels:</p>
+
+    <ol>
+        <li>Formulas are processed for output channels having <em>Standard</em> and <em>Binary</em> command types.</li>
+        <li>A formula of an output channel defines command value calculation for a standard command and defines command data calculation for a binary command.</li>
+    </ol>
+
+    <p>The variables accessible in formulas:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Variable</th>
+            <th>Value Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>CnlVal, Cnl</td>
+            <td>double</td>
+            <td>The input channel value transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CnlStat</td>
+            <td>int</td>
+            <td>The input channel status transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CmdVal, Cmd</td>
+            <td>double</td>
+            <td>The command value transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CmdData</td>
+            <td>byte[]</td>
+            <td>The command data transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CnlNum</td>
+            <td>int</td>
+            <td>The channel number for which the formula is calculated</td>
+        </tr>
+        <tr>
+            <td>E</td>
+            <td>double</td>
+            <td>The natural logarithmic base, specified by the constant, e</td>
+        </tr>
+        <tr>
+            <td>PI</td>
+            <td>double</td>
+            <td>The ratio of the circumference of a circle to its diameter, specified by the constant, π</td>
+        </tr>
+    </table>
+
+    <p>The functions accessible in formulas:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Fucntion</th>
+            <th>Value Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>N(n)</td>
+            <td>int</td>
+            <td>Returns the specified channel number for updating numbers on cloning</td>
+        </tr>
+        <tr>
+            <td>Val()</td>
+            <td>double</td>
+            <td>Gets the current value of the formula channel</td>
+        </tr>
+        <tr>
+            <td>Val(n)</td>
+            <td>double</td>
+            <td>Gets the current value of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetVal(n, val)</td>
+            <td>double</td>
+            <td>Sets the current value of the channel n</td>
+        </tr>
+        <tr>
+            <td>Stat()</td>
+            <td>int</td>
+            <td>Gets the current status of the formula channel</td>
+        </tr>
+        <tr>
+            <td>Stat(n)</td>
+            <td>int</td>
+            <td>Gets the current status of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetStat(n, stat)</td>
+            <td>int</td>
+            <td>Sets the current status of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetData(n, val, stat)</td>
+            <td>double</td>
+            <td>Sets the current value and status of the channel n</td>
+        </tr>
+        <tr>
+            <td>Abs(x)</td>
+            <td>double</td>
+            <td>Calculates the absolute value of a number</td>
+        </tr>
+        <tr>
+            <td>Sin(x)</td>
+            <td>double</td>
+            <td>Calculates the sine of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Cos(x)</td>
+            <td>double</td>
+            <td>Calculates the cosine of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Tan(x)</td>
+            <td>double</td>
+            <td>Calculates the tangent of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Exp(x)</td>
+            <td>double</td>
+            <td>Calculates e raised to the specified power</td>
+        </tr>
+        <tr>
+            <td>Ln(x), Log(x)</td>
+            <td>double</td>
+            <td>Calculates the natural (base e) logarithm of a specified number</td>
+        </tr>
+        <tr>
+            <td>Sqr(x)</td>
+            <td>double</td>
+            <td>Calculates the square of a specified number</td>
+        </tr>
+        <tr>
+            <td>Sqrt(x)</td>
+            <td>double</td>
+            <td>Calculates the square root of a specified number</td>
+        </tr>
+    </table>
+</body>
+</html>

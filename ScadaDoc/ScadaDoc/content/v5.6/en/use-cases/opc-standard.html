@@ -1,0 +1,85 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Connecting Devices Using OPC Standard - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Connecting Devices Using OPC Standard</h1>
+
+    <p class="sd-article-meta">
+        Written by Rapid SCADA on January 5, 2015<br />
+        Updated on January 25, 2017
+    </p>
+
+    <p>This article describes how to configure communication with devices using OPC standard. OPC is designed to provide a common bridge for the software and process control devices from different manufacturers (see <a href="https://en.wikipedia.org/wiki/Open_Platform_Communications" target="_blank">Wikipedia</a>). Rapid SCADA supports the following OPC specifications:</p>
+
+    <ul>
+        <li>OPC DA (Data Access) to read and write current device data.</li>
+        <li>OPC AE (Alarms & Events) to receive event notifications.</li>
+    </ul>
+
+    <p>Rapid SCADA implementation of OPC is provided by the Communicator application, to be exact, by KpOpc.dll device library. To learn about the details of SCADA-Communicator configuring for using OPC is the goal of this article.</p>
+
+    <p>The general configuration sequence:</p>
+
+    <ol>
+        <li>Download and install OPC Core Components. These components can be found at <a href="http://opcfoundation.org/" target="_blank">opcfoundation.org</a> and <a href="http://rapidscada.org/download-all-files/" target="_blank">rapidscada.org</a>.</li>
+        <li>Create an object, a communication line and devices in the configuration database using the Administrator application.</li>
+        <li>Configure communication between Communicator and OPC servers as described in this article.</li>
+        <li>Create input channels in the configuration database according to the tags of the devices. Create output channels according to the commands.</li>
+        <li>Create views (tables or schemes) to display data in the Webstation application. Define the views in the configuration database.</li>
+    </ol>
+
+    <p>The details of the 2nd, the 4th and the 5th steps are described in the <a href="../software-configuration/">Software Configuration</a> section. Device 21 "OPC Demo" of the default Rapid SCADA configuration is an example of using OPC. Find "OPC demo" view in Webstation to examine the received data. This example requires MatrikonOPC Explorer which includes an OPC simulation server.</p>
+
+    <p>Create a separate communication line for each OPC server that is used. It is the most efficient approach because it allows communicating with the OPC servers in parallel. Add devices to the communication lines. Set <em>Undefined</em> communication channel type for the created communication lines in Communicator.</p>
+
+    <p>Open device configuration form to select which OPC tags to receive from OPC server. Click the <img src="../../common-images/props.png" /> button located in the device popup menu or the <em>Request Sequence</em> page to open the form that is shown in Figure 1.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/opc_config_en.png" alt="Selecting OPC tags" /><br />
+        Figure 1. Selecting OPC tags
+    </p>
+
+    <p>OPC servers installed on the local computer are available to Communicator. If data from an OPC server, installed on another computer within a network, are required, deploy an extra instance of Communicator on that computer and properly configure it to connect Server.</p>
+
+    <p>There are two ways how to bind OPC tags to input channels of the configuration database:</p>
+
+    <ol>
+        <li>Using the <em>Signal</em> field of device tags and input channels to identify tags.</li>
+        <li>Setting input channel numbers directly in the configuration form shown in Figure 1.</li>
+    </ol>
+
+    <p>Select the way that is more suitable in a particular configuration of an automated system.</p>
+
+    <p>When the configuration is completed, restart the Server and Communicator services. Check OPC communication state and received data using Communicator logs (see Figure 2). If the data in Communicator seem to be true, open a browser and look for the same data in the Webstation application.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/opc_vals_en.png" alt="Values of OPC tags" /><br />
+        Figure 2. Values of OPC tags
+    </p>
+
+    <p><strong>Known issue of using OPC:</strong> unable to receive data from OPC server while OPC tag properties are available in the device configuration form, no error messages are raised.</p>
+
+    <p>Possible reason is that the Communicator service operates as system user but OPC server forbids interacting with system user.</p>
+
+    <p><strong>Solution 1</strong>. Specify a user account that is used to run OPC server. To open DCOM configuration (see Figure 3), follow the path <em>Control Panel\System and Security\Administrative Tools\Component Services</em> or just run <em>comexp.msc</em></p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/dcom_config_en.png" alt="DCOM configuration" /><br />
+        Figure 3. DCOM configuration
+    </p>
+
+    <p><strong>Solution 2</strong>. Specify a user account that is used to run the Communicator service. Go to <em>Control Panel\System and Security\Administrative Tools\Services</em> or run <em>services.msc</em>, find ScadaCommService and open the service properties. Then enter user account and password on the <em>Log On</em> page as shown in Figure 4. The specified user must be a computer administrator.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/comm_svc_logon_en.png" alt="Service properties" /><br />
+        Figure 4. Service properties
+    </p>
+</body>
+</html>

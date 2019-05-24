@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Plugin - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
+</head>
+<body>
+    <h1>Dashboard Plugin</h1>
+    <h2>Overview</h2>
+    <p>Dashboard Plugin displays useful widgets on dashboards: charts, current data and arbitrary frames, for example, CCTV camera stream. Settings of each dashboard allow to specify column count and widget aspect ratio.</p>
+
+    <h2>Installation</h2>
+    <p>First you need to perform <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins</a>, and then perform several additional actions:</p>
+    <ol>
+        <li>Go to <em>Main Menu &gt; Registration &gt; Dashboard</em>.</li>
+        <li>Register the plugin using the hyperlinks on the page.</li>
+    </ol>
+
+    <h2>Configuring</h2>
+    <p>A configuration of each dashboard stored in a separate XML file. The plugin installation package contains a dashboard example which installs into:</p>
+    <p>C:\SCADA\ScadaWeb\storage\AllUsers\Dashboard\DashboardExample1.xml</p>
+    <p>To create a custom dashboard, copy the example configuration file with a new name, and then edit it using any text editor. Configuration file name may be arbitrary, file extension must be XML. The locations of dashboard configuration files:</p>
+    <p>C:\SCADA\ScadaWeb\storage\allusers\Dashboard\ - dashboards available to all users;<br />
+        C:\SCADA\ScadaWeb\storage\myuser\Dashboard\ - dashboards available to MyUser.
+    </p>
+    <p>Consider the contents of a dashboard configuration file:</p>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;DashboardConfig&gt;
+  &lt;DashboardOptions&gt;
+    &lt;Name&gt;Dashboard Example 1&lt;/Name&gt;
+    &lt;ColumnCount&gt;2&lt;/ColumnCount&gt;
+    &lt;AspectRatio&gt;1.33&lt;/AspectRatio&gt;
+  &lt;/DashboardOptions&gt;
+  &lt;Widgets&gt;
+    &lt;Widget type="Chart" cnlNums="101,102" viewIDs="2,2" period="2" /&gt;
+    &lt;Widget type="CurData" cnlNums="101,102,103,104,105,106,107,115" viewIDs="2,2,2,2,2,2,2,2" /&gt;
+    &lt;Widget type="CustomUrl" url="https://www.youtube.com/embed/xs8Tqkr-Gn4" /&gt;
+  &lt;/Widgets&gt;
+&lt;/DashboardConfig&gt;</code></pre>
+
+    <p>The <strong>DashboardOptions</strong> section contains common dashboard parameters: <br />
+        Name - dashboard name,<br />
+        ColumnCount - number of columns from 1 to 4 (widgets are shown in a single column anyway on small screens of mobiles),<br />
+        AspectRatio - ratio of widget width to its height.</p>
+    <p>The <strong>Widgets</strong> section contains a list of widgets that are displayed on a dashboard. Number of widgets is arbitrary. However, too many widgets on the same dashboard can reduce the performance of the web application.</p>
+    <p>
+        Widgets of the following types are supported:<br />
+        Chart - chart of the specified input channels,<br />
+        CurData - table contains current data of the specified input channels,<br />
+        CustomUrl - custom web page.
+    </p>
+    <p>Configuration of widgets of the Chart and CurData types must define input channel numbers and also identifiers of the views that include these input channels. View IDs are required for user access rights validation.</p>
+</body>
+</html>

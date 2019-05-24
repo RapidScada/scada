@@ -1,0 +1,49 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Communication with Devices Configuration - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Communication with Devices Configuration</h1>
+
+    <p>Interaction with real or virtual devices is performed by the Communicator application which acting as a master or a slave, requests data and sends commands to devices. All the devices are bound to communication lines. Communication lines are independent on each other and are used simultaneously.</p>
+
+    <p>Figure 1 shows an example of communication line parameters. A communication channel determines physical interface or network protocol which is used for data exchange with devices. The following communication channels are supported: Serial port, TCP client, TCP server and UDP. In some cases, if the interaction with devices is implemented in a device library, communication channel should be undefined (e.g., OPC implementation).</p>
+
+    <p>If sending commands to devices is required, it is necessary to tick <em>Commands enabled</em>. By default, this checkbox is disabled due to safety reasons.</p>
+
+    <p>Communication order and request parameters are set on the <em>Request Sequence page</em> (see Figure 2).</p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/scada_comm_line_en.png" alt="Communication line parameters" /><br />
+        Figure 1. Communication line parameters
+    </p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/scada_comm_req_seq_en.png" alt="Request sequence" /><br />
+        Figure 2. Request sequence
+    </p>
+
+    <p>If the <em>Active</em> checkbox on the <em>Communication Line Parameters</em> page is unset, the appropriate communication line is disabled, and no requests are performed. If the <em>Active</em> checkbox in the <em>Selected device</em> group box is unset, communication with the appropriate device is disabled.</p>
+
+    <p>The <em>Bound to server</em> checkbox on the <em>Communication Line Parameters</em> page allows to switch on or switch off sending the communication line data to Server. The <em>Bound</em> checkbox in the <em>Selected device</em> group box has the similar purpose, but only for the device. If the <em>Use SCADA-Server</em> checkbox on the <em>Common Parameters</em> page is unset, any interaction between Communicator and Server is switched off. These options are useful for testing new devices connecting to the system.</p>
+
+    <p>If the <em>Time</em> and <em>Period</em> request parameters of a device are equal to zero, the device is requested cyclically. If <em>Time</em> greater than zero and <em>Period</em> is zero, the device is requested once a day in the specified time. If <em>Period</em> greater than zero, the device is requested periodically starting at the specified time. The <em>Timeout</em> field defines how long to wait an answer from the device after a request. The <em>Delay</em> field defines a delay after each request to the device. <em>Command line</em> may contain additional parameters described in documentation of a device library.</p>
+
+    <p>To reset request parameters of the selected device to the default values, click <img src="../../common-images/reset.png" /> button. To open the device properties form, if it is supported by a device library of the selected device, click <img src="../../common-images/props.png" /> button or use a popup menu of the tree. To set global properties for a device type choose the <em>Device Libraries</em> page, select the device library and click the <em>Properties</em> button if the button is enabled.</p>
+
+    <p>The import feature significantly speeds up configuring Communicator (see Figure 3). This feature is allowable if the <em>Use SCADA-Server</em> checkbox on the <em>Common Parameters</em> page is set and the Server service is running. To start import, click <img src="../../common-images/import.png" /> button. Such button is located on the <em>Request Sequence</em> page and in a popup menu of the tree. The import feature adds communication lines and devices to the Communicator configuration using the information of the configuration database.</p>
+
+    <p>Click <img src="../../common-images/refresh.png" /> to update the Communicator settings according to the configuration database. Names of the communication lines and properties of the devices are affected. Be careful not to lose settings made manually.</p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/scada_comm_import_en.png" alt="Import devices" /><br />
+        Figure 3. Import devices
+    </p>
+</body>
+</html>

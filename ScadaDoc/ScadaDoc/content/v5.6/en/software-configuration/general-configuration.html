@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>General Configuration Sequence - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>General Configuration Sequence</h1>
+    <p>Starting to work with Rapid SCADA, it is recommended to follow the general configuration sequence described below. Having obtained some working experience, better understanding the dependencies between the applications, the sequence can be varied for improving efficiency.</p>
+    <ol>
+        <li>Create objects, communication lines and devices in the configuration database using Administrator application.</li>
+        <li>Pass the configuration database to Server by pressing <img src="../../common-images/pass.gif" /> button located in Administrator toolbar. Restart the Server service.</li>
+        <li>Import communication lines and devices from the configuration database into Communicator. The import feature is accessible in the communication lines popup menu by pressing <img src="../../common-images/import.png" /> button.</li>
+        <li>Configure communication with devices in Communicator.</li>
+        <li>Accomplish tuning up the configuration database using Administrator.</li>
+        <li>Create views (tables or schemes) using Table Editor or Scheme Editor applications.</li>
+        <li>Define the created views in the configuration database in order that they appear in the Webstation application.</li>
+    </ol>
+</body>
+</html>
