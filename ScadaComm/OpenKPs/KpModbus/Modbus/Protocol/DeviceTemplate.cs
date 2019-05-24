@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2019
  */
 
 using System;
@@ -395,7 +395,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             foreach (ModbusCmd srcCmd in srcTemplate.Cmds)
             {
                 ModbusCmd destCmd = CreateModbusCmd(srcCmd.TableType, srcCmd.Multiple);
-                destCmd.CopyFrom(destCmd);
+                destCmd.CopyFrom(srcCmd);
                 Cmds.Add(destCmd);
             }
         }
