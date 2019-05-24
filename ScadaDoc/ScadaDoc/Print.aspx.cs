@@ -27,6 +27,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Web;
 
 namespace ScadaDoc
 {
@@ -48,7 +49,9 @@ namespace ScadaDoc
         }
 
 
-        private string articleDir; // the top directory of the articles
+        private string lang;         // the language specified in the query string
+        private string articleDir;   // the top directory of the articles
+        protected string articleUrl; // the URL of the top directory
 
 
         /// <summary>
@@ -100,7 +103,7 @@ namespace ScadaDoc
         /// </summary>
         private void WriteArticle(Article article)
         {
-            Response.Write("<div>");
+            Response.Write(string.Format("<div class='print-article' data-link='{0}'>", article.Link));
 
             try
             {
@@ -163,7 +166,7 @@ namespace ScadaDoc
         /// </summary>
         protected void GenerateDoc()
         {
-            string lang = Request.QueryString["lang"];
+            Response.Write("<h1>Rapid SCADA</h1>");
 
             if (string.IsNullOrEmpty(lang))
             {
@@ -200,7 +203,8 @@ namespace ScadaDoc
 
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            lang = Request.QueryString["lang"];
+            articleUrl = VirtualPathUtility.ToAbsolute("~/content/" + lang + "/");
         }
     }
 }
