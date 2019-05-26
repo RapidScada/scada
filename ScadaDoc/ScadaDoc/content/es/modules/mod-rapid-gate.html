@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Rapid Gate Module - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Rapid Gate Module</h1>
+    <h2>Overview</h2>
+    <p>Rapid Gate Module is designed to synchronize data between several Rapid SCADA instances. The module allows to setup a backup server, as well as provides data transfer from SCADA installed on remote locations to the primary SCADA.</p>
+
+    <h2>Installation</h2>
+    <p>Rapid Gate Module is installed in accordance with <a href="../installation-and-run/module-installation.html#modules">the general sequence of installing Server modules</a>. The module library file is ModRapidGate.dll. After adding the module, you need to perform several additional actions:</p>
+    <ol>
+        <li>Open the module log C:\SCADA\ScadaServer\Log\ModRapidGate.log in a text editor and copy a computer code.</li>
+        <li>Register the module by contacting the developers or using <a href="http://trial.rapidscada.net/?prod=ModRapidGate" target="_blank">the trial key generator</a>. A register key must be stored in C:\SCADA\ScadaServer\Config\ModRapidGate_Reg.xml between RegKey tags.</li>
+        <li>Configure the module (see the section below).</li>
+        <li>Restart the Server service by clicking <img src="../../common-images/restart.png" />.</li>
+    </ol>
+
+    <h2>Configuring</h2>
+    <p>To cofigure Rapid Gate Module, edit C:\SCADA\ScadaServer\Config\ModRapidGate.xml using a text editor. The settings contains the connection parameters for the SCADA server (target server) to which data are transferred and from which commands are received.</p>
+    <p>Note that you usually need to configure the firewall on the target server to allow connections with it over the network.</p>
+
+    <h2>Algorithm</h2>
+    <p>The algorithm of Rapid Gate Module has the following features:</p>
+    <ol>
+        <li>The module transmits only the data that are received from Communicator. The values of the calculated input channels are not transmitted.</li>
+        <li>The data is transmitted to the same input channel numbers to which they are received.</li>
+        <li>The transmitted values are already calculated by the formulas of the input channels, which can result in double applying of the formulas on the target server. Therefore, when using the module, it is recommended that calculations be performed in separate input channels of the calculated type.</li>
+        <li>The module has a data transfer queue, which allows restoring data in case of a short-term connection failure with a target server.</li>
+    </ol>
+</body>
+</html>
