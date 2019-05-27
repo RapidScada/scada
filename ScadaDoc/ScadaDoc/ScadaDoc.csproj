@@ -115,6 +115,7 @@
     <Content Include="content\latest\en\software-configuration\communication-with-devices.html" />
     <Content Include="content\latest\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
     <Content Include="content\latest\en\software-configuration\creating-views.html" />
+    <Content Include="content\latest\en\software-overview\applications\server-application-files\scada_server_shell_en.png" />
     <Content Include="content\latest\en\software-overview\roadmap.html" />
     <Content Include="content\latest\en\use-cases\index.html" />
     <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_table_itf_en.png" />
@@ -270,7 +271,7 @@
     <Content Include="content\latest\ru\software-overview\applications\index.html" />
     <Content Include="content\latest\ru\software-overview\applications\scheme-editor-application-files\scada_scheme_editor_ru.png" />
     <Content Include="content\latest\ru\software-overview\applications\scheme-editor-application.html" />
-    <Content Include="content\latest\ru\software-overview\applications\server-application-files\scada_server_ru.png" />
+    <Content Include="content\latest\ru\software-overview\applications\server-application-files\scada_server_shell_ru.png" />
     <Content Include="content\latest\ru\software-overview\applications\server-application.html" />
     <Content Include="content\latest\ru\software-overview\index.html" />
     <Content Include="content\latest\ru\software-overview\roadmap.html" />
