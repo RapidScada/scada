@@ -8,6 +8,7 @@ function addContents(context) {
     addArticle(context, "software-overview/applications/server-application.html", "Server Application", 2);
     addArticle(context, "software-overview/applications/communicator-application.html", "Communicator Application", 2);
     addArticle(context, "software-overview/applications/webstation-application.html", "Webstation Application", 2);
+    addArticle(context, "software-overview/applications/agent-application.html", "Agent Application", 2);
     addArticle(context, "software-overview/applications/administrator-application.html", "Administrator Application", 2);
     addArticle(context, "software-overview/applications/table-editor-application.html", "Table Editor Application", 2);
     addArticle(context, "software-overview/applications/scheme-editor-application.html", "Scheme Editor Application", 2);
