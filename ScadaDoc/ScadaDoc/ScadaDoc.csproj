@@ -168,6 +168,9 @@
     <Content Include="content\latest\es\software-overview\software-purpose.html" />
     <Content Include="content\latest\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\module-installation.html" />
+    <Content Include="content\latest\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
+    <Content Include="content\latest\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
+    <Content Include="content\latest\ru\installation-and-run\software-installation-files\web_params_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
     <Content Include="content\latest\ru\js\contents.js" />
     <Content Include="content\latest\ru\modules\index.html" />
@@ -240,9 +243,6 @@
     <Content Include="content\latest\en\version-history\scada-history.html" />
     <Content Include="content\latest\ru\index.html" />
     <Content Include="content\latest\ru\installation-and-run\index.html" />
-    <Content Include="content\latest\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
-    <Content Include="content\latest\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
-    <Content Include="content\latest\ru\installation-and-run\software-installation-files\web_params_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win10_features_dotnet_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win10_features_iis_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
