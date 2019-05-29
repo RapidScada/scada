@@ -77,7 +77,7 @@
     <Content Include="content\latest\common-images\restart_yellow.gif" />
     <Content Include="content\latest\common-images\settings.png" />
     <Content Include="content\latest\common-images\start.png" />
-    <Content Include="content\latest\common-images\stop.png" />
+    <Content Include="content\latest\common-images\upload.png" />
     <Content Include="content\latest\en\index.html" />
     <Content Include="content\latest\en\installation-and-run\index.html" />
     <Content Include="content\latest\en\installation-and-run\manual-installation.html" />
