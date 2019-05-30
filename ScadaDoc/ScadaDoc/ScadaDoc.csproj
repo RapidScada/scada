@@ -77,12 +77,15 @@
     <Content Include="content\latest\common-images\restart_yellow.gif" />
     <Content Include="content\latest\common-images\settings.png" />
     <Content Include="content\latest\common-images\start.png" />
+    <Content Include="content\latest\common-images\status.png" />
     <Content Include="content\latest\common-images\upload.png" />
     <Content Include="content\latest\en\index.html" />
     <Content Include="content\latest\en\installation-and-run\index.html" />
     <Content Include="content\latest\en\installation-and-run\manual-installation.html" />
     <Content Include="content\latest\en\installation-and-run\migrate-configuration.html" />
     <Content Include="content\latest\en\installation-and-run\module-installation.html" />
+    <Content Include="content\latest\en\installation-and-run\run-applications-files\instance_status_en.png" />
+    <Content Include="content\latest\en\installation-and-run\run-applications-files\scada_web_login_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\install_dir_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\scada_setup_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\web_params_en.png" />
@@ -92,7 +95,7 @@
     <Content Include="content\latest\en\installation-and-run\software-installation-files\win7_features_iis_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation.html" />
     <Content Include="content\latest\en\installation-and-run\software-update.html" />
-    <Content Include="content\latest\en\installation-and-run\start-applications-files\service_props_en.png" />
+    <Content Include="content\latest\en\installation-and-run\run-applications-files\service_props_en.png" />
     <Content Include="content\latest\en\installation-and-run\run-applications.html" />
     <Content Include="content\latest\en\installation-and-run\system-requirements.html" />
     <Content Include="content\latest\en\modules\index.html" />
@@ -168,6 +171,8 @@
     <Content Include="content\latest\es\software-overview\software-purpose.html" />
     <Content Include="content\latest\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\module-installation.html" />
+    <Content Include="content\latest\ru\installation-and-run\run-applications-files\instance_status_ru.png" />
+    <Content Include="content\latest\ru\installation-and-run\run-applications-files\scada_web_login_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\install_dir_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\scada_setup_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\web_params_ru.png" />
@@ -248,7 +253,7 @@
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win7_features_iis_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\software-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\software-update.html" />
-    <Content Include="content\latest\ru\installation-and-run\start-applications-files\service_props_ru.png" />
+    <Content Include="content\latest\ru\installation-and-run\run-applications-files\service_props_ru.png" />
     <Content Include="content\latest\ru\installation-and-run\run-applications.html" />
     <Content Include="content\latest\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\latest\ru\installation-and-run\migrate-configuration.html" />
