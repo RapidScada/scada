@@ -86,6 +86,7 @@
     <Content Include="content\latest\en\installation-and-run\module-installation.html" />
     <Content Include="content\latest\en\installation-and-run\run-applications-files\instance_status_en.png" />
     <Content Include="content\latest\en\installation-and-run\run-applications-files\scada_web_login_en.png" />
+    <Content Include="content\latest\en\installation-and-run\safety-recommendations.html" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\install_dir_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\scada_setup_en.png" />
     <Content Include="content\latest\en\installation-and-run\software-installation-files\web_params_en.png" />
