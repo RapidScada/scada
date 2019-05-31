@@ -22,6 +22,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/run-applications.html", "Запуск приложений", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Перенос конфигурации на новый сервер", 1);
     addArticle(context, "installation-and-run/software-update.html", "Обновление программного комплекса", 1);
+    addArticle(context, "installation-and-run/safety-recommendations.html", "Рекомендации по безопасности", 1);
 
     addArticle(context, "software-configuration/", "Настройка комплекса");
     addArticle(context, "software-configuration/general-configuration.html", "Общая последовательность настройки", 1);

@@ -10,28 +10,38 @@
 </head>
 <body>
     <h1>Migrate Configuration to New Server</h1>
+
     <p>The typical tasks when Rapid SCADA migration to another server is needed:</p>
     <ul>
-        <li>The software deployment on a production server when the configuration has been done using a developer workstation.</li>
+        <li>The software deployment on a production server when the configuration has been completed using a developer workstation.</li>
         <li>Server replacement.</li>
     </ul>
-    <p>Configuration migration sequence:</p>
+
+    <p>The steps to migrate a configuration are:</p>
     <ol>
         <li>Ensure that connections between the server and the devices are properly configured: the required serial ports exist, industrial controllers available via the network, etc.</li>
-        <li>Install Rapid SCADA on the new server, but do not start Server and Communicator services.</li>
-        <li>Stop Server and Communicator services on the obsolete server. Set Manual startup type of these services.</li>
-        <li>Copy the content of the directories listed below from the obsolete server to the new server (default directories are shown):<br />
-            C:\SCADA\BaseDAT<br />
-            C:\SCADA\BaseSDF<br />
-            C:\SCADA\Interface<br />
-            C:\SCADA\ScadaComm\Config<br />
-            C:\SCADA\ScadaServer\Config<br />
-            C:\SCADA\ScadaWeb\config</li>
+        <li>Install Rapid SCADA on the new server, but do not start the Server and Communicator services.</li>
+        <li>Stop the Server and Communicator services on the obsolete server. Switch startup type of these services to Manual.</li>
         <li>Copy the data archive located in the following directories from the obsolete server to the new server:<br />
             C:\SCADA\ArchiveDAT<br />
             C:\SCADA\ArchiveDATCopy</li>
-        <li>Start Server and Communicator services on the new server.</li>
-        <li>Check logs.</li>
+        <li>
+            Transfer the configuration from the obsolete to the new server in one of the following ways.
+            <ul>
+                <li>
+                    Copy the content of the directories listed below from the obsolete to the new server (default directories are shown):<br />
+                    C:\SCADA\BaseDAT<br />
+                    C:\SCADA\BaseSDF<br />
+                    C:\SCADA\Interface<br />
+                    C:\SCADA\ScadaComm\Config<br />
+                    C:\SCADA\ScadaServer\Config<br />
+                    C:\SCADA\ScadaWeb\config
+                </li>
+                <li>Open the project in the Administrator application and upload the configuration to the new server with the <img src="../../common-images/upload.png" /> button, unchecking the <em>Restart Server</em> and <em>Restart Communicator</em> checkboxes.</li>
+            </ul>
+        </li>
+        <li>Start the Server and Communicator services on the new server.</li>
+        <li>Check whether the new server operates well.</li>
     </ol>
 </body>
 </html>
