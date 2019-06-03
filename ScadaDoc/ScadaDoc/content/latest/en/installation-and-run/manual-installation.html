@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Manual Installation - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Manual Installation</h1>
+
+    <p>Manual Rapid SCADA setup provides full control over the process of the software installation, update and uninstallation.</p>
+
+    <p>The manual installation sequence:</p>
+
+    <ol>
+        <li>Install Microsoft Internet Information Services (IIS) by selecting the appropriate Windows features. <a href="software-installation.html">More details...</a></li>
+        <li>Install Microsoft .NET Framework (install IIS before the framework) of the version specified in <a href="system-requirements.html">System Requirements</a>.</li>
+        <li>Unzip files from the Arc folder of the installation pachage to the SCADA installation directory. Recommended destination is C:\SCADA</li>
+        <li>Open IIS management console: <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Internet Information Services (IIS) Manager</em>.</li>
+        <li>Add a web application to the site tree. Right click the appropriate site, <em>Default Web Site</em> in most cases, then choose the <em>Add Application</em> menu item.</li>
+        <li>Enter the application alias: Scada. Check that the selected application pool uses .NET 4.0 runtime version and integrated pipeline mode. Specify the physical path to the web application files: C:\SCADA\ScadaWeb. Then click <em>OK</em>.</li>
+        <li>Register ScadaServerService by executing ScadaServer\svc_install.bat as administrator.</li>
+        <li>Register ScadaCommService by executing ScadaComm\svc_install.bat as administrator.</li>
+        <li>Register ScadaAgentService by executing ScadaAgent\svc_install.bat as administrator.</li>
+        <li>Create shortcuts for the Admnistrator and Webstation applications on the desktop if necessary.</li>
+        <li><a href="run-applications.html">Run the applications</a>.</li>
+    </ol>
+
+    <p>The manual uninstallation sequence:</p>
+
+    <ol>
+        <li>Delete Scada web application using IIS Manager.</li>
+        <li>Stop ScadaServerService and ScadaCommService services, close all the applications of Rapid SCADA.</li>
+        <li>Unregister ScadaServerService by executing ScadaServer\svc_uninstall.bat as administrator.</li>
+        <li>Unregister ScadaCommService by executing ScadaComm\svc_uninstall.bat as administrator.</li>
+        <li>Unregister ScadaAgentService by executing ScadaAgent\svc_uninstall.bat as administrator.</li>
+        <li>Delete SCADA folder from the hard disk and delete the shortcuts from the desktop.</li>
+    </ol>
+</body>
+</html>

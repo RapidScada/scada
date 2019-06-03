@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Plugin - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
+</head>
+<body>
+    <h1>Map Plugin</h1>
+    <h2>Overview</h2>
+    <p>Map Plugin displays the status and parameters of locations on OpenStreetMap interactive maps. The plugin allows to monitor geographically distributed systems and navigate to the details page of a location.</p>
+
+    <h2>Installation</h2>
+    <p>First you need to perform <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins</a>, and then perform several additional actions:</p>
+    <ol>
+        <li>Go to <em>Main Menu &gt; Registration &gt; Map</em>.</li>
+        <li>Register the plugin using the hyperlinks on the page.</li>
+    </ol>
+
+    <h2>Creating Map</h2>
+    <p>Map is a <a href="../software-configuration/creating-views.html">view</a> in terms of Rapid SCADA. Creating and editing of maps is similar to work with scheme and table views.</p>
+
+    <h3>Map File</h3>
+    <p>Display options and map locations are stored in a file with the map extension. A map file must be placed in the interface directory or its subdirectory.</p>
+
+    <p>The plugin installation package contains an example of the map file SCADA\Interface\Map\MapExample.map. To edit map files, use any familiar text editor, for example, <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>. To create your own map, create a copy the example file with a new name and edit it. The name of the map file is arbitrary, the file extension is map.</p>
+
+    <p>The <strong>Tiling</strong> section contains parameters for connecting to a tile server. Tiles are used for composing a map background. There are tile servers from different vendors, both paid and free.</p>
+
+    <pre><code class="language-xml">&lt;Tiling&gt;
+  &lt;UrlTemplate&gt;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&lt;/UrlTemplate&gt;
+&lt;/Tiling&gt;</code></pre>
+
+    <p>The <strong>InitialView</strong> section specifies the initial coordinates and scale of the map. A scale is an integer from 0 to 18.</p>
+
+    <pre><code class="language-xml">&lt;InitialView&gt;
+    &lt;Lat&gt;48.861111&lt;/Lat&gt;
+    &lt;Lon&gt;2.336389&lt;/Lon&gt;
+    &lt;Zoom&gt;13&lt;/Zoom&gt;
+&lt;/InitialView&gt;</code></pre>
+
+    <p>The <strong>Locations</strong> section describes a set of locations that are displayed on the map. Let's consider an example:</p>
+
+    <pre><code class="language-xml">&lt;Locations&gt;
+  &lt;Location&gt;
+    &lt;Lat&gt;48.858222&lt;/Lat&gt;
+    &lt;Lon&gt;2.2945&lt;/Lon&gt;
+    &lt;Name&gt;Eiffel Tower&lt;/Name&gt;
+    &lt;Descr&gt;Avenue Anatole France, Paris, France&lt;/Descr&gt;
+    &lt;StatusCnlNum&gt;0&lt;/StatusCnlNum&gt;
+    &lt;Data&gt;
+      &lt;DataItem cnlNum="101" /&gt;
+      &lt;DataItem cnlNum="115"&gt;Avg. temp&lt;/DataItem&gt;
+    &lt;/Data&gt;
+    &lt;Link viewID="2" /&gt;
+  &lt;/Location&gt;
+  ...</code></pre>
+
+    <p>
+        Lat и Lon - latitude and longitude of a map location,<br />
+        Name - location name,<br />
+        Descr - additional description,<br />
+        StatusCnlNum - number of an input channel which means the status of this location, 0 - channel not specified,<br />
+        DataItem - displayed data item associated with an input channel,<br />
+        Link - reference to a view that contains detailed information about the location.
+    </p>
+
+    <h3>Adding Map into Configuration Database</h3>
+
+    <p>To make the map visible in the tree of views, it is necessary to register it in the <em>Interface</em> table using the Administrator application. Specify the path to the map file relative to the interface directory and enter the title which is the text of the tree node (see the figure).</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/interface_table_map_en.png" alt="Map in the Interface table" />
+    </p>
+
+    <p>Then pass the configuration database to the Server application by clicking the <img src="../../common-images/pass.gif" /> button. To apply the changes, logout the Webstation web application and login again. The result:</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/map_example_en.png" alt="Map example" />
+    </p>
+</body>
+</html>

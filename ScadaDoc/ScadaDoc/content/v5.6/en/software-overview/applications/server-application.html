@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Application - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Server Application</h1>
+    <p>Server manages the archive database, performs mathematical calculations and provides information to the client applications. Server writes data to the main archive and makes the backup copy simultaneously.</p>
+    <p class="sd-article-image">
+        <img src="server-application-files/scada_server_en.png" alt="Server application" /><br />
+        Figure 1. Server application
+    </p>
+    <p>Server consists of a Windows service and a graphical shell. The shell is shown in Figure 1. The service does not have user interface. It operates continuously in the background regardless of user login and logout.</p>
+    <p>The application monitors user connections and checks user rights while processing requests and passing commands. Information about the application state and performed actions is stored in text log files. Server is designed for non-stop running.</p>
+    <p>Additional server modules allow extending the functionality of Server according to customer requirements.</p>
+</body>
+</html>

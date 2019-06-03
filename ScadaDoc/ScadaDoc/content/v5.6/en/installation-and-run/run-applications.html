@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Run Applications - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Run Applications</h1>
+    <p>The applications of Rapid SCADA can be started using the shortcuts that located in <em>Start &gt; Programs &gt; SCADA </em> or using executable files directly.</p>
+    <p>The Server and Communicator applications consist of two main parts:</p>
+    <ol>
+        <li>A Windows service which runs in the background.</li>
+        <li>A graphical shell designed for configuration and control the service.</li>
+    </ol>
+    <p>The default startup type of the Server and Communicator services is Automatic, i.e. the services start when an operating system starts, and services stop when the OS stops. If auto start is not necessary, Manual startup type could be set (see Figure 1). To open a service properties follow <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Services</em>. The services names are ScadaCommService and ScadaServerService.</p>
+    <p class="sd-article-image">
+        <img src="start-applications-files/service_props_en.png" alt="Setting Windows service startup type" /><br />
+        Figure 1. Setting Windows service startup type
+    </p>
+    <p>Webstation is a web application which is accessible via a browser such as Chrome, Mozilla Firefox or Microsoft Edge. The address looks like http://compname/scada/ where compname is the host name or IP address of the computer with the installed web application, scada is the virtual directory specified during the installation. If Webstation is opened on the same computer on which it is installed, it is possible to use <a href="http://localhost/scada/" target="_blank">http://localhost/scada/</a> or <a href="http://127.0.0.1/scada/" target="_blank">http://127.0.0.1/scada/</a></p>
+    <p>The default username: <em>admin</em><br />The default password: <em>12345</em></p>
+    <p>If the selected installation directory differs from the recommended directory C:\SCADA, the directory settings of the applications should be checked and adjusted at the first using if necessary.</p>
+</body>
+</html>

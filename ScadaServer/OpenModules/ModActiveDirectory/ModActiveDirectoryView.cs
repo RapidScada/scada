@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 namespace Scada.Server.Modules
@@ -34,16 +34,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Module version.
         /// </summary>
-        internal const string ModVersion = "5.0.0.0";
-
-
-        /// <summary>
-        /// Initializes a new instance of the class.
-        /// </summary>
-        public ModActiveDirectoryView()
-        {
-            CanShowProps = true;
-        }
+        internal const string ModVersion = "5.0.0.1";
 
 
         /// <summary>
@@ -68,14 +59,6 @@ namespace Scada.Server.Modules
             {
                 return ModVersion;
             }
-        }
-
-
-        /// <summary>
-        /// Shows the module properties.
-        /// </summary>
-        public override void ShowProps()
-        {
         }
     }
 }

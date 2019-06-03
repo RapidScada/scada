@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Software Architecture - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Software Architecture</h1>
+    <p>The architecture of Rapid SCADA is multi-tier and distributed (see Figure 1). Applications can run on a single server or multiple computers across a network. Controllers can use communication channels of different types for connecting to a system. Major factors that determine the system configuration are number of equipment locations, distance between them, estimation of end-user activity, restrictions of external systems.</p>
+    <p class="sd-article-image">
+        <img src="software-architecture-files/scada_arc_en.png" alt="Software architecture" /><br />
+        Figure 1. Software architecture
+    </p>
+    <p>Rapid SCADA includes the following main applications:</p>
+    <ol>
+        <li><em>Webstation</em> is a web application that displays information to a dispatcher via browser in different forms (tabular, schematic, diagrams, reports) and provides sending commands.</li>
+        <li><em>Server</em> manages the archive database, performs mathematical calculations and provides information to the client applications.</li>
+        <li><em>Communicator</em> interacts with controllers, transmits data to <em>Server</em> application.</li>
+    </ol>
+    <p>Providing data access using web technology significantly simplifies the deployment and maintenance of the system, which is especially important for a large number of users.</p>
+    <p>Commonly used devices controlled by a system are electricity meters, heat meters, fire and security alarms, access controllers and other equipment.</p>
+</body>
+</html>

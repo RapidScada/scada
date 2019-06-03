@@ -24,6 +24,8 @@
  */
 
 using Scada.Data.Configuration;
+using Scada.Data.Entities;
+using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
 using System.DirectoryServices;
@@ -37,6 +39,8 @@ namespace Scada.Server.Modules
     /// </summary>
     public class ModActiveDirectoryLogic : ModLogic
     {
+        private Dictionary<string, User> users; // the users accessed by username
+
         /// <summary>
         /// Gets the module name.
         /// </summary>
@@ -84,6 +88,46 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
+        /// Loads the users dictionary.
+        /// </summary>
+        private void LoadUsers()
+        {
+            users = new Dictionary<string, User>();
+            BaseTable<User> tblUser = new BaseTable<User>("User", "UserID", CommonPhrases.UserTable);
+
+            try
+            {
+                BaseAdapter adapter = new BaseAdapter()
+                {
+                    Directory = Settings.BaseDATDir,
+                    TableName = "user.dat"
+                };
+
+                adapter.Fill(tblUser, false);
+
+                foreach (User user in tblUser.EnumerateItems())
+                {
+                    users[user.Name.Trim().ToLowerInvariant()] = user;
+                }
+            }
+            catch (Exception ex)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0}. Ошибка при загрузке пользователей: {1}" :
+                    "{0}. Error loading users: {1}", Name, ex.ToString()),
+                    Log.ActTypes.Exception);
+            }
+        }
+
+        /// <summary>
+        /// Performs actions when starting Server.
+        /// </summary>
+        public override void OnServerStart()
+        {
+            LoadUsers();
+        }
+
+        /// <summary>
         /// Validates user name and password returning the user role.
         /// </summary>
         public override bool ValidateUser(string username, string password, out int roleID, out bool handled)
@@ -117,41 +161,50 @@ namespace Scada.Server.Modules
 
                     if (pwdOK)
                     {
-                        // get user security groups
-                        DirectorySearcher search = new DirectorySearcher(entry);
-                        search.Filter = "(sAMAccountName=" + username + ")";
-                        search.PropertiesToLoad.Add("memberOf");
-                        SearchResult searchRes = search.FindOne();
-
-                        if (searchRes != null)
+                        if (users.TryGetValue(username.Trim().ToLowerInvariant(), out User user))
                         {
-                            List<string> groups = new List<string>();
-                            foreach (object result in searchRes.Properties["memberOf"])
-                            {
-                                string group = result.ToString();
-                                groups.Add(group);
-                                FindOwnerGroups(entry, group, groups);
-                            }
+                            roleID = user.RoleID;
+                            handled = true;
+                            return true;
+                        }
+                        else
+                        {
+                            // get user security groups
+                            DirectorySearcher search = new DirectorySearcher(entry);
+                            search.Filter = "(sAMAccountName=" + username + ")";
+                            search.PropertiesToLoad.Add("memberOf");
+                            SearchResult searchRes = search.FindOne();
 
-                            // define user role
-                            if (GroupsContain(groups, "ScadaDisabled"))
-                                roleID = BaseValues.Roles.Disabled;
-                            else if (GroupsContain(groups, "ScadaGuest"))
-                                roleID = BaseValues.Roles.Guest;
-                            else if (GroupsContain(groups, "ScadaDispatcher"))
-                                roleID = BaseValues.Roles.Dispatcher;
-                            else if (GroupsContain(groups, "ScadaAdmin"))
-                                roleID = BaseValues.Roles.Admin;
-                            else if (GroupsContain(groups, "ScadaApp"))
-                                roleID = BaseValues.Roles.App;
-                            else
-                                roleID = BaseValues.Roles.Err;
-
-                            // return successful result
-                            if (roleID != BaseValues.Roles.Err)
+                            if (searchRes != null)
                             {
-                                handled = true;
-                                return true;
+                                List<string> groups = new List<string>();
+                                foreach (object result in searchRes.Properties["memberOf"])
+                                {
+                                    string group = result.ToString();
+                                    groups.Add(group);
+                                    FindOwnerGroups(entry, group, groups);
+                                }
+
+                                // define user role
+                                if (GroupsContain(groups, "ScadaDisabled"))
+                                    roleID = BaseValues.Roles.Disabled;
+                                else if (GroupsContain(groups, "ScadaGuest"))
+                                    roleID = BaseValues.Roles.Guest;
+                                else if (GroupsContain(groups, "ScadaDispatcher"))
+                                    roleID = BaseValues.Roles.Dispatcher;
+                                else if (GroupsContain(groups, "ScadaAdmin"))
+                                    roleID = BaseValues.Roles.Admin;
+                                else if (GroupsContain(groups, "ScadaApp"))
+                                    roleID = BaseValues.Roles.App;
+                                else
+                                    roleID = BaseValues.Roles.Err;
+
+                                // return successful result
+                                if (roleID != BaseValues.Roles.Err)
+                                {
+                                    handled = true;
+                                    return true;
+                                }
                             }
                         }
                     }

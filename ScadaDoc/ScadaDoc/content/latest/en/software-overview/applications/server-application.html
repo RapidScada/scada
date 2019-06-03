@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Server Application - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Server Application</h1>
+    <p>Server manages the data archives, performs mathematical calculations and provides information to the client applications. Server writes data to the main archive and makes the backup copy simultaneously.</p>
+    <p class="sd-article-image">
+        <img src="server-application-files/scada_server_shell_en.png" alt="Graphical shell for Server configuring" /><br />
+        Figure 1. Graphical shell for Server configuring
+    </p>
+    <p>Server works as a service. It does not have a user interface. Server operates continuously in the background regardless of user login and logout. The graphical shell for Server configuring is built into the Administrator application (see Figure 1).</p>
+    <p>The application monitors user connections and checks user rights while processing requests and passing commands. Information about the application state and performed actions is stored in textual log files. Server is designed for non-stop running.</p>
+    <p>Additional server modules allow extending the functionality of Server according to customer requirements.</p>
+</body>
+</html>

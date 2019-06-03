@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Tune up Configuration Database - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Tune up Configuration Database</h1>
+
+    <p>The configuration database is a structured description of the entire automated system. The application included in Rapid SCADA use the information from the configuration database in conjunction with their settings.</p>
+
+    <p>The configuration database is edited using the Administrator application. The edited instance of the configuration database is in SDF file format of Microsoft SQL Server Compact Edition. After completing the necessary changes an administrator clicks <img src="../../common-images/pass.gif" /> button to convert the database in a specially designed DAT format which is used by the other applications. Such approach allows modifying the configuration database while the software is running.</p>
+
+    <p>The configuration database consists of tables, which in turn are composed of columns and rows. Each table belongs to one of the following groups:</p>
+
+    <ol>
+        <li><em>System.</em> This group contains the tables which define a configuration of a particular automated system.</li>
+        <li><em>Dictionaries</em>. This group contains the auxiliary tables. In most cases changing of these tables is not needed and can cause incorrect operation of the software.</li>
+    </ol>
+
+    <p>The following table describes the configuration database tables.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Table Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>System Group</strong></td>
+        </tr>
+        <tr>
+            <td><em>Objects</em></td>
+            <td>Contains logical objects which input data and commands are related to</td>
+        </tr>
+        <tr>
+            <td><em>Communication lines</em></td>
+            <td>Describes communication lines which are used to exchange data with devices</td>
+        </tr>
+        <tr>
+            <td><em>Devices</em></td>
+            <td>Contains real or virtual devices</td>
+        </tr>
+        <tr>
+            <td><em>Input channels</em></td>
+            <td>Defines data received from the devices and data calculated on their base</td>
+        </tr>
+        <tr>
+            <td><em>Output channels</em></td>
+            <td>Specifies commands executed by the system</td>
+        </tr>
+        <tr>
+            <td><em>Roles</em></td>
+            <td>Contains roles. Each role defines a set of functions available to users</td>
+        </tr>
+        <tr>
+            <td><em>Users</em></td>
+            <td>Contains a list of users of the system and their roles</td>
+        </tr>
+        <tr>
+            <td><em>Interface</em></td>
+            <td>Contains descriptions of interface objects (views, reports and data windows) which require different access rights</td>
+        </tr>
+        <tr>
+            <td><em>Rights</em></td>
+            <td>Defines relationships between the roles and the interface objects</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Dictionaries Group</strong></td>
+        </tr>
+        <tr>
+            <td><em>Channel types</em></td>
+            <td>Dictionary of input channel types</td>
+        </tr>
+        <tr>
+            <td><em>Command types</em></td>
+            <td>Dictionary of command types used by output channels</td>
+        </tr>
+        <tr>
+            <td><em>Event types</em></td>
+            <td>Dictionary of system event types which correspond to the input channel statuses</td>
+        </tr>
+        <tr>
+            <td><em>Device types</em></td>
+            <td>Dictionary of device types that can be connected to the system</td>
+        </tr>
+        <tr>
+            <td><em>Quantities</em></td>
+            <td>Dictionary of measured quantities</td>
+        </tr>
+        <tr>
+            <td><em>Units</em></td>
+            <td>Dictionary of units of input channel values and enumerable values of input channels</td>
+        </tr>
+        <tr>
+            <td><em>Command values</em></td>
+            <td>Dictionary of enumerable command values which are transmitted by output channels</td>
+        </tr>
+        <tr>
+            <td><em>Number formats</em></td>
+            <td>Dictionary of formats which are used to display input channel values</td>
+        </tr>
+        <tr>
+            <td><em>Formulas</em></td>
+            <td>Dictionary of formulas used in calculation of input channel data and command values of output channels</td>
+        </tr>
+    </table>
+
+    <p>The following list is a sequence of working with the configuration database in the Administrator application:</p>
+
+    <ol>
+        <li>Create a backup copy of the existing database by pressing <img src="../../common-images/backup.gif" /> button. In addition, the Administrator application automatically saves a copy of the database before passing it to Server.</li>
+        <li>If the sample data are not needed, clear the tables of the <em>System</em> group. According to relations between the tables, start clearing from the <em>Rights</em> table and continue till the <em>Objects</em> table. <em>Do not</em> delete rows with identifiers from 0 to 4 of the <em>Roles</em> table.</li>
+        <li>Enter data in the tables of the <em>System</em> group. Use the opposite order starting from the <em>Objects</em> table and finishing by <em>Rights</em> table. There are <em>Create channels</em> and <em>Clone channels</em> features designed for fast automatic filling the <em>Input channels</em> and <em>Output channels</em> tables.</li>
+        <li>Pass the configuration database to Server using <img src="../../common-images/pass.gif" /> button.</li>
+    </ol>
+
+    <p>It is possible to significantly speed up a process of system configuration by using the past works. The <em>Export</em> and <em>Import</em> features allow exchanging data between different databases. These features are accessible in <em>Database</em> menu. Data tables are exported to DAT format files, then the information can be imported from these files into the same or another configuration database. A range of exported and imported data can be restricted by specifying the start and the final identifiers (see Figure 1). In addition, if a new start identifier is specified, identifiers of the imported data are shifted.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/scada_admin_import_en.png" alt="Import into the configuration database" /><br />
+        Figure 1. Import into the configuration database
+    </p>
+
+    <p>The <em>Create channels</em> feature (see Figure 2), which is accessible in <em>Service</em> menu, allows automatic filling the <em>Input channels</em> and <em>Output channels</em> tables using information about existing objects and devices. Rules for creating channels are defined in device libraries (drivers) of Communicator. The device libraries are located in C:\SCADA\ScadaComm\KP\ by default. If a DLL file, specified in the <em>Device types</em> table, does not exist, the creation of channels corresponding to that device type is impossible. Channels are created according to the settings of Communicator.</p>
+
+    <p>To create input and output channels, tick the appropriate devices, choose or keep undefined the object for the each device, click the <em>Calculate channel numbers</em> button, check the calculated numbers, then click the <em>Create</em> button.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/scada_admin_create_cnls_en.png" alt="Create channels feature" /><br />
+        Figure 2. Create channels feature
+    </p>
+
+    <p>The <em>Clone channels</em> feature (see Figure 3) is also designed to make the process of creating input and output channels faster. The objects and the devices of the cloned channels can be replaced by the specified values during cloning.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/scada_admin_clone_cnls_en.png" alt="Clone channels feature" /><br />
+        Figure 3. Clone channels feature
+    </p>
+
+    <p>Editing of input channels may be done either directly in a table or by using the form that is shown in Figure 4. Right click an input channel row to show popup menu and click the menu item to open this form.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/scada_admin_cnl_props_en.png" alt="Editing input channel properties" /><br />
+        Figure 4. Editing input channel properties
+    </p>
+
+    <p>The <em>Compact database</em> feature decreases the size of the configuration database file. Use this feature when the database editing has been completed. To execute the feature click the <em>Database &gt; Compact</em> main menu item.</p>
+</body>
+</html>

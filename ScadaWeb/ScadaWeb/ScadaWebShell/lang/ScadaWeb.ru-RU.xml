@@ -13,6 +13,19 @@
     <Phrase key="this">Подтверждение</Phrase>
     <Phrase key="lblConfirm">Вы уверены?</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Js.ModalButtons">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Да</Phrase>
+    <Phrase key="no">Нет</Phrase>
+    <Phrase key="execute">Выполнить</Phrase>
+    <Phrase key="cancel">Отмена</Phrase>
+    <Phrase key="close">Закрыть</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Js.NotifPanel">
+    <Phrase key="unmute">Включить звук</Phrase>
+    <Phrase key="mute">Отключить звук</Phrase>
+    <Phrase key="emptyNotif">Уведомлений нет</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lblMainNotifBtn.ToolTip">Уведомления</Phrase>
     <Phrase key="lbtnMainLogout">Выйти</Phrase>
@@ -20,16 +33,7 @@
     <Phrase key="lblMainMenuTab">Главное меню</Phrase>
     <Phrase key="lblMainExplorerTab">Представления</Phrase>
     <Phrase key="lblMainCollapseMenu">Свернуть меню</Phrase>
-    <Phrase key="lblEmptyNotif">Уведомлений нет</Phrase>
     <Phrase key="lblMainNormalViewBtn.ToolTip">Нормальный вид</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.ModalButtons.Js">
-    <Phrase key="ok">OK</Phrase>
-    <Phrase key="yes">Да</Phrase>
-    <Phrase key="no">Нет</Phrase>
-    <Phrase key="execute">Выполнить</Phrase>
-    <Phrase key="cancel">Отмена</Phrase>
-    <Phrase key="close">Закрыть</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Report">
     <Phrase key="GenReport">Генерация отчёта &quot;{0}&quot; пользователем {1}</Phrase>

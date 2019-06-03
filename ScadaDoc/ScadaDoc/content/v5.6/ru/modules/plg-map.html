@@ -1,0 +1,87 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Плагин Карты - Документация Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
+</head>
+<body>
+    <h1>Плагин Карты</h1>
+    <h2>Обзор</h2>
+    <p>Плагин Карты отображает состояние и параметры автоматизированных объектов на интерактивных картах OpenStreetMap. Плагин позволяет наглядно контролировать географически распределённые системы и в случае необходимости переходить на страницу детальной информации по интересующему объекту.</p>
+
+    <h2>Установка</h2>
+    <p>Сначала необходимо выполнить общую последовательность установки плагина, которая описана по <a href="../installation-and-run/module-installation.html#plugins">ссылке</a>. А затем выполнить несколько дополнительных действий:</p>
+    <ol>
+        <li>Перейти на страницу <em>Главное меню &gt; Регистрация &gt; Карты</em>.</li>
+        <li>Зарегистрировать плагин, используя гиперссылки, размещённые на странице.</li>
+    </ol>
+
+    <h2>Создание карты</h2>
+    <p>Карта является <a href="../software-configuration/creating-views.html">представлением</a> в терминах Rapid SCADA. Создание и редактирование карт выполняется по аналогии со схемами и табличными представлениями.</p>
+
+    <h3>Файл карты</h3>
+    <p>Параметры отображения и объекты карты хранятся в файле с расширением map. Файл карты должен располагаться в директории интерфейса или её поддиректории.</p>
+
+    <p>Дистрибутив плагина содержит пример файла карты SCADA\Interface\Map\MapExample.map. Для редактирования файлов карты используйте любой удобный текстовый редактор, например, <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>. Чтобы создать свою карту, необходимо скопировать файл примера под новым именем, а затем отредактировать. Имя файла карты – произвольное, расширение файла – map.</p>
+
+    <p>Секция <strong>Tiling</strong> содержит параметры подключению к серверу тайлов (плиток), из которых состоит подложка карты. Можно использовать сервера тайлов от различных поставщиков, как платные, так и бесплатные.</p>
+
+    <pre><code class="language-xml">&lt;Tiling&gt;
+  &lt;UrlTemplate&gt;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&lt;/UrlTemplate&gt;
+&lt;/Tiling&gt;</code></pre>
+
+    <p>Секция <strong>InitialView</strong> задаёт начальные координаты и масштаб карты. Масштаб - это целое число от 0 до 18.</p>
+
+    <pre><code class="language-xml">&lt;InitialView&gt;
+    &lt;Lat&gt;48.861111&lt;/Lat&gt;
+    &lt;Lon&gt;2.336389&lt;/Lon&gt;
+    &lt;Zoom&gt;13&lt;/Zoom&gt;
+&lt;/InitialView&gt;</code></pre>
+
+    <p>Секция <strong>Locations</strong> описывает набор расположений, которые отображаются на карте. Рассмотрим пример:</p>
+
+    <pre><code class="language-xml">&lt;Locations&gt;
+  &lt;Location&gt;
+    &lt;Lat&gt;48.858222&lt;/Lat&gt;
+    &lt;Lon&gt;2.2945&lt;/Lon&gt;
+    &lt;Name&gt;Eiffel Tower&lt;/Name&gt;
+    &lt;Descr&gt;Avenue Anatole France, Paris, France&lt;/Descr&gt;
+    &lt;StatusCnlNum&gt;0&lt;/StatusCnlNum&gt;
+    &lt;Data&gt;
+      &lt;DataItem cnlNum="101" /&gt;
+      &lt;DataItem cnlNum="115"&gt;Avg. temp&lt;/DataItem&gt;
+    &lt;/Data&gt;
+    &lt;Link viewID="2" /&gt;
+  &lt;/Location&gt;
+  ...</code></pre>
+
+    <p>
+        Lat и Lon - широта и долгота объекта на карте,<br />
+        Name - наименование объекта,<br />
+        Descr - дополнительное описание,<br />
+        StatusCnlNum - номер входного канала, который означает статус данного объекта, 0 - канал не задан,<br />
+        DataItem - отображаемый элемент данных, связанных с входным каналом,<br />
+        Link - ссылка на представление, которое содержит детализированную информацию по объекту.
+    </p>
+
+    <h3>Добавление карты в базу конфигурации</h3>
+
+    <p>Чтобы карта появилась в дереве представлений, её нужно прописать в таблице <em>Интерфейс</em> с помощью программы Администратор. Необходимо указать путь к файлу карты относительно директории интерфейса и ввести заголовок - текст узла дерева (см. рис.).</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/interface_table_map_ru.png" alt="Карта в таблице Интерфейс" />
+    </p>
+
+    <p>Затем следует передать базу конфигурации Серверу, щёлкнув по кнопке <img src="../../common-images/pass.gif" />. Чтобы изменения отобразились в веб-приложении Вебстанция, необходимо выполнить выход и повторный вход в веб-приложение. Результат:</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/map_example_ru.png" alt="Пример карты" />
+    </p>
+</body>
+</html>

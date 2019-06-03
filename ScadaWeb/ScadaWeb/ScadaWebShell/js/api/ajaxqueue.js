@@ -4,7 +4,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  *
  * Requires:
  * - jquery
@@ -130,7 +130,7 @@ scada.ajaxQueueLocator = {
             if (wnd.ajaxQueue) {
                 return wnd.ajaxQueue;
             }
-            wnd = wnd == window.top ? null : window.parent;
+            wnd = wnd === window.top ? null : wnd.parent;
         }
         return null;
     }

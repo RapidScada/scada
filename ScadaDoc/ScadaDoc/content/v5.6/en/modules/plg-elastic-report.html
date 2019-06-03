@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Elastic Report Plugin - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Elastic Report Plugin</h1>
+    <h2>Overview</h2>
+    <p>Elastic Report Plugin allows to generate reports according to a custom configuration. Using this plugin, you can build almost any desired report. A user simply selects the period and clicks the generate report button. An administrator creates report configurations which define a set of different report sections and bind report columns and rows to the system data.</p>
+
+    <h2>Installation</h2>
+    <p>First you need to perform <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins</a>, and then perform several additional actions:</p>
+    <ol>
+        <li>Go to <em>Main Menu &gt; Registration &gt; Elastic Report</em>.</li>
+        <li>Register the plugin using the hyperlinks on the page.</li>
+    </ol>
+
+    <h2>Report Configuring</h2>
+    <p>A report consists of a set of sections, which are listed in the output document, one by one. Each section has its own type, parameters, and data binding. In addition, the report has the general parameters that affect all sections. The same report can be generated in a variety of formats. Currently supported Excel, PDF and HTML formats. The appearance of the same report, generated in different formats may slightly differ.</p>
+
+    <h3>Report Configuration File</h3>
+    <p>The configuration file specifies the report format and defines the binding of the report data to the input channels. There must be a separate configuration file for each of the reporting form. The configuration file is in XML format. It must be saved in the interface directory, C:\SCADA\Interface by default, or in its subdirectory.</p>
+    <p>The plugin distributive contains the example of the report configuration file SCADA\Interface\ElasticReport\ElasticRepExample.xml. This example includes the detailed description of the settings and demonstrates the generation of the report sections of all possible types.</p>
+    <p>Configuration files may be edited using any text editor. For example, the free text editor <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a> supports comfortable work with XML files by the special plugin.</p>
+
+    <h3>Report Styling</h3>
+    <p>It is possible to customize the report styles: fonts, colors, cell sizes, etc.</p>
+    <p>The file SCADA\ScadaWeb\plugins\ElasticReport\templates\ElasticRepExcel.xml specifies the styles of the reports in Excel format.</p>
+    <p>To create custom styles, open this file in Excel and go to the <em>Custom Styles</em> page where the additional styles are located. Use the styles from the <em>Default Styles</em> page as an example.</p>
+    <p>Custom styles for PDF format are specified in the file <br />
+        SCADA\ScadaWeb\plugins\ElasticReport\templates\ElasticRepPdfCustom.xml</p>
+    <p>XML file, which defines PDF styles, is edited manually using any text editor. Use the default styles located in ElasticRepPdfDefault.xml as an example.</p>
+    <p>The report styles for HTML output are configured in the file <br />
+        SCADA\ScadaWeb\plugins\ElasticReport\css\customstyles.css according to the rules of Cascade Style Sheets.</p>
+
+    <h3>Add Report in Configuration Database</h3>
+    <p>To make the report visible in the list of available reports, it is necessary to register it in the <em>Interface</em> table using the Administrator application. Specify the path to the report configuration file related to the interface directory, specify the ElasticRep report type and enter the report title (see the Figure).</p>
+    <p class="sd-article-image">
+        <img src="plg-elastic-report-files/interface_table_en.png" alt="The Interface table" />
+    </p>
+    <p>Then pass the configuration database to the Server application by clicking the <img src="../../common-images/pass.gif" /> button. To apply the changes, logout the Webstation web application and login again. The report is available on the <em>Main Menu &gt; Reports</em> page.</p>
+</body>
+</html>

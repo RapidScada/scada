@@ -1,0 +1,37 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Migrate Configuration to New Server - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Migrate Configuration to New Server</h1>
+    <p>The typical tasks when Rapid SCADA migration to another server is needed:</p>
+    <ul>
+        <li>The software deployment on a production server when the configuration has been done using a developer workstation.</li>
+        <li>Server replacement.</li>
+    </ul>
+    <p>Configuration migration sequence:</p>
+    <ol>
+        <li>Ensure that connections between the server and the devices are properly configured: the required serial ports exist, industrial controllers available via the network, etc.</li>
+        <li>Install Rapid SCADA on the new server, but do not start Server and Communicator services.</li>
+        <li>Stop Server and Communicator services on the obsolete server. Set Manual startup type of these services.</li>
+        <li>Copy the content of the directories listed below from the obsolete server to the new server (default directories are shown):<br />
+            C:\SCADA\BaseDAT<br />
+            C:\SCADA\BaseSDF<br />
+            C:\SCADA\Interface<br />
+            C:\SCADA\ScadaComm\Config<br />
+            C:\SCADA\ScadaServer\Config<br />
+            C:\SCADA\ScadaWeb\config</li>
+        <li>Copy the data archive located in the following directories from the obsolete server to the new server:<br />
+            C:\SCADA\ArchiveDAT<br />
+            C:\SCADA\ArchiveDATCopy</li>
+        <li>Start Server and Communicator services on the new server.</li>
+        <li>Check logs.</li>
+    </ol>
+</body>
+</html>

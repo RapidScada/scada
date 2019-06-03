@@ -6,5 +6,9 @@
   {
     "outputFile": "css/cover.css",
     "inputFile": "css/cover.less"
+  },
+  {
+    "outputFile": "css/print.css",
+    "inputFile": "css/print.less"
   }
 ]

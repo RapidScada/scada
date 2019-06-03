@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * No dependencies
  */
@@ -300,6 +300,17 @@ scada.utils = {
             return frameWnd.document != null;
         } catch (ex) {
             return false;
+        }
+    },
+
+    // Play a sound of the audio element
+    playSound: function (jqAudio) {
+        if (jqAudio.length > 0) {
+            var thisObj = this;
+            var promise = jqAudio[0].play();
+            promise.catch(function (error) {
+                console.error(thisObj.getCurTime() + " Error playing sound '" + jqAudio.attr("src") + "': " + error);
+            });
         }
     }
 };

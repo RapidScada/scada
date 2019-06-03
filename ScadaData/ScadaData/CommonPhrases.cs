@@ -38,6 +38,7 @@ namespace Scada
             SetToDefault();
         }
 
+        public static string ProductName { get; private set; }
         public static string InfoCaption { get; private set; }
         public static string QuestionCaption { get; private set; }
         public static string ErrorCaption { get; private set; }
@@ -110,6 +111,7 @@ namespace Scada
 
         private static void SetToDefault()
         {
+            ProductName = Localization.Dict.GetEmptyPhrase("ProductName");
             InfoCaption = Localization.Dict.GetEmptyPhrase("InfoCaption");
             QuestionCaption = Localization.Dict.GetEmptyPhrase("QuestionCaption");
             ErrorCaption = Localization.Dict.GetEmptyPhrase("ErrorCaption");
@@ -185,6 +187,7 @@ namespace Scada
         {
             if (Localization.Dictionaries.TryGetValue("Common", out Localization.Dict dict))
             {
+                ProductName = dict.GetPhrase("ProductName", ProductName);
                 InfoCaption = dict.GetPhrase("InfoCaption", InfoCaption);
                 QuestionCaption = dict.GetPhrase("QuestionCaption", QuestionCaption);
                 ErrorCaption = dict.GetPhrase("ErrorCaption", ErrorCaption);

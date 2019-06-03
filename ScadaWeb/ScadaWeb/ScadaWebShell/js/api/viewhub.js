@@ -2,7 +2,7 @@
  * View hub provides data exchange between a view, data windows and the shell
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * Requires:
  * - jquery
@@ -108,7 +108,7 @@ scada.viewHubLocator = {
             if (wnd.viewHub) {
                 return wnd.viewHub;
             }
-            wnd = wnd == window.top ? null : window.parent;
+            wnd = wnd === window.top ? null : wnd.parent;
         }
         return null;
     }

@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Table Editor Application - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Table Editor Application</h1>
+
+    <p>The Table Editor application is designed to create table views which are displayed on operator's workstation. Table Editor is used by engineers during Rapid SCADA configuration.</p>
+
+    <p class="sd-article-image">
+        <img src="table-editor-application-files/scada_table_editor_en.png" alt="Table Editor application" /><br />
+        Figure 1. Table Editor application
+    </p>
+
+    <p>Choose the channels from the configuration database in the left pane of the window, and add them to the table view. The contents of the table view is displayed in the right pane.</p>
+
+    <p>There are two options how to bind output channels to items of a view:</p>
+
+    <ol>
+        <li>Specify output channel numbers explicitly using Table Editor.</li>
+        <li>Run the <a href="administrator-application.html">Administrator</a> application, open the <em>Input channels</em> table and fill the <em>Output channel</em> field of an input channel. Then add the input channel to a view by Table Editor.</li>
+    </ol>
+
+    <p>Hidden items of a table view are not displayed but they affect event filtering by view in the <a href="webstation-application.html">Webstation</a> application.</p>
+</body>
+</html>

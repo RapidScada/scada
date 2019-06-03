@@ -9,10 +9,7 @@ function createLayout() {
         "<div class='sd-article-wrapper'><div class='sd-article'></div></div>");
     $("body").append(layoutElem);
     $("body").css("overflow", "hidden");
-
-    var divContents = $("div.sd-contents");
-    var divArticle = $("div.sd-article");
-    divArticle.append(articleElems);
+    $("div.sd-article").append(articleElems);
 
     updateLayout();
     createSearch();
@@ -35,61 +32,61 @@ function updateLayout() {
 }
 
 function createSearch() {
-    var searchHtml =
-        "<script>" +
-        "  (function() {" +
-        "    var cx = '003943521229341952511:vsuy-pqfiri';" +
-        "    var gcse = document.createElement('script');" +
-        "    gcse.type = 'text/javascript';" +
-        "    gcse.async = true;\n" +
-        "    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;" +
-        "    var s = document.getElementsByTagName('script')[0];" +
-        "    s.parentNode.insertBefore(gcse, s);" +
-        "  })();" +
-        "</script>" +
-        "<gcse:search></gcse:search>";
+    var protocol = window.location.protocol;
 
-    $("div.sd-contents").append(searchHtml);
+    if (protocol === "http:" || protocol === "https:") {
+        var searchHtml =
+            "<script>" +
+            "  (function() {" +
+            "    var cx = '003943521229341952511:vsuy-pqfiri';" +
+            "    var gcse = document.createElement('script');" +
+            "    gcse.type = 'text/javascript';" +
+            "    gcse.async = true;\n" +
+            "    gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;" +
+            "    var s = document.getElementsByTagName('script')[0];" +
+            "    s.parentNode.insertBefore(gcse, s);" +
+            "  })();" +
+            "</script>" +
+            "<gcse:search></gcse:search>";
+
+        $("div.sd-contents").append(searchHtml);
+    }
 }
 
 function createContents() {
     var context = createContext();
+    addContents(context);
 
-    $.getScript(context.siteRoot + "js/contents-" + context.lang + ".js", function () {
-        addContents(context);
+    if (typeof onContentsCreated === "function") {
+        onContentsCreated();
+    }
 
-        if (typeof onContentsCreated == "function") {
-            onContentsCreated();
-        }
-
-        // scroll contents
-        var selItem = $(".sd-contents-item.selected:first");
-        if (selItem.length > 0) {
-            // delay is needed to load search panel that affects contents height
-            setTimeout(function () {
-                context.contents.parent().scrollTop(selItem.offset().top)
-            }, 200);
-        }
-    });
+    // scroll contents
+    var selItem = $(".sd-contents-item.selected:first");
+    if (selItem.length > 0) {
+        // delay is needed to load search panel that affects contents height
+        setTimeout(function () {
+            context.contents.parent().scrollTop(selItem.offset().top);
+        }, 200);
+    }
 }
 
 function createContext() {
     var siteRoot = location.origin + "/";
-    var docRoot = siteRoot + "content/en/";
+    var docRoot = siteRoot + "content/latest/en/";
     var lang = "en";
 
     var href = location.href;
-    var i1 = href.indexOf("/content/");
+    var contentIdx = href.indexOf("/content/") + 1;
 
-    if (i1 >= 0) {
-        siteRoot = href.substring(0, i1 + 1);
-        docRoot = siteRoot + "content/en/";
-        var i2 = i1 + "/content/".length;
-        var i3 = href.indexOf("/", i2);
+    if (contentIdx > 0) {
+        siteRoot = href.substring(0, contentIdx);
+        var parts = href.substring(contentIdx).split("/");
 
-        if (i3 >= 0) {
-            lang = href.substring(i2, i3);
-            docRoot = siteRoot + "content/" + lang + "/";
+        if (parts.length >= 3) {
+            var ver = parts[1];
+            lang = parts[2];
+            docRoot = siteRoot + "content/" + ver + "/" + lang + "/";
         }
     }
 
@@ -108,11 +105,11 @@ function createCounter() {
     }
 }
 
-function addArticle(context, link, title, level) {
+function addArticle(context, link, title, opt_level) {
     var url = context.docRoot + link;
     var itemInnerHtml = link ? "<a href='" + url + "'>" + title + "</a>" : title;
-    var levClass = level ? " level" + level : "";
-    var selClass = link && url == location.href.split("#")[0] ? " selected" : "";
+    var levClass = opt_level ? " level" + opt_level : "";
+    var selClass = link && url === location.href.split("#")[0] ? " selected" : "";
 
     var contentsItem = $("<div class='sd-contents-item" + levClass + selClass + "'>" + itemInnerHtml + "</div>");
     context.contents.append(contentsItem);
@@ -133,12 +130,12 @@ function copyContentsToArticle() {
         selItem.nextAll().each(function () {
             var curClass = $(this).attr("class");
 
-            if (curClass == reqClass) {
+            if (curClass === reqClass) {
                 var linkElem = $(this).find("a");
                 if (linkElem.length) {
                     $("<p>").append(linkElem.clone()).appendTo(divArticle);
                 }
-            } else if (curClass == stopClass) {
+            } else if (curClass === stopClass) {
                 return false;
             }
         });

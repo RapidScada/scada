@@ -1,0 +1,61 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Telegram Driver - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Telegram Driver</h1>
+    <h2>Overview</h2>
+    <p>Telegram Driver is designed to send notifications using the popular Telegram messenger. The advantages of using Telegram is quickness of receiving notifications, no fee for the service and easy notification group management.</p>
+
+    <h2>Installation</h2>
+    <p>Telegram Driver is installed in accordance with <a href="../installation-and-run/module-installation.html#drivers">the general sequence of installing Communicator drivers</a>. The driver library file is KpTelegram.dll.</p>
+
+    <h2>Configuring</h2>
+    <h3>Creating Telegram Bot</h3>
+    <p>First you need to create a Telegram bot. To do this:</p>
+    <ol>
+        <li>Install the application and register <a href="https://telegram.org/" target="_blank">Telegram</a>.</li>
+        <li>Add the bot named <a href="https://telegram.me/botfather" target="_blank">BotFather</a> to the contact list.<br />
+            <img src="kp-telegram-files/bot_father.png" alt="Telegram BotFather" class="sd-article-image border" /></li>
+        <li>In the dialog with BotFather, run the command /newbot and follow the instructions from BotFather.</li>
+        <li>Click the menu icon and create a new group to receive notifications.<br />
+            <img src="kp-telegram-files/new_group.png" alt="Новая группа Telegram" class="sd-article-image border" /></li>
+        <li>Add the bot you created to the new group.</li>
+        <li>Add contacts to the new group. These contacts will receive notifications.</li>
+    </ol>
+
+    <h3>Driver Settings</h3>
+    <p>Configure notifications in the following sequence:</p>
+    <ol>
+        <li>Using the Administrator application, open the <em>Device types</em> table and check that the device type &quot;224 Telegram&quot; exists. If the specified record is missing, enter it manually.</li>
+        <li>Using Administrator, create a separate communication line and a single device of the Telegram type that belongs to this communication line.</li>
+        <li>Import the created communication line and the device to Communicator. Enable sending commands for the communication line.</li>
+        <li>Using Communicator, open the device properties, enter the bot token obtained when creating the bot, and generate a bot password that is needed to manage subscriptions.<br />
+            <img src="kp-telegram-files/kp_telegram_config_en.png" alt="Telegram Driver configuration" class="sd-article-image" /></li>
+        <li>Go to the <em>Registration</em> page and register the driver using the hyperlinks on the form.<br />
+            <img src="kp-telegram-files/kp_telegram_reg_en.png" alt="Telegram Driver registration" class="sd-article-image" /></li>
+        <li>Save the driver configuration.</li>
+        <li>Restart the Communicator service by clicking <img src="../../common-images/restart.png" />.</li>
+    </ol>
+
+    <h3>Manage Subscriptions</h3>
+    <p>If the settings are correct, your bot will respond to commands, for example, the /help command.</p>
+    <p class="sd-article-image.border">
+        <img src="kp-telegram-files/test_group_en.png" alt="Telegram notification group" /><br />
+    </p>
+    <p>To add or remove subscriptions to the group, use the /start and /stop commands with the previously generated password. However, by default, subscription changes are blocked. To unlock it, send a standard command number 2 with a value of 1 by Communicator. Now you can add or remove subscriptions.</p>
+
+    <h2>Sending Messages</h2>
+    <p>To send a message from Rapid SCADA to a Telegram group, you need send a binary command number 1 containing the group name (or identifier) and the message text. For example: RapidScadaBotTestGroup; Test message.</p>
+    <p class="sd-article-image">
+        <img src="kp-telegram-files/send_cmd_en.png" alt="Sending Telegram message" /><br />
+    </p>
+    <p>Automatic sending of notifications in case of specific conditions and events are performed by <a href="mod-auto-control.html">Automatic Control Module</a>.</p>
+</body>
+</html>

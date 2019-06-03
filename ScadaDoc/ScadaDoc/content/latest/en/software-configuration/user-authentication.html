@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>User Authentication Configuration - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>User Authentication Configuration</h1>
+
+    <p>Rapid SCADA supports three methods of user authentication:</p>
+
+    <ol>
+        <li>Based on usernames and passwords stored in the configuration database.</li>
+        <li>Based on Active Directory.</li>
+        <li>Combined method.</li>
+    </ol>
+
+    <p>To perform authentication, a client application, for example, Communicator or Webstation, sends to the Server application a request to validate user name and password. Server checks user credentials and returns the user role to the client application.</p>
+
+    <p>The standard user roles and their capabilities are listed in the following table.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>ID</th>
+            <th>Role Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>Disabled</td>
+            <td>Access to the system is denied</td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Administrator</td>
+            <td>Full access</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Dispatcher</td>
+            <td>Viewing all information, sending commands</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Guest</td>
+            <td>Viewing all information</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Application</td>
+            <td>Interacting with the Server application</td>
+        </tr>
+    </table>
+
+    <p>To restrict user access to interface objects (table views, schemes, etc.), create new user roles in <em>Roles</em> table in the configuration database. Then specify access rights in the <em>Rights</em> table.</p>
+
+    <p>If Rapid SCADA operates in a network that managed by Active Directory, it is recommended to use the 2nd and the 3rd authentication methods because of security reasons. The details of these methods are described below.</p>
+
+    <p>To allow the Server application interact with Active Directory, specify domain controller path and tick the nearby checkbox on <em>Common Parameters</em> page of the application.</p>
+
+    <p>The 2nd authentication method is used if the standard roles are enough to manage user rights. The benefits of this method are that rights management is performed using usual Active Directory tools without editing the configuration database and restarting the Server application.</p>
+
+    <p>To use the 2nd method it is required to create the security groups in Active Directory. The groups correspond to the user roles:</p>
+
+    <ul>
+        <li><em>ScadaDisabled</em> - Disabled role;</li>
+        <li><em>ScadaAdmin</em> - Administrator role;</li>
+        <li><em>ScadaDispatcher</em> - Dispatcher role;</li>
+        <li><em>ScadaGuest</em> - Guest role;</li>
+        <li><em>ScadaApp</em> - Application role.</li>
+    </ul>
+
+    <p>If a user is a member of the listed groups or he is a member of a group that is a member of the listed groups, the user is granted the appropriate rights in Rapid SCADA.</p>
+
+    <p>The 3rd method combines the capabilities of the 1st and the 2nd methods. User credentials check is performed by using Active Directory and a user role is defined by the <em>Users</em> table of the configuration database. In this case, user names and user roles are defined in the <em>Users</em> table, but user passwords are kept blank in the table.</p>
+
+    <p>Simultaneous use of all the above authentication methods is allowed.</p>
+</body>
+</html>

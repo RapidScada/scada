@@ -97,6 +97,14 @@
       <Link>Lang\ScadaData.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\ScadaCommShell\Lang\ScadaComm.en-GB.xml">
+      <Link>Lang\ScadaComm.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\ScadaCommShell\Lang\ScadaComm.ru-RU.xml">
+      <Link>Lang\ScadaComm.ru-RU.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Config\ScadaCommSvcConfig.xml" />
     <Content Include="Script\svc_config.xml" />
   </ItemGroup>

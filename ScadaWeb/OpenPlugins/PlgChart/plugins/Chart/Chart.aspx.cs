@@ -50,8 +50,11 @@ namespace Scada.Web.Plugins.Chart
             Translator.TranslatePage(Page, "Scada.Web.Plugins.Chart.WFrmChart");
 
             // получение параметров запроса
-            int cnlNum = Request.QueryString.GetParamAsInt("cnlNum");
-            int viewID = Request.QueryString.GetParamAsInt("viewID");
+            // получить номера как массивы для корректной работы в составе дэшборда
+            int[] cnlNums = Request.QueryString.GetParamAsIntArray("cnlNum"); 
+            int[] viewIDs = Request.QueryString.GetParamAsIntArray("viewID");
+            int cnlNum = cnlNums.Length > 0 ? cnlNums[0] : 0;
+            int viewID = viewIDs.Length > 0 ? viewIDs[0] : 0;
             DateTime startDate = Request.QueryString.GetParamAsDate(DateTime.Today);
 
             // проверка входа в систему и прав
