@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -69,6 +70,11 @@ namespace Scada.Comm.Devices.DbImport.Configuration
         /// </summary>
         public int TagCount { get; set; }
 
+        /// <summary>
+        /// Gets the export commands.
+        /// </summary>
+        public SortedList<int, ExportCmd> ExportCmds { get; private set; }
+
 
         /// <summary>
         /// Sets the default values.
@@ -80,6 +86,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             SelectQuery = "";
             AutoTagCount = true;
             TagCount = 0;
+            ExportCmds = new SortedList<int, ExportCmd>();
         }
 
 
@@ -104,6 +111,16 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 SelectQuery = rootElem.GetChildAsString("SelectQuery");
                 AutoTagCount = rootElem.GetChildAsBool("AutoTagCount");
                 TagCount = rootElem.GetChildAsInt("TagCount");
+
+                if (rootElem.SelectSingleNode("ExportCmds") is XmlNode exportCmdsNode)
+                {
+                    foreach (XmlNode exportCmdNode in exportCmdsNode.SelectNodes("ExportCmd"))
+                    {
+                        ExportCmd exportCmd = new ExportCmd();
+                        exportCmd.LoadFromXml(exportCmdNode);
+                        ExportCmds[exportCmd.CmdNum] = exportCmd;
+                    }
+                }
 
                 errMsg = "";
                 return true;
@@ -134,6 +151,12 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 rootElem.AppendElem("SelectQuery", SelectQuery);
                 rootElem.AppendElem("AutoTagCount", AutoTagCount);
                 rootElem.AppendElem("TagCount", TagCount);
+
+                XmlElement exportCmdsElem = rootElem.AppendElem("ExportCmds");
+                foreach (ExportCmd exportCmd in ExportCmds.Values)
+                {
+                    exportCmd.SaveToXml(exportCmdsElem.AppendElem("ExportCmd"));
+                }
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

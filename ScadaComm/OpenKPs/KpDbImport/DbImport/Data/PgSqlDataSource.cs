@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Npgsql;
@@ -56,6 +56,20 @@ namespace Scada.Comm.Devices.DbImport.Data
         protected override DbCommand CreateCommand()
         {
             return new NpgsqlCommand();
+        }
+
+        /// <summary>
+        /// Adds the command parameter containing the value.
+        /// </summary>
+        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException("cmd");
+            if (!(cmd is NpgsqlCommand))
+                throw new ArgumentException("NpgsqlCommand is required.", "cmd");
+
+            NpgsqlCommand pgSqlCmd = (NpgsqlCommand)cmd;
+            pgSqlCmd.Parameters.AddWithValue(paramName, value);
         }
 
         /// <summary>

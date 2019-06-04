@@ -28,6 +28,8 @@ using System;
 using System.Data.Common;
 using System.Data.OracleClient;
 
+#pragma warning disable 618 // disable the warning about obsolete Oracle classes
+
 namespace Scada.Comm.Devices.DbImport.Data
 {
     /// <summary>
@@ -50,6 +52,20 @@ namespace Scada.Comm.Devices.DbImport.Data
         protected override DbCommand CreateCommand()
         {
             return new OracleCommand();
+        }
+
+        /// <summary>
+        /// Adds the command parameter containing the value.
+        /// </summary>
+        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException("cmd");
+            if (!(cmd is OracleCommand))
+                throw new ArgumentException("OracleCommand is required.", "cmd");
+
+            OracleCommand oraCmd = (OracleCommand)cmd;
+            oraCmd.Parameters.AddWithValue(paramName, value);
         }
 
         /// <summary>

@@ -25,6 +25,7 @@
 
 using Scada.Comm.Devices.DbImport.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Data.Common;
 
 namespace Scada.Comm.Devices.DbImport.Data
@@ -55,6 +56,11 @@ namespace Scada.Comm.Devices.DbImport.Data
         /// </summary>
         public DbCommand SelectCommand { get; protected set; }
 
+        /// <summary>
+        /// Gets the export commands.
+        /// </summary>
+        public SortedList<int, DbCommand> ExportCommands { get; protected set; }
+
 
         /// <summary>
         /// Creates a database connection.
@@ -65,6 +71,11 @@ namespace Scada.Comm.Devices.DbImport.Data
         /// Creates a command.
         /// </summary>
         protected abstract DbCommand CreateCommand();
+
+        /// <summary>
+        /// Adds the command parameter containing the value.
+        /// </summary>
+        protected abstract void AddCmdParamWithValue(DbCommand cmd, string paramName, object value);
 
         /// <summary>
         /// Clears the connection pool.
@@ -128,14 +139,39 @@ namespace Scada.Comm.Devices.DbImport.Data
         /// <summary>
         /// Initializes the data source.
         /// </summary>
-        public void Init(string connectionString, string selectQuery)
+        public void Init(string connectionString, Config config)
         {
+            if (config == null)
+                throw new ArgumentNullException("config");
+
             Connection = CreateConnection();
             Connection.ConnectionString = connectionString;
 
             SelectCommand = CreateCommand();
-            SelectCommand.CommandText = selectQuery;
+            SelectCommand.CommandText = config.SelectQuery;
             SelectCommand.Connection = Connection;
+
+            foreach (ExportCmd exportCmd in config.ExportCmds.Values)
+            {
+                DbCommand exportCommand = CreateCommand();
+                exportCommand.CommandText = exportCmd.Query;
+                exportCommand.Connection = Connection;
+                ExportCommands.Add(exportCmd.CmdNum, exportCommand);
+            }
+        }
+
+        /// <summary>
+        /// Sets the command parameter.
+        /// </summary>
+        public void SetCmdParam(DbCommand cmd, string paramName, object value)
+        {
+            if (cmd == null)
+                throw new ArgumentNullException("cmd");
+
+            if (cmd.Parameters.Contains(paramName))
+                cmd.Parameters[paramName].Value = value;
+            else
+                AddCmdParamWithValue(cmd, paramName, value);
         }
     }
 }
