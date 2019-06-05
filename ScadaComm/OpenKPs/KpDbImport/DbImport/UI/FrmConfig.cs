@@ -45,6 +45,7 @@ namespace Scada.Comm.Devices.DbImport.UI
         private string configFileName; // the configuration file name
         private bool modified;         // the configuration was modified
         private bool connChanging;     // connection settings are changing
+        private bool cmdSelecting;     // a command is selecting
 
 
 
@@ -68,6 +69,7 @@ namespace Scada.Comm.Devices.DbImport.UI
             configFileName = "";
             modified = false;
             connChanging = false;
+            cmdSelecting = false;
         }
 
         
@@ -94,6 +96,7 @@ namespace Scada.Comm.Devices.DbImport.UI
         private void ConfigToControls()
         {
             connChanging = true;
+            cmdSelecting = true;
 
             // set the control values
             cbDataSourceType.SelectedIndex = (int)config.DataSourceType;
@@ -144,10 +147,11 @@ namespace Scada.Comm.Devices.DbImport.UI
 
             if (cbCommand.Items.Count > 0)
                 cbCommand.SelectedIndex = 0;
-            else
-                ShowCommandParams(null);
+
+            ShowCommandParams(cbCommand.SelectedItem as ExportCmd);
 
             connChanging = false;
+            cmdSelecting = false;
         }
 
         /// <summary>
@@ -396,7 +400,12 @@ namespace Scada.Comm.Devices.DbImport.UI
 
         private void cbCommand_SelectedIndexChanged(object sender, EventArgs e)
         {
-            ShowCommandParams(cbCommand.SelectedItem as ExportCmd);
+            if (!cmdSelecting)
+            {
+                cmdSelecting = true;
+                ShowCommandParams(cbCommand.SelectedItem as ExportCmd);
+                cmdSelecting = false;
+            }
         }
 
         private void btnCreateCommand_Click(object sender, EventArgs e)
@@ -438,7 +447,7 @@ namespace Scada.Comm.Devices.DbImport.UI
 
         private void numCmdNum_ValueChanged(object sender, EventArgs e)
         {
-            if (cbCommand.SelectedItem is ExportCmd exportCmd)
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
             {
                 exportCmd.CmdNum = Convert.ToInt32(numCmdNum.Value);
                 UpdateCommands();
@@ -448,7 +457,7 @@ namespace Scada.Comm.Devices.DbImport.UI
 
         private void txtName_TextChanged(object sender, EventArgs e)
         {
-            if (cbCommand.SelectedItem is ExportCmd exportCmd)
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
             {
                 exportCmd.Name = txtName.Text;
                 UpdateCommandItem();
@@ -458,7 +467,7 @@ namespace Scada.Comm.Devices.DbImport.UI
 
         private void txtCmdQuery_TextChanged(object sender, EventArgs e)
         {
-            if (cbCommand.SelectedItem is ExportCmd exportCmd)
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
             {
                 exportCmd.Query = txtCmdQuery.Text;
                 Modified = true;

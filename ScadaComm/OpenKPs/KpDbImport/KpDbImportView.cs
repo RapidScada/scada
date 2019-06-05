@@ -68,8 +68,15 @@ namespace Scada.Comm.Devices
             get
             {
                 return Localization.UseRussian ?
-                    "Импорт из сторонней базы данных." :
-                    "Import from a third-party database.";
+                    "Импорт из сторонней базы данных.\n\n" +
+                    "Команды определяются в конфигурации КП.\n" +
+                    "Пример команды:\n" +
+                    "UPDATE table SET column1 = @cmdVal WHERE column2 = @cmdNum" :
+
+                    "Import from a third-party database.\n\n" +
+                    "Commands are defined in the device configuration.\n" +
+                    "Command example:\n" +
+                    "UPDATE table SET column1 = @cmdVal WHERE column2 = @cmdNum";
             }
         }
 

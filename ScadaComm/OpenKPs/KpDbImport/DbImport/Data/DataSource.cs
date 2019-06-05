@@ -43,6 +43,7 @@ namespace Scada.Comm.Devices.DbImport.Data
         {
             Connection = null;
             SelectCommand = null;
+            ExportCommands = new SortedList<int, DbCommand>();
         }
 
 
