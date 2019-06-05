@@ -151,12 +151,12 @@ namespace Scada.Comm.Devices.DbImport.Data
             SelectCommand.CommandText = config.SelectQuery;
             SelectCommand.Connection = Connection;
 
-            foreach (ExportCmd exportCmd in config.ExportCmds.Values)
+            foreach (ExportCmd exportCmd in config.ExportCmds)
             {
                 DbCommand exportCommand = CreateCommand();
                 exportCommand.CommandText = exportCmd.Query;
                 exportCommand.Connection = Connection;
-                ExportCommands.Add(exportCmd.CmdNum, exportCommand);
+                ExportCommands[exportCmd.CmdNum] = exportCommand;
             }
         }
 

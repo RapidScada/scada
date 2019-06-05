@@ -32,7 +32,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
     /// Configuration of a data export command.
     /// <para>Конфигурация команды экспорта данных.</para>
     /// </summary>
-    internal class ExportCmd
+    internal class ExportCmd : IComparable<ExportCmd>
     {
         /// <summary>
         /// Initializes a new instance of the class.
@@ -60,7 +60,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
         /// </summary>
         public string Query { get; set; }
 
-        
+
         /// <summary>
         /// Loads the command from the XML node.
         /// </summary>
@@ -85,6 +85,22 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             xmlElem.AppendElem("CmdNum", CmdNum);
             xmlElem.AppendElem("Name", Name);
             xmlElem.AppendElem("Query", Query);
+        }
+
+        /// <summary>
+        /// Compares the current instance with another object of the same type.
+        /// </summary>
+        public int CompareTo(ExportCmd other)
+        {
+            return CmdNum.CompareTo(other.CmdNum);
+        }
+
+        /// <summary>
+        /// Returns a string that represents the current object.
+        /// </summary>
+        public override string ToString()
+        {
+            return string.Format("[{0}] {1}", CmdNum, Name);
         }
     }
 }

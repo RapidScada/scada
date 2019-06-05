@@ -10,11 +10,19 @@
     <Phrase key="lblUser">Пользователь</Phrase>
     <Phrase key="lblPassword">Пароль</Phrase>
     <Phrase key="lblConnectionString">Строка соединения</Phrase>
-    <Phrase key="pageQuery">Запрос</Phrase>
+    <Phrase key="pageQuery">Извлечение данных</Phrase>
     <Phrase key="lblSelectQuery">SQL</Phrase>
     <Phrase key="lblTagCount">Количество тегов</Phrase>
     <Phrase key="chkAutoTagCount">Авто</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="pageCommands">Команды</Phrase>
+    <Phrase key="gbCommand">Команда</Phrase>
+    <Phrase key="btnCreateCommand">Создать</Phrase>
+    <Phrase key="btnDeleteCommand">Удалить</Phrase>
+    <Phrase key="gbCommandParams">Параметры команды</Phrase>
+    <Phrase key="lblCmdNum">Номер команды</Phrase>
+    <Phrase key="lblName">Наименование</Phrase>
+    <Phrase key="lblCmdQuery">SQL</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
 </KpDbImportDictionaries>

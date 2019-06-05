@@ -73,7 +73,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
         /// <summary>
         /// Gets the export commands.
         /// </summary>
-        public SortedList<int, ExportCmd> ExportCmds { get; private set; }
+        public List<ExportCmd> ExportCmds { get; private set; }
 
 
         /// <summary>
@@ -86,7 +86,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             SelectQuery = "";
             AutoTagCount = true;
             TagCount = 0;
-            ExportCmds = new SortedList<int, ExportCmd>();
+            ExportCmds = new List<ExportCmd>();
         }
 
 
@@ -118,8 +118,10 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                     {
                         ExportCmd exportCmd = new ExportCmd();
                         exportCmd.LoadFromXml(exportCmdNode);
-                        ExportCmds[exportCmd.CmdNum] = exportCmd;
+                        ExportCmds.Add(exportCmd);
                     }
+
+                    ExportCmds.Sort();
                 }
 
                 errMsg = "";
@@ -153,7 +155,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
                 rootElem.AppendElem("TagCount", TagCount);
 
                 XmlElement exportCmdsElem = rootElem.AppendElem("ExportCmds");
-                foreach (ExportCmd exportCmd in ExportCmds.Values)
+                foreach (ExportCmd exportCmd in ExportCmds)
                 {
                     exportCmd.SaveToXml(exportCmdsElem.AppendElem("ExportCmd"));
                 }

@@ -49,15 +49,31 @@
             this.lblTagCount = new System.Windows.Forms.Label();
             this.txtSelectQuery = new System.Windows.Forms.TextBox();
             this.lblSelectQuery = new System.Windows.Forms.Label();
+            this.pageCommands = new System.Windows.Forms.TabPage();
+            this.gbCommandParams = new System.Windows.Forms.GroupBox();
+            this.txtCmdQuery = new System.Windows.Forms.TextBox();
+            this.lblCmdQuery = new System.Windows.Forms.Label();
+            this.txtName = new System.Windows.Forms.TextBox();
+            this.lblName = new System.Windows.Forms.Label();
+            this.numCmdNum = new System.Windows.Forms.NumericUpDown();
+            this.lblCmdNum = new System.Windows.Forms.Label();
+            this.gbCommand = new System.Windows.Forms.GroupBox();
+            this.cbCommand = new System.Windows.Forms.ComboBox();
+            this.btnDeleteCommand = new System.Windows.Forms.Button();
+            this.btnCreateCommand = new System.Windows.Forms.Button();
             this.pnlBottom = new System.Windows.Forms.Panel();
-            this.btnCancel = new System.Windows.Forms.Button();
-            this.btnOK = new System.Windows.Forms.Button();
+            this.btnClose = new System.Windows.Forms.Button();
+            this.btnSave = new System.Windows.Forms.Button();
             this.gbConnection.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageDatabase.SuspendLayout();
             this.gbDataSourceType.SuspendLayout();
             this.pageQuery.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTagCount)).BeginInit();
+            this.pageCommands.SuspendLayout();
+            this.gbCommandParams.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCmdNum)).BeginInit();
+            this.gbCommand.SuspendLayout();
             this.pnlBottom.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -189,6 +205,7 @@
             // 
             this.tabControl.Controls.Add(this.pageDatabase);
             this.tabControl.Controls.Add(this.pageQuery);
+            this.tabControl.Controls.Add(this.pageCommands);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -231,7 +248,7 @@
             this.pageQuery.Padding = new System.Windows.Forms.Padding(3);
             this.pageQuery.Size = new System.Drawing.Size(426, 283);
             this.pageQuery.TabIndex = 1;
-            this.pageQuery.Text = "Query";
+            this.pageQuery.Text = "Data Retrieval";
             this.pageQuery.UseVisualStyleBackColor = true;
             // 
             // chkAutoTagCount
@@ -251,6 +268,7 @@
             this.numTagCount.Name = "numTagCount";
             this.numTagCount.Size = new System.Drawing.Size(100, 20);
             this.numTagCount.TabIndex = 3;
+            this.numTagCount.ValueChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblTagCount
             // 
@@ -272,6 +290,7 @@
             this.txtSelectQuery.Size = new System.Drawing.Size(414, 219);
             this.txtSelectQuery.TabIndex = 1;
             this.txtSelectQuery.WordWrap = false;
+            this.txtSelectQuery.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblSelectQuery
             // 
@@ -282,44 +301,175 @@
             this.lblSelectQuery.TabIndex = 0;
             this.lblSelectQuery.Text = "SQL";
             // 
+            // pageCommands
+            // 
+            this.pageCommands.Controls.Add(this.gbCommandParams);
+            this.pageCommands.Controls.Add(this.gbCommand);
+            this.pageCommands.Location = new System.Drawing.Point(4, 22);
+            this.pageCommands.Name = "pageCommands";
+            this.pageCommands.Padding = new System.Windows.Forms.Padding(3);
+            this.pageCommands.Size = new System.Drawing.Size(426, 283);
+            this.pageCommands.TabIndex = 2;
+            this.pageCommands.Text = "Commands";
+            this.pageCommands.UseVisualStyleBackColor = true;
+            // 
+            // gbCommandParams
+            // 
+            this.gbCommandParams.Controls.Add(this.txtCmdQuery);
+            this.gbCommandParams.Controls.Add(this.lblCmdQuery);
+            this.gbCommandParams.Controls.Add(this.txtName);
+            this.gbCommandParams.Controls.Add(this.lblName);
+            this.gbCommandParams.Controls.Add(this.numCmdNum);
+            this.gbCommandParams.Controls.Add(this.lblCmdNum);
+            this.gbCommandParams.Location = new System.Drawing.Point(6, 67);
+            this.gbCommandParams.Name = "gbCommandParams";
+            this.gbCommandParams.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbCommandParams.Size = new System.Drawing.Size(414, 210);
+            this.gbCommandParams.TabIndex = 1;
+            this.gbCommandParams.TabStop = false;
+            this.gbCommandParams.Text = "Command Parameters";
+            // 
+            // txtCmdQuery
+            // 
+            this.txtCmdQuery.AcceptsReturn = true;
+            this.txtCmdQuery.Font = new System.Drawing.Font("Consolas", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.txtCmdQuery.Location = new System.Drawing.Point(13, 71);
+            this.txtCmdQuery.Multiline = true;
+            this.txtCmdQuery.Name = "txtCmdQuery";
+            this.txtCmdQuery.ScrollBars = System.Windows.Forms.ScrollBars.Both;
+            this.txtCmdQuery.Size = new System.Drawing.Size(388, 126);
+            this.txtCmdQuery.TabIndex = 5;
+            this.txtCmdQuery.WordWrap = false;
+            this.txtCmdQuery.TextChanged += new System.EventHandler(this.txtCmdQuery_TextChanged);
+            // 
+            // lblCmdQuery
+            // 
+            this.lblCmdQuery.AutoSize = true;
+            this.lblCmdQuery.Location = new System.Drawing.Point(10, 55);
+            this.lblCmdQuery.Name = "lblCmdQuery";
+            this.lblCmdQuery.Size = new System.Drawing.Size(28, 13);
+            this.lblCmdQuery.TabIndex = 4;
+            this.lblCmdQuery.Text = "SQL";
+            // 
+            // txtName
+            // 
+            this.txtName.Location = new System.Drawing.Point(119, 32);
+            this.txtName.Name = "txtName";
+            this.txtName.Size = new System.Drawing.Size(282, 20);
+            this.txtName.TabIndex = 3;
+            this.txtName.TextChanged += new System.EventHandler(this.txtName_TextChanged);
+            // 
+            // lblName
+            // 
+            this.lblName.AutoSize = true;
+            this.lblName.Location = new System.Drawing.Point(116, 16);
+            this.lblName.Name = "lblName";
+            this.lblName.Size = new System.Drawing.Size(35, 13);
+            this.lblName.TabIndex = 2;
+            this.lblName.Text = "Name";
+            // 
+            // numCmdNum
+            // 
+            this.numCmdNum.Location = new System.Drawing.Point(13, 32);
+            this.numCmdNum.Maximum = new decimal(new int[] {
+            65535,
+            0,
+            0,
+            0});
+            this.numCmdNum.Name = "numCmdNum";
+            this.numCmdNum.Size = new System.Drawing.Size(100, 20);
+            this.numCmdNum.TabIndex = 1;
+            this.numCmdNum.ValueChanged += new System.EventHandler(this.numCmdNum_ValueChanged);
+            // 
+            // lblCmdNum
+            // 
+            this.lblCmdNum.AutoSize = true;
+            this.lblCmdNum.Location = new System.Drawing.Point(10, 16);
+            this.lblCmdNum.Name = "lblCmdNum";
+            this.lblCmdNum.Size = new System.Drawing.Size(92, 13);
+            this.lblCmdNum.TabIndex = 0;
+            this.lblCmdNum.Text = "Command number";
+            // 
+            // gbCommand
+            // 
+            this.gbCommand.Controls.Add(this.cbCommand);
+            this.gbCommand.Controls.Add(this.btnDeleteCommand);
+            this.gbCommand.Controls.Add(this.btnCreateCommand);
+            this.gbCommand.Location = new System.Drawing.Point(6, 6);
+            this.gbCommand.Name = "gbCommand";
+            this.gbCommand.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbCommand.Size = new System.Drawing.Size(414, 55);
+            this.gbCommand.TabIndex = 0;
+            this.gbCommand.TabStop = false;
+            this.gbCommand.Text = "Command";
+            // 
+            // cbCommand
+            // 
+            this.cbCommand.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbCommand.FormattingEnabled = true;
+            this.cbCommand.Location = new System.Drawing.Point(13, 20);
+            this.cbCommand.Name = "cbCommand";
+            this.cbCommand.Size = new System.Drawing.Size(226, 21);
+            this.cbCommand.TabIndex = 0;
+            this.cbCommand.SelectedIndexChanged += new System.EventHandler(this.cbCommand_SelectedIndexChanged);
+            // 
+            // btnDeleteCommand
+            // 
+            this.btnDeleteCommand.Location = new System.Drawing.Point(326, 19);
+            this.btnDeleteCommand.Name = "btnDeleteCommand";
+            this.btnDeleteCommand.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteCommand.TabIndex = 2;
+            this.btnDeleteCommand.Text = "Delete";
+            this.btnDeleteCommand.UseVisualStyleBackColor = true;
+            this.btnDeleteCommand.Click += new System.EventHandler(this.btnDeleteCommand_Click);
+            // 
+            // btnCreateCommand
+            // 
+            this.btnCreateCommand.Location = new System.Drawing.Point(245, 19);
+            this.btnCreateCommand.Name = "btnCreateCommand";
+            this.btnCreateCommand.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateCommand.TabIndex = 1;
+            this.btnCreateCommand.Text = "Create";
+            this.btnCreateCommand.UseVisualStyleBackColor = true;
+            this.btnCreateCommand.Click += new System.EventHandler(this.btnCreateCommand_Click);
+            // 
             // pnlBottom
             // 
-            this.pnlBottom.Controls.Add(this.btnCancel);
-            this.pnlBottom.Controls.Add(this.btnOK);
+            this.pnlBottom.Controls.Add(this.btnClose);
+            this.pnlBottom.Controls.Add(this.btnSave);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.pnlBottom.Location = new System.Drawing.Point(0, 309);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(434, 41);
             this.pnlBottom.TabIndex = 1;
             // 
-            // btnCancel
+            // btnClose
             // 
-            this.btnCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(347, 6);
-            this.btnCancel.Name = "btnCancel";
-            this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 1;
-            this.btnCancel.Text = "Cancel";
-            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnClose.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnClose.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnClose.Location = new System.Drawing.Point(347, 6);
+            this.btnClose.Name = "btnClose";
+            this.btnClose.Size = new System.Drawing.Size(75, 23);
+            this.btnClose.TabIndex = 1;
+            this.btnClose.Text = "Close";
+            this.btnClose.UseVisualStyleBackColor = true;
             // 
-            // btnOK
+            // btnSave
             // 
-            this.btnOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnOK.Location = new System.Drawing.Point(266, 6);
-            this.btnOK.Name = "btnOK";
-            this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 0;
-            this.btnOK.Text = "OK";
-            this.btnOK.UseVisualStyleBackColor = true;
-            this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
+            this.btnSave.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSave.Location = new System.Drawing.Point(266, 6);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(75, 23);
+            this.btnSave.TabIndex = 0;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // FrmConfig
             // 
-            this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.CancelButton = this.btnCancel;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(434, 350);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.pnlBottom);
@@ -330,6 +480,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "DB Import - Device {0} Properties";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConfig_FormClosing);
             this.Load += new System.EventHandler(this.FrmConfig_Load);
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
@@ -339,6 +490,11 @@
             this.pageQuery.ResumeLayout(false);
             this.pageQuery.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numTagCount)).EndInit();
+            this.pageCommands.ResumeLayout(false);
+            this.gbCommandParams.ResumeLayout(false);
+            this.gbCommandParams.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numCmdNum)).EndInit();
+            this.gbCommand.ResumeLayout(false);
             this.pnlBottom.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -361,13 +517,25 @@
         private System.Windows.Forms.TabPage pageDatabase;
         private System.Windows.Forms.TabPage pageQuery;
         private System.Windows.Forms.Panel pnlBottom;
-        private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnOK;
+        private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.Button btnSave;
         private System.Windows.Forms.GroupBox gbDataSourceType;
         private System.Windows.Forms.TextBox txtSelectQuery;
         private System.Windows.Forms.Label lblSelectQuery;
         private System.Windows.Forms.NumericUpDown numTagCount;
         private System.Windows.Forms.Label lblTagCount;
         private System.Windows.Forms.CheckBox chkAutoTagCount;
+        private System.Windows.Forms.TabPage pageCommands;
+        private System.Windows.Forms.ComboBox cbCommand;
+        private System.Windows.Forms.GroupBox gbCommand;
+        private System.Windows.Forms.Button btnDeleteCommand;
+        private System.Windows.Forms.Button btnCreateCommand;
+        private System.Windows.Forms.GroupBox gbCommandParams;
+        private System.Windows.Forms.TextBox txtCmdQuery;
+        private System.Windows.Forms.Label lblCmdQuery;
+        private System.Windows.Forms.TextBox txtName;
+        private System.Windows.Forms.Label lblName;
+        private System.Windows.Forms.NumericUpDown numCmdNum;
+        private System.Windows.Forms.Label lblCmdNum;
     }
 }

@@ -379,13 +379,14 @@ namespace Scada.Comm.Devices
                 lastCommSucc = false;
 
                 if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
-                    dataSource.ExportCommands.TryGetValue(cmd.CmdNum, out DbCommand dbCommand))
+                    (dataSource.ExportCommands.TryGetValue(cmd.CmdNum, out DbCommand dbCommand) || 
+                    dataSource.ExportCommands.TryGetValue(0, out dbCommand)))
                 {
-
                     if (ValidateDataSource() && ValidateCommand(dbCommand))
                     {
-                        dataSource.SetCmdParam(dbCommand, "val", 
+                        dataSource.SetCmdParam(dbCommand, "cmdVal", 
                             cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? (object)cmd.CmdVal : cmd.GetCmdDataStr());
+                        dataSource.SetCmdParam(dbCommand, "cmdNum", cmd.CmdNum);
                         int tryNum = 0;
 
                         while (RequestNeeded(ref tryNum))
