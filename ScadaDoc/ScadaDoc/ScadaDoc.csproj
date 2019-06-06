@@ -100,6 +100,10 @@
     <Content Include="content\latest\en\installation-and-run\run-applications.html" />
     <Content Include="content\latest\en\installation-and-run\system-requirements.html" />
     <Content Include="content\latest\en\modules\index.html" />
+    <Content Include="content\latest\en\modules\kp-db-import-files\db_import_cmd_en.png" />
+    <Content Include="content\latest\en\modules\kp-db-import-files\db_import_conn_en.png" />
+    <Content Include="content\latest\en\modules\kp-db-import-files\db_import_query_en.png" />
+    <Content Include="content\latest\en\modules\kp-db-import.html" />
     <Content Include="content\latest\en\modules\kp-telegram-files\bot_father.png" />
     <Content Include="content\latest\en\modules\kp-telegram-files\new_group.png" />
     <Content Include="content\latest\en\modules\kp-telegram.html" />
@@ -181,6 +185,10 @@
     <Content Include="content\latest\ru\installation-and-run\software-installation-files\win7_features_dotnet_ru.png" />
     <Content Include="content\latest\ru\js\contents.js" />
     <Content Include="content\latest\ru\modules\index.html" />
+    <Content Include="content\latest\ru\modules\kp-db-import-files\db_import_cmd_ru.png" />
+    <Content Include="content\latest\ru\modules\kp-db-import-files\db_import_conn_ru.png" />
+    <Content Include="content\latest\ru\modules\kp-db-import-files\db_import_query_ru.png" />
+    <Content Include="content\latest\ru\modules\kp-db-import.html" />
     <Content Include="content\latest\ru\modules\kp-telegram-files\bot_father.png" />
     <Content Include="content\latest\en\modules\kp-telegram-files\kp_telegram_config_en.png" />
     <Content Include="content\latest\en\modules\kp-telegram-files\kp_telegram_reg_en.png" />

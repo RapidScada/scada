@@ -33,6 +33,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
     addArticle(context, "modules/", "Modules");
+    addArticle(context, "modules/kp-db-import.html", "Database Import Driver", 1);
     addArticle(context, "modules/kp-telegram.html", "Telegram Driver", 1);
     addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
     addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
