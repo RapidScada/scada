@@ -57,6 +57,7 @@
     <Compile Include="DbImport\Configuration\Config.cs" />
     <Compile Include="DbImport\Configuration\DbConnSettings.cs" />
     <Compile Include="DbImport\Configuration\DataSourceType.cs" />
+    <Compile Include="DbImport\Configuration\ExportCmd.cs" />
     <Compile Include="DbImport\Data\DataSource.cs" />
     <Compile Include="DbImport\Data\MySqlDataSource.cs" />
     <Compile Include="DbImport\Data\OleDbDataSource.cs" />

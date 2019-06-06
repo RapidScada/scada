@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,20 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
 using Scada.Comm.Devices.DbImport.Data;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.DbImport.UI
@@ -46,9 +41,11 @@ namespace Scada.Comm.Devices.DbImport.UI
     {
         private AppDirs appDirs;       // the application directories
         private int kpNum;             // the device number
-        private string configFileName; // the configuration file name
         private Config config;         // the device configuration
+        private string configFileName; // the configuration file name
+        private bool modified;         // the configuration was modified
         private bool connChanging;     // connection settings are changing
+        private bool cmdSelecting;     // a command is selecting
 
 
 
@@ -68,9 +65,28 @@ namespace Scada.Comm.Devices.DbImport.UI
         {
             this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
             this.kpNum = kpNum;
-            configFileName = "";
             config = new Config();
+            configFileName = "";
+            modified = false;
             connChanging = false;
+            cmdSelecting = false;
+        }
+
+        
+        /// <summary>
+        /// Gets or sets a value indicating whether the configuration was modified.
+        /// </summary>
+        private bool Modified
+        {
+            get
+            {
+                return modified;
+            }
+            set
+            {
+                modified = value;
+                btnSave.Enabled = modified;
+            }
         }
 
 
@@ -80,6 +96,7 @@ namespace Scada.Comm.Devices.DbImport.UI
         private void ConfigToControls()
         {
             connChanging = true;
+            cmdSelecting = true;
 
             // set the control values
             cbDataSourceType.SelectedIndex = (int)config.DataSourceType;
@@ -125,7 +142,16 @@ namespace Scada.Comm.Devices.DbImport.UI
                 }
             }
 
+            // fill the command list
+            cbCommand.Items.AddRange(config.ExportCmds.ToArray());
+
+            if (cbCommand.Items.Count > 0)
+                cbCommand.SelectedIndex = 0;
+
+            ShowCommandParams(cbCommand.SelectedItem as ExportCmd);
+
             connChanging = false;
+            cmdSelecting = false;
         }
 
         /// <summary>
@@ -206,6 +232,57 @@ namespace Scada.Comm.Devices.DbImport.UI
             txtConnectionString.BackColor = Color.FromKnownColor(KnownColor.Window);
         }
 
+        /// <summary>
+        /// Shows the command parameters.
+        /// </summary>
+        private void ShowCommandParams(ExportCmd exportCmd)
+        {
+            if (exportCmd == null)
+            {
+                gbCommandParams.Enabled = false;
+                numCmdNum.Value = numCmdNum.Minimum;
+                txtName.Text = "";
+                txtCmdQuery.Text = "";
+            }
+            else
+            {
+                gbCommandParams.Enabled = true;
+                numCmdNum.SetValue(exportCmd.CmdNum);
+                txtName.Text = exportCmd.Name;
+                txtCmdQuery.Text = exportCmd.Query;
+            }
+        }
+
+        /// <summary>
+        /// Sort and update the command list.
+        /// </summary>
+        private void UpdateCommands()
+        {
+            try
+            {
+                cbCommand.BeginUpdate();
+                config.ExportCmds.Sort();
+                ExportCmd selectedCmd = cbCommand.SelectedItem as ExportCmd;
+
+                cbCommand.Items.Clear();
+                cbCommand.Items.AddRange(config.ExportCmds.ToArray());
+                cbCommand.SelectedIndex = config.ExportCmds.IndexOf(selectedCmd);
+            }
+            finally
+            {
+                cbCommand.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Update text of the selected item.
+        /// </summary>
+        private void UpdateCommandItem()
+        {
+            if (cbCommand.SelectedIndex >= 0)
+                cbCommand.Items[cbCommand.SelectedIndex] = cbCommand.SelectedItem;
+        }
+
 
         private void FrmConfig_Load(object sender, EventArgs e)
         {
@@ -225,6 +302,39 @@ namespace Scada.Comm.Devices.DbImport.UI
 
             // display the configuration
             ConfigToControls();
+            Modified = false;
+        }
+
+        private void FrmConfig_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Modified)
+            {
+                DialogResult result = MessageBox.Show(CommPhrases.SaveKpSettingsConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        string errMsg;
+                        if (!config.Save(configFileName, out errMsg))
+                        {
+                            ScadaUiUtils.ShowError(errMsg);
+                            e.Cancel = true;
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
+            }
+        }
+
+
+        private void control_Changed(object sender, EventArgs e)
+        {
+            Modified = true;
         }
 
         private void cbDataSourceType_SelectedIndexChanged(object sender, EventArgs e)
@@ -250,6 +360,7 @@ namespace Scada.Comm.Devices.DbImport.UI
                         EnableConnProps();
                 }
 
+                Modified = true;
                 connChanging = false;
             }
         }
@@ -267,6 +378,8 @@ namespace Scada.Comm.Devices.DbImport.UI
                     EnableConnProps();
                     connChanging = false;
                 }
+
+                Modified = true;
             }
         }
 
@@ -275,22 +388,100 @@ namespace Scada.Comm.Devices.DbImport.UI
             if (!connChanging)
             {
                 EnableConnString();
+                Modified = true;
             }
         }
 
         private void chkAutoTagCount_CheckedChanged(object sender, EventArgs e)
         {
             numTagCount.Enabled = !chkAutoTagCount.Checked;
+            Modified = true;
         }
 
-        private void btnOK_Click(object sender, EventArgs e)
+        private void cbCommand_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (!cmdSelecting)
+            {
+                cmdSelecting = true;
+                ShowCommandParams(cbCommand.SelectedItem as ExportCmd);
+                cmdSelecting = false;
+            }
+        }
+
+        private void btnCreateCommand_Click(object sender, EventArgs e)
+        {
+            // add a new command
+            ExportCmd exportCmd = new ExportCmd();
+
+            if (config.ExportCmds.Count > 0)
+                exportCmd.CmdNum = config.ExportCmds[config.ExportCmds.Count - 1].CmdNum + 1;
+
+            config.ExportCmds.Add(exportCmd);
+            cbCommand.SelectedIndex = cbCommand.Items.Add(exportCmd);
+            Modified = true;
+        }
+
+        private void btnDeleteCommand_Click(object sender, EventArgs e)
+        {
+            // delete the selected command
+            int selectedIndex = cbCommand.SelectedIndex;
+
+            if (selectedIndex >= 0)
+            {
+                config.ExportCmds.RemoveAt(selectedIndex);
+                cbCommand.Items.RemoveAt(selectedIndex);
+
+                if (cbCommand.Items.Count > 0)
+                {
+                    cbCommand.SelectedIndex = selectedIndex >= cbCommand.Items.Count ?
+                        cbCommand.Items.Count - 1 : selectedIndex;
+                }
+                else
+                {
+                    ShowCommandParams(null);
+                }
+
+                Modified = true;
+            }
+        }
+
+        private void numCmdNum_ValueChanged(object sender, EventArgs e)
+        {
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
+            {
+                exportCmd.CmdNum = Convert.ToInt32(numCmdNum.Value);
+                UpdateCommands();
+                Modified = true;
+            }
+        }
+
+        private void txtName_TextChanged(object sender, EventArgs e)
+        {
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
+            {
+                exportCmd.Name = txtName.Text;
+                UpdateCommandItem();
+                Modified = true;
+            }
+        }
+
+        private void txtCmdQuery_TextChanged(object sender, EventArgs e)
+        {
+            if (!cmdSelecting && cbCommand.SelectedItem is ExportCmd exportCmd)
+            {
+                exportCmd.Query = txtCmdQuery.Text;
+                Modified = true;
+            }
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
         {
             // retrieve the configuration
             ControlsToConfig();
 
             // save the configuration
             if (config.Save(configFileName, out string errMsg))
-                DialogResult = DialogResult.OK;
+                Modified = false;
             else
                 ScadaUiUtils.ShowError(errMsg);
         }

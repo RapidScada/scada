@@ -10,11 +10,19 @@
     <Phrase key="lblUser">User</Phrase>
     <Phrase key="lblPassword">Password</Phrase>
     <Phrase key="lblConnectionString">Connection string</Phrase>
-    <Phrase key="pageQuery">Query</Phrase>
+    <Phrase key="pageQuery">Data Retrieval</Phrase>
     <Phrase key="lblSelectQuery">SQL</Phrase>
     <Phrase key="lblTagCount">Tag count</Phrase>
     <Phrase key="chkAutoTagCount">Auto</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="pageCommands">Commands</Phrase>
+    <Phrase key="gbCommand">Command</Phrase>
+    <Phrase key="btnCreateCommand">Create</Phrase>
+    <Phrase key="btnDeleteCommand">Delete</Phrase>
+    <Phrase key="gbCommandParams">Command Parameters</Phrase>
+    <Phrase key="lblCmdNum">Command number</Phrase>
+    <Phrase key="lblName">Name</Phrase>
+    <Phrase key="lblCmdQuery">SQL</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
 </KpDbImportDictionaries>

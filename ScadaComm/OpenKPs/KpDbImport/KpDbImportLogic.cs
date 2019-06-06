@@ -26,6 +26,7 @@
 using Scada.Comm.Devices.DbImport.Configuration;
 using Scada.Comm.Devices.DbImport.Data;
 using Scada.Data.Configuration;
+using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
@@ -109,7 +110,7 @@ namespace Scada.Comm.Devices
                 }
                 else
                 {
-                    dataSource.Init(connStr, config.SelectQuery);
+                    dataSource.Init(connStr, config);
                 }
             }
         }
@@ -165,6 +166,42 @@ namespace Scada.Comm.Devices
             {
                 tagType = TagType.Number;
                 return SrezTableLight.CnlData.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Validates the data source.
+        /// </summary>
+        private bool ValidateDataSource()
+        {
+            if (dataSource == null)
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Нормальное взаимодействие с КП невозможно, т.к. источник данных не определён" :
+                    "Normal device communication is impossible because data source is undefined");
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Validates the database command.
+        /// </summary>
+        private bool ValidateCommand(DbCommand dbCommand)
+        {
+            if (dbCommand == null)
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Нормальное взаимодействие с КП невозможно, т.к. SQL-команда не определена" :
+                    "Normal device communication is impossible because SQL command is undefined");
+                return false;
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -248,7 +285,29 @@ namespace Scada.Comm.Devices
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "Ошибка при выполнении запроса: {0}" :
-                    "Error executing the query: {0}", ex.Message));
+                    "Error executing query: {0}", ex.Message));
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sends the command to the database.
+        /// </summary>
+        private bool SendDbCommand(DbCommand dbCommand)
+        {
+            try
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Запрос на изменение данных" :
+                    "Data modification request");
+                dbCommand.ExecuteNonQuery();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка при отправке команды БД: {0}" :
+                    "Error sending command to the database: {0}", ex.Message));
                 return false;
             }
         }
@@ -281,21 +340,7 @@ namespace Scada.Comm.Devices
             base.Session();
             lastCommSucc = false;
 
-            if (dataSource == null)
-            {
-                WriteToLog(Localization.UseRussian ?
-                    "Нормальное взаимодействие с КП невозможно, т.к. источник данных не определён" :
-                    "Normal device communication is impossible because data source is undefined");
-                Thread.Sleep(ReqParams.Delay);
-            }
-            else if (dataSource.SelectCommand == null)
-            {
-                WriteToLog(Localization.UseRussian ?
-                    "Нормальное взаимодействие с КП невозможно, т.к. SQL-команда не определена" :
-                    "Normal device communication is impossible because SQL command is undefined");
-                Thread.Sleep(ReqParams.Delay);
-            }
-            else
+            if (ValidateDataSource() && ValidateCommand(dataSource.SelectCommand))
             {
                 // request data
                 int tryNum = 0;
@@ -313,9 +358,55 @@ namespace Scada.Comm.Devices
                 if (!lastCommSucc && !Terminated)
                     InvalidateCurData();
             }
+            else
+            {
+                Thread.Sleep(ReqParams.Delay);
+            }
 
             // calculate session stats
             CalcSessStats();
+        }
+
+        /// <summary>
+        /// Sends the telecontrol command.
+        /// </summary>
+        public override void SendCmd(Command cmd)
+        {
+            base.SendCmd(cmd);
+
+            if (CanSendCmd)
+            {
+                lastCommSucc = false;
+
+                if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
+                    (dataSource.ExportCommands.TryGetValue(cmd.CmdNum, out DbCommand dbCommand) || 
+                    dataSource.ExportCommands.TryGetValue(0, out dbCommand)))
+                {
+                    if (ValidateDataSource() && ValidateCommand(dbCommand))
+                    {
+                        dataSource.SetCmdParam(dbCommand, "cmdVal", 
+                            cmd.CmdTypeID == BaseValues.CmdTypes.Standard ? (object)cmd.CmdVal : cmd.GetCmdDataStr());
+                        dataSource.SetCmdParam(dbCommand, "cmdNum", cmd.CmdNum);
+                        int tryNum = 0;
+
+                        while (RequestNeeded(ref tryNum))
+                        {
+                            if (Connect() && SendDbCommand(dbCommand))
+                                lastCommSucc = true;
+
+                            Disconnect();
+                            FinishRequest();
+                            tryNum++;
+                        }
+                    }
+                }
+                else
+                {
+                    WriteToLog(CommPhrases.IllegalCommand);
+                }
+            }
+
+            CalcCmdStats();
         }
 
         /// <summary>
@@ -330,6 +421,7 @@ namespace Scada.Comm.Devices
             {
                 InitDataSource(config);
                 InitDeviceTags(config);
+                CanSendCmd = config.ExportCmds.Count > 0;
             }
             else
             {
