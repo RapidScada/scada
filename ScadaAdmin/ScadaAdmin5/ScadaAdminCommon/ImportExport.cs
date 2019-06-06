@@ -368,14 +368,14 @@ namespace Scada.Admin
                 }
 
                 // add the Communicator settings to the archive
-                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeComm && instance.CommApp.Enabled)
                 {
                     PackDirectory(zipArchive, instance.CommApp.AppDir,
                         DirectoryBuilder.GetDirectory(ConfigParts.Comm, '/'), ignoreRegKeys);
                 }
 
                 // add the Webstation settings to the archive
-                if (uploadSettings.IncludeServer && instance.ServerApp.Enabled)
+                if (uploadSettings.IncludeWeb && instance.WebApp.Enabled)
                 {
                     PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "config"),
                         DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Config, '/'), ignoreRegKeys);
