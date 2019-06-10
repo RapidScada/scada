@@ -126,7 +126,7 @@ namespace Scada.Comm.Channels
         /// <summary>
         /// The length of the input buffer in the Slave mode.
         /// </summary>
-        protected const int SlaveInBufLen = 1000;
+        protected const int SlaveInBufLen = 1024;
         /// <summary>
         /// The maximum time allowed to elapse before the arrival of the next byte, ms.
         /// </summary>
