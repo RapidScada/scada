@@ -24,9 +24,11 @@
  */
 
 using Scada.Comm.Devices;
+using System;
 using System.Collections.Generic;
 using System.IO.Ports;
 using System.Text;
+using System.Threading;
 
 namespace Scada.Comm.Channels
 {
@@ -42,7 +44,7 @@ namespace Scada.Comm.Channels
         public class Settings
         {
             /// <summary>
-            /// Конструктор
+            /// Конструктор.
             /// </summary>
             public Settings()
             {
@@ -122,6 +124,14 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
+        /// The length of the input buffer in the Slave mode.
+        /// </summary>
+        protected const int SlaveInBufLen = 1000;
+        /// <summary>
+        /// The maximum time allowed to elapse before the arrival of the next byte, ms.
+        /// </summary>
+        protected const int ReadIntervalTimeout = 100;
+        /// <summary>
         /// Наименование типа канала связи.
         /// </summary>
         public const string CommCnlType = "Serial";
@@ -195,12 +205,52 @@ namespace Scada.Comm.Channels
         }
 
         /// <summary>
+        /// Listens to the serial port for incoming data.
+        /// </summary>
+        /// <remarks>This methods works in a separate thread. Is used in Mono.</remarks>
+        protected void ListenSerialPort()
+        {
+            byte[] buffer = new byte[SlaveInBufLen];
+            int readCnt = 0;
+            int prevReadCnt = 0;
+
+            while (!terminated)
+            {
+                try
+                {
+                    serialConn.SerialPort.ReadTimeout = 0;
+
+                    try { readCnt += serialConn.SerialPort.Read(buffer, readCnt, SlaveInBufLen - readCnt); }
+                    catch (TimeoutException) { }
+
+                    Thread.Sleep(ReadIntervalTimeout);
+
+                    if (prevReadCnt == readCnt && readCnt > 0 || readCnt == SlaveInBufLen)
+                    {
+                        KPLogic targetKP = null;
+                        if (!ExecProcIncomingReq(firstKP, buffer, 0, readCnt, ref targetKP))
+                            serialConn.DiscardInBuffer();
+                        readCnt = 0;
+                    }
+
+                    prevReadCnt = readCnt;
+                }
+                catch (Exception ex)
+                {
+                    WriteToLog(string.Format(Localization.UseRussian ?
+                        "Ошибка при прослушивании последовательного порта: {0}" :
+                        "Error listening to the serial port: {0}", ex.Message));
+                }
+            }
+        }
+
+        /// <summary>
         /// Обработать событие приёма данных по последовательному порту.
         /// </summary>
-        protected void serialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        protected void SerialPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
             KPLogic targetKP = null;
-            if (!ExecProcUnreadIncomingReq(kpList[0], serialConn, ref targetKP))
+            if (!ExecProcUnreadIncomingReq(firstKP, serialConn, ref targetKP))
                 serialConn.DiscardInBuffer();
         }
 
@@ -242,7 +292,12 @@ namespace Scada.Comm.Channels
 
             // привязка события приёма данных в режиме ведомого
             if (settings.Behavior == OperatingBehaviors.Slave && kpList.Count > 0)
-                serialConn.SerialPort.DataReceived += serialPort_DataReceived;
+            {
+                if (ScadaUtils.IsRunningOnMono)
+                    StartThread(new ThreadStart(ListenSerialPort));
+                else
+                    serialConn.SerialPort.DataReceived += SerialPort_DataReceived;
+            }
         }
 
         /// <summary>
@@ -250,8 +305,9 @@ namespace Scada.Comm.Channels
         /// </summary>
         public override void Stop()
         {
-            // отключение события приёма данных в режиме ведомого
-            serialConn.SerialPort.DataReceived -= serialPort_DataReceived;
+            // отключение приёма данных в режиме ведомого
+            StopThread();
+            serialConn.SerialPort.DataReceived -= SerialPort_DataReceived;
 
             // очистка ссылки на соединение для всех КП на линии связи
             foreach (KPLogic kpLogic in kpList)
