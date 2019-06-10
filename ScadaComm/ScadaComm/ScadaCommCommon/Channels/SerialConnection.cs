@@ -123,12 +123,12 @@ namespace Scada.Comm.Channels
                 // данный способ чтения данных необходим для избежания исключения 
                 // System.ObjectDisposedException при прерывании потока линии связи
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 SerialPort.ReadTimeout = 0;
 
-                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < count && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     try { readCnt += SerialPort.Read(buffer, offset + readCnt, count - readCnt); }
                     catch (TimeoutException) { }
@@ -137,7 +137,7 @@ namespace Scada.Comm.Channels
                     if (readCnt < count)
                         Thread.Sleep(DataAccumThreadDelay);
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
@@ -158,8 +158,8 @@ namespace Scada.Comm.Channels
             try
             {
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
 
                 stopReceived = false;
@@ -167,7 +167,7 @@ namespace Scada.Comm.Channels
                 int curInd = offset;
                 SerialPort.ReadTimeout = 0;
 
-                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < maxCount && !stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     bool readOk;
                     try { readOk = SerialPort.Read(buffer, curInd, 1) > 0; }
@@ -185,7 +185,7 @@ namespace Scada.Comm.Channels
                         Thread.Sleep(DataAccumThreadDelay);
                     }
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
@@ -208,12 +208,12 @@ namespace Scada.Comm.Channels
                 List<string> lines = new List<string>();
                 stopReceived = false;
 
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 SerialPort.ReadTimeout = 0;
 
-                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (!stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     string line;
                     try { line = SerialPort.ReadLine().Trim(); }
@@ -229,7 +229,7 @@ namespace Scada.Comm.Channels
                     if (!stopReceived)
                         Thread.Sleep(DataAccumThreadDelay);
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLinesLogText(lines);

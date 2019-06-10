@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices;
@@ -231,12 +231,12 @@ namespace Scada.Comm.Channels
             try
             {
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 NetStream.ReadTimeout = timeout; // таймаут не выдерживается, если считаны все доступные данные
 
-                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < count && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание данных
                     try { readCnt += NetStream.Read(buffer, readCnt + offset, count - readCnt); }
@@ -246,7 +246,7 @@ namespace Scada.Comm.Channels
                     if (readCnt < count)
                         Thread.Sleep(DataAccumThreadDelay);
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
@@ -271,8 +271,8 @@ namespace Scada.Comm.Channels
             try
             {
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 NetStream.ReadTimeout = OneByteReadTimeout;
 
@@ -280,7 +280,7 @@ namespace Scada.Comm.Channels
                 int curOffset = offset;
                 byte stopCode = stopCond.StopCode;
 
-                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < maxCount && !stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание одного байта данных
                     bool readOk;
@@ -299,7 +299,7 @@ namespace Scada.Comm.Channels
                         Thread.Sleep(DataAccumThreadDelay);
                     }
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
@@ -326,15 +326,15 @@ namespace Scada.Comm.Channels
                 List<string> lines = new List<string>();
                 stopReceived = false;
 
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 NetStream.ReadTimeout = OneByteReadTimeout;
 
                 StringBuilder sbLine = new StringBuilder(maxLineSize);
                 byte[] buffer = new byte[1];
 
-                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (!stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание одного байта данных
                     bool readOk;
@@ -362,7 +362,7 @@ namespace Scada.Comm.Channels
                         stopReceived = stopCond.CheckCondition(lines, line);
                     }
 
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLinesLogText(lines);
@@ -481,13 +481,11 @@ namespace Scada.Comm.Channels
         /// </summary>
         public void Open(string host, int port)
         {
-            string reason;
-            if (CanOpen(out reason))
+            if (CanOpen(out string reason))
             {
                 try
                 {
-                    IPAddress addr;
-                    if (IPAddress.TryParse(host, out addr))
+                    if (IPAddress.TryParse(host, out IPAddress addr))
                         TcpClient.Connect(addr, port);
                     else
                         TcpClient.Connect(host, port);

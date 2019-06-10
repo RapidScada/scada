@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2019
  */
 
 using System;
@@ -178,18 +178,16 @@ namespace Scada.Comm.Channels
             try
             {
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
                 UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
-                while (readCnt < count && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < count && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание данных
-                    int readPos;
-                    bool isNew;
-                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out int readPos, out bool isNew);
 
                     // копирование полученных данных в заданный буфер
                     if (datagram != null && datagram.Length > 0)
@@ -206,7 +204,7 @@ namespace Scada.Comm.Channels
                         Thread.Sleep(DataAccumThreadDelay);
 
                     StoreDatagram(datagram, readPos);
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
@@ -232,8 +230,8 @@ namespace Scada.Comm.Channels
             try
             {
                 int readCnt = 0;
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
 
@@ -241,12 +239,10 @@ namespace Scada.Comm.Channels
                 byte stopCode = stopCond.StopCode;
                 UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
-                while (readCnt < maxCount && !stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (readCnt < maxCount && !stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание данных
-                    int readPos;
-                    bool isNew;
-                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out int readPos, out bool isNew);
 
                     if (datagram != null && datagram.Length > 0)
                     {
@@ -275,7 +271,7 @@ namespace Scada.Comm.Channels
                         Thread.Sleep(DataAccumThreadDelay);
 
                     StoreDatagram(datagram, readPos);
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLogText(buffer, offset, readCnt, logFormat);
@@ -298,18 +294,16 @@ namespace Scada.Comm.Channels
                 List<string> lines = new List<string>();
                 stopReceived = false;
 
-                DateTime nowDT = DateTime.Now;
-                DateTime startDT = nowDT;
+                DateTime utcNowDT = DateTime.UtcNow;
+                DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
                 IPEndPoint endPoint = CreateIPEndPoint();
                 UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
-                while (!stopReceived && startDT <= nowDT && nowDT <= stopDT)
+                while (!stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание данных
-                    int readPos;
-                    bool isNew;
-                    byte[] datagram = ReceiveDatagram(ref endPoint, out readPos, out isNew);
+                    byte[] datagram = ReceiveDatagram(ref endPoint, out int readPos, out bool isNew);
 
                     if (datagram != null && datagram.Length > 0)
                     {
@@ -339,7 +333,7 @@ namespace Scada.Comm.Channels
                         Thread.Sleep(DataAccumThreadDelay);
 
                     StoreDatagram(datagram, readPos);
-                    nowDT = DateTime.Now;
+                    utcNowDT = DateTime.UtcNow;
                 }
 
                 logText = BuildReadLinesLogText(lines);
