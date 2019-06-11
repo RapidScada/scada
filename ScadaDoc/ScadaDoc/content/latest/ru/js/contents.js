@@ -25,7 +25,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/safety-recommendations.html", "Рекомендации по безопасности", 1);
 
     addArticle(context, "software-configuration/", "Настройка комплекса");
-    addArticle(context, "software-configuration/general-configuration.html", "Общая последовательность настройки", 1);
+    addArticle(context, "software-configuration/configuration-basics.html", "Основы настройки", 1);
     addArticle(context, "software-configuration/tune-database.html", "Создание базы конфигурации", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Использование формул", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Настройка аутентификации пользователей", 1);
@@ -46,7 +46,6 @@ function addContents(context) {
     addArticle(context, "use-cases/", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
     addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
-    addArticle(context, "use-cases/remote-server-management.html", "Управление удалённым сервером с помощью Агента", 1);
 
     addArticle(context, "version-history/", "История версий");
     addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);

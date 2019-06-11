@@ -25,6 +25,7 @@ function addContents(context) {
     addArticle(context, "installation-and-run/safety-recommendations.html", "Safety Recommendations", 1);
 
     addArticle(context, "software-configuration/", "Software Configuration");
+    addArticle(context, "software-configuration/configuration-basics.html", "Configuration Basics", 1);
     addArticle(context, "software-configuration/general-configuration.html", "General Configuration Sequence", 1);
     addArticle(context, "software-configuration/tune-database.html", "Tune up Configuration Database", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
@@ -46,7 +47,6 @@ function addContents(context) {
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
-    addArticle(context, "use-cases/remote-server-management.html", "Managing Remote Server using Agent", 1);
 
     addArticle(context, "version-history/", "Version History");
     addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);

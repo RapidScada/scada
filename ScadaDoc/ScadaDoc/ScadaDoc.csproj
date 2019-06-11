@@ -61,9 +61,12 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="content\latest\common-images\add_device.png" />
+    <Content Include="content\latest\common-images\add_line.png" />
     <Content Include="content\latest\common-images\apply.png" />
     <Content Include="content\latest\common-images\backup.gif" />
     <Content Include="content\latest\common-images\blank.png" />
+    <Content Include="content\latest\common-images\create_cnls.png" />
     <Content Include="content\latest\common-images\edit.png" />
     <Content Include="content\latest\common-images\import.png" />
     <Content Include="content\latest\common-images\open.png" />
@@ -121,6 +124,10 @@
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_import_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_line_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices.html" />
+    <Content Include="content\latest\en\software-configuration\configuration-basics-files\admin_new_proj_en.png" />
+    <Content Include="content\latest\en\software-configuration\configuration-basics-files\admin_start_page_en.png" />
+    <Content Include="content\latest\en\software-configuration\configuration-basics-files\proj_struct_en.png" />
+    <Content Include="content\latest\en\software-configuration\configuration-basics.html" />
     <Content Include="content\latest\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
     <Content Include="content\latest\en\software-configuration\creating-views.html" />
     <Content Include="content\latest\en\software-overview\applications\agent-application.html" />
@@ -136,13 +143,6 @@
     <Content Include="content\latest\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\latest\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\latest\en\use-cases\opc-standard-files\opc_vals_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_connection_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_download1_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_download2_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_status_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_upload1_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management-files\server_upload2_en.png" />
-    <Content Include="content\latest\en\use-cases\remote-server-management.html" />
     <Content Include="content\latest\en\version-history\administrator-history.html" />
     <Content Include="content\latest\en\version-history\communicator-drivers-history.html" />
     <Content Include="content\latest\en\version-history\communicator-history.html" />
@@ -215,7 +215,6 @@
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\scada_comm_line_ru.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_req_seq_en.png" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\scada_comm_req_seq_ru.png" />
-    <Content Include="content\latest\en\software-configuration\general-configuration.html" />
     <Content Include="content\latest\en\software-configuration\index.html" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\scada_admin_clone_cnls_en.png" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\scada_admin_cnl_props_en.png" />
@@ -268,8 +267,11 @@
     <Content Include="content\latest\ru\installation-and-run\system-requirements.html" />
     <Content Include="content\latest\ru\installation-and-run\migrate-configuration.html" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices.html" />
+    <Content Include="content\latest\ru\software-configuration\configuration-basics-files\admin_new_proj_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\configuration-basics-files\admin_start_page_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\configuration-basics-files\proj_struct_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\configuration-basics.html" />
     <Content Include="content\latest\ru\software-configuration\creating-views-files\scada_admin_itf_ru.png" />
-    <Content Include="content\latest\ru\software-configuration\general-configuration.html" />
     <Content Include="content\latest\ru\software-configuration\creating-views.html" />
     <Content Include="content\latest\ru\software-configuration\index.html" />
     <Content Include="content\latest\ru\software-configuration\tune-database-files\scada_admin_clone_cnls_ru.png" />
@@ -323,13 +325,6 @@
     <Content Include="content\latest\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\latest\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\latest\ru\use-cases\opc-standard.html" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_connection_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_download1_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_download2_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_status_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_upload1_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management-files\server_upload2_ru.png" />
-    <Content Include="content\latest\ru\use-cases\remote-server-management.html" />
     <Content Include="content\latest\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\latest\ru\version-history\index.html" />
     <Content Include="content\latest\ru\version-history\server-modules-history.html" />
