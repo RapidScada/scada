@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Tune up Configuration Database - Rapid SCADA Documentation</title>
+    <title>Tune Up Configuration Database - Rapid SCADA Documentation</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -9,17 +9,19 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Tune up Configuration Database</h1>
+    <h1>Tune Up Configuration Database</h1>
 
-    <p>The configuration database is a structured description of the entire automated system. The application included in Rapid SCADA use the information from the configuration database in conjunction with their settings.</p>
+    <h2>Configuration Database Structure</h2>
 
-    <p>The configuration database is edited using the Administrator application. The edited instance of the configuration database is in SDF file format of Microsoft SQL Server Compact Edition. After completing the necessary changes an administrator clicks <img src="../../common-images/pass.gif" /> button to convert the database in a specially designed DAT format which is used by the other applications. Such approach allows modifying the configuration database while the software is running.</p>
+    <p>The configuration database is a structured description of the entire automated system. The applications included in Rapid SCADA use the information from the configuration database in conjunction with their settings.</p>
+
+    <p>The configuration database is edited using the Administrator application as part of a project. The edited instance of the configuration database is in XML file format. When a project is uploaded to a server for execution, the configuration database is converted into a special DAT format.</p>
 
     <p>The configuration database consists of tables, which in turn are composed of columns and rows. Each table belongs to one of the following groups:</p>
 
     <ol>
         <li><em>System.</em> This group contains the tables which define a configuration of a particular automated system.</li>
-        <li><em>Dictionaries</em>. This group contains the auxiliary tables. In most cases changing of these tables is not needed and can cause incorrect operation of the software.</li>
+        <li><em>Dictionaries</em>. This group contains the auxiliary tables. In most cases changing of these tables is not needed.</li>
     </ol>
 
     <p>The following table describes the configuration database tables.</p>
@@ -34,7 +36,7 @@
         </tr>
         <tr>
             <td><em>Objects</em></td>
-            <td>Contains logical objects which input data and commands are related to</td>
+            <td>Contains logical objects that are used to structure information in the system. Objects can be interpreted as locations</td>
         </tr>
         <tr>
             <td><em>Communication lines</em></td>
@@ -46,7 +48,7 @@
         </tr>
         <tr>
             <td><em>Input channels</em></td>
-            <td>Defines data received from the devices and data calculated on their base</td>
+            <td>Defines data received from the devices and calculated data</td>
         </tr>
         <tr>
             <td><em>Output channels</em></td>
@@ -54,7 +56,7 @@
         </tr>
         <tr>
             <td><em>Roles</em></td>
-            <td>Contains roles. Each role defines a set of functions available to users</td>
+            <td>Contains roles. Each role defines a set of functions available to a user</td>
         </tr>
         <tr>
             <td><em>Users</em></td>
@@ -62,11 +64,11 @@
         </tr>
         <tr>
             <td><em>Interface</em></td>
-            <td>Contains descriptions of interface objects (views, reports and data windows) which require different access rights</td>
+            <td>Contains descriptions of interface objects (views, reports and data windows)</td>
         </tr>
         <tr>
             <td><em>Rights</em></td>
-            <td>Defines relationships between the roles and the interface objects</td>
+            <td>Defines rights to interface objects by roles</td>
         </tr>
         <tr>
             <td colspan="2"><strong>Dictionaries Group</strong></td>
@@ -81,7 +83,7 @@
         </tr>
         <tr>
             <td><em>Event types</em></td>
-            <td>Dictionary of system event types which correspond to the input channel statuses</td>
+            <td>Dictionary of system event types and statuses of input channels in the archive</td>
         </tr>
         <tr>
             <td><em>Device types</em></td>
@@ -108,6 +110,8 @@
             <td>Dictionary of formulas used in calculation of input channel data and command values of output channels</td>
         </tr>
     </table>
+
+    <h2>Editing Configuration Database</h2>
 
     <p>The following list is a sequence of working with the configuration database in the Administrator application:</p>
 

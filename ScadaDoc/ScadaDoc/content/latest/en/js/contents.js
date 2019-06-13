@@ -26,7 +26,7 @@ function addContents(context) {
 
     addArticle(context, "software-configuration/", "Software Configuration");
     addArticle(context, "software-configuration/configuration-basics.html", "Configuration Basics", 1);
-    addArticle(context, "software-configuration/tune-database.html", "Tune up Configuration Database", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Tune Up Configuration Database", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "User Authentication Configuration", 1);
     addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);

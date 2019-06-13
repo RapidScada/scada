@@ -130,6 +130,11 @@
     <Content Include="content\latest\en\software-configuration\configuration-basics.html" />
     <Content Include="content\latest\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
     <Content Include="content\latest\en\software-configuration\creating-views.html" />
+    <Content Include="content\latest\en\software-configuration\tune-database-files\admin_clone_cnls_en.png" />
+    <Content Include="content\latest\en\software-configuration\tune-database-files\admin_export_table_en.png" />
+    <Content Include="content\latest\en\software-configuration\tune-database-files\admin_import_table_en.png" />
+    <Content Include="content\latest\en\software-configuration\tune-database-files\in_cnl_props_en.png" />
+    <Content Include="content\latest\en\software-configuration\tune-database-files\out_cnl_props_en.png" />
     <Content Include="content\latest\en\software-overview\applications\agent-application.html" />
     <Content Include="content\latest\en\software-overview\applications\administrator-application-files\scada_admin_en.png" />
     <Content Include="content\latest\en\software-overview\applications\communicator-application-files\scada_comm_shell_en.png" />
@@ -274,10 +279,11 @@
     <Content Include="content\latest\ru\software-configuration\creating-views-files\scada_admin_itf_ru.png" />
     <Content Include="content\latest\ru\software-configuration\creating-views.html" />
     <Content Include="content\latest\ru\software-configuration\index.html" />
-    <Content Include="content\latest\ru\software-configuration\tune-database-files\scada_admin_clone_cnls_ru.png" />
-    <Content Include="content\latest\ru\software-configuration\tune-database-files\scada_admin_cnl_props_ru.png" />
-    <Content Include="content\latest\ru\software-configuration\tune-database-files\scada_admin_create_cnls_ru.png" />
-    <Content Include="content\latest\ru\software-configuration\tune-database-files\scada_admin_import_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\tune-database-files\admin_clone_cnls_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\tune-database-files\admin_export_table_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\tune-database-files\admin_import_table_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\tune-database-files\in_cnl_props_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\tune-database-files\out_cnl_props_ru.png" />
     <Content Include="content\latest\ru\software-configuration\tune-database.html" />
     <Content Include="content\latest\ru\software-configuration\user-authentication.html" />
     <Content Include="content\latest\ru\software-configuration\using-formulas.html" />
