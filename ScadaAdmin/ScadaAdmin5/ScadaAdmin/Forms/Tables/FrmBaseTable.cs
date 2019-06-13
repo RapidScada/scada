@@ -607,7 +607,12 @@ namespace Scada.Admin.App.Forms.Tables
                     if (cell.IsInEditMode)
                     {
                         if (dataGridView.EditingControl is TextBox textBox)
-                            textBox.Cut();
+                        {
+                            if (cut)
+                                textBox.Cut();
+                            else
+                                textBox.Copy();
+                        }
                     }
                     else
                     {
@@ -645,7 +650,8 @@ namespace Scada.Admin.App.Forms.Tables
 
                 if (col is DataGridViewTextBoxColumn)
                 {
-                    if (dataGridView.BeginEdit(true))
+                    // do nothing if the cell is already in edit mode
+                    if (!cell.IsInEditMode && dataGridView.BeginEdit(true))
                     {
                         if (dataGridView.EditingControl is TextBox textBox)
                             textBox.Paste();
