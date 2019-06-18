@@ -13,34 +13,40 @@
 
     <p>Formulas are used for calculating values and statuses of input channels and calculating values of commands. Formulas processing is performed by the Server application.</p>
 
-    <p>Formulas are contained by the <em>Input channels</em> and <em>Output channels</em> tables of the configuration database. To enable the formula, tick the appropriate checkbox in the <em>Formula used</em> column. The <em>Formulas</em> table stores additional functions and data structures which can be used in formulas for input and output channels.</p>
+    <p>Formulas are enterd in the <em>Formula</em> column of the <em>Input channels</em> and <em>Output channels</em> tables of the configuration database. To enable the formula, tick the checkbox in the <em>Formula used</em> column. The <em>Formulas</em> table contains additional functions and data structures which can be used in formulas for input and output channels.</p>
 
-    <p>The general rules of using formulas:</p>
+    <h2>Formula Writing Rules</h2>
+
+    <p>The general rules of writing and using formulas:</p>
 
     <ol>
-        <li>Formulas use the expressions syntax of C# language. Many of Microsoft .NET classes are accessible, for example, Math and DateTime classes.</li>
-        <li>New constants, fields, properties and methods can be added and used in formulas.</li>
+        <li>Formulas use <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/" target="_blank">the expressions syntax of C# language</a>. Many of Microsoft .NET classes are accessible, for example, Math and DateTime classes.</li>
+        <li>New constants, fields, properties and methods can be added to use in formulas.</li>
         <li>If at least one formula contains an error, Server operation is impossible. Information about errors in formulas is written in the Server application log.</li>
     </ol>
 
-    <p>The rules of using formulas for input channels:</p>
+    <p>The rules for calculating input channel formulas:</p>
 
     <ol>
-        <li>For channels of types <em>Discrete</em> and <em>Real</em> calculation starts when the channels data are received by Server. Use these channel types if formula does not refer to data of other channels.</li>
-        <li>For channels of types <em>Calculated *</em> and <em>Switching counter</em> calculations are performed permanent and ordered by channel numbers. A formula of a calculated channel usually refers to data of other channels.</li>
-        <li>For channels of types <em>Minute *</em> and <em>Hourly *</em> calculation starts periodically once per minute or once per hour. Use these channel types to create accumulated values, for example, energy consumption or operating time.</li>
-        <li>For channels of types <em>Discrete</em> and <em>Real</em> statuses of the channels after calculating are equal to the statuses of these channels received by Server if status calculation does not specified explicitly.</li>
-        <li>For channels of the other types the statuses set to <em>Defined</em> if status calculation does not specified explicitly.</li>
+        <li>Channels of the <em>Discrete</em> and <em>Real</em> types are calculated when the channels data are received by Server. Use these channel types if formula does not refer to data of other channels.</li>
+        <li>Channels of the <em>Calculated *</em> and <em>Switching counter</em> types are calculated permanently in order according to the channel numbers. A formula of a calculated channel usually refers to data of other channels.</li>
+        <li>Channels of the <em>Minute *</em> and <em>Hourly *</em> types are calculated periodically, once per minute or once per hour. Use these channel types to create accumulated values, for example, energy consumption or operating time.</li>
+        <li>For channels of the <em>Discrete</em> and <em>Real</em> types statuses of the channels after calculating are equal to the statuses of these channels received by Server if status calculation does not specified explicitly.</li>
+        <li>The statuses of the other types of channels are set to <em>Defined</em> if status calculation does not specified explicitly.</li>
         <li>An input channel formula that does not contain &quot;;&quot; (semicolon) symbol calculates the input channel value only.</li>
         <li>If an input channel formula contains &quot;;&quot;, the formula calculates the input channel value and status. The first part before semicolon is a formula for value calculation and the second part after semicolon calculates status.</li>
+        <li>If the channel limits are specified, the channel status is recalculated taking the limits into account after calculating the channel formula.</li>
+        <li>A formula for calculating a channel value must return a real number of the <em>double</em> type, and the formula for calculating the status returns an integer having the <em>int</em> type.</li>
     </ol>
 
-    <p>The rules of using formulas for output channels:</p>
+    <p>The rules for calculating output channel formulas:</p>
 
     <ol>
-        <li>Formulas are processed for output channels having <em>Standard</em> and <em>Binary</em> command types.</li>
-        <li>A formula of an output channel defines command value calculation for a standard command and defines command data calculation for a binary command.</li>
+        <li>Formulas are processed for output channels having the <em>Standard</em> and <em>Binary</em> command types.</li>
+        <li>A formula for calculating the value of a standard command must return a real number of the <em>double</em> type, and the formula for calculating data of a binary command returns an array of bytes of the <em>byte[]</em> type.</li>
     </ol>
+
+    <h2>Existing Formulas</h2>
 
     <p>The variables accessible in formulas:</p>
 
@@ -176,5 +182,13 @@
             <td>Calculates the square root of a specified number</td>
         </tr>
     </table>
+
+    <p>Additional formulas, including formulas for calculating averages, are <a href="https://github.com/RapidScada/scada-community/tree/master/Formulas" target="_blank">available on GitHub</a>.</p>
+
+    <h2>Debugging Formulas</h2>
+
+    <p>A developer of custom formulas has check the formulas syntax and validate whether the formulas work corrctly. If the Server service fails to compile the formulas at startup, information about the error is written in the Server log file, and the source code of the formulas that Server tries to compile is available in CalcEngine.cs, which is located in the Server log directory, by default C:\SCADA\ScadaServer\Log\</p>
+
+    <p>To develop complex formulas, it is recommended to use Microsoft Visual Studio Community Edition. Add a refererence to the FormulaTester.dll assembly in the project. As an example, use the project mentioned above, which contains formulas.</p>
 </body>
 </html>
