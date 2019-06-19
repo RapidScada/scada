@@ -60,11 +60,11 @@
 
     <p>If Rapid SCADA operates in a network that managed by Active Directory, it is recommended to use the 2nd and the 3rd authentication methods because of security reasons. The details of these methods are described below.</p>
 
-    <p>To allow the Server application interact with Active Directory, specify domain controller path and tick the nearby checkbox on <em>Common Parameters</em> page of the application.</p>
+    <p>To allow the Server service interact with Active Directory, specify domain controller path and tick the nearby checkbox on the <em>Common Parameters</em> page of the application, and activate ModActiveDirectory.dll on the <em>Modules</em> page.</p>
 
-    <p>The 2nd authentication method is used if the standard roles are enough to manage user rights. The benefits of this method are that rights management is performed using usual Active Directory tools without editing the configuration database and restarting the Server application.</p>
+    <p>The 2nd authentication method is used if the standard roles are enough to manage user rights. The benefit of this method is that rights management is performed using usual Active Directory tools without editing the configuration database and restarting the Server service.</p>
 
-    <p>To use the 2nd method it is required to create the security groups in Active Directory. The groups correspond to the user roles:</p>
+    <p>To use the 2nd method, it is required to create the security groups in Active Directory. The groups correspond to the user roles:</p>
 
     <ul>
         <li><em>ScadaDisabled</em> - Disabled role;</li>
@@ -74,9 +74,9 @@
         <li><em>ScadaApp</em> - Application role.</li>
     </ul>
 
-    <p>If a user is a member of the listed groups or he is a member of a group that is a member of the listed groups, the user is granted the appropriate rights in Rapid SCADA.</p>
+    <p>If a user is a member of a group listed above, or he is a member of a group which, in turn, is a member of the above groups, the user is granted the corresponding rights in Rapid SCADA.</p>
 
-    <p>The 3rd method combines the capabilities of the 1st and the 2nd methods. User credentials check is performed by using Active Directory and a user role is defined by the <em>Users</em> table of the configuration database. In this case, user names and user roles are defined in the <em>Users</em> table, but user passwords are kept blank in the table.</p>
+    <p>The 3rd method combines the capabilities of the 1st and the 2nd methods. Validation of user credentials is performed using Active Directory, and a user role is defined by the <em>Users</em> table of the configuration database. In this case, user names and user roles are specified in the <em>Users</em> table, but user passwords are kept blank in the table.</p>
 
     <p>Simultaneous use of all the above authentication methods is allowed.</p>
 </body>
