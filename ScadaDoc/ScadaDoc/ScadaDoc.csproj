@@ -121,10 +121,10 @@
     <Content Include="content\latest\en\modules\plg-map-files\interface_table_map_en.png" />
     <Content Include="content\latest\en\modules\plg-map-files\map_example_en.png" />
     <Content Include="content\latest\en\modules\plg-map.html" />
+    <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_import_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_line_params_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_line_req_en.png" />
-    <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_import_en.png" />
-    <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_line_en.png" />
+    <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_sync_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices.html" />
     <Content Include="content\latest\en\software-configuration\configuration-basics-files\admin_new_proj_en.png" />
     <Content Include="content\latest\en\software-configuration\configuration-basics-files\admin_start_page_en.png" />
@@ -218,10 +218,10 @@
     <Content Include="content\latest\ru\modules\plg-map-files\interface_table_map_ru.png" />
     <Content Include="content\latest\ru\modules\plg-map-files\map_example_ru.png" />
     <Content Include="content\latest\ru\modules\plg-map.html" />
+    <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_import_ru.png" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_line_params_ru.png" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_line_req_ru.png" />
-    <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\scada_comm_import_ru.png" />
-    <Content Include="content\latest\en\software-configuration\communication-with-devices-files\scada_comm_req_seq_en.png" />
+    <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_sync_ru.png" />
     <Content Include="content\latest\en\software-configuration\index.html" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\scada_admin_clone_cnls_en.png" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\scada_admin_cnl_props_en.png" />
