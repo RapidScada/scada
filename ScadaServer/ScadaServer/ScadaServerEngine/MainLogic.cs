@@ -409,22 +409,24 @@ namespace Scada.Server.Engine
                         if ((bool)dataRow["Active"])
                         {
                             // заполняются только свойства, используемые приложением
-                            InCnl inCnl = new InCnl();
-                            inCnl.CnlNum = (int)dataRow["CnlNum"];
-                            inCnl.CnlTypeID = (int)dataRow["CnlTypeID"];
-                            inCnl.ObjNum = (int)dataRow["ObjNum"];
-                            inCnl.KPNum = (int)dataRow["KPNum"];
-                            inCnl.FormulaUsed = (bool)dataRow["FormulaUsed"];
-                            inCnl.Formula = (string)dataRow["Formula"];
-                            inCnl.Averaging = (bool)dataRow["Averaging"];
-                            inCnl.ParamID = (int)dataRow["ParamID"];
-                            inCnl.EvEnabled = (bool)dataRow["EvEnabled"];
-                            inCnl.EvOnChange = (bool)dataRow["EvOnChange"];
-                            inCnl.EvOnUndef = (bool)dataRow["EvOnUndef"];
-                            inCnl.LimLowCrash = (double)dataRow["LimLowCrash"];
-                            inCnl.LimLow = (double)dataRow["LimLow"];
-                            inCnl.LimHigh = (double)dataRow["LimHigh"];
-                            inCnl.LimHighCrash = (double)dataRow["LimHighCrash"];
+                            InCnl inCnl = new InCnl
+                            {
+                                CnlNum = (int)dataRow["CnlNum"],
+                                CnlTypeID = (int)dataRow["CnlTypeID"],
+                                ObjNum = (int)dataRow["ObjNum"],
+                                KPNum = (int)dataRow["KPNum"],
+                                FormulaUsed = (bool)dataRow["FormulaUsed"],
+                                Formula = (string)dataRow["Formula"],
+                                Averaging = (bool)dataRow["Averaging"],
+                                ParamID = (int)dataRow["ParamID"],
+                                EvEnabled = (bool)dataRow["EvEnabled"],
+                                EvOnChange = (bool)dataRow["EvOnChange"],
+                                EvOnUndef = (bool)dataRow["EvOnUndef"],
+                                LimLowCrash = (double)dataRow["LimLowCrash"],
+                                LimLow = (double)dataRow["LimLow"],
+                                LimHigh = (double)dataRow["LimHigh"],
+                                LimHighCrash = (double)dataRow["LimHighCrash"]
+                            };
 
                             int cnlTypeID = inCnl.CnlTypeID;
                             if (BaseValues.CnlTypes.MinCnlTypeID <= cnlTypeID && 
@@ -508,15 +510,17 @@ namespace Scada.Server.Engine
                         if ((bool)dataRow["Active"])
                         {
                             // заполняются только свойства, используемые приложением
-                            CtrlCnl ctrlCnl = new CtrlCnl();
-                            ctrlCnl.CtrlCnlNum = (int)dataRow["CtrlCnlNum"];
-                            ctrlCnl.CmdTypeID = (int)dataRow["CmdTypeID"];
-                            ctrlCnl.ObjNum = (int)dataRow["ObjNum"];
-                            ctrlCnl.KPNum = (int)dataRow["KPNum"];
-                            ctrlCnl.CmdNum = (int)dataRow["CmdNum"];
-                            ctrlCnl.FormulaUsed = (bool)dataRow["FormulaUsed"];
-                            ctrlCnl.Formula = (string)dataRow["Formula"];
-                            ctrlCnl.EvEnabled = (bool)dataRow["EvEnabled"];
+                            CtrlCnl ctrlCnl = new CtrlCnl
+                            {
+                                CtrlCnlNum = (int)dataRow["CtrlCnlNum"],
+                                CmdTypeID = (int)dataRow["CmdTypeID"],
+                                ObjNum = (int)dataRow["ObjNum"],
+                                KPNum = (int)dataRow["KPNum"],
+                                CmdNum = (int)dataRow["CmdNum"],
+                                FormulaUsed = (bool)dataRow["FormulaUsed"],
+                                Formula = (string)dataRow["Formula"],
+                                EvEnabled = (bool)dataRow["EvEnabled"]
+                            };
                             ctrlCnls.Add(ctrlCnl.CtrlCnlNum, ctrlCnl);
                         }
                     }
@@ -553,10 +557,12 @@ namespace Scada.Server.Engine
 
                     foreach (DataRow dataRow in tblUser.Rows)
                     {
-                        User user = new User();
-                        user.Name = (string)dataRow["Name"];
-                        user.Password = (string)dataRow["Password"];
-                        user.RoleID = (int)dataRow["RoleID"];
+                        User user = new User
+                        {
+                            Name = (string)dataRow["Name"],
+                            Password = (string)dataRow["Password"],
+                            RoleID = (int)dataRow["RoleID"]
+                        };
                         users[user.Name.Trim().ToLowerInvariant()] = user;
                     }
                 }
@@ -1094,12 +1100,11 @@ namespace Scada.Server.Engine
                     foreach (FileInfo fileInfo in files)
                     {
                         string fileName = fileInfo.Name;
-                        int year, month, day;
 
                         if (fileName.Length >= 7 &&
-                            int.TryParse(fileName.Substring(1, 2), out year) &&
-                            int.TryParse(fileName.Substring(3, 2), out month) &&
-                            int.TryParse(fileName.Substring(5, 2), out day))
+                            int.TryParse(fileName.Substring(1, 2), out int year) &&
+                            int.TryParse(fileName.Substring(3, 2), out int month) &&
+                            int.TryParse(fileName.Substring(5, 2), out int day))
                         {
                             DateTime fileDate;
                             try { fileDate = new DateTime(2000 + year, month, day); }
@@ -1303,9 +1308,8 @@ namespace Scada.Server.Engine
                         {
                             int cnlNum = receivedSrez.CnlNums[i];
                             int cnlInd = srez.GetCnlIndex(cnlNum);
-                            InCnl inCnl;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                            if (inCnls.TryGetValue(cnlNum, out InCnl inCnl) && cnlInd >= 0) // входной канал существует
                             {
                                 // установка архивного статуса канала
                                 SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
@@ -1927,9 +1931,8 @@ namespace Scada.Server.Engine
 
                 // запуск работы
                 startDT = DateTime.Now;
-                string errMsg;
 
-                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out string errMsg))
                 {
                     LoadModules();
 
@@ -2018,8 +2021,7 @@ namespace Scada.Server.Engine
         {
             lock (ctrlCnls)
             {
-                CtrlCnl ctrlCnl;
-                return ctrlCnls.TryGetValue(ctrlCnlNum, out ctrlCnl) ? ctrlCnl.Clone() : null;
+                return ctrlCnls.TryGetValue(ctrlCnlNum, out CtrlCnl ctrlCnl) ? ctrlCnl.Clone() : null;
             }
         }
 
