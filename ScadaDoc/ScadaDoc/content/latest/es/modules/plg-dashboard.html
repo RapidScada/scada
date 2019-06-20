@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard Plugin - Ayuda de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
+</head>
+<body>
+    <h1>Dashboard Plugin</h1>
+    <h2>Introducción</h2>
+    <p>Dashboard Plugin muestra widgets útiles en los tableros: gráficos, datos actuales y marcos personalizados, por ejemplo, un circuito cerrado de televisión. La configuración de cada panel permite especificar el recuento de columnas y la relación de aspecto del widget. </p>
+
+    <h2>Instalación</h2>
+    <p> Primero debe realizar <a href="../installation-and-run/module-installation.html#plugins">la secuencia general de instalación de complementos</a>, y luego realizar varias acciones adicionales:</p>
+    <ol>
+        <li>Vaya al <em>Main Menu &gt; Registration &gt; Dashboard</em>.</li>
+        <li>Registre el complemento utilizando los hipervínculos en la página.</li>
+    </ol>
+
+    <h2>Configuración</h2>
+	<p>La configuración de cada panel de control es almacenada en un archivo XML separado. El paquete de instalación del complemento contiene un ejemplo de panel que se instala en:</p>
+    <p>C:\SCADA\ScadaWeb\storage\AllUsers\Dashboard\DashboardExample1.xml</p>
+    <p>Para crear un panel personalizado, copie el archivo de configuración de ejemplo con un nuevo nombre y luego edítelo con cualquier editor de texto. El nombre del archivo de configuración puede ser arbitrario, la extensión del archivo debe ser XML. Las ubicaciones de los archivos de configuración del panel de control:</p>
+    <p>C:\SCADA\ScadaWeb\storage\allusers\Dashboard\ - dashboards  disponibles para todos los usuario;<br />
+        C:\SCADA\ScadaWeb\storage\myuser\Dashboard\ - dashboards dashboards available to MyUser.
+    </p>
+    <p>Analisis del contenido  de un archivo de configuración del panel de control:</p>
+    <pre><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
+&lt;DashboardConfig&gt;
+  &lt;DashboardOptions&gt;
+    &lt;Name&gt;Dashboard Example 1&lt;/Name&gt;
+    &lt;ColumnCount&gt;2&lt;/ColumnCount&gt;
+    &lt;AspectRatio&gt;1.33&lt;/AspectRatio&gt;
+  &lt;/DashboardOptions&gt;
+  &lt;Widgets&gt;
+    &lt;Widget type="Chart" cnlNums="101,102" viewIDs="2,2" period="2" /&gt;
+    &lt;Widget type="CurData" cnlNums="101,102,103,104,105,106,107,115" viewIDs="2,2,2,2,2,2,2,2" /&gt;
+    &lt;Widget type="CustomUrl" url="https://www.youtube.com/embed/xs8Tqkr-Gn4" /&gt;
+  &lt;/Widgets&gt;
+&lt;/DashboardConfig&gt;</code></pre>
+
+    <p>La sección <strong>DashboardOptions</strong> contiene parámetros comunes del panel de control:  <br />
+        Name - nombre del panel de control<br />
+        ColumnCount - número de columnas de 1 a 4 (los widgets se muestran en una sola columna en pantallas pequeñas de móviles) <br />
+        AspectRatio - relación entre el ancho del widget y su altura</p>
+    <p>La sección <strong>Widgets</strong> ontiene una lista de widgets que se muestran en un panel. Número de widgets es arbitrario. Sin embargo, demasiados widgets en el mismo panel pueden reducir el rendimiento de la aplicación web.</p>
+    <p>
+        Se admiten los widgets de los siguientes tipos: <br />
+        Chart - gráfico de los canales de entrada especificados,<br />
+        CurData - Tabla que contiene datos actuales de los canales de entrada especificados,<br />
+        CustomUrl - Página web personalizada.
+    </p>
+    <p>La configuración de los widgets de los tipos Chart y CurData debe definir los números de los canales de entrada (channel numbers) y también los identificadores de las vistas (identifiers of the views) que incluyen estos canales de entrada. Se requieren ID de visualización para la validación de derechos de acceso de los usuarios.</p>
+</body>
+</html>
