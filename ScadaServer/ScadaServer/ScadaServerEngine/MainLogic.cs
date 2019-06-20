@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -2561,17 +2561,16 @@ namespace Scada.Server.Engine
                 // выполнение действий модулей после приёма команды
                 RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
 
-                // создание события
+                // запись события и выполнение действий модулей
                 if (passToClients && ctrlCnl.EvEnabled)
                 {
-                    EventTableLight.Event ev = new EventTableLight.Event();
-                    ev.DateTime = DateTime.Now;
-                    ev.ObjNum = ctrlCnl.ObjNum;
-                    ev.KPNum = ctrlCnl.KPNum;
-                    ev.Descr = cmd.GetCmdDescr(ctrlCnlNum, userID);
-
-                    // запись события и выполнение действий модулей
-                    WriteEvent(ev);
+                    WriteEvent(new EventTableLight.Event
+                    {
+                        DateTime = DateTime.Now,
+                        ObjNum = ctrlCnl.ObjNum,
+                        KPNum = ctrlCnl.KPNum,
+                        Descr = cmd.GetCmdDescr(ctrlCnlNum, userID)
+                    });
                 }
 
                 // отмена передачи команды, если номер команды не задан
