@@ -2496,88 +2496,97 @@ namespace Scada.Server.Engine
         {
             passToClients = false;
 
-            if (serverIsReady && ctrlCnl != null && cmd != null)
+            try
             {
-                int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
-
-                // вычисление значения или данных команды по формуле канала управления
-                if (ctrlCnl.CalcCmdVal != null)
+                if (serverIsReady && ctrlCnl != null && cmd != null)
                 {
-                    // вычисление значения стандартной команды
-                    lock (curSrez) lock (calculator)
+                    int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
+
+                    // вычисление значения или данных команды по формуле канала управления
+                    if (ctrlCnl.CalcCmdVal != null)
                     {
-                        try
+                        // вычисление значения стандартной команды
+                        lock (curSrez) lock (calculator)
                         {
-                            procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
-                            double cmdVal = cmd.CmdVal;
-                            ctrlCnl.CalcCmdVal(ref cmdVal);
-                            cmd.CmdVal = cmdVal;
-                            passToClients = !double.IsNaN(cmdVal);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLog.WriteError(string.Format(Localization.UseRussian ?
-                                "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
-                                "Error calculating standard command value for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message));
-                            cmd.CmdVal = double.NaN;
-                        }
-                        finally
-                        {
-                            procSrez = null;
+                            try
+                            {
+                                procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
+                                double cmdVal = cmd.CmdVal;
+                                ctrlCnl.CalcCmdVal(ref cmdVal);
+                                cmd.CmdVal = cmdVal;
+                                passToClients = !double.IsNaN(cmdVal);
+                            }
+                            catch (Exception ex)
+                            {
+                                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
+                                    "Error calculating standard command value for the output channel {0}: {1}",
+                                    ctrlCnlNum, ex.Message));
+                                cmd.CmdVal = double.NaN;
+                            }
+                            finally
+                            {
+                                procSrez = null;
+                            }
                         }
                     }
-                }
-                else if (ctrlCnl.CalcCmdData != null)
-                {
-                    // вычисление данных бинарной команды
-                    lock (curSrez) lock (calculator)
+                    else if (ctrlCnl.CalcCmdData != null)
                     {
-                        try
+                        // вычисление данных бинарной команды
+                        lock (curSrez) lock (calculator)
                         {
-                            procSrez = curSrez;
-                            byte[] cmdData = cmd.CmdData;
-                            ctrlCnl.CalcCmdData(ref cmdData);
-                            cmd.CmdData = cmdData;
-                            passToClients = cmdData != null;
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLog.WriteError(string.Format(Localization.UseRussian ?
-                                "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
-                                "Error calculating binary command data for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message));
-                            cmd.CmdVal = double.NaN;
-                        }
-                        finally
-                        {
-                            procSrez = null;
+                            try
+                            {
+                                procSrez = curSrez;
+                                byte[] cmdData = cmd.CmdData;
+                                ctrlCnl.CalcCmdData(ref cmdData);
+                                cmd.CmdData = cmdData;
+                                passToClients = cmdData != null;
+                            }
+                            catch (Exception ex)
+                            {
+                                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
+                                    "Error calculating binary command data for the output channel {0}: {1}",
+                                    ctrlCnlNum, ex.Message));
+                                cmd.CmdVal = double.NaN;
+                            }
+                            finally
+                            {
+                                procSrez = null;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    passToClients = true;
-                }
-
-                // выполнение действий модулей после приёма команды
-                RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
-
-                // запись события и выполнение действий модулей
-                if (passToClients && ctrlCnl.EvEnabled)
-                {
-                    WriteEvent(new EventTableLight.Event
+                    else
                     {
-                        DateTime = DateTime.Now,
-                        ObjNum = ctrlCnl.ObjNum,
-                        KPNum = ctrlCnl.KPNum,
-                        Descr = cmd.GetCmdDescr(ctrlCnlNum, userID)
-                    });
-                }
+                        passToClients = true;
+                    }
 
-                // отмена передачи команды, если номер команды не задан
-                if (ctrlCnl.CmdNum <= 0)
-                    passToClients = false;
+                    // выполнение действий модулей после приёма команды
+                    RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
+
+                    // запись события и выполнение действий модулей
+                    if (passToClients && ctrlCnl.EvEnabled)
+                    {
+                        WriteEvent(new EventTableLight.Event
+                        {
+                            DateTime = DateTime.Now,
+                            ObjNum = ctrlCnl.ObjNum,
+                            KPNum = ctrlCnl.KPNum,
+                            Descr = cmd.GetCmdDescr(ctrlCnlNum, userID)
+                        });
+                    }
+
+                    // отмена передачи команды, если номер команды не задан
+                    if (ctrlCnl.CmdNum <= 0)
+                        passToClients = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обработке команды ТУ" :
+                    "Error processing command");
             }
         }
     }
