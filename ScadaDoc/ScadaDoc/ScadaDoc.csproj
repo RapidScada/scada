@@ -130,7 +130,9 @@
     <Content Include="content\latest\en\software-configuration\configuration-basics-files\admin_start_page_en.png" />
     <Content Include="content\latest\en\software-configuration\configuration-basics-files\proj_struct_en.png" />
     <Content Include="content\latest\en\software-configuration\configuration-basics.html" />
-    <Content Include="content\latest\en\software-configuration\creating-views-files\scada_admin_itf_en.png" />
+    <Content Include="content\latest\en\software-configuration\creating-views-files\interface_menu_en.png" />
+    <Content Include="content\latest\en\software-configuration\creating-views-files\interface_new_file_en.png" />
+    <Content Include="content\latest\en\software-configuration\creating-views-files\interface_table_en.png" />
     <Content Include="content\latest\en\software-configuration\creating-views.html" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\admin_clone_cnls_en.png" />
     <Content Include="content\latest\en\software-configuration\tune-database-files\admin_export_table_en.png" />
@@ -278,7 +280,9 @@
     <Content Include="content\latest\ru\software-configuration\configuration-basics-files\admin_start_page_ru.png" />
     <Content Include="content\latest\ru\software-configuration\configuration-basics-files\proj_struct_ru.png" />
     <Content Include="content\latest\ru\software-configuration\configuration-basics.html" />
-    <Content Include="content\latest\ru\software-configuration\creating-views-files\scada_admin_itf_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\creating-views-files\interface_menu_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\creating-views-files\interface_new_file_ru.png" />
+    <Content Include="content\latest\ru\software-configuration\creating-views-files\interface_table_ru.png" />
     <Content Include="content\latest\ru\software-configuration\creating-views.html" />
     <Content Include="content\latest\ru\software-configuration\index.html" />
     <Content Include="content\latest\ru\software-configuration\tune-database-files\admin_clone_cnls_ru.png" />
