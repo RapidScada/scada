@@ -163,7 +163,6 @@ namespace Scada.Comm.Channels
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
 
                 stopReceived = false;
-                byte stopCode = stopCond.StopCode;
                 int curInd = offset;
                 SerialPort.ReadTimeout = 0;
 
@@ -175,7 +174,7 @@ namespace Scada.Comm.Channels
 
                     if (readOk)
                     {
-                        stopReceived = buffer[curInd] == stopCode;
+                        stopReceived = stopCond.CheckCondition(buffer, curInd);
                         curInd++;
                         readCnt++;
                     }

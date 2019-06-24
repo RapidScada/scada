@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2019
  */
 
 using System;
@@ -31,49 +31,73 @@ using Utils;
 namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// The base class for connection with physical device
-    /// <para>Родительский класс соединения с физическим КП</para>
+    /// The base class for connection with physical device.
+    /// <para>Родительский класс соединения с физическим КП.</para>
     /// </summary>
     public abstract class Connection
     {
         /// <summary>
-        /// Условие остановки считывания данных в бинарном формате
+        /// The condition to stop reading data in a binary format.
+        /// <para>Условие остановки считывания данных в бинарном формате.</para>
         /// </summary>
         public class BinStopCondition
         {
             /// <summary>
-            /// Конструктор, ограничивающий создание объекта без параметров
-            /// </summary>
-            protected BinStopCondition()
-            {
-            }
-            /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public BinStopCondition(byte stopCode)
             {
                 StopCode = stopCode;
+                StopSeq = null;
+            }
+            /// <summary>
+            /// Initializes a new instance of the class.
+            /// </summary>
+            public BinStopCondition(byte[] stopSeq)
+            {
+                StopCode = 0;
+                StopSeq = stopSeq;
             }
 
             /// <summary>
-            /// Получить код, приём которого останавливает считывание данных
+            /// Получить код, приём которого останавливает считывание данных.
             /// </summary>
             public byte StopCode { get; protected set; }
+            /// <summary>
+            /// Gets the sequence of bytes that stops reading.
+            /// </summary>
+            public byte[] StopSeq { get; protected set; }
+
+            /// <summary>
+            /// Check if the stop condition is satisfied.
+            /// </summary>
+            public bool CheckCondition(byte[] buffer, int index)
+            {
+                if (StopSeq == null)
+                {
+                    return buffer[index] == StopCode;
+                }
+                else
+                {
+                    for (int i = index, j = StopSeq.Length; i >= 0 && j >= 0; i--, j--)
+                    {
+                        if (buffer[index] != StopSeq[j])
+                            return false;
+                    }
+
+                    return true;
+                }
+            }
         }
 
         /// <summary>
-        /// Условие остановки считывания данных в текстовом формате
+        /// The condition to stop reading data in a text format.
+        /// <para>Условие остановки считывания данных в текстовом формате.</para>
         /// </summary>
         public class TextStopCondition
         {
             /// <summary>
-            /// Конструктор, ограничивающий создание объекта без параметров
-            /// </summary>
-            protected TextStopCondition()
-            {
-            }
-            /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public TextStopCondition(params string[] stopEndings)
             {
@@ -81,7 +105,7 @@ namespace Scada.Comm.Channels
                 MaxLineCount = int.MaxValue;
             }
             /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public TextStopCondition(int maxLineCount)
             {
@@ -89,7 +113,7 @@ namespace Scada.Comm.Channels
                 MaxLineCount = maxLineCount;
             }
             /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public TextStopCondition(string[] stopEndings, int maxLineCount = int.MaxValue)
             {
@@ -97,7 +121,7 @@ namespace Scada.Comm.Channels
                 MaxLineCount = maxLineCount;
             }
             /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public TextStopCondition(string stopEnding, int maxLineCount = int.MaxValue)
             {
@@ -106,16 +130,16 @@ namespace Scada.Comm.Channels
             }
 
             /// <summary>
-            /// Получить окончания строк, приём которых останавливает считывание данных
+            /// Получить окончания строк, приём которых останавливает считывание данных.
             /// </summary>
             public string[] StopEndings { get; protected set; }
             /// <summary>
-            /// Получить максимальное количество считываемых строк
+            /// Получить максимальное количество считываемых строк.
             /// </summary>
             public int MaxLineCount { get; protected set; }
 
             /// <summary>
-            /// Проверить выполнение условия остановки
+            /// Проверить выполнение условия остановки.
             /// </summary>
             public bool CheckCondition(List<string> lines, string lastLine)
             {
@@ -127,9 +151,10 @@ namespace Scada.Comm.Channels
                 }
                 else if (StopEndings != null)
                 {
-                    int endingsLen = StopEndings.Length;
-                    for (int i = 0; i < endingsLen && !stopReceived; i++)
+                    for (int i = 0, len = StopEndings.Length; i < len && !stopReceived; i++)
+                    {
                         stopReceived = lastLine.EndsWith(StopEndings[i], StringComparison.OrdinalIgnoreCase);
+                    }
                 }
 
                 return stopReceived;

@@ -35,8 +35,8 @@ using System.Threading;
 namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// TCP connection with a device
-    /// <para>TCP-соединение с КП</para>
+    /// TCP connection with a device.
+    /// <para>TCP-соединение с КП.</para>
     /// </summary>
     public class TcpConnection : Connection
     {
@@ -278,7 +278,6 @@ namespace Scada.Comm.Channels
 
                 stopReceived = false;
                 int curOffset = offset;
-                byte stopCode = stopCond.StopCode;
 
                 while (readCnt < maxCount && !stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
@@ -289,7 +288,7 @@ namespace Scada.Comm.Channels
 
                     if (readOk)
                     {
-                        stopReceived = buffer[curOffset] == stopCode;
+                        stopReceived = stopCond.CheckCondition(buffer, curOffset);
                         curOffset++;
                         readCnt++;
                     }

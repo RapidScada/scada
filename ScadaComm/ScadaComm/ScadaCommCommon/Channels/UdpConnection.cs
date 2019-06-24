@@ -33,11 +33,13 @@ using System.Threading;
 namespace Scada.Comm.Channels
 {
     /// <summary>
-    /// UDP connection with a device
-    /// <para>UDP-соединение с КП</para>
+    /// UDP connection with a device.
+    /// <para>UDP-соединение с КП.</para>
     /// </summary>
-    /// <remarks>In fact, UDP does not create a connection object
-    /// <para>На самом деле протокол UDP не создаёт объект соединения</para></remarks>
+    /// <remarks>
+    /// In fact, UDP does not create a connection object.
+    /// <para>На самом деле протокол UDP не создаёт объект соединения.</para>
+    /// </remarks>
     public class UdpConnection : Connection
     {
         /// <summary>
@@ -236,7 +238,6 @@ namespace Scada.Comm.Channels
                 IPEndPoint endPoint = CreateIPEndPoint();
 
                 stopReceived = false;
-                byte stopCode = stopCond.StopCode;
                 UdpClient.Client.ReceiveTimeout = DatagramReceiveTimeout;
 
                 while (readCnt < maxCount && !stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
@@ -247,11 +248,10 @@ namespace Scada.Comm.Channels
                     if (datagram != null && datagram.Length > 0)
                     {
                         // поиск кода остановки в считанных данных
-                        int datagramLen = datagram.Length;
                         int stopCodeInd = -1;
-                        for (int i = readPos; i < datagramLen && !stopReceived; i++)
+                        for (int i = readPos, len = datagram.Length; i < len && !stopReceived; i++)
                         {
-                            if (datagram[i] == stopCode)
+                            if (stopCond.CheckCondition(datagram, i))
                             {
                                 stopCodeInd = i;
                                 stopReceived = true;
