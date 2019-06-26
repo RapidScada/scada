@@ -11,7 +11,7 @@
 <body>
     <h1>Telegram Driver</h1>
     <h2>Overview</h2>
-    <p>Telegram Driver is designed to send notifications using the popular Telegram messenger. The advantages of using Telegram is quickness of receiving notifications, no fee for the service and easy notification group management.</p>
+    <p>Telegram Driver is designed to send notifications using the popular Telegram messenger. The advantages of using Telegram is quickness of receiving notifications, no fee for the service and easy management of notification groups.</p>
 
     <h2>Installation</h2>
     <p>Telegram Driver is installed in accordance with <a href="../installation-and-run/module-installation.html#drivers">the general sequence of installing Communicator drivers</a>. The driver library file is KpTelegram.dll.</p>
@@ -31,21 +31,20 @@
     </ol>
 
     <h3>Driver Settings</h3>
-    <p>Configure notifications in the following sequence:</p>
+    <p>Configuring of notifications is performed using the Administrator application as part of a project. The configuring steps are:</p>
     <ol>
-        <li>Using the Administrator application, open the <em>Device types</em> table and check that the device type &quot;224 Telegram&quot; exists. If the specified record is missing, enter it manually.</li>
-        <li>Using Administrator, create a separate communication line and a single device of the Telegram type that belongs to this communication line.</li>
-        <li>Import the created communication line and the device to Communicator. Enable sending commands for the communication line.</li>
-        <li>Using Communicator, open the device properties, enter the bot token obtained when creating the bot, and generate a bot password that is needed to manage subscriptions.<br />
+        <li>Open the <em>Device types</em> table and check that the device type &quot;224 Telegram&quot; exists. If the specified record is missing, enter it manually.</li>
+        <li>Create a separate communication line and a single device of the Telegram type that belongs to this communication line. Use wizards that by the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons.</li>
+        <li>In the Communicator settings open the device properties, enter the bot token obtained when creating the bot, and generate a bot password that is needed to manage subscriptions.<br />
             <img src="kp-telegram-files/kp_telegram_config_en.png" alt="Telegram Driver configuration" class="sd-article-image" /></li>
         <li>Go to the <em>Registration</em> page and register the driver using the hyperlinks on the form.<br />
             <img src="kp-telegram-files/kp_telegram_reg_en.png" alt="Telegram Driver registration" class="sd-article-image" /></li>
         <li>Save the driver configuration.</li>
-        <li>Restart the Communicator service by clicking <img src="../../common-images/restart.png" />.</li>
+        <li>Upload the project to the server by the <img src="../../common-images/upload.png" /> button.</li>
     </ol>
 
     <h3>Manage Subscriptions</h3>
-    <p>If the settings are correct, your bot will respond to commands, for example, the /help command.</p>
+    <p>If the settings are correct, your bot will respond to messenger commands, for example, the /help command.</p>
     <p class="sd-article-image.border">
         <img src="kp-telegram-files/test_group_en.png" alt="Telegram notification group" /><br />
     </p>
