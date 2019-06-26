@@ -246,53 +246,50 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportCurData()
         {
-            if (ExportParams.ExportCurData)
+            DbTransaction trans = null;
+            SrezTableLight.Srez srez = null;
+
+            try
             {
-                DbTransaction trans = null;
-                SrezTableLight.Srez srez = null;
+                trans = DataSource.Connection.BeginTransaction();
+                DataSource.ExportCurDataCmd.Transaction = trans;
 
-                try
+                for (int i = 0; i < BundleSize; i++)
                 {
-                    trans = DataSource.Connection.BeginTransaction();
-                    DataSource.ExportCurDataCmd.Transaction = trans;
-
-                    for (int i = 0; i < BundleSize; i++)
+                    // извлечение среза из очереди
+                    lock (curSrezQueue)
                     {
-                        // извлечение среза из очереди
-                        lock (curSrezQueue)
-                        {
-                            if (curSrezQueue.Count > 0)
-                                srez = curSrezQueue.Dequeue();
-                            else
-                                break;
-                        }
-
-                        // экспорт
-                        ExportSrez(DataSource.ExportCurDataCmd, srez);
-
-                        expCurSrezCnt++;
-                        exportError = false;
+                        if (curSrezQueue.Count > 0)
+                            srez = curSrezQueue.Dequeue();
+                        else
+                            break;
                     }
 
-                    trans.Commit();
+                    // экспорт
+                    ExportSrez(DataSource.ExportCurDataCmd, srez);
+
+                    expCurSrezCnt++;
+                    exportError = false;
                 }
-                catch (Exception ex)
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                SafeRollback(trans);
+
+                // возврат среза в очередь
+                if (srez != null)
                 {
-                    SafeRollback(trans);
-
-                    // возврат среза в очередь
-                    if (srez != null)
-                    {
-                        lock (curSrezQueue)
-                            curSrezQueue.Enqueue(srez);
-                    }
-
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Ошибка при экспорте текущих данных в БД {0}: {1}" :
-                        "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
-                    exportError = true;
-                    Thread.Sleep(ErrorDelay);
+                    lock (curSrezQueue)
+                        curSrezQueue.Enqueue(srez);
                 }
+
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при экспорте текущих данных в БД {0}: {1}" :
+                    "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
+                exportError = true;
+                Thread.Sleep(ErrorDelay);
             }
         }
 
@@ -301,53 +298,50 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportArcData()
         {
-            if (ExportParams.ExportArcData)
+            DbTransaction trans = null;
+            SrezTableLight.Srez srez = null;
+
+            try
             {
-                DbTransaction trans = null;
-                SrezTableLight.Srez srez = null;
+                trans = DataSource.Connection.BeginTransaction();
+                DataSource.ExportArcDataCmd.Transaction = trans;
 
-                try
+                for (int i = 0; i < BundleSize; i++)
                 {
-                    trans = DataSource.Connection.BeginTransaction();
-                    DataSource.ExportArcDataCmd.Transaction = trans;
-
-                    for (int i = 0; i < BundleSize; i++)
+                    // извлечение среза из очереди
+                    lock (arcSrezQueue)
                     {
-                        // извлечение среза из очереди
-                        lock (arcSrezQueue)
-                        {
-                            if (arcSrezQueue.Count > 0)
-                                srez = arcSrezQueue.Dequeue();
-                            else
-                                break;
-                        }
-
-                        // экспорт
-                        ExportSrez(DataSource.ExportArcDataCmd, srez);
-
-                        expArcSrezCnt++;
-                        exportError = false;
+                        if (arcSrezQueue.Count > 0)
+                            srez = arcSrezQueue.Dequeue();
+                        else
+                            break;
                     }
 
-                    trans.Commit();
+                    // экспорт
+                    ExportSrez(DataSource.ExportArcDataCmd, srez);
+
+                    expArcSrezCnt++;
+                    exportError = false;
                 }
-                catch (Exception ex)
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                SafeRollback(trans);
+
+                // возврат среза в очередь
+                if (srez != null)
                 {
-                    SafeRollback(trans);
-
-                    // возврат среза в очередь
-                    if (srez != null)
-                    {
-                        lock (arcSrezQueue)
-                            arcSrezQueue.Enqueue(srez);
-                    }
-
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Ошибка при экспорте архивных данных в БД {0}: {1}" :
-                        "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
-                    exportError = true;
-                    Thread.Sleep(ErrorDelay);
+                    lock (arcSrezQueue)
+                        arcSrezQueue.Enqueue(srez);
                 }
+
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при экспорте архивных данных в БД {0}: {1}" :
+                    "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
+                exportError = true;
+                Thread.Sleep(ErrorDelay);
             }
         }
 
@@ -356,53 +350,50 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportEvents()
         {
-            if (ExportParams.ExportEvents)
+            DbTransaction trans = null;
+            EventTableLight.Event ev = null;
+
+            try
             {
-                DbTransaction trans = null;
-                EventTableLight.Event ev = null;
+                trans = DataSource.Connection.BeginTransaction();
+                DataSource.ExportEventCmd.Transaction = trans;
 
-                try
+                for (int i = 0; i < BundleSize; i++)
                 {
-                    trans = DataSource.Connection.BeginTransaction();
-                    DataSource.ExportEventCmd.Transaction = trans;
-
-                    for (int i = 0; i < BundleSize; i++)
+                    // извлечение события из очереди
+                    lock (evQueue)
                     {
-                        // извлечение события из очереди
-                        lock (evQueue)
-                        {
-                            if (evQueue.Count > 0)
-                                ev = evQueue.Dequeue();
-                            else
-                                break;
-                        }
-
-                        // экспорт
-                        ExportEvent(DataSource.ExportEventCmd, ev);
-
-                        expEvCnt++;
-                        exportError = false;
+                        if (evQueue.Count > 0)
+                            ev = evQueue.Dequeue();
+                        else
+                            break;
                     }
 
-                    trans.Commit();
+                    // экспорт
+                    ExportEvent(DataSource.ExportEventCmd, ev);
+
+                    expEvCnt++;
+                    exportError = false;
                 }
-                catch (Exception ex)
+
+                trans.Commit();
+            }
+            catch (Exception ex)
+            {
+                SafeRollback(trans);
+
+                // возврат события в очередь
+                if (ev != null)
                 {
-                    SafeRollback(trans);
-
-                    // возврат события в очередь
-                    if (ev != null)
-                    {
-                        lock (evQueue)
-                            evQueue.Enqueue(ev);
-                    }
-
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Ошибка при экспорте событий в БД {0}: {1}" :
-                        "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
-                    exportError = true;
-                    Thread.Sleep(ErrorDelay);
+                    lock (evQueue)
+                        evQueue.Enqueue(ev);
                 }
+
+                log.WriteAction(string.Format(Localization.UseRussian ?
+                    "Ошибка при экспорте событий в БД {0}: {1}" :
+                    "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
+                exportError = true;
+                Thread.Sleep(ErrorDelay);
             }
         }
         
@@ -489,19 +480,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueCurData(SrezTableLight.Srez curSrez)
         {
-            lock (curSrezQueue)
+            if (ExportParams.ExportCurData)
             {
-                if (curSrezQueue.Count < MaxQueueSize)
+                lock (curSrezQueue)
                 {
-                    curSrezQueue.Enqueue(curSrez);
-                }
-                else
-                {
-                    skipCurSrezCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь текущие данные. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue current data. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (curSrezQueue.Count < MaxQueueSize)
+                    {
+                        curSrezQueue.Enqueue(curSrez);
+                    }
+                    else
+                    {
+                        skipCurSrezCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь текущие данные. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue current data. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }
@@ -511,19 +505,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueArcData(SrezTableLight.Srez arcSrez)
         {
-            lock (arcSrezQueue)
+            if (ExportParams.ExportArcData)
             {
-                if (arcSrezQueue.Count < MaxQueueSize)
+                lock (arcSrezQueue)
                 {
-                    arcSrezQueue.Enqueue(arcSrez);
-                }
-                else
-                {
-                    skipArcSrezCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь архивные данные. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue archive data. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (arcSrezQueue.Count < MaxQueueSize)
+                    {
+                        arcSrezQueue.Enqueue(arcSrez);
+                    }
+                    else
+                    {
+                        skipArcSrezCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь архивные данные. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue archive data. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }
@@ -533,19 +530,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueEvent(EventTableLight.Event ev)
         {
-            lock (evQueue)
+            if (ExportParams.ExportEvents)
             {
-                if (evQueue.Count < MaxQueueSize)
+                lock (evQueue)
                 {
-                    evQueue.Enqueue(ev);
-                }
-                else
-                {
-                    skipEvCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь событие. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue an event. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (evQueue.Count < MaxQueueSize)
+                    {
+                        evQueue.Enqueue(ev);
+                    }
+                    else
+                    {
+                        skipEvCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь событие. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue an event. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }

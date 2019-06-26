@@ -426,7 +426,9 @@ namespace Scada.Server.Modules
             {
                 // добавление события в очередь экспорта
                 foreach (Exporter exporter in exporters)
+                {
                     exporter.EnqueueEvent(ev);
+                }
             }
         }
 
