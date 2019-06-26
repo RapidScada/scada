@@ -246,50 +246,53 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportCurData()
         {
-            DbTransaction trans = null;
-            SrezTableLight.Srez srez = null;
-
-            try
+            if (ExportParams.ExportCurData)
             {
-                trans = DataSource.Connection.BeginTransaction();
-                DataSource.ExportCurDataCmd.Transaction = trans;
+                DbTransaction trans = null;
+                SrezTableLight.Srez srez = null;
 
-                for (int i = 0; i < BundleSize; i++)
+                try
                 {
-                    // извлечение среза из очереди
-                    lock (curSrezQueue)
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportCurDataCmd.Transaction = trans;
+
+                    for (int i = 0; i < BundleSize; i++)
                     {
-                        if (curSrezQueue.Count > 0)
-                            srez = curSrezQueue.Dequeue();
-                        else
-                            break;
+                        // извлечение среза из очереди
+                        lock (curSrezQueue)
+                        {
+                            if (curSrezQueue.Count > 0)
+                                srez = curSrezQueue.Dequeue();
+                            else
+                                break;
+                        }
+
+                        // экспорт
+                        ExportSrez(DataSource.ExportCurDataCmd, srez);
+
+                        expCurSrezCnt++;
+                        exportError = false;
                     }
 
-                    // экспорт
-                    ExportSrez(DataSource.ExportCurDataCmd, srez);
-
-                    expCurSrezCnt++;
-                    exportError = false;
+                    trans.Commit();
                 }
-
-                trans.Commit();
-            }
-            catch (Exception ex)
-            {
-                SafeRollback(trans);
-
-                // возврат среза в очередь
-                if (srez != null)
+                catch (Exception ex)
                 {
-                    lock (curSrezQueue)
-                        curSrezQueue.Enqueue(srez);
-                }
+                    SafeRollback(trans);
 
-                log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при экспорте текущих данных в БД {0}: {1}" :
-                    "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
-                exportError = true;
-                Thread.Sleep(ErrorDelay);
+                    // возврат среза в очередь
+                    if (srez != null)
+                    {
+                        lock (curSrezQueue)
+                            curSrezQueue.Enqueue(srez);
+                    }
+
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте текущих данных в БД {0}: {1}" :
+                        "Error export current data to DB {0}: {1}", DataSource.Name, ex.Message));
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
+                }
             }
         }
 
@@ -298,50 +301,53 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportArcData()
         {
-            DbTransaction trans = null;
-            SrezTableLight.Srez srez = null;
-
-            try
+            if (ExportParams.ExportArcData)
             {
-                trans = DataSource.Connection.BeginTransaction();
-                DataSource.ExportArcDataCmd.Transaction = trans;
+                DbTransaction trans = null;
+                SrezTableLight.Srez srez = null;
 
-                for (int i = 0; i < BundleSize; i++)
+                try
                 {
-                    // извлечение среза из очереди
-                    lock (arcSrezQueue)
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportArcDataCmd.Transaction = trans;
+
+                    for (int i = 0; i < BundleSize; i++)
                     {
-                        if (arcSrezQueue.Count > 0)
-                            srez = arcSrezQueue.Dequeue();
-                        else
-                            break;
+                        // извлечение среза из очереди
+                        lock (arcSrezQueue)
+                        {
+                            if (arcSrezQueue.Count > 0)
+                                srez = arcSrezQueue.Dequeue();
+                            else
+                                break;
+                        }
+
+                        // экспорт
+                        ExportSrez(DataSource.ExportArcDataCmd, srez);
+
+                        expArcSrezCnt++;
+                        exportError = false;
                     }
 
-                    // экспорт
-                    ExportSrez(DataSource.ExportArcDataCmd, srez);
-
-                    expArcSrezCnt++;
-                    exportError = false;
+                    trans.Commit();
                 }
-
-                trans.Commit();
-            }
-            catch (Exception ex)
-            {
-                SafeRollback(trans);
-
-                // возврат среза в очередь
-                if (srez != null)
+                catch (Exception ex)
                 {
-                    lock (arcSrezQueue)
-                        arcSrezQueue.Enqueue(srez);
-                }
+                    SafeRollback(trans);
 
-                log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при экспорте архивных данных в БД {0}: {1}" :
-                    "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
-                exportError = true;
-                Thread.Sleep(ErrorDelay);
+                    // возврат среза в очередь
+                    if (srez != null)
+                    {
+                        lock (arcSrezQueue)
+                            arcSrezQueue.Enqueue(srez);
+                    }
+
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте архивных данных в БД {0}: {1}" :
+                        "Error export archive data to DB {0}: {1}", DataSource.Name, ex.Message));
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
+                }
             }
         }
 
@@ -350,50 +356,53 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private void ExportEvents()
         {
-            DbTransaction trans = null;
-            EventTableLight.Event ev = null;
-
-            try
+            if (ExportParams.ExportEvents)
             {
-                trans = DataSource.Connection.BeginTransaction();
-                DataSource.ExportEventCmd.Transaction = trans;
+                DbTransaction trans = null;
+                EventTableLight.Event ev = null;
 
-                for (int i = 0; i < BundleSize; i++)
+                try
                 {
-                    // извлечение события из очереди
-                    lock (evQueue)
+                    trans = DataSource.Connection.BeginTransaction();
+                    DataSource.ExportEventCmd.Transaction = trans;
+
+                    for (int i = 0; i < BundleSize; i++)
                     {
-                        if (evQueue.Count > 0)
-                            ev = evQueue.Dequeue();
-                        else
-                            break;
+                        // извлечение события из очереди
+                        lock (evQueue)
+                        {
+                            if (evQueue.Count > 0)
+                                ev = evQueue.Dequeue();
+                            else
+                                break;
+                        }
+
+                        // экспорт
+                        ExportEvent(DataSource.ExportEventCmd, ev);
+
+                        expEvCnt++;
+                        exportError = false;
                     }
 
-                    // экспорт
-                    ExportEvent(DataSource.ExportEventCmd, ev);
-
-                    expEvCnt++;
-                    exportError = false;
+                    trans.Commit();
                 }
-
-                trans.Commit();
-            }
-            catch (Exception ex)
-            {
-                SafeRollback(trans);
-
-                // возврат события в очередь
-                if (ev != null)
+                catch (Exception ex)
                 {
-                    lock (evQueue)
-                        evQueue.Enqueue(ev);
-                }
+                    SafeRollback(trans);
 
-                log.WriteAction(string.Format(Localization.UseRussian ?
-                    "Ошибка при экспорте событий в БД {0}: {1}" :
-                    "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
-                exportError = true;
-                Thread.Sleep(ErrorDelay);
+                    // возврат события в очередь
+                    if (ev != null)
+                    {
+                        lock (evQueue)
+                            evQueue.Enqueue(ev);
+                    }
+
+                    log.WriteAction(string.Format(Localization.UseRussian ?
+                        "Ошибка при экспорте событий в БД {0}: {1}" :
+                        "Error export events to DB {0}: {1}", DataSource.Name, ex.Message));
+                    exportError = true;
+                    Thread.Sleep(ErrorDelay);
+                }
             }
         }
         
