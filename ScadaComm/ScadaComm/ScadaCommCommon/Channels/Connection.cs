@@ -79,9 +79,9 @@ namespace Scada.Comm.Channels
                 }
                 else
                 {
-                    for (int i = index, j = StopSeq.Length; i >= 0 && j >= 0; i--, j--)
+                    for (int i = index, j = StopSeq.Length - 1; i >= 0 && j >= 0; i--, j--)
                     {
-                        if (buffer[index] != StopSeq[j])
+                        if (buffer[i] != StopSeq[j])
                             return false;
                     }
 
