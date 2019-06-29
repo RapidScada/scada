@@ -23,7 +23,7 @@
         <li>Install the application and register <a href="https://telegram.org/" target="_blank">Telegram</a>.</li>
         <li>Add the bot named <a href="https://telegram.me/botfather" target="_blank">BotFather</a> to the contact list.<br />
             <img src="kp-telegram-files/bot_father.png" alt="Telegram BotFather" class="sd-article-image border" /></li>
-        <li>In the dialog with BotFather, run the command /newbot and follow the instructions from BotFather.</li>
+        <li>In the dialog with BotFather, run the command <em>/newbot</em> and follow the instructions from BotFather.</li>
         <li>Click the menu icon and create a new group to receive notifications.<br />
             <img src="kp-telegram-files/new_group.png" alt="Новая группа Telegram" class="sd-article-image border" /></li>
         <li>Add the bot you created to the new group.</li>
@@ -45,14 +45,15 @@
     </ol>
 
     <h3>Manage Subscriptions</h3>
-    <p>If the settings are correct, your bot will respond to messenger commands, for example, the /help command.</p>
+    <p>If the settings are correct, your bot will respond to messenger commands, for example, the <em>/help</em> command. It is necessary to specify the subscriptions (chats) in the driver settings.</p>
     <p class="sd-article-image.border">
-        <img src="kp-telegram-files/test_group_en.png" alt="Telegram notification group" /><br />
+        <img src="kp-telegram-files/group_chat_en.png" alt="Telegram notification group" /><br />
     </p>
-    <p>To add or remove subscriptions to the group, use the /start and /stop commands with the previously generated password. However, by default, subscription changes are blocked. To unlock it, send a standard command number 2 with a value of 1 by Communicator. Then you can add or remove subscriptions.</p>
+    <p>To get the ID and the name of the subscription, send the <em>/info</em> command using the messenger. Then add the received values using the device configuration form.</p>
+    <p>Obsolete method: to add or remove subscriptions, use the <em>/start</em> and <em>/stop</em> commands with the previously generated password. However, by default, subscription changes are blocked. To unlock it, send a standard command number 2 with a value of 1 by Communicator. Then you can add or remove subscriptions.</p>
 
     <h2>Sending Messages</h2>
-    <p>To send a message from Rapid SCADA to a Telegram group, you need send a binary command number 1 containing the group name (or identifier) and the message text. For example: RapidScadaBotTestGroup; Test message.</p>
+    <p>To send a message from Rapid SCADA to a Telegram group, you need send a binary command number 1 containing the group name (or identifier) and the message text. For example:<br />RapidScadaDemo; Test message.</p>
     <p class="sd-article-image">
         <img src="kp-telegram-files/send_cmd_en.png" alt="Sending Telegram message" /><br />
     </p>
