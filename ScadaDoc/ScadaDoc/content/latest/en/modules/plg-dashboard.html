@@ -20,16 +20,43 @@
     <ol>
         <li>Go to <em>Main Menu &gt; Registration &gt; Dashboard</em>.</li>
         <li>Register the plugin using the hyperlinks on the page.</li>
+        <li>Add registration key to the project by downloading the Webstation settings using the Administrator application.</li>
     </ol>
 
     <h2>Configuring</h2>
-    <p>A configuration of each dashboard stored in a separate XML file. The plugin installation package contains a dashboard example which installs into:</p>
-    <p>C:\SCADA\ScadaWeb\storage\AllUsers\Dashboard\DashboardExample1.xml</p>
-    <p>To create a custom dashboard, copy the example configuration file with a new name, and then edit it using any text editor. Configuration file name may be arbitrary, file extension must be XML. The locations of dashboard configuration files:</p>
-    <p>C:\SCADA\ScadaWeb\storage\allusers\Dashboard\ - dashboards available to all users;<br />
-        C:\SCADA\ScadaWeb\storage\myuser\Dashboard\ - dashboards available to MyUser.
+
+    <h3>Specifying Dashboards</h3>
+
+    <p>Configuration of each dashboard is stored in a separate XML file. The dashboard example, DashboardExample1.xml, is included in the plugin installation package. Dashboard files can be located in the interface directory, or in the Webstation storage directory. The 1st option is preferred.</p>
+
+    <p>In order to display the dashboard links in the explorer tree of Webstation, perform the following settings in the project:</p>
+
+    <ol>
+        <li>Create and edit a dashboard file in the interface directory.</li>
+        <li>Specify the dashboard path in the <em>Interface</em> table of the configuration database.</li>
+    </ol>
+
+    <p class="sd-article-image">
+        <img src="plg-dashboard-files/dashboard_itf_dir_en.png" alt="Dashboard file" /><br />
     </p>
+
+    <p class="sd-article-image">
+        <img src="plg-dashboard-files/dashboard_itf_tbl_en.png" alt="Editing the Interface table" /><br />
+    </p>
+
+    <p>The @DashboardView path suffix indicates the type of view. The access rights to dashboards are configured using the <em>Rights</em> table of the configuration databse. It is similar to editing the rights to table views and schemes.</p>
+
+    <p>In addition, dashboard files can be located in the storage directory of Webstation. In this case, click the <em>Dashboards</em> item of the Webstation main menu to display the list of available dashboards. Examples of the dashboard locations in the storage:</p>
+
+    <p>
+        ScadaWeb\storage\allusers\Dashboard\ - dashboards available to all users;<br />
+        ScadaWeb\storage\myuser\Dashboard\ - dashboards available to MyUser.
+    </p>
+
+    <h3>Dashboard File Structure</h3>
+
     <p>Consider the contents of a dashboard configuration file:</p>
+
     <pre><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;DashboardConfig&gt;
   &lt;DashboardOptions&gt;
@@ -44,17 +71,22 @@
   &lt;/Widgets&gt;
 &lt;/DashboardConfig&gt;</code></pre>
 
-    <p>The <strong>DashboardOptions</strong> section contains common dashboard parameters: <br />
+    <p>
+        The <strong>DashboardOptions</strong> section contains common dashboard parameters: <br />
         Name - dashboard name,<br />
         ColumnCount - number of columns from 1 to 4 (widgets are shown in a single column anyway on small screens of mobiles),<br />
-        AspectRatio - ratio of widget width to its height.</p>
+        AspectRatio - ratio of widget width to its height.
+    </p>
+
     <p>The <strong>Widgets</strong> section contains a list of widgets that are displayed on a dashboard. Number of widgets is arbitrary. However, too many widgets on the same dashboard can reduce the performance of the web application.</p>
+
     <p>
         Widgets of the following types are supported:<br />
         Chart - chart of the specified input channels,<br />
         CurData - table contains current data of the specified input channels,<br />
         CustomUrl - custom web page.
     </p>
+
     <p>Configuration of widgets of the Chart and CurData types must define input channel numbers and also identifiers of the views that include these input channels. View IDs are required for user access rights validation.</p>
 </body>
 </html>
