@@ -412,7 +412,7 @@
     <Phrase key="lblStartInCnl">Начальный</Phrase>
     <Phrase key="lblEndInCnl">Конечный</Phrase>
     <Phrase key="btnResetInCnls">Сброс</Phrase>
-    <Phrase key="gbOutCnls">Выходные каналы</Phrase>
+    <Phrase key="gbOutCnls">Каналы управления</Phrase>
     <Phrase key="lblStartOutCnl">Начальный</Phrase>
     <Phrase key="lblEndOutCnl">Конечный</Phrase>
     <Phrase key="btnResetOutCnls">Сброс</Phrase>
