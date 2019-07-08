@@ -450,34 +450,43 @@ namespace Scada.Server.Engine
                     int cnt = drCnls.Count;
                     drCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drCnlNums[i] = drCnls[i].CnlNum;
+                    }
                     
                     cnt = drmCnls.Count;
                     drmCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drmCnlNums[i] = drmCnls[i].CnlNum;
+                    }
 
                     cnt = drhCnls.Count;
                     drhCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drhCnlNums[i] = drhCnls[i].CnlNum;
+                    }
 
-                    // определение результата
+                    // вывод информации
                     if (inCnls.Count > 0)
                     {
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Входные каналы считаны из базы конфигурации. Количество активных каналов: {0}" : 
                             "Input channels are read from the configuration database. Active channel count: {0}",
                             inCnls.Count), Log.ActTypes.Action);
-                        return true;
                     }
                     else
                     {
+                        // добавление единственного канала, необходимого для работы приложения
+                        inCnls.Add(1, new InCnl { CnlNum = 1 });
+
                         AppLog.WriteAction(Localization.UseRussian ? 
                             "В базе конфигурации отсутствуют активные входные каналы" :
                             "No active input channels in the configuration database", Log.ActTypes.Error);
-                        return false;
                     }
+
+                    return true;
                 }
             }
             catch (Exception ex)

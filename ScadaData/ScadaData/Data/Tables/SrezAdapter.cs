@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2017
+ * Modified : 2019
  * 
  * --------------------------------
  * Table file structure (version 2)
@@ -180,13 +180,11 @@ namespace Scada.Data.Tables
                 }
 
                 // заполнение объекта данными
-                stream = ioStream == null ?
-                    new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite) :
-                    ioStream;
+                stream = ioStream ?? new FileStream(fileName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                 reader = new BinaryReader(stream);
 
                 DateTime date = ExtractDate(tableName); // определение даты срезов
-                SrezTable.SrezDescr srezDescr = null;              // описание среза
+                SrezTable.SrezDescr srezDescr = null;   // описание среза
                 int[] cnlNums = null; // ссылка на номера входных каналов из описания среза
                 while (stream.Position < stream.Length)
                 {
@@ -411,9 +409,8 @@ namespace Scada.Data.Tables
 
             try
             {
-                stream = ioStream == null ?
-                   new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite) :
-                   ioStream;
+                stream = ioStream ?? 
+                    new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
                 writer = new BinaryWriter(stream);
 
                 writer.Write(GetSrezDescrBuf(srez.SrezDescr));
@@ -446,9 +443,8 @@ namespace Scada.Data.Tables
 
             try
             {
-                stream = ioStream == null ?
-                   new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite) :
-                   ioStream;
+                stream = ioStream ??
+                    new FileStream(fileName, FileMode.OpenOrCreate, FileAccess.Write, FileShare.ReadWrite);
                 writer = new BinaryWriter(stream);
 
                 // запись изменённых срезов
@@ -483,7 +479,7 @@ namespace Scada.Data.Tables
                 }
 
                 // запись добавленных срезов
-                SrezTable.SrezDescr prevSrezDescr = lastSrez == null ? null : lastSrez.SrezDescr;
+                SrezTable.SrezDescr prevSrezDescr = lastSrez?.SrezDescr;
 
                 foreach (SrezTable.Srez srez in srezTable.AddedSrezList)
                 {
