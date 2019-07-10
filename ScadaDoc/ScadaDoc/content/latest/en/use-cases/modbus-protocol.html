@@ -13,7 +13,7 @@
 
     <p class="sd-article-meta">
         Written by Rapid SCADA on January 5, 2015<br />
-        Updated on October 16, 2017
+        Updated on July 10, 2019
     </p>
 
     <p>This article describes how to configure communication with devices using Modbus protocol. Simple and robust, Modbus has since become a de facto standard communication protocol, and it is now a commonly available means of connecting industrial electronic devices (see <a href="https://en.wikipedia.org/wiki/Modbus" target="_blank">Wikipedia</a>). Rapid SCADA supports Modbus RTU, ASCII and TCP modes.</p>
@@ -21,21 +21,44 @@
     <p>The general sequence of configuring:</p>
 
     <ol>
-        <li>Create an object, a communication line and devices in the configuration database using Administrator.</li>
+        <li>Create a project using the Administrator application.</li>
+        <li>Create a new object, a communication line and devices.</li>
         <li>Configure communication between Communicator and the devices.</li>
         <li>Create input channels in the configuration database according to the tags of the devices. Create output channels according to the commands.</li>
         <li>Create views (tables or schemes) to display data in the Webstation application. Define the views in the configuration database.</li>
     </ol>
 
-    <p>The following is a step by step guide to setup a new Modbus device. To ensure that the process of adding the device completely coincides with the text of the article, you have to install Rapid SCADA with the default configuration.</p>
+    <p>The following is a step by step guide to setup a new Modbus device.</p>
+
+    <h2>Creating Project</h2>
+
+    <p>Run Administrator and click the <em>New Project</em> button. Enter a project name in the dialog and click the <em>OK</em> button. The setup process fully consistent with the article if the empty project named EmptyProject.en-GB is selected as a template.</p>
+
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_new_proj_en.png" alt="Creating a project" /><br />
+        Fugire 1. Creating a project
+    </p>
 
     <h2>Preliminary Database Configuration</h2>
 
-    <p>Editing the configuration database is performed using the Administrator application.</p>
+    <p>Expand the <em>Configuration Database</em> node, open the <em>Objects</em> table and add a new row for the object 2 "Test object" (see Figure 2). Click the <img src="../../common-images/add_line.png" /> toolbar button to open the communication line wizard. Using the wizard, add the line 1 "Test line" (see Figure 3). After that click the <img src="../../common-images/add_device.png" /> button and add the device 1 "Test device" (see Figure 4).</p>
 
-    <p>Run Administrator. Open the <em>Objects</em> table and add a new line for the object 2 "Test object" (see Figure 1). Then open the <em>Communication lines</em> table and add the line 11 "Test line" (see Figure 2). After that open  the <em>Devices</em> table and add the device 101 "Test device" (see Figure 3).</p>
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_add_obj_en.png" alt="Adding an object" /><br />
+        Fugire 2. Adding an object
+    </p>
 
-    <p>Fill the following fields for the device (see Figure 3):</p>
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_add_line_en.png" alt="Adding a communication line" /><br />
+        Fugire 3. Adding a communication line
+    </p>
+
+    <p class="sd-article-image">
+        <img src="modbus-protocol-files/modbus_add_device_en.png" alt="Adding a device" /><br />
+        Fugire 4. Adding a device
+    </p>
+
+    <p>Pay attention to the following fields when adding a device:</p>
 
     <table class="sd-article-table">
         <tr>
@@ -48,7 +71,7 @@
         </tr>
         <tr>
             <td>Call number:</td>
-            <td>IP address, if the device is connected via Ethernet. Otherwise, blank</td>
+            <td>IP address, if the device is connected via Ethernet. Otherwise, leave blank</td>
         </tr>
         <tr>
             <td>Communication line:</td>
@@ -56,22 +79,7 @@
         </tr>
     </table>
 
-    <p class="sd-article-image">
-        <img src="modbus-protocol-files/modbus_table_obj_en.png" alt="Adding an object" /><br />
-        Figure 1. Adding an object
-    </p>
-
-    <p class="sd-article-image">
-        <img src="modbus-protocol-files/modbus_table_commline_en.png" alt="Adding a communication line" /><br />
-        Figure 2. Adding a communication line
-    </p>
-
-    <p class="sd-article-image">
-        <img src="modbus-protocol-files/modbus_table_kp_en.png" alt="Adding a device" /><br />
-        Figure 3. Adding a device
-    </p>
-
-    <p>When editing the configuration database is completed, it is necessary to pass it to Server by clicking the button <img src="../../common-images/pass.gif" />. To apply the changes, restart the Server service with the button <img src="../../common-images/restart_blue.gif" />.</p>
+    <p>Open the <em>Communication lines</em> and <em>Devices</em> tables to check that the communication line and device were successfully added to the tables. Make sure that the corresponding communication line and device were created in the Communicator settings.</p>
 
     <h2>Configuring Communication with Devices</h2>
 

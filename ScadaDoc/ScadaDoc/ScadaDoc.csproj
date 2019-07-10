@@ -156,6 +156,10 @@
     <Content Include="content\latest\en\software-overview\applications\table-editor-application-files\scada_table_editor_en.png" />
     <Content Include="content\latest\en\software-overview\roadmap.html" />
     <Content Include="content\latest\en\use-cases\index.html" />
+    <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_add_device_en.png" />
+    <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_add_line_en.png" />
+    <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_add_obj_en.png" />
+    <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_new_proj_en.png" />
     <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_table_itf_en.png" />
     <Content Include="content\latest\en\use-cases\modbus-protocol-files\modbus_template_settings_en.png" />
     <Content Include="content\latest\en\use-cases\opc-standard-files\comm_svc_logon_en.png" />
