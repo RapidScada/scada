@@ -13,7 +13,7 @@
 
     <p class="sd-article-meta">
         Written by Rapid SCADA on January 5, 2015<br />
-        Updated on January 25, 2017
+        Updated on July 15, 2019
     </p>
 
     <p>This article describes how to configure communication with devices using OPC standard. OPC is designed to provide a common bridge for the software and process control devices from different manufacturers (see <a href="https://en.wikipedia.org/wiki/Open_Platform_Communications" target="_blank">Wikipedia</a>). Rapid SCADA supports the following OPC specifications:</p>
@@ -23,30 +23,31 @@
         <li>OPC AE (Alarms & Events) to receive event notifications.</li>
     </ul>
 
-    <p>Rapid SCADA implementation of OPC is provided by the Communicator application, to be exact, by KpOpc.dll device library. To learn about the details of SCADA-Communicator configuring for using OPC is the goal of this article.</p>
+    <p>Rapid SCADA implementation of OPC client is provided by the Communicator application, to be exact, by KpOpc.dll driver. The goal of this article is learning about the details of Communicator configuring for using OPC.</p>
 
     <p>The general configuration sequence:</p>
 
     <ol>
         <li>Download and install OPC Core Components. These components can be found at <a href="http://opcfoundation.org/" target="_blank">opcfoundation.org</a> and <a href="http://rapidscada.org/download-all-files/" target="_blank">rapidscada.org</a>.</li>
-        <li>Create an object, a communication line and devices in the configuration database using the Administrator application.</li>
+        <il>Create a project using the Administrator application.</il>
+        <li>Create an object, a communication line and devices in the configuration database.</li>
         <li>Configure communication between Communicator and OPC servers as described in this article.</li>
         <li>Create input channels in the configuration database according to the tags of the devices. Create output channels according to the commands.</li>
         <li>Create views (tables or schemes) to display data in the Webstation application. Define the views in the configuration database.</li>
     </ol>
 
-    <p>The details of the 2nd, the 4th and the 5th steps are described in the <a href="../software-configuration/">Software Configuration</a> section. Device 21 "OPC Demo" of the default Rapid SCADA configuration is an example of using OPC. Find "OPC demo" view in Webstation to examine the received data. This example requires MatrikonOPC Explorer which includes an OPC simulation server.</p>
+    <p>The details of the above steps, excluding the step #4, are described in the <a href="../software-configuration/">Software Configuration</a> section. It is recommended to see the project DemoProject.en-GB, which is installed together with Rapid SCADA. Device 21 "OPC Demo" is an example of using OPC. The device tags are displayed by the table view OpcDemo.tbl. This example requires <a href="https://www.matrikonopc.com/downloads/178/productsoftware/index.aspx" target="_blank">MatrikonOPC Simulation Server</a>, which provides data.</p>
 
-    <p>Create a separate communication line for each OPC server that is used. It is the most efficient approach because it allows communicating with the OPC servers in parallel. Add devices to the communication lines. Set <em>Undefined</em> communication channel type for the created communication lines in Communicator.</p>
+    <p>Create a separate communication line for each OPC server that is used. This is the most efficient approach because it allows communicating with the OPC servers in parallel. Set <em>Undefined</em> communication channel type for the created communication lines in Communicator. Then add devices to the communication lines.</p>
 
-    <p>Open device configuration form to select which OPC tags to receive from OPC server. Click the <img src="../../common-images/props.png" /> button located in the device popup menu or the <em>Request Sequence</em> page to open the form that is shown in Figure 1.</p>
+    <p>Go to the Communicator settings and open the device properties. The configuration form, shown in Figure 1, allows to select which OPC tags are received from OPC server.</p>
 
     <p class="sd-article-image">
         <img src="opc-standard-files/opc_config_en.png" alt="Selecting OPC tags" /><br />
         Figure 1. Selecting OPC tags
     </p>
 
-    <p>OPC servers installed on the local computer are available to Communicator. If data from an OPC server, installed on another computer within a network, are required, deploy an extra instance of Communicator on that computer and properly configure it to connect Server.</p>
+    <p>OPC servers installed on the local computer are available to Communicator. If data from an OPC server, installed on another computer within a network, are required, deploy an extra instance of Communicator on that computer and properly configure it to connect to the Server application.</p>
 
     <p>There are two ways how to bind OPC tags to input channels of the configuration database:</p>
 
@@ -57,7 +58,7 @@
 
     <p>Select the way that is more suitable in a particular configuration of an automated system.</p>
 
-    <p>When the configuration is completed, restart the Server and Communicator services. Check OPC communication state and received data using Communicator logs (see Figure 2). If the data in Communicator seem to be true, open a browser and look for the same data in the Webstation application.</p>
+    <p>When the configuration is completed, upload the project to the server by the <img src="../../common-images/upload.png" /> button. Check OPC communication state and received data using Communicator logs (see Figure 2). If the data in Communicator seem to be true, open a browser and look for the same data in the Webstation application.</p>
 
     <p class="sd-article-image">
         <img src="opc-standard-files/opc_vals_en.png" alt="Values of OPC tags" /><br />
