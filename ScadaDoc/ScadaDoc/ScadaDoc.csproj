@@ -269,6 +269,7 @@
     <Content Include="content\latest\ru\modules\plg-map-files\map_itf_file_ru.png" />
     <Content Include="content\latest\ru\modules\plg-map-files\map_itf_tbl_ru.png" />
     <Content Include="content\latest\ru\modules\plg-map.html" />
+    <Content Include="content\latest\ru\modules\plg-notification.html" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_import_ru.png" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_line_params_ru.png" />
     <Content Include="content\latest\ru\software-configuration\communication-with-devices-files\comm_line_req_ru.png" />

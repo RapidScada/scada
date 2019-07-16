@@ -42,6 +42,7 @@ function addContents(context) {
     addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
     addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
+    addArticle(context, "modules/plg-notification.html", "Notification Plugin", 1);
 
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);

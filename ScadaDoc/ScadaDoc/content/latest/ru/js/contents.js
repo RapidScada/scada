@@ -42,6 +42,7 @@ function addContents(context) {
     addArticle(context, "modules/plg-dashboard.html", "Плагин Дэшборды", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Плагин Гибкий отчёт", 1);
     addArticle(context, "modules/plg-map.html", "Плагин Карты", 1);
+    addArticle(context, "modules/plg-notification.html", "Плагин Уведомления", 1);
 
     addArticle(context, "use-cases/", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
