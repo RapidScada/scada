@@ -131,6 +131,7 @@
     <Content Include="content\latest\en\modules\plg-map-files\map_itf_file_en.png" />
     <Content Include="content\latest\en\modules\plg-map-files\map_itf_tbl_en.png" />
     <Content Include="content\latest\en\modules\plg-map.html" />
+    <Content Include="content\latest\en\modules\plg-notification.html" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_import_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_line_params_en.png" />
     <Content Include="content\latest\en\software-configuration\communication-with-devices-files\comm_line_req_en.png" />
