@@ -93,6 +93,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ExcelRepBuilder.cs" />
+    <Compile Include="RepPeriodUnit.cs" />
+    <Compile Include="RepStartDate.cs" />
+    <Compile Include="RepUtils.cs" />
     <Compile Include="WordRepBuilder.cs" />
     <Compile Include="RepBuilder.cs" />
   </ItemGroup>
