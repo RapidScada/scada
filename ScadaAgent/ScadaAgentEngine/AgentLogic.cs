@@ -81,7 +81,7 @@ namespace Scada.Agent.Engine
         private SessionManager sessionManager; // ссылка на менджер сессий
         private AppDirs appDirs;               // директории приложения
         private ILog log;                      // журнал приложения
-        private Thread thread;                 // поток работы сервера
+        private Thread thread;                 // поток работы агента
         private volatile bool terminated;      // необходимо завершить работу потока
         private string infoFileName;           // полное имя файла информации
         private DateTime utcStartDT;           // дата и время запуска (UTC)
