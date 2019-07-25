@@ -325,12 +325,15 @@ namespace Scada.Agent.Engine
                         "Обработка логики уже запущена" :
                         "Logic processing is already started");
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при запуске обработки логики" :
                     "Error starting logic processing");
+                return false;
             }
             finally
             {
@@ -340,8 +343,6 @@ namespace Scada.Agent.Engine
                     WriteInfo();
                 }
             }
-
-            return true;
         }
 
         /// <summary>
