@@ -67,12 +67,12 @@ namespace Scada.Comm.Devices
                 return Localization.UseRussian ?
                     "Симулятор устройства.\n\n" +
                     "Команды ТУ:\n" +
-                    "4 (бинарная) - установить состояние реле,\n" +
+                    "4 (бинарная) - установить состояние реле;\n" +
                     "5 (бинарная) - установить аналоговый выход." :
 
                     "Device simulator.\n\n" +
                     "Commands:\n" +
-                    "4 (standard) - set relay state.\n" +
+                    "4 (standard) - set relay state;\n" +
                     "5 (standard) - set analog output.";
             }
         }
