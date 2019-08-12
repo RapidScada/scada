@@ -71,7 +71,7 @@ namespace Scada.Comm.Channels
             /// <summary>
             /// Check if the stop condition is satisfied.
             /// </summary>
-            public bool CheckCondition(byte[] buffer, int index)
+            public virtual bool CheckCondition(byte[] buffer, int index)
             {
                 if (StopSeq == null)
                 {
@@ -141,7 +141,7 @@ namespace Scada.Comm.Channels
             /// <summary>
             /// Проверить выполнение условия остановки.
             /// </summary>
-            public bool CheckCondition(List<string> lines, string lastLine)
+            public virtual bool CheckCondition(List<string> lines, string lastLine)
             {
                 bool stopReceived = false;
 
