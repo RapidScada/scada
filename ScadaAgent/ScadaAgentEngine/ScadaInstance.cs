@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -37,8 +37,8 @@ using Utils;
 namespace Scada.Agent.Engine
 {
     /// <summary>
-    /// Object for manipulating a system instance
-    /// <para>Объект для манипуляций с экземпляром системы</para>
+    /// Object for manipulating a system instance.
+    /// <para>Объект для манипуляций с экземпляром системы.</para>
     /// </summary>
     public class ScadaInstance
     {
@@ -538,7 +538,8 @@ namespace Scada.Agent.Engine
         /// </summary>
         public string GetAbsPath(ConfigParts configPart, AppFolder appFolder, string path)
         {
-            return Path.Combine(Settings.Directory, DirectoryBuilder.GetDirectory(configPart, appFolder), path);
+            return Path.Combine(Settings.Directory, 
+                DirectoryBuilder.GetDirectory(configPart, appFolder, Path.DirectorySeparatorChar), path);
         }
 
         /// <summary>

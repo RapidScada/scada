@@ -267,8 +267,8 @@
         </member>
         <member name="T:Scada.Agent.Engine.ScadaInstance">
             <summary>
-            Object for manipulating a system instance
-            <para>Объект для манипуляций с экземпляром системы</para>
+            Object for manipulating a system instance.
+            <para>Объект для манипуляций с экземпляром системы.</para>
             </summary>
         </member>
         <member name="T:Scada.Agent.Engine.ScadaInstance.PathList">
