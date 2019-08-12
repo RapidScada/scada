@@ -54,6 +54,7 @@ function addContents(context) {
     addArticle(context, "version-history/server-modules-history.html", "History of Server Modules", 1);
     addArticle(context, "version-history/communicator-history.html", "Communicator History", 1);
     addArticle(context, "version-history/communicator-drivers-history.html", "History of Communicator Drivers", 1);
+    addArticle(context, "version-history/agent-history.html", "Agent History", 1);
     addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
     addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
     addArticle(context, "version-history/webstation-plugins-history.html", "History of Webstation Plugins", 1);

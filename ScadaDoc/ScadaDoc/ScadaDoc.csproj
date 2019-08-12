@@ -175,6 +175,7 @@
     <Content Include="content\latest\en\use-cases\opc-standard-files\dcom_config_en.png" />
     <Content Include="content\latest\en\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\latest\en\use-cases\opc-standard-files\opc_vals_en.png" />
+    <Content Include="content\latest\en\version-history\agent-history.html" />
     <Content Include="content\latest\en\version-history\administrator-history.html" />
     <Content Include="content\latest\en\version-history\communicator-drivers-history.html" />
     <Content Include="content\latest\en\version-history\communicator-history.html" />
@@ -382,6 +383,7 @@
     <Content Include="content\latest\ru\use-cases\opc-standard-files\opc_config_ru.png" />
     <Content Include="content\latest\ru\use-cases\opc-standard-files\opc_vals_ru.png" />
     <Content Include="content\latest\ru\use-cases\opc-standard.html" />
+    <Content Include="content\latest\ru\version-history\agent-history.html" />
     <Content Include="content\latest\ru\version-history\communicator-drivers-history.html" />
     <Content Include="content\latest\ru\version-history\index.html" />
     <Content Include="content\latest\ru\version-history\server-modules-history.html" />
