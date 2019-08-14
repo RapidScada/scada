@@ -183,7 +183,7 @@ scada.utils = {
 
     // Check if browser is in fullscreen mode
     isRealFullscreen: function () {
-        return screen.height - window.innerHeight <= 1;
+        return screen.height - window.top.innerHeight <= 1;
     },
 
     // Switch browser to fullscreen mode
