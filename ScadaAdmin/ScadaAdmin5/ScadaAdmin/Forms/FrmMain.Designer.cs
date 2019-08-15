@@ -358,7 +358,7 @@
             this.miToolsOptions,
             this.miToolsCulture});
             this.miTools.Name = "miTools";
-            this.miTools.Size = new System.Drawing.Size(47, 20);
+            this.miTools.Size = new System.Drawing.Size(46, 20);
             this.miTools.Text = "&Tools";
             // 
             // miToolsAddLine
@@ -479,7 +479,7 @@
             // 
             this.miHelpDoc.Image = ((System.Drawing.Image)(resources.GetObject("miHelpDoc.Image")));
             this.miHelpDoc.Name = "miHelpDoc";
-            this.miHelpDoc.Size = new System.Drawing.Size(169, 22);
+            this.miHelpDoc.Size = new System.Drawing.Size(168, 22);
             this.miHelpDoc.Text = "Documentation";
             this.miHelpDoc.Click += new System.EventHandler(this.miHelpDoc_Click);
             // 
@@ -487,20 +487,20 @@
             // 
             this.miHelpSupport.Image = ((System.Drawing.Image)(resources.GetObject("miHelpSupport.Image")));
             this.miHelpSupport.Name = "miHelpSupport";
-            this.miHelpSupport.Size = new System.Drawing.Size(169, 22);
+            this.miHelpSupport.Size = new System.Drawing.Size(168, 22);
             this.miHelpSupport.Text = "Technical Support";
             this.miHelpSupport.Click += new System.EventHandler(this.miHelpSupport_Click);
             // 
             // miHelpSep1
             // 
             this.miHelpSep1.Name = "miHelpSep1";
-            this.miHelpSep1.Size = new System.Drawing.Size(166, 6);
+            this.miHelpSep1.Size = new System.Drawing.Size(165, 6);
             // 
             // miHelpAbout
             // 
             this.miHelpAbout.Image = ((System.Drawing.Image)(resources.GetObject("miHelpAbout.Image")));
             this.miHelpAbout.Name = "miHelpAbout";
-            this.miHelpAbout.Size = new System.Drawing.Size(169, 22);
+            this.miHelpAbout.Size = new System.Drawing.Size(168, 22);
             this.miHelpAbout.Text = "About";
             this.miHelpAbout.Click += new System.EventHandler(this.miHelpAbout_Click);
             // 
@@ -866,14 +866,14 @@
             this.miInstanceRename,
             this.miInstanceProperties});
             this.cmsInstance.Name = "cmsCommLine";
-            this.cmsInstance.Size = new System.Drawing.Size(219, 280);
+            this.cmsInstance.Size = new System.Drawing.Size(220, 280);
             this.cmsInstance.Opening += new System.ComponentModel.CancelEventHandler(this.cmsInstance_Opening);
             // 
             // miInstanceAdd
             // 
             this.miInstanceAdd.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceAdd.Image")));
             this.miInstanceAdd.Name = "miInstanceAdd";
-            this.miInstanceAdd.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceAdd.Size = new System.Drawing.Size(219, 22);
             this.miInstanceAdd.Text = "Add Instance...";
             this.miInstanceAdd.Click += new System.EventHandler(this.miInstanceAdd_Click);
             // 
@@ -881,7 +881,7 @@
             // 
             this.miInstanceMoveUp.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveUp.Image")));
             this.miInstanceMoveUp.Name = "miInstanceMoveUp";
-            this.miInstanceMoveUp.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceMoveUp.Size = new System.Drawing.Size(219, 22);
             this.miInstanceMoveUp.Text = "Move Instance Up";
             this.miInstanceMoveUp.Click += new System.EventHandler(this.miInstanceMoveUp_Click);
             // 
@@ -889,7 +889,7 @@
             // 
             this.miInstanceMoveDown.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceMoveDown.Image")));
             this.miInstanceMoveDown.Name = "miInstanceMoveDown";
-            this.miInstanceMoveDown.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceMoveDown.Size = new System.Drawing.Size(219, 22);
             this.miInstanceMoveDown.Text = "Move Instance Down";
             this.miInstanceMoveDown.Click += new System.EventHandler(this.miInstanceMoveDown_Click);
             // 
@@ -897,20 +897,20 @@
             // 
             this.miInstanceDelete.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceDelete.Image")));
             this.miInstanceDelete.Name = "miInstanceDelete";
-            this.miInstanceDelete.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceDelete.Size = new System.Drawing.Size(219, 22);
             this.miInstanceDelete.Text = "Delete Instance";
             this.miInstanceDelete.Click += new System.EventHandler(this.miInstanceDelete_Click);
             // 
             // miInstanceSep1
             // 
             this.miInstanceSep1.Name = "miInstanceSep1";
-            this.miInstanceSep1.Size = new System.Drawing.Size(215, 6);
+            this.miInstanceSep1.Size = new System.Drawing.Size(216, 6);
             // 
             // miInstanceProfile
             // 
             this.miInstanceProfile.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProfile.Image")));
             this.miInstanceProfile.Name = "miInstanceProfile";
-            this.miInstanceProfile.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceProfile.Size = new System.Drawing.Size(219, 22);
             this.miInstanceProfile.Text = "Deployment Profile...";
             this.miInstanceProfile.Click += new System.EventHandler(this.miDeployInstanceProfile_Click);
             // 
@@ -918,7 +918,7 @@
             // 
             this.miInstanceDownloadConfig.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceDownloadConfig.Image")));
             this.miInstanceDownloadConfig.Name = "miInstanceDownloadConfig";
-            this.miInstanceDownloadConfig.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceDownloadConfig.Size = new System.Drawing.Size(219, 22);
             this.miInstanceDownloadConfig.Text = "Download Configuration...";
             this.miInstanceDownloadConfig.Click += new System.EventHandler(this.miDeployDownloadConfig_Click);
             // 
@@ -926,7 +926,7 @@
             // 
             this.miInstanceUploadConfig.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceUploadConfig.Image")));
             this.miInstanceUploadConfig.Name = "miInstanceUploadConfig";
-            this.miInstanceUploadConfig.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceUploadConfig.Size = new System.Drawing.Size(219, 22);
             this.miInstanceUploadConfig.Text = "Upload Configuration...";
             this.miInstanceUploadConfig.Click += new System.EventHandler(this.miDeployUploadConfig_Click);
             // 
@@ -934,20 +934,20 @@
             // 
             this.miInstanceStatus.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceStatus.Image")));
             this.miInstanceStatus.Name = "miInstanceStatus";
-            this.miInstanceStatus.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceStatus.Size = new System.Drawing.Size(219, 22);
             this.miInstanceStatus.Text = "Instance Status...";
             this.miInstanceStatus.Click += new System.EventHandler(this.miDeployInstanceStatus_Click);
             // 
             // miInstanceSep2
             // 
             this.miInstanceSep2.Name = "miInstanceSep2";
-            this.miInstanceSep2.Size = new System.Drawing.Size(215, 6);
+            this.miInstanceSep2.Size = new System.Drawing.Size(216, 6);
             // 
             // miInstanceOpenInExplorer
             // 
             this.miInstanceOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceOpenInExplorer.Image")));
             this.miInstanceOpenInExplorer.Name = "miInstanceOpenInExplorer";
-            this.miInstanceOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceOpenInExplorer.Size = new System.Drawing.Size(219, 22);
             this.miInstanceOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miInstanceOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
@@ -955,7 +955,7 @@
             // 
             this.miInstanceOpenInBrowser.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceOpenInBrowser.Image")));
             this.miInstanceOpenInBrowser.Name = "miInstanceOpenInBrowser";
-            this.miInstanceOpenInBrowser.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceOpenInBrowser.Size = new System.Drawing.Size(219, 22);
             this.miInstanceOpenInBrowser.Text = "Open in Web Browser";
             this.miInstanceOpenInBrowser.Click += new System.EventHandler(this.miInstanceOpenInBrowser_Click);
             // 
@@ -963,7 +963,7 @@
             // 
             this.miInstanceRename.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceRename.Image")));
             this.miInstanceRename.Name = "miInstanceRename";
-            this.miInstanceRename.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceRename.Size = new System.Drawing.Size(219, 22);
             this.miInstanceRename.Text = "Rename Instance";
             this.miInstanceRename.Click += new System.EventHandler(this.miInstanceRename_Click);
             // 
@@ -971,7 +971,7 @@
             // 
             this.miInstanceProperties.Image = ((System.Drawing.Image)(resources.GetObject("miInstanceProperties.Image")));
             this.miInstanceProperties.Name = "miInstanceProperties";
-            this.miInstanceProperties.Size = new System.Drawing.Size(218, 22);
+            this.miInstanceProperties.Size = new System.Drawing.Size(219, 22);
             this.miInstanceProperties.Text = "Properties";
             this.miInstanceProperties.Click += new System.EventHandler(this.miInstanceProperties_Click);
             // 
@@ -982,13 +982,13 @@
             this.miProjectRename,
             this.miProjectProperties});
             this.cmsProject.Name = "cmsCommLine";
-            this.cmsProject.Size = new System.Drawing.Size(219, 70);
+            this.cmsProject.Size = new System.Drawing.Size(220, 70);
             // 
             // miProjectOpenInExplorer
             // 
             this.miProjectOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miProjectOpenInExplorer.Image")));
             this.miProjectOpenInExplorer.Name = "miProjectOpenInExplorer";
-            this.miProjectOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miProjectOpenInExplorer.Size = new System.Drawing.Size(219, 22);
             this.miProjectOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miProjectOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
@@ -996,7 +996,7 @@
             // 
             this.miProjectRename.Image = ((System.Drawing.Image)(resources.GetObject("miProjectRename.Image")));
             this.miProjectRename.Name = "miProjectRename";
-            this.miProjectRename.Size = new System.Drawing.Size(218, 22);
+            this.miProjectRename.Size = new System.Drawing.Size(219, 22);
             this.miProjectRename.Text = "Rename Project";
             this.miProjectRename.Click += new System.EventHandler(this.miProjectRename_Click);
             // 
@@ -1004,7 +1004,7 @@
             // 
             this.miProjectProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProjectProperties.Image")));
             this.miProjectProperties.Name = "miProjectProperties";
-            this.miProjectProperties.Size = new System.Drawing.Size(218, 22);
+            this.miProjectProperties.Size = new System.Drawing.Size(219, 22);
             this.miProjectProperties.Text = "Properties";
             this.miProjectProperties.Click += new System.EventHandler(this.miProjectProperties_Click);
             // 
@@ -1020,14 +1020,14 @@
             this.miDirectoryOpenInExplorer,
             this.miDirectoryRefresh});
             this.cmsDirectory.Name = "cmsDirectory";
-            this.cmsDirectory.Size = new System.Drawing.Size(219, 148);
+            this.cmsDirectory.Size = new System.Drawing.Size(220, 148);
             this.cmsDirectory.Opening += new System.ComponentModel.CancelEventHandler(this.cmsDirectory_Opening);
             // 
             // miDirectoryNewFile
             // 
             this.miDirectoryNewFile.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryNewFile.Image")));
             this.miDirectoryNewFile.Name = "miDirectoryNewFile";
-            this.miDirectoryNewFile.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryNewFile.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryNewFile.Text = "New File...";
             this.miDirectoryNewFile.Click += new System.EventHandler(this.miDirectoryNewFile_Click);
             // 
@@ -1035,20 +1035,20 @@
             // 
             this.miDirectoryNewFolder.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryNewFolder.Image")));
             this.miDirectoryNewFolder.Name = "miDirectoryNewFolder";
-            this.miDirectoryNewFolder.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryNewFolder.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryNewFolder.Text = "New Folder...";
             this.miDirectoryNewFolder.Click += new System.EventHandler(this.miDirectoryNewFolder_Click);
             // 
             // miDirectorySep1
             // 
             this.miDirectorySep1.Name = "miDirectorySep1";
-            this.miDirectorySep1.Size = new System.Drawing.Size(215, 6);
+            this.miDirectorySep1.Size = new System.Drawing.Size(216, 6);
             // 
             // miDirectoryDelete
             // 
             this.miDirectoryDelete.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryDelete.Image")));
             this.miDirectoryDelete.Name = "miDirectoryDelete";
-            this.miDirectoryDelete.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryDelete.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryDelete.Text = "Delete";
             this.miDirectoryDelete.Click += new System.EventHandler(this.miDirectoryDelete_Click);
             // 
@@ -1056,20 +1056,20 @@
             // 
             this.miDirectoryRename.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryRename.Image")));
             this.miDirectoryRename.Name = "miDirectoryRename";
-            this.miDirectoryRename.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryRename.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryRename.Text = "Rename";
             this.miDirectoryRename.Click += new System.EventHandler(this.miDirectoryRename_Click);
             // 
             // miDirectorySep2
             // 
             this.miDirectorySep2.Name = "miDirectorySep2";
-            this.miDirectorySep2.Size = new System.Drawing.Size(215, 6);
+            this.miDirectorySep2.Size = new System.Drawing.Size(216, 6);
             // 
             // miDirectoryOpenInExplorer
             // 
             this.miDirectoryOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryOpenInExplorer.Image")));
             this.miDirectoryOpenInExplorer.Name = "miDirectoryOpenInExplorer";
-            this.miDirectoryOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryOpenInExplorer.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miDirectoryOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
@@ -1077,7 +1077,7 @@
             // 
             this.miDirectoryRefresh.Image = ((System.Drawing.Image)(resources.GetObject("miDirectoryRefresh.Image")));
             this.miDirectoryRefresh.Name = "miDirectoryRefresh";
-            this.miDirectoryRefresh.Size = new System.Drawing.Size(218, 22);
+            this.miDirectoryRefresh.Size = new System.Drawing.Size(219, 22);
             this.miDirectoryRefresh.Text = "Refresh";
             this.miDirectoryRefresh.Click += new System.EventHandler(this.miDirectoryRefresh_Click);
             // 
@@ -1090,14 +1090,14 @@
             this.miFileItemDelete,
             this.miFileItemRename});
             this.cmsFileItem.Name = "cmsFileItem";
-            this.cmsFileItem.Size = new System.Drawing.Size(232, 98);
+            this.cmsFileItem.Size = new System.Drawing.Size(233, 98);
             this.cmsFileItem.Opening += new System.ComponentModel.CancelEventHandler(this.cmsFileItem_Opening);
             // 
             // miFileItemOpen
             // 
             this.miFileItemOpen.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemOpen.Image")));
             this.miFileItemOpen.Name = "miFileItemOpen";
-            this.miFileItemOpen.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemOpen.Size = new System.Drawing.Size(232, 22);
             this.miFileItemOpen.Text = "Open";
             this.miFileItemOpen.Click += new System.EventHandler(this.miFileItemOpen_Click);
             // 
@@ -1105,20 +1105,20 @@
             // 
             this.miFileItemOpenLocation.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemOpenLocation.Image")));
             this.miFileItemOpenLocation.Name = "miFileItemOpenLocation";
-            this.miFileItemOpenLocation.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemOpenLocation.Size = new System.Drawing.Size(232, 22);
             this.miFileItemOpenLocation.Text = "Open Location in File Explorer";
             this.miFileItemOpenLocation.Click += new System.EventHandler(this.miFileItemOpenLocation_Click);
             // 
             // miFileItemSep1
             // 
             this.miFileItemSep1.Name = "miFileItemSep1";
-            this.miFileItemSep1.Size = new System.Drawing.Size(228, 6);
+            this.miFileItemSep1.Size = new System.Drawing.Size(229, 6);
             // 
             // miFileItemDelete
             // 
             this.miFileItemDelete.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemDelete.Image")));
             this.miFileItemDelete.Name = "miFileItemDelete";
-            this.miFileItemDelete.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemDelete.Size = new System.Drawing.Size(232, 22);
             this.miFileItemDelete.Text = "Delete";
             this.miFileItemDelete.Click += new System.EventHandler(this.miFileItemDelete_Click);
             // 
@@ -1126,7 +1126,7 @@
             // 
             this.miFileItemRename.Image = ((System.Drawing.Image)(resources.GetObject("miFileItemRename.Image")));
             this.miFileItemRename.Name = "miFileItemRename";
-            this.miFileItemRename.Size = new System.Drawing.Size(231, 22);
+            this.miFileItemRename.Size = new System.Drawing.Size(232, 22);
             this.miFileItemRename.Text = "Rename";
             this.miFileItemRename.Click += new System.EventHandler(this.miFileItemRename_Click);
             // 
@@ -1135,13 +1135,13 @@
             this.cmsServer.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miServerOpenInExplorer});
             this.cmsServer.Name = "cmsServer";
-            this.cmsServer.Size = new System.Drawing.Size(219, 26);
+            this.cmsServer.Size = new System.Drawing.Size(220, 26);
             // 
             // miServerOpenInExplorer
             // 
             this.miServerOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miServerOpenInExplorer.Image")));
             this.miServerOpenInExplorer.Name = "miServerOpenInExplorer";
-            this.miServerOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miServerOpenInExplorer.Size = new System.Drawing.Size(219, 22);
             this.miServerOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miServerOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
@@ -1150,13 +1150,13 @@
             this.cmsComm.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.miCommOpenInExplorer});
             this.cmsComm.Name = "cmsServer";
-            this.cmsComm.Size = new System.Drawing.Size(219, 26);
+            this.cmsComm.Size = new System.Drawing.Size(220, 26);
             // 
             // miCommOpenInExplorer
             // 
             this.miCommOpenInExplorer.Image = ((System.Drawing.Image)(resources.GetObject("miCommOpenInExplorer.Image")));
             this.miCommOpenInExplorer.Name = "miCommOpenInExplorer";
-            this.miCommOpenInExplorer.Size = new System.Drawing.Size(218, 22);
+            this.miCommOpenInExplorer.Size = new System.Drawing.Size(219, 22);
             this.miCommOpenInExplorer.Text = "Open Folder in File Explorer";
             this.miCommOpenInExplorer.Click += new System.EventHandler(this.miDirectoryOpenInExplorer_Click);
             // 
@@ -1228,7 +1228,6 @@
             this.Name = "FrmMain";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Administrator";
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmMain_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FrmMain_FormClosed);
             this.Load += new System.EventHandler(this.FrmMain_Load);

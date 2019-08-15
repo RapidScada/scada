@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Text;
 using System.Threading;
@@ -324,6 +325,22 @@ namespace Scada.UI
             {
                 Monitor.Exit(listBox);
             }
+        }
+
+        /// <summary>
+        /// Tests whether the specified area is visible on any of the available screens.
+        /// </summary>
+        public static bool IsAreaVisible(int x, int y, int width, int height)
+        {
+            Rectangle rect = new Rectangle(x, y, width, height);
+
+            foreach (Screen screen in Screen.AllScreens)
+            {
+                if (screen.Bounds.IntersectsWith(rect))
+                    return true;
+            }
+
+            return false;
         }
 
         /// <summary>
