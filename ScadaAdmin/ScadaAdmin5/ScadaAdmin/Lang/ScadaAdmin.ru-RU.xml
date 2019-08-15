@@ -687,6 +687,8 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmStartPage">
     <Phrase key="this">Стартовая страница</Phrase>
+    <Phrase key="miRemoveFromList">Удалить из списка</Phrase>
+    <Phrase key="miCopyPath">Копировать путь</Phrase>
     <Phrase key="lblRecentProjects">Недавние проекты</Phrase>
     <Phrase key="lblNoRecentProjects">Недавние проекты отсутствуют</Phrase>
     <Phrase key="btnNewProject">Новый проект</Phrase>
