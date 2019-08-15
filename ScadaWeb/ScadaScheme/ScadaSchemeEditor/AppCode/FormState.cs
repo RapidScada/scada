@@ -237,7 +237,7 @@ namespace Scada.Scheme.Editor
             if (form == null)
                 throw new ArgumentNullException("form");
 
-            if (IsEmpty || !ScadaUiUtils.IsAreaVisible(Left, Top, Width, Height))
+            if (IsEmpty || !ScadaUiUtils.AreaIsVisible(Left, Top, Width, Height))
             {
                 int adj = CalcFormAdj(form);
                 form.Left = -adj;

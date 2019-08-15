@@ -142,7 +142,7 @@ namespace Scada.Admin.App.Code
             if (form == null)
                 throw new ArgumentNullException("form");
 
-            if (!IsEmpty && ScadaUiUtils.IsAreaVisible(Left, Top, Width, Height))
+            if (!IsEmpty && ScadaUiUtils.AreaIsVisible(Left, Top, Width, Height))
             {
                 form.SetBounds(Left, Top, Width, Height);
                 form.WindowState = Maximized ? FormWindowState.Maximized : FormWindowState.Normal;

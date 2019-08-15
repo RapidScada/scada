@@ -330,7 +330,7 @@ namespace Scada.UI
         /// <summary>
         /// Tests whether the specified area is visible on any of the available screens.
         /// </summary>
-        public static bool IsAreaVisible(int x, int y, int width, int height)
+        public static bool AreaIsVisible(int x, int y, int width, int height)
         {
             Rectangle rect = new Rectangle(x, y, width, height);
 
