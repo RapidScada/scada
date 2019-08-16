@@ -26,6 +26,7 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.Comm;
+using Scada.Comm.Devices;
 using Scada.Comm.Shell.Code;
 using Scada.Data.Entities;
 using Scada.Data.Tables;
@@ -42,8 +43,9 @@ namespace Scada.Admin.App.Forms.Tools
     /// </summary>
     public partial class FrmCommImport : Form
     {
-        private readonly ScadaProject project; // the project under development
-        private readonly Instance instance;    // the import destination instance
+        private readonly ScadaProject project;            // the project under development
+        private readonly Instance instance;               // the import destination instance
+        private readonly CommEnvironment commEnvironment; // the Communicator environment
 
 
         /// <summary>
@@ -57,11 +59,12 @@ namespace Scada.Admin.App.Forms.Tools
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmCommImport(ScadaProject project, Instance instance)
+        public FrmCommImport(ScadaProject project, Instance instance, CommEnvironment commEnvironment)
             : this()
         {
             this.project = project ?? throw new ArgumentNullException("project");
             this.instance = instance ?? throw new ArgumentNullException("instance");
+            this.commEnvironment = commEnvironment ?? throw new ArgumentNullException("commEnvironment");
 
             CommLineSettings = null;
             ImportedCommLines = null;
@@ -177,6 +180,10 @@ namespace Scada.Admin.App.Forms.Tools
                             Settings.KP kpSettings = SettingsConverter.CreateKP(kpEntity, 
                                 project.ConfigBase.KPTypeTable);
                             kpSettings.Parent = commLineSettings;
+
+                            if (commEnvironment.TryGetKPView(kpSettings, true, null, out KPView kpView, out string errMsg))
+                                kpSettings.SetReqParams(kpView.DefaultReqParams);
+
                             commLineSettings.ReqSequence.Add(kpSettings);
                             ImportedDevices.Add(kpSettings);
                         }

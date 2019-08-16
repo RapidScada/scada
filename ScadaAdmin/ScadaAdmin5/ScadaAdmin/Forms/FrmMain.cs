@@ -2280,8 +2280,8 @@ namespace Scada.Admin.App.Forms
             if (selectedNode != null &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                FrmCommImport frmCommImport = new FrmCommImport(project, liveInstance.Instance);
                 CommEnvironment commEnv = liveInstance.CommEnvironment;
+                FrmCommImport frmCommImport = new FrmCommImport(project, liveInstance.Instance, commEnv);
                 TreeNode lastAddedNode = null;
 
                 if (selectedNode.TagIs(CommNodeType.CommLines))
@@ -2307,9 +2307,6 @@ namespace Scada.Admin.App.Forms
                     {
                         foreach (Comm.Settings.KP kpSettings in frmCommImport.ImportedDevices)
                         {
-                            if (commEnv.TryGetKPView(kpSettings, true, null, out KPView kpView, out string errMsg))
-                                kpSettings.SetReqParams(kpView.DefaultReqParams);
-
                             TreeNode kpNode = commShell.CreateDeviceNode(kpSettings, commLineSettings, commEnv);
                             selectedNode.Nodes.Add(kpNode);
                             lastAddedNode = kpNode;
