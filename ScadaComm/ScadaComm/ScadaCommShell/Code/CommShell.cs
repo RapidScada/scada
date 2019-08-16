@@ -50,6 +50,7 @@ namespace Scada.Comm.Shell.Code
                 { "comm_device.png", Resources.comm_device },
                 { "comm_driver.png", Resources.comm_driver },
                 { "comm_line.png", Resources.comm_line },
+                { "comm_line_inactive.png", Resources.comm_line_inactive },
                 { "comm_lines.png", Resources.comm_lines },
                 { "comm_params.png", Resources.comm_params },
                 { "comm_stats.png", Resources.comm_stats }
@@ -133,11 +134,12 @@ namespace Scada.Comm.Shell.Code
         /// </summary>
         public TreeNode CreateCommLineNode(Settings.CommLine commLine, CommEnvironment environment)
         {
+            string commLineImageKey = commLine.Active ? "comm_line.png" : "comm_line_inactive.png";
             TreeNode commLineNode = new TreeNode(string.Format(CommShellPhrases.CommLineNode,
                 commLine.Number, commLine.Name))
             {
-                ImageKey = "comm_line.png",
-                SelectedImageKey = "comm_line.png",
+                ImageKey = commLineImageKey,
+                SelectedImageKey = commLineImageKey,
                 Tag = new TreeNodeTag()
                 {
                     RelatedObject = commLine,
@@ -200,6 +202,7 @@ namespace Scada.Comm.Shell.Code
 
             // update text of the line node
             Settings.CommLine commLine = (Settings.CommLine)((TreeNodeTag)commLineNode.Tag).RelatedObject;
+            commLineNode.SetImageKey(commLine.Active ? "comm_line.png" : "comm_line_inactive.png");
             commLineNode.Text = string.Format(CommShellPhrases.CommLineNode, commLine.Number, commLine.Name);
 
             // remove the existing device nodes
