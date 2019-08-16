@@ -278,6 +278,7 @@
     <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTable">
+    <Phrase key="miProperties">Properties</Phrase>
     <Phrase key="btnCloseError">Close</Phrase>
     <Phrase key="btnMoveFirst.ToolTip">Move First</Phrase>
     <Phrase key="btnMovePrevious.ToolTip">Move Previous</Phrase>

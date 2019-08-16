@@ -29,6 +29,7 @@ using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
@@ -723,7 +724,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName, null, cmsTable);
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -873,6 +874,25 @@ namespace Scada.Admin.App.Forms.Tables
                         EndEdit();
                     }
                 }
+            }
+        }
+
+        private void dataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int colInd = e.ColumnIndex;
+            int rowInd = e.RowIndex;
+
+            if (0 <= rowInd && rowInd < dataGridView.RowCount &&
+                0 <= colInd && colInd < dataGridView.ColumnCount &&
+                e.Button == MouseButtons.Right && e.Clicks == 1 &&
+                (dataGridView.CurrentCell == null || !dataGridView.CurrentCell.IsInEditMode))
+            {
+                // select cell on right-click
+                dataGridView.CurrentCell = dataGridView[colInd, rowInd];
+
+                // show context menu
+                if (ProperiesAvailable)
+                    cmsTable.Show(MousePosition);
             }
         }
 

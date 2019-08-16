@@ -61,11 +61,14 @@
             this.lblError = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.cmsTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miProperties = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pnlError.SuspendLayout();
+            this.cmsTable.SuspendLayout();
             this.SuspendLayout();
             // 
             // bindingNavigator
@@ -316,6 +319,7 @@
             this.dataGridView.TabIndex = 2;
             this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
             this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
+            this.dataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseClick);
             this.dataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView_CellValidating);
             this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
             this.dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView_EditingControlShowing);
@@ -358,6 +362,21 @@
             this.lblError.Text = "Error message";
             this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // cmsTable
+            // 
+            this.cmsTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miProperties});
+            this.cmsTable.Name = "cmsTable";
+            this.cmsTable.Size = new System.Drawing.Size(181, 48);
+            // 
+            // miProperties
+            // 
+            this.miProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProperties.Image")));
+            this.miProperties.Name = "miProperties";
+            this.miProperties.Size = new System.Drawing.Size(180, 22);
+            this.miProperties.Text = "Properties";
+            this.miProperties.Click += new System.EventHandler(this.btnProperties_Click);
+            // 
             // FrmBaseTable
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -379,6 +398,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.pnlError.ResumeLayout(false);
+            this.cmsTable.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -417,5 +437,7 @@
         private System.Windows.Forms.ToolStripButton btnProperties;
         private System.Windows.Forms.BindingSource bindingSource;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.ContextMenuStrip cmsTable;
+        private System.Windows.Forms.ToolStripMenuItem miProperties;
     }
 }

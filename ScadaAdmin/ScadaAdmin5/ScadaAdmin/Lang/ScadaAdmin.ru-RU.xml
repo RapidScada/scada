@@ -278,6 +278,7 @@
     <Phrase key="UploadConfigError">Ошибка при передачи конфигурации</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTable">
+    <Phrase key="miProperties">Свойства</Phrase>
     <Phrase key="btnCloseError">Закрыть</Phrase>
     <Phrase key="btnMoveFirst.ToolTip">Переместиться в начало</Phrase>
     <Phrase key="btnMovePrevious.ToolTip">Переместиться на предыдущую строку</Phrase>
