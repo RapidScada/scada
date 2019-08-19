@@ -1,0 +1,41 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Creating Views - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Creating Views</h1>
+
+    <p>View is a form of data representation in the Webstation application. There are 2 types of views supported by default: table views and schemes. Support for other types of views can be added by installing additional plugins.</p>
+
+    <p><a href="../software-overview/applications/table-editor-application.html">Table Editor</a> and <a href="../software-overview/applications/scheme-editor-application.html">Scheme Editor</a> are designed to create views. Views are saved to files that must be located in the interface directory of a project. At run time, views are located in the interface directory specified in the Server application settings, or in its subdirectories, by default C:\SCADA\Interface\</p>
+
+    <p>Examples of view files:<br />
+        Interface\Servers\ServerRoom.sch - scheme,<br />
+        Interface\Servers\ServerRoom.tbl - table view.</p>
+
+    <p>To open a dialog for creating a view, select the <em>New file</em> context menu item (see Figure 1 and 2). Then in the dialog form, select the type of view, specify the file name and click the <em>OK</em> button. The created file will be displayed in the project explorer. By double-clicking on the corresponding tree node, the view is opened by the editor.</p>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_menu_en.png" alt="Menu to create a view" /><br />
+        Figure 1. Menu to create a view
+    </p>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_new_file_en.png" alt="View creation dialog" /><br />
+        Figure 2. View creation dialog
+    </p>
+
+    <p>After view files are created, they must be specified in the <em>Interface</em> table of the configuration database, as shown in Figure 3. View identifiers must be unique. The view path is relative to the interface directory. The text specified in the <em>Title</em> column is displayed as a node text in the explorer tree of Webstation, and identifiers determine the sorting of the views. If view files are located in the subdirectories of the interface directory, these subdirectories must also be specified in the <em>Interface</em> table.</p>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_table_en.png" alt="Editing the Interface table" /><br />
+        Figure 3. Editing the Interface table
+    </p>
+</body>
+</html>

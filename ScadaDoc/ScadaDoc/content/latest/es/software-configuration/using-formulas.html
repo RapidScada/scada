@@ -1,0 +1,194 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Using Formulas - Rapid SCADA Documentatio</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Using Formulas</h1>
+
+    <p>Formulas are used for calculating values and statuses of input channels and calculating values of commands. Formulas processing is performed by the Server application.</p>
+
+    <p>Formulas are enterd in the <em>Formula</em> column of the <em>Input channels</em> and <em>Output channels</em> tables of the configuration database. To enable the formula, tick the checkbox in the <em>Formula used</em> column. The <em>Formulas</em> table contains additional functions and data structures which can be used in formulas for input and output channels.</p>
+
+    <h2>Formula Writing Rules</h2>
+
+    <p>The general rules of writing and using formulas:</p>
+
+    <ol>
+        <li>Formulas use <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/" target="_blank">the expressions syntax of C# language</a>. Many of Microsoft .NET classes are accessible, for example, Math and DateTime classes.</li>
+        <li>New constants, fields, properties and methods can be added to use in formulas.</li>
+        <li>If at least one formula contains an error, Server operation is impossible. Information about errors in formulas is written in the Server application log.</li>
+    </ol>
+
+    <p>The rules for calculating input channel formulas:</p>
+
+    <ol>
+        <li>Channels of the <em>Discrete</em> and <em>Real</em> types are calculated when the channels data are received by Server. Use these channel types if formula does not refer to data of other channels.</li>
+        <li>Channels of the <em>Calculated *</em> and <em>Switching counter</em> types are calculated permanently in order according to the channel numbers. A formula of a calculated channel usually refers to data of other channels.</li>
+        <li>Channels of the <em>Minute *</em> and <em>Hourly *</em> types are calculated periodically, once per minute or once per hour. Use these channel types to create accumulated values, for example, energy consumption or operating time.</li>
+        <li>For channels of the <em>Discrete</em> and <em>Real</em> types statuses of the channels after calculating are equal to the statuses of these channels received by Server if status calculation does not specified explicitly.</li>
+        <li>The statuses of the other types of channels are set to <em>Defined</em> if status calculation does not specified explicitly.</li>
+        <li>An input channel formula that does not contain &quot;;&quot; (semicolon) symbol calculates the input channel value only.</li>
+        <li>If an input channel formula contains &quot;;&quot;, the formula calculates the input channel value and status. The first part before semicolon is a formula for value calculation and the second part after semicolon calculates status.</li>
+        <li>If the channel limits are specified, the channel status is recalculated taking the limits into account after calculating the channel formula.</li>
+        <li>A formula for calculating a channel value must return a real number of the <em>double</em> type, and the formula for calculating the status returns an integer having the <em>int</em> type.</li>
+    </ol>
+
+    <p>The rules for calculating output channel formulas:</p>
+
+    <ol>
+        <li>Formulas are processed for output channels having the <em>Standard</em> and <em>Binary</em> command types.</li>
+        <li>A formula for calculating the value of a standard command must return a real number of the <em>double</em> type, and the formula for calculating data of a binary command returns an array of bytes of the <em>byte[]</em> type.</li>
+    </ol>
+
+    <h2>Existing Formulas</h2>
+
+    <p>The variables accessible in formulas:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Variable</th>
+            <th>Value Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>CnlVal, Cnl</td>
+            <td>double</td>
+            <td>The input channel value transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CnlStat</td>
+            <td>int</td>
+            <td>The input channel status transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CmdVal, Cmd</td>
+            <td>double</td>
+            <td>The command value transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CmdData</td>
+            <td>byte[]</td>
+            <td>The command data transmitted to Server before calculation</td>
+        </tr>
+        <tr>
+            <td>CnlNum</td>
+            <td>int</td>
+            <td>The channel number for which the formula is calculated</td>
+        </tr>
+        <tr>
+            <td>E</td>
+            <td>double</td>
+            <td>The natural logarithmic base, specified by the constant, e</td>
+        </tr>
+        <tr>
+            <td>PI</td>
+            <td>double</td>
+            <td>The ratio of the circumference of a circle to its diameter, specified by the constant, π</td>
+        </tr>
+    </table>
+
+    <p>The functions accessible in formulas:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Fucntion</th>
+            <th>Value Type</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>N(n)</td>
+            <td>int</td>
+            <td>Returns the specified channel number for updating numbers on cloning</td>
+        </tr>
+        <tr>
+            <td>Val()</td>
+            <td>double</td>
+            <td>Gets the current value of the formula channel</td>
+        </tr>
+        <tr>
+            <td>Val(n)</td>
+            <td>double</td>
+            <td>Gets the current value of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetVal(n, val)</td>
+            <td>double</td>
+            <td>Sets the current value of the channel n</td>
+        </tr>
+        <tr>
+            <td>Stat()</td>
+            <td>int</td>
+            <td>Gets the current status of the formula channel</td>
+        </tr>
+        <tr>
+            <td>Stat(n)</td>
+            <td>int</td>
+            <td>Gets the current status of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetStat(n, stat)</td>
+            <td>int</td>
+            <td>Sets the current status of the channel n</td>
+        </tr>
+        <tr>
+            <td>SetData(n, val, stat)</td>
+            <td>double</td>
+            <td>Sets the current value and status of the channel n</td>
+        </tr>
+        <tr>
+            <td>Abs(x)</td>
+            <td>double</td>
+            <td>Calculates the absolute value of a number</td>
+        </tr>
+        <tr>
+            <td>Sin(x)</td>
+            <td>double</td>
+            <td>Calculates the sine of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Cos(x)</td>
+            <td>double</td>
+            <td>Calculates the cosine of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Tan(x)</td>
+            <td>double</td>
+            <td>Calculates the tangent of the specified angle</td>
+        </tr>
+        <tr>
+            <td>Exp(x)</td>
+            <td>double</td>
+            <td>Calculates e raised to the specified power</td>
+        </tr>
+        <tr>
+            <td>Ln(x), Log(x)</td>
+            <td>double</td>
+            <td>Calculates the natural (base e) logarithm of a specified number</td>
+        </tr>
+        <tr>
+            <td>Sqr(x)</td>
+            <td>double</td>
+            <td>Calculates the square of a specified number</td>
+        </tr>
+        <tr>
+            <td>Sqrt(x)</td>
+            <td>double</td>
+            <td>Calculates the square root of a specified number</td>
+        </tr>
+    </table>
+
+    <p>Additional formulas, including formulas for calculating averages, are <a href="https://github.com/RapidScada/scada-community/tree/master/Formulas" target="_blank">available on GitHub</a>.</p>
+
+    <h2>Debugging Formulas</h2>
+
+    <p>A developer of custom formulas has check the formulas syntax and validate whether the formulas work corrctly. If the Server service fails to compile the formulas at startup, information about the error is written in the Server log file, and the source code of the formulas that Server tries to compile is available in CalcEngine.cs, which is located in the Server log directory, by default C:\SCADA\ScadaServer\Log\</p>
+
+    <p>To develop complex formulas, it is recommended to use Microsoft Visual Studio Community Edition. Add a refererence to the FormulaTester.dll assembly in the project. As an example, use the project mentioned above, which contains formulas.</p>
+</body>
+</html>

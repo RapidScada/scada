@@ -1,0 +1,153 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Tune Up Configuration Database - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Tune Up Configuration Database</h1>
+
+    <h2>Configuration Database Structure</h2>
+
+    <p>The configuration database is a structured description of the entire automated system. The applications included in Rapid SCADA use the information from the configuration database in conjunction with their settings.</p>
+
+    <p>The configuration database is edited using the Administrator application as part of a project. The edited instance of the configuration database is in XML file format. When a project is uploaded to a server for execution, the configuration database is converted into a special DAT format.</p>
+
+    <p>The configuration database consists of tables, which in turn are composed of columns and rows. Each table belongs to one of the following groups:</p>
+
+    <ol>
+        <li><em>System.</em> This group contains the tables which define a configuration of a particular automated system.</li>
+        <li><em>Dictionaries</em>. This group contains the auxiliary tables. In most cases changing of these tables is not needed.</li>
+    </ol>
+
+    <p>The following table describes the configuration database tables.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Table Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>System Group</strong></td>
+        </tr>
+        <tr>
+            <td><em>Objects</em></td>
+            <td>Contains logical objects that are used to structure information in the system. Objects can be interpreted as locations</td>
+        </tr>
+        <tr>
+            <td><em>Communication lines</em></td>
+            <td>Describes communication lines which are used to exchange data with devices</td>
+        </tr>
+        <tr>
+            <td><em>Devices</em></td>
+            <td>Contains real or virtual devices</td>
+        </tr>
+        <tr>
+            <td><em>Input channels</em></td>
+            <td>Defines data received from the devices and calculated data</td>
+        </tr>
+        <tr>
+            <td><em>Output channels</em></td>
+            <td>Specifies commands executed by the system</td>
+        </tr>
+        <tr>
+            <td><em>Roles</em></td>
+            <td>Contains roles. Each role defines a set of functions available to a user</td>
+        </tr>
+        <tr>
+            <td><em>Users</em></td>
+            <td>Contains a list of users of the system and their roles</td>
+        </tr>
+        <tr>
+            <td><em>Interface</em></td>
+            <td>Contains descriptions of interface objects (views, reports and data windows)</td>
+        </tr>
+        <tr>
+            <td><em>Rights</em></td>
+            <td>Defines rights to interface objects by roles</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Dictionaries Group</strong></td>
+        </tr>
+        <tr>
+            <td><em>Channel types</em></td>
+            <td>Dictionary of input channel types</td>
+        </tr>
+        <tr>
+            <td><em>Command types</em></td>
+            <td>Dictionary of command types used by output channels</td>
+        </tr>
+        <tr>
+            <td><em>Event types</em></td>
+            <td>Dictionary of system event types and statuses of input channels in the archive</td>
+        </tr>
+        <tr>
+            <td><em>Device types</em></td>
+            <td>Dictionary of device types that can be connected to the system</td>
+        </tr>
+        <tr>
+            <td><em>Quantities</em></td>
+            <td>Dictionary of measured quantities</td>
+        </tr>
+        <tr>
+            <td><em>Units</em></td>
+            <td>Dictionary of units of input channel values and enumerable values of input channels</td>
+        </tr>
+        <tr>
+            <td><em>Command values</em></td>
+            <td>Dictionary of enumerable command values which are transmitted by output channels</td>
+        </tr>
+        <tr>
+            <td><em>Number formats</em></td>
+            <td>Dictionary of formats which are used to display input channel values</td>
+        </tr>
+        <tr>
+            <td><em>Formulas</em></td>
+            <td>Dictionary of formulas used in calculation of input channel data and command values of output channels</td>
+        </tr>
+    </table>
+
+    <h2>Editing Configuration Database</h2>
+
+    <p>The configuration database tables have relations with each other, that is, a cell of one table can refer to a record of another table. For example, each device refers to the communication line to which it is connected. Therefore, it is efficient to edit tables in a certain sequence. For tables from the <em>System</em> group, enter data in order starting with the <em>Objects</em> table and ending by the <em>Rights</em> table.</p>
+
+    <p>To add communication lines and devices, it is suggested to use the wizards that are opened using the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons. Using the wizard allows to add an entry to the configuration database table, and also to create the corresponding entity in the Communicator settings. To create input and output channels, use the wizard opened by the <img src="../../common-images/create_cnls.png" /> button. However, automatic channel creation must be supported by the device drivers selected, otherwise channels should be entered manually.</p>
+
+    <p>If the <img src="../../common-images/props.png" /> button is displayed on the table toolbar, the table can be edited using the form view. Forms for editing channel properties are shown in Figure 1 and 2.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/in_cnl_props_en.png" alt="Input channel properties" /><br />
+        Figure 1. Input channel properties
+    </p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/out_cnl_props_en.png" alt="Output channel properties" /><br />
+        Figure 2. Output channel properties
+    </p>
+
+    <p>Creating a configuration database can be significantly accelerated by using the existing works. To exchange information between different databases, the Administrator application supports the <em>Import table</em> and <em>Export table</em> features (see Figure 3 and 4), which are accessible in the <em>File</em> menu. Tables can be are exported to DAT, XML and CSV files. Then information can be imported from DAT and XML files into the same or a different project. Limit the range of exported and imported data by specifying the starting and ending identifiers. If the new destination identifier for the import operation is set, data is imported with an offset of identifiers.</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/admin_import_table_en.png" alt="Import table" /><br />
+        Figure 3. Import table
+    </p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/admin_export_table_en.png" alt="Export table" /><br />
+        Figure 4. Export table
+    </p>
+
+    <p>A cloning tool is available for input and output channels (see Figure 5). In the <em>Clone Channels</em> form fill the source and destination channel numbers. If needed, select a new object and device for the cloned channels. The function of updating channel numbers in formulas applies if a channel number is used as an argument in the following functions: N(), Val(), Stat(), SetVal(), SetStat() and SetData().</p>
+
+    <p class="sd-article-image">
+        <img src="tune-database-files/admin_clone_cnls_en.png" alt="Channel cloning" /><br />
+        Figure 5. Channel cloning
+    </p>
+
+    <p>Copy (Ctrl + C) and paste (Ctrl + V) are available for table cells. Click a column header to sort the table rows by the values of that column. The search and replace feature (Ctrl + F) also speeds up editing.</p>
+</body>
+</html>

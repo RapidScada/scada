@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Communication with Devices Configuration - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Communication with Devices Configuration</h1>
+
+    <p>Interaction with real or virtual devices is performed by the Communicator application, which acting as a master or a slave, polls data and sends commands to devices. All the devices are bound to communication lines. Communication lines are independent of each other and work in parallel.</p>
+
+    <p>The user interface of Communicator, designed for configuration, is built into the Administrator application. Communicator is configured as part of a project.</p>
+
+    <p>Figure 1 shows an example of the main communication line parameters. A communication channel determines physical interface or network protocol which is used for data exchange with devices. The following communication channels are supported: Serial port, TCP client, TCP server and UDP. In some cases, if the interaction with devices is implemented by a device driver, communication channel should be undefined (e.g., the OPC driver).</p>
+
+    <p>If sending commands to devices is not required, it is recommended to untick the <em>Commands enabled</em> checkbox due to safety reasons.</p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/comm_line_params_en.png" alt="Main communication line parameters" /><br />
+        Figure 1. Main communication line parameters
+    </p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/comm_line_req_en.png" alt="Request sequence" /><br />
+        Figure 2. Request sequence
+    </p>
+
+    <p>Communication order and request parameters are set on the <em>Request Sequence</em> page (see Figure 2).</p>
+
+    <p>If the <em>Active</em> checkbox on the <em>Main Parameters</em> page is unset, the corresponding communication line is disabled, and no requests are performed. If the <em>Active</em> checkbox in the <em>Selected Device</em> group box is unset, communication with that device is disabled.</p>
+
+    <p>The <em>Bound to Server</em> checkbox on the <em>Main Parameters</em> page allows to switch on or off sending the communication line data to Server. The <em>Bound to Server</em> checkbox in the <em>Selected Device</em> group box has the similar purpose, but applied only for the device. If the <em>Interact with Server</em> checkbox on the <em>Common Parameters</em> page of the Communicator settings is unset, any interaction between Communicator and Server is disabled. These options are useful for testing new devices being connected to the system.</p>
+
+    <p>If the <em>Time</em> and <em>Period</em> parameters of a device are equal to zero, the device is requested cyclically. If the <em>Time</em> parameter is greater than zero and <em>Period</em> is zero, the device is requested once a day in the specified time. If <em>Period</em> is greater than zero, the device is requested periodically starting at the specified time. The <em>Timeout</em> field defines how long to wait an answer from the device after a request. The <em>Delay</em> field defines a delay after each request to the device. <em>Command line</em> may contain additional parameters described in documentation of a device driver.</p>
+
+    <p>To reset request parameters of the selected device to the default values, click the <em>Reset</em> button. To open the device properties form, if it is supported by a driver of the selected device, click the <em>Properties</em> button or use a popup menu of the project explorer. To set global properties for a device type, choose the <em>Drivers</em> page, select the device driver and click the <em>Properties</em> button if the button is enabled.</p>
+
+    <p>To import communication lines and devices from the configuration database to the Communicator settings, right-click the <em>Communication Lines</em> node or a node of a specific communication line in the project explorer and select the <em>Import</em> item in the context menu. The import form is shown in Figure 3.</p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/comm_import_en.png" alt="Import Communicator settings" /><br />
+        Figure 3. Import Communicator settings
+    </p>
+
+    <p>The settings synchronization feature (see Figure 4) is also run using the communication line context menu. Synchronization allows to update the parameters of existing communication lines and devices according to the configuration database, however, the parameters entered manually may be lost.</p>
+
+    <p class="sd-article-image">
+        <img src="communication-with-devices-files/comm_sync_en.png" alt="Sync Communicator settings" /><br />
+        Figure 4. Sync Communicator settings
+    </p>
+</body>
+</html>

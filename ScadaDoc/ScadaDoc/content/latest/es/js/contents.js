@@ -22,13 +22,13 @@ function addContents(context) {
     //addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
     //addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
 
-    //addArticle(context, "software-configuration/", "Software Configuration");
-    //addArticle(context, "software-configuration/general-configuration.html", "General Configuration Sequence", 1);
-    //addArticle(context, "software-configuration/tune-database.html", "Tune up Configuration Database", 1);
-    //addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
-    //addArticle(context, "software-configuration/user-authentication.html", "User Authentication Configuration", 1);
-    //addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
-    //addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
+    addArticle(context, "software-configuration/", "Software Configuration");
+    addArticle(context, "software-configuration/configuration-basics.html", "Configuration Basics", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Tune Up Configuration Database", 1);
+    addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
+    addArticle(context, "software-configuration/user-authentication.html", "User Authentication Configuration", 1);
+    addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
+    addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
     addArticle(context, "modules/", "Modules");
     addArticle(context, "modules/kp-telegram.html", "Telegram Driver", 1);
