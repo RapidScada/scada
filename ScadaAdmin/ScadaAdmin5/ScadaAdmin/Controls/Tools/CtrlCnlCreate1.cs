@@ -239,7 +239,8 @@ namespace Scada.Admin.App.Controls.Tools
                     {
                         if (deviceItem.KPView == null)
                         {
-                            CommDirs commDirs = new CommDirs(appData.AppSettings.CommDir, deviceItem.Instance);
+                            CommDirs commDirs = new CommDirs(
+                                appData.AppSettings.PathOptions.CommDir, deviceItem.Instance);
                             deviceItem.KPView = KPFactory.GetKPView(
                                 Path.Combine(commDirs.KPDir, deviceItem.KPSettings.Dll), kp.KPNum);
                             deviceItem.KPView.KPProps = new KPView.KPProperties(

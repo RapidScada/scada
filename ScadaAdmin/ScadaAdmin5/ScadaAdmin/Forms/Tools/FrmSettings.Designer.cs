@@ -44,7 +44,8 @@
             this.btnBrowseServerDir = new System.Windows.Forms.Button();
             this.txtServerDir = new System.Windows.Forms.TextBox();
             this.lblServerDir = new System.Windows.Forms.Label();
-            this.gbCnlNumOptions = new System.Windows.Forms.GroupBox();
+            this.gbChannelOptions = new System.Windows.Forms.GroupBox();
+            this.chkPrependDeviceName = new System.Windows.Forms.CheckBox();
             this.numCnlGap = new System.Windows.Forms.NumericUpDown();
             this.lblCnlGap = new System.Windows.Forms.Label();
             this.lblCnlShift = new System.Windows.Forms.Label();
@@ -57,7 +58,7 @@
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
             this.gbPathOptions.SuspendLayout();
-            this.gbCnlNumOptions.SuspendLayout();
+            this.gbChannelOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlGap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlMult)).BeginInit();
@@ -223,22 +224,34 @@
             this.lblServerDir.TabIndex = 0;
             this.lblServerDir.Text = "Server directory";
             // 
-            // gbCnlNumOptions
+            // gbChannelOptions
             // 
-            this.gbCnlNumOptions.Controls.Add(this.numCnlGap);
-            this.gbCnlNumOptions.Controls.Add(this.lblCnlGap);
-            this.gbCnlNumOptions.Controls.Add(this.lblCnlShift);
-            this.gbCnlNumOptions.Controls.Add(this.numCnlShift);
-            this.gbCnlNumOptions.Controls.Add(this.lblExplanation);
-            this.gbCnlNumOptions.Controls.Add(this.numCnlMult);
-            this.gbCnlNumOptions.Controls.Add(this.lblCnlMult);
-            this.gbCnlNumOptions.Location = new System.Drawing.Point(12, 241);
-            this.gbCnlNumOptions.Name = "gbCnlNumOptions";
-            this.gbCnlNumOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbCnlNumOptions.Size = new System.Drawing.Size(410, 104);
-            this.gbCnlNumOptions.TabIndex = 1;
-            this.gbCnlNumOptions.TabStop = false;
-            this.gbCnlNumOptions.Text = "Channel Numbering";
+            this.gbChannelOptions.Controls.Add(this.chkPrependDeviceName);
+            this.gbChannelOptions.Controls.Add(this.numCnlGap);
+            this.gbChannelOptions.Controls.Add(this.lblCnlGap);
+            this.gbChannelOptions.Controls.Add(this.lblCnlShift);
+            this.gbChannelOptions.Controls.Add(this.numCnlShift);
+            this.gbChannelOptions.Controls.Add(this.lblExplanation);
+            this.gbChannelOptions.Controls.Add(this.numCnlMult);
+            this.gbChannelOptions.Controls.Add(this.lblCnlMult);
+            this.gbChannelOptions.Location = new System.Drawing.Point(12, 241);
+            this.gbChannelOptions.Name = "gbChannelOptions";
+            this.gbChannelOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbChannelOptions.Size = new System.Drawing.Size(410, 104);
+            this.gbChannelOptions.TabIndex = 1;
+            this.gbChannelOptions.TabStop = false;
+            this.gbChannelOptions.Text = "Channel Generation";
+            // 
+            // chkPrependDeviceName
+            // 
+            this.chkPrependDeviceName.AutoSize = true;
+            this.chkPrependDeviceName.Location = new System.Drawing.Point(158, 73);
+            this.chkPrependDeviceName.Name = "chkPrependDeviceName";
+            this.chkPrependDeviceName.Size = new System.Drawing.Size(130, 17);
+            this.chkPrependDeviceName.TabIndex = 7;
+            this.chkPrependDeviceName.Text = "Prepend device name";
+            this.chkPrependDeviceName.UseVisualStyleBackColor = true;
+            this.chkPrependDeviceName.CheckedChanged += new System.EventHandler(this.control_Changed);
             // 
             // numCnlGap
             // 
@@ -368,7 +381,7 @@
             this.ClientSize = new System.Drawing.Size(434, 386);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.gbCnlNumOptions);
+            this.Controls.Add(this.gbChannelOptions);
             this.Controls.Add(this.gbPathOptions);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -380,8 +393,8 @@
             this.Load += new System.EventHandler(this.FrmSettings_Load);
             this.gbPathOptions.ResumeLayout(false);
             this.gbPathOptions.PerformLayout();
-            this.gbCnlNumOptions.ResumeLayout(false);
-            this.gbCnlNumOptions.PerformLayout();
+            this.gbChannelOptions.ResumeLayout(false);
+            this.gbChannelOptions.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlGap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlShift)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlMult)).EndInit();
@@ -404,7 +417,7 @@
         private System.Windows.Forms.Button btnBrowseTableEditorPath;
         private System.Windows.Forms.TextBox txtTableEditorPath;
         private System.Windows.Forms.Label lblTableEditorPath;
-        private System.Windows.Forms.GroupBox gbCnlNumOptions;
+        private System.Windows.Forms.GroupBox gbChannelOptions;
         private System.Windows.Forms.NumericUpDown numCnlMult;
         private System.Windows.Forms.Label lblCnlMult;
         private System.Windows.Forms.NumericUpDown numCnlShift;
@@ -419,5 +432,6 @@
         private System.Windows.Forms.Label lblTextEditorPath;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
+        private System.Windows.Forms.CheckBox chkPrependDeviceName;
     }
 }

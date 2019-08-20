@@ -514,10 +514,11 @@
     <Phrase key="btnBrowseTableEditorPath">Browse...</Phrase>
     <Phrase key="lblTextEditorPath">Text editor</Phrase>
     <Phrase key="btnBrowseTextEditorPath">Browse...</Phrase>
-    <Phrase key="gbCnlNumOptions">Channel Numbering</Phrase>
+    <Phrase key="gbChannelOptions">Channel Generation</Phrase>
     <Phrase key="lblCnlMult">Multiplicity</Phrase>
     <Phrase key="lblCnlShift">Shift</Phrase>
     <Phrase key="lblCnlGap">Gap</Phrase>
+    <Phrase key="chkPrependDeviceName">Prepend device name</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ExecutableFileFilter">Executable files (*.exe)|*.exe|All Files (*.*)|*.*</Phrase>

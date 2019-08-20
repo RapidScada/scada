@@ -69,6 +69,8 @@
     <Compile Include="AdminUtils.cs" />
     <Compile Include="AdminDirs.cs" />
     <Compile Include="BaseTableFormat.cs" />
+    <Compile Include="Config\ChannelOptions.cs" />
+    <Compile Include="Config\PathOptions.cs" />
     <Compile Include="Deployment\DeploymentProfile.cs" />
     <Compile Include="Deployment\DeploymentSettings.cs" />
     <Compile Include="Deployment\DownloadSettings.cs" />

@@ -51,44 +51,14 @@ namespace Scada.Admin.Config
 
 
         /// <summary>
-        /// Gets or sets the directory of the Server application.
+        /// Gets the external application path options.
         /// </summary>
-        public string ServerDir { get; set; }
+        public PathOptions PathOptions { get; private set; }
 
         /// <summary>
-        /// Gets or sets the directory of the Communicator application.
+        /// Gets the channel generation options.
         /// </summary>
-        public string CommDir { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a scheme editor.
-        /// </summary>
-        public string SchemeEditorPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a table editor.
-        /// </summary>
-        public string TableEditorPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a text editor.
-        /// </summary>
-        public string TextEditorPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the multiplicity of the first channel of a device.
-        /// </summary>
-        public int CnlMult { get; set; }
-
-        /// <summary>
-        /// Gets or sets the shift of the first channel of a device.
-        /// </summary>
-        public int CnlShift { get; set; }
-
-        /// <summary>
-        /// Gets or sets the gap between channel numbers of different devices.
-        /// </summary>
-        public int CnlGap { get; set; }
+        public ChannelOptions ChannelOptions { get; private set; }
 
 
         /// <summary>
@@ -96,26 +66,8 @@ namespace Scada.Admin.Config
         /// </summary>
         private void SetToDefault()
         {
-            if (ScadaUtils.IsRunningOnWin)
-            {
-                ServerDir = @"C:\SCADA\ScadaServer\";
-                CommDir = @"C:\SCADA\ScadaComm\";
-                SchemeEditorPath = @"C:\SCADA\ScadaSchemeEditor\ScadaSchemeEditor.exe";
-                TableEditorPath = @"C:\SCADA\ScadaTableEditor\ScadaTableEditor.exe";
-                TextEditorPath = "";
-            }
-            else
-            {
-                ServerDir = "/opt/scada/ScadaServer/";
-                CommDir = "/opt/scada/ScadaComm/";
-                SchemeEditorPath = "/opt/scada/ScadaSchemeEditor/ScadaSchemeEditor.exe";
-                TableEditorPath = "/opt/scada/ScadaTableEditor/ScadaTableEditor.exe";
-                TextEditorPath = "";
-            }
-
-            CnlMult = 100;
-            CnlShift = 1;
-            CnlGap = 10;
+            PathOptions = new PathOptions();
+            ChannelOptions = new ChannelOptions();
         }
 
         /// <summary>
@@ -134,52 +86,11 @@ namespace Scada.Admin.Config
                 xmlDoc.Load(fileName);
                 XmlElement rootElem = xmlDoc.DocumentElement;
 
-                // load path options
                 if (rootElem.SelectSingleNode("PathOptions") is XmlNode pathOptionsNode)
-                {
-                    foreach (XmlElement paramElem in pathOptionsNode)
-                    {
-                        string name = paramElem.GetAttribute("name");
-                        string nameL = name.ToLowerInvariant();
-                        string val = paramElem.GetAttribute("value");
+                    PathOptions.LoadFromXml(pathOptionsNode);
 
-                        if (nameL == "serverdir")
-                            ServerDir = ScadaUtils.NormalDir(val);
-                        else if (nameL == "commdir")
-                            CommDir = ScadaUtils.NormalDir(val);
-                        else if (nameL == "schemeeditorpath")
-                            SchemeEditorPath = val;
-                        else if (nameL == "tableeditorpath")
-                            TableEditorPath = val;
-                        else if (nameL == "texteditorpath")
-                            TextEditorPath = val;
-                    }
-                }
-
-                // load channel numbering options
-                if (rootElem.SelectSingleNode("CnlNumOptions") is XmlNode cnlNumOptionsNode)
-                {
-                    foreach (XmlElement paramElem in cnlNumOptionsNode)
-                    {
-                        string name = paramElem.GetAttribute("name");
-                        string nameL = name.ToLowerInvariant();
-                        string val = paramElem.GetAttribute("value");
-
-                        try
-                        {
-                            if (nameL == "cnlmult")
-                                CnlMult = int.Parse(val);
-                            else if (nameL == "cnlshift")
-                                CnlShift = int.Parse(val);
-                            else if (nameL == "cnlgap")
-                                CnlGap = int.Parse(val);
-                        }
-                        catch
-                        {
-                            throw new Exception(string.Format(CommonPhrases.IncorrectXmlParamVal, name));
-                        }
-                    }
-                }
+                if (rootElem.SelectSingleNode("ChannelOptions") is XmlNode channelOptionsNode)
+                    ChannelOptions.LoadFromXml(channelOptionsNode);
 
                 errMsg = "";
                 return true;
@@ -205,35 +116,8 @@ namespace Scada.Admin.Config
                 XmlElement rootElem = xmlDoc.CreateElement("ScadaAdminConfig");
                 xmlDoc.AppendChild(rootElem);
 
-                // save path options
-                XmlElement pathOptionsElem = rootElem.AppendElem("PathOptions");
-                pathOptionsElem.AppendParamElem("ServerDir", ServerDir, 
-                    "Директория Сервера", 
-                    "Server directory");
-                pathOptionsElem.AppendParamElem("CommDir", CommDir, 
-                    "Директория Коммуникатора", 
-                    "Communicator directory");
-                pathOptionsElem.AppendParamElem("SchemeEditorPath", SchemeEditorPath,
-                    "Полное имя файла редактора схем",
-                    "Full file name of a scheme editor");
-                pathOptionsElem.AppendParamElem("TableEditorPath", TableEditorPath,
-                    "Полное имя файла редактора таблиц",
-                    "Full file name of a table editor");
-                pathOptionsElem.AppendParamElem("TextEditorPath", TextEditorPath,
-                    "Полное имя файла текстового редактора",
-                    "Full file name of a text editor");
-
-                // save channel numbering options
-                XmlElement cnlNumOptionsElem = rootElem.AppendElem("CnlNumOptions");
-                cnlNumOptionsElem.AppendParamElem("CnlMult", CnlMult,
-                    "Кратность первого канала устройства", 
-                    "Multiplicity of the first channel of a device");
-                cnlNumOptionsElem.AppendParamElem("CnlShift", CnlShift,
-                    "Смещение первого канала устройства", 
-                    "Shift of the first channel of a device");
-                cnlNumOptionsElem.AppendParamElem("CnlGap", CnlGap,
-                    "Промежуток между номерами каналов разных устройств", 
-                    "Gap between channel numbers of different devices");
+                PathOptions.SaveToXml(rootElem.AppendElem("PathOptions"));
+                ChannelOptions.SaveToXml(rootElem.AppendElem("ChannelOptions"));
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

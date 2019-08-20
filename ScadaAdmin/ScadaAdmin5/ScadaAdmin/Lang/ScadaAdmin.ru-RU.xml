@@ -514,10 +514,11 @@
     <Phrase key="btnBrowseTableEditorPath">Обзор...</Phrase>
     <Phrase key="lblTextEditorPath">Текстовый редактор</Phrase>
     <Phrase key="btnBrowseTextEditorPath">Обзор...</Phrase>
-    <Phrase key="gbCnlNumOptions">Нумерация каналов</Phrase>
+    <Phrase key="gbChannelOptions">Генерация каналов</Phrase>
     <Phrase key="lblCnlMult">Кратность</Phrase>
     <Phrase key="lblCnlShift">Смещение</Phrase>
     <Phrase key="lblCnlGap">Промежуток</Phrase>
+    <Phrase key="chkPrependDeviceName">Добавлять наименование КП</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
     <Phrase key="ExecutableFileFilter">Исполняемые файлы (*.exe)|*.exe|Все файлы (*.*)|*.*</Phrase>

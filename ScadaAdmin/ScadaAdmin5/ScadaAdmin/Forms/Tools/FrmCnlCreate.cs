@@ -188,7 +188,8 @@ namespace Scada.Admin.App.Forms.Tools
                 List<KPView.CtrlCnlPrototype> ctrlCnlPrototypes = ctrlCnlCreate1.CnlPrototypes.CtrlCnls;
                 int? objNum = ctrlCnlCreate2.ObjNum;
                 int kpNum = ctrlCnlCreate1.SelectedDevice.KPNum;
-                string cnlPrefix = ctrlCnlCreate1.SelectedDevice.Name + " - ";
+                string cnlPrefix = appData.AppSettings.ChannelOptions.PrependDeviceName ? 
+                    ctrlCnlCreate1.SelectedDevice.Name + " - " : "";
                 int inCnlNum = ctrlCnlCreate3.StartInCnl;
                 int ctrlCnlNum = ctrlCnlCreate3.StartOutCnl;
                 int inCnlsAdded = 0;
