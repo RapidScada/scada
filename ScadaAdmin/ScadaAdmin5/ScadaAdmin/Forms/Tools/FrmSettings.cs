@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Config;
 using Scada.UI;
 using System;
 using System.IO;

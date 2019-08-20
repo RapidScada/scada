@@ -27,7 +27,7 @@ using System;
 using System.IO;
 using System.Xml;
 
-namespace Scada.Admin
+namespace Scada.Admin.Config
 {
     /// <summary>
     /// Administrator settings.

@@ -23,6 +23,7 @@
  * Modified : 2018
  */
 
+using Scada.Admin.Config;
 using Scada.UI;
 using System;
 using System.IO;
