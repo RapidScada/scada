@@ -683,6 +683,7 @@
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
     <Phrase key="this">Project Properties</Phrase>
     <Phrase key="lblName">Project name</Phrase>
+    <Phrase key="lblVersion">Version</Phrase>
     <Phrase key="lblDescr">Description</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
+using Scada.Admin.Project;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms
@@ -67,6 +61,24 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Gets or sets the project version.
+        /// </summary>
+        public ProjectVersion Version
+        {
+            get
+            {
+                return new ProjectVersion(
+                    Convert.ToInt32(numMajorVersion.Value), 
+                    Convert.ToInt32(numMinorVersion.Value));
+            }
+            set
+            {
+                numMajorVersion.SetValue(value.Major);
+                numMinorVersion.SetValue(value.Minor);
+            }
+        }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description
@@ -91,11 +103,10 @@ namespace Scada.Admin.App.Forms
         {
             Translator.TranslateForm(this, GetType().FullName);
             Modified = false;
-            ActiveControl = txtDescr;
-            txtDescr.Select(0, 0);
+            ActiveControl = numMajorVersion;
         }
 
-        private void txtDescr_TextChanged(object sender, EventArgs e)
+        private void control_Changed(object sender, EventArgs e)
         {
             Modified = true;
         }

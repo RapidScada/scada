@@ -1702,11 +1702,13 @@ namespace Scada.Admin.App.Forms
                 FrmProjectProps frmProjectProps = new FrmProjectProps
                 {
                     ProjectName = project.Name,
+                    Version = project.Version,
                     Description = project.Description
                 };
 
                 if (frmProjectProps.ShowDialog() == DialogResult.OK && frmProjectProps.Modified)
                 {
+                    project.Version = frmProjectProps.Version;
                     project.Description = frmProjectProps.Description;
                     SaveProjectSettings();
                 }

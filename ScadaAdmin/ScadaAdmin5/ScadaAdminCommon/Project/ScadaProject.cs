@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.Deployment;
@@ -115,6 +115,11 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Gets or sets the project version.
+        /// </summary>
+        public ProjectVersion Version { get; set; }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
@@ -148,6 +153,7 @@ namespace Scada.Admin.Project
             fileName = "";
 
             Name = DefaultName;
+            Version = new ProjectVersion(1, 0);
             Description = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
@@ -210,6 +216,7 @@ namespace Scada.Admin.Project
             xmlDoc.Load(fileName);
 
             XmlElement rootElem = xmlDoc.DocumentElement;
+            Version = ProjectVersion.Parse(rootElem.GetChildAsString("ProjectVersion"));
             Description = rootElem.GetChildAsString("Description");
 
             // load instances
@@ -260,7 +267,8 @@ namespace Scada.Admin.Project
             xmlDoc.AppendChild(xmlDecl);
 
             XmlElement rootElem = xmlDoc.CreateElement("ScadaProject");
-            rootElem.AppendElem("Version", AdminUtils.AppVersion);
+            rootElem.AppendElem("AdminVersion", AdminUtils.AppVersion);
+            rootElem.AppendElem("ProjectVersion", Version);
             rootElem.AppendElem("Description", Description);
             xmlDoc.AppendChild(rootElem);
 
