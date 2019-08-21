@@ -34,6 +34,7 @@ using System.ComponentModel;
 using System.Data;
 using System.IO;
 using System.IO.Compression;
+using System.Text;
 
 namespace Scada.Admin
 {
@@ -43,6 +44,12 @@ namespace Scada.Admin
     /// </summary>
     public class ImportExport
     {
+        /// <summary>
+        /// The name of the archive entry that contains project information.
+        /// </summary>
+        private const string ProjectInfoEntryName = "Project.txt";
+
+
         /// <summary>
         /// Extracts the specified archive.
         /// </summary>
@@ -384,6 +391,16 @@ namespace Scada.Admin
                     {
                         PackDirectory(zipArchive, Path.Combine(instance.WebApp.AppDir, "storage"),
                             DirectoryBuilder.GetDirectory(ConfigParts.Web, AppFolder.Storage, '/'), ignoreRegKeys);
+                    }
+                }
+
+                // add an information entry to the archive
+                using (Stream entryStream = 
+                    zipArchive.CreateEntry(ProjectInfoEntryName, CompressionLevel.Fastest).Open())
+                {
+                    using (StreamWriter writer = new StreamWriter(entryStream, Encoding.UTF8))
+                    {
+                        writer.Write(project.GetInfo());
                     }
                 }
             }

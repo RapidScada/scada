@@ -27,6 +27,7 @@ using Scada.Admin.Deployment;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace Scada.Admin.Project
@@ -378,6 +379,31 @@ namespace Scada.Admin.Project
             }
 
             return instanceNames;
+        }
+
+        /// <summary>
+        /// Gets the project info.
+        /// </summary>
+        public string GetInfo()
+        {
+            StringBuilder sbInfo = new StringBuilder();
+
+            if (Localization.UseRussian)
+            {
+                sbInfo
+                    .Append("Наименование проекта : ").AppendLine(Name)
+                    .Append("Версия проекта       : ").AppendLine(Version.ToString())
+                    .Append("Метка времени        : ").AppendLine(DateTime.Now.ToLocalizedString());
+            }
+            else
+            {
+                sbInfo
+                    .Append("Project name    : ").AppendLine(Name)
+                    .Append("Project version : ").AppendLine(Version.ToString())
+                    .Append("Timestamp       : ").AppendLine(DateTime.Now.ToLocalizedString());
+            }
+
+            return sbInfo.ToString();
         }
 
 
