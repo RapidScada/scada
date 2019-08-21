@@ -306,6 +306,11 @@
             Макс. количество попыток проверки пользователя
             </summary>
         </member>
+        <member name="F:Scada.Agent.Engine.ScadaInstance.ProjectInfoEntryName">
+            <summary>
+            The name of the archive entry that contains project information.
+            </summary>
+        </member>
         <member name="F:Scada.Agent.Engine.ScadaInstance.AllConfigParts">
             <summary>
             Все части конфигурации в виде массива

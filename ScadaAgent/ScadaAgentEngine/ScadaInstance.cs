@@ -101,6 +101,10 @@ namespace Scada.Agent.Engine
         /// </summary>
         private const int MaxValidateUserAttempts = 3;
         /// <summary>
+        /// The name of the archive entry that contains project information.
+        /// </summary>
+        private const string ProjectInfoEntryName = "Project.txt";
+        /// <summary>
         /// Все части конфигурации в виде массива
         /// </summary>
         private static readonly ConfigParts[] AllConfigParts = { ConfigParts.Base,
@@ -609,7 +613,7 @@ namespace Scada.Agent.Engine
         {
             try
             {
-                // удаление существующей конфигурации
+                // delete the existing configuration
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
                 PathDict pathDict = PrepareIgnoredPaths(configOptions.IgnoredPaths);
 
@@ -618,9 +622,14 @@ namespace Scada.Agent.Engine
                     ClearDir(relPath, pathDict);
                 }
 
-                // определение допустимых директорий для распаковки
+                // delete a project information file
+                string instanceDir = Settings.Directory;
+                string projectInfoFileName = Path.Combine(instanceDir, ProjectInfoEntryName);
+                File.Delete(projectInfoFileName);
+
+                // define allowed directories to unpack
                 ConfigParts configParts = configOptions.ConfigParts;
-                List<string> allowedEntries = new List<string>(AllConfigParts.Length);
+                List<string> allowedEntries = new List<string> { ProjectInfoEntryName };
 
                 foreach (ConfigParts configPart in AllConfigParts)
                 {
@@ -628,14 +637,12 @@ namespace Scada.Agent.Engine
                         allowedEntries.Add(DirectoryBuilder.GetDirectory(configPart, '/'));
                 }
 
-                // распаковка новой конфигурации
+                // unpack the new configuration
                 using (FileStream fileStream =
                     new FileStream(srcFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
-                        string instanceDir = Settings.Directory;
-
                         foreach (ZipArchiveEntry entry in zipArchive.Entries)
                         {
                             if (StartsWith(entry.FullName, allowedEntries, StringComparison.Ordinal))
