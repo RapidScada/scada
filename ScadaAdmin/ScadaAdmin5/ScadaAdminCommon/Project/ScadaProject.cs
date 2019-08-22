@@ -204,6 +204,22 @@ namespace Scada.Admin.Project
             }
         }
 
+        /// <summary>
+        /// Gets the maximum ID of existing instances.
+        /// </summary>
+        private int GetMaxInstanceID()
+        {
+            int maxID = 0;
+
+            foreach (Instance instance in Instances)
+            {
+                if (instance.ID > maxID)
+                    maxID = instance.ID;
+            }
+
+            return maxID;
+        }
+
 
         /// <summary>
         /// Loads the project from the specified file.
@@ -234,6 +250,10 @@ namespace Scada.Admin.Project
                     instance.LoadFromXml(instanceNode);
                     instance.InstanceDir = Path.Combine(projectDir, "Instances", instance.Name);
                     Instances.Add(instance);
+
+                    // fix instance ID
+                    if (instance.ID <= 0)
+                        instance.ID = Instances.Count;
                 }
             }
         }
@@ -344,6 +364,7 @@ namespace Scada.Admin.Project
             string projectDir = Path.GetDirectoryName(FileName);
             return new Instance()
             {
+                ID = GetMaxInstanceID() + 1,
                 Name = name,
                 InstanceDir = Path.Combine(projectDir, "Instances", name)
             };

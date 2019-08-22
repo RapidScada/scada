@@ -2143,6 +2143,10 @@ namespace Scada.Admin.App.Forms
                 if (!liveInstance.Instance.DeleteInstanceFiles(out string errMsg))
                     appData.ProcError(errMsg);
 
+                project.DeploymentSettings.RemoveProfilesByInstance(liveInstance.Instance.ID, out bool affected);
+                if (affected && !project.DeploymentSettings.Save(out errMsg))
+                    appData.ProcError(errMsg);
+
                 SetDeployMenuItemsEnabled();
                 SaveProjectSettings();
             }
