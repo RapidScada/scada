@@ -12,6 +12,7 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
     <PublishUrl>publish\</PublishUrl>
     <Install>true</Install>
     <InstallFrom>Disk</InstallFrom>
@@ -26,7 +27,6 @@
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -97,6 +97,7 @@
     <Compile Include="Code\AppUtils.cs" />
     <Compile Include="Code\BaseTableItem.cs" />
     <Compile Include="Code\CnlMap.cs" />
+    <Compile Include="Code\ColumnInfo.cs" />
     <Compile Include="Code\ColumnKind.cs" />
     <Compile Include="Code\ColumnLength.cs" />
     <Compile Include="Code\ColumnOptions.cs" />
@@ -209,6 +210,12 @@
     </Compile>
     <Compile Include="Forms\Tables\FrmColorSelect.designer.cs">
       <DependentUpon>FrmColorSelect.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmFilter.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Tables\FrmFilter.Designer.cs">
+      <DependentUpon>FrmFilter.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\Tables\FrmFind.cs">
       <SubType>Form</SubType>
@@ -380,6 +387,9 @@
     <EmbeddedResource Include="Forms\Tables\FrmColorSelect.resx">
       <DependentUpon>FrmColorSelect.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Tables\FrmFilter.resx">
+      <DependentUpon>FrmFilter.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\Tables\FrmFind.resx">
       <DependentUpon>FrmFind.cs</DependentUpon>
     </EmbeddedResource>
@@ -514,6 +524,8 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>
     </Content>
+    <None Include="Resources\filter_set.png" />
+    <None Include="Resources\filter.png" />
     <None Include="Resources\warning.png" />
     <None Include="Resources\success.png" />
     <None Include="Resources\error.png" />

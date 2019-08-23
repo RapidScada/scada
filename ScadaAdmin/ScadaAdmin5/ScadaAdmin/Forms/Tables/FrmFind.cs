@@ -38,131 +38,6 @@ namespace Scada.Admin.App.Forms.Tables
     /// </summary>
     public partial class FrmFind : Form
     {
-        /// <summary>
-        /// Represents information associated with a column.
-        /// <para>Представляет информацию, связанную со столбцом.</para>
-        /// </summary>
-        private class ColumnInfo
-        {
-            private DataTable dataSource1;
-            private DataTable dataSource2;
-
-            /// <summary>
-            /// Initializes a new instance of the class.
-            /// </summary>
-            public ColumnInfo(DataGridViewColumn column)
-            {
-                Column = column ?? throw new ArgumentNullException("column");
-                dataSource1 = null;
-                dataSource2 = null;
-            }
-
-            /// <summary>
-            /// Gets the column.
-            /// </summary>
-            public DataGridViewColumn Column { get; private set; }
-            /// <summary>
-            /// Gets the column header.
-            /// </summary>
-            public string Header
-            {
-                get
-                {
-                    return Column.HeaderText ?? "";
-                }
-            }
-            /// <summary>
-            /// Gets a value indicating whether the column contains text.
-            /// </summary>
-            public bool IsText
-            {
-                get
-                {
-                    return Column is DataGridViewTextBoxColumn;
-                }
-            }
-            /// <summary>
-            /// Gets the column from which to retrieve strings for display in the combo box.
-            /// </summary>
-            public string DisplayMember
-            {
-                get
-                {
-                    return Column is DataGridViewComboBoxColumn comboBoxColumn ? comboBoxColumn.DisplayMember : "";
-                }
-            }
-            /// <summary>
-            /// Gets the column from which to get values that correspond to the selections in the combo box.
-            /// </summary>
-            public string ValueMember
-            {
-                get
-                {
-                    return Column is DataGridViewComboBoxColumn comboBoxColumn ? comboBoxColumn.ValueMember : "";
-                }
-            }
-
-            /// <summary>
-            /// Gets the data source #1 contains columns values.
-            /// </summary>
-            public DataTable DataSource1
-            {
-                get
-                {
-                    if (dataSource1 == null)
-                    {
-                        dataSource1 = Column is DataGridViewComboBoxColumn comboBoxColumn ? 
-                            CopyTable(comboBoxColumn.DataSource as DataTable) : null;
-                    }
-
-                    return dataSource1;
-                }
-            }
-            /// <summary>
-            /// Gets the data source #2 contains columns values.
-            /// </summary>
-            public DataTable DataSource2
-            {
-                get
-                {
-                    if (dataSource2 == null)
-                    {
-                        dataSource2 = Column is DataGridViewComboBoxColumn comboBoxColumn ?
-                            CopyTable(comboBoxColumn.DataSource as DataTable) : null;
-                    }
-
-                    return dataSource2;
-                }
-            }
-
-            /// <summary>
-            /// Makes a table copy having disabled constraints.
-            /// </summary>
-            private DataTable CopyTable(DataTable dataTable)
-            {
-                if (dataTable == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    DataTable tableCopy = new DataTable(dataTable.TableName);
-                    tableCopy.BeginLoadData();
-                    tableCopy.Merge(dataTable, false, MissingSchemaAction.Add);
-                    tableCopy.DefaultView.Sort = dataTable.DefaultView.Sort;
-                    return tableCopy;
-                }
-            }
-            /// <summary>
-            /// Returns a string that represents the current object.
-            /// </summary>
-            public override string ToString()
-            {
-                return Header;
-            }
-        }
-
-
         private readonly FrmBaseTable frmBaseTable;
         private readonly DataGridView dataGridView;
         private int startRowIndex;   // the starting point of the search
@@ -195,7 +70,7 @@ namespace Scada.Admin.App.Forms.Tables
         {
             try
             {
-                cbTableColumn.BeginUpdate();
+                cbColumn.BeginUpdate();
                 DataGridViewCell curCell = dataGridView.CurrentCell;
                 int curColInd = curCell == null ? -1 : curCell.ColumnIndex;
                 int selColInd = 0;
@@ -209,7 +84,7 @@ namespace Scada.Admin.App.Forms.Tables
                         !column.ReadOnly)
                     {
                         ColumnInfo colInfo = new ColumnInfo(column);
-                        cbTableColumn.Items.Add(colInfo);
+                        cbColumn.Items.Add(colInfo);
 
                         if (i == curColInd)
                         {
@@ -221,12 +96,12 @@ namespace Scada.Admin.App.Forms.Tables
                     }
                 }
 
-                if (cbTableColumn.Items.Count > 0)
-                    cbTableColumn.SelectedIndex = selColInd;
+                if (cbColumn.Items.Count > 0)
+                    cbColumn.SelectedIndex = selColInd;
             }
             finally
             {
-                cbTableColumn.EndUpdate();
+                cbColumn.EndUpdate();
             }
         }
 
@@ -518,13 +393,13 @@ namespace Scada.Admin.App.Forms.Tables
             SetDefaultSearchCondition(selColumnInfo);
             ResetSearch();
 
-            if (cbTableColumn.Items.Count == 0 || txtFind.Visible && txtFind.Text == "")
+            if (cbColumn.Items.Count == 0 || txtFind.Visible && txtFind.Text == "")
                 btnFindNext.Enabled = btnReplace.Enabled = btnReplaceAll.Enabled = false;
         }
 
         private void cbColumn_SelectedIndexChanged(object sender, EventArgs e)
         {
-            AdjustControls(cbTableColumn.SelectedItem as ColumnInfo);
+            AdjustControls(cbColumn.SelectedItem as ColumnInfo);
             ResetSearch();
         }
 
@@ -547,13 +422,13 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void btnFindNext_Click(object sender, EventArgs e)
         {
-            if (cbTableColumn.SelectedItem is ColumnInfo columnInfo)
+            if (cbColumn.SelectedItem is ColumnInfo columnInfo)
                 FindNext(columnInfo, true);
         }
 
         private void btnReplace_Click(object sender, EventArgs e)
         {
-            if (cbTableColumn.SelectedItem is ColumnInfo columnInfo)
+            if (cbColumn.SelectedItem is ColumnInfo columnInfo)
             {
                 ReplaceCell(columnInfo, true, out bool replaced, out bool noError);
                 if (noError)
@@ -563,7 +438,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void btnReplaceAll_Click(object sender, EventArgs e)
         {
-            if (cbTableColumn.SelectedItem is ColumnInfo columnInfo)
+            if (cbColumn.SelectedItem is ColumnInfo columnInfo)
                 ReplaceAll(columnInfo);
         }
 

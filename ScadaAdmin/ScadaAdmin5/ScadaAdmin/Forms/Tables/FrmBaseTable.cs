@@ -74,6 +74,7 @@ namespace Scada.Admin.App.Forms.Tables
         private DataTable dataTable; // the table used by a grid view control
         private int maxRowID;        // the maximum ID in the table
         private FrmFind frmFind;     // the find and replace form
+        private FrmFilter frmFilter; // the filter form
 
 
         /// <summary>
@@ -98,6 +99,7 @@ namespace Scada.Admin.App.Forms.Tables
             dataTable = null;
             maxRowID = 0;
             frmFind = null;
+            frmFilter = null;
 
             Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
         }
@@ -1074,13 +1076,25 @@ namespace Scada.Admin.App.Forms.Tables
                 frmFind = new FrmFind(this, dataGridView);
 
                 // center the form within the bounds of its parent
-                frmFind.Left = (Left + Right - frmFind.Width) / 2;
-                frmFind.Top = (Top + Bottom - frmFind.Height) / 2;
+                frmFind.Left = (ParentForm.Left + ParentForm.Right - frmFind.Width) / 2;
+                frmFind.Top = (ParentForm.Top + ParentForm.Bottom - frmFind.Height) / 2;
                 frmFind.Show(this);
             }
             else
             {
                 frmFind.Activate();
+            }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            frmFilter = frmFilter ?? new FrmFilter(dataGridView, dataTable);
+
+            if (frmFilter.ShowDialog() == DialogResult.OK)
+            {
+                btnFilter.Image = frmFilter.FilterIsEmpty ? 
+                    Properties.Resources.filter : 
+                    Properties.Resources.filter_set;
             }
         }
 

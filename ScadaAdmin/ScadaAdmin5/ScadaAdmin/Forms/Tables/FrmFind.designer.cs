@@ -31,7 +31,7 @@
             this.btnReplaceAll = new System.Windows.Forms.Button();
             this.btnClose = new System.Windows.Forms.Button();
             this.lblColumn = new System.Windows.Forms.Label();
-            this.cbTableColumn = new System.Windows.Forms.ComboBox();
+            this.cbColumn = new System.Windows.Forms.ComboBox();
             this.lblFind = new System.Windows.Forms.Label();
             this.txtFind = new System.Windows.Forms.TextBox();
             this.lblReplaceWith = new System.Windows.Forms.Label();
@@ -74,15 +74,15 @@
             this.lblColumn.TabIndex = 0;
             this.lblColumn.Text = "Column";
             // 
-            // cbTableColumn
+            // cbColumn
             // 
-            this.cbTableColumn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTableColumn.FormattingEnabled = true;
-            this.cbTableColumn.Location = new System.Drawing.Point(12, 25);
-            this.cbTableColumn.Name = "cbTableColumn";
-            this.cbTableColumn.Size = new System.Drawing.Size(320, 21);
-            this.cbTableColumn.TabIndex = 1;
-            this.cbTableColumn.SelectedIndexChanged += new System.EventHandler(this.cbColumn_SelectedIndexChanged);
+            this.cbColumn.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbColumn.FormattingEnabled = true;
+            this.cbColumn.Location = new System.Drawing.Point(12, 25);
+            this.cbColumn.Name = "cbColumn";
+            this.cbColumn.Size = new System.Drawing.Size(320, 21);
+            this.cbColumn.TabIndex = 1;
+            this.cbColumn.SelectedIndexChanged += new System.EventHandler(this.cbColumn_SelectedIndexChanged);
             // 
             // lblFind
             // 
@@ -198,7 +198,7 @@
             this.Controls.Add(this.lblReplaceWith);
             this.Controls.Add(this.txtFind);
             this.Controls.Add(this.lblFind);
-            this.Controls.Add(this.cbTableColumn);
+            this.Controls.Add(this.cbColumn);
             this.Controls.Add(this.lblColumn);
             this.Controls.Add(this.btnReplaceAll);
             this.Controls.Add(this.btnClose);
@@ -219,7 +219,7 @@
         private System.Windows.Forms.Button btnReplaceAll;
         private System.Windows.Forms.Button btnClose;
         private System.Windows.Forms.Label lblColumn;
-        private System.Windows.Forms.ComboBox cbTableColumn;
+        private System.Windows.Forms.ComboBox cbColumn;
         private System.Windows.Forms.Label lblFind;
         private System.Windows.Forms.TextBox txtFind;
         private System.Windows.Forms.Label lblReplaceWith;
