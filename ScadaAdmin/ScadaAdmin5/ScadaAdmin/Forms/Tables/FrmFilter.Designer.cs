@@ -39,6 +39,7 @@
             this.txtValue = new System.Windows.Forms.TextBox();
             this.cbMathOperation = new System.Windows.Forms.ComboBox();
             this.cbValue = new System.Windows.Forms.ComboBox();
+            this.cbBoolean = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // btnClearFilter
@@ -46,7 +47,7 @@
             this.btnClearFilter.Location = new System.Drawing.Point(12, 102);
             this.btnClearFilter.Name = "btnClearFilter";
             this.btnClearFilter.Size = new System.Drawing.Size(75, 23);
-            this.btnClearFilter.TabIndex = 8;
+            this.btnClearFilter.TabIndex = 9;
             this.btnClearFilter.Text = "Clear Filter";
             this.btnClearFilter.UseVisualStyleBackColor = true;
             this.btnClearFilter.Click += new System.EventHandler(this.btnClearFilter_Click);
@@ -56,7 +57,7 @@
             this.btnOK.Location = new System.Drawing.Point(176, 102);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 9;
+            this.btnOK.TabIndex = 10;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -67,7 +68,7 @@
             this.btnCancel.Location = new System.Drawing.Point(257, 102);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 10;
+            this.btnCancel.TabIndex = 11;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -152,6 +153,18 @@
             this.cbValue.Size = new System.Drawing.Size(200, 21);
             this.cbValue.TabIndex = 7;
             // 
+            // cbBoolean
+            // 
+            this.cbBoolean.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbBoolean.FormattingEnabled = true;
+            this.cbBoolean.Items.AddRange(new object[] {
+            "False",
+            "True"});
+            this.cbBoolean.Location = new System.Drawing.Point(132, 85);
+            this.cbBoolean.Name = "cbBoolean";
+            this.cbBoolean.Size = new System.Drawing.Size(200, 21);
+            this.cbBoolean.TabIndex = 8;
+            // 
             // FrmFilter
             // 
             this.AcceptButton = this.btnOK;
@@ -162,6 +175,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.btnClearFilter);
+            this.Controls.Add(this.cbBoolean);
             this.Controls.Add(this.cbValue);
             this.Controls.Add(this.txtValue);
             this.Controls.Add(this.lblValue);
@@ -196,5 +210,6 @@
         private System.Windows.Forms.TextBox txtValue;
         private System.Windows.Forms.ComboBox cbMathOperation;
         private System.Windows.Forms.ComboBox cbValue;
+        private System.Windows.Forms.ComboBox cbBoolean;
     }
 }

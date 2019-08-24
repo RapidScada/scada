@@ -78,6 +78,28 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
+        /// Gets a value indicating whether the column contains combo boxes.
+        /// </summary>
+        public bool IsComboBox
+        {
+            get
+            {
+                return Column is DataGridViewComboBoxColumn;
+            }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether the column contains check boxes.
+        /// </summary>
+        public bool IsCheckBox
+        {
+            get
+            {
+                return Column is DataGridViewCheckBoxColumn;
+            }
+        }
+
+        /// <summary>
         /// Gets the column from which to retrieve strings for display in the combo box.
         /// </summary>
         public string DisplayMember
