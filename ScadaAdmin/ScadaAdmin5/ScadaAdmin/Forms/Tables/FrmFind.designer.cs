@@ -143,7 +143,7 @@
             // 
             this.cbFind.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbFind.FormattingEnabled = true;
-            this.cbFind.Location = new System.Drawing.Point(12, 65);
+            this.cbFind.Location = new System.Drawing.Point(12, 75);
             this.cbFind.Name = "cbFind";
             this.cbFind.Size = new System.Drawing.Size(320, 21);
             this.cbFind.TabIndex = 4;
@@ -154,7 +154,7 @@
             // 
             this.cbReplaceWith.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbReplaceWith.FormattingEnabled = true;
-            this.cbReplaceWith.Location = new System.Drawing.Point(12, 105);
+            this.cbReplaceWith.Location = new System.Drawing.Point(12, 115);
             this.cbReplaceWith.Name = "cbReplaceWith";
             this.cbReplaceWith.Size = new System.Drawing.Size(320, 21);
             this.cbReplaceWith.TabIndex = 7;

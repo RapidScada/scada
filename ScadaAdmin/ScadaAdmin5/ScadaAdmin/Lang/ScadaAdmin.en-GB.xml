@@ -296,6 +296,7 @@
     <Phrase key="btnCut.ToolTip">Cut (Ctrl+X)</Phrase>
     <Phrase key="btnCopy.ToolTip">Copy (Ctrl+C)</Phrase>
     <Phrase key="btnPaste.ToolTip">Paste (Ctrl+V)</Phrase>
+    <Phrase key="btnFilter.ToolTip">Filter</Phrase>
     <Phrase key="btnFind.ToolTip">Find and Replace (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Autofit Column Widths</Phrase>
     <Phrase key="btnProperties.ToolTip">Item Properties</Phrase>
@@ -333,6 +334,20 @@
     <Phrase key="chkEvEnabled">Write events</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFilter">
+    <Phrase key="this">Filter</Phrase>
+    <Phrase key="lblColumn">Column</Phrase>
+    <Phrase key="lblOperation">Operation</Phrase>
+    <Phrase key="cbStringOperation.Items[0]">Equals</Phrase>
+    <Phrase key="cbStringOperation.Items[1]">Contains</Phrase>
+    <Phrase key="lblValue">Value</Phrase>
+    <Phrase key="cbBoolean.Items[0]">False</Phrase>
+    <Phrase key="cbBoolean.Items[1]">True</Phrase>
+    <Phrase key="btnClearFilter">Clear Filter</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="IncorrectTableFilter">Incorrect table filter.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFind">
     <Phrase key="this">Find and Replace</Phrase>

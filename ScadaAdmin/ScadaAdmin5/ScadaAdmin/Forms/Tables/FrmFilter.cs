@@ -24,9 +24,12 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Data;
+using System.Globalization;
+using System.Text;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Tables
@@ -38,27 +41,40 @@ namespace Scada.Admin.App.Forms.Tables
     public partial class FrmFilter : Form
     {
         /// <summary>
-        /// Represents a filter.
-        /// <para>Представляет фильтр.</para>
+        /// Represents an extended filter.
+        /// <para>Представляет расширенный фильтр.</para>
         /// </summary>
-        private class Filter
+        private class FilterExtended : TableFilter
         {
-            public string ColumnName { get; set; }
+            private static readonly string[] MathOperations = { "=", "<>", "<", "<=", ">", ">=" };
             public int StringOperation { get; set; }
             public int MathOperation { get; set; }
-            public string ValueText { get; set; }
-            public int ValueKey { get; set; }
-            public bool ValueFlag { get; set; }
 
             public string GetRowFilter()
             {
-                return "";
+                if (Value == null)
+                {
+                    return "";
+                }
+                else if (Value is string)
+                {
+                    return string.Format(StringOperation == 0 ?
+                        "{0} = '{1}'" :
+                        "{0} like '%{1}%'", ColumnName, Value);
+                }
+                else
+                {
+                    string valStr = Value is double valDbl ?
+                        valDbl.ToString(CultureInfo.InvariantCulture) :
+                        Value.ToString();
+
+                    return string.Format("{0} {1} {2}", ColumnName, MathOperations[MathOperation], valStr);
+                }
             }
         }
 
         private readonly DataGridView dataGridView;
-        private readonly DataTable dataTable;
-        private Filter currentFilter;
+        private FilterExtended currentFilter;
 
 
         /// <summary>
@@ -77,12 +93,12 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmFilter(DataGridView dataGridView, DataTable dataTable)
+        public FrmFilter(DataGridView dataGridView)
             : this()
         {
             this.dataGridView = dataGridView ?? throw new ArgumentNullException("dataGridView");
-            this.dataTable = dataTable ?? throw new ArgumentNullException("dataTable");
             currentFilter = null;
+            DataTable = null;
         }
 
 
@@ -96,6 +112,11 @@ namespace Scada.Admin.App.Forms.Tables
                 return cbColumn.SelectedItem as ColumnInfo;
             }
         }
+
+        /// <summary>
+        /// Gets or sets the data table being filtered.
+        /// </summary>
+        public DataTable DataTable { get; set; }
 
         /// <summary>
         /// Gets a value indicating whether the filter is not set.
@@ -149,24 +170,37 @@ namespace Scada.Admin.App.Forms.Tables
         private void AdjustControls(ColumnInfo columnInfo)
         {
             cbStringOperation.Visible = false;
-            cbMathOperation.Visible = false;
-            txtValue.Visible = false;
-            cbValue.Visible = false;
-            cbBoolean.Visible = false;
-
             cbStringOperation.SelectedIndex = 0;
+
+            cbMathOperation.Visible = false;
+            cbMathOperation.Enabled = true;
             cbMathOperation.SelectedIndex = 0;
+
+            txtValue.Visible = false;
+            txtValue.Text = "";
+
+            cbValue.Visible = false;
+            cbValue.DataSource = null;
+
+            cbBoolean.Visible = false;
             cbBoolean.SelectedIndex = 0;
 
             if (columnInfo != null)
             {
                 if (columnInfo.IsText)
                 {
-                    cbStringOperation.Visible = true;
+                    if (columnInfo.IsNumber)
+                        cbMathOperation.Visible = true;
+                    else
+                        cbStringOperation.Visible = true;
+
                     txtValue.Visible = true;
                 }
                 else if (columnInfo.IsComboBox)
                 {
+                    cbMathOperation.Visible = true;
+                    cbMathOperation.Enabled = false;
+
                     cbValue.Visible = true;
                     cbValue.DataSource = columnInfo.DataSource1;
                     cbValue.DisplayMember = columnInfo.DisplayMember;
@@ -174,6 +208,8 @@ namespace Scada.Admin.App.Forms.Tables
                 }
                 else if (columnInfo.IsCheckBox)
                 {
+                    cbMathOperation.Visible = true;
+                    cbMathOperation.Enabled = false;
                     cbBoolean.Visible = true;
                 }
             }
@@ -184,28 +220,17 @@ namespace Scada.Admin.App.Forms.Tables
         /// </summary>
         private void SetDefaultFilter(ColumnInfo columnInfo)
         {
-            txtValue.Text = "";
-            cbValue.SelectedIndex = -1;
             DataGridViewCell curCell = dataGridView.CurrentCell;
 
             if (columnInfo != null && curCell != null)
             {
                 if (columnInfo.IsText)
                 {
-                    if (curCell.EditedFormattedValue != null)
-                        txtValue.Text = curCell.EditedFormattedValue.ToString();
+                    txtValue.Text = curCell.Value?.ToString() ?? "";
                 }
                 else if (columnInfo.IsComboBox)
                 {
-                    if (curCell.IsInEditMode)
-                    {
-                        if (dataGridView.EditingControl is ComboBox comboBox)
-                            cbValue.SelectedValue = comboBox.SelectedValue;
-                    }
-                    else
-                    {
-                        cbValue.SelectedValue = curCell.Value;
-                    }
+                    cbValue.SelectedValue = curCell.Value;
                 }
                 else if (columnInfo.IsCheckBox)
                 {
@@ -224,18 +249,19 @@ namespace Scada.Admin.App.Forms.Tables
                 if (columnInfo.IsText)
                 {
                     cbStringOperation.SelectedIndex = currentFilter.StringOperation;
-                    txtValue.Text = currentFilter.ValueText;
+                    cbMathOperation.SelectedIndex = currentFilter.MathOperation;
+                    txtValue.Text = currentFilter.Value?.ToString() ?? "";
                 }
                 else if (columnInfo.IsComboBox)
                 {
                     cbStringOperation.SelectedIndex = 0;
-                    try { cbValue.SelectedValue = currentFilter.ValueKey; }
+                    try { cbValue.SelectedValue = (int)currentFilter.Value; }
                     catch { }
                 }
                 else if (columnInfo.IsCheckBox)
                 {
                     cbStringOperation.SelectedIndex = 0;
-                    cbBoolean.SelectedIndex = currentFilter.ValueFlag ? 1 : 0;
+                    cbBoolean.SelectedIndex = currentFilter.Value is bool val && val ? 1 : 0;
                 }
             }
         }
@@ -243,15 +269,34 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Creates a new filter according to the controls.
         /// </summary>
-        private Filter CreateFilter(ColumnInfo columnInfo)
+        private FilterExtended CreateFilter(ColumnInfo columnInfo)
         {
-            return new Filter();
+            FilterExtended filter = new FilterExtended
+            {
+                ColumnName = columnInfo.Column.Name,
+                StringOperation = cbStringOperation.SelectedIndex,
+                MathOperation = cbMathOperation.SelectedIndex
+            };
+
+            if (columnInfo.IsText)
+                filter.Value = columnInfo.IsNumber ? (object)ScadaUtils.ParseDouble(txtValue.Text) : txtValue.Text;
+            else if (columnInfo.IsComboBox)
+                filter.Value = (cbValue.SelectedValue is int val) ? val : -1;
+            else if (columnInfo.IsCheckBox)
+                filter.Value = cbBoolean.SelectedIndex > 0;
+
+            return filter;
         }
 
 
 
         private void FrmFilter_Load(object sender, EventArgs e)
         {
+            if (DataTable == null)
+                throw new InvalidOperationException("DataTable must not be null.");
+
+            ActiveControl = cbColumn;
+
             if (currentFilter == null)
             {
                 FillColumnList(dataGridView.CurrentCell?.OwningColumn.Name ?? "");
@@ -272,7 +317,7 @@ namespace Scada.Admin.App.Forms.Tables
         private void btnClearFilter_Click(object sender, EventArgs e)
         {
             currentFilter = null;
-            dataTable.DefaultView.RowFilter = "";
+            DataTable.DefaultView.RowFilter = "";
             DialogResult = DialogResult.OK;
         }
 
@@ -281,12 +326,12 @@ namespace Scada.Admin.App.Forms.Tables
             try
             {
                 currentFilter = CreateFilter(SelectedColumnInfo);
-                dataTable.DefaultView.RowFilter = currentFilter == null ? "" : currentFilter.GetRowFilter();
+                DataTable.DefaultView.RowFilter = currentFilter == null ? "" : currentFilter.GetRowFilter();
                 DialogResult = DialogResult.OK;
             }
             catch (Exception ex)
             {
-                ScadaUiUtils.ShowError(ex.Message);
+                ScadaUiUtils.ShowError(AppPhrases.IncorrectTableFilter);
             }
         }
     }

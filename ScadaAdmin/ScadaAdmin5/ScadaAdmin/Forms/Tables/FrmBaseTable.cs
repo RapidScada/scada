@@ -157,6 +157,9 @@ namespace Scada.Admin.App.Forms.Tables
             if (!project.ConfigBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
+            // save the existing filter
+            string rowFilter = dataTable?.DefaultView.RowFilter ?? "";
+
             // reset the binding source
             bindingSource.DataSource = null;
 
@@ -167,6 +170,7 @@ namespace Scada.Admin.App.Forms.Tables
             dataTable.DefaultView.Sort = baseTable.PrimaryKey;
             maxRowID = dataTable.DefaultView.Count > 0 ? 
                 (int)dataTable.DefaultView[dataTable.DefaultView.Count - 1][baseTable.PrimaryKey] : 0;
+            dataTable.DefaultView.RowFilter = rowFilter;
 
             // set the binding source before creating grid columns in case of work on Mono
             if (ScadaUtils.IsRunningOnMono)
@@ -1088,7 +1092,8 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void btnFilter_Click(object sender, EventArgs e)
         {
-            frmFilter = frmFilter ?? new FrmFilter(dataGridView, dataTable);
+            frmFilter = frmFilter ?? new FrmFilter(dataGridView);
+            frmFilter.DataTable = dataTable;
 
             if (frmFilter.ShowDialog() == DialogResult.OK)
             {

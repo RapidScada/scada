@@ -50,6 +50,8 @@ namespace Scada.Admin.App.Forms.Tables
         private FrmFind()
         {
             InitializeComponent();
+            cbFind.Top = txtFind.Top;
+            cbReplaceWith.Top = txtReplaceWith.Top;
         }
 
         /// <summary>
@@ -66,33 +68,24 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Fills the column list.
         /// </summary>
-        private void FillColumnList(out ColumnInfo selColumnInfo)
+        private void FillColumnList()
         {
             try
             {
                 cbColumn.BeginUpdate();
-                DataGridViewCell curCell = dataGridView.CurrentCell;
-                int curColInd = curCell == null ? -1 : curCell.ColumnIndex;
+                int curColInd = dataGridView.CurrentCell == null ? -1 : dataGridView.CurrentCell.ColumnIndex;
                 int selColInd = 0;
-                selColumnInfo = null;
 
-                for (int i = 0, k = 0; i < dataGridView.Columns.Count; i++)
+                foreach (DataGridViewColumn column in dataGridView.Columns)
                 {
-                    DataGridViewColumn column = dataGridView.Columns[i];
-
                     if ((column is DataGridViewTextBoxColumn || column is DataGridViewComboBoxColumn) &&
                         !column.ReadOnly)
                     {
                         ColumnInfo colInfo = new ColumnInfo(column);
-                        cbColumn.Items.Add(colInfo);
+                        int index = cbColumn.Items.Add(colInfo);
 
-                        if (i == curColInd)
-                        {
-                            selColInd = k;
-                            selColumnInfo = colInfo;
-                        }
-
-                        k++;
+                        if (column.Index == curColInd)
+                            selColInd = index;
                     }
                 }
 
@@ -108,28 +101,25 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Sets the default search condition.
         /// </summary>
-        private void SetDefaultSearchCondition(ColumnInfo selColumnInfo)
+        private void SetDefaultSearch(ColumnInfo columnInfo)
         {
             DataGridViewCell curCell = dataGridView.CurrentCell;
 
-            if (curCell != null && selColumnInfo != null)
+            if (curCell != null && columnInfo != null)
             {
-                if (selColumnInfo.IsText)
+                if (columnInfo.IsText)
                 {
                     if (curCell.EditedFormattedValue != null)
                         txtFind.Text = curCell.EditedFormattedValue.ToString();
                 }
+                else if (curCell.IsInEditMode)
+                {
+                    if (dataGridView.EditingControl is ComboBox comboBox)
+                        cbFind.SelectedValue = comboBox.SelectedValue;
+                }
                 else
                 {
-                    if (curCell.IsInEditMode)
-                    {
-                        if (dataGridView.EditingControl is ComboBox comboBox)
-                            cbFind.SelectedValue = comboBox.SelectedValue;
-                    }
-                    else
-                    {
-                        cbFind.SelectedValue = curCell.Value;
-                    }
+                    cbFind.SelectedValue = curCell.Value;
                 }
             }
         }
@@ -146,8 +136,8 @@ namespace Scada.Admin.App.Forms.Tables
             else if (columnInfo.IsText)
             {
                 txtFind.Visible = true;
-                txtReplaceWith.Visible = true;
                 cbFind.Visible = false;
+                txtReplaceWith.Visible = true;
                 cbReplaceWith.Visible = false;
                 chkCaseSensitive.Enabled = true;
                 chkWholeCellOnly.Enabled = true;
@@ -157,8 +147,8 @@ namespace Scada.Admin.App.Forms.Tables
             else
             {
                 txtFind.Visible = false;
-                txtReplaceWith.Visible = false;
                 cbFind.Visible = true;
+                txtReplaceWith.Visible = false;
                 cbReplaceWith.Visible = true;
                 chkCaseSensitive.Enabled = false;
                 chkWholeCellOnly.Enabled = false;
@@ -195,7 +185,7 @@ namespace Scada.Admin.App.Forms.Tables
             {
                 StringComparison comparison = ignoreCase ? 
                     StringComparison.CurrentCultureIgnoreCase : StringComparison.CurrentCulture;
-                string cellVal = cell.EditedFormattedValue == null ? "" : cell.EditedFormattedValue.ToString();
+                string cellVal = cell.EditedFormattedValue?.ToString() ?? "";
 
                 return wholeCellOnly && string.Compare(cellVal, value, ignoreCase) == 0 ||
                     !wholeCellOnly && cellVal.IndexOf(value, comparison) >= 0;
@@ -217,7 +207,7 @@ namespace Scada.Admin.App.Forms.Tables
                     (dataGridView.EditingControl as ComboBox)?.SelectedValue :
                     cell.Value;
 
-                return cellVal == value || (cellVal is int) && (value is int) && ((int)cellVal == (int)value);
+                return cellVal == value || (cellVal is int val1) && (value is int val2) && (val1 == val2);
             }
         }
 
@@ -389,8 +379,8 @@ namespace Scada.Admin.App.Forms.Tables
         {
             Translator.TranslateForm(this, GetType().FullName);
 
-            FillColumnList(out ColumnInfo selColumnInfo);
-            SetDefaultSearchCondition(selColumnInfo);
+            FillColumnList();
+            SetDefaultSearch(cbColumn.SelectedItem as ColumnInfo);
             ResetSearch();
 
             if (cbColumn.Items.Count == 0 || txtFind.Visible && txtFind.Text == "")

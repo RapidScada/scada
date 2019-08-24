@@ -78,6 +78,17 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
+        /// Gets a value indicating whether the text column contains numbers.
+        /// </summary>
+        public bool IsNumber
+        {
+            get
+            {
+                return IsText && (Column.ValueType == typeof(int) || Column.ValueType == typeof(double));
+            }
+        }
+
+        /// <summary>
         /// Gets a value indicating whether the column contains combo boxes.
         /// </summary>
         public bool IsComboBox

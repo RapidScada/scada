@@ -297,6 +297,7 @@
     <Phrase key="btnCopy.ToolTip">Копировать (Ctrl+C)</Phrase>
     <Phrase key="btnPaste.ToolTip">Вставить (Ctrl+V)</Phrase>
     <Phrase key="btnFind.ToolTip">Найти и заменить (Ctrl+F)</Phrase>
+    <Phrase key="btnFilter.ToolTip">Фильтр</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Автоподбор ширины столбцов</Phrase>
     <Phrase key="btnProperties.ToolTip">Свойства элемента</Phrase>
     <Phrase key="GridViewError">Ошибка при отображении таблицы, столбец &quot;{0}&quot;</Phrase>
@@ -333,6 +334,20 @@
     <Phrase key="chkEvEnabled">Запись событий</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFilter">
+    <Phrase key="this">Фильтр</Phrase>
+    <Phrase key="lblColumn">Столбец</Phrase>
+    <Phrase key="lblOperation">Операция</Phrase>
+    <Phrase key="cbStringOperation.Items[0]">Равен</Phrase>
+    <Phrase key="cbStringOperation.Items[1]">Содержит</Phrase>
+    <Phrase key="lblValue">Значение</Phrase>
+    <Phrase key="cbBoolean.Items[0]">Нет</Phrase>
+    <Phrase key="cbBoolean.Items[1]">Да</Phrase>
+    <Phrase key="btnClearFilter">Очистить</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="IncorrectTableFilter">Некорректный фильтр таблицы.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFind">
     <Phrase key="this">Найти и заменить</Phrase>
