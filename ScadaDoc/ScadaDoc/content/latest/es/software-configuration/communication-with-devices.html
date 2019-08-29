@@ -1,56 +1,44 @@
 ﻿<!DOCTYPE html>
-<html>
+<html dir="ltr">
 <head>
-    <title>Communication with Devices Configuration - Rapid SCADA Documentation</title>
-    <meta charset="utf-8" />
-    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <title>Configuraci&#243;n de comunicaci&#243;n con dispositivos - Documentaci&#243;n de Rapid SCADA</title>
+    <meta charset="utf-8">
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../js/contents.js"></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Communication with Devices Configuration</h1>
+    <h1>Configuraci&#243;n de comunicaci&#243;n con dispositivos</h1>
 
-    <p>Interaction with real or virtual devices is performed by the Communicator application, which acting as a master or a slave, polls data and sends commands to devices. All the devices are bound to communication lines. Communication lines are independent of each other and work in parallel.</p>
+    <p>La interacci&#243;n con los dispositivos reales o virtuales se realiza por la aplicaci&#243;n llamada Comunicador que funciona como un m&#225;ster o un esclavo, solicita los datos y env&#237;a comandos a los dispositivos. Todos los dispositivos est&#225;n vinculados con las l&#237;neas de comunicaci&#243;n. Las l&#237;neas de comunicaci&#243;n son&#160;independientes&#160;entre&#160;s&#237; y funcionan en paralelo.</p>
 
-    <p>The user interface of Communicator, designed for configuration, is built into the Administrator application. Communicator is configured as part of a project.</p>
+    <p>La interfaz de usuario del Comunicador, siendo dise&#241;ada para la configuraci&#243;n, est&#225; integrada en la aplicaci&#243;n llamada Administrador. El Comunicador est&#225; configurado como parte de un proyecto.</p>
 
-    <p>Figure 1 shows an example of the main communication line parameters. A communication channel determines physical interface or network protocol which is used for data exchange with devices. The following communication channels are supported: Serial port, TCP client, TCP server and UDP. In some cases, if the interaction with devices is implemented by a device driver, communication channel should be undefined (e.g., the OPC driver).</p>
+    <p>Imagen 1 muestra un ejemplo de par&#225;metros de la l&#237;nea de comunicaci&#243;n principal. Un canal de comunicaci&#243;n define la interfaz f&#237;sica o un protocolo de red que se usa para intercambiar los datos con los dispositivos. Se apoyan los siguientes canales de comunicaci&#243;n: Serial port, TCP client, TCP server y UDP. A veces si la interacci&#243;n con los dispositivos se realiza por un controlador del dispositivo, se requiere que el canal de comunicaci&#243;n est&#233; indefinido (p.ej., el controlador OPC).</p>
 
-    <p>If sending commands to devices is not required, it is recommended to untick the <em>Commands enabled</em> checkbox due to safety reasons.</p>
+    <p>Si no se requiere enviar comandos a los dispositivos, se recomienda desmarcar la casilla de verificaci&#243;n <em>Comandos habilitados</em> por razones de&#160;seguridad.</p>
 
-    <p class="sd-article-image">
-        <img src="communication-with-devices-files/comm_line_params_en.png" alt="Main communication line parameters" /><br />
-        Figure 1. Main communication line parameters
-    </p>
+    <p class="sd-article-image"> <img src="communication-with-devices-files/comm_line_params_en.png" alt="Parámetros principales de la línea de comunicación"><br> Imagen 1. Par&#225;metros principales de la l&#237;nea de comunicaci&#243;n </p>
 
-    <p class="sd-article-image">
-        <img src="communication-with-devices-files/comm_line_req_en.png" alt="Request sequence" /><br />
-        Figure 2. Request sequence
-    </p>
+    <p class="sd-article-image"> <img src="communication-with-devices-files/comm_line_req_en.png" alt="Secuencia de solicitud"><br> Imagen 2. Secuencia de solicitud </p>
 
-    <p>Communication order and request parameters are set on the <em>Request Sequence</em> page (see Figure 2).</p>
+    <p>El orden de comunicaci&#243;n y los par&#225;metros de solicitud est&#225;n establecidos en la p&#225;gina <em>Secuencia de solicitud</em> (refi&#233;rase a la Imagen 2).</p>
 
-    <p>If the <em>Active</em> checkbox on the <em>Main Parameters</em> page is unset, the corresponding communication line is disabled, and no requests are performed. If the <em>Active</em> checkbox in the <em>Selected Device</em> group box is unset, communication with that device is disabled.</p>
+    <p>Si la casilla de verificaci&#243;n <em>Activo </em>en la p&#225;gina <em>Par&#225;metros principales</em> est&#225; desmarcada, la l&#237;nea de comunicaci&#243;n correspondiente est&#225; deshabilitada y las solicitudes no se realizan. Si la casilla de verificaci&#243;n <em>Activo </em>en el cuadro de grupo <em>Dispositivo seleccionado</em> est&#225; desmarcada, la comunicaci&#243;n con aquel dispositivo est&#225; deshabilitada.</p>
 
-    <p>The <em>Bound to Server</em> checkbox on the <em>Main Parameters</em> page allows to switch on or off sending the communication line data to Server. The <em>Bound to Server</em> checkbox in the <em>Selected Device</em> group box has the similar purpose, but applied only for the device. If the <em>Interact with Server</em> checkbox on the <em>Common Parameters</em> page of the Communicator settings is unset, any interaction between Communicator and Server is disabled. These options are useful for testing new devices being connected to the system.</p>
+    <p>La casilla de verificaci&#243;n <em>Vinculado con servidor</em> en la p&#225;gina <em>Par&#225;metros principales</em> permite activar o desactivar el env&#237;o de los datos de la l&#237;nea de comunicaci&#243;n al Servidor. La casilla de verificaci&#243;n <em>Vinculado con servidor</em> en el cuadro de grupo <em>Dispositivo seleccionado</em> tiene el mismo objetivo, aunque se aplica solamente para el dispositivo. Si la casilla de verificaci&#243;n<em> Interacci&#243;n con servidor </em>en la p&#225;gina <em>Par&#225;metros comunes </em>de los ajustes del Comunicador est&#225; desmarcada, cualquier interacci&#243;n entre el Comunicador y el Servidor est&#225; deshabilitada. Estas opciones son &#250;tiles para probar nuevos dispositivos que est&#225;n conectados con el sistema.</p>
 
-    <p>If the <em>Time</em> and <em>Period</em> parameters of a device are equal to zero, the device is requested cyclically. If the <em>Time</em> parameter is greater than zero and <em>Period</em> is zero, the device is requested once a day in the specified time. If <em>Period</em> is greater than zero, the device is requested periodically starting at the specified time. The <em>Timeout</em> field defines how long to wait an answer from the device after a request. The <em>Delay</em> field defines a delay after each request to the device. <em>Command line</em> may contain additional parameters described in documentation of a device driver.</p>
+    <p>Si los par&#225;metros de un dispositivo <em>Hora </em>y <em>Per&#237;odo </em>son iguales a cero, el dispositivo se solicita de manera c&#237;clica. Si el par&#225;metro <em>Hora </em>es m&#225;s de cero y el <em>Per&#237;odo </em>es cero, el dispositivo se solicita una vez al d&#237;a en la hora especificada. Si el <em>Per&#237;odo </em>es m&#225;s de cero, el dispositivo se solicita peri&#243;dicamente a partir de la hora especificada. El campo <em>Tiempo de espera</em> define el tiempo de espera de respuesta del dispositivo despu&#233;s de la solicitud. El campo <em>Retraso </em>define un retraso despu&#233;s de cada solicitud enviada al dispositivo. La <em>L&#237;nea de comando </em>puede contener par&#225;metros adicionales descritos en la documentaci&#243;n de un controlador del dispositivo.</p>
 
-    <p>To reset request parameters of the selected device to the default values, click the <em>Reset</em> button. To open the device properties form, if it is supported by a driver of the selected device, click the <em>Properties</em> button or use a popup menu of the project explorer. To set global properties for a device type, choose the <em>Drivers</em> page, select the device driver and click the <em>Properties</em> button if the button is enabled.</p>
+    <p>Para restablecer los par&#225;metros de solicitud del dispositivo seleccionado a los valores por defecto, haga clic en el bot&#243;n <em>Restablecer</em>. Para abrir el formulario de propiedades del dispositivo, en caso de que se soporte por un controlador del dispositivo seleccionado, haga clic en el bot&#243;n <em>Propiedades </em>o use un men&#250; emergente del explorador de proyectos. Para establecer las propiedades globales para un tipo de dispositivo, elija la p&#225;gina <em>Controladores</em>, seleccione un controlador del dispositivo y haga clic en el bot&#243;n <em>Propiedades </em>si est&#225; habilitado.</p>
 
-    <p>To import communication lines and devices from the configuration database to the Communicator settings, right-click the <em>Communication Lines</em> node or a node of a specific communication line in the project explorer and select the <em>Import</em> item in the context menu. The import form is shown in Figure 3.</p>
+    <p>Para importar las l&#237;neas de comunicaci&#243;n y los dispositivos de la base de datos de configuraci&#243;n a los ajustes del Comunicador, haga clic derecho en el nodo <em>L&#237;neas de comunicaci&#243;n</em> o un nodo de una l&#237;nea de comunicaci&#243;n espec&#237;fica en el explorador de proyectos y seleccione un elemento <em>Importar </em>en el men&#250; contextual. El formulario de importaci&#243;n se muestra en la Imagen 3.</p>
 
-    <p class="sd-article-image">
-        <img src="communication-with-devices-files/comm_import_en.png" alt="Import Communicator settings" /><br />
-        Figure 3. Import Communicator settings
-    </p>
+    <p class="sd-article-image"> <img src="communication-with-devices-files/comm_import_en.png" alt="Ajustes de importación del Comunicador"><br> Imagen 3. Ajustes de importaci&#243;n del Comunicador </p>
 
-    <p>The settings synchronization feature (see Figure 4) is also run using the communication line context menu. Synchronization allows to update the parameters of existing communication lines and devices according to the configuration database, however, the parameters entered manually may be lost.</p>
+    <p>La gesti&#243;n de la funci&#243;n de sincronizaci&#243;n de ajustes (refi&#233;rase a la Imagen 4) se realiza usando el men&#250; contextual de la l&#237;nea de comunicaci&#243;n. La sincronizaci&#243;n permite actualizar los par&#225;metros de las l&#237;neas de comunicaci&#243;n existentes y los dispositivos seg&#250;n la base de datos de configuraci&#243;n. Sin embargo, se puede que los par&#225;metros ingresados a mano se pierdan.</p>
 
-    <p class="sd-article-image">
-        <img src="communication-with-devices-files/comm_sync_en.png" alt="Sync Communicator settings" /><br />
-        Figure 4. Sync Communicator settings
-    </p>
+    <p class="sd-article-image"> <img src="communication-with-devices-files/comm_sync_en.png" alt="Ajustes de sincronización del Comunicador"><br> Imagen 4. Ajustes de sincronizaci&#243;n del Comunicador </p>
 </body>
 </html>

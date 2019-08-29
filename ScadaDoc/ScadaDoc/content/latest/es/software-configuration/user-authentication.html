@@ -1,83 +1,83 @@
 ﻿<!DOCTYPE html>
-<html>
+<html dir="ltr">
 <head>
-    <title>User Authentication Configuration - Rapid SCADA Documentation</title>
-    <meta charset="utf-8" />
-    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <title>Configuraci&#243;n de autenticaci&#243;n del usuario - Documentaci&#243;n de Rapid SCADA</title>
+    <meta charset="utf-8">
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../js/contents.js"></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>User Authentication Configuration</h1>
+    <h1>Configuraci&#243;n de autenticaci&#243;n del usuario</h1>
 
-    <p>Rapid SCADA supports three methods of user authentication:</p>
+    <p>Rapid SCADA apoya tres m&#233;todos de autenticaci&#243;n del usuario:</p>
 
     <ol>
-        <li>Based on usernames and passwords stored in the configuration database.</li>
-        <li>Based on Active Directory.</li>
-        <li>Combined method.</li>
+        <li>Basando en los nombres de usuarios y las contrase&#241;as almacenadas en la base de datos de configuraci&#243;n.</li>
+        <li>Basando en Active Directory.</li>
+        <li>M&#233;todo combinado.</li>
     </ol>
 
-    <p>To perform authentication, a client application, for example, Communicator or Webstation, sends to the Server application a request to validate user name and password. Server checks user credentials and returns the user role to the client application.</p>
+    <p>Para realizar la autenticaci&#243;n, una aplicaci&#243;n de cliente, por ejemplo, Comunicador o Estaci&#243;n Web, env&#237;a una solicitud a la aplicaci&#243;n Servidor para que valide el nombre de usuario y la contrase&#241;a. El Servidor verifica los credenciales del usuario y devuelve el rol del usuario a la aplicaci&#243;n de cliente.</p>
 
-    <p>The standard user roles and their capabilities are listed in the following table.</p>
+    <p>Los roles de usuario est&#225;ndar y sus capacidades se enumeran en la tabla a continuaci&#243;n.</p>
 
     <table class="sd-article-table">
         <tr>
             <th>ID</th>
-            <th>Role Name</th>
-            <th>Description</th>
+            <th>Nombre de rol</th>
+            <th>Descripci&#243;n</th>
         </tr>
         <tr>
             <td>0</td>
             <td>Disabled</td>
-            <td>Access to the system is denied</td>
+            <td>El acceso al sistema es denegado</td>
         </tr>
         <tr>
             <td>1</td>
             <td>Administrator</td>
-            <td>Full access</td>
+            <td>Acceso completo</td>
         </tr>
         <tr>
             <td>2</td>
             <td>Dispatcher</td>
-            <td>Viewing all information, sending commands</td>
+            <td>Visualizaci&#243;n de toda la informaci&#243;n, env&#237;o de comandos</td>
         </tr>
         <tr>
             <td>3</td>
             <td>Guest</td>
-            <td>Viewing all information</td>
+            <td>Visualizaci&#243;n de toda la informaci&#243;n</td>
         </tr>
         <tr>
             <td>4</td>
             <td>Application</td>
-            <td>Interacting with the Server application</td>
+            <td>Interacci&#243;n con la aplicaci&#243;n Servidor</td>
         </tr>
     </table>
 
-    <p>To restrict user access to interface objects (table views, schemes, etc.), create new user roles in <em>Roles</em> table in the configuration database. Then specify access rights in the <em>Rights</em> table.</p>
+    <p>Para restringir el acceso del usuario respecto a los objetos de la interfaz (las visiones de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles </em>en la base de datos de configuraci&#243;n. Luego especifique los derechos de acceso en la tabla <em>Derechos</em>.</p>
 
-    <p>If Rapid SCADA operates in a network that managed by Active Directory, it is recommended to use the 2nd and the 3rd authentication methods because of security reasons. The details of these methods are described below.</p>
+    <p>Si Rapid SCADA opera en una red gestionada por Active Directory, entonces se recomienda usar los m&#233;todos de autenticaci&#243;n 2 y 3 debido a razones de seguridad. Los detalles de estos m&#233;todos se describen a continuaci&#243;n.</p>
 
-    <p>To allow the Server service interact with Active Directory, specify domain controller path and tick the nearby checkbox on the <em>Common Parameters</em> page of the application, and activate ModActiveDirectory.dll on the <em>Modules</em> page.</p>
+    <p>Para hacer que e servicio del Servidor interact&#250;a con Active Directory, especifique la ruta del controlador de dominio y marque la casilla de verificaci&#243;n cercana en la p&#225;gina <em>Par&#225;metros comunes</em> de la aplicaci&#243;n y habilite ModActiveDirectory.dll en la p&#225;gina <em>M&#243;dulos</em>.</p>
 
-    <p>The 2nd authentication method is used if the standard roles are enough to manage user rights. The benefit of this method is that rights management is performed using usual Active Directory tools without editing the configuration database and restarting the Server service.</p>
+    <p>El 2do m&#233;todo de autenticaci&#243;n se usa si los roles est&#225;ndar son suficientes para gestionar los derechos del usuario. La ventaja de este m&#233;todo es que la gesti&#243;n de derechos se realiza usando las herramientas de Active Directory est&#225;ndar sin editar la base de datos de configuraci&#243;n y sin reinicar el servidio de Servidor.</p>
 
-    <p>To use the 2nd method, it is required to create the security groups in Active Directory. The groups correspond to the user roles:</p>
+    <p>Para utilizar el 2do m&#233;todo se requiere crear los grupos de seguridad en Active Directory. Los grupos corresponden a los roles de usuarios:</p>
 
     <ul>
-        <li><em>ScadaDisabled</em> - Disabled role;</li>
-        <li><em>ScadaAdmin</em> - Administrator role;</li>
-        <li><em>ScadaDispatcher</em> - Dispatcher role;</li>
-        <li><em>ScadaGuest</em> - Guest role;</li>
-        <li><em>ScadaApp</em> - Application role.</li>
+        <li><em>ScadaDisabled</em> - rol Disabled;</li>
+        <li><em>ScadaAdmin</em> - rol Administrator;</li>
+        <li><em>ScadaDispatcher</em> - rol Dispatcher;</li>
+        <li><em>ScadaGuest</em> - rol Guest;</li>
+        <li><em>ScadaApp</em> - rol Application.</li>
     </ul>
 
-    <p>If a user is a member of a group listed above, or he is a member of a group which, in turn, is a member of the above groups, the user is granted the corresponding rights in Rapid SCADA.</p>
+    <p>Si un usuario es un miembro de un grupo enumerado anteriormente o un miembro de un grupo que a su vez es un miembro de los grupos mencionados anteriormente, entonces los derechos correspondientes en Rapid SCADA est&#225;n concedidos al usuario.</p>
 
-    <p>The 3rd method combines the capabilities of the 1st and the 2nd methods. Validation of user credentials is performed using Active Directory, and a user role is defined by the <em>Users</em> table of the configuration database. In this case, user names and user roles are specified in the <em>Users</em> table, but user passwords are kept blank in the table.</p>
+    <p>El 3er m&#233;todo combina las capacidades de los primeros dos m&#233;todos. La validaci&#243;n de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Usuarios </em>de la base de datos de configuraci&#243;n. En este caso los nombres de usuarios y los roles de usuarios est&#225;n especificados en la tabla <em>Usuarios</em>, aunque las contrase&#241;as de usuarios siguen en blanco en la tabla.</p>
 
-    <p>Simultaneous use of all the above authentication methods is allowed.</p>
+    <p>Se permite el uso simultaneo de todos los m&#233;todos de autenticaci&#243;n mencionados anteriormente.</p>
 </body>
 </html>

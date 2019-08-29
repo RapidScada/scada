@@ -1,153 +1,138 @@
 ﻿<!DOCTYPE html>
-<html>
+<html dir="ltr">
 <head>
-    <title>Tune Up Configuration Database - Rapid SCADA Documentation</title>
-    <meta charset="utf-8" />
-    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <title>Sincronizaci&#243;n de la base de datos de configuraci&#243;n - Documentaci&#243;n de Rapid SCADA</title>
+    <meta charset="utf-8">
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../js/contents.js"></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Tune Up Configuration Database</h1>
+    <h1>Sincronizaci&#243;n de la base de datos de configuraci&#243;n</h1>
 
-    <h2>Configuration Database Structure</h2>
+    <h2>Estructura de la base de datos de configuraci&#243;n</h2>
 
-    <p>The configuration database is a structured description of the entire automated system. The applications included in Rapid SCADA use the information from the configuration database in conjunction with their settings.</p>
+    <p>La base de datos de configuraci&#243;n es una descripci&#243;n estructurada de todo el sistema automatizado. Las aplicaciones incluidas en Rapid SCADA utilizan la informaci&#243;n de la base de datos de configuraci&#243;n conjuntamente con sus ajustes.</p>
 
-    <p>The configuration database is edited using the Administrator application as part of a project. The edited instance of the configuration database is in XML file format. When a project is uploaded to a server for execution, the configuration database is converted into a special DAT format.</p>
+    <p>La base de datos de configuraci&#243;n se edita usando la aplicaci&#243;n Administrador como parte de un proyecto. La instancia editada de la base de datos de configuraci&#243;n es en el formato de archivo XML. Cuando un proyecto se sube al servidor para su ejecuci&#243;n, la base de datos de configuraci&#243;n se convierte en un formato DAT especial.</p>
 
-    <p>The configuration database consists of tables, which in turn are composed of columns and rows. Each table belongs to one of the following groups:</p>
+    <p>La base de datos de configuraci&#243;n consta en las tablas, que a su vez se componen de columnas y filas. Cada tabla pertenece a uno de los siguientes grupos:</p>
 
     <ol>
-        <li><em>System.</em> This group contains the tables which define a configuration of a particular automated system.</li>
-        <li><em>Dictionaries</em>. This group contains the auxiliary tables. In most cases changing of these tables is not needed.</li>
+        <li><em>System.</em> Este grupo contiene las tablas que definen una configuraci&#243;n de un sistema automatizado particular.</li>
+        <li><em>Dictionaries</em>. Este grupo contiene las tablas auxiliares. En la mayor&#237;a de los casos no se requiere cambiar estas tablas.</li>
     </ol>
 
-    <p>The following table describes the configuration database tables.</p>
+    <p>La siguiente tabla describe las tablas de la base de datos de configuraci&#243;n.</p>
 
     <table class="sd-article-table">
         <tr>
-            <th>Table Name</th>
-            <th>Description</th>
+            <th>Nombre de tabla</th>
+            <th>Descripci&#243;n</th>
         </tr>
         <tr>
             <td colspan="2"><strong>System Group</strong></td>
         </tr>
         <tr>
             <td><em>Objects</em></td>
-            <td>Contains logical objects that are used to structure information in the system. Objects can be interpreted as locations</td>
+            <td>Contiene los objetos l&#243;gicos que se usan para estructurar la informaci&#243;n en el sistema. Los objetos pueden interpretarse como ubicaciones</td>
         </tr>
         <tr>
             <td><em>Communication lines</em></td>
-            <td>Describes communication lines which are used to exchange data with devices</td>
+            <td>Describe las l&#237;neas de comunicaciones que se usan para intercambiar los datos con los dispositivos.</td>
         </tr>
         <tr>
             <td><em>Devices</em></td>
-            <td>Contains real or virtual devices</td>
+            <td>Contiene los dispositivos reales o virtuales</td>
         </tr>
         <tr>
             <td><em>Input channels</em></td>
-            <td>Defines data received from the devices and calculated data</td>
+            <td>Define los datos recibidos de los dispositivos y los datos calculados</td>
         </tr>
         <tr>
             <td><em>Output channels</em></td>
-            <td>Specifies commands executed by the system</td>
+            <td>Especifica los comandos ejecutados por el sistema</td>
         </tr>
         <tr>
             <td><em>Roles</em></td>
-            <td>Contains roles. Each role defines a set of functions available to a user</td>
+            <td>Contiene los roles. Cada rol define un conjunto de funciones disponibles para un usuario</td>
         </tr>
         <tr>
             <td><em>Users</em></td>
-            <td>Contains a list of users of the system and their roles</td>
+            <td>Contiene una lista de usuarios del sistema y sus roles</td>
         </tr>
         <tr>
             <td><em>Interface</em></td>
-            <td>Contains descriptions of interface objects (views, reports and data windows)</td>
+            <td>Contiene las descripciones de los objetos de la interfaz (las ventanas de los datos, visiones e informes)</td>
         </tr>
         <tr>
             <td><em>Rights</em></td>
-            <td>Defines rights to interface objects by roles</td>
+            <td>Define los derechos para mostrar los objetos por roles</td>
         </tr>
         <tr>
             <td colspan="2"><strong>Dictionaries Group</strong></td>
         </tr>
         <tr>
             <td><em>Channel types</em></td>
-            <td>Dictionary of input channel types</td>
+            <td>Diccionario de los tipos de canales de entrada</td>
         </tr>
         <tr>
             <td><em>Command types</em></td>
-            <td>Dictionary of command types used by output channels</td>
+            <td>Diccionario de los tipos de comandos usados por canales de salida</td>
         </tr>
         <tr>
             <td><em>Event types</em></td>
-            <td>Dictionary of system event types and statuses of input channels in the archive</td>
+            <td>Diccionario de los tipos de eventos del sistema y los estados de los canales de entrada en el archivo</td>
         </tr>
         <tr>
             <td><em>Device types</em></td>
-            <td>Dictionary of device types that can be connected to the system</td>
+            <td>Diccionario de los tipos de dispositivos que pueden estar conectados con el sistema</td>
         </tr>
         <tr>
             <td><em>Quantities</em></td>
-            <td>Dictionary of measured quantities</td>
+            <td>Diccionario de las cantidades medidas</td>
         </tr>
         <tr>
             <td><em>Units</em></td>
-            <td>Dictionary of units of input channel values and enumerable values of input channels</td>
+            <td>Diccionario de las unidades de valores de canales de entrada y los valores enumerables de canales de entrada</td>
         </tr>
         <tr>
             <td><em>Command values</em></td>
-            <td>Dictionary of enumerable command values which are transmitted by output channels</td>
+            <td>Diccionario de los valores de comandos enumerables que se transmiten por los canales de salida</td>
         </tr>
         <tr>
             <td><em>Number formats</em></td>
-            <td>Dictionary of formats which are used to display input channel values</td>
+            <td>Diccionario de los formatos que se usan para visualizar los valores de canales de entrada</td>
         </tr>
         <tr>
             <td><em>Formulas</em></td>
-            <td>Dictionary of formulas used in calculation of input channel data and command values of output channels</td>
+            <td>Diccionario de las f&#243;rmulas usadas en el c&#225;lculo de los datos de canales de entrada y los valores de comandos de los canales de salida</td>
         </tr>
     </table>
 
-    <h2>Editing Configuration Database</h2>
+    <h2>Edici&#243;n de la base de datos de configuraci&#243;n</h2>
 
-    <p>The configuration database tables have relations with each other, that is, a cell of one table can refer to a record of another table. For example, each device refers to the communication line to which it is connected. Therefore, it is efficient to edit tables in a certain sequence. For tables from the <em>System</em> group, enter data in order starting with the <em>Objects</em> table and ending by the <em>Rights</em> table.</p>
+    <p>Las tablas de la base de datos de configuraci&#243;n est&#225;n relacionados entre s&#237;, es decir, una celda de una tabla puede referirse a un registro de otra tabla. Por ejemplo, cada dispositivo se refiere a la l&#237;nea de comunicaci&#243;n con la cual est&#225; conectado. As&#237;, es eficiente editar las tablas en una cierta secuencia. Para las tablas del grupo <em>System </em>ingrese los datos en el orden que se inicia con la tabla <em>Objects </em>y termina con la tabla <em>Rights</em>.</p>
 
-    <p>To add communication lines and devices, it is suggested to use the wizards that are opened using the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons. Using the wizard allows to add an entry to the configuration database table, and also to create the corresponding entity in the Communicator settings. To create input and output channels, use the wizard opened by the <img src="../../common-images/create_cnls.png" /> button. However, automatic channel creation must be supported by the device drivers selected, otherwise channels should be entered manually.</p>
+    <p>Para a&#241;adir las l&#237;neas de comunicaciones y los dispositivos, se recomienda utilizar los asistentes que se abren usando los botones <img src="../../common-images/add_line.png"> y <img src="../../common-images/add_device.png">. El uso del asistente le permite a&#241;adir una entrada en la tabla de la base de datos de configuraci&#243;n y tambi&#233;n crear la entidad correspondiente en los ajustes del Comunicador. Para crear los canales de entrada y salida utilice el asistente que se abre usando el bot&#243;n <img src="../../common-images/create_cnls.png">. Sin embargo, la creaci&#243;n de canales autom&#225;tica debe apoyarse por los controladores de dispositivos seleccionados, de lo contrario habr&#237;a que ingresarlo a mano.</p>
 
-    <p>If the <img src="../../common-images/props.png" /> button is displayed on the table toolbar, the table can be edited using the form view. Forms for editing channel properties are shown in Figure 1 and 2.</p>
+    <p>Si el bot&#243;n <img src="../../common-images/props.png"> est&#225; visualizado en la barra de herramientas de la tabla, la tabla puede editarse usando la visi&#243;n de formulario. Los formularios para editar las propiedades de canales se muestran en las im&#225;genes 1 y 2.</p>
 
-    <p class="sd-article-image">
-        <img src="tune-database-files/in_cnl_props_en.png" alt="Input channel properties" /><br />
-        Figure 1. Input channel properties
-    </p>
+    <p class="sd-article-image"> <img src="tune-database-files/in_cnl_props_en.png" alt="Propiedades del canal de entrada"><br> Imagen 1. Propiedades del canal de entrada </p>
 
-    <p class="sd-article-image">
-        <img src="tune-database-files/out_cnl_props_en.png" alt="Output channel properties" /><br />
-        Figure 2. Output channel properties
-    </p>
+    <p class="sd-article-image"> <img src="tune-database-files/out_cnl_props_en.png" alt="Propiedades del canal de salida"><br> Imagen 2. Propiedades del canal de salida </p>
 
-    <p>Creating a configuration database can be significantly accelerated by using the existing works. To exchange information between different databases, the Administrator application supports the <em>Import table</em> and <em>Export table</em> features (see Figure 3 and 4), which are accessible in the <em>File</em> menu. Tables can be are exported to DAT, XML and CSV files. Then information can be imported from DAT and XML files into the same or a different project. Limit the range of exported and imported data by specifying the starting and ending identifiers. If the new destination identifier for the import operation is set, data is imported with an offset of identifiers.</p>
+    <p>Es posible acelerar significativamente&#160;la creaci&#243;n de una base de datos de configuraci&#243;n usando los trabajos existentes. Para intercambiar la informaci&#243;n entre varias bases de datos la aplicaci&#243;n Administrador soporta las funciones <em>Import table</em> y <em>Export table</em> (refi&#233;rase a las im&#225;genes 3 y 4) que est&#225;n accesibles en el men&#250; <em>Archivo</em>. Es posible exportar las tablas en los archivos DAT, XML y CSV. Luego es posible importar la informaci&#243;n de los archivos DAT y XML en el mismo u otro proyecto. Limite el rango de los datos exportados e importados especificando los identificadores de inicio y fin. Si est&#225; establecido un nuevo identificador de destino para la operaci&#243;n de importaci&#243;n, los datos se importan con un&#160;intervalo de identificadores.</p>
 
-    <p class="sd-article-image">
-        <img src="tune-database-files/admin_import_table_en.png" alt="Import table" /><br />
-        Figure 3. Import table
-    </p>
+    <p class="sd-article-image"> <img src="tune-database-files/admin_import_table_en.png" alt="Tabla de importación"><br> Imagen 3. Tabla de importaci&#243;n </p>
 
-    <p class="sd-article-image">
-        <img src="tune-database-files/admin_export_table_en.png" alt="Export table" /><br />
-        Figure 4. Export table
-    </p>
+    <p class="sd-article-image"> <img src="tune-database-files/admin_export_table_en.png" alt="Tabla de exportación"><br> Imagen 4. Tabla de exportaci&#243;n </p>
 
-    <p>A cloning tool is available for input and output channels (see Figure 5). In the <em>Clone Channels</em> form fill the source and destination channel numbers. If needed, select a new object and device for the cloned channels. The function of updating channel numbers in formulas applies if a channel number is used as an argument in the following functions: N(), Val(), Stat(), SetVal(), SetStat() and SetData().</p>
+    <p>Una herramienta de clonaci&#243;n est&#225; disponible para los canales de entrada y salida (refi&#233;rase a la imagen 5). En el formulario <em>Clonar canales</em> rellene los n&#250;meros de canales de fuente y destino. Si se requiere, seleccione un objeto y un dispositivo nuevo para los canales clonados. La funci&#243;n de actualizaci&#243;n de n&#250;meros de canales en las f&#243;rmulas se aplica si un n&#250;mero de canal se usa como argumento en las siguientes funciones: N(), Val(), Stat(), SetVal(), SetStat() y SetData().</p>
 
-    <p class="sd-article-image">
-        <img src="tune-database-files/admin_clone_cnls_en.png" alt="Channel cloning" /><br />
-        Figure 5. Channel cloning
-    </p>
+    <p class="sd-article-image"> <img src="tune-database-files/admin_clone_cnls_en.png" alt="Clonación de canales"><br> Imagen 5. Clonaci&#243;n de canales </p>
 
-    <p>Copy (Ctrl + C) and paste (Ctrl + V) are available for table cells. Click a column header to sort the table rows by the values of that column. The search and replace feature (Ctrl + F) also speeds up editing.</p>
+    <p>Copiar (Ctrl + C) y pegar (Ctrl + V) est&#225; disponible para las celdas de tabla. Haga clic en la cabecera de la columna para clasificar las filas de la tabla por valores de aquella columna. La funci&#243;n de b&#250;squeda y reemplazo (Ctrl + F) tambi&#233;n acelera la&#160;edici&#243;n.</p>
 </body>
 </html>
