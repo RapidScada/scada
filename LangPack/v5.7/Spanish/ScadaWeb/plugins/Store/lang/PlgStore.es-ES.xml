@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgStoreDictionaries>
+  <Dictionary key="Scada.Web.Plugins.PlgStoreSpec">
+    <Phrase key="DownloadPluginsMenuItem">Download</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo">
+    <Phrase key="this">Plugin Info - Rapid SCADA</Phrase>
+    <Phrase key="lblGeneralTab">General</Phrase>
+    <Phrase key="lblScreenshotsTab">Screenshots</Phrase>
+    <Phrase key="lblDescrHdr">Description</Phrase>
+    <Phrase key="lblPriceHdr">Price</Phrase>
+    <Phrase key="hlBuy">Click here to buy</Phrase>
+    <Phrase key="hlBuy.NavigateUrl">http://rapidscada.org/download-all-files/purchase-module/</Phrase>
+    <Phrase key="lblAuthorHdr">Author</Phrase>
+    <Phrase key="lblUrlHdr">Web pages</Phrase>
+    <Phrase key="hlHome">Home page</Phrase>
+    <Phrase key="hlDoc">Documentation</Phrase>
+    <Phrase key="lblDownloadHdr">Download</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo.Js">
+    <Phrase key="GetPluginInfoError">Unable to receive plugin information</Phrase>
+    <Phrase key="FreePrice">Free</Phrase>
+    <Phrase key="PersonalPrice">Personal </Phrase>
+    <Phrase key="BusinessPrice">Business </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore">
+    <Phrase key="this">Download Plugins - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Download Plugins</Phrase>
+    <Phrase key="NameCol">Name</Phrase>
+    <Phrase key="DescrCol">Description</Phrase>
+    <Phrase key="PriceCol">Price</Phrase>
+    <Phrase key="AuthorCol">Author</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore.Js">
+    <Phrase key="GetPluginsError">Unable to receive list of plugins</Phrase>
+    <Phrase key="NoPlugins">No plugins found</Phrase>
+    <Phrase key="PluginNew">New</Phrase>
+    <Phrase key="PluginInfoBtn">More Info</Phrase>
+    <Phrase key="FreePrice">Free</Phrase>
+    <Phrase key="PersonalPrice">Personal </Phrase>
+    <Phrase key="BusinessPrice">Business </Phrase>
+  </Dictionary>
+</PlgStoreDictionaries>
