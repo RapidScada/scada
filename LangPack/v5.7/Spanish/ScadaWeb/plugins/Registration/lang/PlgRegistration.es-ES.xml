@@ -1,15 +1,15 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgRegistrationDictionaries>
   <Dictionary key="Scada.Web.Plugins.Registration">
-    <Phrase key="this">Registration - Rapid SCADA</Phrase>
-    <Phrase key="lblTitle">{0} Registration</Phrase>
-    <Phrase key="lblCompCode">Computer code</Phrase>
-    <Phrase key="lblRegKey">Registration key</Phrase>
-    <Phrase key="hlGetPermanentKey">Purchase a permanent key</Phrase>
-    <Phrase key="hlGetTrialKey">Get a trial key</Phrase>
-    <Phrase key="lblKeyStatus">Key status</Phrase>
-    <Phrase key="btnSaveKey">Save Key</Phrase>
-    <Phrase key="RegDataMissed">Registration data missed.</Phrase>
-    <Phrase key="RegDataTypeMismatch">Registration data type mismatch.</Phrase>
+    <Phrase key="this">Registro - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">{0} Registro</Phrase>
+    <Phrase key="lblCompCode">Codigo de computadora</Phrase>
+    <Phrase key="lblRegKey">Clave de registro</Phrase>
+    <Phrase key="hlGetPermanentKey">Compre una clave permanente</Phrase>
+    <Phrase key="hlGetTrialKey">Obtener una clave de prueba</Phrase>
+    <Phrase key="lblKeyStatus">Estado clave</Phrase>
+    <Phrase key="btnSaveKey">Guardar clave</Phrase>
+    <Phrase key="RegDataMissed">Datos de registro perdidos.</Phrase>
+    <Phrase key="RegDataTypeMismatch">Tipo de datos de registro no coincidentes.</Phrase>
   </Dictionary>
 </PlgRegistrationDictionaries>

@@ -1,43 +1,43 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgStoreDictionaries>
   <Dictionary key="Scada.Web.Plugins.PlgStoreSpec">
-    <Phrase key="DownloadPluginsMenuItem">Download</Phrase>
+    <Phrase key="DownloadPluginsMenuItem">Descargar</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo">
-    <Phrase key="this">Plugin Info - Rapid SCADA</Phrase>
+    <Phrase key="this">Información del plugin - Rapid SCADA</Phrase>
     <Phrase key="lblGeneralTab">General</Phrase>
-    <Phrase key="lblScreenshotsTab">Screenshots</Phrase>
-    <Phrase key="lblDescrHdr">Description</Phrase>
-    <Phrase key="lblPriceHdr">Price</Phrase>
-    <Phrase key="hlBuy">Click here to buy</Phrase>
+    <Phrase key="lblScreenshotsTab">Capturas de pantalla</Phrase>
+    <Phrase key="lblDescrHdr">Descripción</Phrase>
+    <Phrase key="lblPriceHdr">Precio</Phrase>
+    <Phrase key="hlBuy">Haga clic aquí para comprar</Phrase>
     <Phrase key="hlBuy.NavigateUrl">http://rapidscada.org/download-all-files/purchase-module/</Phrase>
-    <Phrase key="lblAuthorHdr">Author</Phrase>
-    <Phrase key="lblUrlHdr">Web pages</Phrase>
-    <Phrase key="hlHome">Home page</Phrase>
-    <Phrase key="hlDoc">Documentation</Phrase>
-    <Phrase key="lblDownloadHdr">Download</Phrase>
+    <Phrase key="lblAuthorHdr">Autor</Phrase>
+    <Phrase key="lblUrlHdr">Páginas web</Phrase>
+    <Phrase key="hlHome">Página de inicio</Phrase>
+    <Phrase key="hlDoc">Documentación</Phrase>
+    <Phrase key="lblDownloadHdr">Descargar</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo.Js">
-    <Phrase key="GetPluginInfoError">Unable to receive plugin information</Phrase>
-    <Phrase key="FreePrice">Free</Phrase>
+    <Phrase key="GetPluginInfoError">No se puede recibir información del plugin</Phrase>
+    <Phrase key="FreePrice">Gratis</Phrase>
     <Phrase key="PersonalPrice">Personal </Phrase>
-    <Phrase key="BusinessPrice">Business </Phrase>
+    <Phrase key="BusinessPrice">Negocio </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmStore">
-    <Phrase key="this">Download Plugins - Rapid SCADA</Phrase>
-    <Phrase key="lblTitle">Download Plugins</Phrase>
-    <Phrase key="NameCol">Name</Phrase>
-    <Phrase key="DescrCol">Description</Phrase>
-    <Phrase key="PriceCol">Price</Phrase>
-    <Phrase key="AuthorCol">Author</Phrase>
+    <Phrase key="this">Descargar plugins - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Descargar plugins</Phrase>
+    <Phrase key="NameCol">Nombre</Phrase>
+    <Phrase key="DescrCol">Descripción</Phrase>
+    <Phrase key="PriceCol">Precio</Phrase>
+    <Phrase key="AuthorCol">Autor</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmStore.Js">
-    <Phrase key="GetPluginsError">Unable to receive list of plugins</Phrase>
-    <Phrase key="NoPlugins">No plugins found</Phrase>
-    <Phrase key="PluginNew">New</Phrase>
-    <Phrase key="PluginInfoBtn">More Info</Phrase>
-    <Phrase key="FreePrice">Free</Phrase>
+    <Phrase key="GetPluginsError">No se puede recibir la lista de plugins</Phrase>
+    <Phrase key="NoPlugins">No se encontraron plugins</Phrase>
+    <Phrase key="PluginNew">Nuevo</Phrase>
+    <Phrase key="PluginInfoBtn">Más información</Phrase>
+    <Phrase key="FreePrice">Gratis</Phrase>
     <Phrase key="PersonalPrice">Personal </Phrase>
-    <Phrase key="BusinessPrice">Business </Phrase>
+    <Phrase key="BusinessPrice">Negocio </Phrase>
   </Dictionary>
 </PlgStoreDictionaries>

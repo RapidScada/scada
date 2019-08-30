@@ -112,7 +112,7 @@
     <Phrase key="AdminMenuItem">Administración</Phrase>
     <Phrase key="ConfigMenuItem">Configuración</Phrase>
     <Phrase key="RegMenuItem">Registro</Phrase>
-    <Phrase key="PluginsMenuItem">Complementos</Phrase>
+    <Phrase key="PluginsMenuItem">Plugins</Phrase>
     <Phrase key="AboutMenuItem">Acerca</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.RememberMe">
