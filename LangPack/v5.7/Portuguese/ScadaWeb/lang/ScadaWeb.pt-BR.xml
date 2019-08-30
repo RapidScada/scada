@@ -13,14 +13,6 @@
     <Phrase key="this">Confimação</Phrase>
     <Phrase key="lblConfirm">Você está certo disso?</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.MasterMain">
-    <Phrase key="lbtnMainLogout">Encerrar sessão</Phrase>
-    <Phrase key="lblMainFullscreenBtn.ToolTip">Tela cheia</Phrase>
-    <Phrase key="lblMainNormalViewBtn.ToolTip">Visualização normal</Phrase>
-    <Phrase key="lblMainMenuTab">Menu principal</Phrase>
-    <Phrase key="lblMainExplorerTab">Visualizações</Phrase>
-    <Phrase key="lblMainCollapseMenu">Colapsar Menu</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Web.ModalButtons.Js">
     <Phrase key="ok">OK</Phrase>
     <Phrase key="yes">Sim</Phrase>
@@ -29,8 +21,22 @@
     <Phrase key="cancel">Cancelar</Phrase>
     <Phrase key="close">Fechar</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Js.NotifPanel">
+    <Phrase key="unmute">Ativar som</Phrase>
+    <Phrase key="mute">Mudo</Phrase>
+    <Phrase key="emptyNotif">Nenhuma notificação</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lblMainNotifBtn.ToolTip">Notificações</Phrase>
+    <Phrase key="lbtnMainLogout">Encerrar sessão</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">Tela cheia</Phrase>
+    <Phrase key="lblMainMenuTab">Menu principal</Phrase>
+    <Phrase key="lblMainExplorerTab">Visualizações</Phrase>
+    <Phrase key="lblMainCollapseMenu">Colapsar Menu</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Visualização normal</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Report">
-    <Phrase key="GenReport">Gerar relatório &quot; {0} &quot; pelo usuário {1}</Phrase>
+    <Phrase key="GenReport">Gerar relatório &quot;{0}&quot; pelo usuário {1}</Phrase>
     <Phrase key="IncorrectRepTemplate">Tela de informação incorreta.</Phrase>
     <Phrase key="IncorrectStartDate">Data de início incorreta.</Phrase>
     <Phrase key="IncorrectEndDate">Data de finalização incorreta.</Phrase>
@@ -96,7 +102,7 @@
     <Phrase key="RightNo">Não</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
-    <Phrase key="this">Visualização (View) - Rapid SCADA</Phrase>
+    <Phrase key="this">Visualização - Rapid SCADA</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView.Js">
     <Phrase key="ExternalLinkTitle">Link externo - Rapid SCADA</Phrase>
@@ -105,6 +111,8 @@
     <Phrase key="ReportsMenuItem">Relatórios</Phrase>
     <Phrase key="AdminMenuItem">Adminisração</Phrase>
     <Phrase key="ConfigMenuItem">Configurações</Phrase>
+    <Phrase key="RegMenuItem">Registro</Phrase>
+    <Phrase key="PluginsMenuItem">Plugins</Phrase>
     <Phrase key="AboutMenuItem">Sobre</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.RememberMe">
