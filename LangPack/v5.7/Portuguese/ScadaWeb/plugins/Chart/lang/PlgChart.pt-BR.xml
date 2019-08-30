@@ -34,7 +34,7 @@
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmSelectCnls">
     <Phrase key="this">Selecionar Canais - Rapid SCADA</Phrase>
     <Phrase key="lblLoading">Carregando...</Phrase>
-    <Phrase key="lblUnableLoadView">Não é possível carregar a visualização (View)</Phrase>
+    <Phrase key="lblUnableLoadView">Não é possível carregar a visualização</Phrase>
     <Phrase key="lblNoCnlsByView">Canais de entrada não encontrados</Phrase>
   </Dictionary>
 </PlgChartDictionaries>

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgMapDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Map.WFrmMap.Js">
+    <Phrase key="ClickPosition">Clicado em </Phrase>
+    <Phrase key="DetailsLink">Mostrar detalhes</Phrase>
+    <Phrase key="UpdateCurDataError">Erro ao atualizar os dados atuais</Phrase>
+  </Dictionary>
+</PlgMapDictionaries>

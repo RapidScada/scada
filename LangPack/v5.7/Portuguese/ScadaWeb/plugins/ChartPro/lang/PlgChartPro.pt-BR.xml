@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgChartProDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart">
+    <Phrase key="IncorrectStartDate">Data de início incorreta.</Phrase>
+    <Phrase key="IncorrectEndDate">Data de término incorreta.</Phrase>
+    <Phrase key="IncorrectPeriod">A data de início deve ser menor ou igual à data de término.</Phrase>
+    <Phrase key="PeriodTooLong">A duração máxima do período é de {0} dias.</Phrase>
+    <Phrase key="CnlNumsEmptyError">Os números dos canais não são especificados.</Phrase>
+    <Phrase key="CountMismatchError">Incompatibilidade no número de canais e visualizar IDs.</Phrase>
+    <Phrase key="PerfWarning">Aviso! Muitos canais podem afetar o desempenho.</Phrase>
+    <Phrase key="AddCnlBtn">Adicionar</Phrase>
+    <Phrase key="RemoveCnlBtn">Remover</Phrase>
+    <Phrase key="CnlInfoBtn">Info</Phrase>
+    <Phrase key="ObjectHint">Objeto: </Phrase>
+    <Phrase key="DeviceHint">Dispositivo: </Phrase>
+    <Phrase key="ViewHint">Visualização: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartCnls">
+    <Phrase key="this">Canais do gráfico - Rapid SCADA</Phrase>
+    <Phrase key="btnAddCnls">Adicionar canais</Phrase>
+    <Phrase key="lblSelCnls">Canais selecionados:</Phrase>
+    <Phrase key="lblNoSelCnls">Canais de entrada não estão selecionados</Phrase>
+    <Phrase key="lbtnBackToCnls">Voltar aos canais selecionados</Phrase>
+    <Phrase key="lblLoading">Carregando...</Phrase>
+    <Phrase key="lblUnableLoadView">Não foi possível carregar a visualização</Phrase>
+    <Phrase key="lblNoCnlsByView">Canais de entrada não encontrados</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartExport">
+    <Phrase key="this">Exportação de gráficos - Rapid SCADA</Phrase>
+    <Phrase key="btnExportPdf">Exportar gráfico para PDF</Phrase>
+    <Phrase key="btnExportPng">Exportar gráfico para PNG</Phrase>
+    <Phrase key="btnExportExcel">Exportar dados para o Excel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPeriod">
+    <Phrase key="this">Período do gráfico - Rapid SCADA</Phrase>
+    <Phrase key="lblDateFrom">Das</Phrase>
+    <Phrase key="txtDateTo">Às</Phrase>
+    <Phrase key="btnPrevDay">Dia anterior</Phrase>
+    <Phrase key="btnNextDay">Próximo dia</Phrase>
+    <Phrase key="btnPrevWeek">Semana anterior</Phrase>
+    <Phrase key="btnNextWeek">Semana que vem</Phrase>
+    <Phrase key="btnPrevMonth">Mês anterior</Phrase>
+    <Phrase key="btnNextMonth">Próximo mês</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPro">
+    <Phrase key="this">Chart Pro - Rapid SCADA</Phrase>
+    <Phrase key="lblStatus">Gerado </Phrase>
+    <Phrase key="hlSelectCnls">Selecionar canais</Phrase>
+    <Phrase key="hlChangePeriod">Período de mudança</Phrase>
+    <Phrase key="hlShowData">Mostrar dados</Phrase>
+    <Phrase key="hlHideData">Ocultar dados</Phrase>
+    <Phrase key="hlExport">Exportar</Phrase>
+    <Phrase key="btnClose">Fechar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPro.Js">
+    <Phrase key="DataLoading">Carregamento de dados...</Phrase>
+    <Phrase key="LoadError">Erro ao carregar dados</Phrase>
+    <Phrase key="Generated">Gerado </Phrase>
+    <Phrase key="TimeCol">Tempo</Phrase>
+    <Phrase key="ZoomIn">Ampliar zoom</Phrase>
+    <Phrase key="ZoomOut">Reduzir zoom</Phrase>
+    <Phrase key="ResetZoom">Redefinir zoom</Phrase>
+  </Dictionary>
+</PlgChartProDictionaries>

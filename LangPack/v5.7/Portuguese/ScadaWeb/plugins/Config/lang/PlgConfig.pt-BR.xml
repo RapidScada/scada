@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgConfigDictionaries>
   <Dictionary key="Scada.Web.Plugins.Config.WFrmPlugins">
-    <Phrase key="this">Plugins - Rapid SCADA</Phrase>
-    <Phrase key="lblTitle">Plugins</Phrase>
+    <Phrase key="this">Plugins instalados - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Plugins instalados</Phrase>
     <Phrase key="NameCol">Nome</Phrase>
     <Phrase key="DescrCol">Descrição</Phrase>
     <Phrase key="StateCol">Estado</Phrase>
@@ -41,7 +41,7 @@
     <Phrase key="lblCmdEnabled">Habilitar comandos</Phrase>
     <Phrase key="lblCmdPassword">Senha requerida para enviar comando</Phrase>
     <Phrase key="lblRemEnabled">Permitir salvar usuário registrado</Phrase>
-    <Phrase key="lblViewsFromBase">Carregar a configuração da visualização (View) da base de dados</Phrase>
+    <Phrase key="lblViewsFromBase">Carregar a configuração da visualização da base de dados</Phrase>
     <Phrase key="lblShareStats">Compartilhar estatísticas despersonalizadas com os desenvolvedores</Phrase>
     <Phrase key="lblChartScript">Chart plugin</Phrase>
     <Phrase key="lblCmdScript">Plugin de comandos</Phrase>

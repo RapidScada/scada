@@ -1,5 +1,60 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Erro ao carregar visualização da tabela do arquivo</Phrase>
+    <Phrase key="SaveTableViewError">Erro ao salvar visualização da tabela no arquivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmItemInfo">
+    <Phrase key="this">Item Information</Phrase>
+    <Phrase key="gbInCnl">Input Channel</Phrase>
+    <Phrase key="lblInCnl">Channel</Phrase>
+    <Phrase key="lblInCnlObj">Object</Phrase>
+    <Phrase key="lblInCnlKP">Device</Phrase>
+    <Phrase key="gbCtrlCnl">Output Channel</Phrase>
+    <Phrase key="lblCtrlCnl">Channel</Phrase>
+    <Phrase key="lblCtrlCnlObj">Object</Phrase>
+    <Phrase key="lblCtrlCnlKP">Device</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="miFile">&amp;File</Phrase>
+    <Phrase key="miFileNew">New</Phrase>
+    <Phrase key="miFileOpen">Open...</Phrase>
+    <Phrase key="miFileSave">Save</Phrase>
+    <Phrase key="miFileSaveAs">Save As...</Phrase>
+    <Phrase key="miFileExit">Exit</Phrase>
+    <Phrase key="miHelp">&amp;Help</Phrase>
+    <Phrase key="miHelpAbout">About</Phrase>
+    <Phrase key="btnFileNew.ToolTip">New Table (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Open Table (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Save Table (Ctrl+S)</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Refresh Configuration Database</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Add Item</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Add Empty Item</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Move Item Up</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Move Item Down</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Delete Selected Items</Phrase>
+    <Phrase key="btnItemInfo.ToolTip">Show Item Info</Phrase>
+    <Phrase key="miDeviceAddItems">Add All Items</Phrase>
+    <Phrase key="cbCnlKind.Items[0]">Input channels</Phrase>
+    <Phrase key="cbCnlKind.Items[1]">Output channels</Phrase>
+    <Phrase key="lblHint">Press Enter or double-click a node to add it to the table. Right-click a device node to display the context menu.</Phrase>
+    <Phrase key="colItemCnlNum">Input Channel</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Output Channel</Phrase>
+    <Phrase key="colItemCaption">Caption</Phrase>
+    <Phrase key="colItemHidden">Hidden</Phrase>
+    <Phrase key="EditorTitle">{0} - Table Editor</Phrase>
+    <Phrase key="DefaultTableTitle">Table Title</Phrase>
+    <Phrase key="TableFileFilter">Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveTableConfirm">The table view has been modified. Save the changes?</Phrase>
+    <Phrase key="BaseNotFound">The configuration database not found</Phrase>
+    <Phrase key="EmptyDeviceNode">Empty device</Phrase>
+    <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+    <Phrase key="FillCnlTreeError">Error filling channel tree</Phrase>
+    <Phrase key="LoadFormStateError">Error loading form state</Phrase>
+    <Phrase key="SaveFormStateError">Error saving form state</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
     <Phrase key="EventsWorksheet">Eventos</Phrase>
     <Phrase key="AllEventsTitle">Todos os Eventos, {0}</Phrase>
@@ -20,10 +75,6 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
     <Phrase key="EventsTitle">Eventos</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.Plugins.Table.TableView">
-    <Phrase key="LoadTableViewError">Erro ao carregar visualização (View) da tabela do arquivo</Phrase>
-    <Phrase key="SaveTableViewError">Erro ao salvar visualização (View) da tabela no arquivo</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
     <Phrase key="this">Comando - Rapid SCADA</Phrase>
@@ -64,7 +115,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
     <Phrase key="lblAllEventsBtn">Todos os eventos</Phrase>
-    <Phrase key="lblEventsByViewBtn">Eventos por visualização (View)</Phrase>
+    <Phrase key="lblEventsByViewBtn">Eventos por visualização</Phrase>
     <Phrase key="lblNumCol">Número</Phrase>
     <Phrase key="lblTimeCol">Data e hora</Phrase>
     <Phrase key="lblObjCol">Objeto</Phrase>

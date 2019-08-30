@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgStoreDictionaries>
+  <Dictionary key="Scada.Web.Plugins.PlgStoreSpec">
+    <Phrase key="DownloadPluginsMenuItem">Baixar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo">
+    <Phrase key="this">Informações do plug-in - Rapid SCADA</Phrase>
+    <Phrase key="lblGeneralTab">Geral</Phrase>
+    <Phrase key="lblScreenshotsTab">Screenshots</Phrase>
+    <Phrase key="lblDescrHdr">Descrição</Phrase>
+    <Phrase key="lblPriceHdr">Preço</Phrase>
+    <Phrase key="hlBuy">Clique aqui para comprar</Phrase>
+    <Phrase key="hlBuy.NavigateUrl">http://rapidscada.org/download-all-files/purchase-module/</Phrase>
+    <Phrase key="lblAuthorHdr">Autor</Phrase>
+    <Phrase key="lblUrlHdr">Paginas web</Phrase>
+    <Phrase key="hlHome">Pagina inicial</Phrase>
+    <Phrase key="hlDoc">Documentação</Phrase>
+    <Phrase key="lblDownloadHdr">Baixar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmPluginInfo.Js">
+    <Phrase key="GetPluginInfoError">Não foi possível receber informações do plug-in</Phrase>
+    <Phrase key="FreePrice">Grátis</Phrase>
+    <Phrase key="PersonalPrice">Pessoal </Phrase>
+    <Phrase key="BusinessPrice">O negócio </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore">
+    <Phrase key="this">Download de plugins - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Download de plugins</Phrase>
+    <Phrase key="NameCol">Nome</Phrase>
+    <Phrase key="DescrCol">Descrição</Phrase>
+    <Phrase key="PriceCol">Preço</Phrase>
+    <Phrase key="AuthorCol">Autor</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStore.Js">
+    <Phrase key="GetPluginsError">Não foi possível receber a lista de plugins</Phrase>
+    <Phrase key="NoPlugins">Nenhum plug-in encontrado</Phrase>
+    <Phrase key="PluginNew">Novo</Phrase>
+    <Phrase key="PluginInfoBtn">Mais informações</Phrase>
+    <Phrase key="FreePrice">Grátis</Phrase>
+    <Phrase key="PersonalPrice">Pessoal </Phrase>
+    <Phrase key="BusinessPrice">O negócio </Phrase>
+  </Dictionary>
+</PlgStoreDictionaries>
