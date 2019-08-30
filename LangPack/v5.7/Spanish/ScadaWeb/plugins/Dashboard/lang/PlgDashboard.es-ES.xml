@@ -20,6 +20,7 @@
   <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboardList">
     <Phrase key="this">Tableros - Rapid SCADA</Phrase>
     <Phrase key="lblTitle">Tableros</Phrase>
+    <Phrase key="lblNoDashboards">No tableros disponibles</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.PlgDashboardSpec">
     <Phrase key="DashboardsMenuItem">Tableros</Phrase>

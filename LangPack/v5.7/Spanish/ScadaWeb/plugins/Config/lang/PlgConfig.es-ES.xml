@@ -28,7 +28,7 @@
     <Phrase key="lblServerPwdHelp">Dejar en blanco para no cambiar.</Phrase>
     <Phrase key="lblCommonParams">Parámetros de aplicación</Phrase>
     <Phrase key="lblCulture">Cultura</Phrase>
-    <Phrase key="lblCultureHelp">Ejemplo: es-LA. Vacío es el valor predeterminado.</Phrase>
+    <Phrase key="lblCultureHelp">Ejemplo: es-ES. Vacío es el valor predeterminado.</Phrase>
     <Phrase key="lblDataRefrRate">Frecuencia de actualización de datos</Phrase>
     <Phrase key="lbltxtDataRefrRateUnit">ms</Phrase>
     <Phrase key="lblArcRefrRate">AFrecuencia de actualización del archivo</Phrase>
