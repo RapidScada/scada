@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html dir="ltr">
 <head>
-    <title>Conceptos b&#225;sicos de configuraci&#243;n - Documentaci&#243;n de Rapid SCADA</title>
+    <title>Conceptos b&#225;sicos de la configuraci&#243;n - Documentaci&#243;n de Rapid SCADA</title>
     <meta charset="utf-8">
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -11,40 +11,40 @@
 <body>
     <h1>Conceptos b&#225;sicos de configuraci&#243;n</h1>
 
-    <h2>Creaci&#243;n de proyecto</h2>
-    <p>La configuraci&#243;n de Rapid SCADA se realiza a base de un proyecto. Un proyecto es un conjunto de archivos en varios formatos que est&#225;n almacenados en el directorio de proyecto. Para crear y editar los proyectos utilice la aplicaci&#243;n llamada Administrador. Al iniciar el Administrador se abre la <em>P&#225;gina de inicio</em> que contiene los botones para crear un proyecto nuevo o abrir uno existente (refi&#233;rase a la Imagen 1).</p>
+    <h2>Creaci&#243;n de un proyecto</h2>
+    <p>La configuraci&#243;n de Rapid SCADA se realiza a base de un proyecto. Un proyecto es un conjunto de archivos en varios formatos que est&#225;n almacenados en el directorio de proyecto. Para crear y editar los proyectos utilice la aplicaci&#243;n llamada Administrator (Administrador). Al iniciar el Administrator, se abre la <em>Start Page (P&#225;gina de inicio)</em> que contiene los botones para crear un proyecto nuevo o abrir uno existente (refi&#233;rase a la Imagen 1).</p>
 
     <p class="sd-article-image border"> <img src="configuration-basics-files/admin_start_page_en.png" alt="Página de inicio"><br> Imagen 1. P&#225;gina de inicio </p>
 
-    <p class="sd-article-image"> <img src="configuration-basics-files/admin_new_proj_en.png" alt="Formulario de creación de proyecto"><br> Imagen 2. Formulario de creaci&#243;n de proyecto </p>
+    <p class="sd-article-image"> <img src="configuration-basics-files/admin_new_proj_en.png" alt="Formulario de creación de un proyecto"><br> Imagen 2. Formulario de creaci&#243;n de un proyecto </p>
 
-    <p>Preste atenci&#243;n al campo <em>Plantilla </em>del formulario de creaci&#243;n de proyecto (refi&#233;rase a la Imagen 2). La plantilla define la configuraci&#243;n inicial que se a&#241;ade al proyecto. Es posible usar otro proyecto existente como plantilla.</p>
+    <p>Preste atenci&#243;n al campo <em>Template (Plantilla) </em>del formulario (refi&#233;rase a la Imagen 2). La plantilla define la configuraci&#243;n inicial que se a&#241;ade al proyecto. Es posible usar otro proyecto existente como plantilla.</p>
 
-    <h2>Estructura de proyecto</h2>
-    <p>La configuraci&#243;n de Rapid SCADA se visualiza en el explorador de proyectos que se ubica en la parte izquierda de la ventana principal del Administrador. El proyecto consta en las siguientes partes principales (Imagen 3):</p>
+    <h2>Estructura de un proyecto</h2>
+    <p>La configuraci&#243;n de Rapid SCADA se muestra en el explorador de proyectos que se ubica en la parte izquierda de la ventana principal del Administrador. El proyecto consta de las siguientes partes principales (Imagen 3):</p>
 
     <ul>
-        <li>La base de datos de configuraci&#243;n es una descripci&#243;n estructurada de todo el sistema automatizado. La base de datos de configuraci&#243;n define el sistema en general, mientras que los ajustes detallados se refieren a las aplicaciones de Rapid SCADA correspondientes.</li>
-        <li>Interfaz. Esta secci&#243;n de configuraci&#243;n contiene los archivos de visiones y los archivos de configuraci&#243;n de informes. Los ejemplos de visiones: los esquemas, las tablas, los mapas y los paneles de instrumentos.</li>
-        <li>Los ajustes de la aplicaci&#243;n Servidor.</li>
-        <li>Los ajustes de la aplicaci&#243;n Comunicador.</li>
-        <li>Los ajustes de la aplicaci&#243;n web Estaci&#243;n Web. Es mucho m&#225;s c&#243;modo editar los ajustes de la Estaci&#243;n Web a trav&#233;s de la interfaz web y luego descargarlos en el proyecto.</li>
+        <li>La base de datos de configuraci&#243;n es una descripci&#243;n estructurada de todo el sistema automatizado. La base de datos de configuraci&#243;n define el sistema en general, mientras que los ajustes detallados se refieren a las aplicaciones correspondientes de Rapid SCADA.</li>
+        <li>Interface (Interface). Esta secci&#243;n de configuraci&#243;n contiene los archivos de vistas y los archivos de configuraci&#243;n de informes. Son ejemplos de vistas: los esquemas, las tablas, los mapas y los paneles de instrumentos.</li>
+        <li>Configuraci&#243;n de la aplicaci&#243;n Server (Servidor).</li>
+        <li>Configuraci&#243;n de la aplicaci&#243;n Comunicator (Comunicador).</li>
+        <li>Configuraci&#243;n de la aplicaci&#243;n Webstation (Estaci&#243;n Web). Es m&#225;s conveniente editar la configuraci&#243;n de la Webstation a trav&#233;s de la interfaz web y luego descargarlos en el proyecto.</li>
     </ul>
 
-    <p class="sd-article-image border"> <img src="configuration-basics-files/proj_struct_en.png" alt="Estructura de proyecto"><br> Imagen 3. Estructura de proyecto </p>
+    <p class="sd-article-image border"> <img src="configuration-basics-files/proj_struct_en.png" alt="Estructura de un proyecto"><br> Imagen 3. Estructura de un proyecto </p>
 
-    <p>Una instancia es un ordenador donde est&#225; desplegado Rapid SCADA. Un solo proyecto puede incluir m&#250;ltiples instancias de Rapid SCADA que intercambian los datos. La aplicaci&#243;n Administrador puede conectarse con los servidores remotos para descargar y subir la configuraci&#243;n, as&#237; es posible configurar Rapid SCADA usando una estaci&#243;n de trabajo.</p>
+    <p>Una instancia es un ordenador en el que est&#225; instalado Rapid SCADA. Un determinado proyecto puede incluir m&#250;ltiples instancias de Rapid SCADA que intercambian los datos. La aplicaci&#243;n Administrator puede conectarse con los servidores remotos para descargar y subir la configuraci&#243;n, as&#237; es posible configurar Rapid SCADA usando una estaci&#243;n de trabajo.</p>
 
-    <h2>Secuencia de configuraciones general</h2>
+    <h2>Secuencia general de configuraci&#243;n</h2>
     <p>Al iniciar el trabajo con Rapid SCADA se recomienda seguir la secuencia de configuraciones general descrita a continuaci&#243;n. Al obtener m&#225;s experiencia y mejor comprensi&#243;n de las dependencias entre las aplicaciones, se podr&#225; cambiar la secuencia para aumentar la eficiencia.</p>
     <ol>
         <li>Cree un proyecto nuevo o abra uno existente.</li>
-        <li>A&#241;ada los objetos, las l&#237;neas comunicaciones y los dispositivos en la base de datos de configuraci&#243;n. Para crear las l&#237;neas de comunicaciones y los dispositivos se recomienda usar los asistentes  que se abren usando los botones <img src="../../common-images/add_line.png"> y <img src="../../common-images/add_device.png"> ubicados en la barra de herramientas del Administrador.</li>
-        <li>Verifique que las l&#237;neas de comunicaciones y los dispositivos a&#241;adidos est&#225;n presentes en los ajustes del Comunicador. Si es necesario, imp&#243;rtelos seleccionando el elemento del men&#250; <em>Importar </em>del men&#250; contextual del nodo <em>L&#237;neas de comunicaciones</em> del explorador de proyectos.</li>
-        <li><a href="communication-with-devices.html">Configure la comunicaci&#243;n con los dispositivos </a>en el Comunicador.</li>
-        <li>Cree los canales de entrada y salida en la base de datos de configuraci&#243;n. Se recomienda usar el asistente que se abre usando el bot&#243;n <img src="../../common-images/create_cnls.png">.</li>
-        <li><a href="creating-views.html">Cree las visiones</a> y especif&#237;quelos en la tabla <em>Interfaz </em>de la base de datos de configuraci&#243;n.</li>
-        <li>Suba el proyecto al servidor usando el bot&#243;n <img src="../../common-images/upload.png">.</li>
+        <li>A&#241;ada los objetos, las l&#237;neas de comunicaci&#243;n y los dispositivos en la base de datos de configuraci&#243;n. Para crear las l&#237;neas de comunicaci&#243;n y los dispositivos se recomienda usar los asistentes  que se abren usando los botones <img src="../../common-images/add_line.png"> y <img src="../../common-images/add_device.png"> ubicados en la barra de herramientas del Administrator.</li>
+        <li>Verifique que las l&#237;neas de comunicaciones y los dispositivos a&#241;adidos est&#225;n presentes en la configuraci&#243;n del Comunicator. Si es necesario, imp&#243;rtelos seleccionando el elemento del men&#250; <em>Import (Importar) </em>del men&#250; contextual del nodo <em>Communicator lines (L&#237;neas de comunicaciones)</em> del explorador de proyectos.</li>
+        <li><a href="communication-with-devices.html">Configure la comunicaci&#243;n con los dispositivos </a>en el Comunicator.</li>
+        <li>Cree los canales de entrada y salida en la Configuration Data -base (base de datos de configuraci&#243;n). Se recomienda usar el asistente que se abre usando el bot&#243;n <img src="../../common-images/create_cnls.png">.</li>
+        <li><a href="creating-views.html">Cree las vistas</a> y especif&#237;quelos en la tabla <em>Interface (Interfaz) </em>de la base de datos de configuraci&#243;n.</li>
+        <li>Suba el proyecto al servidor usando el bot&#243;n <img src="../../common-images/upload.png"> (Upload Configuration).</li>
     </ol>
 </body>
 </html>

@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html dir="ltr">
 <head>
-    <title>Creaci&#243;n de visiones - Documentaci&#243;n de Rapid SCADA</title>
+    <title>Creaci&#243;n de vistas - Documentaci&#243;n de Rapid SCADA</title>
     <meta charset="utf-8">
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -9,21 +9,21 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Creaci&#243;n de visiones</h1>
+    <h1>Creaci&#243;n de vistas</h1>
 
-    <p>Una visi&#243;n es una forma de representaci&#243;n de los datos en la aplicaci&#243;n Estaci&#243;n Web. Existen 2 tipos de visiones soportados por defecto: visiones de tabla y esquemas. Es posible a&#241;adir el soporte de otros tipos de visiones tras instalar los complementos adicionales.</p>
+    <p>Una vista es una forma de representaci&#243;n de los datos en la aplicaci&#243;n Webstation. Existen dos tipos de vistas soportados por defecto: vistas de tabla y esquemas. Es posible agregar soporte para otros tipos de vistas tras instalar complementos adicionales.</p>
 
-    <p><a href="../software-overview/applications/table-editor-application.html">Editor de tablas</a> y <a href="../software-overview/applications/scheme-editor-application.html">Editor de esquemas</a> est&#225;n dise&#241;ados para crear las visiones. Las visiones se guardan en los archivos que deben ubicarse en un directorio de la interfaz de un proyecto. Durante la ejecuci&#243;n las visiones est&#225;n ubicadas en el directorio de la interfaz especificado en los ajustes de la aplicaci&#243;n Servidor o en sus subdirectorios, por defecto es C:\SCADA\Interface\</p>
+    <p><a href="../software-overview/applications/table-editor-application.html">Table Editor (Editor de tablas)</a> y <a href="../software-overview/applications/scheme-editor-application.html">Scheme Editor (Editor de esquemas)</a> est&#225;n dise&#241;ados para crear las vistas. Las mismas se guardan en archivos que deben estar ubicados en el directorio de la interfaz de un proyecto. Durante la ejecuci&#243;n las vistas est&#225;n ubicadas en el directorio Interface especificado en los ajustes de la aplicaci&#243;n Server o en sus subdirectorios. Por defecto C:\SCADA\Interface\</p>
 
-    <p>Los ejemplos de los archivos de visiones:<br> Interface\Servers\ServerRoom.sch - esquema,<br> Interface\Servers\ServerRoom.tbl - visi&#243;n de tabla.</p>
+    <p>Son ejemplos de archivos de vistas:<br> Interface\Servers\ServerRoom.sch - scheme,<br> Interface\Servers\ServerRoom.tbl - table view.</p>
 
-    <p>Para abrir un di&#225;logo de creaci&#243;n de una visi&#243;n seleccione el elemento <em>Nuevo archivo </em>del men&#250; contextual (refi&#233;rase a las im&#225;genes 1 y 2). Luego, en el di&#225;logo, seleccione el tipo de la visi&#243;n, especifique el nombre del archivo y haga clic en el bot&#243;n <em>OK</em>. El archivo creado ser&#225; visualizado en el explorador de proyectos. La visi&#243;n se abre por el editor tras hacer un doble clic en el nodo del &#225;rbol correspondiente.</p>
+    <p>Para abrir un di&#225;logo de creaci&#243;n de una vista seleccione el elemento <em>New file (Nuevo archivo) </em>del men&#250; contextual (refi&#233;rase a las im&#225;genes 1 y 2). Luego, en el di&#225;logo, seleccione el tipo de la vista, especifique el nombre del archivo y haga clic en el bot&#243;n <em>OK</em>. El archivo creado ser&#225; mostrado en el explorador de proyectos. La vista se abre por el editor tras hacer un doble clic en el nodo del &#225;rbol correspondiente.</p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_menu_en.png" alt="Menú para crear una visión"><br> Imagen 1. Men&#250; para crear una visi&#243;n </p>
+    <p class="sd-article-image"> <img src="creating-views-files/interface_menu_en.png" alt="Menú para crear una vista"><br> Imagen 1. Men&#250; para crear una vista </p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_new_file_en.png" alt="Diálogo de creación de visión"><br> Imagen 2. Di&#225;logo de creaci&#243;n de visi&#243;n </p>
+    <p class="sd-article-image"> <img src="creating-views-files/interface_new_file_en.png" alt="Diálogo de creación de una vista"><br> Imagen 2. Di&#225;logo de creaci&#243;n de una vista </p>
 
-    <p>Despu&#233;s de crear los archivos de visiones se requiere especificarlos en la tabla <em>Interfaz </em>de la base de datos de configuraci&#243;n seg&#250;n se muestra en la Imagen 3. Los identificadores de visiones deben ser &#250;nicos. La ruta de visi&#243;n est&#225; relacionada con el directorio de la interfaz. El texto especificado en la columna <em>T&#237;tulo </em>se visualiza como un texto de nodo en el &#225;rbol del explorador de la Estaci&#243;n Web, y los identificadores determinan la clasificaci&#243;n de las visiones. Si los archivos de visiones se ubican en los subdirectorios del directorio de la interfaz, aquellos subdirectorios tambi&#233;n deben especificarse en la tabla <em>Interfaz</em>.</p>
+    <p>Despu&#233;s de crear los archivos de vistas se requiere especificarlos en la tabla <em>Interface (Interfaz) </em>de la base de datos de configuraci&#243;n seg&#250;n se muestra en la Imagen 3. Los identificadores de vistas deben ser &#250;nicos. La ruta de vistas est&#225; relacionada con el directorio de la interfaz. El texto especificado en la columna <em>Title (T&#237;tulo) </em>se muestra como un texto de nodo en el &#225;rbol del explorador de la Webstation, y los identificadores determinan el orden de las vistas. Si los archivos de vistas se ubican en los subdirectorios del directorio de la interfaz, estos subdirectorios deben tambi&#233;n especificarse en la tabla <em>Interface</em>.</p>
 
     <p class="sd-article-image"> <img src="creating-views-files/interface_table_en.png" alt="Edición de la tabla Interfaz"><br> Imagen 3. Edici&#243;n de la tabla Interfaz </p>
 </body>

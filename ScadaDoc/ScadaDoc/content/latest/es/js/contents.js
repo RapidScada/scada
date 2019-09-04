@@ -28,7 +28,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/using-formulas.html", "Uso de fórmulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Configuración de autenticación del usuario", 1);
     addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de comunicación con dispositivos", 1);
-    addArticle(context, "software-configuration/creating-views.html", "Creación de visiones", 1);
+    addArticle(context, "software-configuration/creating-views.html", "Creación de vistas", 1);
 
     addArticle(context, "modules/", "Modules");
     addArticle(context, "modules/kp-telegram.html", "Telegram Driver", 1);

@@ -11,15 +11,15 @@
 <body>
     <h1>Configuraci&#243;n de autenticaci&#243;n del usuario</h1>
 
-    <p>Rapid SCADA apoya tres m&#233;todos de autenticaci&#243;n del usuario:</p>
+    <p>Rapid SCADA soporta tres m&#233;todos de autenticaci&#243;n del usuario:</p>
 
     <ol>
-        <li>Basando en los nombres de usuarios y las contrase&#241;as almacenadas en la base de datos de configuraci&#243;n.</li>
-        <li>Basando en Active Directory.</li>
+        <li>Basado en nombres de usuario y contrase&#241;a almacenadоs en la base de datos de configuraci&#243;n.</li>
+        <li>Basado en Active Directory.</li>
         <li>M&#233;todo combinado.</li>
     </ol>
 
-    <p>Para realizar la autenticaci&#243;n, una aplicaci&#243;n de cliente, por ejemplo, Comunicador o Estaci&#243;n Web, env&#237;a una solicitud a la aplicaci&#243;n Servidor para que valide el nombre de usuario y la contrase&#241;a. El Servidor verifica los credenciales del usuario y devuelve el rol del usuario a la aplicaci&#243;n de cliente.</p>
+    <p>Para realizar la autenticaci&#243;n, una aplicaci&#243;n de cliente, por ejemplo, Communicator o Webstation, env&#237;a una solicitud a la aplicaci&#243;n Server para que valide el nombre de usuario y la contrase&#241;a. El Server verifica las credenciales del usuario y devuelve el rol del usuario a la aplicaci&#243;n de cliente.</p>
 
     <p>Los roles de usuario est&#225;ndar y sus capacidades se enumeran en la tabla a continuaci&#243;n.</p>
 
@@ -32,52 +32,52 @@
         <tr>
             <td>0</td>
             <td>Disabled</td>
-            <td>El acceso al sistema es denegado</td>
+            <td>Se deniega el acceso al sistema</td>
         </tr>
         <tr>
             <td>1</td>
             <td>Administrator</td>
-            <td>Acceso completo</td>
+            <td>Brinda acceso completo</td>
         </tr>
         <tr>
             <td>2</td>
             <td>Dispatcher</td>
-            <td>Visualizaci&#243;n de toda la informaci&#243;n, env&#237;o de comandos</td>
+            <td>Permite ver toda la informaci&#243;n, env&#237;o de comandos</td>
         </tr>
         <tr>
             <td>3</td>
             <td>Guest</td>
-            <td>Visualizaci&#243;n de toda la informaci&#243;n</td>
+            <td>Permite ver toda la informaci&#243;n</td>
         </tr>
         <tr>
             <td>4</td>
             <td>Application</td>
-            <td>Interacci&#243;n con la aplicaci&#243;n Servidor</td>
+            <td>Puede interactuar con la aplicaci&#243;n Server</td>
         </tr>
     </table>
 
-    <p>Para restringir el acceso del usuario respecto a los objetos de la interfaz (las visiones de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles </em>en la base de datos de configuraci&#243;n. Luego especifique los derechos de acceso en la tabla <em>Derechos</em>.</p>
+    <p>Para restringir el acceso del usuario respecto a los objetos de la interfaz (las vistas de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles </em>en la base de datos de configuraci&#243;n. Luego especifique los derechos de acceso en la tabla <em>Derechos</em>.</p>
 
-    <p>Si Rapid SCADA opera en una red gestionada por Active Directory, entonces se recomienda usar los m&#233;todos de autenticaci&#243;n 2 y 3 debido a razones de seguridad. Los detalles de estos m&#233;todos se describen a continuaci&#243;n.</p>
+    <p>Si Rapid SCADA opera en una red gestionada por Active Directory, se recomienda usar los m&#233;todos de autenticaci&#243;n 2 y 3 debido a razones de seguridad. Los detalles de estos m&#233;todos se describen a continuaci&#243;n.</p>
 
-    <p>Para hacer que e servicio del Servidor interact&#250;a con Active Directory, especifique la ruta del controlador de dominio y marque la casilla de verificaci&#243;n cercana en la p&#225;gina <em>Par&#225;metros comunes</em> de la aplicaci&#243;n y habilite ModActiveDirectory.dll en la p&#225;gina <em>M&#243;dulos</em>.</p>
+    <p>Para hacer que e servicio del Servidor interact&#250;e con Active Directory, especifique la ruta del controlador de dominio y marque la casilla de verificaci&#243;n cercana en la p&#225;gina <em>Par&#225;metros comunes</em> de la aplicaci&#243;n y habilite ModActiveDirectory.dll en la p&#225;gina <em>M&#243;dulos</em>.</p>
 
-    <p>El 2do m&#233;todo de autenticaci&#243;n se usa si los roles est&#225;ndar son suficientes para gestionar los derechos del usuario. La ventaja de este m&#233;todo es que la gesti&#243;n de derechos se realiza usando las herramientas de Active Directory est&#225;ndar sin editar la base de datos de configuraci&#243;n y sin reinicar el servidio de Servidor.</p>
+    <p>El 2do m&#233;todo de autenticaci&#243;n se usa si los roles est&#225;ndar son suficientes para gestionar los derechos del usuario. La ventaja de este m&#233;todo es que la gesti&#243;n de derechos se realiza usando las herramientas est&#225;ndar de Active Directory sin editar la base de datos de configuraci&#243;n y sin reiniciar el servicio de Servidor.</p>
 
     <p>Para utilizar el 2do m&#233;todo se requiere crear los grupos de seguridad en Active Directory. Los grupos corresponden a los roles de usuarios:</p>
 
     <ul>
-        <li><em>ScadaDisabled</em> - rol Disabled;</li>
-        <li><em>ScadaAdmin</em> - rol Administrator;</li>
-        <li><em>ScadaDispatcher</em> - rol Dispatcher;</li>
-        <li><em>ScadaGuest</em> - rol Guest;</li>
-        <li><em>ScadaApp</em> - rol Application.</li>
+        <li><em>ScadaDisabled</em> - rol Deshabilitado;</li>
+        <li><em>ScadaAdmin</em> - rol Administrador;</li>
+        <li><em>ScadaDispatcher</em> - rol Despachante;</li>
+        <li><em>ScadaGuest</em> - rol Invitado;</li>
+        <li><em>ScadaApp</em> - rol Aplicaci&#243;n.</li>
     </ul>
 
-    <p>Si un usuario es un miembro de un grupo enumerado anteriormente o un miembro de un grupo que a su vez es un miembro de los grupos mencionados anteriormente, entonces los derechos correspondientes en Rapid SCADA est&#225;n concedidos al usuario.</p>
+    <p>Si un usuario es un miembro de un grupo listado anteriormente o un miembro de un grupo que a su vez es un miembro de los grupos mencionados anteriormente, se le conceden a usuario los derechos correspondientes en Rapid SCADA.</p>
 
-    <p>El 3er m&#233;todo combina las capacidades de los primeros dos m&#233;todos. La validaci&#243;n de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Usuarios </em>de la base de datos de configuraci&#243;n. En este caso los nombres de usuarios y los roles de usuarios est&#225;n especificados en la tabla <em>Usuarios</em>, aunque las contrase&#241;as de usuarios siguen en blanco en la tabla.</p>
+    <p>El 3er m&#233;todo combina las capacidades de los primeros dos m&#233;todos. La validaci&#243;n de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Usuarios </em>de la base de datos de configuraci&#243;n. En este caso los nombres de usuario y los roles de usuario est&#225;n especificados en la tabla <em>Usuarios</em>, aunque las contrase&#241;as de usuarios siguen vac&#237;as en la tabla.</p>
 
-    <p>Se permite el uso simultaneo de todos los m&#233;todos de autenticaci&#243;n mencionados anteriormente.</p>
+    <p>Se permite el uso simult&#225;neo de todos los m&#233;todos de autenticaci&#243;n mencionados anteriormente.</p>
 </body>
 </html>
