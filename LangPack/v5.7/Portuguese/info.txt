@@ -2,6 +2,5 @@ Language                 : Portuguese
 Culture name:            : pt-BR
 Rapid SCADA version      : 5.7.1
 Rapid SCADA applications : Webstation
-Author                   : AGPR5
-Author's email           : agpr5@agpr5.com
+Author                   : AGPR5, agpr5@agpr5.com
 Updated by               : Joao Vitor Cesar

@@ -2,5 +2,5 @@ Language                 : Spanish
 Culture name:            : es-ES
 Rapid SCADA version      : 5.7.1
 Rapid SCADA applications : Websatation
-Author                   : Jesus Escoto Lopez
-Author's email           : jeeslo@gmail.com
+Author                   : Jesus Escoto Lopez, jeeslo@gmail.com
+Updated by               : Horacio Venturino, hventuri@vera.com.uy
