@@ -30,7 +30,7 @@
  * ObjNum          - object number                           (UInt16)
  * KPNum           - device number                           (UInt16)
  * ParamID         - quantity ID                             (UInt16)
- * CnlNum          - inpit channel number                    (UInt16)
+ * CnlNum          - input channel number                    (UInt16)
  * OldCnlVal       - previous channel number                 (Double)
  * OldCnlStat      - previous channel status                 (Byte)
  * NewCnlVal       - new channel value                       (Double)
