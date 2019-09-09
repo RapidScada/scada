@@ -24,7 +24,7 @@ function addContents(context) {
 
     addArticle(context, "software-configuration/", "Configuración de software");
     addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de configuración", 1);
-    addArticle(context, "software-configuration/tune-database.html", "Sincronización de la base de datos de configuración", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Afinación de la base de datos de configuración", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Uso de fórmulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Configuración de autenticación del usuario", 1);
     addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de comunicación con dispositivos", 1);
