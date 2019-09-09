@@ -56,13 +56,13 @@
         </tr>
     </table>
 
-    <p>Para restringir el acceso del usuario respecto a los objetos de la interfaz (las vistas de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles </em>en la base de datos de configuraci&#243;n. Luego especifique los derechos de acceso en la tabla <em>Derechos</em>.</p>
+    <p>Para restringir el acceso del usuario respecto a los objetos de la interfaz (las vistas de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles (Roles) </em>en la base de datos de configuraci&#243;n. Luego especifique los derechos de acceso en la tabla <em>Rights (Derechos)</em>.</p>
 
     <p>Si Rapid SCADA opera en una red gestionada por Active Directory, se recomienda usar los m&#233;todos de autenticaci&#243;n 2 y 3 debido a razones de seguridad. Los detalles de estos m&#233;todos se describen a continuaci&#243;n.</p>
 
-    <p>Para hacer que e servicio del Servidor interact&#250;e con Active Directory, especifique la ruta del controlador de dominio y marque la casilla de verificaci&#243;n cercana en la p&#225;gina <em>Par&#225;metros comunes</em> de la aplicaci&#243;n y habilite ModActiveDirectory.dll en la p&#225;gina <em>M&#243;dulos</em>.</p>
+    <p>Para hacer que e servicio del Servidor interact&#250;e con Active Directory, especifique la ruta del controlador de dominio y marque la casilla de verificaci&#243;n cercana en la p&#225;gina <em>Common Parameters (Par&#225;metros comunes)</em> de la aplicaci&#243;n y habilite ModActiveDirectory.dll en la p&#225;gina <em>Modules (M&#243;dulos)</em>.</p>
 
-    <p>El 2do m&#233;todo de autenticaci&#243;n se usa si los roles est&#225;ndar son suficientes para gestionar los derechos del usuario. La ventaja de este m&#233;todo es que la gesti&#243;n de derechos se realiza usando las herramientas est&#225;ndar de Active Directory sin editar la base de datos de configuraci&#243;n y sin reiniciar el servicio de Servidor.</p>
+    <p>El 2do m&#233;todo de autenticaci&#243;n se usa si los roles est&#225;ndar son suficientes para gestionar los derechos del usuario. La ventaja de este m&#233;todo es que la gesti&#243;n de derechos se realiza usando las herramientas est&#225;ndar de Active Directory sin editar la base de datos de configuraci&#243;n y sin reiniciar el servicio de Server.</p>
 
     <p>Para utilizar el 2do m&#233;todo se requiere crear los grupos de seguridad en Active Directory. Los grupos corresponden a los roles de usuarios:</p>
 
@@ -76,7 +76,7 @@
 
     <p>Si un usuario es un miembro de un grupo listado anteriormente o un miembro de un grupo que a su vez es un miembro de los grupos mencionados anteriormente, se le conceden a usuario los derechos correspondientes en Rapid SCADA.</p>
 
-    <p>El 3er m&#233;todo combina las capacidades de los primeros dos m&#233;todos. La validaci&#243;n de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Usuarios </em>de la base de datos de configuraci&#243;n. En este caso los nombres de usuario y los roles de usuario est&#225;n especificados en la tabla <em>Usuarios</em>, aunque las contrase&#241;as de usuarios siguen vac&#237;as en la tabla.</p>
+    <p>El 3er m&#233;todo combina las capacidades de los primeros dos m&#233;todos. La validaci&#243;n de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Usuarios </em>de la base de datos de configuraci&#243;n. En este caso los nombres de usuario y los roles de usuario est&#225;n especificados en la tabla <em>Users (Usuarios)</em>, aunque las contrase&#241;as de usuarios siguen vac&#237;as en la tabla.</p>
 
     <p>Se permite el uso simult&#225;neo de todos los m&#233;todos de autenticaci&#243;n mencionados anteriormente.</p>
 </body>
