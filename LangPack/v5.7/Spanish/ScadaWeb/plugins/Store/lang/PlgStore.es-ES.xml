@@ -21,7 +21,7 @@
     <Phrase key="GetPluginInfoError">No se puede recibir información del plugin</Phrase>
     <Phrase key="FreePrice">Gratis</Phrase>
     <Phrase key="PersonalPrice">Personal </Phrase>
-    <Phrase key="BusinessPrice">Negocio </Phrase>
+    <Phrase key="BusinessPrice">Comercial </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmStore">
     <Phrase key="this">Descargar plugins - Rapid SCADA</Phrase>
@@ -32,12 +32,12 @@
     <Phrase key="AuthorCol">Autor</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Store.WFrmStore.Js">
-    <Phrase key="GetPluginsError">No se puede recibir la lista de plugins</Phrase>
+    <Phrase key="GetPluginsError">No se pudo recibir la lista de plugins</Phrase>
     <Phrase key="NoPlugins">No se encontraron plugins</Phrase>
     <Phrase key="PluginNew">Nuevo</Phrase>
     <Phrase key="PluginInfoBtn">Más información</Phrase>
     <Phrase key="FreePrice">Gratis</Phrase>
     <Phrase key="PersonalPrice">Personal </Phrase>
-    <Phrase key="BusinessPrice">Negocio </Phrase>
+    <Phrase key="BusinessPrice">Comercial </Phrase>
   </Dictionary>
 </PlgStoreDictionaries>

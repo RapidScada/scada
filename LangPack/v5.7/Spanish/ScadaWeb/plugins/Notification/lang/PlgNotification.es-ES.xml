@@ -4,7 +4,7 @@
     <Phrase key="Instructions">Instrucciones</Phrase>
     <Phrase key="Acknowledge">Reconocer</Phrase>
     <Phrase key="Register">Registro</Phrase>
-    <Phrase key="RegistrationRequired">El plugin de notificación requiere registro.</Phrase>
+    <Phrase key="RegistrationRequired">El plugin de notificación requiere registración.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Notification.WFrmEventTip">
     <Phrase key="this">Instrucciones del evento - Rapid SCADA</Phrase>

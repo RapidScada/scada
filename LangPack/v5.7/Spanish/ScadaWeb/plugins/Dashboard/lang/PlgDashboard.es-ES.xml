@@ -11,7 +11,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard">
     <Phrase key="btnExportPdf">Exportar a PDF</Phrase>
-    <Phrase key="DashboardNotFound">Panel de control con la clave especificada no encontrada.</Phrase>
+    <Phrase key="DashboardNotFound">Tablero con la clave especificada no encontrado.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard.Js">
     <Phrase key="ReceiveDashboardError">Error al recibir la configuración del tablero</Phrase>
@@ -19,8 +19,8 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboardList">
     <Phrase key="this">Tableros - Rapid SCADA</Phrase>
-    <Phrase key="lblTitle">Tableros</Phrase>
-    <Phrase key="lblNoDashboards">No tableros disponibles</Phrase>
+    <Phrase key="lblTitle">Tableros (Dashboards)</Phrase>
+    <Phrase key="lblNoDashboards">Ningún tablero disponible</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.PlgDashboardSpec">
     <Phrase key="DashboardsMenuItem">Tableros</Phrase>
