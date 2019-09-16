@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Installation of Additional Modules - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Installation of Additional Modules</h1>
+    <p>Rapid SCADA supports additional modules which extend the software functionality. This section contains a description of the common installation sequence that is typical for most modules.</p>
+
+    <h2 id="modules">Installation of Server Modules</h2>
+    <p>The sequence of installing a new or updating an existing module of the Server application:</p>
+    <ol>
+        <li>Close the Administrator application if it is running.</li>
+        <li>Unzip the module installation package.</li>
+        <li>Copy all files from the SCADA folder of the module installation package to the Rapid SCADA installation directory, the default is C:\SCADA, with the hierarchy of directories retained.</li>
+        <li>In case of using Windows 8 or higher, find C:\SCADA\ScadaServer\Mod\Mod*.dll, open the file properties and unblock the file.</li>
+        <li>Start Administrator, open the project and open the <em>Server &gt; Modules</em> page using the project explorer.</li>
+        <li>Select the installed module in the list of unused modules and click the <em>Activate</em> button.</li>
+        <li>Perform the configuration of the module specified in the module documentation.</li>
+        <li>Save the project and upload the configuration to the server using the <img src="../../common-images/upload.png" /> button.</li>
+    </ol>
+
+    <h2 id="drivers">Installation of Communicator Drivers</h2>
+    <p>The sequence of installing a new or updating an existing driver of the Communicator application:</p>
+    <ol>
+        <li>Close the Administrator application if it is running.</li>
+        <li>Unzip the driver installation package.</li>
+        <li>Copy all files from the SCADA folder of the driver installation package to the Rapid SCADA installation directory, the default is C:\SCADA, with the hierarchy of directories retained.</li>
+        <li>In case of using Windows 8 or higher, find C:\SCADA\ScadaComm\KP\Kp*.dll, open the file properties and unblock the file.</li>
+        <li>Start Administrator, open the project and open the <em>Communicator &gt; Drivers</em> page using the project explorer.</li>
+        <li>Make sure that the installed driver is in the list of available drivers. And if the driver is selected, its description is displayed.</li>
+    </ol>
+
+    <h2 id="plugins">Installation of Webstation Plugins</h2>
+    <p>Additional modules for the Webstation application are called plugins. The installation sequence for a new plugin:</p>
+    <ol>
+        <li>Unzip the plugin installation package.</li>
+        <li>Copy all files from the SCADA folder of the plugin installation package to the Rapid SCADA installation directory, the default is C:\SCADA, with the hierarchy of directories retained.</li>
+        <li>In case of using Windows 8 or higher, find C:\SCADA\ScadaWeb\bin\Plg*.dll, open the file properties and unblock the file.</li>
+        <li>Login the web application as administrator and go to <em>Main Menu &gt; Plugins &gt; Installed</em>.</li>
+        <li>Find the new plugin on the page and click the <em>Activate</em> link.</li>
+        <li>Perform the configuration of the plugin specified in the plugin documentation.</li>
+    </ol>
+</body>
+</html>

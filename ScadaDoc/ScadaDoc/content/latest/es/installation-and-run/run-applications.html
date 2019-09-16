@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Run Applications - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Run Applications</h1>
+
+    <h2>First Run</h2>
+
+    <p>After installing Rapid SCADA, it is recommended to restart the computer so that the Server, Communicator and Agent services start automatically. After the reboot is complete, run one of the following browsers: Google Chrome, Mozilla Firefox or Microsoft Edge. In the address bar, type <a href="http://localhost/scada/" target="_blank">http://localhost/scada/</a>. The login page should open (see Figure 1). Enter <em>admin</em> and <em>12345</em> in the login and password fields and click the <em>Login</em> button.</p>
+
+    <p class="sd-article-image">
+        <img src="run-applications-files/scada_web_login_en.png" alt="Login web form" /><br />
+        Figure 1. Login web form
+    </p>
+
+    <h2>Run Administrator</h2>
+
+    <p>To start the Administrator application, use the shortcut located in the menu <em>Start &gt; Programs &gt; SCADA </em>. If the shortcut is missing for any reason, Administrator can be run from the executable file C:\SCADA\ScadaAdmin\ScadaAdmin.exe</p>
+
+    <p>The Administrator application includes the tools for managing other Rapid SCADA applications.</p>
+
+    <h2>Services</h2>
+
+    <p>The Server, Communicator and Agent applications work as services. In case of working on Windows, use the services.msc snap-in to manage services. It can be run from the command line or by <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Services</em>. Service names: ScadaServerService, ScadaCommService and ScadaAgentService.</p>
+
+    <p>In addition, there are the svc_start.bat and svc_stop.bat files in the directories of the corresponding applications, which allow to start and stop the services. These batch files must be run as administrator.</p>
+
+    <p>The Administrator application also ables to start and stop Server and Communicator. To manage the services in Administrator, open a project and then open the instance status form (see Figure 2) using the <img src="../../common-images/status.png" /> button.</p>
+
+    <p class="sd-article-image">
+        <img src="run-applications-files/instance_status_en.png" alt="Instance status in Administrator" /><br />
+        Figure. 2. Instance status in Administrator
+    </p>
+
+    <p>The default startup type of the Server, Communicator and Agent services is Automatic, i.e. the services start when an operating system starts, and the services stop when the OS stops. If auto start is not necessary, Manual startup type could be set (see Figure 3).</p>
+
+    <p class="sd-article-image">
+        <img src="start-applications-files/service_props_en.png" alt="Setting Windows service startup type" /><br />
+        Figure 3. Setting Windows service startup type
+    </p>
+
+    <h2>Web Application</h2>
+
+    <p>To open the web application named Webstation, in the browser address bar, enter http://compname/scada/ where compname is the host name or IP address of the computer with the installed web application, scada is the virtual directory specified during the installation. If Webstation is opened on the same computer on which it is installed, it is possible to use <a href="http://localhost/scada/" target="_blank">http://localhost/scada/</a> or <a href="http://127.0.0.1/scada/" target="_blank">http://127.0.0.1/scada/</a></p>
+    <p>The default username: <em>admin</em><br />The default password: <em>12345</em></p>
+</body>
+</html>
