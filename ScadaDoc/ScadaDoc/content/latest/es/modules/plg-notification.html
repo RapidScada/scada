@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Notification Plugin - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Notification Plugin</h1>
+
+    <h2>Overview</h2>
+
+    <p>Notification Plugin helps an operator to pay attention to the most important events. The plugin generates notifications based on events according to specified rules and displays them in the notification panel that appears on the right side of the web page. In addition, the plugin turns on an audible alert depending on the notification type.</p>
+
+    <h2>Installation</h2>
+
+    <p>First you need to perform <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins</a>, and then perform several additional actions:</p>
+
+    <ol>
+        <li>Go to <em>Main Menu &gt; Registration &gt; Notification</em>.</li>
+        <li>Register the plugin using the hyperlinks on the page.</li>
+        <li>Add registration key to the project by downloading the Webstation settings using the Administrator application.</li>
+    </ol>
+
+    <p>If the plugin is installed correctly, there is a bell in the top right corner of the web page.</p>
+
+    <h2>Configuring</h2>
+
+    <p>Configuration of the Notification plugin is stored in the PlgNotification.xml file. This file must be included into the project and locate in the configuration folder of Webstation. On runtime the plugin configuration file locates in C:\SCADA\ScadaWeb\config\</p>
+
+    <p>Consider the contents of the configuration file:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>XML Tag</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td><strong>GeneralOptions</strong></td>
+            <td>Section of general options</td>
+        </tr>
+        <tr>
+            <td>EvPeriod</td>
+            <td>Period (in days) of taking events to create notifications</td>
+        </tr>
+        <tr>
+            <td>DispNotifCnt</td>
+            <td>Number of displayed notifications</td>
+        </tr>
+        <tr>
+            <td><strong>NotifOptions</strong></td>
+            <td>Section containing the options determine how to generate notifications</td>
+        </tr>
+        <tr>
+            <td>
+                InfoCondition<br />
+                WarningCondition<br />
+                ErrorCondition
+            </td>
+            <td>Specify the conditions of generating notifications of the information, warning and error types</td>
+        </tr>
+        <tr>
+            <td>Statuses</td>
+            <td>Input channel statuses that cause a new notification</td>
+        </tr>
+        <tr>
+            <td>ParamIDs</td>
+            <td>Quantity IDs of an input channel allowed to notification</td>
+        </tr>
+        <tr>
+            <td><strong>Tips</strong></td>
+            <td>Section that specifies the notification tips</td>
+        </tr>
+        <tr>
+            <td>Tip</td>
+            <td>Section determines a one tip</td>
+        </tr>
+        <tr>
+            <td>TipCondition</td>
+            <td>Condition of the tip</td>
+        </tr>
+        <tr>
+            <td>Link</td>
+            <td>If defined, specifies link to navigate by the tip</td>
+        </tr>
+        <tr>
+            <td>Html</td>
+            <td>Tip markup instead of link</td>
+        </tr>
+    </table>
+</body>
+</html>

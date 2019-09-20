@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Migrate Configuration to New Server - Rapid SCADA Documentation</title>
+    <title>Migrar la configuración a un nuevo servidor - Documentación de Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -9,27 +9,28 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Migrate Configuration to New Server</h1>
+    <h1>Migrar la configuración a un nuevo servidor</h1>
 
-    <p>The typical tasks when Rapid SCADA migration to another server is needed:</p>
+    <p>Tareas típicas cuando se necesita migrar Rapid SCADA a otro servidor:</p>
     <ul>
-        <li>The software deployment on a production server when the configuration has been completed using a developer workstation.</li>
-        <li>Server replacement.</li>
+        <li>Implementación del software en un servidor de producción cuando la configuración se ha completado utilizando la estación de trabajo (Workstation) del desarrollador.</li>
+        <li>Reemplazo del servidor.</li>
     </ul>
 
-    <p>The steps to migrate a configuration are:</p>
+    <p>Los pasos para migrar la configuración son:</p>
     <ol>
-        <li>Ensure that connections between the server and the devices are properly configured: the required serial ports exist, industrial controllers available via the network, etc.</li>
-        <li>Install Rapid SCADA on the new server, but do not start the Server and Communicator services.</li>
-        <li>Stop the Server and Communicator services on the obsolete server. Switch startup type of these services to Manual.</li>
-        <li>Copy the data archive located in the following directories from the obsolete server to the new server:<br />
+        <li>Asegúrese de que las conexiones entre el servidor y los dispositivos estén configuradas correctamente: puertos seriales requeridos, controladores industriales disponibles a través de la red, etc.</li>
+        <li>Instale Rapid SCADA en el nuevo servidor, pero no inicie los servicios Server y Communicator.</li>
+        <li>Detenga los servicios Server y Communicator en el servidor obsoleto. Cambie el tipo de inicio de estos servicios a Manual.</li>
+        <li>Copie el archivo de datos ubicado en los siguientes directorios del servidor obsoleto al servidor nuevo:<br />
             C:\SCADA\ArchiveDAT<br />
-            C:\SCADA\ArchiveDATCopy</li>
+            C:\SCADA\ArchiveDATCopy
+        </li>
         <li>
-            Transfer the configuration from the obsolete to the new server in one of the following ways.
+            Transfiera la configuración del servidor obsoleto al servidor nuevo de una de las siguientes formas.
             <ul>
                 <li>
-                    Copy the content of the directories listed below from the obsolete to the new server (default directories are shown):<br />
+                    Copie el contenido de los directorios listados a continuación, del servidor obsoleto al servidor nuevo (se muestran los directorios predeterminados):<br />
                     C:\SCADA\BaseDAT<br />
                     C:\SCADA\Interface<br />
                     C:\SCADA\Projects<br />
@@ -39,11 +40,11 @@
                     C:\SCADA\ScadaWeb\config<br />
                     C:\SCADA\ScadaWeb\storage
                 </li>
-                <li>Open the project in the Administrator application and upload the configuration to the new server with the <img src="../../common-images/upload.png" /> button, unchecking the <em>Restart Server</em> and <em>Restart Communicator</em> checkboxes.</li>
+                <li>o	Abra el proyecto en la aplicación Administrator y suba la configuración al nuevo servidor con el botón  <img src="../../common-images/upload.png" /> desmarcando <em>Restart Server</em> and <em>Restart Communicator</em>.</li>
             </ul>
         </li>
-        <li>Start the Server and Communicator services on the new server.</li>
-        <li>Check whether the new server operates well.</li>
+        <li>Inicie los servicios Server y Communicator en el nuevo servidor.</li>
+        <li>Verifique que el nuevo servidor funcione bien.</li>
     </ol>
 </body>
 </html>

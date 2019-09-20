@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Rapid Gate Module - Ayuda de Rapid SCADA</title>
+    <title>Modulo Rapid Gate - Documentación de Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -9,29 +9,30 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Modulo Rapid Gate </h1>
+    <h1>Modulo Rapid Gate</h1>
     <h2>Introducción</h2>
-    <p>El Módulo Rapid Gate está diseñado para sincronizar datos entre varias instancias de Rapid SCADA. El módulo permite configurar un servidor de respaldo, así como también proporciona transferencia de datos desde SCADAS instalados en ubicaciones remotas al SCADA primario.</p>
-    <h2>Intalación</h2>
-    <p>El módulo Rapid Gate se instala de acuerdo con <a href="../installation-and-run/module-installation.html#modules"> la secuencia general de instalación de los módulos del servidor </a>. El archivo de la libreria del módulo es ModRapidGate.dll. Después de agregar el módulo, debe realizar varias acciones adicionales:</p>
+    <p>El Módulo Rapid Gate está diseñado para sincronizar datos entre varias instancias de Rapid SCADA. El módulo permite configurar un servidor de respaldo, así como posibilita transferir datos desde SCADAs instalados en ubicaciones remotas al SCADA primario.</p>
+
+    <h2>Instalación</h2>
+    <p>El módulo Rapid Gate se instala de acuerdo con <a href="../installation-and-run/module-installation.html#modules">la secuencia general de instalación de los módulos del Server</a>. El archivo en la librería del módulo, es ModRapidGate.dll. Después de agregar el módulo debe realizar varias acciones adicionales:</p>
     <ol>
-        <li>Abrir el log del modulo C:\SCADA\ScadaServer\Log\ModRapidGate.log en un editor de texto y copiar copie un código de computadora.</li>
-        <li>Registrar el módulo contactando a los desarrolladores o utilizando <a href="http://trial.rapidscada.net/?prod=ModRapidGate" target="_blank">the trial key generator</a>. Una clave de registro debe almacenarse en C:\SCADA\ScadaServer\Config\ModRapidGate_Reg.xml entre las etiquetas RegKey</li>
-        <li>Configure el módulo (vea la sección de abajo).</li>
-        <li>Reinicie el servicio del servidor haciendo click <img src="../../common-images/restart.png" />.</li>
+        <li>Copie los archivos de configuración del módulo ModRapidGate.xml y ModRapidGate_Reg.xml en el proyecto editado. Dentro del proyecto, estos archivos se encuentran en ScadaServer\Config\</li>
+        <li>Tras activar el módulo, suba el proyecto al Server para determinar el código de su computadora, necesario para la registración del módulo. El código de la computadora está escrito en C:\SCADA\ScadaServer\Log\ModRapidGate.log</li>
+        <li>Registre el módulo poniéndose en contacto con los desarrolladores o utilizando el <a href="http://trial.rapidscada.net/?prod=ModRapidGate" target="_blank">the trial key generator</a> (generador de claves de prueba). La clave de registro debe estar almacenada en el archivo de proyecto ScadaServer\Config\ModRapidGate_Reg..xml entre las etiquetas RegKey.</li>
+        <li>Configure el módulo y suba el proyecto al Server.</li>
     </ol>
 
     <h2>Configuración</h2>
-    <p>Para configurar el Módulo de Rapid Gate, edite C: \ SCADA \ ScadaServer \ Config \ ModRapidGate.xml utilizando un editor de texto. La configuración contiene los parámetros de conexión para el servidor SCADA (servidor de destino) al que se transfieren los datos y desde donde se reciben los comandos.</p>
-    <p>Tenga en cuenta que normalmente necesita configurar el firewall en el servidor de destino para permitir conexiones con él a través de la red.</p>
+    <p>Para configurar el Módulo de Rapid Gate, edite C:\SCADA\ScadaServer\Config\ModRapidGate.xml utilizando un editor de texto. La configuración contiene los parámetros de conexión para el Server SCADA (servidor de destino) al que se transfieren los datos y desde el que se reciben los comandos.</p>
+    <p>Tenga en cuenta que normalmente se necesita configurar el firewall en el servidor de destino para permitir conexiones entrantes al puerto TCP 10000.</p>
 
     <h2>Algoritmo</h2>
     <p>El algoritmo de Rapid Gate Module tiene las siguientes características:</p>
     <ol>
         <li>El módulo transmite solo los datos que se reciben desde Communicator. Los valores de los canales de entrada calculados no se transmiten.</li>
-        <li>Los datos se transmiten a los mismos números de canal de entrada a los que se reciben.</li>
-        <li>Los valores transmitidos ya se calculan mediante las fórmulas de los canales de entrada, lo que puede resultar en una doble aplicación de las fórmulas en el servidor de destino. Por lo tanto, cuando se usa el módulo, se recomienda que los cálculos se realicen en canales de entrada separados del tipo calculado.</li>
-        <li>El módulo tiene una cola de transferencia de datos, que permite restaurar datos en caso de una falla de conexión a corto plazo con un servidor de destino.</li>
+        <li>Los datos se transmiten a los mismos números de canal de entrada de los que se reciben.</li>
+        <li>Los valores transmitidos ya están calculados por las fórmulas de los canales de entrada, lo que puede resultar en una doble aplicación de las fórmulas en el servidor de destino. Por lo tanto, cuando se usa el módulo, se recomienda que los cálculos se realicen en canales de entrada separados del tipo calculado.</li>
+        <li>El módulo tiene una cola de transferencia de datos, que permite restaurar datos en caso de una falla de conexión a corto plazo con el servidor de destino.</li>
     </ol>
 </body>
 </html>

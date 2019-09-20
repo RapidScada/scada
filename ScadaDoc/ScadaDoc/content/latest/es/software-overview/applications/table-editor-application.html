@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Table Editor Application - Rapid SCADA Documentation</title>
+    <title>Aplicación Table Editor - Documentación de Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../../../../lib/jquery/jquery.min.js"></script>
@@ -9,24 +9,17 @@
     <script type="text/javascript" src="../../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Table Editor Application</h1>
+    <h1>Aplicación Table Editor</h1>
 
-    <p>The Table Editor application is designed to create table views which are displayed on operator's workstation. Table Editor is used by engineers during Rapid SCADA configuration.</p>
+    <p>Table Editor está diseñada para crear vistas de tabla que se muestran (vía Webstation) en la estación de trabajo del operador. Los ingenieros utilizan Table Editor durante la configuración de Rapid SCADA.</p>
 
     <p class="sd-article-image">
-        <img src="table-editor-application-files/scada_table_editor_en.png" alt="Table Editor application" /><br />
-        Figure 1. Table Editor application
+        <img src="table-editor-application-files/scada_table_editor_en.png" alt="Aplicación Table Editor" /><br />
+        Figura 1. Aplicación Table Editor
     </p>
 
-    <p>Choose the channels from the configuration database in the left pane of the window, and add them to the table view. The contents of the table view is displayed in the right pane.</p>
+    <p>Elija los canales en el panel izquierdo de la ventana y agréguelos a la vista de tabla en la ventana derecha. El contenido de la vista de tabla se muestra en el panel derecho. Los elementos ocultos de una tabla no se mostrarán en la aplicación <a href="webstation-application.html">Webstation</a>, sin embargo, cobran sentido al filtrar eventos por vista, +.</p>
 
-    <p>There are two options how to bind output channels to items of a view:</p>
-
-    <ol>
-        <li>Specify output channel numbers explicitly using Table Editor.</li>
-        <li>Run the <a href="administrator-application.html">Administrator</a> application, open the <em>Input channels</em> table and fill the <em>Output channel</em> field of an input channel. Then add the input channel to a view by Table Editor.</li>
-    </ol>
-
-    <p>Hidden items of a table view are not displayed but they affect event filtering by view in the <a href="webstation-application.html">Webstation</a> application.</p>
+    <p>Table Editor generalmente se inicia desde la aplicación Administrator haciendo doble clic en un nodo de vista de tabla en el explorador de proyectos. La barra de estado del editor muestra la ruta de la base de datos de configuración del proyecto que contiene la tabla que se está editando.</p>
 </body>
 </html>
