@@ -226,6 +226,7 @@
     <Content Include="content\latest\es\modules\plg-map-files\interface_table_map_en.png" />
     <Content Include="content\latest\es\modules\plg-map-files\map_example_en.png" />
     <Content Include="content\latest\es\modules\plg-map.html" />
+    <Content Include="content\latest\es\modules\plg-notification.html" />
     <Content Include="content\latest\es\software-configuration\communication-with-devices-files\comm_import_en.png" />
     <Content Include="content\latest\es\software-configuration\communication-with-devices-files\comm_line_params_en.png" />
     <Content Include="content\latest\es\software-configuration\communication-with-devices-files\comm_line_req_en.png" />
