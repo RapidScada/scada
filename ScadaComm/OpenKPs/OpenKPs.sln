@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpDbImport", "KpDbImport\Kp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpSimulator", "KpSimulator\KpSimulator.csproj", "{81C5771D-5C51-4339-A336-36D5D28F03D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KpOpcUa", "KpOpcUa\KpOpcUa.csproj", "{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{81C5771D-5C51-4339-A336-36D5D28F03D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81C5771D-5C51-4339-A336-36D5D28F03D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81C5771D-5C51-4339-A336-36D5D28F03D9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
