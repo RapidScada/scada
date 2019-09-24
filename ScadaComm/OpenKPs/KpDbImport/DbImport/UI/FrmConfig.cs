@@ -39,13 +39,13 @@ namespace Scada.Comm.Devices.DbImport.UI
     /// </summary>
     public partial class FrmConfig : Form
     {
-        private AppDirs appDirs;       // the application directories
-        private int kpNum;             // the device number
-        private Config config;         // the device configuration
-        private string configFileName; // the configuration file name
-        private bool modified;         // the configuration was modified
-        private bool connChanging;     // connection settings are changing
-        private bool cmdSelecting;     // a command is selecting
+        private readonly AppDirs appDirs; // the application directories
+        private readonly int kpNum;       // the device number
+        private readonly Config config;   // the device configuration
+        private string configFileName;    // the configuration file name
+        private bool modified;            // the configuration was modified
+        private bool connChanging;        // connection settings are changing
+        private bool cmdSelecting;        // a command is selecting
 
 
 
