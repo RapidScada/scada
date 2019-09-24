@@ -12,6 +12,7 @@
  */
 
 using Scada.Comm.Devices.OpcUa.Config;
+using Scada.Comm.Devices.OpcUa.UI;
 using Scada.Data.Configuration;
 using System.Collections.Generic;
 using System.IO;
@@ -43,7 +44,7 @@ namespace Scada.Comm.Devices
         public KpOpcUaView(int number)
             : base(number)
         {
-            CanShowProps = false;
+            CanShowProps = number > 0;
         }
 
 
@@ -144,6 +145,15 @@ namespace Scada.Comm.Devices
             {
                 return new KPReqParams(0, 500);
             }
+        }
+
+
+        /// <summary>
+        /// Shows the driver properties.
+        /// </summary>
+        public override void ShowProps()
+        {
+            new FrmConfig(AppDirs, Number).ShowDialog();
         }
     }
 }
