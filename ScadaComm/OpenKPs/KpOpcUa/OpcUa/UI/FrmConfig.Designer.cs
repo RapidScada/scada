@@ -139,7 +139,7 @@
             this.btnConnect.TabIndex = 2;
             this.toolTip.SetToolTip(this.btnConnect, "Connect to Server");
             this.btnConnect.UseVisualStyleBackColor = true;
-            this.btnConnect.Click += new System.EventHandler(this.btnConnect_Click);
+            this.btnConnect.Click += new System.EventHandler(this.btnConnect_ClickAsync);
             // 
             // txtServerUrl
             // 

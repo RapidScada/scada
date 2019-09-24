@@ -69,6 +69,7 @@
     <Compile Include="OpcUa\Config\ItemConfig.cs" />
     <Compile Include="OpcUa\Config\SecurityPolicy.cs" />
     <Compile Include="OpcUa\Config\SubscriptionConfig.cs" />
+    <Compile Include="OpcUa\OpcUaHelper.cs" />
     <Compile Include="OpcUa\UI\FrmConfig.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -94,6 +95,13 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Config\KpOpcUa_001.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lang\KpOpcUa.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\KpOpcUa.ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

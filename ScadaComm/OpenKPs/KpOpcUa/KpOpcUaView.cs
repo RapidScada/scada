@@ -136,17 +136,6 @@ namespace Scada.Comm.Devices
             }
         }
 
-        /// <summary>
-        /// Gets the prototypes of default device channels.
-        /// </summary>
-        public override KPReqParams DefaultReqParams
-        {
-            get
-            {
-                return new KPReqParams(0, 500);
-            }
-        }
-
 
         /// <summary>
         /// Shows the driver properties.

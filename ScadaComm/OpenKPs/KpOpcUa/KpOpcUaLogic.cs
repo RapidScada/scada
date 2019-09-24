@@ -14,6 +14,7 @@
 using Opc.Ua;
 using Opc.Ua.Client;
 using Opc.Ua.Configuration;
+using Scada.Comm.Devices.OpcUa;
 using Scada.Comm.Devices.OpcUa.Config;
 using Scada.Data.Configuration;
 using Scada.Data.Models;
@@ -113,91 +114,29 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Connects to the OPC server.
         /// </summary>
-        private bool ConnectToOpcServer()
+        private void ConnectToOpcServer()
         {
             try
             {
-                return ConnectAsync().Result;
+                OpcUaHelper helper = new OpcUaHelper(AppDirs, Number)
+                {
+                    CertificateValidation = CertificateValidator_CertificateValidation,
+                    WriteToLog = WriteToLog
+                };
+
+                connected = helper.ConnectAsync(deviceConfig.ConnectionOptions, ReqParams.Timeout).Result;
+                autoAccept = autoAccept || helper.AutoAccept;
+                opcSession = helper.OpcSession;
+                opcSession.KeepAlive += OpcSession_KeepAlive;
+                opcSession.Notification += OpcSession_Notification;
             }
             catch (Exception ex)
             {
+                connected = false;
                 WriteToLog((Localization.UseRussian ?
                     "Ошибка при соединении с OPC-сервером: " :
                     "Error connecting OPC server: ") + ex);
-                return false;
             }
-        }
-
-        /// <summary>
-        /// Connects to the OPC server asynchronously.
-        /// </summary>
-        private async Task<bool> ConnectAsync()
-        {
-            string kpNumStr = CommUtils.AddZeros(Number, 3);
-
-            ApplicationInstance application = new ApplicationInstance
-            {
-                ApplicationName = string.Format("KpOpcUa_{0} Driver", kpNumStr),
-                ApplicationType = ApplicationType.Client,
-                ConfigSectionName = "Scada.Comm.Devices.KpOpcUa"
-            };
-
-            // load the application configuration
-            ApplicationConfiguration config = await application.LoadApplicationConfiguration(
-                Path.Combine(AppDirs.ConfigDir, OpcConfigFileName), false);
-            
-            // check the application certificate
-            bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);
-
-            if (!haveAppCertificate)
-            {
-                throw new ScadaException(Localization.UseRussian ?
-                    "Сертификат экземпляра приложения недействителен!" :
-                    "Application instance certificate invalid!");
-            }
-
-            if (haveAppCertificate)
-            {
-                config.ApplicationUri = Opc.Ua.Utils.GetApplicationUriFromCertificate(
-                    config.SecurityConfiguration.ApplicationCertificate.Certificate);
-
-                if (config.SecurityConfiguration.AutoAcceptUntrustedCertificates)
-                {
-                    autoAccept = true;
-                }
-
-                config.CertificateValidator.CertificateValidation += CertificateValidator_CertificateValidation;
-            }
-            else
-            {
-                WriteToLog(Localization.UseRussian ?
-                    "Предупреждение: отсутствует сертификат приложения, используется незащищенное соединение." :
-                    "Warning: missing application certificate, using unsecure connection.");
-            }
-
-            // create session
-            ConnectionOptions connectionOptions = deviceConfig.ConnectionOptions;
-            EndpointDescription selectedEndpoint = CoreClientUtils.SelectEndpoint(
-                connectionOptions.ServerUrl, haveAppCertificate, ReqParams.Timeout);
-            selectedEndpoint.SecurityMode = connectionOptions.SecurityMode;
-            selectedEndpoint.SecurityPolicyUri = connectionOptions.GetSecurityPolicy();
-            EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(config);
-            ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
-            UserIdentity userIdentity = connectionOptions.AuthenticationMode == AuthenticationMode.Username ?
-                new UserIdentity(connectionOptions.Username, connectionOptions.Password) :
-                new UserIdentity(new AnonymousIdentityToken());
-
-            opcSession = await Opc.Ua.Client.Session.Create(config, endpoint, false,
-                "Rapid SCADA KpOpcUa_" + kpNumStr, 
-                (uint)config.ClientConfiguration.DefaultSessionTimeout, userIdentity, null);
-
-            opcSession.KeepAlive += OpcSession_KeepAlive;
-            opcSession.Notification += OpcSession_Notification;
-
-            WriteToLog(string.Format(Localization.UseRussian ?
-                "OPC сессия успешно создана: {0}" :
-                "OPC session created successfully: {0}", deviceConfig.ConnectionOptions.ServerUrl));
-            return true;
         }
 
         /// <summary>
@@ -263,9 +202,28 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
+        /// Clears all subscriptions of the OPC session.
+        /// </summary>
+        private void ClearSubscriptions()
+        {
+            try
+            {
+                subscrByID = null;
+                opcSession.RemoveSubscriptions(new List<Subscription>(opcSession.Subscriptions));
+            }
+            catch (Exception ex)
+            {
+                WriteToLog((Localization.UseRussian ?
+                    "Ошибка при очистке подписок: " :
+                    "Error clearing subscriptions: ") + ex);
+            }
+        }
+
+        /// <summary>
         /// Validates the certificate.
         /// </summary>
-        private void CertificateValidator_CertificateValidation(CertificateValidator validator, CertificateValidationEventArgs e)
+        private void CertificateValidator_CertificateValidation(CertificateValidator validator, 
+            CertificateValidationEventArgs e)
         {
             if (e.Error.StatusCode == StatusCodes.BadCertificateUntrusted)
             {
@@ -298,6 +256,8 @@ namespace Scada.Comm.Devices
 
                 if (reconnectHandler == null)
                 {
+                    InvalidateCurData();
+                    WorkState = WorkStates.Error;
                     WriteToLog(Localization.UseRussian ?
                         "Переподключение к OPC-серверу" :
                         "Reconnecting to OPC server");
@@ -322,6 +282,10 @@ namespace Scada.Comm.Devices
             reconnectHandler.Dispose();
             reconnectHandler = null;
 
+            // after reconnecting, the subscriptions are automatically recreated, but with the wrong IDs and names,
+            // so it's needed to clear them and create again
+            ClearSubscriptions();
+            WorkState = CreateSubscriptions() ? WorkStates.Normal : WorkStates.Error;
             WriteToLog(Localization.UseRussian ?
                 "Переподключено" :
                 "Reconnected");
@@ -338,7 +302,8 @@ namespace Scada.Comm.Devices
                 WriteToLog("");
                 LastSessDT = DateTime.Now;
 
-                if (subscrByID.TryGetValue(e.Subscription.Id, out SubscriptionTag subscriptionTag))
+                if (subscrByID != null && 
+                    subscrByID.TryGetValue(e.Subscription.Id, out SubscriptionTag subscriptionTag))
                 {
                     WriteToLog(string.Format(Localization.UseRussian ?
                         "{0} КП {1}. Обработка новых данных. Подписка: {2}" :
@@ -615,7 +580,7 @@ namespace Scada.Comm.Devices
 
                 // connect to OPC server and create subscriptions
                 connAttemptDT = DateTime.UtcNow;
-                connected = ConnectToOpcServer();
+                ConnectToOpcServer();
                 WorkState = connected && CreateSubscriptions() ?
                     WorkStates.Normal : WorkStates.Error;
             }

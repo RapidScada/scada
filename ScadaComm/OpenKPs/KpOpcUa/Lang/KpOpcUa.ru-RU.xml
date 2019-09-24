@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpOpcUaDictionaries>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmConfig">
+    <Phrase key="this">OPC UA - Свойства КП {0}</Phrase>
+  </Dictionary>
+</KpOpcUaDictionaries>
