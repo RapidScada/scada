@@ -119,7 +119,7 @@ namespace Scada.Comm.Devices.OpcUa.Config
                 XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
                 xmlDoc.AppendChild(xmlDecl);
 
-                XmlElement rootElem = xmlDoc.CreateElement("ScadaAutoReportConfig");
+                XmlElement rootElem = xmlDoc.CreateElement("KpOpcUa");
                 xmlDoc.AppendChild(rootElem);
 
                 ConnectionOptions.SaveToXml(rootElem.AppendElem("ConnectionOptions"));

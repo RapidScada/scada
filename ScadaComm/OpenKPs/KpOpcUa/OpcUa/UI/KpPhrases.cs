@@ -23,6 +23,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
         public static string ConnectServerError { get; private set; }
         public static string DisconnectServerError { get; private set; }
         public static string BrowseServerError { get; private set; }
+        public static string ServerUrlRequired { get; private set; }
         public static string EmptyNode { get; private set; }
 
         public static void Init()
@@ -31,6 +32,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             ConnectServerError = dict.GetPhrase("ConnectServerError");
             DisconnectServerError = dict.GetPhrase("DisconnectServerError");
             BrowseServerError = dict.GetPhrase("BrowseServerError");
+            ServerUrlRequired = dict.GetPhrase("ServerUrlRequired");
             EmptyNode = dict.GetPhrase("EmptyNode");
         }
     }

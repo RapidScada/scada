@@ -19,7 +19,7 @@
     </Subscription>
   </Subscriptions>
   <Commands>
-    <Command nodeID="ns=3;s=Int32AnalogItem" displayName="Int32AnalogItem" dataType="System.Int32" cmdNum="1"></Command>
-    <Command nodeID="ns=3;s=DoubleAnalogItem" displayName="DoubleAnalogItem" dataType="System.Double" cmdNum="2"></Command>
+    <Command nodeID="ns=3;s=Int32AnalogItem" displayName="Int32AnalogItem" dataType="System.Int32" cmdNum="1" />
+    <Command nodeID="ns=3;s=DoubleAnalogItem" displayName="DoubleAnalogItem" dataType="System.Double" cmdNum="2" />
   </Commands>
 </KpOpcUa>

@@ -61,6 +61,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
         private readonly DeviceConfig deviceConfig; // the device configuration
         private string configFileName;              // the configuration file name
         private bool modified;                      // the configuration was modified
+        private bool changing;                      // controls are being changed programmatically
         private Session opcSession;                 // the OPC session
 
 
@@ -83,6 +84,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             deviceConfig = new DeviceConfig();
             configFileName = "";
             modified = false;
+            changing = false;
             opcSession = null;
         }
 
@@ -108,7 +110,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
         /// </summary>
         private void ConfigToControls()
         {
+            changing = true;
             txtServerUrl.Text = deviceConfig.ConnectionOptions.ServerUrl;
+            changing = false;
         }
 
         /// <summary>
@@ -292,10 +296,46 @@ namespace Scada.Comm.Devices.OpcUa.UI
             Modified = false;
         }
 
+        private void FrmConfig_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (Modified)
+            {
+                DialogResult result = MessageBox.Show(CommPhrases.SaveKpSettingsConfirm,
+                    CommonPhrases.QuestionCaption, MessageBoxButtons.YesNoCancel, MessageBoxIcon.Question);
+
+                switch (result)
+                {
+                    case DialogResult.Yes:
+                        if (!deviceConfig.Save(configFileName, out string errMsg))
+                        {
+                            ScadaUiUtils.ShowError(errMsg);
+                            e.Cancel = true;
+                        }
+                        break;
+                    case DialogResult.No:
+                        break;
+                    default:
+                        e.Cancel = true;
+                        break;
+                }
+            }
+        }
+
         private async void btnConnect_ClickAsync(object sender, EventArgs e)
         {
-            if (await ConnectToOpcServer())
+            if (string.IsNullOrWhiteSpace(deviceConfig.ConnectionOptions.ServerUrl))
+                ScadaUiUtils.ShowError(KpPhrases.ServerUrlRequired);
+            else if (await ConnectToOpcServer())
                 BrowseServerNode(null);
+        }
+
+        private void txtServerUrl_TextChanged(object sender, EventArgs e)
+        {
+            if (!changing)
+            {
+                deviceConfig.ConnectionOptions.ServerUrl = txtServerUrl.Text;
+                Modified = true;
+            }
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
@@ -305,12 +345,21 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
         private void btnSecurityOptions_Click(object sender, EventArgs e)
         {
-
+            if (new FrmSecurityOptions(deviceConfig.ConnectionOptions).ShowDialog() == DialogResult.OK)
+                Modified = true;
         }
 
         private void tvServer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             BrowseServerNode(e.Node);
+        }
+
+        private void btnSave_Click(object sender, EventArgs e)
+        {
+            if (deviceConfig.Save(configFileName, out string errMsg))
+                Modified = false;
+            else
+                ScadaUiUtils.ShowError(errMsg);
         }
     }
 }

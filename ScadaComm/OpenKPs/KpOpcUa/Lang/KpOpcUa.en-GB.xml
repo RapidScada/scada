@@ -5,7 +5,15 @@
     <Phrase key="ConnectServerError">Error connecting to OPC server</Phrase>
     <Phrase key="DisconnectServerError">Error disconnecting from OPC server</Phrase>
     <Phrase key="BrowseServerError">Error browsing OPC server item</Phrase>
+    <Phrase key="ServerUrlRequired">Server URL must not be empty.</Phrase>
     <Phrase key="EmptyNode">Empty</Phrase>
     <Phrase key=""></Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmSecurityOptions">
+    <Phrase key="cbSecurityMode.Items[0]">None</Phrase>
+    <Phrase key="cbSecurityMode.Items[1]">Sign</Phrase>
+    <Phrase key="cbSecurityMode.Items[2]">Sign and encrypt</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[0]">Anonymous</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[1]">Username and password</Phrase>
   </Dictionary>
 </KpOpcUaDictionaries>

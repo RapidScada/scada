@@ -69,6 +69,7 @@
             this.btnSave.TabIndex = 4;
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+            this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
             // gbDevice
             // 
@@ -159,6 +160,7 @@
             this.txtServerUrl.Name = "txtServerUrl";
             this.txtServerUrl.Size = new System.Drawing.Size(557, 20);
             this.txtServerUrl.TabIndex = 1;
+            this.txtServerUrl.TextChanged += new System.EventHandler(this.txtServerUrl_TextChanged);
             // 
             // lblServerUrl
             // 
@@ -192,6 +194,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(694, 461);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.btnClose);
@@ -206,6 +209,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "OPC UA - Device {0} Properties";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConfig_FormClosing);
             this.Load += new System.EventHandler(this.FrmConfig_Load);
             this.gbServerBrowse.ResumeLayout(false);
             this.gbConnection.ResumeLayout(false);
