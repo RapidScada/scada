@@ -2,5 +2,10 @@
 <KpOpcUaDictionaries>
   <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmConfig">
     <Phrase key="this">OPC UA - Device {0} Properties</Phrase>
+    <Phrase key="ConnectServerError">Error connecting to OPC server</Phrase>
+    <Phrase key="DisconnectServerError">Error disconnecting from OPC server</Phrase>
+    <Phrase key="BrowseServerError">Error browsing OPC server item</Phrase>
+    <Phrase key="EmptyNode">Empty</Phrase>
+    <Phrase key=""></Phrase>
   </Dictionary>
 </KpOpcUaDictionaries>

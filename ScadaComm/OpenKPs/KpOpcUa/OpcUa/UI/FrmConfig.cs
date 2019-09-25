@@ -29,6 +29,7 @@ using Scada.Comm.Devices.OpcUa.Config;
 using Scada.UI;
 using System;
 using System.IO;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.OpcUa.UI
@@ -39,6 +40,22 @@ namespace Scada.Comm.Devices.OpcUa.UI
     /// </summary>
     public partial class FrmConfig : Form
     {
+        /// <summary>
+        /// Represents an object associated with a node of the server tree.
+        /// <para>Представляет объект, связанный с узлом дерева сервера.</para>
+        /// </summary>
+        private class ServerNodeTag
+        {
+            public ServerNodeTag(NodeId opcNodeId)
+            {
+                OpcNodeId = opcNodeId;
+                IsFilled = false;
+            }
+
+            public NodeId OpcNodeId { get; private set; }
+            public bool IsFilled { get; set; }
+        }
+
         private readonly AppDirs appDirs;           // the application directories
         private readonly int kpNum;                 // the device number
         private readonly DeviceConfig deviceConfig; // the device configuration
@@ -95,6 +112,153 @@ namespace Scada.Comm.Devices.OpcUa.UI
         }
 
         /// <summary>
+        /// Connects to the OPC server.
+        /// </summary>
+        private async Task<bool> ConnectToOpcServer()
+        {
+            try
+            {
+                OpcUaHelper helper = new OpcUaHelper(appDirs, kpNum)
+                {
+                    CertificateValidation = CertificateValidator_CertificateValidation
+                };
+
+                if (await helper.ConnectAsync(deviceConfig.ConnectionOptions))
+                {
+                    opcSession = helper.OpcSession;
+                    return true;
+                }
+                else
+                {
+                    opcSession = null;
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(KpPhrases.ConnectServerError + ":" + Environment.NewLine + ex.Message);
+                return false;
+            }
+            finally
+            {
+                SetConnButtonsEnabled();
+            }
+        }
+
+        /// <summary>
+        /// Disconnects from the OPC server.
+        /// </summary>
+        private void DisconnectFromOpcServer()
+        {
+            try
+            {
+                tvServer.Nodes.Clear();
+
+                if (opcSession != null)
+                {
+                    opcSession.Close();
+                    opcSession = null;
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(KpPhrases.DisconnectServerError + ":" + Environment.NewLine + ex.Message);
+            }
+            finally
+            {
+                SetConnButtonsEnabled();
+            }
+        }
+
+        /// <summary>
+        /// Browses the server node.
+        /// </summary>
+        private void BrowseServerNode(TreeNode treeNode)
+        {
+            try
+            {
+                tvServer.BeginUpdate();
+                bool fillNode = false;
+                TreeNodeCollection nodeCollection = null;
+                NodeId nodeId = null;
+
+                if (treeNode == null)
+                {
+                    fillNode = true;
+                    nodeCollection = tvServer.Nodes;
+                    nodeId = ObjectIds.ObjectsFolder;
+                }
+                else if (treeNode.Tag is ServerNodeTag serverNodeTag)
+                {
+                    fillNode = !serverNodeTag.IsFilled;
+                    nodeCollection = treeNode.Nodes;
+                    nodeId = serverNodeTag.OpcNodeId;
+                }
+
+                if (fillNode && nodeId != null && opcSession != null)
+                {
+                    opcSession.Browse(null, null, nodeId,
+                        0, BrowseDirection.Forward, ReferenceTypeIds.HierarchicalReferences, true,
+                        (uint)NodeClass.Variable | (uint)NodeClass.Object | (uint)NodeClass.Method,
+                        out byte[] continuationPoint, out ReferenceDescriptionCollection references);
+                    nodeCollection.Clear();
+
+                    foreach (ReferenceDescription rd in references)
+                    {
+                        TreeNode childNode = TreeViewUtils.CreateNode(rd.DisplayName, SelectImageKey(rd.NodeClass));
+                        childNode.Tag = new ServerNodeTag(ExpandedNodeId.ToNodeId(rd.NodeId, opcSession.NamespaceUris));
+
+                        if (rd.NodeClass.HasFlag(NodeClass.Object))
+                        {
+                            TreeNode emptyNode = TreeViewUtils.CreateNode(KpPhrases.EmptyNode, "empty.png");
+                            childNode.Nodes.Add(emptyNode);
+                        }
+
+                        nodeCollection.Add(childNode);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(KpPhrases.BrowseServerError + ":" + Environment.NewLine + ex.Message);
+            }
+            finally
+            {
+                tvServer.EndUpdate();
+            }
+        }
+
+        /// <summary>
+        /// Selects an image key depending on the node class.
+        /// </summary>
+        private string SelectImageKey(NodeClass nodeClass)
+        {
+            if (nodeClass.HasFlag(NodeClass.Object))
+                return "object.png";
+            else if (nodeClass.HasFlag(NodeClass.Method))
+                return "method.png";
+            else
+                return "variable.png";
+        }
+
+        /// <summary>
+        /// Sets the enabled property of the connection buttons.
+        /// </summary>
+        private void SetConnButtonsEnabled()
+        {
+            if (opcSession == null)
+            {
+                btnConnect.Enabled = true;
+                btnDisconnect.Enabled = false;
+            }
+            else
+            {
+                btnConnect.Enabled = false;
+                btnDisconnect.Enabled = true;
+            }
+        }
+
+        /// <summary>
         /// Validates the certificate.
         /// </summary>
         private void CertificateValidator_CertificateValidation(CertificateValidator validator,
@@ -114,6 +278,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 ScadaUiUtils.ShowError(errMsg);
 
             Text = string.Format(Text, kpNum);
+            KpPhrases.Init();
 
             // load a configuration
             configFileName = DeviceConfig.GetFileName(appDirs.ConfigDir, kpNum);
@@ -123,62 +288,29 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
             // display the configuration
             ConfigToControls();
+            SetConnButtonsEnabled();
             Modified = false;
         }
 
         private async void btnConnect_ClickAsync(object sender, EventArgs e)
         {
-            OpcUaHelper helper = new OpcUaHelper(appDirs, kpNum)
-            {
-                CertificateValidation = CertificateValidator_CertificateValidation
-            };
-
-            bool connected = await helper.ConnectAsync(deviceConfig.ConnectionOptions);
-            opcSession = helper.OpcSession;
-
-            if (connected)
-            {
-                opcSession.Browse(null, null, ObjectIds.ObjectsFolder, 
-                    0, BrowseDirection.Forward, ReferenceTypeIds.HierarchicalReferences, true,
-                    (uint)NodeClass.Variable | (uint)NodeClass.Object | (uint)NodeClass.Method,
-                    out byte[] continuationPoint, out ReferenceDescriptionCollection references);
-
-                try
-                {
-                    tvServer.BeginUpdate();
-                    tvServer.Nodes.Clear();
-
-                    foreach (ReferenceDescription rd in references)
-                    {
-                        TreeNode treeNode = tvServer.Nodes.Add(rd.DisplayName + " - " + rd.BrowseName + " - " + rd.NodeClass);
-
-                        opcSession.Browse(null, null, ExpandedNodeId.ToNodeId(rd.NodeId, opcSession.NamespaceUris), 
-                            0, BrowseDirection.Forward, ReferenceTypeIds.HierarchicalReferences, true,
-                            (uint)NodeClass.Variable | (uint)NodeClass.Object | (uint)NodeClass.Method,
-                            out byte[] nextCp, out ReferenceDescriptionCollection nextRefs);
-
-                        foreach (ReferenceDescription nextRd in nextRefs)
-                        {
-                            treeNode.Nodes.Add(nextRd.DisplayName + " - " + nextRd.BrowseName + " - " + nextRd.NodeClass);
-                        }
-                    }
-                }
-                finally
-                {
-                    tvServer.EndUpdate();
-                }
-            }
+            if (await ConnectToOpcServer())
+                BrowseServerNode(null);
         }
 
         private void btnDisconnect_Click(object sender, EventArgs e)
         {
-            if (opcSession != null)
-                opcSession.Close();
+            DisconnectFromOpcServer();
         }
 
         private void btnSecurityOptions_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void tvServer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
+        {
+            BrowseServerNode(e.Node);
         }
     }
 }

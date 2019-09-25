@@ -34,6 +34,7 @@
             this.btnSave = new System.Windows.Forms.Button();
             this.gbDevice = new System.Windows.Forms.GroupBox();
             this.gbServerBrowse = new System.Windows.Forms.GroupBox();
+            this.tvServer = new System.Windows.Forms.TreeView();
             this.gbConnection = new System.Windows.Forms.GroupBox();
             this.btnSecurityOptions = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
@@ -42,7 +43,7 @@
             this.lblServerUrl = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.tvServer = new System.Windows.Forms.TreeView();
+            this.ilTree = new System.Windows.Forms.ImageList(this.components);
             this.gbServerBrowse.SuspendLayout();
             this.gbConnection.SuspendLayout();
             this.SuspendLayout();
@@ -89,6 +90,17 @@
             this.gbServerBrowse.TabIndex = 1;
             this.gbServerBrowse.TabStop = false;
             this.gbServerBrowse.Text = "Server Browse";
+            // 
+            // tvServer
+            // 
+            this.tvServer.ImageIndex = 0;
+            this.tvServer.ImageList = this.ilTree;
+            this.tvServer.Location = new System.Drawing.Point(13, 19);
+            this.tvServer.Name = "tvServer";
+            this.tvServer.SelectedImageIndex = 0;
+            this.tvServer.Size = new System.Drawing.Size(194, 305);
+            this.tvServer.TabIndex = 0;
+            this.tvServer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvServer_BeforeExpand);
             // 
             // gbConnection
             // 
@@ -167,12 +179,14 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Parameters";
             // 
-            // tvServer
+            // ilTree
             // 
-            this.tvServer.Location = new System.Drawing.Point(13, 19);
-            this.tvServer.Name = "tvServer";
-            this.tvServer.Size = new System.Drawing.Size(194, 305);
-            this.tvServer.TabIndex = 0;
+            this.ilTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTree.ImageStream")));
+            this.ilTree.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilTree.Images.SetKeyName(0, "empty.png");
+            this.ilTree.Images.SetKeyName(1, "method.png");
+            this.ilTree.Images.SetKeyName(2, "object.png");
+            this.ilTree.Images.SetKeyName(3, "variable.png");
             // 
             // FrmConfig
             // 
@@ -214,5 +228,6 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.TreeView tvServer;
+        private System.Windows.Forms.ImageList ilTree;
     }
 }
