@@ -73,7 +73,7 @@
             treeNode1.Name = "grsNode";
             treeNode1.SelectedImageKey = "group.png";
             treeNode1.Text = "Element groups";
-            treeNode2.ImageIndex = 2;
+            treeNode2.ImageIndex = 3;
             treeNode2.Name = "cmdsNode";
             treeNode2.SelectedImageKey = "cmds.png";
             treeNode2.Text = "Commands";
