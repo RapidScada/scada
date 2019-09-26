@@ -56,6 +56,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
             public bool IsFilled { get; set; }
         }
 
+        private const string FolderOpenImageKey = "folder_open.png";
+        private const string FolderClosedImageKey = "folder_closed.png";
+
         private readonly AppDirs appDirs;           // the application directories
         private readonly int kpNum;                 // the device number
         private readonly DeviceConfig deviceConfig; // the device configuration
@@ -112,7 +115,48 @@ namespace Scada.Comm.Devices.OpcUa.UI
         {
             changing = true;
             txtServerUrl.Text = deviceConfig.ConnectionOptions.ServerUrl;
+            FillDeviceTree();
             changing = false;
+        }
+
+        private void FillDeviceTree()
+        {
+            try
+            {
+                tvDevice.BeginUpdate();
+                tvDevice.Nodes.Clear();
+
+                TreeNode subscriptionsNode = TreeViewUtils.CreateNode("Subscriptions", FolderClosedImageKey);
+
+                foreach (SubscriptionConfig subscriptionConfig in deviceConfig.Subscriptions)
+                {
+                    TreeNode subscriptionNode = TreeViewUtils.CreateNode(subscriptionConfig.DisplayName, FolderClosedImageKey);
+                    subscriptionsNode.Nodes.Add(subscriptionNode);
+
+                    foreach (ItemConfig itemConfig in subscriptionConfig.Items)
+                    {
+                        TreeNode itemNode = TreeViewUtils.CreateNode(itemConfig.DisplayName, "variable.png");
+                        subscriptionNode.Nodes.Add(itemNode);
+                    }
+                }
+
+                TreeNode commandsNode = TreeViewUtils.CreateNode("Commands", FolderClosedImageKey);
+
+                foreach (CommandConfig commandConfig in deviceConfig.Commands)
+                {
+                    TreeNode commandNode = TreeViewUtils.CreateNode(commandConfig.DisplayName, "command.png");
+                    commandsNode.Nodes.Add(commandNode);
+                }
+
+                tvDevice.Nodes.Add(subscriptionsNode);
+                tvDevice.Nodes.Add(commandsNode);
+                subscriptionsNode.Expand();
+                commandsNode.Expand();
+            }
+            finally
+            {
+                tvDevice.EndUpdate();
+            }
         }
 
         /// <summary>
@@ -263,6 +307,15 @@ namespace Scada.Comm.Devices.OpcUa.UI
         }
 
         /// <summary>
+        /// Sets the node image as open or closed folder.
+        /// </summary>
+        private void SetFolderImage(TreeNode treeNode)
+        {
+            if (treeNode.ImageKey.StartsWith("folder_"))
+                treeNode.SetImageKey(treeNode.IsExpanded ? FolderOpenImageKey : FolderClosedImageKey);
+        }
+
+        /// <summary>
         /// Validates the certificate.
         /// </summary>
         private void CertificateValidator_CertificateValidation(CertificateValidator validator,
@@ -352,6 +405,46 @@ namespace Scada.Comm.Devices.OpcUa.UI
         private void tvServer_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             BrowseServerNode(e.Node);
+        }
+
+        private void btnAddItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddSubscription_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMoveUpItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMoveDownItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnDeleteItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tvDevice_AfterSelect(object sender, TreeViewEventArgs e)
+        {
+
+        }
+
+        private void tvDevice_AfterExpand(object sender, TreeViewEventArgs e)
+        {
+            SetFolderImage(e.Node);
+        }
+
+        private void tvDevice_AfterCollapse(object sender, TreeViewEventArgs e)
+        {
+            SetFolderImage(e.Node);
         }
 
         private void btnSave_Click(object sender, EventArgs e)

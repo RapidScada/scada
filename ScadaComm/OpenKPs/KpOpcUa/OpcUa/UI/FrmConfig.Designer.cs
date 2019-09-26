@@ -35,6 +35,7 @@
             this.gbDevice = new System.Windows.Forms.GroupBox();
             this.gbServerBrowse = new System.Windows.Forms.GroupBox();
             this.tvServer = new System.Windows.Forms.TreeView();
+            this.ilServer = new System.Windows.Forms.ImageList(this.components);
             this.gbConnection = new System.Windows.Forms.GroupBox();
             this.btnSecurityOptions = new System.Windows.Forms.Button();
             this.btnDisconnect = new System.Windows.Forms.Button();
@@ -43,7 +44,14 @@
             this.lblServerUrl = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this.ilTree = new System.Windows.Forms.ImageList(this.components);
+            this.btnAddItem = new System.Windows.Forms.Button();
+            this.btnAddSubscription = new System.Windows.Forms.Button();
+            this.btnMoveUpItem = new System.Windows.Forms.Button();
+            this.btnMoveDownItem = new System.Windows.Forms.Button();
+            this.btnDeleteItem = new System.Windows.Forms.Button();
+            this.tvDevice = new System.Windows.Forms.TreeView();
+            this.ilDevice = new System.Windows.Forms.ImageList(this.components);
+            this.gbDevice.SuspendLayout();
             this.gbServerBrowse.SuspendLayout();
             this.gbConnection.SuspendLayout();
             this.SuspendLayout();
@@ -73,6 +81,12 @@
             // 
             // gbDevice
             // 
+            this.gbDevice.Controls.Add(this.tvDevice);
+            this.gbDevice.Controls.Add(this.btnDeleteItem);
+            this.gbDevice.Controls.Add(this.btnMoveDownItem);
+            this.gbDevice.Controls.Add(this.btnMoveUpItem);
+            this.gbDevice.Controls.Add(this.btnAddSubscription);
+            this.gbDevice.Controls.Add(this.btnAddItem);
             this.gbDevice.Location = new System.Drawing.Point(238, 83);
             this.gbDevice.Name = "gbDevice";
             this.gbDevice.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -95,13 +109,22 @@
             // tvServer
             // 
             this.tvServer.ImageIndex = 0;
-            this.tvServer.ImageList = this.ilTree;
+            this.tvServer.ImageList = this.ilServer;
             this.tvServer.Location = new System.Drawing.Point(13, 19);
             this.tvServer.Name = "tvServer";
             this.tvServer.SelectedImageIndex = 0;
             this.tvServer.Size = new System.Drawing.Size(194, 305);
             this.tvServer.TabIndex = 0;
             this.tvServer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvServer_BeforeExpand);
+            // 
+            // ilServer
+            // 
+            this.ilServer.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilServer.ImageStream")));
+            this.ilServer.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilServer.Images.SetKeyName(0, "empty.png");
+            this.ilServer.Images.SetKeyName(1, "method.png");
+            this.ilServer.Images.SetKeyName(2, "object.png");
+            this.ilServer.Images.SetKeyName(3, "variable.png");
             // 
             // gbConnection
             // 
@@ -181,14 +204,87 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Parameters";
             // 
-            // ilTree
+            // btnAddItem
             // 
-            this.ilTree.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilTree.ImageStream")));
-            this.ilTree.TransparentColor = System.Drawing.Color.Transparent;
-            this.ilTree.Images.SetKeyName(0, "empty.png");
-            this.ilTree.Images.SetKeyName(1, "method.png");
-            this.ilTree.Images.SetKeyName(2, "object.png");
-            this.ilTree.Images.SetKeyName(3, "variable.png");
+            this.btnAddItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAddItem.Image = ((System.Drawing.Image)(resources.GetObject("btnAddItem.Image")));
+            this.btnAddItem.Location = new System.Drawing.Point(13, 19);
+            this.btnAddItem.Name = "btnAddItem";
+            this.btnAddItem.Size = new System.Drawing.Size(23, 23);
+            this.btnAddItem.TabIndex = 0;
+            this.toolTip.SetToolTip(this.btnAddItem, "Add Selected Item");
+            this.btnAddItem.UseVisualStyleBackColor = true;
+            this.btnAddItem.Click += new System.EventHandler(this.btnAddItem_Click);
+            // 
+            // btnAddSubscription
+            // 
+            this.btnAddSubscription.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnAddSubscription.Image = ((System.Drawing.Image)(resources.GetObject("btnAddSubscription.Image")));
+            this.btnAddSubscription.Location = new System.Drawing.Point(42, 19);
+            this.btnAddSubscription.Name = "btnAddSubscription";
+            this.btnAddSubscription.Size = new System.Drawing.Size(23, 23);
+            this.btnAddSubscription.TabIndex = 1;
+            this.toolTip.SetToolTip(this.btnAddSubscription, "Add Subscription");
+            this.btnAddSubscription.UseVisualStyleBackColor = true;
+            this.btnAddSubscription.Click += new System.EventHandler(this.btnAddSubscription_Click);
+            // 
+            // btnMoveUpItem
+            // 
+            this.btnMoveUpItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnMoveUpItem.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveUpItem.Image")));
+            this.btnMoveUpItem.Location = new System.Drawing.Point(71, 19);
+            this.btnMoveUpItem.Name = "btnMoveUpItem";
+            this.btnMoveUpItem.Size = new System.Drawing.Size(23, 23);
+            this.btnMoveUpItem.TabIndex = 2;
+            this.toolTip.SetToolTip(this.btnMoveUpItem, "Move Up");
+            this.btnMoveUpItem.UseVisualStyleBackColor = true;
+            this.btnMoveUpItem.Click += new System.EventHandler(this.btnMoveUpItem_Click);
+            // 
+            // btnMoveDownItem
+            // 
+            this.btnMoveDownItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnMoveDownItem.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveDownItem.Image")));
+            this.btnMoveDownItem.Location = new System.Drawing.Point(100, 19);
+            this.btnMoveDownItem.Name = "btnMoveDownItem";
+            this.btnMoveDownItem.Size = new System.Drawing.Size(23, 23);
+            this.btnMoveDownItem.TabIndex = 3;
+            this.toolTip.SetToolTip(this.btnMoveDownItem, "Move Down");
+            this.btnMoveDownItem.UseVisualStyleBackColor = true;
+            this.btnMoveDownItem.Click += new System.EventHandler(this.btnMoveDownItem_Click);
+            // 
+            // btnDeleteItem
+            // 
+            this.btnDeleteItem.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.btnDeleteItem.Image = ((System.Drawing.Image)(resources.GetObject("btnDeleteItem.Image")));
+            this.btnDeleteItem.Location = new System.Drawing.Point(129, 19);
+            this.btnDeleteItem.Name = "btnDeleteItem";
+            this.btnDeleteItem.Size = new System.Drawing.Size(23, 23);
+            this.btnDeleteItem.TabIndex = 4;
+            this.toolTip.SetToolTip(this.btnDeleteItem, "Delete");
+            this.btnDeleteItem.UseVisualStyleBackColor = true;
+            this.btnDeleteItem.Click += new System.EventHandler(this.btnDeleteItem_Click);
+            // 
+            // tvDevice
+            // 
+            this.tvDevice.ImageIndex = 0;
+            this.tvDevice.ImageList = this.ilDevice;
+            this.tvDevice.Location = new System.Drawing.Point(13, 48);
+            this.tvDevice.Name = "tvDevice";
+            this.tvDevice.SelectedImageIndex = 0;
+            this.tvDevice.Size = new System.Drawing.Size(194, 276);
+            this.tvDevice.TabIndex = 5;
+            this.tvDevice.AfterCollapse += new System.Windows.Forms.TreeViewEventHandler(this.tvDevice_AfterCollapse);
+            this.tvDevice.AfterExpand += new System.Windows.Forms.TreeViewEventHandler(this.tvDevice_AfterExpand);
+            this.tvDevice.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvDevice_AfterSelect);
+            // 
+            // ilDevice
+            // 
+            this.ilDevice.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("ilDevice.ImageStream")));
+            this.ilDevice.TransparentColor = System.Drawing.Color.Transparent;
+            this.ilDevice.Images.SetKeyName(0, "command.png");
+            this.ilDevice.Images.SetKeyName(1, "folder_closed.png");
+            this.ilDevice.Images.SetKeyName(2, "folder_open.png");
+            this.ilDevice.Images.SetKeyName(3, "variable.png");
             // 
             // FrmConfig
             // 
@@ -211,6 +307,7 @@
             this.Text = "OPC UA - Device {0} Properties";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmConfig_FormClosing);
             this.Load += new System.EventHandler(this.FrmConfig_Load);
+            this.gbDevice.ResumeLayout(false);
             this.gbServerBrowse.ResumeLayout(false);
             this.gbConnection.ResumeLayout(false);
             this.gbConnection.PerformLayout();
@@ -232,6 +329,13 @@
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.TreeView tvServer;
-        private System.Windows.Forms.ImageList ilTree;
+        private System.Windows.Forms.ImageList ilServer;
+        private System.Windows.Forms.Button btnAddItem;
+        private System.Windows.Forms.Button btnDeleteItem;
+        private System.Windows.Forms.Button btnMoveDownItem;
+        private System.Windows.Forms.Button btnMoveUpItem;
+        private System.Windows.Forms.Button btnAddSubscription;
+        private System.Windows.Forms.TreeView tvDevice;
+        private System.Windows.Forms.ImageList ilDevice;
     }
 }
