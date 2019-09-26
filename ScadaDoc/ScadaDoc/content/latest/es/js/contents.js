@@ -23,11 +23,11 @@ function addContents(context) {
     addArticle(context, "installation-and-run/software-update.html", "Actualización del Software", 1);
 
     addArticle(context, "software-configuration/", "Configuración de software");
-    addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de configuración", 1);
+    addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de la configuración", 1);
     addArticle(context, "software-configuration/tune-database.html", "Afinación de la base de datos de configuración", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Uso de fórmulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Configuración de autenticación del usuario", 1);
-    addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de comunicación con dispositivos", 1);
+    addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de la comunicación con los dispositivos", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creación de vistas", 1);
 
     addArticle(context, "modules/", "Modules");
