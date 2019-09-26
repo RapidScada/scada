@@ -28,7 +28,7 @@ namespace Scada.Comm.Devices.OpcUa.Config
         /// </summary>
         public SubscriptionConfig()
         {
-            Active = false;
+            Active = true;
             DisplayName = "";
             PublishingInterval = 1000;
             Items = new List<ItemConfig>();

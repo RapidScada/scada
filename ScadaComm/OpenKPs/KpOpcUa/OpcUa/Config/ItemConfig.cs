@@ -27,7 +27,7 @@ namespace Scada.Comm.Devices.OpcUa.Config
         /// </summary>
         public ItemConfig()
         {
-            Active = false;
+            Active = true;
             NodeID = "";
             DisplayName = "";
             IsArray = false;
