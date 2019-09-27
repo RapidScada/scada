@@ -2,43 +2,44 @@
 function addContents(context) {
     addArticle(context, "../../../", "Home");
     addArticle(context, "software-overview/", "Software Overview");
-    addArticle(context, "software-overview/software-purpose.html", "Software Purpose and Characteristics", 1);
-    addArticle(context, "software-overview/software-architecture.html", "Software Architecture", 1);
+    addArticle(context, "software-overview/software-purpose.html", "Propósito y características del software", 1);
+    addArticle(context, "software-overview/software-architecture.html", "Arquitectura del Software", 1);
     addArticle(context, "software-overview/applications/", "Description of Applications", 1);
-    addArticle(context, "software-overview/applications/server-application.html", "Server Application", 2);
-    addArticle(context, "software-overview/applications/communicator-application.html", "Communicator Application", 2);
-    addArticle(context, "software-overview/applications/webstation-application.html", "Webstation Application", 2);
-    addArticle(context, "software-overview/applications/administrator-application.html", "Administrator Application", 2);
-    addArticle(context, "software-overview/applications/table-editor-application.html", "Table Editor Application", 2);
-    addArticle(context, "software-overview/applications/scheme-editor-application.html", "Scheme Editor Application", 2);
+    addArticle(context, "software-overview/applications/server-application.html", "Aplicación Server", 2);
+    addArticle(context, "software-overview/applications/communicator-application.html", "Aplicación Communicator", 2);
+    addArticle(context, "software-overview/applications/webstation-application.html", "Aplicación Webstation", 2);
+    addArticle(context, "software-overview/applications/administrator-application.html", "Aplicación Administrator", 2);
+    addArticle(context, "software-overview/applications/table-editor-application.html", "Aplicación Table Editor", 2);
+    addArticle(context, "software-overview/applications/scheme-editor-application.html", "Aplicación Scheme Editor", 2);
     addArticle(context, "software-overview/roadmap.html", "Roadmap", 1);
 
-    //addArticle(context, "installation-and-run/", "Installation and Run");
-    //addArticle(context, "installation-and-run/system-requirements.html", "System Requirements", 1);
-    //addArticle(context, "installation-and-run/software-installation.html", "Software Installation", 1);
-    //addArticle(context, "installation-and-run/manual-installation.html", "Manual Installation", 1);
-    //addArticle(context, "installation-and-run/module-installation.html", "Installation of Additional Modules", 1);
-    //addArticle(context, "installation-and-run/run-applications.html", "Run Applications", 1);
-    //addArticle(context, "installation-and-run/migrate-configuration.html", "Migrate Configuration to New Server", 1);
-    //addArticle(context, "installation-and-run/software-update.html", "Software Update", 1);
+    addArticle(context, "installation-and-run/", "Installation and Run");
+    addArticle(context, "installation-and-run/system-requirements.html", "Requerimientos del Sistema", 1);
+    addArticle(context, "installation-and-run/software-installation.html", "Instalación del Software", 1);
+    addArticle(context, "installation-and-run/manual-installation.html", "Instalación Manual", 1);
+    addArticle(context, "installation-and-run/module-installation.html", "Instalación de módulos adicionales", 1);
+    addArticle(context, "installation-and-run/run-applications.html", "Ejecución de aplicaciones", 1);
+    addArticle(context, "installation-and-run/migrate-configuration.html", "Migrar la configuración a un nuevo servidor", 1);
+    addArticle(context, "installation-and-run/software-update.html", "Actualización del Software", 1);
 
     addArticle(context, "software-configuration/", "Configuración de software");
-    addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de configuración", 1);
+    addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de la configuración", 1);
     addArticle(context, "software-configuration/tune-database.html", "Afinación de la base de datos de configuración", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Uso de fórmulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Configuración de autenticación del usuario", 1);
-    addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de comunicación con dispositivos", 1);
+    addArticle(context, "software-configuration/communication-with-devices.html", "Configuración de la comunicación con los dispositivos", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creación de vistas", 1);
 
     addArticle(context, "modules/", "Modules");
-    addArticle(context, "modules/kp-telegram.html", "Telegram Driver", 1);
-    addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
-    addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
-    addArticle(context, "modules/mod-rapid-gate.html", "Rapid Gate Module", 1);
+    addArticle(context, "modules/kp-telegram.html", "Controlador de Telegram", 1);
+    addArticle(context, "modules/mod-auto-control.html", "Módulo de Control Automático", 1);
+    addArticle(context, "modules/mod-db-export.html", "Módulo de Exportación a Base de Datos", 1);
+    addArticle(context, "modules/mod-rapid-gate.html", "Modulo Rapid Gate", 1);
     addArticle(context, "modules/plg-chart-pro.html", "Chart Pro Plugin", 1);
     addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
     addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
+    addArticle(context, "modules/plg-notification.html", "Notification Plugin", 1);
 
     //addArticle(context, "use-cases/", "Use Cases");
     //addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);

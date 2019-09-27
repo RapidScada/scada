@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Notification Plugin - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Notification Plugin</h1>
+
+    <h2>Introducción</h2>
+
+    <p>Este complemento ayuda al operador de un sistema a prestar atención a los eventos más importantes. Genera notificaciones basadas en eventos de acuerdo con reglas especificadas y las muestra en el panel de notificaciones que aparece en el lado derecho de la página web. Además, el complemento activa una alerta audible dependiendo del tipo de notificación.</p>
+
+    <h2>Instalación</h2>
+
+    <p>Primero debe realizar la <a href="../installation-and-run/module-installation.html#plugins">secuencia general de instalación de complementos</a>, y luego realizar varias acciones adicionales:</p>
+
+    <ol>
+        <li>Vaya al <em>Main Menu &gt; Registration &gt; Notification</em>.</li>
+        <li>Registre el complemento utilizando los hipervínculos en la página.</li>
+        <li>Agregar la clave de registración al proyecto, bajando la configuración de Webstation y utilizando la aplicación Administrator.</li>
+    </ol>
+
+    <p>Si el complemento quedó instalado correctamente, verá una campana en la esquina superior derecha de la página web.</p>
+
+    <h2>Configuración</h2>
+
+    <p>La configuración del plugin de notificación se almacena en el archivo PlgNotification.xml. Este archivo debe ser incluido en el proyecto y ubicado en la carpeta de configuración de Webstation. Al tiempo de ejecución, el archivo de configuración del plugin se ubica en C:\SCADA\ScadaWeb\config\</p>
+
+    <p>Considere los contenidos del archivo de configuración:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Etiquetas XML</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td><strong>Opc. Generales</strong></td>
+            <td>Sección de opciones generales</td>
+        </tr>
+        <tr>
+            <td>EvPeriod</td>
+            <td>Período (en días) para tomar eventos para crear notificaciones</td>
+        </tr>
+        <tr>
+            <td>DispNotifCnt</td>
+            <td>Cantidad de notificaciones a mostrar</td>
+        </tr>
+        <tr>
+            <td><strong>NotifOptions</strong></td>
+            <td>Sección que contiene las opciones que determinan como generar las  notificaciones</td>
+        </tr>
+        <tr>
+            <td>
+                InfoCondition<br />
+                WarningCondition<br />
+                ErrorCondition
+            </td>
+            <td>Para especificar las condiciones para generar notificaciones de los tipos información, advertencia y error</td>
+        </tr>
+        <tr>
+            <td>Statuses</td>
+            <td>Estados de los canales de entrada que causan una nueva notificación </td>
+        </tr>
+        <tr>
+            <td>ParamIDs</td>
+            <td>Cantidad permitida de IDs de un canal de entrada para notificar</td>
+        </tr>
+        <tr>
+            <td><strong>Tips</strong></td>
+            <td>Sección que especifica las sugerencias a notificar</td>
+        </tr>
+        <tr>
+            <td>Tip</td>
+            <td>Sección que determina un sugerencia</td>
+        </tr>
+        <tr>
+            <td>TipCondition</td>
+            <td>Condition of the tip</td>
+        </tr>
+        <tr>
+            <td>Link</td>
+            <td>Si se define, especifica un enlace para navegar por la sugerencia</td>
+        </tr>
+        <tr>
+            <td>Html</td>
+            <td>Marcado de la sugerencia en vez de un enlace</td>
+        </tr>
+    </table>
+</body>
+</html>

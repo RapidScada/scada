@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Export to Database Module - Ayuda de Rapid SCADA</title>
+    <title>Módulo de Exportación a Base de Datos - Documentación de Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
     <link href="../../../../lib/prism/prism.css" rel="stylesheet" />
@@ -11,10 +11,28 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Export to Database Module (Módulo de Exportación a Base de Datos)</h1>
+    <h1>Módulo de Exportación a Base de Datos</h1>
     <h2>Introducción</h2>
 
-    <p>El módulo proporciona un medio para exportar los datos en tiempo real, que fueron recibidos desde los dispositivos, en algunas bases de datos populares. Los DBMS soportados son Microsoft SQL Server, Oracle, PostgreSQL y MySQL. Para usar el módulo, primero debe crear las tablas de base de datos para almacenar la información. La configuración del módulo debe contener los parámetros de conexión a la base de datos y scripts SQL, que son ejecutados por la aplicación Servidor cuando se reciben nuevos datos.</p>
+    <p>El módulo permite exportar los datos que fueron recibidos desde dispositivos, en tiempo real, en el formato de algunas bases de datos populares. Los DBMS soportados son Microsoft SQL Server, Oracle, PostgreSQL y MySQL. Este módulo viene incluido en el paquete de instalación de Rapid SCADA y no requiere instalación por separado.  El driver (controlador) del mismo es ModDBExport.dll.</p>
+
+    <h2>Configuración</h2>
+
+    <p>Seleccionado un proyecto, vaya a la página <em>Modules</em>, active el módulo ModDBExport.dll y abra sus propiedades. El módulo soporta la exportación en varios tipos de bases de datos diferentes y en paralelo. Para agregar una base de datos, haga clic en el botón <img src="mod-db-export-files/plus.png" />. La página <em>Connection</em> contiene los parámetros para conectarse a la base de datos. Especifique las consultas SQL en las páginas <em>Current Data</em> (datos actuales), <em>Archive Data</em> (datos a archivar) y <em>Events</em> (eventos). El módulo ejecuta estas consultas cuando el servidor recibe nuevos datos. La base de datos, que es un objetivo de exportación, debe crearse y contener tablas las apropiadas para almacenar los datos.</p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_conn_en.png" alt="DB parámetros de conexión" /><br />
+    </p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_cur_en.png" alt="Parámetros de exportación de datos actuales" /><br />
+    </p>
+
+    <p>Si algunos datos no se exportaron a tiempo, por ejemplo, si una base de datos no está disponible, los datos pueden ser transferidos en modo manual. El formulario de exportación correspondiente se abre con el botón <img src="mod-db-export-files/export.png" />. Para hacer posible la exportación manual, cree los canales de salida correspondientes en la base de datos de configuración y especifíquelos en el formulario.</p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_manual_en.png" alt="Exportación manual" /><br />
+    </p>
 
     <h2>Ejemplos de tablas y consultas SQL</h2>
 

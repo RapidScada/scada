@@ -1,7 +1,7 @@
 ﻿<!DOCTYPE html>
 <html dir="ltr">
 <head>
-    <title>Uso de f&#243;rmulas - Documentaci&#243;n de Rapid SCADA</title>
+    <title>Uso de fórmulas - Documentación de Rapid SCADA</title>
     <meta charset="utf-8">
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
@@ -9,107 +9,107 @@
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
-    <h1>Uso de f&#243;rmulas</h1>
+    <h1>Uso de fórmulas</h1>
 
-    <p>Las f&#243;rmulas se usan para calcular los valores y los estados de los canales de entrada, as&#237; como para calcular los valores de los comandos. El procesamiento de las f&#243;rmulas la realiza la aplicaci&#243;n Server (Servidor).</p>
+    <p>Las fórmulas se usan para calcular los valores y los estados de los canales de entrada, así como para calcular los valores de los comandos. El procesamiento de las fórmulas la realiza la aplicación Server (Servidor).</p>
 
-    <p>Las f&#243;rmulas se ingresan en la columna <em>Formula (F&#243;rmula) </em>de las tablas <em>Input channels (Canales de entrada)</em> y <em>Output channels (Canales de salida)</em> de la base de datos de configuraci&#243;n. Para habilitar una f&#243;rmula, marque la casilla de verificaci&#243;n en la columna <em>Formula used (F&#243;rmula usada)</em>. La tabla <em>Formula (F&#243;rmulas) </em>contiene las funciones adicionales y las estructuras de los datos que pueden usarse en las f&#243;rmulas para los canales de entrada y salida.</p>
+    <p>Las fórmulas se ingresan en la columna <em>Fórmula</em> de las tablas <em>Canales de entrada</em> y <em>Canales de salida</em> de la base de datos de configuración. Para habilitar una fórmula, marque la casilla en la columna <em>Formula used (Fórmula utilizada)</em>. La tabla <em>Fórmulas</em> contiene funciones adicionales y estructuras de los datos que pueden utilizarse en las fórmulas para los canales de entrada y salida.</p>
 
-    <h2>Reglas de escritura de una f&#243;rmula</h2>
+    <h2>Reglas para escribir fórmulas</h2>
 
-    <p>Las reglas generales de escritura y uso de f&#243;rmulas son:</p>
-
-    <ol>
-        <li>Las f&#243;rmulas usan <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/" target="_blank">la sintaxis de expresiones del lenguaje&#160;C#</a>. Muchas de las clases Microsoft .NET est&#225;n accesibles, por ejemplo, las clases Math y DateTime.</li>
-        <li>Es posible a&#241;adir nuevas constantes, campos, propiedades y m&#233;todos para usarlos en las f&#243;rmulas.</li>
-        <li>Si al menos una f&#243;rmula contiene un error, la operaci&#243;n del Servidor ser&#225; imposible. La informaci&#243;n sobre los errores en las f&#243;rmulas se escribe en el registro de la aplicaci&#243;n Servidor.</li>
-    </ol>
-
-    <p>Reglas para calcular las f&#243;rmulas del canal de entrada:</p>
+    <p>Las reglas generales de escritura y uso de fórmulas son:</p>
 
     <ol>
-        <li>Los canales de los tipos <em>Discrete </em>y <em>Real </em>se calculan cuando el Servidor recibe los datos de canales. Utilice estos tipos de canales si la f&#243;rmula no se refiere a los datos de otros canales.</li>
-        <li>Los canales de los tipos <em>Calculated *</em> y <em>Switching counter</em> se calculan permanentemente en el orden correspondiente a los n&#250;meros de los canales. Una f&#243;rmula de un canal calculado utiliza generalmente datos de otros canales.</li>
-        <li>Los canales de los tipos<em> Minute *</em> y <em>Hourly *</em> se calculan peri&#243;dicamente, una vez por minuto o una vez por hora. Utilice estos tipos de canales para crear los valores acumulados, por ejemplo, consumo de energ&#237;a o el tiempo de funcionamiento.</li>
-        <li>Para los canales de los tipos <em>Discrete </em>y <em>Real </em>, los estados de los canales despu&#233;s del c&#225;lculo son iguales a los estados de aquellos canales recibidos por el Servidor, si el estado del c&#225;lculo no est&#225; especificado expl&#237;citamente.</li>
-        <li>Los estados de los otros tipos de canales son marcados como <em>Defined </em>si el c&#225;lculo de estado no est&#225; especificado expl&#237;citamente.</li>
-        <li>Cuando la f&#243;rmula de un canal de entrada, la que no contiene el s&#237;mbolo &quot;;&quot; (punto y coma), solamente calcula el valor del canal de entrada.</li>
-        <li>Si la f&#243;rmula de un canal de entrada contiene &quot;;&quot;, entonces la f&#243;rmula calcula el valor del canal de entrada y el estado. La primera parte antes de punto y coma es la f&#243;rmula para calcular un valor y la segunda parte despu&#233;s de punto y coma calcula el estado.</li>
-        <li>Si los l&#237;mites del canal est&#225;n especificados, el estado del canal se recalcula tomando en cuenta los l&#237;mites despu&#233;s de calcular la f&#243;rmula del canal.</li>
-        <li>La f&#243;rmula para calcular el valor de un canal debe devolver un n&#250;mero real del tipo <em>double</em>, y la f&#243;rmula para el c&#225;lculo del estado devuelve un n&#250;mero entero del tipo <em>int</em>.</li>
+        <li>Las fórmulas usan <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/" target="_blank">la sintaxis de expresiones del lenguaje C#</a>. Muchas de las clases Microsoft .NET están accesibles, por ejemplo, las clases Math y DateTime.</li>
+        <li>Es posible añadir nuevas constantes, campos, propiedades y métodos para usarlos en las fórmulas.</li>
+        <li>Si al menos una fórmula contiene un error, la operación del Servidor será imposible y no funciona. La información sobre los errores en las fórmulas se escribe en el registro de la aplicación Servidor.</li>
     </ol>
 
-    <p>Reglas para calcular las f&#243;rmulas del canal de salida:</p>
+    <p>Reglas para calcular fórmulas para los canales de entrada:</p>
 
     <ol>
-        <li>Las f&#243;rmulas se procesan para los canales de salida que tienen los tipos de comandos <em>Standard </em>y <em>Binary</em>.</li>
-        <li>Una f&#243;rmula para calcular el valor de un comando est&#225;ndar debe devolver un n&#250;mero real del tipo <em>double</em>, y la f&#243;rmula para calcular los datos de un comando binario devuelve una matriz de los bytes del tipo <em>byte[ ]</em>.</li>
+        <li>Los canales de los tipos <em>Discrete </em>y <em>Real </em>se calculan cuando el Servidor recibe los datos de canales. Utilice estos tipos de canales si la fórmula no se refiere a datos de otros canales.</li>
+        <li>Los canales de los tipos <em>Calculated *</em> y <em>Switching counter</em> se calculan permanentmente en el orden correspondiente a los números de los canales. La fórmula de un canal calculado utiliza generalmente datos de otros canales.</li>
+        <li>Los canales de los tipos<em> Minute *</em> y <em>Hourly *</em> sse calculan periódicamente, una vez por minuto o una vez por hora. Utilice estos tipos de canales para crear valores acumulados, por ejemplo, consumo de energía o tiempo de funcionamiento.</li>
+        <li>Para los canales de los tipos <em>Discrete </em>y <em>Real </em>, los estados de los canales tras del cálculo son iguales a los estados de esos canales recibidos por el Servidor, si el cálculo del estado no lo especifica explícitamente.</li>
+        <li>Los estados de los otros tipos de canales son marcados como <em>Defined </em>si el cálculo del estado no lo especifica explícitamente.</li>
+        <li>Cuando la fórmula de un canal de entrada, no contiene el símbolo ";" (punto y coma), la fórmula calcula solamente el valor del canal de entrada.</li>
+        <li>Si la fórmula de un canal de entrada contiene ";", la fórmula calcula el valor del canal de entrada y el estado. La primera parte antes del punto y coma es la fórmula para calcular un valor y la segunda parte, después de punto y coma, calcula el estado.</li>
+        <li>Si se especifican los límites del canal, el estado del canal es recalculado tomando en cuenta los límites después de haber calculado la fórmula del canal.</li>
+        <li>9.	La fórmula para calcular el valor de un canal debe devolver un número real del tipo  <em>double</em>, y la fórmula para el cálculo del estado devuelve un número entero del tipo <em>int</em>.</li>
     </ol>
 
-    <h2>F&#243;rmulas existentes</h2>
+    <p>Reglas para calcular fórmulas para los canales de salida:</p>
 
-    <p>Los variables accesibles en las f&#243;rmulas son:</p>
+    <ol>
+        <li>Las fórmulas para los canales de salida se procesan utilizando los tipos de comando <em>Standard </em>y <em>Binary</em>.</li>
+        <li>Las fórmulas para calcular el valor de un comando estándar deben devolver un número real del tipo <em>double</em>, y la fórmula para calcular datos de un comando binario devuelven una matriz de bytes del tipo  <em>byte[ ]</em>.</li>
+    </ol>
+
+    <h2>Fórmulas existentes</h2>
+
+    <p>Los variables accesibles en las fórmulas son:</p>
 
     <table class="sd-article-table">
         <tr>
             <th>Variable</th>
             <th>Tipo de valor</th>
-            <th>Descripci&#243;n</th>
+            <th>Descripción</th>
         </tr>
         <tr>
             <td>CnlVal, Cnl</td>
             <td>double</td>
-            <td>El valor del canal de entrada transmitido al Servidor antes del c&#225;lculo</td>
+            <td>El valor del canal de entrada transmitido al Servidor antes del cálculo</td>
         </tr>
         <tr>
             <td>CnlStat</td>
             <td>int</td>
-            <td>El estado del canal de entrada transmitido al Servidor antes del c&#225;lculo</td>
+            <td>El estado del canal de entrada transmitido al Servidor antes del cálculo</td>
         </tr>
         <tr>
             <td>CmdVal, Cmd</td>
             <td>double</td>
-            <td>El valor del comando transmitido al Servidor antes del c&#225;lculo</td>
+            <td>El valor del comando transmitido al Servidor antes del cálculo</td>
         </tr>
         <tr>
             <td>CmdData</td>
             <td>byte[]</td>
-            <td>Los datos del comando transmitidos al Servidor antes del c&#225;lculo</td>
+            <td>Los datos del comando transmitidos al Servidor antes del cálculo</td>
         </tr>
         <tr>
             <td>CnlNum</td>
             <td>int</td>
-            <td>El n&#250;mero de canal para el cual se calcula la f&#243;rmula</td>
+            <td>El número de canal para el cual se calcula la fórmula</td>
         </tr>
         <tr>
             <td>E</td>
             <td>double</td>
-            <td>La base&#160;logar&#237;tmica natural especificada por la constante, e</td>
+            <td>La base logarítmica natural especificada por la constante, e</td>
         </tr>
         <tr>
             <td>PI</td>
             <td>double</td>
-            <td>La proporci&#243;n&#160;de la&#160;circunferencia de un c&#237;rculo a su di&#225;metro especificada por la constante, π</td>
+            <td>La proporción de la circunferencia de un círculo a su diámetro especificada por la constante, π</td>
         </tr>
     </table>
 
-    <p>Las funciones accesibles en las f&#243;rmulas:</p>
+    <p>Funciones accesibles en las fórmulas:</p>
 
     <table class="sd-article-table">
         <tr>
-            <th>Funci&#243;n</th>
+            <th>Función</th>
             <th>Tipo de valor</th>
-            <th>Descripci&#243;n</th>
+            <th>Descripción</th>
         </tr>
         <tr>
             <td>N(n)</td>
             <td>int</td>
-            <td>Devuelve el n&#250;mero del canal especificado para actualizar los n&#250;meros durante la clonaci&#243;n</td>
+            <td>Devuelve el número del canal especificado para actualizar los números al clonar</td>
         </tr>
         <tr>
             <td>Val()</td>
             <td>double</td>
-            <td>Obtiene el valor actual del canal de la f&#243;rmula</td>
+            <td>Obtiene el valor actual del canal de la fórmula</td>
         </tr>
         <tr>
             <td>Val(n)</td>
@@ -124,7 +124,7 @@
         <tr>
             <td>Stat()</td>
             <td>int</td>
-            <td>Obtiene el estado actual del canal de la f&#243;rmula</td>
+            <td>Obtiene el estado actual del canal de la fórmula</td>
         </tr>
         <tr>
             <td>Stat(n)</td>
@@ -144,51 +144,51 @@
         <tr>
             <td>Abs(x)</td>
             <td>double</td>
-            <td>Calcula el valor absoluto de un n&#250;mero</td>
+            <td>Calcula el valor absoluto de un número</td>
         </tr>
         <tr>
             <td>Sin(x)</td>
             <td>double</td>
-            <td>Calcula el&#160;seno&#160;del &#225;ngulo especificado</td>
+            <td>Calcula el seno del ángulo especificado</td>
         </tr>
         <tr>
             <td>Cos(x)</td>
             <td>double</td>
-            <td>Calcula el coseno&#160;del &#225;ngulo especificado</td>
+            <td>Calcula el coseno del ángulo especificado</td>
         </tr>
         <tr>
             <td>Tan(x)</td>
             <td>double</td>
-            <td>Calcula la tangente&#160;del &#225;ngulo especificado</td>
+            <td>Calcula la tangente del ángulo especificado</td>
         </tr>
         <tr>
             <td>Exp(x)</td>
             <td>double</td>
-            <td>Calcula un e elevado&#160;a la potencia especificada</td>
+            <td>Calcula un e elevado a la potencia especificada</td>
         </tr>
         <tr>
             <td>Ln(x), Log(x)</td>
             <td>double</td>
-            <td>Calcula el logaritmo&#160;natural (e base) de un n&#250;mero especificado</td>
+            <td>Calcula el logaritmo natural (base e) del número especificado</td>
         </tr>
         <tr>
             <td>Sqr(x)</td>
             <td>double</td>
-            <td>Calcula el cuadrado de un n&#250;mero especificado</td>
+            <td>Calcula el cuadrado de un número especificado</td>
         </tr>
         <tr>
             <td>Sqrt(x)</td>
             <td>double</td>
-            <td>Calcula la ra&#237;z&#160;cuadrada de un n&#250;mero especificado</td>
+            <td>Calcula la raíz cuadrada de un número especificado</td>
         </tr>
     </table>
 
-    <p>F&#243;rmulas adicionales, incluidas las f&#243;rmulas para calcular promedios, est&#225;n <a href="https://github.com/RapidScada/scada-community/tree/master/Formulas" target="_blank">disponibles en GitHub</a>.</p>
+    <p>Fórmulas adicionales, incluidas las fórmulas para el calcular promedios, están <a href="https://github.com/RapidScada/scada-community/tree/master/Formulas" target="_blank">disponibles en GitHub</a>.</p>
 
-    <h2>F&#243;rmulas de depuraci&#243;n</h2>
+    <h2>Fórmulas de depuración</h2>
 
-    <p>Un desarrollador que crea f&#243;rmulas personalizadas tiene que verificar la sintaxis de las f&#243;rmulas y validar que funcionen correctamente. Si el servicio del Servidor no puede compilar las f&#243;rmulas en el inicio, se escribir&#225; informaci&#243;n sobre el error en el Server log file (Archivo de registro del servidor) y el c&#243;digo fuente de las f&#243;rmulas que el Servidor trata de compilar estar&#225; disponible en CalcEngine.cs, ubicado en el directorio de registro del Servidor, por defecto es C:\SCADA\ScadaServer\Log\</p>
+    <p>Un desarrollador que crea fórmulas personalizadas tiene que verificar la sintaxis de las fórmulas y validar que funcionen correctamente. Si el servicio del Servidor no puede compilar las fórmulas en el inicio, se escribirá información sobre el error en el archivo de registro del Servidor (Server log file) y el código fuente de las fórmulas que el Servidor trata de compilar estará disponible en CalcEngine.cs, ubicado en el directorio de registro del Servidor, por defecto C:\SCADA\ScadaServer\Log\</p>
 
-    <p>Para desarrollar las f&#243;rmulas complejas se recomienda usar Microsoft Visual Studio Community Edition. A&#241;ada una referencia a FormulaTester.dll en el proyecto. Como ejemplo, utilice el proyecto mencionado anteriormente que contiene las f&#243;rmulas.</p>
+    <p>Para desarrollar las fórmulas complejas se recomienda usar Microsoft Visual Studio Community Edition. Añada una referencia a FormulaTester.dll en el proyecto. Como ejemplo, utilice el proyecto mencionado anteriormente que contiene las fórmulas.</p>
 </body>
 </html>

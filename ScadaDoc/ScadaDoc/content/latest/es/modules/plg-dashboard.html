@@ -1,35 +1,62 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>Dashboard Plugin - Ayuda de Rapid SCADA</title>
+    <title>Dashboard Plugin - Documentación de Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
-    <link href="../../../lib/prism/prism.css" rel="stylesheet" />
+    <link href="../../../../lib/prism/prism.css" rel="stylesheet" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../lib/prism/prism.js"></script>
     <script type="text/javascript" src="../js/contents.js"></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
-    <script type="text/javascript" src="../../../lib/prism/prism.js"></script>
 </head>
 <body>
     <h1>Dashboard Plugin</h1>
     <h2>Introducción</h2>
-    <p>Dashboard Plugin muestra widgets útiles en los tableros: gráficos, datos actuales y marcos personalizados, por ejemplo, un circuito cerrado de televisión. La configuración de cada panel permite especificar el recuento de columnas y la relación de aspecto del widget. </p>
+    <p>Dashboard Plugin muestra widgets (componentes de una interfaz) útiles en los tableros (dashboards).  Por ejemplo, gráficos, datos actuales y cuadros personalizados. También imágenes de un circuito cerrado de televisión. En la configuración de cada tablero se puede especificar el recuento de columnas y la relación de aspecto del widget.</p>
 
     <h2>Instalación</h2>
-    <p> Primero debe realizar <a href="../installation-and-run/module-installation.html#plugins">la secuencia general de instalación de complementos</a>, y luego realizar varias acciones adicionales:</p>
+    <p>Primero debe realizar <a href="../installation-and-run/module-installation.html#plugins">la secuencia general de instalación de complementos</a>, y luego realizar estas acciones adicionales:</p>
     <ol>
         <li>Vaya al <em>Main Menu &gt; Registration &gt; Dashboard</em>.</li>
-        <li>Registre el complemento utilizando los hipervínculos en la página.</li>
+        <li>Registre el plugin utilizando los hipervínculos en la página.</li>
+        <li>Agregue la clave de registración al proyecto, bajando la configuración de Webstation, utilizando la aplicación Administrator.</li>
     </ol>
 
     <h2>Configuración</h2>
-	<p>La configuración de cada panel de control es almacenada en un archivo XML separado. El paquete de instalación del complemento contiene un ejemplo de panel que se instala en:</p>
-    <p>C:\SCADA\ScadaWeb\storage\AllUsers\Dashboard\DashboardExample1.xml</p>
-    <p>Para crear un panel personalizado, copie el archivo de configuración de ejemplo con un nuevo nombre y luego edítelo con cualquier editor de texto. El nombre del archivo de configuración puede ser arbitrario, la extensión del archivo debe ser XML. Las ubicaciones de los archivos de configuración del panel de control:</p>
-    <p>C:\SCADA\ScadaWeb\storage\allusers\Dashboard\ - dashboards  disponibles para todos los usuario;<br />
-        C:\SCADA\ScadaWeb\storage\myuser\Dashboard\ - dashboards dashboards available to MyUser.
+
+    <h3>Especificar paneles</h3>
+
+    <p>La configuración de cada tablero de control es almacenada en un archivo XML separado. El paquete de instalación del complemento contiene un tablero de ejemplo, DashboardExample1.xml. Los archivos de dashboards (tableros) pueden ser localizados en el directorio Interface, o en el directorio de almacenamiento de Webstation. Es preferible la 1ra opción.</p>
+
+    <p>Para mostrar los enlaces del tablero en el árbol explorador de Webstation, realice la siguiente configuración en el proyecto:</p>
+
+    <ol>
+        <li>Cree un archivo de tablero en el directorio de la interfaz y edítelo.</li>
+        <li>Especifique la ruta del tablero en la tabla <em>Interface</em> de la base de datos de configuración.</li>
+    </ol>
+
+    <p class="sd-article-image">
+        <img src="plg-dashboard-files/dashboard_itf_file_en.png" alt="Archivo de tablero" /><br />
     </p>
-    <p>Analisis del contenido  de un archivo de configuración del panel de control:</p>
+
+    <p class="sd-article-image">
+        <img src="plg-dashboard-files/dashboard_itf_tbl_en.png" alt="Edición de la tabla de interfaz" /><br />
+    </p>
+
+    <p>El sufijo de ruta @DashboardView indica el tipo de vista. Los derechos de acceso a los tableros se configuran utilizando la tabla <em>Rights</em> (Derechos) de la base de datos de configuración. Es similar a editar los derechos de vistas, tablas y esquemas.</p>
+
+    <p>Además, los archivos de tablero se pueden ubicar en el directorio de almacenamiento de Webstation. En este caso, haga clic en el elemento <em>Dashboards</em> del menú principal de Webstation para mostrar la lista de tableros disponibles. Siguen ejemplos de ubicaciones del tablero en el almacenamiento:</p>
+
+    <p>
+        ScadaWeb\storage\allusers\Dashboard\ - tableros disponibles para todos los usuarios;<br />
+        ScadaWeb\storage\myuser\Dashboard\ - tableros disponibles para MyUser.
+    </p>
+
+    <h3>Estructura de los archivos de Dashboard</h3>
+
+    <p>Considere el contenido de un archivo de configuración de tableros:</p>
+
     <pre><code class="language-xml">&lt;?xml version="1.0" encoding="utf-8" ?&gt;
 &lt;DashboardConfig&gt;
   &lt;DashboardOptions&gt;
@@ -44,17 +71,22 @@
   &lt;/Widgets&gt;
 &lt;/DashboardConfig&gt;</code></pre>
 
-    <p>La sección <strong>DashboardOptions</strong> contiene parámetros comunes del panel de control:  <br />
-        Name - nombre del panel de control<br />
-        ColumnCount - número de columnas de 1 a 4 (los widgets se muestran en una sola columna en pantallas pequeñas de móviles) <br />
-        AspectRatio - relación entre el ancho del widget y su altura</p>
-    <p>La sección <strong>Widgets</strong> ontiene una lista de widgets que se muestran en un panel. Número de widgets es arbitrario. Sin embargo, demasiados widgets en el mismo panel pueden reducir el rendimiento de la aplicación web.</p>
     <p>
-        Se admiten los widgets de los siguientes tipos: <br />
-        Chart - gráfico de los canales de entrada especificados,<br />
-        CurData - Tabla que contiene datos actuales de los canales de entrada especificados,<br />
-        CustomUrl - Página web personalizada.
+        La sección <strong>DashboardOptions</strong> contiene parámetros comunes de un tablero de control: <br />
+        Name - nombre del panel de control,<br />
+        ColumnCount - número de columnas de 1 a 4 (los widgets se muestran en una sola columna en las pantallas pequeñas de los móviles),<br />
+        AspectRatio - relación entre el ancho del widget y su altura.
     </p>
-    <p>La configuración de los widgets de los tipos Chart y CurData debe definir los números de los canales de entrada (channel numbers) y también los identificadores de las vistas (identifiers of the views) que incluyen estos canales de entrada. Se requieren ID de visualización para la validación de derechos de acceso de los usuarios.</p>
+
+    <p>La sección <strong>Widgets</strong> contiene una lista de widgets que se muestran en un tablero. El número de widgets es arbitrario. Sin embargo, demasiados widgets en el mismo tablero pueden reducir el desempeño de la aplicación web.</p>
+
+    <p>
+        Se soportan los widgets de los siguientes tipos:<br />
+        Chart - curvas de los canales de entrada especificados vs tiempo,<br />
+        CurData - tabla que contiene datos actuales de los canales de entrada especificados,<br />
+        CustomUrl - página web personalizada.
+    </p>
+
+    <p>La configuración de los widgets de los tipos Chart y CurData debe definir los números de los canales de entrada (channel numbers) y también los identificadores de las vistas (identifiers of the views) que incluyen estos canales de entrada. Se requieren las ID de las vistas para la validación de los derechos de acceso de los usuarios.</p>
 </body>
 </html>
