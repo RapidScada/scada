@@ -17,6 +17,8 @@ using Opc.Ua.Configuration;
 using Scada.Comm.Devices.OpcUa.Config;
 using System;
 using System.IO;
+using System.Reflection;
+using System.Text;
 using System.Threading.Tasks;
 using Utils;
 
@@ -29,21 +31,32 @@ namespace Scada.Comm.Devices.OpcUa
     public class OpcUaHelper
     {
         /// <summary>
-        /// The name of the file containing OPC UA configuration.
+        /// The runtime kinds.
         /// </summary>
-        public const string OpcConfigFileName = "KpOpcUa.xml";
+        public enum RuntimeKind { Logic, View };
 
-        private readonly AppDirs appDirs; // the application directories
-        private readonly string kpNumStr; // the device number as a string
+        /// <summary>
+        /// The OPC UA configuration file name for the logic runtime.
+        /// </summary>
+        private const string LogicOpcConfig = "KpOpcUa.Logic.xml";
+        /// <summary>
+        /// The OPC UA configuration file name for the view runtime.
+        /// </summary>
+        private const string ViewOpcConfig = "KpOpcUa.View.xml";
+
+        private readonly AppDirs appDirs;     // the application directories
+        private readonly string kpNumStr;     // the device number as a string
+        private readonly RuntimeKind runtime; // the runtime kind
 
 
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public OpcUaHelper(AppDirs appDirs, int kpNum)
+        public OpcUaHelper(AppDirs appDirs, int kpNum, RuntimeKind runtime)
         {
             this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
             kpNumStr = CommUtils.AddZeros(kpNum, 3);
+            this.runtime = runtime;
 
             AutoAccept = false;
             OpcSession = null;
@@ -74,6 +87,32 @@ namespace Scada.Comm.Devices.OpcUa
 
 
         /// <summary>
+        /// Writes an OPC UA configuration file depending on operating system and runtime kind.
+        /// </summary>
+        private void WriteConfigFile(out string fileName)
+        {
+            fileName = Path.Combine(appDirs.ConfigDir, runtime == RuntimeKind.View ? ViewOpcConfig : LogicOpcConfig);
+
+            if (!File.Exists(fileName))
+            {
+                string resourceName = ScadaUtils.IsRunningOnWin ?
+                    "Scada.Comm.Devices.Config.KpOpcUa.Win.xml" :
+                    "Scada.Comm.Devices.Config.KpOpcUa.Linux.xml";
+                string fileContents;
+
+                using (Stream stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(resourceName))
+                {
+                    using (StreamReader reader = new StreamReader(stream))
+                    {
+                        fileContents = reader.ReadToEnd();
+                    }
+                }
+
+                File.WriteAllText(fileName, fileContents, Encoding.UTF8);
+            }
+        }
+
+        /// <summary>
         /// Connects to the OPC server asynchronously.
         /// </summary>
         public async Task<bool> ConnectAsync(ConnectionOptions connectionOptions, int operationTimeout = -1)
@@ -89,8 +128,8 @@ namespace Scada.Comm.Devices.OpcUa
             };
 
             // load the application configuration
-            ApplicationConfiguration config = await application.LoadApplicationConfiguration(
-                Path.Combine(appDirs.ConfigDir, OpcConfigFileName), false);
+            WriteConfigFile(out string configFileName);
+            ApplicationConfiguration config = await application.LoadApplicationConfiguration(configFileName, false);
 
             // check the application certificate
             bool haveAppCertificate = await application.CheckApplicationInstanceCertificate(false, 0);

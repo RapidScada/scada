@@ -74,7 +74,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
         {
             if (subscriptionConfig != null)
             {
-                chkActive.Checked = subscriptionConfig.Active;
+                chkSubscrActive.Checked = subscriptionConfig.Active;
                 txtDisplayName.Text = subscriptionConfig.DisplayName;
                 numPublishingInterval.SetValue(subscriptionConfig.PublishingInterval);
             }
@@ -104,11 +104,11 @@ namespace Scada.Comm.Devices.OpcUa.UI
         public event ObjectChangedEventHandler ObjectChanged;
 
 
-        private void chkActive_CheckedChanged(object sender, EventArgs e)
+        private void chkSubscrActive_CheckedChanged(object sender, EventArgs e)
         {
             if (subscriptionConfig != null)
             {
-                subscriptionConfig.Active = chkActive.Checked;
+                subscriptionConfig.Active = chkSubscrActive.Checked;
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }

@@ -26,6 +26,11 @@ namespace Scada.Comm.Devices.OpcUa.UI
         public static string GetDataTypeError { get; private set; }
         public static string ServerUrlRequired { get; private set; }
         public static string EmptyNode { get; private set; }
+        public static string SubscriptionsNode { get; private set; }
+        public static string CommandsNode { get; private set; }
+        public static string EmptySubscription { get; private set; }
+        public static string EmptyItem { get; private set; }
+        public static string EmptyCommand { get; private set; }
         public static string UnknownDataType { get; private set; }
 
         // Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr
@@ -40,6 +45,11 @@ namespace Scada.Comm.Devices.OpcUa.UI
             GetDataTypeError = dict.GetPhrase("GetDataTypeError");
             ServerUrlRequired = dict.GetPhrase("ServerUrlRequired");
             EmptyNode = dict.GetPhrase("EmptyNode");
+            SubscriptionsNode = dict.GetPhrase("SubscriptionsNode");
+            CommandsNode = dict.GetPhrase("CommandsNode");
+            EmptySubscription = dict.GetPhrase("EmptySubscription");
+            EmptyItem = dict.GetPhrase("EmptyItem");
+            EmptyCommand = dict.GetPhrase("EmptyCommand");
             UnknownDataType = dict.GetPhrase("UnknownDataType");
 
             dict = Localization.GetDictionary("Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr");

@@ -120,12 +120,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Config\KpOpcUa.Linux.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Config\KpOpcUa.xml">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
+    <EmbeddedResource Include="Config\KpOpcUa.Linux.xml" />
+    <EmbeddedResource Include="Config\KpOpcUa.Win.xml" />
     <Content Include="Config\KpOpcUa_001.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       <SubType>Designer</SubType>

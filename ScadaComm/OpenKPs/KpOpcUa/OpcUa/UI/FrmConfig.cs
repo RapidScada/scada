@@ -44,7 +44,6 @@ namespace Scada.Comm.Devices.OpcUa.UI
     {
         /// <summary>
         /// Represents an object associated with a node of the server tree.
-        /// <para>Представляет объект, связанный с узлом дерева сервера.</para>
         /// </summary>
         private class ServerNodeTag
         {
@@ -66,7 +65,6 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
         /// <summary>
         /// Represents an object associated with a monitored item configuration.
-        /// <para>Представляет объект, связанный с конфигурацией отслеживаемого элемента.</para>
         /// </summary>
         internal class ItemConfigTag
         {
@@ -188,8 +186,8 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 tvDevice.BeginUpdate();
                 tvDevice.Nodes.Clear();
 
-                subscriptionsNode = TreeViewUtils.CreateNode("Subscriptions", FolderClosedImageKey);
-                commandsNode = TreeViewUtils.CreateNode("Commands", FolderClosedImageKey);
+                subscriptionsNode = TreeViewUtils.CreateNode(KpPhrases.SubscriptionsNode, FolderClosedImageKey);
+                commandsNode = TreeViewUtils.CreateNode(KpPhrases.CommandsNode, FolderClosedImageKey);
                 int signal = 1;
 
                 foreach (SubscriptionConfig subscriptionConfig in deviceConfig.Subscriptions)
@@ -228,7 +226,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
         /// </summary>
         private TreeNode CreateSubscriptionNode(SubscriptionConfig subscriptionConfig)
         {
-            TreeNode subscriptionNode = TreeViewUtils.CreateNode(subscriptionConfig.DisplayName, FolderClosedImageKey);
+            TreeNode subscriptionNode = TreeViewUtils.CreateNode(
+                GetDisplayName(subscriptionConfig.DisplayName, KpPhrases.EmptySubscription),
+                FolderClosedImageKey);
             subscriptionNode.Tag = subscriptionConfig;
             return subscriptionNode;
         }
@@ -238,7 +238,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
         /// </summary>
         private TreeNode CreateItemNode(ItemConfig itemConfig)
         {
-            TreeNode itemNode = TreeViewUtils.CreateNode(itemConfig.DisplayName, "variable.png");
+            TreeNode itemNode = TreeViewUtils.CreateNode(
+                GetDisplayName(itemConfig.DisplayName, KpPhrases.EmptyItem), 
+                "variable.png");
             itemNode.Tag = itemConfig;
             return itemNode;
         }
@@ -248,9 +250,19 @@ namespace Scada.Comm.Devices.OpcUa.UI
         /// </summary>
         private TreeNode CreateCommandNode(CommandConfig commandConfig)
         {
-            TreeNode commandNode = TreeViewUtils.CreateNode(commandConfig.DisplayName, "command.png");
+            TreeNode commandNode = TreeViewUtils.CreateNode(
+                GetDisplayName(commandConfig.DisplayName, KpPhrases.EmptyCommand), 
+                "command.png");
             commandNode.Tag = commandConfig;
             return commandNode;
+        }
+
+        /// <summary>
+        /// Returns the specified display name or the default name.
+        /// </summary>
+        private string GetDisplayName(string displayName, string defaultName)
+        {
+            return string.IsNullOrEmpty(displayName) ? defaultName : displayName;
         }
 
         /// <summary>
@@ -260,7 +272,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
         {
             try
             {
-                OpcUaHelper helper = new OpcUaHelper(appDirs, kpNum)
+                OpcUaHelper helper = new OpcUaHelper(appDirs, kpNum, OpcUaHelper.RuntimeKind.View)
                 {
                     CertificateValidation = CertificateValidator_CertificateValidation
                 };
@@ -385,6 +397,78 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 return "method.png";
             else
                 return "variable.png";
+        }
+
+        /// <summary>
+        /// Adds a new item to the configuration.
+        /// </summary>
+        private bool AddItem(TreeNode serverNode)
+        {
+            if (serverNode?.Tag is ServerNodeTag serverNodeTag &&
+                serverNodeTag.NodeClass == NodeClass.Variable)
+            {
+                TreeNode deviceNode = tvDevice.SelectedNode;
+                object deviceNodeTag = deviceNode?.Tag;
+
+                if (GetTopParentNode(tvDevice.SelectedNode) == commandsNode)
+                {
+                    // add a new command
+                    if (GetDataTypeName(serverNodeTag.OpcNodeId, out string dataTypeName))
+                    {
+                        CommandConfig commandConfig = new CommandConfig
+                        {
+                            NodeID = serverNodeTag.OpcNodeId.ToString(),
+                            DisplayName = serverNodeTag.DisplayName,
+                            DataTypeName = dataTypeName,
+                            CmdNum = GetNextCmdNum()
+                        };
+
+                        tvDevice.Insert(commandsNode, CreateCommandNode(commandConfig),
+                            deviceConfig.Commands, commandConfig);
+
+                        Modified = true;
+                        return true;
+                    }
+                }
+                else
+                {
+                    // create a new monitored item
+                    ItemConfig itemConfig = new ItemConfig
+                    {
+                        NodeID = serverNodeTag.OpcNodeId.ToString(),
+                        DisplayName = serverNodeTag.DisplayName,
+                    };
+
+                    itemConfig.Tag = new ItemConfigTag(0, itemConfig.IsArray, itemConfig.ArrayLen);
+
+                    // find a subscription
+                    TreeNode subscriptionNode = deviceNode?.FindClosest(typeof(SubscriptionConfig)) ??
+                        subscriptionsNode.LastNode;
+                    SubscriptionConfig subscriptionConfig;
+
+                    // add a new subscription
+                    if (subscriptionNode == null)
+                    {
+                        subscriptionConfig = new SubscriptionConfig();
+                        subscriptionNode = CreateSubscriptionNode(subscriptionConfig);
+                        tvDevice.Insert(subscriptionsNode, subscriptionNode,
+                            deviceConfig.Subscriptions, subscriptionConfig);
+                    }
+                    else
+                    {
+                        subscriptionConfig = (SubscriptionConfig)subscriptionNode.Tag;
+                    }
+
+                    // add the monitored item
+                    TreeNode itemNode = CreateItemNode(itemConfig);
+                    tvDevice.Insert(subscriptionNode, itemNode, subscriptionConfig.Items, itemConfig);
+                    UpdateSignals(itemNode);
+                    Modified = true;
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -702,70 +786,29 @@ namespace Scada.Comm.Devices.OpcUa.UI
             BrowseServerNode(e.Node);
         }
 
+        private void tvServer_KeyDown(object sender, KeyEventArgs e)
+        {
+            TreeNode selectedNode = tvServer.SelectedNode;
+
+            if (e.KeyCode == Keys.Enter && AddItem(selectedNode))
+            {
+                // go to the next node
+                if (selectedNode.NextNode != null)
+                    tvServer.SelectedNode = selectedNode.NextNode;
+                else if (selectedNode.Parent?.NextNode != null)
+                    tvServer.SelectedNode = selectedNode.Parent.NextNode;
+            }
+        }
+
+        private void tvServer_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+                AddItem(tvServer.SelectedNode);
+        }
+
         private void btnAddItem_Click(object sender, EventArgs e)
         {
-            // add a new item
-            if (tvServer.SelectedNode?.Tag is ServerNodeTag serverNodeTag &&
-                serverNodeTag.NodeClass == NodeClass.Variable)
-            {
-                TreeNode deviceNode = tvDevice.SelectedNode;
-                object deviceNodeTag = deviceNode?.Tag;
-
-                if (GetTopParentNode(tvDevice.SelectedNode) == commandsNode)
-                {
-                    // add a new command
-                    if (GetDataTypeName(serverNodeTag.OpcNodeId, out string dataTypeName))
-                    {
-                        CommandConfig commandConfig = new CommandConfig
-                        {
-                            NodeID = serverNodeTag.OpcNodeId.ToString(),
-                            DisplayName = serverNodeTag.DisplayName,
-                            DataTypeName = dataTypeName,
-                            CmdNum = GetNextCmdNum()
-                        };
-
-                        tvDevice.Insert(commandsNode, CreateCommandNode(commandConfig),
-                            deviceConfig.Commands, commandConfig);
-
-                    }
-                }
-                else
-                {
-                    // create a new monitored item
-                    ItemConfig itemConfig = new ItemConfig
-                    {
-                        NodeID = serverNodeTag.OpcNodeId.ToString(),
-                        DisplayName = serverNodeTag.DisplayName,
-                    };
-
-                    itemConfig.Tag = new ItemConfigTag(0, itemConfig.IsArray, itemConfig.ArrayLen);
-
-                    // find a subscription
-                    TreeNode subscriptionNode = deviceNode?.FindClosest(typeof(SubscriptionConfig)) ?? 
-                        subscriptionsNode.LastNode;
-                    SubscriptionConfig subscriptionConfig;
-
-                    // add a new subscription
-                    if (subscriptionNode == null)
-                    {
-                        subscriptionConfig = new SubscriptionConfig();
-                        subscriptionNode = CreateSubscriptionNode(subscriptionConfig);
-                        tvDevice.Insert(subscriptionsNode, subscriptionNode,
-                            deviceConfig.Subscriptions, subscriptionConfig);
-                    }
-                    else
-                    {
-                        subscriptionConfig = (SubscriptionConfig)subscriptionNode.Tag;
-                    }
-
-                    // add the monitored item
-                    TreeNode itemNode = CreateItemNode(itemConfig);
-                    tvDevice.Insert(subscriptionNode, itemNode, subscriptionConfig.Items, itemConfig);
-                    UpdateSignals(itemNode);
-                }
-
-                Modified = true;
-            }
+            AddItem(tvServer.SelectedNode);
         }
 
         private void btnAddSubscription_Click(object sender, EventArgs e)
@@ -914,12 +957,12 @@ namespace Scada.Comm.Devices.OpcUa.UI
             if (e.ChangedObject is SubscriptionConfig subscriptionConfig)
             {
                 if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
-                    selectedNode.Text = subscriptionConfig.DisplayName;
+                    selectedNode.Text = GetDisplayName(subscriptionConfig.DisplayName, KpPhrases.EmptySubscription);
             }
             else if (e.ChangedObject is ItemConfig itemConfig)
             {
                 if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
-                    selectedNode.Text = itemConfig.DisplayName;
+                    selectedNode.Text = GetDisplayName(itemConfig.DisplayName, KpPhrases.EmptyItem);
 
                 if (treeUpdateTypes.HasFlag(TreeUpdateTypes.UpdateSignals))
                     UpdateSignals(selectedNode);
@@ -927,7 +970,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             else if (e.ChangedObject is CommandConfig commandConfig)
             {
                 if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
-                    selectedNode.Text = commandConfig.DisplayName;
+                    selectedNode.Text = GetDisplayName(commandConfig.DisplayName, KpPhrases.EmptyCommand);
             }
         }
 

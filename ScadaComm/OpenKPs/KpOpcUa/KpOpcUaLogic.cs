@@ -65,10 +65,6 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// The name of the file containing OPC UA configuration.
-        /// </summary>
-        private const string OpcConfigFileName = "KpOpcUa.xml";
-        /// <summary>
         /// The period of reconnecting to OPC server if a connection lost, ms
         /// </summary>
         private const int ReconnectPeriod = 10000;
@@ -118,7 +114,7 @@ namespace Scada.Comm.Devices
         {
             try
             {
-                OpcUaHelper helper = new OpcUaHelper(AppDirs, Number)
+                OpcUaHelper helper = new OpcUaHelper(AppDirs, Number, OpcUaHelper.RuntimeKind.Logic)
                 {
                     CertificateValidation = CertificateValidator_CertificateValidation,
                     WriteToLog = WriteToLog
@@ -232,13 +228,13 @@ namespace Scada.Comm.Devices
                 if (autoAccept)
                 {
                     WriteToLog(string.Format(Localization.UseRussian ?
-                        "Принятый сертификат" :
+                        "Принятый сертификат: {0}" :
                         "Accepted certificate: {0}", e.Certificate.Subject));
                 }
                 else
                 {
                     WriteToLog(string.Format(Localization.UseRussian ?
-                        "Отклоненный сертификат" :
+                        "Отклоненный сертификат: {0}" :
                         "Rejected certificate: {0}", e.Certificate.Subject));
                 }
             }
@@ -636,8 +632,8 @@ namespace Scada.Comm.Devices
 
                         // write value
                         WriteToLog(string.Format(Localization.UseRussian ?
-                            "Отправка значения {0} = {1} OPC-серверу" :
-                            "Send value {0} = {1} to the OPC server", commandConfig.DisplayName, itemVal));
+                            "Отправка значения OPC-серверу: {0} = {1}" :
+                            "Send value to the OPC server: {0} = {1}", commandConfig.DisplayName, itemVal));
 
                         WriteValue valueToWrite = new WriteValue
                         {

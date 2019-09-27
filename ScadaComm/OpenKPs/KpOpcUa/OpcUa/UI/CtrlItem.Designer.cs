@@ -40,7 +40,7 @@
             this.lblNodeID = new System.Windows.Forms.Label();
             this.txtDisplayName = new System.Windows.Forms.TextBox();
             this.lblDisplayName = new System.Windows.Forms.Label();
-            this.chkActive = new System.Windows.Forms.CheckBox();
+            this.chkItemActive = new System.Windows.Forms.CheckBox();
             this.gbItem.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlNum)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numArrayLen)).BeginInit();
@@ -59,7 +59,7 @@
             this.gbItem.Controls.Add(this.lblNodeID);
             this.gbItem.Controls.Add(this.txtDisplayName);
             this.gbItem.Controls.Add(this.lblDisplayName);
-            this.gbItem.Controls.Add(this.chkActive);
+            this.gbItem.Controls.Add(this.chkItemActive);
             this.gbItem.Location = new System.Drawing.Point(0, 0);
             this.gbItem.Name = "gbItem";
             this.gbItem.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -184,16 +184,16 @@
             this.lblDisplayName.TabIndex = 1;
             this.lblDisplayName.Text = "Display name";
             // 
-            // chkActive
+            // chkItemActive
             // 
-            this.chkActive.AutoSize = true;
-            this.chkActive.Location = new System.Drawing.Point(13, 19);
-            this.chkActive.Name = "chkActive";
-            this.chkActive.Size = new System.Drawing.Size(56, 17);
-            this.chkActive.TabIndex = 0;
-            this.chkActive.Text = "Active";
-            this.chkActive.UseVisualStyleBackColor = true;
-            this.chkActive.CheckedChanged += new System.EventHandler(this.chkActive_CheckedChanged);
+            this.chkItemActive.AutoSize = true;
+            this.chkItemActive.Location = new System.Drawing.Point(13, 19);
+            this.chkItemActive.Name = "chkItemActive";
+            this.chkItemActive.Size = new System.Drawing.Size(56, 17);
+            this.chkItemActive.TabIndex = 0;
+            this.chkItemActive.Text = "Active";
+            this.chkItemActive.UseVisualStyleBackColor = true;
+            this.chkItemActive.CheckedChanged += new System.EventHandler(this.chkItemActive_CheckedChanged);
             // 
             // CtrlItem
             // 
@@ -215,7 +215,7 @@
         private System.Windows.Forms.GroupBox gbItem;
         private System.Windows.Forms.TextBox txtDisplayName;
         private System.Windows.Forms.Label lblDisplayName;
-        private System.Windows.Forms.CheckBox chkActive;
+        private System.Windows.Forms.CheckBox chkItemActive;
         private System.Windows.Forms.TextBox txtNodeID;
         private System.Windows.Forms.Label lblNodeID;
         private System.Windows.Forms.CheckBox chkIsArray;

@@ -33,7 +33,7 @@
             this.lblPublishingInterval = new System.Windows.Forms.Label();
             this.txtDisplayName = new System.Windows.Forms.TextBox();
             this.lblDisplayName = new System.Windows.Forms.Label();
-            this.chkActive = new System.Windows.Forms.CheckBox();
+            this.chkSubscrActive = new System.Windows.Forms.CheckBox();
             this.dbSubscription.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numPublishingInterval)).BeginInit();
             this.SuspendLayout();
@@ -44,7 +44,7 @@
             this.dbSubscription.Controls.Add(this.lblPublishingInterval);
             this.dbSubscription.Controls.Add(this.txtDisplayName);
             this.dbSubscription.Controls.Add(this.lblDisplayName);
-            this.dbSubscription.Controls.Add(this.chkActive);
+            this.dbSubscription.Controls.Add(this.chkSubscrActive);
             this.dbSubscription.Location = new System.Drawing.Point(0, 0);
             this.dbSubscription.Name = "dbSubscription";
             this.dbSubscription.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
@@ -92,16 +92,16 @@
             this.lblDisplayName.TabIndex = 1;
             this.lblDisplayName.Text = "Display name";
             // 
-            // chkActive
+            // chkSubscrActive
             // 
-            this.chkActive.AutoSize = true;
-            this.chkActive.Location = new System.Drawing.Point(13, 19);
-            this.chkActive.Name = "chkActive";
-            this.chkActive.Size = new System.Drawing.Size(56, 17);
-            this.chkActive.TabIndex = 0;
-            this.chkActive.Text = "Active";
-            this.chkActive.UseVisualStyleBackColor = true;
-            this.chkActive.CheckedChanged += new System.EventHandler(this.chkActive_CheckedChanged);
+            this.chkSubscrActive.AutoSize = true;
+            this.chkSubscrActive.Location = new System.Drawing.Point(13, 19);
+            this.chkSubscrActive.Name = "chkSubscrActive";
+            this.chkSubscrActive.Size = new System.Drawing.Size(56, 17);
+            this.chkSubscrActive.TabIndex = 0;
+            this.chkSubscrActive.Text = "Active";
+            this.chkSubscrActive.UseVisualStyleBackColor = true;
+            this.chkSubscrActive.CheckedChanged += new System.EventHandler(this.chkSubscrActive_CheckedChanged);
             // 
             // CtrlSubscription
             // 
@@ -120,7 +120,7 @@
         #endregion
 
         private System.Windows.Forms.GroupBox dbSubscription;
-        private System.Windows.Forms.CheckBox chkActive;
+        private System.Windows.Forms.CheckBox chkSubscrActive;
         private System.Windows.Forms.NumericUpDown numPublishingInterval;
         private System.Windows.Forms.Label lblPublishingInterval;
         private System.Windows.Forms.TextBox txtDisplayName;

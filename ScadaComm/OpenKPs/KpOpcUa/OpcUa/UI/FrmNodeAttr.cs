@@ -49,6 +49,8 @@ namespace Scada.Comm.Devices.OpcUa.UI
         private FrmNodeAttr()
         {
             InitializeComponent();
+            colName.Name = "colName";
+            colValue.Name = "colValue";
         }
 
         /// <summary>

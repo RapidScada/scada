@@ -74,7 +74,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
         {
             if (itemConfig != null)
             {
-                chkActive.Checked = itemConfig.Active;
+                chkItemActive.Checked = itemConfig.Active;
                 txtDisplayName.Text = itemConfig.DisplayName;
                 txtNodeID.Text = itemConfig.NodeID;
                 chkIsArray.Checked = itemConfig.IsArray;
@@ -132,11 +132,11 @@ namespace Scada.Comm.Devices.OpcUa.UI
         public event ObjectChangedEventHandler ObjectChanged;
 
 
-        private void chkActive_CheckedChanged(object sender, EventArgs e)
+        private void chkItemActive_CheckedChanged(object sender, EventArgs e)
         {
             if (itemConfig != null)
             {
-                itemConfig.Active = chkActive.Checked;
+                itemConfig.Active = chkItemActive.Checked;
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }

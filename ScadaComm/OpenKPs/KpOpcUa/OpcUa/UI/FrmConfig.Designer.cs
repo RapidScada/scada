@@ -222,6 +222,8 @@
             this.tvServer.TabIndex = 0;
             this.tvServer.BeforeExpand += new System.Windows.Forms.TreeViewCancelEventHandler(this.tvServer_BeforeExpand);
             this.tvServer.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.tvServer_AfterSelect);
+            this.tvServer.NodeMouseDoubleClick += new System.Windows.Forms.TreeNodeMouseClickEventHandler(this.tvServer_NodeMouseDoubleClick);
+            this.tvServer.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tvServer_KeyDown);
             // 
             // gbConnection
             // 
