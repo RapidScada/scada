@@ -28,6 +28,7 @@ using Opc.Ua.Client;
 using Scada.Comm.Devices.OpcUa.Config;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
@@ -63,8 +64,49 @@ namespace Scada.Comm.Devices.OpcUa.UI
             public bool IsFilled { get; set; }
         }
 
+        /// <summary>
+        /// Represents an object associated with a monitored item configuration.
+        /// <para>Представляет объект, связанный с конфигурацией отслеживаемого элемента.</para>
+        /// </summary>
+        internal class ItemConfigTag
+        {
+            public ItemConfigTag(int signal, bool isArray, int arrayLen)
+            {
+                Signal = signal;
+                SetLength(isArray, arrayLen);
+            }
+
+            public int Signal { get; set; }
+            public int Length { get; set; }
+
+            public void SetLength(bool isArray, int arrayLen)
+            {
+                Length = arrayLen > 1 ? arrayLen : 1;
+            }
+            public string GetSignalStr()
+            {
+                return Length > 1 ? 
+                    Signal + " - " + (Signal + Length - 1) : 
+                    Signal.ToString();
+            }
+        }
+
         private const string FolderOpenImageKey = "folder_open.png";
         private const string FolderClosedImageKey = "folder_closed.png";
+
+        private static readonly Dictionary<string, Type> KnownTypes = new Dictionary<string, Type>
+        {
+            {  "byte", typeof(byte) },
+            {  "double", typeof(double) },
+            {  "Int16", typeof(Int16) },
+            {  "int32", typeof(Int32) },
+            {  "int64", typeof(Int64) },
+            {  "sbyte", typeof(SByte) },
+            {  "float", typeof(Single) },
+            {  "uint16", typeof(UInt16) },
+            {  "uint32", typeof(UInt32) },
+            {  "uint64", typeof(UInt64) },
+        };
 
         private readonly AppDirs appDirs;           // the application directories
         private readonly int kpNum;                 // the device number
@@ -148,6 +190,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
                 subscriptionsNode = TreeViewUtils.CreateNode("Subscriptions", FolderClosedImageKey);
                 commandsNode = TreeViewUtils.CreateNode("Commands", FolderClosedImageKey);
+                int signal = 1;
 
                 foreach (SubscriptionConfig subscriptionConfig in deviceConfig.Subscriptions)
                 {
@@ -157,6 +200,10 @@ namespace Scada.Comm.Devices.OpcUa.UI
                     foreach (ItemConfig itemConfig in subscriptionConfig.Items)
                     {
                         subscriptionNode.Nodes.Add(CreateItemNode(itemConfig));
+
+                        ItemConfigTag tag = new ItemConfigTag(signal, itemConfig.IsArray, itemConfig.ArrayLen);
+                        signal += tag.Length;
+                        itemConfig.Tag = tag;
                     }
                 }
 
@@ -248,6 +295,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             try
             {
                 tvServer.Nodes.Clear();
+                btnViewAttrs.Enabled = false;
                 btnAddItem.Enabled = false;
                 subscriptionsNode = null;
                 commandsNode = null;
@@ -342,9 +390,57 @@ namespace Scada.Comm.Devices.OpcUa.UI
         /// <summary>
         /// Gets the data type name of the node.
         /// </summary>
-        private string GetDataTypeName(NodeId nodeId)
+        private bool GetDataTypeName(NodeId nodeId, out string dataTypeName)
         {
-            return "System.Double";
+            if (nodeId == null)
+                throw new ArgumentNullException("nodeId");
+            if (opcSession == null)
+                throw new InvalidOperationException("OPC session must not be null.");
+
+            try
+            {
+                ReadValueIdCollection nodesToRead = new ReadValueIdCollection
+                {
+                    new ReadValueId
+                    {
+                        NodeId = nodeId,
+                        AttributeId = Attributes.DataType
+                    }
+                };
+
+                opcSession.Read(null, 0, TimestampsToReturn.Neither, nodesToRead,
+                    out DataValueCollection results, out DiagnosticInfoCollection diagnosticInfos);
+                ClientBase.ValidateResponse(results, nodesToRead);
+                ClientBase.ValidateDiagnosticInfos(diagnosticInfos, nodesToRead);
+
+                DataValue dataTypeValue = results[0];
+                INode dataType = opcSession.NodeCache.Find((NodeId)dataTypeValue.Value);
+
+                if (dataType == null)
+                {
+                    throw new ScadaException(Localization.UseRussian ?
+                        "Не удалось получить тип данных от OPC-сервера." :
+                        "Unable to get data type from OPC server.");
+                }
+
+                if (KnownTypes.TryGetValue(dataType.DisplayName.Text.ToLowerInvariant(), out Type type))
+                {
+                    dataTypeName = type.FullName;
+                    return true;
+                }
+                else
+                {
+                    ScadaUiUtils.ShowError(string.Format(KpPhrases.UnknownDataType, dataType.DisplayName.Text));
+                    dataTypeName = "";
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                ScadaUiUtils.ShowError(KpPhrases.GetDataTypeError + ":" + Environment.NewLine + ex.Message);
+                dataTypeName = "";
+                return false;
+            }
         }
 
         /// <summary>
@@ -377,6 +473,14 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 btnConnect.Enabled = false;
                 btnDisconnect.Enabled = true;
             }
+        }
+
+        /// <summary>
+        /// Sets the enabled property of the buttons that manipulate the server tree.
+        /// </summary>
+        private void SetServerButtonsEnabled()
+        {
+            btnViewAttrs.Enabled = opcSession != null && tvServer.SelectedNode != null;
         }
 
         /// <summary>
@@ -426,6 +530,70 @@ namespace Scada.Comm.Devices.OpcUa.UI
         }
 
         /// <summary>
+        /// Update signals if 2 elements are reversed.
+        /// </summary>
+        private void SwapSignals(TreeNode treeNode1, TreeNode treeNode2)
+        {
+            if (treeNode1?.Tag is ItemConfig itemConfig1 &&
+                treeNode2?.Tag is ItemConfig itemConfig2 &&
+                itemConfig1.Tag is ItemConfigTag itemConfigTag1 &&
+                itemConfig2.Tag is ItemConfigTag itemConfigTag2)
+            {
+                int signal1 = itemConfigTag1.Signal;
+                itemConfigTag1.Signal = itemConfigTag2.Signal;
+                itemConfigTag2.Signal = signal1;
+                ctrlItem.ShowSignal();
+            }
+        }
+
+        /// <summary>
+        /// Update signals starting from the specified node.
+        /// </summary>
+        private void UpdateSignals(TreeNode startNode)
+        {
+            TreeNode startSubscrNode = startNode?.FindClosest(typeof(SubscriptionConfig));
+
+            if (startSubscrNode != null)
+            {
+                // define initial signal
+                int signal = 1;
+                TreeNode subscrNode = startSubscrNode.PrevNode;
+
+                while (subscrNode != null)
+                {
+                    if (subscrNode.LastNode?.Tag is ItemConfig itemConfig &&
+                        itemConfig.Tag is ItemConfigTag tag)
+                    {
+                        signal = tag.Signal + tag.Length;
+                        break;
+                    }
+
+                    subscrNode = subscrNode.PrevNode;
+                }
+
+                // recalculate signals
+                subscrNode = startSubscrNode;
+
+                while (subscrNode != null)
+                {
+                    foreach (TreeNode itemNode in subscrNode.Nodes)
+                    {
+                        if (itemNode.Tag is ItemConfig itemConfig &&
+                            itemConfig.Tag is ItemConfigTag tag)
+                        {
+                            tag.Signal = signal;
+                            signal += tag.Length;
+                        }
+                    }
+
+                    subscrNode = subscrNode.NextNode;
+                }
+
+                ctrlItem.ShowSignal();
+            }
+        }
+
+        /// <summary>
         /// Validates the certificate.
         /// </summary>
         private void CertificateValidator_CertificateValidation(CertificateValidator validator,
@@ -456,6 +624,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             // display the configuration
             ConfigToControls();
             SetConnButtonsEnabled();
+            SetServerButtonsEnabled();
             SetDeviceButtonsEnabled();
             Modified = false;
         }
@@ -513,8 +682,18 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 Modified = true;
         }
 
+        private void btnViewAttrs_Click(object sender, EventArgs e)
+        {
+            if (opcSession != null &&
+                tvServer.SelectedNode?.Tag is ServerNodeTag serverNodeTag)
+            {
+                new FrmNodeAttr(opcSession, serverNodeTag.OpcNodeId).ShowDialog();
+            }
+        }
+
         private void tvServer_AfterSelect(object sender, TreeViewEventArgs e)
         {
+            SetServerButtonsEnabled();
             SetDeviceButtonsEnabled();
         }
 
@@ -535,16 +714,20 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 if (GetTopParentNode(tvDevice.SelectedNode) == commandsNode)
                 {
                     // add a new command
-                    CommandConfig commandConfig = new CommandConfig
+                    if (GetDataTypeName(serverNodeTag.OpcNodeId, out string dataTypeName))
                     {
-                        NodeID = serverNodeTag.OpcNodeId.ToString(),
-                        DisplayName = serverNodeTag.DisplayName,
-                        DataTypeName = GetDataTypeName(serverNodeTag.OpcNodeId),
-                        CmdNum = GetNextCmdNum()
-                    };
+                        CommandConfig commandConfig = new CommandConfig
+                        {
+                            NodeID = serverNodeTag.OpcNodeId.ToString(),
+                            DisplayName = serverNodeTag.DisplayName,
+                            DataTypeName = dataTypeName,
+                            CmdNum = GetNextCmdNum()
+                        };
 
-                    tvDevice.Insert(commandsNode, CreateCommandNode(commandConfig), 
-                        deviceConfig.Commands, commandConfig);
+                        tvDevice.Insert(commandsNode, CreateCommandNode(commandConfig),
+                            deviceConfig.Commands, commandConfig);
+
+                    }
                 }
                 else
                 {
@@ -552,22 +735,22 @@ namespace Scada.Comm.Devices.OpcUa.UI
                     ItemConfig itemConfig = new ItemConfig
                     {
                         NodeID = serverNodeTag.OpcNodeId.ToString(),
-                        DisplayName = serverNodeTag.DisplayName
+                        DisplayName = serverNodeTag.DisplayName,
                     };
 
-                    // find a subscription
-                    TreeNode subscriptionNode = deviceNode?.FindClosest(typeof(SubscriptionConfig));
-                    SubscriptionConfig subscriptionConfig;
+                    itemConfig.Tag = new ItemConfigTag(0, itemConfig.IsArray, itemConfig.ArrayLen);
 
-                    if (subscriptionNode == null && subscriptionsNode.Nodes.Count > 0)
-                        subscriptionNode = subscriptionsNode.Nodes[subscriptionsNode.Nodes.Count - 1];
+                    // find a subscription
+                    TreeNode subscriptionNode = deviceNode?.FindClosest(typeof(SubscriptionConfig)) ?? 
+                        subscriptionsNode.LastNode;
+                    SubscriptionConfig subscriptionConfig;
 
                     // add a new subscription
                     if (subscriptionNode == null)
                     {
                         subscriptionConfig = new SubscriptionConfig();
                         subscriptionNode = CreateSubscriptionNode(subscriptionConfig);
-                        tvDevice.Insert(subscriptionsNode, subscriptionNode, 
+                        tvDevice.Insert(subscriptionsNode, subscriptionNode,
                             deviceConfig.Subscriptions, subscriptionConfig);
                     }
                     else
@@ -576,8 +759,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
                     }
 
                     // add the monitored item
-                    tvDevice.Insert(subscriptionNode, CreateItemNode(itemConfig),
-                       subscriptionConfig.Items, itemConfig);
+                    TreeNode itemNode = CreateItemNode(itemConfig);
+                    tvDevice.Insert(subscriptionNode, itemNode, subscriptionConfig.Items, itemConfig);
+                    UpdateSignals(itemNode);
                 }
 
                 Modified = true;
@@ -604,11 +788,15 @@ namespace Scada.Comm.Devices.OpcUa.UI
             if (deviceNodeTag is SubscriptionConfig)
             {
                 tvDevice.MoveUpSelectedNode(deviceConfig.Subscriptions);
+                UpdateSignals(selectedNode);
             }
             else if (deviceNodeTag is ItemConfig)
             {
                 if (selectedNode.Parent.Tag is SubscriptionConfig subscriptionConfig)
+                {
                     tvDevice.MoveUpSelectedNode(subscriptionConfig.Items);
+                    SwapSignals(selectedNode, selectedNode.NextNode);
+                }
             }
             else if (deviceNodeTag is CommandConfig)
             {
@@ -627,11 +815,15 @@ namespace Scada.Comm.Devices.OpcUa.UI
             if (deviceNodeTag is SubscriptionConfig)
             {
                 tvDevice.MoveDownSelectedNode(deviceConfig.Subscriptions);
+                UpdateSignals(selectedNode);
             }
             else if (deviceNodeTag is ItemConfig)
             {
                 if (selectedNode.Parent.Tag is SubscriptionConfig subscriptionConfig)
+                {
                     tvDevice.MoveDownSelectedNode(subscriptionConfig.Items);
+                    SwapSignals(selectedNode, selectedNode.PrevNode);
+                }
             }
             else if (deviceNodeTag is CommandConfig)
             {
@@ -649,12 +841,18 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
             if (deviceNodeTag is SubscriptionConfig)
             {
+                TreeNode nextSubscrNode = selectedNode.NextNode;
                 tvDevice.RemoveNode(selectedNode, deviceConfig.Subscriptions);
+                UpdateSignals(nextSubscrNode);
             }
             else if (deviceNodeTag is ItemConfig)
             {
                 if (selectedNode.Parent.Tag is SubscriptionConfig subscriptionConfig)
+                {
+                    TreeNode subscrNode = selectedNode.Parent;
                     tvDevice.RemoveNode(selectedNode, subscriptionConfig.Items);
+                    UpdateSignals(subscrNode);
+                }
             }
             else if (deviceNodeTag is CommandConfig)
             {
@@ -722,6 +920,9 @@ namespace Scada.Comm.Devices.OpcUa.UI
             {
                 if (treeUpdateTypes.HasFlag(TreeUpdateTypes.CurrentNode))
                     selectedNode.Text = itemConfig.DisplayName;
+
+                if (treeUpdateTypes.HasFlag(TreeUpdateTypes.UpdateSignals))
+                    UpdateSignals(selectedNode);
             }
             else if (e.ChangedObject is CommandConfig commandConfig)
             {

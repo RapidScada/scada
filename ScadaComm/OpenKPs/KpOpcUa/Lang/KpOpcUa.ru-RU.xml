@@ -5,8 +5,13 @@
     <Phrase key="ConnectServerError">Ошибка при соединении с OPC-сервером</Phrase>
     <Phrase key="DisconnectServerError">Ошибка при разъединении с OPC-сервером</Phrase>
     <Phrase key="BrowseServerError">Ошибка при обзоре элемента OPC-сервера</Phrase>
+    <Phrase key="GetDataTypeError">Ошибка при получении типа данных OPC-элемента</Phrase>
     <Phrase key="ServerUrlRequired">Адрес сервера не должен быть пустым.</Phrase>
+    <Phrase key="UnknownDataType">Неизвестный тип данных &quot;{0}&quot;.</Phrase>
     <Phrase key="EmptyNode">Пусто</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr">
+    <Phrase key="ReadAttrError">Ошибка при чтении атрибутов с OPC-сервера</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmSecurityOptions">
     <Phrase key="cbSecurityMode.Items[0]">Нет</Phrase>

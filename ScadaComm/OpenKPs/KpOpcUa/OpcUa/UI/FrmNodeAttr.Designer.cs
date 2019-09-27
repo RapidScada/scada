@@ -28,18 +28,28 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.listView1 = new System.Windows.Forms.ListView();
+            this.listView = new System.Windows.Forms.ListView();
             this.btnClose = new System.Windows.Forms.Button();
+            this.colName = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colValue = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.SuspendLayout();
             // 
-            // listView1
+            // listView
             // 
-            this.listView1.HideSelection = false;
-            this.listView1.Location = new System.Drawing.Point(12, 12);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(310, 308);
-            this.listView1.TabIndex = 0;
-            this.listView1.UseCompatibleStateImageBehavior = false;
+            this.listView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colName,
+            this.colValue});
+            this.listView.FullRowSelect = true;
+            this.listView.GridLines = true;
+            this.listView.HideSelection = false;
+            this.listView.Location = new System.Drawing.Point(12, 12);
+            this.listView.MultiSelect = false;
+            this.listView.Name = "listView";
+            this.listView.ShowItemToolTips = true;
+            this.listView.Size = new System.Drawing.Size(310, 308);
+            this.listView.TabIndex = 0;
+            this.listView.UseCompatibleStateImageBehavior = false;
+            this.listView.View = System.Windows.Forms.View.Details;
             // 
             // btnClose
             // 
@@ -51,6 +61,16 @@
             this.btnClose.Text = "Close";
             this.btnClose.UseVisualStyleBackColor = true;
             // 
+            // colName
+            // 
+            this.colName.Text = "Name";
+            this.colName.Width = 120;
+            // 
+            // colValue
+            // 
+            this.colValue.Text = "Value";
+            this.colValue.Width = 160;
+            // 
             // FrmNodeAttr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -58,7 +78,7 @@
             this.CancelButton = this.btnClose;
             this.ClientSize = new System.Drawing.Size(334, 361);
             this.Controls.Add(this.btnClose);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.listView);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -66,13 +86,17 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Node Attributes";
+            this.Load += new System.EventHandler(this.FrmNodeAttr_Load);
+            this.Shown += new System.EventHandler(this.FrmNodeAttr_Shown);
             this.ResumeLayout(false);
 
         }
 
         #endregion
 
-        private System.Windows.Forms.ListView listView1;
+        private System.Windows.Forms.ListView listView;
         private System.Windows.Forms.Button btnClose;
+        private System.Windows.Forms.ColumnHeader colName;
+        private System.Windows.Forms.ColumnHeader colValue;
     }
 }

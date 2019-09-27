@@ -5,9 +5,14 @@
     <Phrase key="ConnectServerError">Error connecting to OPC server</Phrase>
     <Phrase key="DisconnectServerError">Error disconnecting from OPC server</Phrase>
     <Phrase key="BrowseServerError">Error browsing OPC server item</Phrase>
+    <Phrase key="GetDataTypeError">Error getting OPC item data type</Phrase>
     <Phrase key="ServerUrlRequired">Server URL must not be empty.</Phrase>
     <Phrase key="EmptyNode">Empty</Phrase>
+    <Phrase key="UnknownDataType">Data type &quot;{0}&quot; is unknown.</Phrase>
     <Phrase key=""></Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr">
+    <Phrase key="ReadAttrError">Error reading attributes from OPC server</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmSecurityOptions">
     <Phrase key="cbSecurityMode.Items[0]">None</Phrase>

@@ -81,6 +81,21 @@ namespace Scada.Comm.Devices.OpcUa.UI
                 numArrayLen.Enabled = itemConfig.IsArray;
                 numArrayLen.SetValue(itemConfig.ArrayLen);
                 numCnlNum.SetValue(itemConfig.CnlNum);
+
+                if (itemConfig.Tag is FrmConfig.ItemConfigTag tag)
+                    txtSignal.Text = tag.GetSignalStr();
+            }
+        }
+
+        /// <summary>
+        /// Updates the information in the item tag.
+        /// </summary>
+        private void UpdateTag()
+        {
+            if (itemConfig.Tag is FrmConfig.ItemConfigTag tag)
+            {
+                tag.SetLength(itemConfig.IsArray, itemConfig.ArrayLen);
+                txtSignal.Text = tag.GetSignalStr();
             }
         }
 
@@ -98,6 +113,15 @@ namespace Scada.Comm.Devices.OpcUa.UI
         public void SetFocus()
         {
             txtDisplayName.Select();
+        }
+
+        /// <summary>
+        /// Shows the signal value.
+        /// </summary>
+        public void ShowSignal()
+        {
+            if (itemConfig?.Tag is FrmConfig.ItemConfigTag tag)
+                txtSignal.Text = tag.GetSignalStr();
         }
 
 
@@ -142,6 +166,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
                     numArrayLen.Enabled = false;
                 }
 
+                UpdateTag();
                 OnObjectChanged(TreeUpdateTypes.None);
             }
         }
@@ -151,6 +176,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
             if (itemConfig != null)
             {
                 itemConfig.ArrayLen = Convert.ToInt32(numArrayLen.Value);
+                UpdateTag();
                 OnObjectChanged(TreeUpdateTypes.UpdateSignals);
             }
         }

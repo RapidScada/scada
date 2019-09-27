@@ -208,6 +208,7 @@
             this.btnViewAttrs.TabIndex = 1;
             this.toolTip.SetToolTip(this.btnViewAttrs, "View Attributes");
             this.btnViewAttrs.UseVisualStyleBackColor = true;
+            this.btnViewAttrs.Click += new System.EventHandler(this.btnViewAttrs_Click);
             // 
             // tvServer
             // 
