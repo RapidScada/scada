@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Scada.Comm.Devices</RootNamespace>
     <AssemblyName>KpSnmp</AssemblyName>
-    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -20,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -28,6 +30,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Log, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
@@ -41,13 +44,11 @@
     <Reference Include="ScadaData">
       <HintPath>..\..\..\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
     </Reference>
-    <Reference Include="SharpSnmpLib.Full">
-      <HintPath>..\..\..\..\dll\SNMP\SharpSnmpLib.Full.dll</HintPath>
-    </Reference>
-    <Reference Include="SharpSnmpLib.Portable">
-      <HintPath>..\..\..\..\dll\SNMP\SharpSnmpLib.Portable.dll</HintPath>
+    <Reference Include="SharpSnmpLib, Version=11.3.0.0, Culture=neutral, PublicKeyToken=4c00852d3788e005, processorArchitecture=MSIL">
+      <HintPath>..\packages\Lextm.SharpSnmpLib.11.3.0\lib\net452\SharpSnmpLib.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
@@ -119,7 +120,9 @@
     <Content Include="Res\move_up.png" />
     <Content Include="Res\var.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
