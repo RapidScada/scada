@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,19 +20,20 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2019
  */
 
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Xml;
 
 namespace Scada.Comm.Devices.KpSnmp
 {
     /// <summary>
-    /// Device communication configuration
-    /// <para>Конфигурация связи с КП</para>
+    /// Device communication configuration.
+    /// <para>Конфигурация связи с КП.</para>
     /// </summary>
     internal class Config : ITreeNode
     {
@@ -369,9 +370,12 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Получить имя файла конфигурации
         /// </summary>
-        public static string GetFileName(string configDir, int kpNum)
+        public static string GetFileName(string configDir, int kpNum, string cmdLine)
         {
-            return configDir + "KpSnmp_" + CommUtils.AddZeros(kpNum, 3) + ".xml";
+            string shortFileName = string.IsNullOrEmpty(cmdLine) ?
+                "KpSnmp_" + CommUtils.AddZeros(kpNum, 3) + ".xml" :
+                cmdLine.Trim();
+            return Path.Combine(configDir, shortFileName);
         }
     }
 }

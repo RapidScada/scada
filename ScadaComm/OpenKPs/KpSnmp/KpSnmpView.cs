@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices.KpSnmp;
@@ -32,19 +32,19 @@ using System.IO;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// Device library user interface.
+    /// <para>Пользовательский интерфейс библиотеки КП.</para>
     /// </summary>
     public class KpSnmpView : KPView
     {
         /// <summary>
-        /// Версия библиотеки КП
+        /// Версия библиотеки КП.
         /// </summary>
-        internal const string KpVersion = "5.0.0.1";
+        internal const string KpVersion = "5.0.1.0";
 
 
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// Конструктор для общей настройки библиотеки КП.
         /// </summary>
         public KpSnmpView()
             : this(0)
@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Конструктор для настройки конкретного КП
+        /// Конструктор для настройки конкретного КП.
         /// </summary>
         public KpSnmpView(int number)
             : base(number)
@@ -62,7 +62,7 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// Описание библиотеки КП.
         /// </summary>
         public override string KPDescr
         {
@@ -108,7 +108,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить версию библиотеки КП
+        /// Получить версию библиотеки КП.
         /// </summary>
         public override string Version
         {
@@ -119,21 +119,20 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить прототипы каналов КП по умолчанию
+        /// Получить прототипы каналов КП по умолчанию.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
             get
             {
                 // получение имени файла шаблона устройства
-                string configFileName = Config.GetFileName(AppDirs.ConfigDir, Number);
+                string configFileName = Config.GetFileName(AppDirs.ConfigDir, Number, KPProps?.CmdLine);
                 if (!File.Exists(configFileName))
                     return null;
 
                 // загрузка конфигурации КП
                 Config config = new Config();
-                string errMsg;
-                if (!config.Load(configFileName, out errMsg))
+                if (!config.Load(configFileName, out string errMsg))
                     throw new Exception(errMsg);
 
                 // создание прототипов входных каналов
@@ -155,11 +154,11 @@ namespace Scada.Comm.Devices
 
         
         /// <summary>
-        /// Отобразить свойства КП
+        /// Отобразить свойства КП.
         /// </summary>
         public override void ShowProps()
         {
-            FrmConfig.ShowDialog(AppDirs, Number);
+            FrmConfig.ShowDialog(AppDirs, Number, KPProps?.CmdLine);
         }
     }
 }

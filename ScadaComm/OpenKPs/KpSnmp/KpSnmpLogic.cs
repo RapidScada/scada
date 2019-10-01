@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2019
  * 
  * Description
  * Interacting with controllers via SNMP protocol.
@@ -226,9 +226,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void RetrieveEndPoint()
         {
-            IPAddress addr;
-            int port;
-            CommUtils.ExtractAddrAndPort(CallNum, DefaultPort, out addr, out port);
+            CommUtils.ExtractAddrAndPort(CallNum, DefaultPort, out IPAddress addr, out int port);
             endPoint = new IPEndPoint(addr, port);
         }
 
@@ -471,9 +469,8 @@ namespace Scada.Comm.Devices
                                 WriteToLog(KPTags[tagInd].Name + " = " + ConvertVarDataToString(snmpData, isBits));
 
                                 // расшифровка данных переменной и установка данных тега КП
-                                SrezTableLight.CnlData tagData;
-                                bool isString;
-                                bool decodeOK = DecodeVarData(snmpData, isBits, out tagData, out isString);
+                                bool decodeOK = DecodeVarData(snmpData, isBits, 
+                                    out SrezTableLight.CnlData tagData, out bool isString);
                                 SetCurData(tagInd, tagData);
                                 strVals[tagInd] = isString ?
                                     ConvertVarDataToString(snmpData, isBits, MaxTagStrLen, false) : null;
@@ -612,10 +609,9 @@ namespace Scada.Comm.Devices
             else
             {
                 int signal = cmd.CmdNum;
-                ObjectIdentifier varOid;
 
                 if ((cmd.CmdTypeID == BaseValues.CmdTypes.Standard || cmd.CmdTypeID == BaseValues.CmdTypes.Binary) &&
-                    FindVariableBySignal(signal, out varOid))
+                    FindVariableBySignal(signal, out ObjectIdentifier varOid))
                 {
                     ISnmpData data = cmd.CmdTypeID == BaseValues.CmdTypes.Standard ?
                         new Integer32((int)cmd.CmdVal) :
@@ -646,8 +642,8 @@ namespace Scada.Comm.Devices
         public override void OnAddedToCommLine()
         {
             // загрузка конфигурации КП
-            string errMsg;
-            bool configLoaded = config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out errMsg);
+            bool configLoaded = config.Load(Config.GetFileName(AppDirs.ConfigDir, Number, ReqParams.CmdLine), 
+                out string errMsg);
 
             if (configLoaded)
             {
