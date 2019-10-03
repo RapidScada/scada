@@ -30,6 +30,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         internal const string KpVersion = "5.0.0.0";
 
+
         /// <summary>
         /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
