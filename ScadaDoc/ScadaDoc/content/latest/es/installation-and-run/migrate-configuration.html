@@ -11,9 +11,9 @@
 <body>
     <h1>Migrar la configuración a un nuevo servidor</h1>
 
-    <p>Tareas cuando se necesita migrar Rapid SCADA a otro servidor o actualizar el actual:</p>
+    <p>Tareas típicas cuando se necesita migrar Rapid SCADA a otro servidor:</p>
     <ul>
-        <li>Implementación del software en un servidor de producción cuando la configuración se ha completado utilizando la estación de trabajo (Workstation) del desarrollador.</li>
+        <li>Implementar el software en un servidor de producción cuando la configuración se ha completado utilizando la estación de trabajo (Workstation) del desarrollador.</li>
         <li>Reemplazo del servidor.</li>
     </ul>
 
@@ -22,7 +22,7 @@
         <li>Asegúrese de que las conexiones entre el servidor y los dispositivos estén configuradas correctamente: puertos seriales requeridos, controladores industriales disponibles a través de la red, etc.</li>
         <li>Instale Rapid SCADA en el nuevo servidor, pero no inicie los servicios Server y Communicator.</li>
         <li>Detenga los servicios Server y Communicator en el servidor obsoleto. Cambie el tipo de inicio de estos servicios a Manual.</li>
-        <li>Copie el archivo de datos ubicado en los siguientes directorios del servidor obsoleto al servidor nuevo:<br />
+        <li>Copie los archivos de datos ubicados en los siguientes directorios, del servidor obsoleto al servidor nuevo:<br />
             C:\SCADA\ArchiveDAT<br />
             C:\SCADA\ArchiveDATCopy
         </li>

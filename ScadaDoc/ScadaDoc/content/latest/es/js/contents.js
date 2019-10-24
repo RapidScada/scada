@@ -8,6 +8,7 @@ function addContents(context) {
     addArticle(context, "software-overview/applications/server-application.html", "Aplicación Server", 2);
     addArticle(context, "software-overview/applications/communicator-application.html", "Aplicación Communicator", 2);
     addArticle(context, "software-overview/applications/webstation-application.html", "Aplicación Webstation", 2);
+    addArticle(context, "software-overview/applications/agent-application.html", "Aplicación Agent", 2);
     addArticle(context, "software-overview/applications/administrator-application.html", "Aplicación Administrator", 2);
     addArticle(context, "software-overview/applications/table-editor-application.html", "Aplicación Table Editor", 2);
     addArticle(context, "software-overview/applications/scheme-editor-application.html", "Aplicación Scheme Editor", 2);
@@ -20,7 +21,8 @@ function addContents(context) {
     addArticle(context, "installation-and-run/run-applications.html", "Ejecución de aplicaciones", 1);
     addArticle(context, "installation-and-run/migrate-configuration.html", "Migrar la configuración a un nuevo servidor", 1);
     addArticle(context, "installation-and-run/software-update.html", "Actualización del software", 1);
-
+    addArticle(context, "installation-and-run/safety-recommendations.html", "Recomendaciones de seguridad", 1);
+     
     addArticle(context, "software-configuration/", "Configuración de software");
     addArticle(context, "software-configuration/configuration-basics.html", "Conceptos básicos de la configuración", 1);
     addArticle(context, "software-configuration/tune-database.html", "Afinación de la base de datos de configuración", 1);
