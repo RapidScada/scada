@@ -45,6 +45,14 @@ namespace Scada.Comm.Channels
             /// <summary>
             /// Initializes a new instance of the class.
             /// </summary>
+            protected BinStopCondition()
+            {
+                StopCode = 0;
+                StopSeq = null;
+            }
+            /// <summary>
+            /// Initializes a new instance of the class.
+            /// </summary>
             public BinStopCondition(byte stopCode)
             {
                 StopCode = stopCode;
