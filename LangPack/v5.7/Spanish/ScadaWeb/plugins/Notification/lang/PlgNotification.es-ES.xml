@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgNotificationDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Notification.NotifSvc">
+    <Phrase key="Instructions">Instrucciones</Phrase>
+    <Phrase key="Acknowledge">Reconocer</Phrase>
+    <Phrase key="Register">Registro</Phrase>
+    <Phrase key="RegistrationRequired">El plugin de notificación requiere registración.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Notification.WFrmEventTip">
+    <Phrase key="this">Instrucciones del evento - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Evento no encontrado.</Phrase>
+    <Phrase key="lblTip">No hay información disponible.</Phrase>
+  </Dictionary>
+</PlgNotificationDictionaries>

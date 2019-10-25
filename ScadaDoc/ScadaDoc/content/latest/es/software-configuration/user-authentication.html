@@ -1,0 +1,83 @@
+﻿<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <title>Configuración de autenticación del usuario - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8">
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Configuración de autenticación del usuario</h1>
+
+    <p>Rapid SCADA soporta tres métodos de autenticación del usuario:</p>
+
+    <ol>
+        <li>Basado en el nombre de usuario y la contraseña almacenados en la base de datos de configuración.</li>
+        <li>Basado en Active Directory.</li>
+        <li>Método combinado.</li>
+    </ol>
+
+    <p>Para realizar la autenticación, una aplicación cliente, por ejemplo, Communicator o Webstation, envía una solicitud a la aplicación Server para que valide el nombre de usuario y la contraseña. El Server verifica las credenciales del usuario y devuelve el rol del usuario a la aplicación de cliente.</p>
+
+    <p>Los roles de usuario estándar y sus capacidades se enumeran en la tabla a continuación.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>ID</th>
+            <th>Nombre de rol</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td>0</td>
+            <td>Disabled</td>
+            <td><dfn>Inhabilitado</dfn> - Se deniega el acceso al sistema </td>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Administrator</td>
+            <td><dfn>Administrador</dfn> - Brinda acceso completo</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Dispatcher</td>
+            <td><dfn>Despachador</dfn> - Permite ver toda la información y enviar comandos</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Guest</td>
+            <td><dfn>Invitado</dfn> - Permite ver toda la información</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Application</td>
+            <td><dfn>Aplicación</dfn> - Puede interactuar con la aplicación Server</td>
+        </tr>
+    </table>
+
+    <p>Para restringir el acceso del usuario a los objetos de la interfaz (las vistas de tablas, esquemas, etc.), cree nuevos roles de usuario en la tabla <em>Roles </em>de la base de datos de configuración. Luego especifique los derechos de acceso en la tabla <em>Derechos</em>.</p>
+
+    <p>Si Rapid SCADA opera en una red gestionada por Active Directory, se recomienda utilizar los métodos de autenticación 2 y 3 debido a razones de seguridad. Los detalles de estos métodos se describen a continuación.</p>
+
+    <p>Para permitir que el servicio del Servidor interactúe con Active Directory, especifique la ruta del controlador de dominio y marque la casilla cercana en la página <em>Parámetros comunes</em> de la aplicación y habilite el ModActiveDirectory.dll en la página  <em>Modules (Módulos)</em>.</p>
+
+    <p>El 2do método de autenticación se usa si los roles estándar son suficientes para gestionar los derechos del usuario. La ventaja de este método es que la gestión de derechos se realiza usando las herramientas usuales de Active Directory sin editar la base de datos de configuración y sin reiniciar el servicio de Servidor.</p>
+
+    <p>Para utilizar el 2do método es necesario crear grupos de seguridad en Active Directory. Los grupos corresponden a los roles de usuarios:</p>
+
+    <ul>
+        <li><em>ScadaDisabled</em> - rol Deshabilitado;</li>
+        <li><em>ScadaAdmin</em> - rol Administrador;</li>
+        <li><em>ScadaDispatcher</em> - rol Despachante;</li>
+        <li><em>ScadaGuest</em> - rol Invitado;</li>
+        <li><em>ScadaApp</em> - rol Aplicación.</li>
+    </ul>
+
+    <p>Si un usuario es miembro de un grupo listado anteriormente o miembro de un grupo que a su vez es un miembro de los grupos mencionados anteriormente, se le conceden a usuario los derechos correspondientes en Rapid SCADA.</p>
+
+    <p>El 3er método combina las capacidades de 1er y 2do métodos. La validación de los credenciales del usuario se realiza usando Active Directory y un rol de usuario se define por la tabla <em>Users (Usuarios) </em>de la base de datos de configuración. En este caso, los nombres de usuario y sus roles están especificados en la tabla <em>Users (Usuarios)</em>, aunque las contraseñas de usuarios siguen vacías en la tabla.</p>
+
+    <p>El uso simultáneo de todos los métodos de autenticación mencionados anteriormente está permitido.</p>
+</body>
+</html>

@@ -28,13 +28,19 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmStartPage));
             this.pnlContent = new System.Windows.Forms.Panel();
             this.lblNoRecentProjects = new System.Windows.Forms.Label();
             this.lbRecentProjects = new System.Windows.Forms.ListBox();
             this.btnOpenProject = new System.Windows.Forms.Button();
             this.btnNewProject = new System.Windows.Forms.Button();
             this.lblRecentProjects = new System.Windows.Forms.Label();
+            this.cmsProjectList = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.miRemoveFromList = new System.Windows.Forms.ToolStripMenuItem();
+            this.miCopyPath = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlContent.SuspendLayout();
+            this.cmsProjectList.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlContent
@@ -66,6 +72,7 @@
             this.lbRecentProjects.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
             this.lbRecentProjects.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this.lbRecentProjects.ContextMenuStrip = this.cmsProjectList;
             this.lbRecentProjects.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.lbRecentProjects.Font = new System.Drawing.Font("Verdana", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.lbRecentProjects.FormattingEnabled = true;
@@ -123,6 +130,31 @@
             this.lblRecentProjects.TabIndex = 0;
             this.lblRecentProjects.Text = "Recent Projects";
             // 
+            // cmsProjectList
+            // 
+            this.cmsProjectList.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miRemoveFromList,
+            this.miCopyPath});
+            this.cmsProjectList.Name = "cmsProjectList";
+            this.cmsProjectList.Size = new System.Drawing.Size(181, 70);
+            this.cmsProjectList.Opening += new System.ComponentModel.CancelEventHandler(this.cmsProjectList_Opening);
+            // 
+            // miRemoveFromList
+            // 
+            this.miRemoveFromList.Image = ((System.Drawing.Image)(resources.GetObject("miRemoveFromList.Image")));
+            this.miRemoveFromList.Name = "miRemoveFromList";
+            this.miRemoveFromList.Size = new System.Drawing.Size(180, 22);
+            this.miRemoveFromList.Text = "Remove From List";
+            this.miRemoveFromList.Click += new System.EventHandler(this.miRemoveFromList_Click);
+            // 
+            // miCopyPath
+            // 
+            this.miCopyPath.Image = ((System.Drawing.Image)(resources.GetObject("miCopyPath.Image")));
+            this.miCopyPath.Name = "miCopyPath";
+            this.miCopyPath.Size = new System.Drawing.Size(180, 22);
+            this.miCopyPath.Text = "Copy Path";
+            this.miCopyPath.Click += new System.EventHandler(this.miCopyPath_Click);
+            // 
             // FrmStartPage
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +169,7 @@
             this.Resize += new System.EventHandler(this.FrmStartPage_Resize);
             this.pnlContent.ResumeLayout(false);
             this.pnlContent.PerformLayout();
+            this.cmsProjectList.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -149,5 +182,8 @@
         private System.Windows.Forms.Button btnOpenProject;
         private System.Windows.Forms.ListBox lbRecentProjects;
         private System.Windows.Forms.Label lblNoRecentProjects;
+        private System.Windows.Forms.ContextMenuStrip cmsProjectList;
+        private System.Windows.Forms.ToolStripMenuItem miRemoveFromList;
+        private System.Windows.Forms.ToolStripMenuItem miCopyPath;
     }
 }

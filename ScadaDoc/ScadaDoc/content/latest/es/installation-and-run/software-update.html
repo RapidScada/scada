@@ -1,0 +1,28 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Actualización del software - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Actualización del software</h1>
+
+    <p>La actualización de Rapid SCADA a nuevas versiones debe realizarse primero en el entorno de prueba. Lea atentamente <a href="../version-history/">la lista de cambios realizados en la nueva versión</a>. Si cambia la estructura de la base de datos de configuración o se cambian los formatos de archivo o de configuración, se requiere una utilidad especial para convertir los datos.</p>
+
+    <p>La instalación en el servidor de producción solo puede permitirse si se está seguro de que la nueva versión de Rapid SCADA funciona correctamente en el entorno de prueba.</p>
+
+    <p>Pasos para actualizar Rapid SCADA:</p>
+    <ol>
+        <li>Haga una copia de respaldo de todos los archivos de Rapid SCADA, ubicados de forma predeterminada en el directorio C:\SCADA.</li>
+        <li>Desinstale Rapid SCADA utilizando el instalador ScadaSetup.exe.</li>
+        <li>Instale la nueva versión de Rapid SCADA y <a href="migrate-configuration.html">migre la configuración</a> desde la copia de respaldo.</li>
+        <li>Borre la memoria caché del navegador o actualice las páginas de la aplicación web presionando Shift + F5.</li>
+    </ol>
+
+    <p>La actualización de Rapid SCADA copiando directamente los archivos de una nueva versión es técnicamente posible. Sin embargo, esta operación requiere una comprensión profunda de Rapid SCADA y puede causar errores en el software.</p>
+</body>
+</html>

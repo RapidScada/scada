@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Config;
 using Scada.UI;
 using System;
 using System.IO;
@@ -63,8 +64,8 @@ namespace Scada.Admin.App.Forms.Tools
             this.appData = appData ?? throw new ArgumentNullException("appData");
             settings = appData.AppSettings;
 
-            serverDir = settings.ServerDir;
-            commDir = settings.CommDir;
+            serverDir = settings.PathOptions.ServerDir;
+            commDir = settings.PathOptions.CommDir;
             modified = false;
         }
 
@@ -76,7 +77,8 @@ namespace Scada.Admin.App.Forms.Tools
         {
             get
             {
-                return serverDir != settings.ServerDir || commDir != settings.CommDir;
+                return serverDir != settings.PathOptions.ServerDir || 
+                    commDir != settings.PathOptions.CommDir;
             }
         }
 
@@ -86,14 +88,19 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void SettingsToControls()
         {
-            txtServerDir.Text = settings.ServerDir;
-            txtCommDir.Text = settings.CommDir;
-            txtSchemeEditorPath.Text = settings.SchemeEditorPath;
-            txtTableEditorPath.Text = settings.TableEditorPath;
-            txtTextEditorPath.Text = settings.TextEditorPath;
-            numCnlMult.SetValue(settings.CnlMult);
-            numCnlShift.SetValue(settings.CnlShift);
-            numCnlGap.SetValue(settings.CnlGap);
+            PathOptions pathOptions = settings.PathOptions;
+            txtServerDir.Text = pathOptions.ServerDir;
+            txtCommDir.Text = pathOptions.CommDir;
+            txtSchemeEditorPath.Text = pathOptions.SchemeEditorPath;
+            txtTableEditorPath.Text = pathOptions.TableEditorPath;
+            txtTextEditorPath.Text = pathOptions.TextEditorPath;
+
+            ChannelOptions channelOptions = settings.ChannelOptions;
+            numCnlMult.SetValue(channelOptions.CnlMult);
+            numCnlShift.SetValue(channelOptions.CnlShift);
+            numCnlGap.SetValue(channelOptions.CnlGap);
+            chkPrependDeviceName.Checked = channelOptions.PrependDeviceName;
+
             modified = false;
         }
 
@@ -102,14 +109,18 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private void ControlsToSettings()
         {
-            settings.ServerDir = txtServerDir.Text;
-            settings.CommDir = txtCommDir.Text;
-            settings.SchemeEditorPath = txtSchemeEditorPath.Text;
-            settings.TableEditorPath = txtTableEditorPath.Text;
-            settings.TextEditorPath = txtTextEditorPath.Text;
-            settings.CnlMult = Convert.ToInt32(numCnlMult.Value);
-            settings.CnlShift = Convert.ToInt32(numCnlShift.Value);
-            settings.CnlGap = Convert.ToInt32(numCnlGap.Value);
+            PathOptions pathOptions = settings.PathOptions;
+            pathOptions.ServerDir = txtServerDir.Text;
+            pathOptions.CommDir = txtCommDir.Text;
+            pathOptions.SchemeEditorPath = txtSchemeEditorPath.Text;
+            pathOptions.TableEditorPath = txtTableEditorPath.Text;
+            pathOptions.TextEditorPath = txtTextEditorPath.Text;
+
+            ChannelOptions channelOptions = settings.ChannelOptions;
+            channelOptions.CnlMult = Convert.ToInt32(numCnlMult.Value);
+            channelOptions.CnlShift = Convert.ToInt32(numCnlShift.Value);
+            channelOptions.CnlGap = Convert.ToInt32(numCnlGap.Value);
+            channelOptions.PrependDeviceName = chkPrependDeviceName.Checked;
         }
 
         /// <summary>

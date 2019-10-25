@@ -267,8 +267,8 @@
         </member>
         <member name="T:Scada.Agent.Engine.ScadaInstance">
             <summary>
-            Object for manipulating a system instance
-            <para>Объект для манипуляций с экземпляром системы</para>
+            Object for manipulating a system instance.
+            <para>Объект для манипуляций с экземпляром системы.</para>
             </summary>
         </member>
         <member name="T:Scada.Agent.Engine.ScadaInstance.PathList">
@@ -304,6 +304,11 @@
         <member name="F:Scada.Agent.Engine.ScadaInstance.MaxValidateUserAttempts">
             <summary>
             Макс. количество попыток проверки пользователя
+            </summary>
+        </member>
+        <member name="F:Scada.Agent.Engine.ScadaInstance.ProjectInfoEntryName">
+            <summary>
+            The name of the archive entry that contains project information.
             </summary>
         </member>
         <member name="F:Scada.Agent.Engine.ScadaInstance.AllConfigParts">

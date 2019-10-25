@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgDashboardDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Dashboard">
+    <Phrase key="LoadDashboardListError">Erro ao carregar a lista do painel</Phrase>
+    <Phrase key="LoadDashboardError">Erro ao carregar a configuração do painel</Phrase>
+    <Phrase key="LoadDashboardNameError">Erro ao carregar o nome do painel</Phrase>
+    <Phrase key="InvalidDashboardKey">Chave de painel inválida.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmCurDataWidget.Js">
+    <Phrase key="LoadError">Erro ao carregar dados</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard">
+    <Phrase key="btnExportPdf">Exportar para PDF</Phrase>
+    <Phrase key="DashboardNotFound">Painel com a chave especificada não encontrada.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard.Js">
+    <Phrase key="ReceiveDashboardError">Erro ao receber a configuração do painel</Phrase>
+    <Phrase key="NoWidgetsToExport">Nenhum widget suporta exportação para PDF</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboardList">
+    <Phrase key="this">Dashboards - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Dashboards</Phrase>
+    <Phrase key="lblNoDashboards">Nenhum painel disponível</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.PlgDashboardSpec">
+    <Phrase key="DashboardsMenuItem">Dashboards</Phrase>
+  </Dictionary>
+</PlgDashboardDictionaries>

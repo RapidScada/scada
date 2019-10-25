@@ -34,6 +34,14 @@ namespace Scada.Data.Tables
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
+        public TableFilter()
+            : this("", null)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
         public TableFilter(string columnName, object value)
         {
             ColumnName = columnName;

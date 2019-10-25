@@ -81,7 +81,7 @@ namespace Scada.Agent.Engine
         private SessionManager sessionManager; // ссылка на менджер сессий
         private AppDirs appDirs;               // директории приложения
         private ILog log;                      // журнал приложения
-        private Thread thread;                 // поток работы сервера
+        private Thread thread;                 // поток работы агента
         private volatile bool terminated;      // необходимо завершить работу потока
         private string infoFileName;           // полное имя файла информации
         private DateTime utcStartDT;           // дата и время запуска (UTC)
@@ -325,12 +325,15 @@ namespace Scada.Agent.Engine
                         "Обработка логики уже запущена" :
                         "Logic processing is already started");
                 }
+
+                return true;
             }
             catch (Exception ex)
             {
                 log.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при запуске обработки логики" :
                     "Error starting logic processing");
+                return false;
             }
             finally
             {
@@ -340,8 +343,6 @@ namespace Scada.Agent.Engine
                     WriteInfo();
                 }
             }
-
-            return true;
         }
 
         /// <summary>

@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Módulo de Control Automático - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Módulo de Control Automático</h1>
+    <h2>Introducción</h2>
+    <p>El Módulo de Control Automático permite enviar comandos automáticamente cuando se cumplen ciertas condiciones. A menos que registre el módulo, éste funciona en el modo de demostración. La duración de una demostración funcional completa está limitada a 10 minutos después del reinicio. El módulo funciona bajo el control de la aplicación Server. Para configurar el módulo se utiliza el formulario que se muestra a continuación:</p>
+    <p class="sd-article-image">
+        <img src="mod-auto-control-files/mod_auto_control_en.png" alt="El formulario de configuración del módulo" /><br />
+    </p>
+    <p>Condiciones requeridas para enviar comandos especificados con disparadores (triggers) de varios tipos:
+    </p>
+    <ul>
+        <li>Disparo por datos del canal. Se dispara si el valor o el estado del canal de entrada satisface la condición especificada.</li>
+        <li>Disparo por cambios en los datos del canal. Se dispara cada vez que cambia el valor o el estado del canal.</li>
+        <li>Disparo por eventos. Se dispara si ocurre un evento que satisface la condición especificada.</li>
+        <li>Disparo por tiempo. Se dispara a las fechas y horas especificadas.</li>
+        <li>Disparo por comando. Se dispara si la aplicación Server recibe el comando especificado.</li>
+    </ul>
+    <p>Cada modalidad contiene un conjunto de comandos que se envían cuando el disparador se dispara. Se puede acceder a la información sobre la activación de los disparadores en la página <em>Log (registro)</em> o directamente desde el archivo ModAutoControl.log. Este archivo se encuentra en el directorio de registros del Server, C:\SCADA\ScadaServer\Log</p>
+
+    <h2>Instalación</h2>
+    <p>El módulo de control automático se instala de acuerdo con <a href="../installation-and-run/module-installation.html#modules">la secuencia general de instalación de los módulos del Server</a>. El archivo en la biblioteca del módulo es ModAutoControl.dll. Después de agregar el módulo, debe realizar varias acciones adicionales:</p>
+    <ol>
+        <li>Tras activar el módulo, suba el proyecto al Server a fin de determinar el código de su computadora, que necesitará para la registración del módulo.</li>
+        <li>Seleccione el módulo en la página <em>Modules</em> y haga clic en el botón <em>Properties</em> para abrir el formulario de configuración del módulo.</li>
+        <li>Ir a la página <em>Registration</em> y registre el módulo utilizando los hipervínculos del formulario.</li>
+        <li>Configure el módulo creando disparadores y comandos.</li>
+        <li>5.	Guarde la configuración del módulo y suba el proyecto al Server.</li>
+    </ol>
+
+    <h2>Variables de los comandos de telecontrol</h2>
+    <p>Los datos del tipo cadena de texto de los comandos de telecontrol, que se envían al ejecutar el disparador pueden contener variables. Las variables se escriben entre llaves, {n}</p>
+    <p>Las siguientes variables son compatibles:</p>
+    <table class="sd-article-table">
+        <tr>
+            <th>Variable</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td>{n}</td>
+            <td>El valor actual del canal de entrada n con una unidad, donde n es el número de canal, n = 0 es el canal especificado en el disparador o gatillo (trigger) de datos</td>
+        </tr>
+        <tr>
+            <td>{Now}</td>
+            <td>La fecha y hora actual en el servidor</td>
+        </tr>
+        <tr>
+            <td>{CnlNum}, {CnlName}</td>
+            <td>Parámetros del disparador por datos: número de canal de entrada y nombre</td>
+        </tr>
+        <tr>
+            <td>{CnlVal}, {CnlStat}</td>
+            <td>El valor y el estado del canal de entrada que causaron el disparo</td>
+        </tr>
+        <tr>
+            <td>{EvNum}, {EvTime}, {EvObj}, {EvDev}, {EvCnl}, {EvText}</td>
+            <td>Parámetros del evento que causó el disparo del trigger: número, fecha y hora, objeto, dispositivo, canal y descripción</td>
+        </tr>
+        <tr>
+            <td>{CtrlCnlNum}, {CtrlCnlName}</td>
+            <td>Parámetros del comando trigger: número y nombre del canal de salida</td>
+        </tr>
+        <tr>
+            <td>{CmdVal}, {CmdDataStr}, {CmdDataHex}</td>
+            <td>Parámetros del comando que provocó el  disparo del trigger: valor, datos como una cadena de texto, datos en representación hexadecimal</td>
+        </tr>
+    </table>
+</body>
+</html>

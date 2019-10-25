@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -37,8 +37,8 @@ using Utils;
 namespace Scada.Agent.Engine
 {
     /// <summary>
-    /// Object for manipulating a system instance
-    /// <para>Объект для манипуляций с экземпляром системы</para>
+    /// Object for manipulating a system instance.
+    /// <para>Объект для манипуляций с экземпляром системы.</para>
     /// </summary>
     public class ScadaInstance
     {
@@ -100,6 +100,10 @@ namespace Scada.Agent.Engine
         /// Макс. количество попыток проверки пользователя
         /// </summary>
         private const int MaxValidateUserAttempts = 3;
+        /// <summary>
+        /// The name of the archive entry that contains project information.
+        /// </summary>
+        private const string ProjectInfoEntryName = "Project.txt";
         /// <summary>
         /// Все части конфигурации в виде массива
         /// </summary>
@@ -538,7 +542,8 @@ namespace Scada.Agent.Engine
         /// </summary>
         public string GetAbsPath(ConfigParts configPart, AppFolder appFolder, string path)
         {
-            return Path.Combine(Settings.Directory, DirectoryBuilder.GetDirectory(configPart, appFolder), path);
+            return Path.Combine(Settings.Directory, 
+                DirectoryBuilder.GetDirectory(configPart, appFolder, Path.DirectorySeparatorChar), path);
         }
 
         /// <summary>
@@ -608,7 +613,7 @@ namespace Scada.Agent.Engine
         {
             try
             {
-                // удаление существующей конфигурации
+                // delete the existing configuration
                 List<RelPath> configPaths = GetConfigPaths(configOptions.ConfigParts);
                 PathDict pathDict = PrepareIgnoredPaths(configOptions.IgnoredPaths);
 
@@ -617,9 +622,14 @@ namespace Scada.Agent.Engine
                     ClearDir(relPath, pathDict);
                 }
 
-                // определение допустимых директорий для распаковки
+                // delete a project information file
+                string instanceDir = Settings.Directory;
+                string projectInfoFileName = Path.Combine(instanceDir, ProjectInfoEntryName);
+                File.Delete(projectInfoFileName);
+
+                // define allowed directories to unpack
                 ConfigParts configParts = configOptions.ConfigParts;
-                List<string> allowedEntries = new List<string>(AllConfigParts.Length);
+                List<string> allowedEntries = new List<string> { ProjectInfoEntryName };
 
                 foreach (ConfigParts configPart in AllConfigParts)
                 {
@@ -627,14 +637,12 @@ namespace Scada.Agent.Engine
                         allowedEntries.Add(DirectoryBuilder.GetDirectory(configPart, '/'));
                 }
 
-                // распаковка новой конфигурации
+                // unpack the new configuration
                 using (FileStream fileStream =
                     new FileStream(srcFileName, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     using (ZipArchive zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Read))
                     {
-                        string instanceDir = Settings.Directory;
-
                         foreach (ZipArchiveEntry entry in zipArchive.Entries)
                         {
                             if (StartsWith(entry.FullName, allowedEntries, StringComparison.Ordinal))

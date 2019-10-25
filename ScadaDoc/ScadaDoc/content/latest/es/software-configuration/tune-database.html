@@ -1,0 +1,138 @@
+﻿<!DOCTYPE html>
+<html dir="ltr">
+<head>
+    <title>Afinación de la base de datos de configuración - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8">
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Afinación de la base de datos de configuración</h1>
+
+    <h2>Estructura de la base de datos de configuración</h2>
+
+    <p>La base de datos de configuración es una descripción estructurada de todo el sistema automatizado. Las aplicaciones incluidas en Rapid SCADA utilizan la información de la base de datos de configuración en conjunto con sus ajustes.</p>
+
+    <p>Como parte de un proyecto, se edita la base de datos de configuración utilizando la aplicación Administrator. La instancia editada de la base de datos de configuración está en formato de archivo XML. Cuando el proyecto se sube al servidor para ser ejecutado, la base de datos de configuración se convierte a un formato DAT especial.</p>
+
+    <p>La base de datos de configuración consiste en tablas, que a su vez se componen de columnas y filas. Cada tabla pertenece a uno de los siguientes grupos:</p>
+
+    <ol>
+        <li><em>System.</em> Este grupo contiene las tablas que definen la configuración de un sistema automatizado particular.</li>
+        <li><em>Dictionaries</em>. Este grupo contiene las tablas auxiliares. En la mayoría de los casos no se requiere cambiar estas tablas.</li>
+    </ol>
+
+    <p>La siguiente tabla describe las tablas de la base de datos de configuración.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Nombre de tabla</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Grupo Sistema</strong></td>
+        </tr>
+        <tr>
+            <td><em>Objects</em></td>
+            <td>Contiene los objetos lógicos que se usan para estructurar la información en el sistema. Los objetos pueden interpretarse como ubicaciones</td>
+        </tr>
+        <tr>
+            <td><em>Communication lines</em></td>
+            <td>Describe las líneas de comunicaciones que se usan para intercambiar datos con los dispositivos</td>
+        </tr>
+        <tr>
+            <td><em>Devices</em></td>
+            <td>Contiene los dispositivos reales o virtuales</td>
+        </tr>
+        <tr>
+            <td><em>Input channels</em></td>
+            <td>Define los datos recibidos de los dispositivos y los cálculos a aplicarles</td>
+        </tr>
+        <tr>
+            <td><em>Output channels</em></td>
+            <td>Especifica los comandos a ser ejecutados por el sistema</td>
+        </tr>
+        <tr>
+            <td><em>Roles</em></td>
+            <td>Contiene los roles. Cada rol define el conjunto de funciones disponibles para un determinado usuario</td>
+        </tr>
+        <tr>
+            <td><em>Users</em></td>
+            <td>Contiene una lista de los usuarios del sistema y de sus roles</td>
+        </tr>
+        <tr>
+            <td><em>Interface</em></td>
+            <td>Contiene las descripciones de los objetos de la interfaz (las ventanas de los datos, vistas e informes)</td>
+        </tr>
+        <tr>
+            <td><em>Rights</em></td>
+            <td>Define los derechos para mostrar los objetos por roles</td>
+        </tr>
+        <tr>
+            <td colspan="2"><strong>Grupo Diccionarios</strong></td>
+        </tr>
+        <tr>
+            <td><em>Channel types</em></td>
+            <td>Diccionario de los tipos de canales de entrada</td>
+        </tr>
+        <tr>
+            <td><em>Command types</em></td>
+            <td>Diccionario de los tipos de comandos usados por canales de salida</td>
+        </tr>
+        <tr>
+            <td><em>Event types</em></td>
+            <td>Diccionario de los tipos de eventos del sistema y los estados de los canales de entrada en el archivo</td>
+        </tr>
+        <tr>
+            <td><em>Device types</em></td>
+            <td>Diccionario de los tipos de dispositivos que pueden estar conectados al sistema</td>
+        </tr>
+        <tr>
+            <td><em>Quantities</em></td>
+            <td>Diccionario de las cantidades medidas</td>
+        </tr>
+        <tr>
+            <td><em>Units</em></td>
+            <td>Diccionario de las unidades de los valores de los canales de entrada y de los valores de canales de entrada</td>
+        </tr>
+        <tr>
+            <td><em>Command values</em></td>
+            <td>Diccionario de los valores de los comandos que se transmiten por los canales de salida</td>
+        </tr>
+        <tr>
+            <td><em>Number formats</em></td>
+            <td>Diccionario de los formatos que se usan para visualizar los valores de canales de entrada</td>
+        </tr>
+        <tr>
+            <td><em>Formulas</em></td>
+            <td>Diccionario de las fórmulas usadas en el cálculo de los datos de canales de entrada y de los valores de los comandos de los canales de salida</td>
+        </tr>
+    </table>
+
+    <h2>Edición de la base de datos de configuración</h2>
+
+    <p>Las tablas de la base de datos de configuración están relacionadas entre sí, es decir, una celda de una tabla puede referirse a un registro de otra tabla. Por ejemplo, cada dispositivo se refiere a la línea de comunicación con la cual está conectado. Así, resulta más eficiente editar las tablas en una cierta secuencia. Para las tablas del grupo <em>System </em>ingrese los datos en orden, empezando con la tabla <em>Objects </em>y terminando con la tabla <em>Rights</em>.</p>
+
+    <p>Para añadir las líneas de comunicación y los dispositivos, se recomienda utilizar los asistentes que se abren usando los botones <img src="../../common-images/add_line.png"> y <img src="../../common-images/add_device.png">. El uso del asistente le permite añadir una entrada en la tabla de la base de datos de configuración y también crear la entidad correspondiente en los ajustes del Communicator. Para crear los canales de entrada y de salida utilice el asistente que se abre usando el botón <img src="../../common-images/create_cnls.png">. Sin embargo, la creación automática de canales debe ser soportada por los controladores de los dispositivos seleccionados, de lo contrario habría que ingresarlos a mano.</p>
+
+    <p>Cuando se muestra el botón <img src="../../common-images/props.png"> en la barra de herramientas, la tabla puede editarse usando la vista de formulario. Los formularios para editar las propiedades de canales se muestran en las imágenes 1 y 2.</p>
+
+    <p class="sd-article-image"> <img src="tune-database-files/in_cnl_props_en.png" alt="Propiedades de un canal de entrada"><br> Imagen 1. Propiedades de un canal de entrada </p>
+
+    <p class="sd-article-image"> <img src="tune-database-files/out_cnl_props_en.png" alt="Propiedades del canal de salida"><br> Imagen 2. Propiedades del canal de salida </p>
+
+    <p>Es posible acelerar significativamente la creación de una base de datos de configuración utilizando trabajos existentes. Para intercambiar la información entre diferentes bases de datos, la aplicación Administrator incluye las funciones <em>Import table</em> y <em>Export table</em> (refiérase a las imágenes 3 y 4) que están accesibles en el menú <em>File (Archivo)</em>. Es posible exportar las tablas a archivos en formato DAT, XML y CSV. Luego es posible importar la información desde los archivos DAT y XML en el mismo o en otro proyecto. Limite el rango de los datos exportados e importados especificando los identificadores de inicio y fin. Si el identificador de nuevo destino para la operación de importación está seleccionado, los datos se importan con un offset (desplazamiento) de los identificadores.</p>
+
+    <p class="sd-article-image"> <img src="tune-database-files/admin_import_table_en.png" alt="Tabla de importación"><br> Imagen 3. Tabla de importaci&#243;n </p>
+
+    <p class="sd-article-image"> <img src="tune-database-files/admin_export_table_en.png" alt="Tabla de exportación"><br> Imagen 4. Tabla de exportaci&#243;n </p>
+
+    <p>Se dispone de una herramienta de clonación para los canales de entrada y salida (refiérase a la imagen 5). En el formulario  <em>Clone Channels (Clonar canales)</em> rellene los números de canales fuente y destino. Si se requiere, seleccione un nuevo objeto y un nuevo dispositivo para los canales clonados. La función de actualización de los números de canales en las fórmulas se aplica si un número de canal se usa como argumento en las siguientes funciones: N(), Val(), Stat(), SetVal(), SetStat() y SetData().</p>
+
+    <p class="sd-article-image"> <img src="tune-database-files/admin_clone_cnls_en.png" alt="Clonación de canales"><br> Imagen 5. Clonación de canales </p>
+
+    <p>Copiar (Ctrl + C) y pegar (Ctrl + V) están disponible para las celdas de tabla. Haga clic en la cabecera de la columna para ordenar las filas de la tabla por valores de aquella columna. La función de búsqueda y reemplazo (Ctrl + F) también acelera la edición.</p>
+</body>
+</html>

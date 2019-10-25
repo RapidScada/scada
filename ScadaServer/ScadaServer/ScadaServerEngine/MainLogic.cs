@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -409,22 +409,24 @@ namespace Scada.Server.Engine
                         if ((bool)dataRow["Active"])
                         {
                             // заполняются только свойства, используемые приложением
-                            InCnl inCnl = new InCnl();
-                            inCnl.CnlNum = (int)dataRow["CnlNum"];
-                            inCnl.CnlTypeID = (int)dataRow["CnlTypeID"];
-                            inCnl.ObjNum = (int)dataRow["ObjNum"];
-                            inCnl.KPNum = (int)dataRow["KPNum"];
-                            inCnl.FormulaUsed = (bool)dataRow["FormulaUsed"];
-                            inCnl.Formula = (string)dataRow["Formula"];
-                            inCnl.Averaging = (bool)dataRow["Averaging"];
-                            inCnl.ParamID = (int)dataRow["ParamID"];
-                            inCnl.EvEnabled = (bool)dataRow["EvEnabled"];
-                            inCnl.EvOnChange = (bool)dataRow["EvOnChange"];
-                            inCnl.EvOnUndef = (bool)dataRow["EvOnUndef"];
-                            inCnl.LimLowCrash = (double)dataRow["LimLowCrash"];
-                            inCnl.LimLow = (double)dataRow["LimLow"];
-                            inCnl.LimHigh = (double)dataRow["LimHigh"];
-                            inCnl.LimHighCrash = (double)dataRow["LimHighCrash"];
+                            InCnl inCnl = new InCnl
+                            {
+                                CnlNum = (int)dataRow["CnlNum"],
+                                CnlTypeID = (int)dataRow["CnlTypeID"],
+                                ObjNum = (int)dataRow["ObjNum"],
+                                KPNum = (int)dataRow["KPNum"],
+                                FormulaUsed = (bool)dataRow["FormulaUsed"],
+                                Formula = (string)dataRow["Formula"],
+                                Averaging = (bool)dataRow["Averaging"],
+                                ParamID = (int)dataRow["ParamID"],
+                                EvEnabled = (bool)dataRow["EvEnabled"],
+                                EvOnChange = (bool)dataRow["EvOnChange"],
+                                EvOnUndef = (bool)dataRow["EvOnUndef"],
+                                LimLowCrash = (double)dataRow["LimLowCrash"],
+                                LimLow = (double)dataRow["LimLow"],
+                                LimHigh = (double)dataRow["LimHigh"],
+                                LimHighCrash = (double)dataRow["LimHighCrash"]
+                            };
 
                             int cnlTypeID = inCnl.CnlTypeID;
                             if (BaseValues.CnlTypes.MinCnlTypeID <= cnlTypeID && 
@@ -448,34 +450,43 @@ namespace Scada.Server.Engine
                     int cnt = drCnls.Count;
                     drCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drCnlNums[i] = drCnls[i].CnlNum;
+                    }
                     
                     cnt = drmCnls.Count;
                     drmCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drmCnlNums[i] = drmCnls[i].CnlNum;
+                    }
 
                     cnt = drhCnls.Count;
                     drhCnlNums = new int[cnt];
                     for (int i = 0; i < cnt; i++)
+                    {
                         drhCnlNums[i] = drhCnls[i].CnlNum;
+                    }
 
-                    // определение результата
+                    // вывод информации
                     if (inCnls.Count > 0)
                     {
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? 
                             "Входные каналы считаны из базы конфигурации. Количество активных каналов: {0}" : 
                             "Input channels are read from the configuration database. Active channel count: {0}",
                             inCnls.Count), Log.ActTypes.Action);
-                        return true;
                     }
                     else
                     {
+                        // добавление единственного канала, необходимого для работы приложения
+                        inCnls.Add(1, new InCnl { CnlNum = 1 });
+
                         AppLog.WriteAction(Localization.UseRussian ? 
                             "В базе конфигурации отсутствуют активные входные каналы" :
                             "No active input channels in the configuration database", Log.ActTypes.Error);
-                        return false;
                     }
+
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -508,15 +519,17 @@ namespace Scada.Server.Engine
                         if ((bool)dataRow["Active"])
                         {
                             // заполняются только свойства, используемые приложением
-                            CtrlCnl ctrlCnl = new CtrlCnl();
-                            ctrlCnl.CtrlCnlNum = (int)dataRow["CtrlCnlNum"];
-                            ctrlCnl.CmdTypeID = (int)dataRow["CmdTypeID"];
-                            ctrlCnl.ObjNum = (int)dataRow["ObjNum"];
-                            ctrlCnl.KPNum = (int)dataRow["KPNum"];
-                            ctrlCnl.CmdNum = (int)dataRow["CmdNum"];
-                            ctrlCnl.FormulaUsed = (bool)dataRow["FormulaUsed"];
-                            ctrlCnl.Formula = (string)dataRow["Formula"];
-                            ctrlCnl.EvEnabled = (bool)dataRow["EvEnabled"];
+                            CtrlCnl ctrlCnl = new CtrlCnl
+                            {
+                                CtrlCnlNum = (int)dataRow["CtrlCnlNum"],
+                                CmdTypeID = (int)dataRow["CmdTypeID"],
+                                ObjNum = (int)dataRow["ObjNum"],
+                                KPNum = (int)dataRow["KPNum"],
+                                CmdNum = (int)dataRow["CmdNum"],
+                                FormulaUsed = (bool)dataRow["FormulaUsed"],
+                                Formula = (string)dataRow["Formula"],
+                                EvEnabled = (bool)dataRow["EvEnabled"]
+                            };
                             ctrlCnls.Add(ctrlCnl.CtrlCnlNum, ctrlCnl);
                         }
                     }
@@ -553,10 +566,12 @@ namespace Scada.Server.Engine
 
                     foreach (DataRow dataRow in tblUser.Rows)
                     {
-                        User user = new User();
-                        user.Name = (string)dataRow["Name"];
-                        user.Password = (string)dataRow["Password"];
-                        user.RoleID = (int)dataRow["RoleID"];
+                        User user = new User
+                        {
+                            Name = (string)dataRow["Name"],
+                            Password = (string)dataRow["Password"],
+                            RoleID = (int)dataRow["RoleID"]
+                        };
                         users[user.Name.Trim().ToLowerInvariant()] = user;
                     }
                 }
@@ -1094,12 +1109,11 @@ namespace Scada.Server.Engine
                     foreach (FileInfo fileInfo in files)
                     {
                         string fileName = fileInfo.Name;
-                        int year, month, day;
 
                         if (fileName.Length >= 7 &&
-                            int.TryParse(fileName.Substring(1, 2), out year) &&
-                            int.TryParse(fileName.Substring(3, 2), out month) &&
-                            int.TryParse(fileName.Substring(5, 2), out day))
+                            int.TryParse(fileName.Substring(1, 2), out int year) &&
+                            int.TryParse(fileName.Substring(3, 2), out int month) &&
+                            int.TryParse(fileName.Substring(5, 2), out int day))
                         {
                             DateTime fileDate;
                             try { fileDate = new DateTime(2000 + year, month, day); }
@@ -1303,9 +1317,8 @@ namespace Scada.Server.Engine
                         {
                             int cnlNum = receivedSrez.CnlNums[i];
                             int cnlInd = srez.GetCnlIndex(cnlNum);
-                            InCnl inCnl;
 
-                            if (inCnls.TryGetValue(cnlNum, out inCnl) && cnlInd >= 0) // входной канал существует
+                            if (inCnls.TryGetValue(cnlNum, out InCnl inCnl) && cnlInd >= 0) // входной канал существует
                             {
                                 // установка архивного статуса канала
                                 SrezTableLight.CnlData newCnlData = receivedSrez.CnlData[i];
@@ -1927,9 +1940,8 @@ namespace Scada.Server.Engine
 
                 // запуск работы
                 startDT = DateTime.Now;
-                string errMsg;
 
-                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out errMsg))
+                if (Settings.Load(AppDirs.ConfigDir + Settings.DefFileName, out string errMsg))
                 {
                     LoadModules();
 
@@ -2018,8 +2030,7 @@ namespace Scada.Server.Engine
         {
             lock (ctrlCnls)
             {
-                CtrlCnl ctrlCnl;
-                return ctrlCnls.TryGetValue(ctrlCnlNum, out ctrlCnl) ? ctrlCnl.Clone() : null;
+                return ctrlCnls.TryGetValue(ctrlCnlNum, out CtrlCnl ctrlCnl) ? ctrlCnl.Clone() : null;
             }
         }
 
@@ -2494,89 +2505,97 @@ namespace Scada.Server.Engine
         {
             passToClients = false;
 
-            if (serverIsReady && ctrlCnl != null && cmd != null)
+            try
             {
-                int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
-
-                // вычисление значения или данных команды по формуле канала управления
-                if (ctrlCnl.CalcCmdVal != null)
+                if (serverIsReady && ctrlCnl != null && cmd != null)
                 {
-                    // вычисление значения стандартной команды
-                    lock (curSrez) lock (calculator)
+                    int ctrlCnlNum = ctrlCnl.CtrlCnlNum;
+
+                    // вычисление значения или данных команды по формуле канала управления
+                    if (ctrlCnl.CalcCmdVal != null)
                     {
-                        try
+                        // вычисление значения стандартной команды
+                        lock (curSrez) lock (calculator)
                         {
-                            procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
-                            double cmdVal = cmd.CmdVal;
-                            ctrlCnl.CalcCmdVal(ref cmdVal);
-                            cmd.CmdVal = cmdVal;
-                            passToClients = !double.IsNaN(cmdVal);
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLog.WriteError(string.Format(Localization.UseRussian ?
-                                "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
-                                "Error calculating standard command value for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message));
-                            cmd.CmdVal = double.NaN;
-                        }
-                        finally
-                        {
-                            procSrez = null;
+                            try
+                            {
+                                procSrez = curSrez; // необходимо для работы формул Val(n) и Stat(n)
+                                double cmdVal = cmd.CmdVal;
+                                ctrlCnl.CalcCmdVal(ref cmdVal);
+                                cmd.CmdVal = cmdVal;
+                                passToClients = !double.IsNaN(cmdVal);
+                            }
+                            catch (Exception ex)
+                            {
+                                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Ошибка при вычислении значения стандартной команды для канала управления {0}: {1}" :
+                                    "Error calculating standard command value for the output channel {0}: {1}",
+                                    ctrlCnlNum, ex.Message));
+                                cmd.CmdVal = double.NaN;
+                            }
+                            finally
+                            {
+                                procSrez = null;
+                            }
                         }
                     }
-                }
-                else if (ctrlCnl.CalcCmdData != null)
-                {
-                    // вычисление данных бинарной команды
-                    lock (curSrez) lock (calculator)
+                    else if (ctrlCnl.CalcCmdData != null)
                     {
-                        try
+                        // вычисление данных бинарной команды
+                        lock (curSrez) lock (calculator)
                         {
-                            procSrez = curSrez;
-                            byte[] cmdData = cmd.CmdData;
-                            ctrlCnl.CalcCmdData(ref cmdData);
-                            cmd.CmdData = cmdData;
-                            passToClients = cmdData != null;
-                        }
-                        catch (Exception ex)
-                        {
-                            AppLog.WriteError(string.Format(Localization.UseRussian ?
-                                "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
-                                "Error calculating binary command data for the output channel {0}: {1}",
-                                ctrlCnlNum, ex.Message));
-                            cmd.CmdVal = double.NaN;
-                        }
-                        finally
-                        {
-                            procSrez = null;
+                            try
+                            {
+                                procSrez = curSrez;
+                                byte[] cmdData = cmd.CmdData;
+                                ctrlCnl.CalcCmdData(ref cmdData);
+                                cmd.CmdData = cmdData;
+                                passToClients = cmdData != null;
+                            }
+                            catch (Exception ex)
+                            {
+                                AppLog.WriteError(string.Format(Localization.UseRussian ?
+                                    "Ошибка при вычислении данных бинарной команды для канала управления {0}: {1}" :
+                                    "Error calculating binary command data for the output channel {0}: {1}",
+                                    ctrlCnlNum, ex.Message));
+                                cmd.CmdVal = double.NaN;
+                            }
+                            finally
+                            {
+                                procSrez = null;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    passToClients = true;
-                }
+                    else
+                    {
+                        passToClients = true;
+                    }
 
-                // выполнение действий модулей после приёма команды
-                RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
-
-                // создание события
-                if (passToClients && ctrlCnl.EvEnabled)
-                {
-                    EventTableLight.Event ev = new EventTableLight.Event();
-                    ev.DateTime = DateTime.Now;
-                    ev.ObjNum = ctrlCnl.ObjNum;
-                    ev.KPNum = ctrlCnl.KPNum;
-                    ev.Descr = cmd.GetCmdDescr(ctrlCnlNum, userID);
+                    // выполнение действий модулей после приёма команды
+                    RaiseOnCommandReceived(ctrlCnlNum, cmd, userID, ref passToClients);
 
                     // запись события и выполнение действий модулей
-                    WriteEvent(ev);
-                }
+                    if (passToClients && ctrlCnl.EvEnabled)
+                    {
+                        WriteEvent(new EventTableLight.Event
+                        {
+                            DateTime = DateTime.Now,
+                            ObjNum = ctrlCnl.ObjNum,
+                            KPNum = ctrlCnl.KPNum,
+                            Descr = cmd.GetCmdDescr(ctrlCnlNum, userID)
+                        });
+                    }
 
-                // отмена передачи команды, если номер команды не задан
-                if (ctrlCnl.CmdNum <= 0)
-                    passToClients = false;
+                    // отмена передачи команды, если номер команды не задан
+                    if (ctrlCnl.CmdNum <= 0)
+                        passToClients = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при обработке команды ТУ" :
+                    "Error processing command");
             }
         }
     }

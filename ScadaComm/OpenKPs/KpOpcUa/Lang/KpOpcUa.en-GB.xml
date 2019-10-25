@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpOpcUaDictionaries>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmConfig">
+    <Phrase key="this">OPC UA - Device {0} Properties</Phrase>
+    <Phrase key="gbConnection">Connection</Phrase>
+    <Phrase key="lblServerUrl">Server URL</Phrase>
+    <Phrase key="btnConnect.ToolTip">Connect to Server</Phrase>
+    <Phrase key="btnDisconnect.ToolTip">Disconnect from Server</Phrase>
+    <Phrase key="btnSecurityOptions.ToolTip">Security Options</Phrase>
+    <Phrase key="gbServerBrowse">Server Browse</Phrase>
+    <Phrase key="btnViewAttrs.ToolTip">View Attributes</Phrase>
+    <Phrase key="gbDevice">Device</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Add Selected Item</Phrase>
+    <Phrase key="btnAddSubscription.ToolTip">Add Subscription</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Move Up</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Move Down</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Delete</Phrase>
+    <Phrase key="gbEmptyItem">Item Parameters</Phrase>
+    <Phrase key="lblEmptyItem">Item not selected</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="dbSubscription">Subscription Parameters</Phrase>
+    <Phrase key="chkSubscrActive">Active</Phrase>
+    <Phrase key="lblDisplayName">Display name</Phrase>
+    <Phrase key="lblPublishingInterval">Publishing interval</Phrase>
+    <Phrase key="gbItem">Item Parameters</Phrase>
+    <Phrase key="chkItemActive">Active</Phrase>
+    <Phrase key="lblNodeID">Node ID</Phrase>
+    <Phrase key="chkIsArray">Is array</Phrase>
+    <Phrase key="lblArrayLen">Array length</Phrase>
+    <Phrase key="lblCnlNum">Input channel</Phrase>
+    <Phrase key="lblSignal">Signal</Phrase>
+    <Phrase key="gbCommand">Command Parameters</Phrase>
+    <Phrase key="lblDataType">Data type</Phrase>
+    <Phrase key="lblCmdNum">Command number</Phrase>
+    <Phrase key="ConnectServerError">Error connecting to OPC server</Phrase>
+    <Phrase key="DisconnectServerError">Error disconnecting from OPC server</Phrase>
+    <Phrase key="BrowseServerError">Error browsing OPC server item</Phrase>
+    <Phrase key="GetDataTypeError">Error getting OPC item data type</Phrase>
+    <Phrase key="ServerUrlRequired">Server URL must not be empty.</Phrase>
+    <Phrase key="EmptyNode">Empty</Phrase>
+    <Phrase key="SubscriptionsNode">Subscriptions</Phrase>
+    <Phrase key="CommandsNode">Commands</Phrase>
+    <Phrase key="EmptySubscription">&lt;Subscription&gt;</Phrase>
+    <Phrase key="EmptyItem">&lt;Item&gt;</Phrase>
+    <Phrase key="EmptyCommand">&lt;Command&gt;</Phrase>
+    <Phrase key="UnknownDataType">Data type &quot;{0}&quot; is unknown.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr">
+    <Phrase key="this">Node Attributes</Phrase>
+    <Phrase key="colName">Name</Phrase>
+    <Phrase key="colValue">Value</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+    <Phrase key="ReadAttrError">Error reading attributes from OPC server</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmSecurityOptions">
+    <Phrase key="this">Security Options</Phrase>
+    <Phrase key="lblSecurityMode">Security mode</Phrase>
+    <Phrase key="cbSecurityMode.Items[0]">None</Phrase>
+    <Phrase key="cbSecurityMode.Items[1]">Sign</Phrase>
+    <Phrase key="cbSecurityMode.Items[2]">Sign and encrypt</Phrase>
+    <Phrase key="lblSecurityPolicy">Security policy</Phrase>
+    <Phrase key="lblAuthenticationMode">Authentication mode</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[0]">Anonymous</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[1]">Username and password</Phrase>
+    <Phrase key="lblUsername">Username</Phrase>
+    <Phrase key="lblPassword">Password</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+</KpOpcUaDictionaries>

@@ -11,7 +11,7 @@
 <body>
     <h1>Telegram Driver</h1>
     <h2>Overview</h2>
-    <p>Telegram Driver is designed to send notifications using the popular Telegram messenger. The advantages of using Telegram is quickness of receiving notifications, no fee for the service and easy notification group management.</p>
+    <p>Telegram Driver is designed to send notifications using the popular Telegram messenger. The advantages of using Telegram is quickness of receiving notifications, no fee for the service and easy management of notification groups.</p>
 
     <h2>Installation</h2>
     <p>Telegram Driver is installed in accordance with <a href="../installation-and-run/module-installation.html#drivers">the general sequence of installing Communicator drivers</a>. The driver library file is KpTelegram.dll.</p>
@@ -23,7 +23,7 @@
         <li>Install the application and register <a href="https://telegram.org/" target="_blank">Telegram</a>.</li>
         <li>Add the bot named <a href="https://telegram.me/botfather" target="_blank">BotFather</a> to the contact list.<br />
             <img src="kp-telegram-files/bot_father.png" alt="Telegram BotFather" class="sd-article-image border" /></li>
-        <li>In the dialog with BotFather, run the command /newbot and follow the instructions from BotFather.</li>
+        <li>In the dialog with BotFather, run the command <em>/newbot</em> and follow the instructions from BotFather.</li>
         <li>Click the menu icon and create a new group to receive notifications.<br />
             <img src="kp-telegram-files/new_group.png" alt="Новая группа Telegram" class="sd-article-image border" /></li>
         <li>Add the bot you created to the new group.</li>
@@ -31,28 +31,29 @@
     </ol>
 
     <h3>Driver Settings</h3>
-    <p>Configure notifications in the following sequence:</p>
+    <p>Configuring of notifications is performed using the Administrator application as part of a project. The configuring steps are:</p>
     <ol>
-        <li>Using the Administrator application, open the <em>Device types</em> table and check that the device type &quot;224 Telegram&quot; exists. If the specified record is missing, enter it manually.</li>
-        <li>Using Administrator, create a separate communication line and a single device of the Telegram type that belongs to this communication line.</li>
-        <li>Import the created communication line and the device to Communicator. Enable sending commands for the communication line.</li>
-        <li>Using Communicator, open the device properties, enter the bot token obtained when creating the bot, and generate a bot password that is needed to manage subscriptions.<br />
+        <li>Open the <em>Device types</em> table and check that the device type &quot;224 Telegram&quot; exists. If the specified record is missing, enter it manually.</li>
+        <li>Create a separate communication line and a single device of the Telegram type that belongs to this communication line. Use wizards that by the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons.</li>
+        <li>In the Communicator settings open the device properties, enter the bot token obtained when creating the bot, and generate a bot password that is needed to manage subscriptions.<br />
             <img src="kp-telegram-files/kp_telegram_config_en.png" alt="Telegram Driver configuration" class="sd-article-image" /></li>
+        <li>Save the driver configuration.</li>
+        <li>Upload the project to the server by the <img src="../../common-images/upload.png" /> button.</li>
         <li>Go to the <em>Registration</em> page and register the driver using the hyperlinks on the form.<br />
             <img src="kp-telegram-files/kp_telegram_reg_en.png" alt="Telegram Driver registration" class="sd-article-image" /></li>
-        <li>Save the driver configuration.</li>
-        <li>Restart the Communicator service by clicking <img src="../../common-images/restart.png" />.</li>
+        <li>Save the changes again and upload the project to the server.</li>
     </ol>
 
     <h3>Manage Subscriptions</h3>
-    <p>If the settings are correct, your bot will respond to commands, for example, the /help command.</p>
-    <p class="sd-article-image.border">
-        <img src="kp-telegram-files/test_group_en.png" alt="Telegram notification group" /><br />
+    <p>If the settings are correct, your bot will respond to messenger commands, for example, the <em>/help</em> command. It is necessary to specify the subscriptions (chats) in the driver settings.</p>
+    <p class="sd-article-image border">
+        <img src="kp-telegram-files/group_chat_en.png" alt="Telegram notification group" /><br />
     </p>
-    <p>To add or remove subscriptions to the group, use the /start and /stop commands with the previously generated password. However, by default, subscription changes are blocked. To unlock it, send a standard command number 2 with a value of 1 by Communicator. Now you can add or remove subscriptions.</p>
+    <p>To get the ID and the name of the subscription, send the <em>/info</em> command using the messenger. Then add the received values using the device configuration form.</p>
+    <p>Obsolete method: to add or remove subscriptions, use the <em>/start</em> and <em>/stop</em> commands with the previously generated password. However, by default, subscription changes are blocked. To unlock it, send a standard command number 2 with a value of 1 by Communicator. Then you can add or remove subscriptions.</p>
 
     <h2>Sending Messages</h2>
-    <p>To send a message from Rapid SCADA to a Telegram group, you need send a binary command number 1 containing the group name (or identifier) and the message text. For example: RapidScadaBotTestGroup; Test message.</p>
+    <p>To send a message from Rapid SCADA to a Telegram group, you need send a binary command number 1 containing the group name (or identifier) and the message text. For example:<br />RapidScadaDemo; Test message.</p>
     <p class="sd-article-image">
         <img src="kp-telegram-files/send_cmd_en.png" alt="Sending Telegram message" /><br />
     </p>

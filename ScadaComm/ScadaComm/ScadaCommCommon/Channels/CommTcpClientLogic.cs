@@ -180,9 +180,7 @@ namespace Scada.Comm.Channels
                 {
                     foreach (KPLogic kpLogic in kpList)
                     {
-                        TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
-
-                        if (tcpConn != null && tcpConn.TcpClient.Available > 0)
+                        if (kpLogic.Connection is TcpConnection tcpConn && tcpConn.TcpClient.Available > 0)
                         {
                             KPLogic targetKP = kpLogic;
                             if (!ExecProcUnreadIncomingReq(kpLogic, tcpConn, ref targetKP))
@@ -260,8 +258,7 @@ namespace Scada.Comm.Channels
             if (settings.ConnMode == ConnectionModes.Shared)
             {
                 // общее соединение для всех КП
-                sharedTcpConn = new TcpConnection(new TcpClient());
-                sharedTcpConn.ReconnectAfter = settings.ReconnectAfter;
+                sharedTcpConn = new TcpConnection(new TcpClient()) { ReconnectAfter = settings.ReconnectAfter };
 
                 foreach (KPLogic kpLogic in kpList)
                 {
@@ -276,8 +273,10 @@ namespace Scada.Comm.Channels
                 {
                     foreach (KPLogic kpLogic in kpByCallNumList)
                     {
-                        TcpConnection tcpConn = new TcpConnection(new TcpClient());
-                        tcpConn.ReconnectAfter = settings.ReconnectAfter;
+                        TcpConnection tcpConn = new TcpConnection(new TcpClient())
+                        {
+                            ReconnectAfter = settings.ReconnectAfter
+                        };
                         tcpConnList.Add(tcpConn);
                         tcpConn.AddRelatedKP(kpLogic);
                         kpLogic.Connection = tcpConn;
@@ -343,11 +342,9 @@ namespace Scada.Comm.Channels
         public override void BeforeSession(KPLogic kpLogic)
         {
             // установка соединения при необходимости
-            TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
-            if (tcpConn != null && !tcpConn.Connected)
+            if (kpLogic.Connection is TcpConnection tcpConn && !tcpConn.Connected)
             {
-                string reason;
-                if (tcpConn.CanOpen(out reason))
+                if (tcpConn.CanOpen(out string reason))
                 {
                     try
                     {
@@ -397,8 +394,7 @@ namespace Scada.Comm.Channels
             // разрыв соединения согласно настройкам, а также если сеанс опроса КП завершён с ошибкой
             if (!settings.StayConnected || kpLogic.WorkState == KPLogic.WorkStates.Error)
             {
-                TcpConnection tcpConn = kpLogic.Connection as TcpConnection;
-                if (tcpConn != null && tcpConn.Connected)
+                if (kpLogic.Connection is TcpConnection tcpConn && tcpConn.Connected)
                 {
                     WriteToLog("");
                     WriteToLog(string.Format(Localization.UseRussian ?

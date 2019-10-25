@@ -165,5 +165,22 @@ namespace Scada.Admin.Deployment
 
             return existingNames;
         }
+
+        /// <summary>
+        /// Removes profiles belong to the specified instance.
+        /// </summary>
+        public void RemoveProfilesByInstance(int instanceID, out bool profilesAffected)
+        {
+            profilesAffected = false;
+
+            for (int i = Profiles.Count - 1; i >= 0; i--)
+            {
+                if (Profiles.Values[i].InstanceID == instanceID)
+                {
+                    Profiles.RemoveAt(i);
+                    profilesAffected = true;
+                }
+            }
+        }
     }
 }

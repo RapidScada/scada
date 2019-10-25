@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgChartDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart">
+    <Phrase key="PerfWarning">¡Advertencia! Demasiados canales pueden afectar el rendimiento.</Phrase>
+    <Phrase key="AddCnlBtn">Añadir</Phrase>
+    <Phrase key="RemoveCnlBtn">Borrar</Phrase>
+    <Phrase key="CnlInfoBtn">Información</Phrase>
+    <Phrase key="ObjectHint">Objeto: </Phrase>
+    <Phrase key="DeviceHint">Dispositivo: </Phrase>
+    <Phrase key="ViewHint">Ver: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.MinDataRepBuilder">
+    <Phrase key="MinDataWorksheet">Datos minutos</Phrase>
+    <Phrase key="MinDataGen">Generado: </Phrase>
+    <Phrase key="CnlsCaption">Canales de entrada:</Phrase>
+    <Phrase key="TimeColTitle">Tiempo</Phrase>
+    <Phrase key="ValColTitle">Canal {0}</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
+    <Phrase key="this">Chart - Rapid SCADA</Phrase>
+    <Phrase key="lblGenerated">Generado</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmMinDataRep">
+    <Phrase key="this">Informe de datos por minuto - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Informe de datos por minuto</Phrase>
+    <Phrase key="lblDateFrom">De</Phrase>
+    <Phrase key="lblDateTo">Para</Phrase>
+    <Phrase key="btnAddCnls">Añadir canales</Phrase>
+    <Phrase key="lblSelCnls">Canales seleccionados:</Phrase>
+    <Phrase key="lblNoSelCnls">Los canales de entrada no están seleccionados</Phrase>
+    <Phrase key="btnGenReport">Descargar Reporte</Phrase>
+    <Phrase key="lblGenStarted">Generando del reporte. Por favor espera...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmSelectCnls">
+    <Phrase key="this">Seleccionar Canales - Rapid SCADA</Phrase>
+    <Phrase key="lblLoading">Cargando...</Phrase>
+    <Phrase key="lblUnableLoadView">No se puede cargar la vista</Phrase>
+    <Phrase key="lblNoCnlsByView">Canales de entrada no encontrados</Phrase>
+  </Dictionary>
+</PlgChartDictionaries>

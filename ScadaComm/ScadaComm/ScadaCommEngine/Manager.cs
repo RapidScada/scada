@@ -836,11 +836,16 @@ namespace Scada.Comm.Engine
 
             if (AppDirs.Exist)
             {
-                // локализация ScadaData.dll
+                // локализация
                 if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaData", out string errMsg))
                     CommonPhrases.Init();
                 else
                     AppLog.WriteAction(errMsg, Log.ActTypes.Error);
+
+                if (Localization.LoadDictionaries(AppDirs.LangDir, "ScadaComm", out errMsg))
+                    CommPhrases.InitFromDictionaries();
+                else
+                    AppLog.WriteError(errMsg);
 
                 // запуск работы
                 if (StartOperation())

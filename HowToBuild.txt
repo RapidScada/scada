@@ -10,12 +10,16 @@ Microsoft Visual Studio 2017 is needed. Visual Studio Community is OK.
    Log,
    Report,
    ScadaData,
+   ScadaAgent,
    ScadaComm,
    OpenKPs,
    ScadaServer,
-   ScadaAdmin,
+   OpenModules,
    ScadaWeb,
-   ScadaScheme.
+   OpenPlugins,
+   ScadaScheme,
+   ScadaTable,
+   ScadaAdmin.
 
    Switch to the Release configuration so that the references are correct.
 

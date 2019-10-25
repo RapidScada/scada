@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{205C7DAB-C3ED-4D4F-8F2F-CFE65D6C4044}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scada.Comm.Devices</RootNamespace>
+    <AssemblyName>KpOpcUa</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.4.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.4\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="Log">
+      <HintPath>..\..\..\..\scada\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Client, Version=1.4.356.0, Culture=neutral, PublicKeyToken=bfa7a73c5cf4b6e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\OPCFoundation.NetStandard.Opc.Ua.1.4.356.27\lib\net46\Opc.Ua.Client.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Configuration, Version=1.4.356.0, Culture=neutral, PublicKeyToken=bfa7a73c5cf4b6e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\OPCFoundation.NetStandard.Opc.Ua.1.4.356.27\lib\net46\Opc.Ua.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="Opc.Ua.Core, Version=1.4.356.0, Culture=neutral, PublicKeyToken=bfa7a73c5cf4b6e8, processorArchitecture=MSIL">
+      <HintPath>..\packages\OPCFoundation.NetStandard.Opc.Ua.1.4.356.27\lib\net46\Opc.Ua.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaCommCommon">
+      <HintPath>..\..\..\..\scada\ScadaComm\ScadaComm\ScadaCommCommon\bin\Release\ScadaCommCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData, Version=5.1.2.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\scada\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="KpOpcUaLogic.cs" />
+    <Compile Include="KpOpcUaView.cs" />
+    <Compile Include="OpcUa\Config\AuthenticationMode.cs" />
+    <Compile Include="OpcUa\Config\CommandConfig.cs" />
+    <Compile Include="OpcUa\Config\ConnectionOptions.cs" />
+    <Compile Include="OpcUa\Config\DeviceConfig.cs" />
+    <Compile Include="OpcUa\Config\ItemConfig.cs" />
+    <Compile Include="OpcUa\Config\SecurityPolicy.cs" />
+    <Compile Include="OpcUa\Config\SubscriptionConfig.cs" />
+    <Compile Include="OpcUa\OpcUaHelper.cs" />
+    <Compile Include="OpcUa\UI\CtrlCommand.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\CtrlCommand.Designer.cs">
+      <DependentUpon>CtrlCommand.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\CtrlItem.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\CtrlItem.Designer.cs">
+      <DependentUpon>CtrlItem.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\CtrlSubscription.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\CtrlSubscription.Designer.cs">
+      <DependentUpon>CtrlSubscription.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmConfig.Designer.cs">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmNodeAttr.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmNodeAttr.Designer.cs">
+      <DependentUpon>FrmNodeAttr.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmSecurityOptions.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="OpcUa\UI\FrmSecurityOptions.Designer.cs">
+      <DependentUpon>FrmSecurityOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="OpcUa\UI\KpPhrases.cs" />
+    <Compile Include="OpcUa\UI\TreeUpdateTypes.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Config\KpOpcUa.Linux.xml" />
+    <EmbeddedResource Include="Config\KpOpcUa.Win.xml" />
+    <Content Include="Config\KpOpcUa_001.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="Lang\KpOpcUa.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\KpOpcUa.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="OpcUa\UI\CtrlCommand.resx">
+      <DependentUpon>CtrlCommand.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpcUa\UI\CtrlItem.resx">
+      <DependentUpon>CtrlItem.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpcUa\UI\CtrlSubscription.resx">
+      <DependentUpon>CtrlSubscription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpcUa\UI\FrmConfig.resx">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpcUa\UI\FrmNodeAttr.resx">
+      <DependentUpon>FrmNodeAttr.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="OpcUa\UI\FrmSecurityOptions.resx">
+      <DependentUpon>FrmSecurityOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

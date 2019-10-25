@@ -23,6 +23,7 @@
  * Modified : 2019
  */
 
+using Scada.UI;
 using System;
 using System.Drawing;
 using System.IO;
@@ -236,7 +237,7 @@ namespace Scada.Scheme.Editor
             if (form == null)
                 throw new ArgumentNullException("form");
 
-            if (IsEmpty)
+            if (IsEmpty || !ScadaUiUtils.AreaIsVisible(Left, Top, Width, Height))
             {
                 int adj = CalcFormAdj(form);
                 form.Left = -adj;
@@ -246,10 +247,7 @@ namespace Scada.Scheme.Editor
             }
             else
             {
-                form.Left = Left;
-                form.Top = Top;
-                form.Width = Width;
-                form.Height = Height;
+                form.SetBounds(Left, Top, Width, Height);
             }
         }
 

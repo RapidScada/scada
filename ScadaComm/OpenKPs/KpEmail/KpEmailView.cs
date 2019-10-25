@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Comm.Devices.AB;
@@ -38,7 +38,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.0.2";
+        internal const string KpVersion = "5.0.1.0";
 
 
         /// <summary>
@@ -69,19 +69,23 @@ namespace Scada.Comm.Devices
                 return Localization.UseRussian ?
                     "Отправка уведомлений по электронной почте.\n\n" +
                     "Команды ТУ:\n" +
-                    "1 (бинарная) - отправка уведомления.\n\n" +
+                    "1 (бинарная) - отправка электронного письма;\n" +
+                    "2 (бинарная) - отправка электронного письма с вложениями.\n\n" +
                     "Примеры текста команды:\n" +
-                    "имя_группы;тема;сообщение\n" +
-                    "имя_контакта;тема;сообщение\n" +
-                    "эл_почта;тема;сообщение" :
+                    "имя_группы;тема;сообщение;вложения\n" +
+                    "имя_контакта;тема;сообщение;вложения\n" +
+                    "эл_почта;тема;сообщение;вложения\n" +
+                    "вложения - это список путей к файлам, разделенных запятыми.":
 
                     "Sending email notifications.\n\n" +
                     "Commands:\n" +
-                    "1 (binary) - send the notification.\n\n" +
+                    "1 (binary) - send the email;\n" +
+                    "2 (binary) - send the email with attachments.\n\n" +
                     "Command text examples:\n" +
-                    "group_name;subject;message\n" +
-                    "contact_name;subject;message\n" +
-                    "email;subject;message";
+                    "group_name;subject;message;attachments\n" +
+                    "contact_name;subject;message;attachments\n" +
+                    "email;subject;message;attachments\n" +
+                    "attachments is a comma-separated list of file paths.";
             }
         }
 

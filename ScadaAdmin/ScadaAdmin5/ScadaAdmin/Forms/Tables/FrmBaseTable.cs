@@ -29,6 +29,7 @@ using Scada.Data.Entities;
 using Scada.Data.Tables;
 using Scada.UI;
 using System;
+using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Globalization;
@@ -73,6 +74,7 @@ namespace Scada.Admin.App.Forms.Tables
         private DataTable dataTable; // the table used by a grid view control
         private int maxRowID;        // the maximum ID in the table
         private FrmFind frmFind;     // the find and replace form
+        private FrmFilter frmFilter; // the filter form
 
 
         /// <summary>
@@ -97,6 +99,7 @@ namespace Scada.Admin.App.Forms.Tables
             dataTable = null;
             maxRowID = 0;
             frmFind = null;
+            frmFilter = null;
 
             Text = baseTable.Title + (tableFilter == null ? "" : " - " + tableFilter);
         }
@@ -154,6 +157,9 @@ namespace Scada.Admin.App.Forms.Tables
             if (!project.ConfigBase.Load(out string errMsg))
                 appData.ProcError(errMsg);
 
+            // save the existing filter
+            string rowFilter = dataTable?.DefaultView.RowFilter ?? "";
+
             // reset the binding source
             bindingSource.DataSource = null;
 
@@ -164,6 +170,7 @@ namespace Scada.Admin.App.Forms.Tables
             dataTable.DefaultView.Sort = baseTable.PrimaryKey;
             maxRowID = dataTable.DefaultView.Count > 0 ? 
                 (int)dataTable.DefaultView[dataTable.DefaultView.Count - 1][baseTable.PrimaryKey] : 0;
+            dataTable.DefaultView.RowFilter = rowFilter;
 
             // set the binding source before creating grid columns in case of work on Mono
             if (ScadaUtils.IsRunningOnMono)
@@ -607,7 +614,12 @@ namespace Scada.Admin.App.Forms.Tables
                     if (cell.IsInEditMode)
                     {
                         if (dataGridView.EditingControl is TextBox textBox)
-                            textBox.Cut();
+                        {
+                            if (cut)
+                                textBox.Cut();
+                            else
+                                textBox.Copy();
+                        }
                     }
                     else
                     {
@@ -645,7 +657,8 @@ namespace Scada.Admin.App.Forms.Tables
 
                 if (col is DataGridViewTextBoxColumn)
                 {
-                    if (dataGridView.BeginEdit(true))
+                    // do nothing if the cell is already in edit mode
+                    if (!cell.IsInEditMode && dataGridView.BeginEdit(true))
                     {
                         if (dataGridView.EditingControl is TextBox textBox)
                             textBox.Paste();
@@ -717,7 +730,7 @@ namespace Scada.Admin.App.Forms.Tables
 
         private void FrmBaseTable_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName, null, cmsTable);
 
             if (lblCount.Text.Contains("{0}"))
                 bindingNavigator.CountItemFormat = lblCount.Text;
@@ -867,6 +880,25 @@ namespace Scada.Admin.App.Forms.Tables
                         EndEdit();
                     }
                 }
+            }
+        }
+
+        private void dataGridView_CellMouseClick(object sender, DataGridViewCellMouseEventArgs e)
+        {
+            int colInd = e.ColumnIndex;
+            int rowInd = e.RowIndex;
+
+            if (0 <= rowInd && rowInd < dataGridView.RowCount &&
+                0 <= colInd && colInd < dataGridView.ColumnCount &&
+                e.Button == MouseButtons.Right && e.Clicks == 1 &&
+                (dataGridView.CurrentCell == null || !dataGridView.CurrentCell.IsInEditMode))
+            {
+                // select cell on right-click
+                dataGridView.CurrentCell = dataGridView[colInd, rowInd];
+
+                // show context menu
+                if (ProperiesAvailable)
+                    cmsTable.Show(MousePosition);
             }
         }
 
@@ -1048,13 +1080,26 @@ namespace Scada.Admin.App.Forms.Tables
                 frmFind = new FrmFind(this, dataGridView);
 
                 // center the form within the bounds of its parent
-                frmFind.Left = (Left + Right - frmFind.Width) / 2;
-                frmFind.Top = (Top + Bottom - frmFind.Height) / 2;
+                frmFind.Left = (ParentForm.Left + ParentForm.Right - frmFind.Width) / 2;
+                frmFind.Top = (ParentForm.Top + ParentForm.Bottom - frmFind.Height) / 2;
                 frmFind.Show(this);
             }
             else
             {
                 frmFind.Activate();
+            }
+        }
+
+        private void btnFilter_Click(object sender, EventArgs e)
+        {
+            frmFilter = frmFilter ?? new FrmFilter(dataGridView);
+            frmFilter.DataTable = dataTable;
+
+            if (frmFilter.ShowDialog() == DialogResult.OK)
+            {
+                btnFilter.Image = frmFilter.FilterIsEmpty ? 
+                    Properties.Resources.filter : 
+                    Properties.Resources.filter_set;
             }
         }
 

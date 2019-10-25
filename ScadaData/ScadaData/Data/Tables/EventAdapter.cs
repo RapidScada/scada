@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2007
- * Modified : 2017
+ * Modified : 2019
  * 
  * --------------------------------
  * Table file structure (version 3)
@@ -30,7 +30,7 @@
  * ObjNum          - object number                           (UInt16)
  * KPNum           - device number                           (UInt16)
  * ParamID         - quantity ID                             (UInt16)
- * CnlNum          - inpit channel number                    (UInt16)
+ * CnlNum          - input channel number                    (UInt16)
  * OldCnlVal       - previous channel number                 (Double)
  * OldCnlStat      - previous channel status                 (Byte)
  * NewCnlVal       - new channel value                       (Double)
@@ -80,15 +80,43 @@ namespace Scada.Data.Tables
 
 
         /// <summary>
-        /// Преобразовать массив байт в строку, 0-й байт - длина строки
+        /// Записать строку в буфер, в 0-й байт записывается длина данных.
         /// </summary>
-        protected string BytesToStr(byte[] bytes, int startIndex)
+        protected void StrToBytes(string s, byte[] buffer, int index, int maxStrLen)
         {
-            int length = bytes[startIndex];
-            startIndex++;
-            if (startIndex + length > bytes.Length)
-                length = bytes.Length - startIndex;
-            return Encoding.Default.GetString(bytes, startIndex, length);
+            if (string.IsNullOrEmpty(s))
+            {
+                buffer[index] = 0;
+            }
+            else
+            {
+                if (s.Length > maxStrLen)
+                    s = s.Substring(0, maxStrLen);
+
+                byte[] strBuf = Encoding.Default.GetBytes(s);
+                buffer[index] = (byte)strBuf.Length;
+                Array.Copy(strBuf, 0, buffer, index + 1, strBuf.Length);
+            }
+        }
+
+        /// <summary>
+        /// Преобразовать массив байт в строку, 0-й байт - длина данных.
+        /// </summary>
+        protected string BytesToStr(byte[] buffer, int index)
+        {
+            int dataLen = buffer[index++];
+
+            if (dataLen > 0)
+            {
+                if (index + dataLen > buffer.Length)
+                    dataLen = buffer.Length - index - 1;
+
+                return Encoding.Default.GetString(buffer, index, dataLen);
+            }
+            else
+            {
+                return "";
+            }
         }
 
         /// <summary>
@@ -172,16 +200,8 @@ namespace Scada.Data.Tables
             evBuf[34] = ev.Checked ? (byte)1 : (byte)0;
             evBuf[35] = (byte)(ev.UserID % 256);
             evBuf[36] = (byte)(ev.UserID / 256);
-            string descr = ev.Descr ?? "";
-            if (descr.Length > MaxDescrLen)
-                descr = descr.Substring(0, MaxDescrLen);
-            evBuf[37] = (byte)descr.Length;
-            Array.Copy(Encoding.Default.GetBytes(descr), 0, evBuf, 38, descr.Length);
-            string data = ev.Data ?? "";
-            if (data.Length > MaxDataLen)
-                data = data.Substring(0, MaxDataLen);
-            evBuf[138] = (byte)data.Length;
-            Array.Copy(Encoding.Default.GetBytes(data), 0, evBuf, 139, data.Length);
+            StrToBytes(ev.Descr, evBuf, 37, MaxDescrLen);
+            StrToBytes(ev.Data, evBuf, 138, MaxDataLen);
             return evBuf;
         }
 

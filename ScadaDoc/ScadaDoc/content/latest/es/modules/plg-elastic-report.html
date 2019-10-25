@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Elastic Report Plugin - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Elastic Report Plugin</h1>
+
+    <h2>Introducción</h2>
+
+    <p>Elastic Report Plugin permite generar informes de acuerdo con una configuración personalizada. Con este complemento se puede crear casi que cualquier informe deseado. Un usuario simplemente selecciona el período y hace clic en el botón generar informe. Un administrador crea configuraciones de informes que definen un conjunto de diferentes secciones de informe y unen las columnas y filas del informe a los datos del sistema.</p>
+
+    <h2>Instalación</h2>
+
+    <p>Primero debe realizar <a href="../installation-and-run/module-installation.html#plugins">la secuencia general de instalación de complementos</a> y luego realizar varias acciones adicionales:</p>
+
+    <ol>
+        <li>Vaya al <em>Main Menu &gt; Registration &gt; Elastic Report</em>.</li>
+        <li>Registre el complemento utilizando los hipervínculos en la página.</li>
+        <li>Agregue la clave de registración al proyecto bajando la configuración de Webstation, utilizando para ello la aplicación Administrator.</li>
+    </ol>
+
+    <h2>Configuración de informes</h2>
+
+    <p>Un informe consta de un conjunto de secciones que aparecen, una por una, en el documento de salida. Cada sección tiene su propio tipo, parámetros y enlace de datos. Además, el informe tiene parámetros generales que afectan a todas las secciones. El mismo informe se puede generar en una variedad de formatos. Actualmente soporta los formatos Excel, PDF y HTML. La apariencia de un mismo informe, generado en diferentes formatos,  puede diferir ligeramente.</p>
+
+    <h3>Archivo de Configuración de Informes</h3>
+
+    <p>El archivo de configuración especifica el formato del informe y define el enlace de los datos a los canales de entrada. Debe haber un archivo de configuración separado para cada formulario de informe. El archivo de configuración está en formato XML. Debe guardarse en el directorio <em>Interface</em>, o en su subdirectorio dentro de un proyecto.</p>
+
+    <p>El plugin distributivo contiene un ejemplo del archivo de configuración de informe, SCADA\Interface\ElasticReport\ElasticRepExample.xml. Este ejemplo incluye la descripción detallada de la configuración y demuestra la generación de secciones de informe, de todos los tipos posibles.</p>
+
+    <p>Los archivos de configuración se pueden editar utilizando cualquier editor de texto. Por ejemplo, el editor de texto gratuito <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a> permite trabajar comodamente con archivos XML mediante un complemento especial.</p>
+
+    <h3>Estilos de Informes</h3>
+
+    <p>Es posible personalizar los estilos de informe: fuentes, colores, tamaños de celda, etc.</p>
+
+    <p>El archivo SCADA\ScadaWeb\plugins\ElasticReport\templates\ElasticRepExcel.xml especifica los estilos de los informes en formato Excel.</p>
+
+    <p>Para crear estilos personalizados, abra este archivo en Excel y vaya a la página <em>Custom Styles</em> donde se encuentran los estilos adicionales. Utilice los estilos de la página <em>Default Styles</em> como ejemplo.</p>
+
+    <p>Los estilos personalizados para el formato PDF se especifican en el archivo SCADA\ScadaWeb\plugins\ElasticReport\template\ElasticRepPdfCustom.xml</p>
+
+    <p>El archivo XML, que define los estilos de PDF, se edita manualmente utilizando cualquier editor de texto. Utilice los estilos predeterminados ubicados en ElasticRepPdfDefault.xml como ejemplo.</p>
+
+    <p>Los estilos de informe para salida HTML se configuran en el archivo SCADA\ScadaWeb\plugins\ElasticReport\css\customstyles.css de acuerdo con las reglas de Cascade Style Sheets.</p>
+
+    <h3>Añadir informes a la Configuración de la Base de Datos</h3>
+
+    <p>Para hacer que el informe aparezca en la lista de informes disponibles, es necesario registrarlo en la tabla <em>Interface</em> utilizando la aplicación Administrator. Especifique la ruta al archivo de configuración del informe relacionado con el directorio de la interfaz, especifique el tipo de informe ElasticRep e ingrese el título del informe (ver la Figura).Después de subir el proyecto al Server, el informe está disponible en la página <em>Main Menu &gt; Reports</em> page.</p>
+
+    <p class="sd-article-image">
+        <img src="plg-elastic-report-files/report_itf_file_en.png" alt="Archivo de informe" /><br />
+    </p>
+
+    <p class="sd-article-image">
+        <img src="plg-elastic-report-files/report_itf_tbl_en.png" alt="Edición de la tabla de interfaz" /><br />
+    </p>
+</body>
+</html>

@@ -11,27 +11,28 @@
 <body>
     <h1>Automatic Control Module</h1>
     <h2>Overview</h2>
-    <p>Automatic Control Module allows to automatically send commands depending on certain conditions. Unless you register the module, it works in the demo mode. The duration of a full functional demo is limited to 10 minutes after restart. The module works under control of the Server application. The form shown below is designed to configure the module.</p>
+    <p>Automatic Control Module automatically sends commands depending on certain conditions. Unless you register the module, it works in the demo mode. The duration of a full functional demo is limited to 10 minutes after restart. The module operates under control of the Server application. The form shown below is designed to configure the module.</p>
     <p class="sd-article-image">
         <img src="mod-auto-control-files/mod_auto_control_en.png" alt="The module configuration form" /><br />
     </p>
     <p>Conditions required for sending commands specified as triggers of several types:</p>
     <ul>
         <li>Channel data trigger. The trigger fires if value or status of the input channel satisfies the condition.</li>
+        <li>Channel data change trigger. The trigger fires every time when value or status of an input channel changes.</li>
         <li>Event trigger. The trigger fires if an event satisfies the condition occurs.</li>
         <li>Time trigger. The trigger fires on the specified dates and times.</li>
         <li>Command trigger. The trigger fires if the Server application receives the specified command.</li>
     </ul>
-    <p>Each trigger contains a set of commands which are sent if the trigger fires. The information about firing of the triggers is accessible on the <em>Log</em> page or directly from the ModAutoControl.log file. This file is located in Server logs directory C:\SCADA\ScadaServer\Log</p>
+    <p>Each trigger contains a set of commands which are sent if the trigger fires. The information about firing of the triggers is accessible on the <em>Log</em> page or directly from the ModAutoControl.log file. This file is located in the Server logs directory C:\SCADA\ScadaServer\Log</p>
 
     <h2>Installation</h2>
-    <p>Automatic Control Module is installed in accordance with <a href="../installation-and-run/module-installation.html#modules">the general sequence of installing Server modules</a>. The module library file is ModAutoControl.dll. After adding the module, you need to perform several additional actions:</p>
+    <p>Automatic Control Module is installed in accordance with <a href="../installation-and-run/module-installation.html#modules">the general sequence of installing Server modules</a>. The module library file is ModAutoControl.dll. By adding the module, perform the following additional actions:</p>
     <ol>
-        <li>Click the <em>Properties</em> button to open the module configuration form </li>
+        <li>After activating the module, upload the project to the server in order to determine the computer code for module registration.</li>
+        <li>Select the module on the <em>Modules</em> page and click the <em>Properties</em> button to open the module settings form.</li>
         <li>Go to the <em>Registration</em> page and register the module using the hyperlinks on the form.</li>
         <li>Configure the module by creating triggers and commands.</li>
-        <li>Save the module configuration.</li>
-        <li>Restart the Server service by clicking <img src="../../common-images/restart.png" />.</li>
+        <li>Save the module configuration and upload the project to the server.</li>
     </ol>
 
     <h2>Variables of Telecontrol Commands</h2>

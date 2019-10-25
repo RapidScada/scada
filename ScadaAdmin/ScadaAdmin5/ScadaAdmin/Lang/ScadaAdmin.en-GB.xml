@@ -278,6 +278,7 @@
     <Phrase key="UploadConfigError">Error uploading configuration</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmBaseTable">
+    <Phrase key="miProperties">Properties</Phrase>
     <Phrase key="btnCloseError">Close</Phrase>
     <Phrase key="btnMoveFirst.ToolTip">Move First</Phrase>
     <Phrase key="btnMovePrevious.ToolTip">Move Previous</Phrase>
@@ -295,6 +296,7 @@
     <Phrase key="btnCut.ToolTip">Cut (Ctrl+X)</Phrase>
     <Phrase key="btnCopy.ToolTip">Copy (Ctrl+C)</Phrase>
     <Phrase key="btnPaste.ToolTip">Paste (Ctrl+V)</Phrase>
+    <Phrase key="btnFilter.ToolTip">Filter</Phrase>
     <Phrase key="btnFind.ToolTip">Find and Replace (Ctrl+F)</Phrase>
     <Phrase key="btnAutoSizeColumns.ToolTip">Autofit Column Widths</Phrase>
     <Phrase key="btnProperties.ToolTip">Item Properties</Phrase>
@@ -332,6 +334,20 @@
     <Phrase key="chkEvEnabled">Write events</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFilter">
+    <Phrase key="this">Filter</Phrase>
+    <Phrase key="lblColumn">Column</Phrase>
+    <Phrase key="lblOperation">Operation</Phrase>
+    <Phrase key="cbStringOperation.Items[0]">Equals</Phrase>
+    <Phrase key="cbStringOperation.Items[1]">Contains</Phrase>
+    <Phrase key="lblValue">Value</Phrase>
+    <Phrase key="cbBoolean.Items[0]">False</Phrase>
+    <Phrase key="cbBoolean.Items[1]">True</Phrase>
+    <Phrase key="btnClearFilter">Clear Filter</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="IncorrectTableFilter">Incorrect table filter.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tables.FrmFind">
     <Phrase key="this">Find and Replace</Phrase>
@@ -513,10 +529,11 @@
     <Phrase key="btnBrowseTableEditorPath">Browse...</Phrase>
     <Phrase key="lblTextEditorPath">Text editor</Phrase>
     <Phrase key="btnBrowseTextEditorPath">Browse...</Phrase>
-    <Phrase key="gbCnlNumOptions">Channel Numbering</Phrase>
+    <Phrase key="gbChannelOptions">Channel Generation</Phrase>
     <Phrase key="lblCnlMult">Multiplicity</Phrase>
     <Phrase key="lblCnlShift">Shift</Phrase>
     <Phrase key="lblCnlGap">Gap</Phrase>
+    <Phrase key="chkPrependDeviceName">Prepend device name</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="ExecutableFileFilter">Executable files (*.exe)|*.exe|All Files (*.*)|*.*</Phrase>
@@ -681,12 +698,15 @@
   <Dictionary key="Scada.Admin.App.Forms.FrmProjectProps">
     <Phrase key="this">Project Properties</Phrase>
     <Phrase key="lblName">Project name</Phrase>
+    <Phrase key="lblVersion">Version</Phrase>
     <Phrase key="lblDescr">Description</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.FrmStartPage">
     <Phrase key="this">Start Page</Phrase>
+    <Phrase key="miRemoveFromList">Remove From List</Phrase>
+    <Phrase key="miCopyPath">Copy Path</Phrase>
     <Phrase key="lblRecentProjects">Recent Projects</Phrase>
     <Phrase key="lblNoRecentProjects">No recent projects</Phrase>
     <Phrase key="btnNewProject">New Project</Phrase>

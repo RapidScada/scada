@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2019
  */
 
 using Scada.UI;
@@ -31,13 +31,14 @@ using System.Windows.Forms;
 namespace Scada.Comm.Devices.KpSnmp
 {
     /// <summary>
-    /// Device properties form
-    /// <para>Форма настройки свойств КП</para>
+    /// Device properties form.
+    /// <para>Форма настройки свойств КП.</para>
     /// </summary>
     public partial class FrmConfig : Form
     {
         private AppDirs appDirs;       // директории приложения
         private int kpNum;             // номер настраиваемого КП
+        private string cmdLine;        // командная строка КП
         private Config config;         // конфигурация КП
         private string configFileName; // имя файла конфигурации КП
         private bool modified;         // признак изменения конфигурации
@@ -53,6 +54,7 @@ namespace Scada.Comm.Devices.KpSnmp
 
             appDirs = null;
             kpNum = 0;
+            cmdLine = "";
             config = new Config();
             configFileName = "";
             modified = false;
@@ -183,14 +185,15 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Отобразить форму модально
         /// </summary>
-        public static void ShowDialog(AppDirs appDirs, int kpNum)
+        public static void ShowDialog(AppDirs appDirs, int kpNum, string cmdLine)
         {
-            if (appDirs == null)
-                throw new ArgumentNullException("appDirs");
+            FrmConfig frmConfig = new FrmConfig
+            {
+                appDirs = appDirs ?? throw new ArgumentNullException("appDirs"),
+                kpNum = kpNum,
+                cmdLine = cmdLine
+            };
 
-            FrmConfig frmConfig = new FrmConfig();
-            frmConfig.appDirs = appDirs;
-            frmConfig.kpNum = kpNum;
             frmConfig.ShowDialog();
         }
 
@@ -217,7 +220,7 @@ namespace Scada.Comm.Devices.KpSnmp
             Text = string.Format(Text, kpNum);
 
             // загрузка конфигурации КП
-            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
+            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum, cmdLine);
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
             Modified = false;

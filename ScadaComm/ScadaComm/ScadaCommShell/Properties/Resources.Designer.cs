@@ -93,6 +93,16 @@ namespace Scada.Comm.Shell.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap comm_line_inactive {
+            get {
+                object obj = ResourceManager.GetObject("comm_line_inactive", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap comm_lines {
             get {
                 object obj = ResourceManager.GetObject("comm_lines", resourceCulture);

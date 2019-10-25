@@ -1,0 +1,20 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicación Agent - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Aplicación Agent</h1>
+
+    <p>La aplicación Agent transfiere la configuración entre una instancia de Rapid SCADA y la aplicación Administrator. Adicionalmente, Agent proporciona archivos de registro (log files) para mostrar en Administrator. Agent se ejecuta como un servicio en el servidor en el que está instalada una instancia de Rapid SCADA, controlada por Agent. Una instancia de Rapid SCADA incluye las aplicaciones Server, Communicator y Webstation, todas o algunas de ellas.</p>
+
+    <p>Agent se comunica con Administrator a vía TCP. Por lo tanto, Administrator puede ser instalado en la misma computadora que Agent o en otra computadora a la que se pueda acceder a través de la red. De manera predeterminada (por defecto), Agent utiliza el puerto TPC 10002. En caso de acceso remoto, el servidor de seguridad (Firewall) debe permitir las conexiones entrantes a este puerto.</p>
+
+    <p>Agent no tiene interfaz de usuario. Para verificar su funcionamiento, utilize los archivos de registro cuya ubicación predeterminada es C: \ SCADA \ ScadaAgent \ Log</p>
+</body>
+</html>

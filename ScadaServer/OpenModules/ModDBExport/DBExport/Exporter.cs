@@ -489,19 +489,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueCurData(SrezTableLight.Srez curSrez)
         {
-            lock (curSrezQueue)
+            if (ExportParams.ExportCurData)
             {
-                if (curSrezQueue.Count < MaxQueueSize)
+                lock (curSrezQueue)
                 {
-                    curSrezQueue.Enqueue(curSrez);
-                }
-                else
-                {
-                    skipCurSrezCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь текущие данные. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue current data. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (curSrezQueue.Count < MaxQueueSize)
+                    {
+                        curSrezQueue.Enqueue(curSrez);
+                    }
+                    else
+                    {
+                        skipCurSrezCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь текущие данные. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue current data. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }
@@ -511,19 +514,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueArcData(SrezTableLight.Srez arcSrez)
         {
-            lock (arcSrezQueue)
+            if (ExportParams.ExportArcData)
             {
-                if (arcSrezQueue.Count < MaxQueueSize)
+                lock (arcSrezQueue)
                 {
-                    arcSrezQueue.Enqueue(arcSrez);
-                }
-                else
-                {
-                    skipArcSrezCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь архивные данные. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue archive data. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (arcSrezQueue.Count < MaxQueueSize)
+                    {
+                        arcSrezQueue.Enqueue(arcSrez);
+                    }
+                    else
+                    {
+                        skipArcSrezCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь архивные данные. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue archive data. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }
@@ -533,19 +539,22 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public void EnqueueEvent(EventTableLight.Event ev)
         {
-            lock (evQueue)
+            if (ExportParams.ExportEvents)
             {
-                if (evQueue.Count < MaxQueueSize)
+                lock (evQueue)
                 {
-                    evQueue.Enqueue(ev);
-                }
-                else
-                {
-                    skipEvCnt++;
-                    log.WriteAction(string.Format(Localization.UseRussian ?
-                        "Невозможно добавить в очередь событие. Максимальный размер очереди {0} превышен" :
-                        "Unable to enqueue an event. The maximum size of the queue {0} is exceeded",
-                        MaxQueueSize));
+                    if (evQueue.Count < MaxQueueSize)
+                    {
+                        evQueue.Enqueue(ev);
+                    }
+                    else
+                    {
+                        skipEvCnt++;
+                        log.WriteAction(string.Format(Localization.UseRussian ?
+                            "Невозможно добавить в очередь событие. Максимальный размер очереди {0} превышен" :
+                            "Unable to enqueue an event. The maximum size of the queue {0} is exceeded",
+                            MaxQueueSize));
+                    }
                 }
             }
         }

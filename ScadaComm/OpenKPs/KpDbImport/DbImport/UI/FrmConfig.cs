@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpDBImport
- * Summary  : Device properties form
+ * Summary  : Device configuration form
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
@@ -34,18 +34,18 @@ using System.Windows.Forms;
 namespace Scada.Comm.Devices.DbImport.UI
 {
     /// <summary>
-    /// Device properties form.
-    /// <para>Форма настройки свойств КП.</para>
+    /// Device configuration form.
+    /// <para>Форма настройки конфигурации КП.</para>
     /// </summary>
     public partial class FrmConfig : Form
     {
-        private AppDirs appDirs;       // the application directories
-        private int kpNum;             // the device number
-        private Config config;         // the device configuration
-        private string configFileName; // the configuration file name
-        private bool modified;         // the configuration was modified
-        private bool connChanging;     // connection settings are changing
-        private bool cmdSelecting;     // a command is selecting
+        private readonly AppDirs appDirs; // the application directories
+        private readonly int kpNum;       // the device number
+        private readonly Config config;   // the device configuration
+        private string configFileName;    // the configuration file name
+        private bool modified;            // the configuration was modified
+        private bool connChanging;        // connection settings are changing
+        private bool cmdSelecting;        // a command is selecting
 
 
 
@@ -294,7 +294,7 @@ namespace Scada.Comm.Devices.DbImport.UI
 
             Text = string.Format(Text, kpNum);
 
-            // load configuration
+            // load a configuration
             configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
 
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))

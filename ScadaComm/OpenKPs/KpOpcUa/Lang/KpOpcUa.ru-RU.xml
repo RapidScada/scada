@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpOpcUaDictionaries>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmConfig">
+    <Phrase key="this">OPC UA - Свойства КП {0}</Phrase>
+    <Phrase key="gbConnection">Соединение</Phrase>
+    <Phrase key="lblServerUrl">Адрес сервера</Phrase>
+    <Phrase key="btnConnect.ToolTip">Соединиться с сервером</Phrase>
+    <Phrase key="btnDisconnect.ToolTip">Разъединиться с сервером</Phrase>
+    <Phrase key="btnSecurityOptions.ToolTip">Настройки безопасности</Phrase>
+    <Phrase key="gbServerBrowse">Обзор сервера</Phrase>
+    <Phrase key="btnViewAttrs.ToolTip">Просмотреть атрибуты</Phrase>
+    <Phrase key="gbDevice">КП</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Добавить выбранный элемент</Phrase>
+    <Phrase key="btnAddSubscription.ToolTip">Добавить подписку</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Переместить вверх</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Переместить вниз</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Удалить</Phrase>
+    <Phrase key="gbEmptyItem">Параметры элемента</Phrase>
+    <Phrase key="lblEmptyItem">Элемент не выбран</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="dbSubscription">Параметры подписки</Phrase>
+    <Phrase key="chkSubscrActive">Активна</Phrase>
+    <Phrase key="lblDisplayName">Наименование</Phrase>
+    <Phrase key="lblPublishingInterval">Интервал публикации</Phrase>
+    <Phrase key="gbItem">Параметры элемента</Phrase>
+    <Phrase key="chkItemActive">Активен</Phrase>
+    <Phrase key="lblNodeID">Идентификатор узла</Phrase>
+    <Phrase key="chkIsArray">Массив</Phrase>
+    <Phrase key="lblArrayLen">Длина массива</Phrase>
+    <Phrase key="lblCnlNum">Входной канал</Phrase>
+    <Phrase key="lblSignal">Сигнал</Phrase>
+    <Phrase key="gbCommand">Параметры команды</Phrase>
+    <Phrase key="lblDataType">Тип данных</Phrase>
+    <Phrase key="lblCmdNum">Номер команды</Phrase>
+    <Phrase key="ConnectServerError">Ошибка при соединении с OPC-сервером</Phrase>
+    <Phrase key="DisconnectServerError">Ошибка при разъединении с OPC-сервером</Phrase>
+    <Phrase key="BrowseServerError">Ошибка при обзоре элемента OPC-сервера</Phrase>
+    <Phrase key="GetDataTypeError">Ошибка при получении типа данных OPC-элемента</Phrase>
+    <Phrase key="ServerUrlRequired">Адрес сервера не должен быть пустым.</Phrase>
+    <Phrase key="EmptyNode">Пусто</Phrase>
+    <Phrase key="SubscriptionsNode">Подписки</Phrase>
+    <Phrase key="CommandsNode">Команды</Phrase>
+    <Phrase key="EmptySubscription">&lt;Подписка&gt;</Phrase>
+    <Phrase key="EmptyItem">&lt;Элемент&gt;</Phrase>
+    <Phrase key="EmptyCommand">&lt;Комманда&gt;</Phrase>
+    <Phrase key="UnknownDataType">Неизвестный тип данных &quot;{0}&quot;.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmNodeAttr">
+    <Phrase key="this">Атрибуты узла</Phrase>
+    <Phrase key="colName">Наименование</Phrase>
+    <Phrase key="colValue">Значение</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
+    <Phrase key="ReadAttrError">Ошибка при чтении атрибутов с OPC-сервера</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Comm.Devices.OpcUa.UI.FrmSecurityOptions">
+    <Phrase key="this">Настройки безопасности</Phrase>
+    <Phrase key="lblSecurityMode">Режим безопасности</Phrase>
+    <Phrase key="cbSecurityMode.Items[0]">Нет</Phrase>
+    <Phrase key="cbSecurityMode.Items[1]">Подпись</Phrase>
+    <Phrase key="cbSecurityMode.Items[2]">Подпись и шифрование</Phrase>
+    <Phrase key="lblSecurityPolicy">Политика безопасности</Phrase>
+    <Phrase key="lblAuthenticationMode">Режим аутентификации</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[0]">Анонимно</Phrase>
+    <Phrase key="cbAuthenticationMode.Items[1]">Имя пользователя и пароль</Phrase>
+    <Phrase key="lblUsername">Имя пользователя</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+</KpOpcUaDictionaries>

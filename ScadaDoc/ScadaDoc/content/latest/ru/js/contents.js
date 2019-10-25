@@ -25,14 +25,15 @@ function addContents(context) {
     addArticle(context, "installation-and-run/safety-recommendations.html", "Рекомендации по безопасности", 1);
 
     addArticle(context, "software-configuration/", "Настройка комплекса");
-    addArticle(context, "software-configuration/general-configuration.html", "Общая последовательность настройки", 1);
-    addArticle(context, "software-configuration/tune-database.html", "Создание базы конфигурации", 1);
+    addArticle(context, "software-configuration/configuration-basics.html", "Основы настройки", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Настройка базы конфигурации", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Использование формул", 1);
     addArticle(context, "software-configuration/user-authentication.html", "Настройка аутентификации пользователей", 1);
     addArticle(context, "software-configuration/communication-with-devices.html", "Настройка обмена данными с устройствами", 1);
     addArticle(context, "software-configuration/creating-views.html", "Создание представлений", 1);
 
     addArticle(context, "modules/", "Модули");
+    addArticle(context, "modules/kp-db-import.html", "Драйвер импорта из БД", 1);
     addArticle(context, "modules/kp-telegram.html", "Драйвер Telegram", 1);
     addArticle(context, "modules/mod-auto-control.html", "Модуль автоматического управления", 1);
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);
@@ -41,11 +42,11 @@ function addContents(context) {
     addArticle(context, "modules/plg-dashboard.html", "Плагин Дэшборды", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Плагин Гибкий отчёт", 1);
     addArticle(context, "modules/plg-map.html", "Плагин Карты", 1);
+    addArticle(context, "modules/plg-notification.html", "Плагин Уведомления", 1);
 
     addArticle(context, "use-cases/", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
     addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
-    addArticle(context, "use-cases/remote-server-management.html", "Управление удалённым сервером с помощью Агента", 1);
 
     addArticle(context, "version-history/", "История версий");
     addArticle(context, "version-history/scada-history.html", "История Rapid SCADA", 1);
@@ -55,6 +56,7 @@ function addContents(context) {
     addArticle(context, "version-history/communicator-drivers-history.html", "История драйверов Коммуникатора", 1);
     addArticle(context, "version-history/webstation-history.html", "История приложения Вебстанция", 1);
     addArticle(context, "version-history/webstation-plugins-history.html", "История плагинов Вебстанции", 1);
+    addArticle(context, "version-history/agent-history.html", "История приложения Агент", 1);
     addArticle(context, "version-history/administrator-history.html", "История приложения Администратор", 1);
     addArticle(context, "version-history/table-editor-history.html", "История приложения Редактор таблиц", 1);
     addArticle(context, "version-history/scheme-editor-history.html", "История приложения Редактор схем", 1);

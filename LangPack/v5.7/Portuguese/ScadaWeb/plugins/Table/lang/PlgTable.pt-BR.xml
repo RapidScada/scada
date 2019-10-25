@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Table.TableView">
+    <Phrase key="LoadTableViewError">Erro ao carregar visualização da tabela do arquivo</Phrase>
+    <Phrase key="SaveTableViewError">Erro ao salvar visualização da tabela no arquivo</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmItemInfo">
+    <Phrase key="this">Item Information</Phrase>
+    <Phrase key="gbInCnl">Input Channel</Phrase>
+    <Phrase key="lblInCnl">Channel</Phrase>
+    <Phrase key="lblInCnlObj">Object</Phrase>
+    <Phrase key="lblInCnlKP">Device</Phrase>
+    <Phrase key="gbCtrlCnl">Output Channel</Phrase>
+    <Phrase key="lblCtrlCnl">Channel</Phrase>
+    <Phrase key="lblCtrlCnlObj">Object</Phrase>
+    <Phrase key="lblCtrlCnlKP">Device</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="miFile">&amp;File</Phrase>
+    <Phrase key="miFileNew">New</Phrase>
+    <Phrase key="miFileOpen">Open...</Phrase>
+    <Phrase key="miFileSave">Save</Phrase>
+    <Phrase key="miFileSaveAs">Save As...</Phrase>
+    <Phrase key="miFileExit">Exit</Phrase>
+    <Phrase key="miHelp">&amp;Help</Phrase>
+    <Phrase key="miHelpAbout">About</Phrase>
+    <Phrase key="btnFileNew.ToolTip">New Table (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Open Table (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Save Table (Ctrl+S)</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">Refresh Configuration Database</Phrase>
+    <Phrase key="btnAddItem.ToolTip">Add Item</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">Add Empty Item</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">Move Item Up</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">Move Item Down</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">Delete Selected Items</Phrase>
+    <Phrase key="btnItemInfo.ToolTip">Show Item Info</Phrase>
+    <Phrase key="miDeviceAddItems">Add All Items</Phrase>
+    <Phrase key="cbCnlKind.Items[0]">Input channels</Phrase>
+    <Phrase key="cbCnlKind.Items[1]">Output channels</Phrase>
+    <Phrase key="lblHint">Press Enter or double-click a node to add it to the table. Right-click a device node to display the context menu.</Phrase>
+    <Phrase key="colItemCnlNum">Input Channel</Phrase>
+    <Phrase key="colItemCtrlCnlNum">Output Channel</Phrase>
+    <Phrase key="colItemCaption">Caption</Phrase>
+    <Phrase key="colItemHidden">Hidden</Phrase>
+    <Phrase key="EditorTitle">{0} - Table Editor</Phrase>
+    <Phrase key="DefaultTableTitle">Table Title</Phrase>
+    <Phrase key="TableFileFilter">Table Views (*.tbl)|*.tbl|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveTableConfirm">The table view has been modified. Save the changes?</Phrase>
+    <Phrase key="BaseNotFound">The configuration database not found</Phrase>
+    <Phrase key="EmptyDeviceNode">Empty device</Phrase>
+    <Phrase key="LoadConfigBaseError">Error loading the configuration database</Phrase>
+    <Phrase key="FillCnlTreeError">Error filling channel tree</Phrase>
+    <Phrase key="LoadFormStateError">Error loading form state</Phrase>
+    <Phrase key="SaveFormStateError">Error saving form state</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">Eventos</Phrase>
+    <Phrase key="AllEventsTitle">Todos os Eventos, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="EventsGen">Gerado </Phrase>
+    <Phrase key="NumCol">Número</Phrase>
+    <Phrase key="TimeCol">Data e Hora</Phrase>
+    <Phrase key="ObjCol">Objetos</Phrase>
+    <Phrase key="DevCol">Dispositivo</Phrase>
+    <Phrase key="CnlCol">Canal</Phrase>
+    <Phrase key="TextCol">Descrição</Phrase>
+    <Phrase key="AckCol">Ack</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">Dados por hora</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">Gerado </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">Eventos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">Comando - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">Canal de Saída {0} não encontrado.</Phrase>
+    <Phrase key="lblWrongPwd">Senha incorreta.</Phrase>
+    <Phrase key="lblNoRights">Privilégios insuficientes.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">Valor de comando incorreto.</Phrase>
+    <Phrase key="lblIncorrectCmdData">Dados de comando incorretos.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">Canal de saída:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblPassword">Senha</Phrase>
+    <Phrase key="lblCmdVal">Valor</Phrase>
+    <Phrase key="lblCommand">Comando</Phrase>
+    <Phrase key="lblCmdData">Dados</Phrase>
+    <Phrase key="lblStr">String</Phrase>
+    <Phrase key="lblHex">Hexadecimal</Phrase>
+    <Phrase key="lblCmdEnqueded">O comando está em fila para sua execução.</Phrase>
+    <Phrase key="lblCloseAfter">A janela será encerra após</Phrase>
+    <Phrase key="lblSec">sec.</Phrase>
+    <Phrase key="lblCmdNotSent">Não é possível enviar o comando. O servidor não está disponível.</Phrase>
+    <Phrase key="lblCmdRejected">Comando rejeitado pelo servidor.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">Reconhecimento do evento - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">Evento não encontrado.</Phrase>
+    <Phrase key="lblAckNotSent">Não é possível enviar o reconhecimento. Servidor não disponível.</Phrase>
+    <Phrase key="lblAckRejected">Reconhecimento rejeitado pelo servidor.</Phrase>
+    <Phrase key="lblNumCaption">Número:</Phrase>
+    <Phrase key="lblTimeCaption">Data e hora:</Phrase>
+    <Phrase key="lblObjCaption">Objeto:</Phrase>
+    <Phrase key="lblDevCaption">Dispositivo:</Phrase>
+    <Phrase key="lblCnlCaption">Canal:</Phrase>
+    <Phrase key="lblTextCaption">Descrição:</Phrase>
+    <Phrase key="lblAckCaption">Reconhecido:</Phrase>
+    <Phrase key="lblByUser">por {0}</Phrase>
+    <Phrase key="lblTip">Clique em OK para confirmar o evento.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">Todos os eventos</Phrase>
+    <Phrase key="lblEventsByViewBtn">Eventos por visualização</Phrase>
+    <Phrase key="lblNumCol">Número</Phrase>
+    <Phrase key="lblTimeCol">Data e hora</Phrase>
+    <Phrase key="lblObjCol">Objeto</Phrase>
+    <Phrase key="lblDevCol">Dispositivo</Phrase>
+    <Phrase key="lblCnlCol">Canal</Phrase>
+    <Phrase key="lblTextCol">Descrição</Phrase>
+    <Phrase key="lblAckCol">Reconhecido</Phrase>
+    <Phrase key="lblNoEvents">Não há eventos</Phrase>
+    <Phrase key="lblLoading">Carregando...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">Erro ao atualizar eventos</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">Dia selecionado:</Phrase>
+    <Phrase key="PreviousDay">Dia anterior:</Phrase>
+    <Phrase key="PrevDayItem">Anterior. </Phrase>
+    <Phrase key="ItemCol">Item</Phrase>
+    <Phrase key="CurCol">Atual</Phrase>
+    <Phrase key="InCnlHint">Canal de entrada: </Phrase>
+    <Phrase key="CtrlCnlHint">Canal de saída: </Phrase>
+    <Phrase key="ObjectHint">Objeto: </Phrase>
+    <Phrase key="DeviceHint">Dispositivo: </Phrase>
+    <Phrase key="QuantityHint">Quantidade: </Phrase>
+    <Phrase key="UnitHint">Unidade: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">Erro ao atualizar dados atuais</Phrase>
+    <Phrase key="UpdateHourDataError">Erro ao atualizar dados por hora</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

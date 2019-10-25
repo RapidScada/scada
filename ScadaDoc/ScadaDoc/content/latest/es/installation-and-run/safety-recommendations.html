@@ -1,0 +1,26 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Recomendaciones de seguridad - Documentación de Rapid SCADA</title>
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Recomendaciones de seguridad</h1>
+
+    <h2>Protección de archivos</h2>
+    <p>Si se usa Rapid SCADA en un entorno corporativo, restrinja el acceso de los usuarios al directorio de instalación de Rapid SCADA, de forma predeterminada C:\SCADA\. Para hacerlo, abra las propiedades del directorio que contiene las aplicaciones Rapid SCADA, elija la pestaña <em>Security</em> y configure los derechos de acceso.</p>
+
+    <h2>HTTPS</h2>
+    <p>Configure un servidor web para habilitar el protocolo HTTPS para la aplicación Webstation. Con HTTPS, todo el tráfico entre un navegador y el servidor web, incluidas las contraseñas, está encriptado.</p>
+
+    <h2>VPN</h2>
+    <p>Use VPN para proporcionar acceso a usuarios externos. Si es posible, evite el acceso abierto a la Webstation desde el exterior.</p>
+
+    <h2>Contraseñas</h2>
+    <p>Cambie las contraseñas predeterminadas. Abra el proyecto con la aplicación Administrator, ingrese las nuevas contraseñas en la tabla Usuarios y actualice las contraseñas para conectarse al Server especificado en la configuración de la aplicación. Para crear contraseñas seguras, use un generador de contraseñas. Si una empresa usa Active Directory, la configuración de la <a href="../software-configuration/user-authentication.html">autenticación en Rapid SCADA</a> basada en Active Directory mejora la seguridad del sistema.</p>
+</body>
+</html>

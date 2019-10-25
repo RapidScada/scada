@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2019
  * 
  * Description
  * Sending email notifications.
@@ -33,6 +33,7 @@ using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 using System.Threading;
@@ -45,12 +46,12 @@ namespace Scada.Comm.Devices
     /// </summary>
     public class KpEmailLogic : KPLogic
     {
-        private AB.AddressBook addressBook; // адресная книга, общая для линии связи
-        private Config config;              // конфигурация соединения с почтовым сервером
-        private SmtpClient smtpClient;      // клиент SMTP
-        private bool fatalError;            // фатальная ошибка при инициализации КП
-        private string state;               // состояние КП
-        private bool writeState;            // вывести состояние КП
+        private AddressBook addressBook; // адресная книга, общая для линии связи
+        private Config config;           // конфигурация соединения с почтовым сервером
+        private SmtpClient smtpClient;   // клиент SMTP
+        private bool fatalError;         // фатальная ошибка при инициализации КП
+        private string state;            // состояние КП
+        private bool writeState;         // вывести состояние КП
 
 
         /// <summary>
@@ -82,8 +83,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void LoadConfig()
         {
-            string errMsg;
-            fatalError = !config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out errMsg);
+            fatalError = !config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out string errMsg);
 
             if (fatalError)
             {
@@ -115,19 +115,18 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Попытаться получить почтовое сообщение из команды ТУ
         /// </summary>
-        private bool TryGetMessage(Command cmd, out MailMessage message)
+        private bool TryGetMessage(Command cmd, bool withAttachments, out MailMessage message)
         {
             string cmdDataStr = cmd.GetCmdDataStr();
-            int ind1 = cmdDataStr.IndexOf(';');
-            int ind2 = ind1 >= 0 ? cmdDataStr.IndexOf(';', ind1 + 1) : -1;
+            int scInd1 = cmdDataStr.IndexOf(';');
+            int scInd2 = scInd1 >= 0 ? cmdDataStr.IndexOf(';', scInd1 + 1) : -1;
 
-            if (ind1 >= 0 && ind2 >= 0)
+            if (scInd1 >= 0 && scInd2 >= 0)
             {
-                string recipient = cmdDataStr.Substring(0, ind1);
-                string subject = cmdDataStr.Substring(ind1 + 1, ind2 - ind1 - 1);
-                string text = cmdDataStr.Substring(ind2 + 1);
-
+                // get addresses
+                string recipient = cmdDataStr.Substring(0, scInd1);
                 List<string> addresses = new List<string>();
+
                 if (addressBook == null)
                 {
                     // добавление адреса получателя из данных команды
@@ -136,10 +135,11 @@ namespace Scada.Comm.Devices
                 else
                 {
                     // поиск адресов получателей в адресной книге
-                    AB.AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
+                    AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
                     if (contactGroup == null)
                     {
-                        AB.AddressBook.Contact contact = addressBook.FindContact(recipient);
+                        AddressBook.Contact contact = addressBook.FindContact(recipient);
+
                         if (contact == null)
                         {
                             // добавление адреса получателя из данных команды
@@ -154,13 +154,46 @@ namespace Scada.Comm.Devices
                     else
                     {
                         // добавление адресов получателей из группы контактов
-                        foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
+                        foreach (AddressBook.Contact contact in contactGroup.Contacts)
+                        {
                             addresses.AddRange(contact.Emails);
+                        }
                     }
                 }
 
-                // создание сообщения
-                message = CreateMessage(addresses, subject, text);
+                // get subject, text and attachments
+                string subject = cmdDataStr.Substring(scInd1 + 1, scInd2 - scInd1 - 1);
+                string text = null;
+                string[] fileNames = null;
+
+                if (withAttachments)
+                {
+                    int scInd3 = cmdDataStr.LastIndexOf(';');
+
+                    if (scInd2 < scInd3)
+                    {
+                        text = cmdDataStr.Substring(scInd2 + 1, scInd3 - scInd2 - 1);
+                        List<string> fileNameList = new List<string>();
+
+                        foreach (string s in cmdDataStr.Substring(scInd3 + 1).Split(','))
+                        {
+                            string fileName = s.Trim();
+                            if (File.Exists(fileName))
+                            {
+                                fileNameList.Add(fileName);
+                            }
+                        }
+
+                        if (fileNameList.Count > 0)
+                            fileNames = fileNameList.ToArray();
+                    }
+                }
+
+                if (text == null)
+                    text = cmdDataStr.Substring(scInd2 + 1);
+
+                // create message
+                message = CreateMessage(addresses, subject, text, fileNames);
                 return message != null;
             }
             else
@@ -173,7 +206,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Создать почтовое сообщение
         /// </summary>
-        private MailMessage CreateMessage(List<string> addresses, string subject, string text)
+        private MailMessage CreateMessage(List<string> addresses, string subject, string text, string[] fileNames)
         {
             MailMessage message = new MailMessage();
 
@@ -207,6 +240,15 @@ namespace Scada.Comm.Devices
             {
                 message.Subject = subject;
                 message.Body = text;
+
+                if (fileNames != null)
+                {
+                    foreach (string fileName in fileNames)
+                    {
+                        message.Attachments.Add(new Attachment(fileName));
+                    }
+                }
+
                 return message;
             }
             else
@@ -283,10 +325,9 @@ namespace Scada.Comm.Devices
             }
             else
             {
-                if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
+                if (cmd.CmdNum == 1 || cmd.CmdNum == 2 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    MailMessage message;
-                    if (TryGetMessage(cmd, out message))
+                    if (TryGetMessage(cmd, cmd.CmdNum == 2, out MailMessage message))
                     {
                         if (SendMessage(message))
                             lastCommSucc = true;

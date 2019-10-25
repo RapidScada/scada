@@ -180,4 +180,16 @@
     <DllFileName>KpSimulator.dll</DllFileName>
     <Descr>Симулятор устройства</Descr>
   </KPType>
+  <KPType>
+    <KPTypeID>231</KPTypeID>
+    <Name>MQTT</Name>
+    <DllFileName>KpMqtt.dll</DllFileName>
+    <Descr>Взаимодействие с контроллерами по протоколу MQTT</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>232</KPTypeID>
+    <Name>OPC UA</Name>
+    <DllFileName>KpOpcUa.dll</DllFileName>
+    <Descr>Взаимодействие с контроллерами по спецификации OPC UA</Descr>
+  </KPType>
 </ArrayOfKPType>

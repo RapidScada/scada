@@ -1,0 +1,51 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Instalación del software - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Instalación del software</h1>
+    <h2>Antes de la Instalación</h2>
+    <p>Rapid SCADA requiere la instalación de ciertos componentes de Windows. Vaya a <em>Control Panel &gt; Programs &gt; Turn Windows features on or off </em>(Panel de control> Programas> Activar o desactivar las características de Windows). Los componentes necesarios de Microsoft .NET Framework se muestran en Figuras 1 y 3. Tenga en cuenta que los componentes secundarios de Windows Communication Foundation de Microsoft .NET Framework <strong>3.5</strong> deben estar apagados.</p>
+    <p>La aplicación Webstation requiere Internet Information Services (IIS), que es una de las características de Windows. La aplicación Webstation no funcionará a menos que se active el conjunto de ciertas características de IIS. Las Figuras 2 y 4 muestran qué características deben instalarse. Durante la configuración de la aplicación Webstation el instalador verifica la disponibilidad de estas características.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win7_features_dotnet_en.png" alt="Componentes de Windows 7 .NET" /><br />
+        Figura 1. Componentes de Windows 7 .NET
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win7_features_iis_en.png" alt="Componentes de Windows 7 IIS" /><br />
+        Figura 2. Componentes de Windows 7 IIS
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win10_features_dotnet_en.png" alt="Componentes de Windows 10 .NET" /><br />
+        Figura 3. Componentes de Windows 10 .NET
+    </p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/win10_features_iis_en.png" alt="Componentes de Windows 10 IIS" /><br />
+        Figura 4. Componentes de Windows 10 IIS
+    </p>
+
+    <h2>Instalación</h2>
+    <p>Ejecute <em>ScadaSetup.exe</em> desde el paquete de instalación para iniciar la instalación de Rapid SCADA. El instalador se muestra en la Figura 5. La instalación debe realizarse con una cuenta de administrador. Rapid SCADA requiere que esté instalada la versión actualizada de Microsoft .NET Framework. El instalador verifica que el Framework esté presente y sugiere descargarlo e instalarlo si fuera necesario.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/scada_setup_en.png" alt="Instalador de Rapid SCADA" /><br />
+        Figura 5. Instalador de Rapid SCADA
+    </p>
+    <p>Antes de comenzar la instalación, se pide al usuario que elija las aplicaciones y el directorio de instalación (vea las Figuras 5 y 6). Este directorio especifica la ubicación de todo el software. El instalador crea los subdirectorios necesarios para las aplicaciones seleccionadas. Se recomienda el directorio predeterminado <em>C:\SCADA</em> debido a que así se simplificará la configuración de las aplicaciones.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/install_dir_en.png" alt="Eligiendo el directorio de instalación" /><br />
+        Figura 6. Eligiendo el directorio de instalación
+    </p>
+    <p>Las opciones de instalación de la aplicación web (vea la Figura 7) se deben acordar con el administrador del sistema. Si no hay requisitos específicos para la aplicación web, se deben usar los valores predeterminados.</p>
+    <p class="sd-article-image">
+        <img src="software-installation-files/web_params_en.png" alt="Opciones de instalación de la aplicación Web" /><br />
+        Figura 7. Opciones de instalación de la aplicación Web
+    </p>
+    <p>Al completar la instalación, se recomienda verificar que la aplicación <em>Scada</em> web utilice un grupo de aplicaciones que tienen .NET 4.0 runtime version y el modo pipeline integrado. La ruta de la consola de administración de IIS es <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Internet Information Services (IIS) Manager </em>(Panel de control> Sistema y seguridad> Herramientas administrativas> Administrador de Internet Information Services (IIS).</p>
+</body>
+</html>

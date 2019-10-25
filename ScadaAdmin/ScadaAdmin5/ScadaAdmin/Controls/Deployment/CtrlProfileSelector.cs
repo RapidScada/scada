@@ -28,6 +28,7 @@ using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows.Forms;
 
@@ -39,6 +40,11 @@ namespace Scada.Admin.App.Controls.Deployment
     /// </summary>
     public partial class CtrlProfileSelector : UserControl
     {
+        /// <summary>
+        /// The default profile name format.
+        /// </summary>
+        private const string ProfileNameFormat = "{0} Profile";
+
         private AppData appData;                       // the common data of the application
         private DeploymentSettings deploymentSettings; // the deployment settings to select or edit
         private Instance instance;                     // the instance which profile is selected
@@ -77,13 +83,17 @@ namespace Scada.Admin.App.Controls.Deployment
                 cbProfile.Items.Add(AppPhrases.ProfileNotSet);
 
                 int selectedIndex = 0;
+                int instanceID = instance.ID;
                 string selectedName = instance.DeploymentProfile;
 
                 foreach (DeploymentProfile profile in deploymentSettings.Profiles.Values)
                 {
-                    int index = cbProfile.Items.Add(profile);
-                    if (profile.Name == selectedName)
-                        selectedIndex = index;
+                    if (profile.InstanceID <= 0 || profile.InstanceID == instanceID)
+                    {
+                        int index = cbProfile.Items.Add(profile);
+                        if (profile.Name == selectedName)
+                            selectedIndex = index;
+                    }
                 }
 
                 cbProfile.SelectedIndex = selectedIndex;
@@ -103,12 +113,19 @@ namespace Scada.Admin.App.Controls.Deployment
             deploymentSettings.Profiles.Add(profile.Name, profile);
 
             // add to the combo box
-            int index = deploymentSettings.Profiles.IndexOfKey(profile.Name) + 1;
-            if (index > 0)
+            int indexToInsert = cbProfile.Items.Count;
+
+            for (int i = 1, cnt = cbProfile.Items.Count; i < cnt; i++)
             {
-                cbProfile.Items.Insert(index, profile);
-                cbProfile.SelectedIndex = index;
+                if (string.Compare(cbProfile.Items[i].ToString(), profile.Name) > 0)
+                {
+                    indexToInsert = i;
+                    break;
+                }
             }
+
+            cbProfile.Items.Insert(indexToInsert, profile);
+            cbProfile.SelectedIndex = indexToInsert;
         }
 
         /// <summary>
@@ -159,12 +176,19 @@ namespace Scada.Admin.App.Controls.Deployment
         private void btnCreateProfile_Click(object sender, EventArgs e)
         {
             // create a new profile
-            DeploymentProfile profile = new DeploymentProfile();
+            HashSet<string> existingNames = deploymentSettings.GetExistingProfileNames();
+            string defaultProfileName = string.Format(ProfileNameFormat, instance.Name);
 
-            FrmProfileEdit frmProfileEdit = new FrmProfileEdit()
+            DeploymentProfile profile = new DeploymentProfile
+            {
+                InstanceID = instance.ID,
+                Name = existingNames.Contains(defaultProfileName) ? "" : defaultProfileName
+            };
+
+            FrmProfileEdit frmProfileEdit = new FrmProfileEdit
             {
                 Profile = profile,
-                ExistingProfileNames = deploymentSettings.GetExistingProfileNames()
+                ExistingProfileNames = existingNames
             };
 
             if (frmProfileEdit.ShowDialog() == DialogResult.OK)
@@ -204,6 +228,10 @@ namespace Scada.Admin.App.Controls.Deployment
                         cbProfile.EndUpdate();
                     }
                 }
+
+                // fix the instance reference
+                if (profile.InstanceID <= 0)
+                    profile.InstanceID = instance.ID;
 
                 // save the deployment settings
                 SaveDeploymentSettings();

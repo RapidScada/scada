@@ -27,6 +27,7 @@ using Scada.Admin.App.Code;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
@@ -140,9 +141,23 @@ namespace Scada.Admin.App.Forms
                 else
                 {
                     ScadaUiUtils.ShowWarning(string.Format(CommonPhrases.NamedFileNotFound, item.Path));
-                    lbRecentProjects.Items.Remove(item);
-                    appState.RemoveRecentProject(item.Path);
+                    RemoveProjectFromList(item);
                 }
+            }
+        }
+
+        /// <summary>
+        /// Removes the project from the list of recent projects.
+        /// </summary>
+        private void RemoveProjectFromList(ProjectItem item)
+        {
+            lbRecentProjects.Items.Remove(item);
+            appState.RemoveRecentProject(item.Path);
+
+            if (lbRecentProjects.Items.Count == 0)
+            {
+                lbRecentProjects.Visible = false;
+                lblNoRecentProjects.Visible = true;
             }
         }
 
@@ -157,7 +172,7 @@ namespace Scada.Admin.App.Forms
 
         private void FrmStartPage_Load(object sender, EventArgs e)
         {
-            Translator.TranslateForm(this, GetType().FullName);
+            Translator.TranslateForm(this, GetType().FullName, null, cmsProjectList);
             FillRecentProjectList();
         }
 
@@ -172,6 +187,33 @@ namespace Scada.Admin.App.Forms
             pnlContent.Height = Height;
             pnlContent.Left = Math.Max(0, (Width - pnlContent.Width) / 2);
         }
+
+
+        private void cmsProjectList_Opening(object sender, CancelEventArgs e)
+        {
+            if (hoverItemIndex >= 0)
+            {
+                cmsProjectList.Tag = lbRecentProjects.Items[hoverItemIndex];
+            }
+            else
+            {
+                cmsProjectList.Tag = null;
+                e.Cancel = true;
+            }
+        }
+
+        private void miRemoveFromList_Click(object sender, EventArgs e)
+        {
+            if (cmsProjectList.Tag is ProjectItem item)
+                RemoveProjectFromList(item);
+        }
+
+        private void miCopyPath_Click(object sender, EventArgs e)
+        {
+            if (cmsProjectList.Tag is ProjectItem item && !string.IsNullOrEmpty(item.Path))
+                Clipboard.SetText(item.Path);
+        }
+
 
         private void lbRecentProjects_MouseMove(object sender, MouseEventArgs e)
         {

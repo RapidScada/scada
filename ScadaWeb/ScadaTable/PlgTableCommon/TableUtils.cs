@@ -34,6 +34,6 @@ namespace Scada.Table
         /// <summary>
         /// The tables version.
         /// </summary>
-        public const string TableVersion = "5.1.0.0";
+        public const string TableVersion = "5.1.0.1";
     }
 }

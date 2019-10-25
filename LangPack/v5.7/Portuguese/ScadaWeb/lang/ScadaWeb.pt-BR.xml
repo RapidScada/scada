@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaWebDictionaries>
+  <Dictionary key="Scada.Web">
+    <Phrase key="NotLoggedOn">Usuário não está logado.</Phrase>
+    <Phrase key="IncorrectDate">Data dos dados solicitados incorreta.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.AppData">
+    <Phrase key="ServerUnavailable">O servidor não está disponível.</Phrase>
+    <Phrase key="WrongPassword">Nome de usuário ou senha incorreta.</Phrase>
+    <Phrase key="IllegalRole">Papel de usuário ilegal.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
+    <Phrase key="this">Confimação</Phrase>
+    <Phrase key="lblConfirm">Você está certo disso?</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ModalButtons.Js">
+    <Phrase key="ok">OK</Phrase>
+    <Phrase key="yes">Sim</Phrase>
+    <Phrase key="no">Não</Phrase>
+    <Phrase key="execute">Executar</Phrase>
+    <Phrase key="cancel">Cancelar</Phrase>
+    <Phrase key="close">Fechar</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Js.NotifPanel">
+    <Phrase key="unmute">Ativar som</Phrase>
+    <Phrase key="mute">Mudo</Phrase>
+    <Phrase key="emptyNotif">Nenhuma notificação</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lblMainNotifBtn.ToolTip">Notificações</Phrase>
+    <Phrase key="lbtnMainLogout">Encerrar sessão</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">Tela cheia</Phrase>
+    <Phrase key="lblMainMenuTab">Menu principal</Phrase>
+    <Phrase key="lblMainExplorerTab">Visualizações</Phrase>
+    <Phrase key="lblMainCollapseMenu">Colapsar Menu</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">Visualização normal</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Report">
+    <Phrase key="GenReport">Gerar relatório &quot;{0}&quot; pelo usuário {1}</Phrase>
+    <Phrase key="IncorrectRepTemplate">Tela de informação incorreta.</Phrase>
+    <Phrase key="IncorrectStartDate">Data de início incorreta.</Phrase>
+    <Phrase key="IncorrectEndDate">Data de finalização incorreta.</Phrase>
+    <Phrase key="IncorrectPeriod">Data de início precisa ser menor ou igual a data de finalização.</Phrase>
+    <Phrase key="DayPeriodTooLong">A duração máxima do período é de {0} dias.</Phrase>
+    <Phrase key="MonthPeriodTooLong">A duração máxima do período é de {0} meses.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.UserRights">
+    <Phrase key="CnlNumsEmptyError">Números de canal não estão especificados.</Phrase>
+    <Phrase key="CnlsViewsCountError">Incompatibilidade entre o número de canais e ID de visualizações (Views).</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.ViewSettings">
+    <Phrase key="LoadViewSettingsError">Erro ao carregar a configuração da visualização (View)</Phrase>
+    <Phrase key="SaveViewSettingsError">Erro ao salvar a configuração da visualização (View) </Phrase>
+    <Phrase key="LoadViewSettingsBaseError">Erro ao carregar ajustes da visualização (View) da base de dados de configuração</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WebSettings">
+    <Phrase key="LoadWebSettingsError">Erro ao carregar a configuração da aplicação Web</Phrase>
+    <Phrase key="SaveWebSettingsError">Erro ao salvar a configuração da aplicação Web</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmAbout">
+    <Phrase key="this">Sobre - Rapid SCADA</Phrase>
+    <Phrase key="hlAppName">Webstation</Phrase>
+    <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmError">
+    <Phrase key="this">Erro da aplicação - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Erro da aplicação</Phrase>
+    <Phrase key="lblErrMsg">Ocorreu um erro de aplicação. Caso se repita com frequência, favor entrar em contacto con o suporte.</Phrase>
+    <Phrase key="lblErrDetailsCaption">Detalhes:</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin">
+    <Phrase key="this">Iniciar sessão - Rapid SCADA</Phrase>
+    <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>
+    <Phrase key="lblUsername">Nome do usuário</Phrase>
+    <Phrase key="lblPassword">Senha</Phrase>
+    <Phrase key="lblRememberMe">Lembrar-me</Phrase>
+    <Phrase key="btnLogin">Iniciar sessão</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmLogin.Js">
+    <Phrase key="BrowserOutdated">Seu navegador está desatualizado..&lt;br/&gt;Favor atualizar para um navegador mais moderno.</Phrase>
+    <Phrase key="CookiesDisabled">Os cookies estão desabilitados. Por favor, habilite-os.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmNoView">
+    <Phrase key="this">Ninguna vista - Rapid SCADA</Phrase>
+    <Phrase key="lblViewNotExist">A visualização(View) solicitada não existe ou o usuário não possui direitos suficientes para acessá-la.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmReports">
+    <Phrase key="this">Relatórios - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Relatórios disponíveis</Phrase>
+    <Phrase key="lblNoReports">Nenhum relatório disponível</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmUser">
+    <Phrase key="this">Perfil do Usuário - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Perfil do Usuário</Phrase>
+    <Phrase key="lblUserNameCaption">Nome do Usuário:</Phrase>
+    <Phrase key="lblRoleNameCaption">Papel:</Phrase>
+    <Phrase key="lblGeneralRightsTitle">Direitos Gerais</Phrase>
+    <Phrase key="lblViewAllRightCaption">Ver todos os dados:</Phrase>
+    <Phrase key="lblControlAllRightCaption">Controlar todos os dispositivos:</Phrase>
+    <Phrase key="lblConfigRightCaption">Configuração do sistema:</Phrase>
+    <Phrase key="RightYes">Sim</Phrase>
+    <Phrase key="RightNo">Não</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView">
+    <Phrase key="this">Visualização - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.WFrmView.Js">
+    <Phrase key="ExternalLinkTitle">Link externo - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.MenuItem">
+    <Phrase key="ReportsMenuItem">Relatórios</Phrase>
+    <Phrase key="AdminMenuItem">Adminisração</Phrase>
+    <Phrase key="ConfigMenuItem">Configurações</Phrase>
+    <Phrase key="RegMenuItem">Registro</Phrase>
+    <Phrase key="PluginsMenuItem">Plugins</Phrase>
+    <Phrase key="AboutMenuItem">Sobre</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.RememberMe">
+    <Phrase key="SecurityViolation">Uma violação de segurança foi detectada. Entre em contato imediatamente com o administrador do sistema.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Shell.UserContent">
+    <Phrase key="ReportNotFound">Relatório com ID= {0} não encontrado.</Phrase>
+    <Phrase key="UnexpectedReportSpec">Relatório com ID= {0} possui tipo de especificação inesperado.</Phrase>
+    <Phrase key="DataWndNotFound">Janela de dados com ID= {0} não encontrada.</Phrase>
+    <Phrase key="UnexpectedDataWndSpec">Janela de dados com ID= {0} possui tipo de especificação inesperado.</Phrase>
+  </Dictionary>
+</ScadaWebDictionaries>

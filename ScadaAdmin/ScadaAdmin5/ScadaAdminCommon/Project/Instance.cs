@@ -52,6 +52,7 @@ namespace Scada.Admin.Project
         /// </summary>
         public Instance()
         {
+            ID = 0;
             Name = "";
             ServerApp = new ServerApp();
             CommApp = new CommApp();
@@ -61,6 +62,11 @@ namespace Scada.Admin.Project
             AppSettingsLoaded = false;
         }
 
+
+        /// <summary>
+        /// Gets or sets the instance identifier.
+        /// </summary>
+        public int ID { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the instance.
@@ -129,6 +135,7 @@ namespace Scada.Admin.Project
             if (xmlNode == null)
                 throw new ArgumentNullException("xmlNode");
 
+            ID = xmlNode.GetChildAsInt("ID");
             Name = xmlNode.GetChildAsString("Name");
 
             if (xmlNode.SelectSingleNode("ServerApp") is XmlElement serverAppElem)
@@ -151,6 +158,7 @@ namespace Scada.Admin.Project
             if (xmlElem == null)
                 throw new ArgumentNullException("xmlElem");
 
+            xmlElem.AppendElem("ID", ID);
             xmlElem.AppendElem("Name", Name);
             ServerApp.SaveToXml(xmlElem.AppendElem("ServerApp"));
             CommApp.SaveToXml(xmlElem.AppendElem("CommApp"));

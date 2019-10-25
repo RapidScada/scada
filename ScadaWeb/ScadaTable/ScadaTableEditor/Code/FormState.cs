@@ -24,6 +24,7 @@
  */
 
 using Scada.Table.Editor.Forms;
+using Scada.UI;
 using System;
 using System.Drawing;
 using System.IO;
@@ -181,12 +182,9 @@ namespace Scada.Table.Editor.Code
             if (form == null)
                 throw new ArgumentNullException("form");
 
-            if (!IsEmpty)
+            if (!IsEmpty && ScadaUiUtils.AreaIsVisible(Left, Top, Width, Height))
             {
-                form.Left = Left;
-                form.Top = Top;
-                form.Width = Width;
-                form.Height = Height;
+                form.SetBounds(Left, Top, Width, Height);
                 form.WindowState = Maximized ? FormWindowState.Maximized : FormWindowState.Normal;
                 form.ExplorerWidth = ExplorerWidth;
             }

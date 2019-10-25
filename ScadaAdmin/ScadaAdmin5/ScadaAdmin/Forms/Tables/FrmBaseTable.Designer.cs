@@ -31,41 +31,45 @@
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmBaseTable));
             this.bindingNavigator = new System.Windows.Forms.BindingNavigator(this.components);
-            this.btnAddNew = new System.Windows.Forms.ToolStripButton();
-            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             this.lblCount = new System.Windows.Forms.ToolStripLabel();
-            this.btnMoveFirst = new System.Windows.Forms.ToolStripButton();
-            this.btnMovePrevious = new System.Windows.Forms.ToolStripButton();
             this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.txtPosition = new System.Windows.Forms.ToolStripTextBox();
             this.sep2 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
-            this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
             this.sep3 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnApplyEdit = new System.Windows.Forms.ToolStripButton();
-            this.btnCancelEdit = new System.Windows.Forms.ToolStripButton();
-            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
-            this.btnDelete = new System.Windows.Forms.ToolStripButton();
-            this.btnClear = new System.Windows.Forms.ToolStripButton();
             this.sep4 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnCut = new System.Windows.Forms.ToolStripButton();
-            this.btnCopy = new System.Windows.Forms.ToolStripButton();
-            this.btnPaste = new System.Windows.Forms.ToolStripButton();
             this.sep5 = new System.Windows.Forms.ToolStripSeparator();
-            this.btnFind = new System.Windows.Forms.ToolStripButton();
-            this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
-            this.btnProperties = new System.Windows.Forms.ToolStripButton();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.pnlError = new System.Windows.Forms.Panel();
             this.btnCloseError = new System.Windows.Forms.Button();
             this.lblError = new System.Windows.Forms.Label();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.cmsTable = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
+            this.btnAddNew = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveFirst = new System.Windows.Forms.ToolStripButton();
+            this.btnMovePrevious = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveNext = new System.Windows.Forms.ToolStripButton();
+            this.btnMoveLast = new System.Windows.Forms.ToolStripButton();
+            this.btnApplyEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnCancelEdit = new System.Windows.Forms.ToolStripButton();
+            this.btnRefresh = new System.Windows.Forms.ToolStripButton();
+            this.btnDelete = new System.Windows.Forms.ToolStripButton();
+            this.btnClear = new System.Windows.Forms.ToolStripButton();
+            this.btnCut = new System.Windows.Forms.ToolStripButton();
+            this.btnCopy = new System.Windows.Forms.ToolStripButton();
+            this.btnPaste = new System.Windows.Forms.ToolStripButton();
+            this.btnFind = new System.Windows.Forms.ToolStripButton();
+            this.btnAutoSizeColumns = new System.Windows.Forms.ToolStripButton();
+            this.btnProperties = new System.Windows.Forms.ToolStripButton();
+            this.miProperties = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnFilter = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).BeginInit();
             this.bindingNavigator.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
             this.pnlError.SuspendLayout();
+            this.cmsTable.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // bindingNavigator
@@ -96,6 +100,7 @@
             this.btnPaste,
             this.sep5,
             this.btnFind,
+            this.btnFilter,
             this.btnAutoSizeColumns,
             this.btnProperties});
             this.bindingNavigator.Location = new System.Drawing.Point(0, 40);
@@ -108,39 +113,12 @@
             this.bindingNavigator.Size = new System.Drawing.Size(584, 25);
             this.bindingNavigator.TabIndex = 1;
             // 
-            // btnAddNew
-            // 
-            this.btnAddNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnAddNew.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNew.Image")));
-            this.btnAddNew.Name = "btnAddNew";
-            this.btnAddNew.RightToLeftAutoMirrorImage = true;
-            this.btnAddNew.Size = new System.Drawing.Size(23, 22);
-            this.btnAddNew.Text = "Add New";
-            // 
             // lblCount
             // 
             this.lblCount.Name = "lblCount";
             this.lblCount.Size = new System.Drawing.Size(35, 22);
             this.lblCount.Text = "of {0}";
             this.lblCount.ToolTipText = "Total Number of Items";
-            // 
-            // btnMoveFirst
-            // 
-            this.btnMoveFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnMoveFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveFirst.Image")));
-            this.btnMoveFirst.Name = "btnMoveFirst";
-            this.btnMoveFirst.RightToLeftAutoMirrorImage = true;
-            this.btnMoveFirst.Size = new System.Drawing.Size(23, 22);
-            this.btnMoveFirst.Text = "Move First";
-            // 
-            // btnMovePrevious
-            // 
-            this.btnMovePrevious.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnMovePrevious.Image = ((System.Drawing.Image)(resources.GetObject("btnMovePrevious.Image")));
-            this.btnMovePrevious.Name = "btnMovePrevious";
-            this.btnMovePrevious.RightToLeftAutoMirrorImage = true;
-            this.btnMovePrevious.Size = new System.Drawing.Size(23, 22);
-            this.btnMovePrevious.Text = "Move Previous";
             // 
             // sep1
             // 
@@ -161,6 +139,110 @@
             this.sep2.Name = "sep2";
             this.sep2.Size = new System.Drawing.Size(6, 25);
             // 
+            // sep3
+            // 
+            this.sep3.Name = "sep3";
+            this.sep3.Size = new System.Drawing.Size(6, 25);
+            // 
+            // sep4
+            // 
+            this.sep4.Name = "sep4";
+            this.sep4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // sep5
+            // 
+            this.sep5.Name = "sep5";
+            this.sep5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // dataGridView
+            // 
+            this.dataGridView.AllowUserToOrderColumns = true;
+            this.dataGridView.AutoGenerateColumns = false;
+            this.dataGridView.DataSource = this.bindingSource;
+            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.dataGridView.Location = new System.Drawing.Point(0, 65);
+            this.dataGridView.Name = "dataGridView";
+            this.dataGridView.Size = new System.Drawing.Size(584, 296);
+            this.dataGridView.TabIndex = 2;
+            this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
+            this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
+            this.dataGridView.CellMouseClick += new System.Windows.Forms.DataGridViewCellMouseEventHandler(this.dataGridView_CellMouseClick);
+            this.dataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView_CellValidating);
+            this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
+            this.dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView_EditingControlShowing);
+            this.dataGridView.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_RowValidating);
+            // 
+            // pnlError
+            // 
+            this.pnlError.AutoSize = true;
+            this.pnlError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
+            this.pnlError.Controls.Add(this.btnCloseError);
+            this.pnlError.Controls.Add(this.lblError);
+            this.pnlError.Dock = System.Windows.Forms.DockStyle.Top;
+            this.pnlError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(68)))), ((int)(((byte)(66)))));
+            this.pnlError.Location = new System.Drawing.Point(0, 0);
+            this.pnlError.Name = "pnlError";
+            this.pnlError.Size = new System.Drawing.Size(584, 40);
+            this.pnlError.TabIndex = 0;
+            this.pnlError.Visible = false;
+            // 
+            // btnCloseError
+            // 
+            this.btnCloseError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnCloseError.Location = new System.Drawing.Point(497, 8);
+            this.btnCloseError.Name = "btnCloseError";
+            this.btnCloseError.Size = new System.Drawing.Size(75, 23);
+            this.btnCloseError.TabIndex = 1;
+            this.btnCloseError.Text = "Close";
+            this.btnCloseError.UseVisualStyleBackColor = true;
+            this.btnCloseError.Click += new System.EventHandler(this.btnCloseError_Click);
+            // 
+            // lblError
+            // 
+            this.lblError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.lblError.Location = new System.Drawing.Point(0, 0);
+            this.lblError.Name = "lblError";
+            this.lblError.Padding = new System.Windows.Forms.Padding(5);
+            this.lblError.Size = new System.Drawing.Size(479, 40);
+            this.lblError.TabIndex = 0;
+            this.lblError.Text = "Error message";
+            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // cmsTable
+            // 
+            this.cmsTable.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.miProperties});
+            this.cmsTable.Name = "cmsTable";
+            this.cmsTable.Size = new System.Drawing.Size(128, 26);
+            // 
+            // btnAddNew
+            // 
+            this.btnAddNew.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnAddNew.Image = ((System.Drawing.Image)(resources.GetObject("btnAddNew.Image")));
+            this.btnAddNew.Name = "btnAddNew";
+            this.btnAddNew.RightToLeftAutoMirrorImage = true;
+            this.btnAddNew.Size = new System.Drawing.Size(23, 22);
+            this.btnAddNew.Text = "Add New";
+            // 
+            // btnMoveFirst
+            // 
+            this.btnMoveFirst.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMoveFirst.Image = ((System.Drawing.Image)(resources.GetObject("btnMoveFirst.Image")));
+            this.btnMoveFirst.Name = "btnMoveFirst";
+            this.btnMoveFirst.RightToLeftAutoMirrorImage = true;
+            this.btnMoveFirst.Size = new System.Drawing.Size(23, 22);
+            this.btnMoveFirst.Text = "Move First";
+            // 
+            // btnMovePrevious
+            // 
+            this.btnMovePrevious.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnMovePrevious.Image = ((System.Drawing.Image)(resources.GetObject("btnMovePrevious.Image")));
+            this.btnMovePrevious.Name = "btnMovePrevious";
+            this.btnMovePrevious.RightToLeftAutoMirrorImage = true;
+            this.btnMovePrevious.Size = new System.Drawing.Size(23, 22);
+            this.btnMovePrevious.Text = "Move Previous";
+            // 
             // btnMoveNext
             // 
             this.btnMoveNext.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -178,11 +260,6 @@
             this.btnMoveLast.RightToLeftAutoMirrorImage = true;
             this.btnMoveLast.Size = new System.Drawing.Size(23, 22);
             this.btnMoveLast.Text = "Move Last";
-            // 
-            // sep3
-            // 
-            this.sep3.Name = "sep3";
-            this.sep3.Size = new System.Drawing.Size(6, 25);
             // 
             // btnApplyEdit
             // 
@@ -234,11 +311,6 @@
             this.btnClear.Text = "Clear Table";
             this.btnClear.Click += new System.EventHandler(this.btnClear_Click);
             // 
-            // sep4
-            // 
-            this.sep4.Name = "sep4";
-            this.sep4.Size = new System.Drawing.Size(6, 25);
-            // 
             // btnCut
             // 
             this.btnCut.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -268,11 +340,6 @@
             this.btnPaste.Size = new System.Drawing.Size(23, 22);
             this.btnPaste.Text = "Paste (Ctrl+V)";
             this.btnPaste.Click += new System.EventHandler(this.btnPaste_Click);
-            // 
-            // sep5
-            // 
-            this.sep5.Name = "sep5";
-            this.sep5.Size = new System.Drawing.Size(6, 25);
             // 
             // btnFind
             // 
@@ -304,59 +371,23 @@
             this.btnProperties.Text = "Item Properties";
             this.btnProperties.Click += new System.EventHandler(this.btnProperties_Click);
             // 
-            // dataGridView
+            // miProperties
             // 
-            this.dataGridView.AllowUserToOrderColumns = true;
-            this.dataGridView.AutoGenerateColumns = false;
-            this.dataGridView.DataSource = this.bindingSource;
-            this.dataGridView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.dataGridView.Location = new System.Drawing.Point(0, 65);
-            this.dataGridView.Name = "dataGridView";
-            this.dataGridView.Size = new System.Drawing.Size(584, 296);
-            this.dataGridView.TabIndex = 2;
-            this.dataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView_CellClick);
-            this.dataGridView.CellFormatting += new System.Windows.Forms.DataGridViewCellFormattingEventHandler(this.dataGridView_CellFormatting);
-            this.dataGridView.CellValidating += new System.Windows.Forms.DataGridViewCellValidatingEventHandler(this.dataGridView_CellValidating);
-            this.dataGridView.DataError += new System.Windows.Forms.DataGridViewDataErrorEventHandler(this.dataGridView_DataError);
-            this.dataGridView.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this.dataGridView_EditingControlShowing);
-            this.dataGridView.RowValidating += new System.Windows.Forms.DataGridViewCellCancelEventHandler(this.dataGridView_RowValidating);
+            this.miProperties.Image = ((System.Drawing.Image)(resources.GetObject("miProperties.Image")));
+            this.miProperties.Name = "miProperties";
+            this.miProperties.Size = new System.Drawing.Size(127, 22);
+            this.miProperties.Text = "Properties";
+            this.miProperties.Click += new System.EventHandler(this.btnProperties_Click);
             // 
-            // pnlError
+            // btnFilter
             // 
-            this.pnlError.AutoSize = true;
-            this.pnlError.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(242)))), ((int)(((byte)(222)))), ((int)(((byte)(222)))));
-            this.pnlError.Controls.Add(this.btnCloseError);
-            this.pnlError.Controls.Add(this.lblError);
-            this.pnlError.Dock = System.Windows.Forms.DockStyle.Top;
-            this.pnlError.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(68)))), ((int)(((byte)(66)))));
-            this.pnlError.Location = new System.Drawing.Point(0, 0);
-            this.pnlError.Name = "pnlError";
-            this.pnlError.Size = new System.Drawing.Size(584, 40);
-            this.pnlError.TabIndex = 0;
-            this.pnlError.Visible = false;
-            // 
-            // btnCloseError
-            // 
-            this.btnCloseError.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnCloseError.Location = new System.Drawing.Point(497, 8);
-            this.btnCloseError.Name = "btnCloseError";
-            this.btnCloseError.Size = new System.Drawing.Size(75, 23);
-            this.btnCloseError.TabIndex = 1;
-            this.btnCloseError.Text = "Close";
-            this.btnCloseError.UseVisualStyleBackColor = true;
-            this.btnCloseError.Click += new System.EventHandler(this.btnCloseError_Click);
-            // 
-            // lblError
-            // 
-            this.lblError.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lblError.Location = new System.Drawing.Point(0, 0);
-            this.lblError.Name = "lblError";
-            this.lblError.Padding = new System.Windows.Forms.Padding(5);
-            this.lblError.Size = new System.Drawing.Size(479, 40);
-            this.lblError.TabIndex = 0;
-            this.lblError.Text = "Error message";
-            this.lblError.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btnFilter.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFilter.Image = ((System.Drawing.Image)(resources.GetObject("btnFilter.Image")));
+            this.btnFilter.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnFilter.Name = "btnFilter";
+            this.btnFilter.Size = new System.Drawing.Size(23, 22);
+            this.btnFilter.Text = "Filter";
+            this.btnFilter.Click += new System.EventHandler(this.btnFilter_Click);
             // 
             // FrmBaseTable
             // 
@@ -376,9 +407,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.bindingNavigator)).EndInit();
             this.bindingNavigator.ResumeLayout(false);
             this.bindingNavigator.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
             this.pnlError.ResumeLayout(false);
+            this.cmsTable.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -417,5 +449,8 @@
         private System.Windows.Forms.ToolStripButton btnProperties;
         private System.Windows.Forms.BindingSource bindingSource;
         private System.Windows.Forms.DataGridView dataGridView;
+        private System.Windows.Forms.ContextMenuStrip cmsTable;
+        private System.Windows.Forms.ToolStripMenuItem miProperties;
+        private System.Windows.Forms.ToolStripButton btnFilter;
     }
 }

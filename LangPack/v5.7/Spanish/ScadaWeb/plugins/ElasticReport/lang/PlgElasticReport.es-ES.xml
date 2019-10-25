@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgElasticReportDictionaries>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.Config.ElasticRepConfig">
+    <Phrase key="LoadConfigError">Error al cargar la configuración de informe elástico</Phrase>
+    <Phrase key="UnableReceiveConfig">No se puede recibir la configuración de informe elástico.</Phrase>
+    <Phrase key="ConfigMissing">Falta la configuración en XML.</Phrase>
+    <Phrase key="SectionIdMissing">Identificación de sección ausente.</Phrase>
+    <Phrase key="SectionIdDuplicated">Identificador de sección duplicado.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.Model.Builder">
+    <Phrase key="WorkPeriod">Período de trabajo: </Phrase>
+    <Phrase key="Generated">Generado: </Phrase>
+    <Phrase key="GenerateSectionError">Error al generar sección con ID &quot;{0}&quot;</Phrase>
+    <Phrase key="CellNotSupported">No disponible</Phrase>
+    <Phrase key="IncorrectColumnIndex">Índice de columna incorrecto</Phrase>
+    <Phrase key="DateCell">Fecha</Phrase>
+    <Phrase key="TimeCell">Hora</Phrase>
+    <Phrase key="CaptionCell">Nombre</Phrase>
+    <Phrase key="TotalCell">Total</Phrase>
+    <Phrase key="AvgCell">Promedio</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.ElasticRepPdfBuilder">
+    <Phrase key="FontNotFoundError">Al menos uno de los siguientes archivos de fuentes no encontrado:</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.PdfStyles">
+    <Phrase key="LoadPdfStylesError">Error al cargar estilos de documentos PDF</Phrase>
+    <Phrase key="LoadPdfStyleError">Error al cargar estilo &quot;{0}&quot;</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.WFrmElasticRep">
+    <Phrase key="this">Informe elástico - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Informe elástico</Phrase>
+    <Phrase key="lblDateFrom">Desde</Phrase>
+    <Phrase key="lblDateTo">hasta</Phrase>
+    <Phrase key="lblMonthFrom">Desde</Phrase>
+    <Phrase key="lblMonthTo">hasta</Phrase>
+    <Phrase key="lblFormat">Formato de salida:</Phrase>
+    <Phrase key="lblExcelFormat">Excel</Phrase>
+    <Phrase key="lblPdfFormat">PDF</Phrase>
+    <Phrase key="lblHtmlFormat">HTML</Phrase>
+    <Phrase key="btnGenReport">Obtener informe</Phrase>
+    <Phrase key="lblGenStarted">Generando el informe. Por favor espere...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ElasticReport.WFrmElasticRepHtmlOut">
+    <Phrase key="btnClose">Cerrar</Phrase>
+  </Dictionary>
+</PlgElasticReportDictionaries>

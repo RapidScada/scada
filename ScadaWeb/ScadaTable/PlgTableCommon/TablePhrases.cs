@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgTableCommon
- * Summary  : The phrases used by the scheme plugin and editor
+ * Summary  : The phrases used by the table plugin and editor
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
@@ -28,8 +28,8 @@
 namespace Scada.Table
 {
     /// <summary>
-    /// The phrases used by the scheme plugin and editor.
-    /// <para>Фразы, используемые плагином и редактором схем.</para>
+    /// The phrases used by the table plugin and editor.
+    /// <para>Фразы, используемые плагином и редактором таблиц.</para>
     /// </summary>
     public static class TablePhrases
     {

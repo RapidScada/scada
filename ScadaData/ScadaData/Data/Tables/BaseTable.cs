@@ -168,13 +168,10 @@ namespace Scada.Data.Tables
 
 
         /// <summary>
-        /// Adds or updates an item in the table.
+        /// Adds references to the item to the table indexes.
         /// </summary>
-        public void AddItem(T item)
+        private void AddToIndexes(T item, int itemKey)
         {
-            int itemKey = GetPkValue(item);
-            Items[itemKey] = item;
-
             if (IndexesEnabled)
             {
                 foreach (TableIndex index in Indexes.Values)
@@ -183,6 +180,33 @@ namespace Scada.Data.Tables
                         index.AddToIndex(item, itemKey);
                 }
             }
+        }
+
+        /// <summary>
+        /// Removes references to the item from the table indexes.
+        /// </summary>
+        private void RemoveFromIndexes(int key)
+        {
+            if (IndexesEnabled && Items.TryGetValue(key, out T item))
+            {
+                foreach (TableIndex index in Indexes.Values)
+                {
+                    if (index.IsReady)
+                        index.RemoveFromIndex(item, key);
+                }
+            }
+        }
+
+
+        /// <summary>
+        /// Adds or updates an item in the table.
+        /// </summary>
+        public void AddItem(T item)
+        {
+            int itemKey = GetPkValue(item);
+            RemoveFromIndexes(itemKey);
+            Items[itemKey] = item;
+            AddToIndexes(item, itemKey);
         }
 
         /// <summary>
@@ -199,15 +223,7 @@ namespace Scada.Data.Tables
         /// </summary>
         public void RemoveItem(int key)
         {
-            if (IndexesEnabled && Items.TryGetValue(key, out T item))
-            {
-                foreach (TableIndex index in Indexes.Values)
-                {
-                    if (index.IsReady)
-                        index.RemoveFromIndex(item, key);
-                }
-            }
-
+            RemoveFromIndexes(key);
             Items.Remove(key);
         }
 

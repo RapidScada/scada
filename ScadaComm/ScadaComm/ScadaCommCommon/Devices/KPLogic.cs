@@ -147,7 +147,7 @@ namespace Scada.Comm.Devices
             Bound = false;
             Number = number;
             Name = "";
-            Dll = Assembly.GetCallingAssembly().GetName().Name;
+            Dll = GetType().Assembly.GetName().Name;
             Address = 0;
             CallNum = "";
             ReqParams = KPReqParams.Default;

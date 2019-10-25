@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Instalación manual - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Instalación manual</h1>
+
+    <p>La configuración manual de Rapid SCADA brinda un control total sobre el proceso de instalación, actualización y desinstalación del software.</p>
+
+    <p>La secuencia de instalación manual es:</p>
+
+    <ol>
+        <li>Instale Microsoft Internet Information Services (IIS) seleccionando las características apropiadas de Windows. <a href="software-installation.html">Más detalles...</a></li>
+        <li>Instale Microsoft .NET Framework (instale antes IIS!) de la versión especificada en <a href="system-requirements.html">Requisitos del sistema</a>.</li>
+        <li>Descomprima los archivos de la carpeta Arc del paquete de instalación en el directorio de instalación de SCADA. El destino recomendado es C:\SCADA</li>
+        <li>Abra la consola de administración de IIS: <em>Control Panel &gt; System and Security &gt; Administrative Tools &gt; Internet Information Services (IIS) Manager </em>(Panel de control> Sistema y seguridad> Herramientas administrativas> Administrador de Internet Information Services (IIS).</li>
+        <li>Agregue una aplicación web al árbol del sitio. Haga clic derecho en el sitio apropiado, <em>Default Web Site</em> en la mayoría de los casos y luego elija el elemento <em>Add Application</em>.</li>
+        <li>Ingrese el alias de la aplicación: Scada. Compruebe que el grupo de aplicaciones seleccionado utiliza la versión de runtime (tiempo de ejecución) de .NET 4.0 y el modo de pipeline (canalización) integrado. Especifique la ruta física a los archivos de la aplicación web: C:\SCADA\ScadaWeb. Luego haga clic en <em>Aceptar</em>.</li>
+        <li>Registre ScadaServerService ejecutando ScadaServer\svc_install.bat como administrador.</li>
+        <li>Registre ScadaCommService ejecutando ScadaComm\svc_install.bat como administrador.</li>
+        <li>Registre ScadaAgentService ejecutando ScadaAgent\svc_install.bat como administrador.</li>
+        <li>Cree accesos directos para las aplicaciones Admnistrator y Webstation en el escritorio si lo considera necesario.</li>
+        <li><a href="run-applications.html">Ejecute las aplicaciones</a>.</li>
+    </ol>
+
+    <p>La secuencia de desinstalación manual es:</p>
+
+    <ol>
+        <li>Elimine la aplicación web Scada utilizando el IIS Manager (Administrador IIS).</li>
+        <li>Detenga los servicios ScadaServerService y ScadaCommService, y cierre todas las aplicaciones de Rapid SCADA.</li>
+        <li>Anule el registro de ScadaServerService ejecutando ScadaServer\svc_uninstall.bat como administrador.</li>
+        <li>Anule el registro de ScadaCommService ejecutando ScadaComm\svc_uninstall.bat como administrador.</li>
+        <li>Anule el registro de ScadaAgentService ejecutando ScadaAgent\svc_uninstall.bat como administrador.</li>
+        <li>Elimine la carpeta SCADA del disco duro y así como los accesos directos del escritorio.</li>
+    </ol>
+</body>
+</html>

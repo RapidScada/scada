@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Admin.Deployment;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text;
 using System.Xml;
 
 namespace Scada.Admin.Project
@@ -115,6 +116,11 @@ namespace Scada.Admin.Project
         }
 
         /// <summary>
+        /// Gets or sets the project version.
+        /// </summary>
+        public ProjectVersion Version { get; set; }
+
+        /// <summary>
         /// Gets or sets the project description.
         /// </summary>
         public string Description { get; set; }
@@ -148,6 +154,7 @@ namespace Scada.Admin.Project
             fileName = "";
 
             Name = DefaultName;
+            Version = new ProjectVersion(1, 0);
             Description = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
@@ -197,6 +204,22 @@ namespace Scada.Admin.Project
             }
         }
 
+        /// <summary>
+        /// Gets the maximum ID of existing instances.
+        /// </summary>
+        private int GetMaxInstanceID()
+        {
+            int maxID = 0;
+
+            foreach (Instance instance in Instances)
+            {
+                if (instance.ID > maxID)
+                    maxID = instance.ID;
+            }
+
+            return maxID;
+        }
+
 
         /// <summary>
         /// Loads the project from the specified file.
@@ -210,6 +233,7 @@ namespace Scada.Admin.Project
             xmlDoc.Load(fileName);
 
             XmlElement rootElem = xmlDoc.DocumentElement;
+            Version = ProjectVersion.Parse(rootElem.GetChildAsString("ProjectVersion"));
             Description = rootElem.GetChildAsString("Description");
 
             // load instances
@@ -226,6 +250,10 @@ namespace Scada.Admin.Project
                     instance.LoadFromXml(instanceNode);
                     instance.InstanceDir = Path.Combine(projectDir, "Instances", instance.Name);
                     Instances.Add(instance);
+
+                    // fix instance ID
+                    if (instance.ID <= 0)
+                        instance.ID = Instances.Count;
                 }
             }
         }
@@ -260,7 +288,8 @@ namespace Scada.Admin.Project
             xmlDoc.AppendChild(xmlDecl);
 
             XmlElement rootElem = xmlDoc.CreateElement("ScadaProject");
-            rootElem.AppendElem("Version", AdminUtils.AppVersion);
+            rootElem.AppendElem("AdminVersion", AdminUtils.AppVersion);
+            rootElem.AppendElem("ProjectVersion", Version);
             rootElem.AppendElem("Description", Description);
             xmlDoc.AppendChild(rootElem);
 
@@ -335,6 +364,7 @@ namespace Scada.Admin.Project
             string projectDir = Path.GetDirectoryName(FileName);
             return new Instance()
             {
+                ID = GetMaxInstanceID() + 1,
                 Name = name,
                 InstanceDir = Path.Combine(projectDir, "Instances", name)
             };
@@ -370,6 +400,31 @@ namespace Scada.Admin.Project
             }
 
             return instanceNames;
+        }
+
+        /// <summary>
+        /// Gets the project info.
+        /// </summary>
+        public string GetInfo()
+        {
+            StringBuilder sbInfo = new StringBuilder();
+
+            if (Localization.UseRussian)
+            {
+                sbInfo
+                    .Append("Наименование проекта : ").AppendLine(Name)
+                    .Append("Версия проекта       : ").AppendLine(Version.ToString())
+                    .Append("Метка времени        : ").AppendLine(DateTime.Now.ToLocalizedString());
+            }
+            else
+            {
+                sbInfo
+                    .Append("Project name    : ").AppendLine(Name)
+                    .Append("Project version : ").AppendLine(Version.ToString())
+                    .Append("Timestamp       : ").AppendLine(DateTime.Now.ToLocalizedString());
+            }
+
+            return sbInfo.ToString();
         }
 
 

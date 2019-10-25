@@ -31,7 +31,7 @@ namespace Scada.Web.Plugins.Chart
     /// The phrases used by the minute data report
     /// <para>Фразы, используемые отчётом по минутным данным</para>
     /// </summary>
-    internal static class MinDataRepPhrases
+    public static class MinDataRepPhrases
     {
         static MinDataRepPhrases()
         {

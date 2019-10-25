@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Configuration Basics - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Configuration Basics</h1>
+
+    <h2>Creating Project</h2>
+    <p>Configuration of Rapid SCADA is performed on a project basys. A project is a set of files in various formats that are stored in the project directory. To create and edit projects, use the Administrator application. When Administrator starts, the <em>Start page</em> opens, which contains the buttons to create a new or open an existing project (see Figure 1).</p>
+
+    <p class="sd-article-image border">
+        <img src="configuration-basics-files/admin_start_page_en.png" alt="Start page" /><br />
+        Figure 1. Start page
+    </p>
+
+    <p class="sd-article-image">
+        <img src="configuration-basics-files/admin_new_proj_en.png" alt="Project creation form" /><br />
+        Figure 2. Project creation form
+    </p>
+
+    <p>Pay attention to the <em>Template</em> field of the project creation form (see Figure 2). The template defines the initial configuration that is added to the project. Another existing project can be used as a template.</p>
+
+    <h2>Project Structure</h2>
+    <p>Rapid SCADA configuration is displayed in the project explorer, which is located in the left part of the main Administrator window. The project consists of the following main parts (Fig. 3):</p>
+
+    <ul>
+        <li>The configuration database is a structured description of the entire automated system. The configuration database defines the system in general, while the detailed settings refer to the corresponding Rapid SCADA applications.</li>
+        <li>Interface. This configuration section contains files of views and report configuration files. Examples of views: schemes, tables, maps and dashboards.</li>
+        <li>Server application settings.</li>
+        <li>Communicator application settings.</li>
+        <li>Webstation web application settings. It is more convenient to to edit the Webstation settings through the web interface, and then download them into the project.</li>
+    </ul>
+
+    <p class="sd-article-image border">
+        <img src="configuration-basics-files/proj_struct_en.png" alt="Project structure" /><br />
+        Figure 3. Project structure
+    </p>
+
+    <p>An instance is a computer on which Rapid SCADA is deployed. A single project can include multiple instances of Rapid SCADA that exchange data. The Administrator application can connect to remote servers for downloading and uploading configuration, therefore, Rapid SCADA can be configured using one workstation.</p>
+
+    <h2>General Configuration Sequence</h2>
+    <p>Starting to work with Rapid SCADA, it is recommended to follow the general configuration sequence described below. Having obtained some experience, better understanding the dependencies between the applications, the sequence can be varied to increase efficiency.</p>
+    <ol>
+        <li>Create a new or open an existing project.</li>
+        <li>Add objects, communications lines and devices into the configuration database. To create communication lines and devices it is recommended to use wizards that are opened using the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons located on the Administrator's toolbar.</li>
+        <li>Check that the added communication lines and devices are present in the Communicator settings. If necessary, import them by selecting the <em>Import</em> menu item from the context menu of the <em>Communication Lines</em> node of the project explorer.</li>
+        <li><a href="communication-with-devices.html">Configure communication with devices</a> in Communicator.</li>
+        <li>Create input and output channels in the configuration database. It is recommended to use the wizard opened by the <img src="../../common-images/create_cnls.png" /> button.</li>
+        <li><a href="creating-views.html">Create views</a> and specify them in the <em>Interface</em> table of the configuration database.</li>
+        <li>Upload the project to the server by the <img src="../../common-images/upload.png" /> button.</li>
+    </ol>
+</body>
+</html>

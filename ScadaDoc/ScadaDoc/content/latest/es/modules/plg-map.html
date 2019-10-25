@@ -1,0 +1,98 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Map Plugin - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../../lib/prism/prism.css" rel="stylesheet" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../lib/prism/prism.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Map Plugin</h1>
+
+    <h2>Introducción</h2>
+
+    <p>El plugin Maps muestra el estado y los parámetros de las ubicaciones en los mapas interactivos de OpenStreetMap. El complemento permite monitorear sistemas distribuidos geográficamente y navegar a la página de detalles de una ubicación.</p>
+
+    <h2>Instalación</h2>
+
+    <p>Primero debe realizar <a href="../installation-and-run/module-installation.html#plugins">la secuencia general de instalación de complementos</a>y luego realizar varias acciones adicionales:</p>
+
+    <ol>
+        <li>Vaya al <em>Main Menu &gt; Registration &gt; Map</em>.</li>
+        <li>Registre el complemento utilizando los hipervínculos en la página.</li>
+        <li>Agregar la clave de registración al proyecto, bajando la configuración de Webstation y utilizando la aplicación Administrator.</li>
+    </ol>
+
+    <h2>Creando un Map</h2>
+
+    <p>Un mapa para Rapid SCADA es una <a href="../software-configuration/creating-views.html">vista</a> La creación y edición de mapas es similar al trabajo con vistas de esquema y tabla.</p>
+
+    <h3>Archivo de mapa</h3>
+
+    <p>Las opciones de visualización y las ubicaciones de los mapas se almacenan en un archivo con la extensión map. Los archivos de mapa se deben colocar en el directorio Interface o en un subdirectorio suyo, dentro del proyecto.</p>
+
+    <p>El paquete de instalación del complemento contiene un ejemplo del archivo de mapa SCADA\Interface\Map\MapExample.map. Para editar archivos de mapas, use cualquier editor de texto familiar, por ejemplo, <a href="https://notepad-plus-plus.org/" target="_blank">Notepad++</a>. Para crear su propio mapa, cree una copia del archivo de ejemplo con un nuevo nombre y edítelo. El nombre del archivo de mapa es arbitrario, la extensión del archivo es map.</p>
+
+    <p>La sección <strong>Tiling</strong> contiene parámetros para conectarse a un servidor de tile (tejas). Los tile se utilizan para componer un fondo de mapa. Hay servidores de tile de diferentes proveedores, tanto pagados como gratuitos.</p>
+
+    <pre><code class="language-xml">&lt;Tiling&gt;
+  &lt;UrlTemplate&gt;https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png&lt;/UrlTemplate&gt;
+&lt;/Tiling&gt;</code></pre>
+
+    <p>La sección <strong>InitialView</strong> (vista inicial) especifica las coordenadas iniciales y la escala del mapa. Una escala es un número entero de 0 a 18.</p>
+
+    <pre><code class="language-xml">&lt;InitialView&gt;
+    &lt;Lat&gt;48.861111&lt;/Lat&gt;
+    &lt;Lon&gt;2.336389&lt;/Lon&gt;
+    &lt;Zoom&gt;13&lt;/Zoom&gt;
+&lt;/InitialView&gt;</code></pre>
+
+    <p>La sección <strong>Locations</strong> (ubicaciones) describe un conjunto de ubicaciones que se muestran en el mapa. Consideremos un ejemplo:</p>
+
+    <pre><code class="language-xml">&lt;Locations&gt;
+  &lt;Location&gt;
+    &lt;Lat&gt;48.858222&lt;/Lat&gt;
+    &lt;Lon&gt;2.2945&lt;/Lon&gt;
+    &lt;Name&gt;Eiffel Tower&lt;/Name&gt;
+    &lt;Descr&gt;Avenue Anatole France, Paris, France&lt;/Descr&gt;
+    &lt;StatusCnlNum&gt;0&lt;/StatusCnlNum&gt;
+    &lt;Data&gt;
+      &lt;DataItem cnlNum="101" /&gt;
+      &lt;DataItem cnlNum="115"&gt;Avg. temp&lt;/DataItem&gt;
+    &lt;/Data&gt;
+    &lt;Link viewID="2" /&gt;
+  &lt;/Location&gt;
+  ...</code></pre>
+
+    <p>
+        Lat и Lon - latitud y longitud de una ubicación del mapa,<br />
+        Name - Nombre de la ubicación,<br />
+        Descr - Descripción adicional,<br />
+        StatusCnlNum - Número de un canal de entrada que significa el estado de esta ubicación; 0 - canal no especificado, valor positivo del canal significa que la ubicación es normal, de otra forma la ubicación necesita atención,<br />
+        DataItem - Muestra el dato del ítem asociado con un canal de entrada,<br />
+        Link - Referencia a una vista que contiene información detallada sobre la ubicación.
+    </p>
+
+    <h3>Agregar un mapa a la base de datos de configuración</h3>
+
+    <p>Para hacer que el mapa esté visible en el árbol de vistas, es necesario registrarlo en la tabla de <em>Interface</em> utilizando la aplicación Administrador. Especifique la ruta del archivo de mapa (relativa al directorio de la interfaz) e ingrese el título que es el texto del node en el árbol del explorador (ver la figura).</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/map_itf_file_en.png" alt="Archivo de mapa" /><br />
+    </p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/map_itf_tbl_en.png" alt="Edición de la tabla de interfaz" /><br />
+    </p>
+
+    <p>Para ver los cambios en la aplicación Webstation, suba el proyecto al Server y vuelva a iniciar sesión en la aplicación Web.  El resultado es:</p>
+
+    <p class="sd-article-image">
+        <img src="plg-map-files/map_example_en.png" alt="Ejemplo de mapa" />
+    </p>
+</body>
+</html>

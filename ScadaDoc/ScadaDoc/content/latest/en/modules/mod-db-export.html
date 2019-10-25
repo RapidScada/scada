@@ -14,7 +14,25 @@
     <h1>Export to Database Module</h1>
     <h2>Overview</h2>
 
-    <p>The module provides real-time export data, which received from devices, in the popular databases. The supported DBMS are Microsoft SQL Server, Oracle, PostgreSQL and MySQL. To use the module, first create database tables for storing the information. The module settings must contain database connection parameters and SQL scripts, which are executed by the Server application when new data received.</p>
+    <p>The module provides real-time export data, which received from devices, in the popular databases. The supported DBMS are Microsoft SQL Server, Oracle, PostgreSQL and MySQL. This module is included in the Rapid SCADA installation package and does not require separate installation. The module library file is ModDBExport.dll.</p>
+
+    <h2>Configuring</h2>
+
+    <p>In a project go to the <em>Modules</em> page, activate the ModDBExport.dll module and open its properties. The module supports export in several different databases in parallel. To add a database, click the <img src="mod-db-export-files/plus.png" /> button. The <em>Connection</em> page contains the parameters for connecting to the database. Specify the SQL queries on the <em>Current Data</em>, <em>Archive Data</em> and <em>Events</em> pages. These queries are executed by the module when new data is received by Server. The database, which is an export target, must be created and contain appropriate tables for storing data.</p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_conn_en.png" alt="DB connection parameters" /><br />
+    </p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_cur_en.png" alt="Current data export parameters" /><br />
+    </p>
+
+    <p>If some data was not timely exported, for example, if a database is unavailable, the data can be transferred in manual mode. The manual export form is opened by the <img src="mod-db-export-files/export.png" /> button. To make manaul export possible, create the corresponding output channels in the configuration database and specify them on the form.</p>
+
+    <p class="sd-article-image">
+        <img src="mod-db-export-files/db_export_manual_en.png" alt="Manual export" /><br />
+    </p>
 
     <h2>Examples of Tables and SQL Queries</h2>
 

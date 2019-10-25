@@ -25,14 +25,15 @@ function addContents(context) {
     addArticle(context, "installation-and-run/safety-recommendations.html", "Safety Recommendations", 1);
 
     addArticle(context, "software-configuration/", "Software Configuration");
-    addArticle(context, "software-configuration/general-configuration.html", "General Configuration Sequence", 1);
-    addArticle(context, "software-configuration/tune-database.html", "Tune up Configuration Database", 1);
+    addArticle(context, "software-configuration/configuration-basics.html", "Configuration Basics", 1);
+    addArticle(context, "software-configuration/tune-database.html", "Tune Up Configuration Database", 1);
     addArticle(context, "software-configuration/using-formulas.html", "Using Formulas", 1);
     addArticle(context, "software-configuration/user-authentication.html", "User Authentication Configuration", 1);
     addArticle(context, "software-configuration/communication-with-devices.html", "Communication with Devices Configuration", 1);
     addArticle(context, "software-configuration/creating-views.html", "Creating Views", 1);
 
     addArticle(context, "modules/", "Modules");
+    addArticle(context, "modules/kp-db-import.html", "Database Import Driver", 1);
     addArticle(context, "modules/kp-telegram.html", "Telegram Driver", 1);
     addArticle(context, "modules/mod-auto-control.html", "Automatic Control Module", 1);
     addArticle(context, "modules/mod-db-export.html", "Export to Database Module", 1);
@@ -41,11 +42,11 @@ function addContents(context) {
     addArticle(context, "modules/plg-dashboard.html", "Dashboard Plugin", 1);
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
     addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
+    addArticle(context, "modules/plg-notification.html", "Notification Plugin", 1);
 
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
     addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
-    addArticle(context, "use-cases/remote-server-management.html", "Managing Remote Server using Agent", 1);
 
     addArticle(context, "version-history/", "Version History");
     addArticle(context, "version-history/scada-history.html", "History of Rapid SCADA", 1);
@@ -53,6 +54,7 @@ function addContents(context) {
     addArticle(context, "version-history/server-modules-history.html", "History of Server Modules", 1);
     addArticle(context, "version-history/communicator-history.html", "Communicator History", 1);
     addArticle(context, "version-history/communicator-drivers-history.html", "History of Communicator Drivers", 1);
+    addArticle(context, "version-history/agent-history.html", "Agent History", 1);
     addArticle(context, "version-history/administrator-history.html", "Administrator History", 1);
     addArticle(context, "version-history/webstation-history.html", "Webstation History", 1);
     addArticle(context, "version-history/webstation-plugins-history.html", "History of Webstation Plugins", 1);

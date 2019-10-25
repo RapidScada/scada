@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.Config;
 using Scada.Admin.Project;
 using Scada.Data.Tables;
 using Scada.UI;
@@ -109,9 +110,10 @@ namespace Scada.Admin.App.Controls.Tools
         /// </summary>
         private bool CalcStartCnlNum(IBaseTable cnlTable, int cnlCnt, out int startCnlNum)
         {
-            int cnlMult = appSettings.CnlMult;
-            int cnlGap = appSettings.CnlGap;
-            startCnlNum = cnlMult + appSettings.CnlShift;
+            ChannelOptions channelOptions = appSettings.ChannelOptions;
+            int cnlMult = channelOptions.CnlMult;
+            int cnlGap = channelOptions.CnlGap;
+            startCnlNum = cnlMult + channelOptions.CnlShift;
             int prevCnlNum = 0;
 
             foreach (int cnlNum in cnlTable.EnumerateKeys())

@@ -1,0 +1,50 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Migrar la configuración a un nuevo servidor - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Migrar la configuración a un nuevo servidor</h1>
+
+    <p>Tareas típicas cuando se necesita migrar Rapid SCADA a otro servidor:</p>
+    <ul>
+        <li>Implementar el software en un servidor de producción cuando la configuración se ha completado utilizando la estación de trabajo (Workstation) del desarrollador.</li>
+        <li>Reemplazo del servidor.</li>
+    </ul>
+
+    <p>Los pasos para migrar la configuración son:</p>
+    <ol>
+        <li>Asegúrese de que las conexiones entre el servidor y los dispositivos estén configuradas correctamente: puertos seriales requeridos, controladores industriales disponibles a través de la red, etc.</li>
+        <li>Instale Rapid SCADA en el nuevo servidor, pero no inicie los servicios Server y Communicator.</li>
+        <li>Detenga los servicios Server y Communicator en el servidor obsoleto. Cambie el tipo de inicio de estos servicios a Manual.</li>
+        <li>Copie los archivos de datos ubicados en los siguientes directorios, del servidor obsoleto al servidor nuevo:<br />
+            C:\SCADA\ArchiveDAT<br />
+            C:\SCADA\ArchiveDATCopy
+        </li>
+        <li>
+            Transfiera la configuración del servidor obsoleto al servidor nuevo de las siguiente forma:
+            <ul>
+                <li>
+                    Copie el contenido de los directorios listados a continuación, del servidor obsoleto al servidor nuevo (se muestran los directorios predeterminados):<br />
+                    C:\SCADA\BaseDAT<br />
+                    C:\SCADA\Interface<br />
+                    C:\SCADA\Projects<br />
+                    C:\SCADA\ScadaAgent\Config<br />
+                    C:\SCADA\ScadaComm\Config<br />
+                    C:\SCADA\ScadaServer\Config<br />
+                    C:\SCADA\ScadaWeb\config<br />
+                    C:\SCADA\ScadaWeb\storage
+                </li>
+                <li>Abra el proyecto en la aplicación Administrator y suba la configuración al nuevo servidor con el botón  <img src="../../common-images/upload.png" /> desmarcando <em>Restart Server</em> and <em>Restart Communicator</em>.</li>
+            </ul>
+        </li>
+        <li>Inicie los servicios Server y Communicator en el nuevo servidor.</li>
+        <li>Verifique que el nuevo servidor funcione bien.</li>
+    </ol>
+</body>
+</html>

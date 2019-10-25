@@ -1,0 +1,58 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgConfigDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmPlugins">
+    <Phrase key="this">Plugins instalados - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Plugins instalados</Phrase>
+    <Phrase key="NameCol">Nombre</Phrase>
+    <Phrase key="DescrCol">Descripción</Phrase>
+    <Phrase key="StateCol">Estado</Phrase>
+    <Phrase key="ActivateBtn">Activar</Phrase>
+    <Phrase key="DeactivateBtn">Desactivar</Phrase>
+    <Phrase key="InactiveState">Inactivo</Phrase>
+    <Phrase key="ActiveState">Activo</Phrase>
+    <Phrase key="NotLoadedState">No cargado</Phrase>
+    <Phrase key="PluginActivated">Plugin activado satisfactoriamente.</Phrase>
+    <Phrase key="PluginDeactivated">Plugin desactivado satisfactoriamente.</Phrase>
+    <Phrase key="PluginVersion">Versión </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Config.WFrmWebConfig">
+    <Phrase key="this">Configuración de la aplicación Web - Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">Configuración de la aplicación Web</Phrase>
+    <Phrase key="lblConnection">Conexión al servidor</Phrase>
+    <Phrase key="lblServerHost">Servidor</Phrase>
+    <Phrase key="lblServerPort">Puerto</Phrase>
+    <Phrase key="lblServerTimeout">Tiempo excedido</Phrase>
+    <Phrase key="txtServerTimeoutUnit">ms</Phrase>
+    <Phrase key="lblServerUser">Usuario</Phrase>
+    <Phrase key="lblServerPwd">Contraseña</Phrase>
+    <Phrase key="lblServerPwdHelp">Dejar en blanco para no cambiar.</Phrase>
+    <Phrase key="lblCommonParams">Parámetros de la aplicación</Phrase>
+    <Phrase key="lblCulture">Cultura</Phrase>
+    <Phrase key="lblCultureHelp">Ejemplo: en-GB. Lo predeterminado es dejarlo vacío.</Phrase>
+    <Phrase key="lblDataRefrRate">Frecuencia de actualización de datos</Phrase>
+    <Phrase key="lbltxtDataRefrRateUnit">ms</Phrase>
+    <Phrase key="lblArcRefrRate">Frecuencia de actualización de archivos</Phrase>
+    <Phrase key="lblArcRefrRateUnit">ms</Phrase>
+    <Phrase key="lblDispEventCnt">Mostrar conteo de eventos</Phrase>
+    <Phrase key="lblChartGap">Intervalo en Gráfica</Phrase>
+    <Phrase key="lblChartGapUnit">seg</Phrase>
+    <Phrase key="lblStartPage">Página de inicio</Phrase>
+    <Phrase key="lblStartPageHelp">Ejemplo: ~/plugins/MyPlugin/MyPage.aspx</Phrase>
+    <Phrase key="lblCmdEnabled">Habilitar comandos</Phrase>
+    <Phrase key="lblCmdPassword">Requerir contraseña para enviar comandos</Phrase>
+    <Phrase key="lblRemEnabled">Permitir recordar al usuario registrado</Phrase>
+    <Phrase key="lblViewsFromBase">Cargar la configuración de la vista desde la base de datos</Phrase>
+    <Phrase key="lblShareStats">Compartir estadísticas despersonalizadas con los desarrolladores</Phrase>
+    <Phrase key="lblChartScript">Plugin de Gráficos</Phrase>
+    <Phrase key="lblCmdScript">Plugin de Comandos</Phrase>
+    <Phrase key="lblEventAckScript">Plugin de acusar recibo</Phrase>
+    <Phrase key="btnSave">Guardar configuración</Phrase>
+    <Phrase key="UnknownPlugin">Plugin desconocido</Phrase>
+    <Phrase key="IncorrectFields">Los siguientes campos son incorrectos:</Phrase>
+    <Phrase key="ConfigSaved">Configuración guardada correctamente.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.PlgConfigSpec">
+    <Phrase key="WebConfigMenuItem">Aplicación Web</Phrase>
+    <Phrase key="InstalledPluginsMenuItem">Instalado</Phrase>
+  </Dictionary>
+</PlgConfigDictionaries>

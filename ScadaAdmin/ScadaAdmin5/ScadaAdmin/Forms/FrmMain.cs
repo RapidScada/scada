@@ -28,6 +28,7 @@ using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.App.Forms.Tables;
 using Scada.Admin.App.Forms.Tools;
 using Scada.Admin.App.Properties;
+using Scada.Admin.Config;
 using Scada.Admin.Deployment;
 using Scada.Admin.Project;
 using Scada.Agent.Connector;
@@ -350,21 +351,22 @@ namespace Scada.Admin.App.Forms
                 if (tag.ExistingForm == null)
                 {
                     KnownFileType fileType = fileItem.FileType;
+                    PathOptions pathOptions = appData.AppSettings.PathOptions;
 
-                    if (fileType == KnownFileType.SchemeView && File.Exists(appData.AppSettings.SchemeEditorPath))
+                    if (fileType == KnownFileType.SchemeView && File.Exists(pathOptions.SchemeEditorPath))
                     {
                         // run Scheme Editor
-                        Process.Start(appData.AppSettings.SchemeEditorPath, string.Format("\"{0}\"", fileItem.Path));
+                        Process.Start(pathOptions.SchemeEditorPath, string.Format("\"{0}\"", fileItem.Path));
                     }
-                    else if (fileType == KnownFileType.TableView && File.Exists(appData.AppSettings.TableEditorPath))
+                    else if (fileType == KnownFileType.TableView && File.Exists(pathOptions.TableEditorPath))
                     {
                         // run Table Editor
-                        Process.Start(appData.AppSettings.TableEditorPath, string.Format("\"{0}\"", fileItem.Path));
+                        Process.Start(pathOptions.TableEditorPath, string.Format("\"{0}\"", fileItem.Path));
                     }
-                    else if (fileType != KnownFileType.None && File.Exists(appData.AppSettings.TextEditorPath))
+                    else if (fileType != KnownFileType.None && File.Exists(pathOptions.TextEditorPath))
                     {
                         // run text editor
-                        Process.Start(appData.AppSettings.TextEditorPath, string.Format("\"{0}\"", fileItem.Path));
+                        Process.Start(pathOptions.TextEditorPath, string.Format("\"{0}\"", fileItem.Path));
                     }
                     else
                     {
@@ -745,7 +747,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private ServerEnvironment CreateServerEnvironment(Instance instance, IAgentClient agentClient)
         {
-            return new ServerEnvironment(new ServerDirs(appData.AppSettings.ServerDir, instance), log)
+            return new ServerEnvironment(new ServerDirs(appData.AppSettings.PathOptions.ServerDir, instance), log)
             {
                 AgentClient = agentClient
             };
@@ -756,7 +758,7 @@ namespace Scada.Admin.App.Forms
         /// </summary>
         private CommEnvironment CreateCommEnvironment(Instance instance, IAgentClient agentClient)
         {
-            return new CommEnvironment(new CommDirs(appData.AppSettings.CommDir, instance), log)
+            return new CommEnvironment(new CommDirs(appData.AppSettings.PathOptions.CommDir, instance), log)
             {
                 AgentClient = agentClient
             };
@@ -1700,11 +1702,13 @@ namespace Scada.Admin.App.Forms
                 FrmProjectProps frmProjectProps = new FrmProjectProps
                 {
                     ProjectName = project.Name,
+                    Version = project.Version,
                     Description = project.Description
                 };
 
                 if (frmProjectProps.ShowDialog() == DialogResult.OK && frmProjectProps.Modified)
                 {
+                    project.Version = frmProjectProps.Version;
                     project.Description = frmProjectProps.Description;
                     SaveProjectSettings();
                 }
@@ -2139,6 +2143,10 @@ namespace Scada.Admin.App.Forms
                 if (!liveInstance.Instance.DeleteInstanceFiles(out string errMsg))
                     appData.ProcError(errMsg);
 
+                project.DeploymentSettings.RemoveProfilesByInstance(liveInstance.Instance.ID, out bool affected);
+                if (affected && !project.DeploymentSettings.Save(out errMsg))
+                    appData.ProcError(errMsg);
+
                 SetDeployMenuItemsEnabled();
                 SaveProjectSettings();
             }
@@ -2280,8 +2288,8 @@ namespace Scada.Admin.App.Forms
             if (selectedNode != null &&
                 FindClosestInstance(selectedNode, out LiveInstance liveInstance))
             {
-                FrmCommImport frmCommImport = new FrmCommImport(project, liveInstance.Instance);
                 CommEnvironment commEnv = liveInstance.CommEnvironment;
+                FrmCommImport frmCommImport = new FrmCommImport(project, liveInstance.Instance, commEnv);
                 TreeNode lastAddedNode = null;
 
                 if (selectedNode.TagIs(CommNodeType.CommLines))
@@ -2307,9 +2315,6 @@ namespace Scada.Admin.App.Forms
                     {
                         foreach (Comm.Settings.KP kpSettings in frmCommImport.ImportedDevices)
                         {
-                            if (commEnv.TryGetKPView(kpSettings, true, null, out KPView kpView, out string errMsg))
-                                kpSettings.SetReqParams(kpView.DefaultReqParams);
-
                             TreeNode kpNode = commShell.CreateDeviceNode(kpSettings, commLineSettings, commEnv);
                             selectedNode.Nodes.Add(kpNode);
                             lastAddedNode = kpNode;

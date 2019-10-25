@@ -55,6 +55,7 @@ namespace Scada.Comm.Shell.Controls
         public CtrlLineReqSequence()
         {
             InitializeComponent();
+            numDeviceAddress.Maximum = int.MaxValue;
 
             SetColumnNames();
             changing = false;
