@@ -11,21 +11,21 @@
 <body>
     <h1>Creación de vistas</h1>
 
-    <p>Una vista es una forma de representación de los datos en la aplicación Webstation. Existen dos tipos de vistas soportados por defecto: vistas de tabla y de esquemas.Es posible agregar soporte para otros tipos vistas tras instalar complementos adicionales.
+    <p>Una vista es una forma de representación de datos en la aplicación Webstation. Existen dos tipos de vistas soportadas por defecto: vistas de tabla y de esquemas. Es posible agregar soporte para otros tipos vistas instalando complementos adicionales.
     </p>
 
     <p><a href="../software-overview/applications/table-editor-application.html">Table Editor (Editor de tablas)</a> y <a href="../software-overview/applications/scheme-editor-application.html">Scheme Editor (Editor de esquemas)</a> están diseñados para crear las vistas. Las mismas se guardan en archivos que deben estar ubicados en el directorio de la Interface de un proyecto. Durante la ejecución, las vistas están ubicadas en el directorio Interface especificado en la configuración de la aplicación Server o en sus subdirectorios. Por defecto C:\SCADA\Interface\</p>
 
     <p>Son ejemplos de archivos de vistas:<br> Interface\Servers\ServerRoom.sch - scheme,<br> Interface\Servers\ServerRoom.tbl - table view.</p>
 
-    <p>Para abrir un diálogo de creación de una vista seleccione el elemento <em>New file (Nuevo archivo) </em>del men&#250; contextual (refiérase a las imágenes 1 y 2). Luego, en el formulario que aparece, seleccione el tipo de vista deseado (en este caso Scheme View), escriba en “File name” el nombre del esquema a crear y haga clic en el botón <em>OK</em>. El archivo creado será mostrado en el explorador de proyectos. Haciendo doble clic en el nodo del árbol correspondiente, el editor abre la vista y la puede confeccionar o puede editarla, si era una vista ya creada.</p>
+    <p>Para abrir un diálogo de creación de una vista seleccione el elemento <em>New file (Nuevo archivo) </em>del men&#250; contextual (refiérase a las figuras 1 y 2). Luego, en el formulario que aparece, seleccione el tipo de vista deseado (en este caso Scheme View), escriba en “File name” el nombre del esquema a crear y haga clic en el botón <em>OK</em>. El archivo creado será mostrado en el explorador de proyectos. Haciendo doble clic en el nodo del árbol correspondiente, el editor abre la vista y la puede, confeccionar o puede editarla si era una vista ya creada.</p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_menu_en.png" alt="Menú para crear una vista"><br> Imagen 1. Menú para crear una vista </p>
+    <p class="sd-article-image"> <img src="creating-views-files/interface_menu_en.png" alt="Menú para crear una vista"><br> Figura 1. Menú para crear una vista </p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_new_file_en.png" alt="Diálogo de creación de una vista"><br> Imagen 2. Diálogo de creación de una vista </p>
+    <p class="sd-article-image"> <img src="creating-views-files/interface_new_file_en.png" alt="Diálogo de creación de una vista"><br> Figura 2. Diálogo de creación de una vista </p>
 
-    <p>Después de crear los archivos de vistas, éstos deben ser declarados en la tabla Interface de Configuration Database – System <em>Interface (Interfaz) </em>como se ve en la Imagen 3. Los identificadores de vistas deben ser únicos. La ruta de las vistas está relacionada con el directorio de la interfaz. El texto especificado en la columna <em>Title (Título) </em>se muestra como un texto en un nodo del árbol del explorador de la Webstation, y los identificadores determinan el orden de las vistas. Si los archivos de vistas se ubican en los subdirectorios del directorio interfaz, estos subdirectorios también deben estar especificados en la tabla <em>Interface</em>.</p>
+    <p>Después de crear los archivos de vistas, éstos deben ser declarados en la tabla Interface de Configuration Database – System <em>Interface (Interfaz) </em>como se ve en la figura 3. Los identificadores de vistas deben ser únicos. La ruta de las vistas es relativa al directorio de la interfaz. El texto especificado en la columna <em>Title (Título) </em>se muestra como texto de un nodo del árbol del explorador de la Webstation, y los identificadores determinan el orden de las vistas. Si los archivos de vistas están ubicados se ubican en los subdirectorios del directorio interfaz, estos subdirectorios también deben estar especificados en la tabla <em>Interface</em>.</p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_table_en.png" alt="Edición de la tabla Interfaz"><br> Imagen 3. Edición de la tabla Interfaz </p>
+    <p class="sd-article-image"> <img src="creating-views-files/interface_table_en.png" alt="Edición de la tabla Interfaz"><br> Figura 3. Edición de la tabla Interfaz </p>
 </body>
 </html>
