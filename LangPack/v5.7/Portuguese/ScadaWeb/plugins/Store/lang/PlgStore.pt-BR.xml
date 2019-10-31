@@ -40,4 +40,8 @@
     <Phrase key="PersonalPrice">Pessoal </Phrase>
     <Phrase key="BusinessPrice">O negócio </Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Store.WFrmStorePublic">
+    <Phrase key="this">Repositório de módulos do Rapid SCADA</Phrase>
+    <Phrase key="lblHeader">Repositório de módulos do Rapid SCADA</Phrase>
+  </Dictionary>
 </PlgStoreDictionaries>

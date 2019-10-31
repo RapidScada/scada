@@ -235,9 +235,11 @@ namespace Scada.Admin.App.Forms.Tools
                 // create input channels
                 foreach (KPView.InCnlPrototype inCnlPrototype in inCnlPrototypes)
                 {
-                    int formatID = inCnlPrototype.ShowNumber ?
-                        Math.Min(inCnlPrototype.DecDigits, BaseValues.Formats.MaxFixedID) :
-                        BaseValues.Formats.EnumText;
+                    int formatID = inCnlPrototype.FormatID > 0 ?
+                        inCnlPrototype.FormatID :
+                        inCnlPrototype.ShowNumber ? 
+                            Math.Min(inCnlPrototype.DecDigits, BaseValues.Formats.MaxFixedID) :
+                            BaseValues.Formats.EnumText;
 
                     InCnl inCnl = new InCnl
                     {
