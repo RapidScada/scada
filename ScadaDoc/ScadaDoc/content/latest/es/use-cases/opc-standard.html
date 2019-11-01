@@ -28,7 +28,7 @@
     <p>Secuencia de configuración general:</p>
 
     <ol>
-        <li>1.	Baje e instale los Componentes Núcleo de OPC (OPC Core Components). Estos pueden  obtenerse  de <a href="http://opcfoundation.org/" target="_blank">opcfoundation.org</a> y <a href="http://rapidscada.org/download-all-files/" target="_blank">rapidscada.org</a>.</li>
+        <li>Baje e instale los Componentes Núcleo de OPC (OPC Core Components). Estos pueden  obtenerse  de <a href="http://opcfoundation.org/" target="_blank">opcfoundation.org</a> y <a href="http://rapidscada.org/download-all-files/" target="_blank">rapidscada.org</a>.</li>
         <il>Cree un proyecto utilizando la aplicación Administrator.</il>
         <li>Cree un objeto, una línea de comunicación y dispositivos en la base de datos de configuración.</li>
         <li>Configure la comunicación entre Communicator y los servidores OPC como se describe en este artículo.</li>
@@ -36,7 +36,7 @@
         <li>Cree vistas (tablas o esquemas) para mostrar datos en la aplicación Webstation. Defina las vistas en la base de datos de configuración.</li>
     </ol>
 
-    <p>Los detalles de los pasos anteriores, excluyendo el paso 4, se describen en la sección <a href="../software-configuration/">Software Configuration</a> s. Se recomienda ver el proyecto DemoProject.en-GB, que se instala junto con Rapid SCADA. El dispositivo 21 "OPC Demo" es un ejemplo del uso de OPC. Las etiquetas del dispositivo se muestran en la vista de tabla OpcDemo.tbl. Este ejemplo requiere <a href="https://www.matrikonopc.com/downloads/178/productsoftware/index.aspx" target="_blank">MatrikonOPC Simulation Server</a>, que proporciona los datos.</p>
+    <p>Los detalles de los pasos anteriores, excluyendo el paso 4, se describen en la sección <a href="../software-configuration/">Software Configuration</a>. Se recomienda ver el proyecto DemoProject.en-GB, que se instala junto con Rapid SCADA. El dispositivo 21 "OPC Demo" es un ejemplo del uso de OPC. Las etiquetas del dispositivo se muestran en la vista de tabla OpcDemo.tbl. Este ejemplo requiere <a href="https://www.matrikonopc.com/downloads/178/productsoftware/index.aspx" target="_blank">MatrikonOPC Simulation Server</a>, que proporciona los datos.</p>
 
     <p>Cree una línea de comunicación separada para cada servidor OPC que se utilice. Este es el enfoque más eficiente porque permite la comunicación con los servidores OPC en paralelo. Establezca el tipo de canal de comunicación <em>Undefined</em> (no definido) para las líneas de comunicación creadas en Communicator. Luego agregue dispositivos a las líneas de comunicación.</p>
 
