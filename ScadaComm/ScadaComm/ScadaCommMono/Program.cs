@@ -28,7 +28,7 @@ using System;
 using System.IO;
 using System.Threading;
 
-namespace Scada.Server.Mono
+namespace Scada.Comm.Mono
 {
     /// <summary>
     /// The main entry point for the application.
