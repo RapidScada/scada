@@ -13,7 +13,7 @@
 
     <p>La interacción con dispositivos reales o virtuales se realiza mediante la aplicación Communicator que funciona como un máster o un esclavo, solicitando datos y enviando comandos a los dispositivos. Todos los dispositivos están vinculados a las líneas de comunicación. Las líneas de comunicación son independientes entre sí y funcionan en paralelo.</p>
 
-    <p>La interfaz de usuario del Communicator, diseñada para configurar, es parte de la aplicación Administrator. El Communicator debe ser configurado como parte de un proyecto.</p>
+    <p>La interfaz de usuario del Communicator, diseñada para configurarlo, es parte de la aplicación Administrator. El Communicator debe ser configurado como parte de un proyecto.</p>
 
     <p>La figura 1 muestra un ejemplo de los parámetros principales de una línea de comunicación. Un canal de comunicación comprende la interfaz física y un protocolo de red que se usa para intercambiar los datos con los dispositivos. Rapid Scada soporta los siguientes canales de comunicación: Puerto serie, cliente TCP, servidor TCP y UDP. En ciertos casos, si la interacción con un dispositivo es implementada por el controlador del mismo, el canal de comunicación debe ser “indefinido” (p.ej., el controlador (driver) OPC).</p>
 
@@ -23,7 +23,7 @@
 
     <p class="sd-article-image"> <img src="communication-with-devices-files/comm_line_req_en.png" alt="Secuencia de solicitud"><br> Figura 2. Secuencia de solicitud </p>
 
-    <p>El orden en que se realiza la comunicación con los dispositivos y los parámetros de la solicitud se establecen en la página  <em>Request Sequence (Secuencia de solicitud),</em> (refiérase a la Figura 2).</p>
+    <p>El orden en que se realiza la comunicación con los dispositivos y los parámetros de la solicitud se establecen en la página  <em>Request Sequence (Secuencia de solicitud),</em> (refiérase a la figura 2).</p>
 
     <p>Si la casilla <em>Active </em>en la página <em>Main Parameters (Parámetros principales)</em>está desmarcada, la línea de comunicación queda desactivada y no se realizarán solicitudes en esa línea. Si la casilla <em>Active </em>en el cuadro <em>Selected Device (Dispositivo seleccionado) </em> está desmarcada, la comunicación con ese dispositivo queda desactivada.</p>
 
@@ -31,7 +31,7 @@
 
     <p>Si los parámetros <em>Time (Hora) </em>y <em>Period (Período) </em> de un dispositivo  son cero, el dispositivo es solicitado de manera cíclica. Si el parámetro <em>Time </em>es mayor que cero y el <em>Period </em>es cero, el dispositivo es solicitado una vez al día en la hora especificada. Si el <em>Period </em>es mayor que cero, el dispositivo es solicitado periódicamente a partir de la hora especificada. El campo <em>Timeout (Tiempo de espera)</em> define cuanto esperar por una respuesta del dispositivo tras una solicitud. El campo <em>Delay (Retardo) </em>define un tiempo tras cada solicitud enviada al dispositivo. <em>Command line (Línea de comando) </em>puede contener parámetros adicionales descritos en la documentación de un controlador de dispositivo.</p>
 
-    <p>Para restablecer los parámetros de solicitud del dispositivo seleccionado a los valores por defecto, haga clic en el botón  <em>Reset (Restablecer)</em>. Para abrir el formulario de propiedades del dispositivo, en caso de que el mismo sea soportado por controlador específico del dispositivo seleccionado, haga clic en el botón <em>Properties (Propiedades) </em>o use el menú emergente del explorador de proyectos. Para establecer las propiedades globales para un tipo de dispositivo, seleccione la página  <em>Drivers (Controladores)</em>, seleccione el controlador del dispositivo, y si el botón  está habilitado, haga clic en <em>Properties </em>si est&#225; habilitado.</p>
+    <p>Para restablecer los parámetros de solicitud del dispositivo seleccionado a los valores por defecto, haga clic en el botón  <em>Reset (Restablecer)</em>. Para abrir el formulario de propiedades del dispositivo, en caso de que el mismo sea soportado por el controlador específico del dispositivo seleccionado, haga clic en el botón <em>Properties (Propiedades) </em>o use el menú emergente del explorador de proyectos. Para establecer las propiedades globales para un tipo de dispositivo, seleccione la página  <em>Drivers (Controladores)</em>, seleccione el controlador del dispositivo, y si el botón  está habilitado, haga clic en <em>Properties</em>.</p>
 
     <p>Para importar las líneas de comunicación y los dispositivos desde la base de datos de configuración, a la configuración del Communicator, haga clic derecho en el nodo <em>Communication Lines</em> o en el nodo de una línea de comunicación específica en el explorador de proyectos, y seleccione el ítem a importar en el menú contextual. El formulario de importación se muestra en la figura 3
      .</p>

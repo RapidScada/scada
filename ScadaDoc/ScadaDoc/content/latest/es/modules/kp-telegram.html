@@ -37,12 +37,12 @@
     <ol>
         <li>En Administrator – Dictionaries – abra la tabla <em>Device types</em> y verifique que esté  &quot;224 Telegram&quot;. Si faltase, ingréselo manualmente.</li>
         <li>En Administrator – System - Communication lines, cree una nueva línea de comunicación separada. Y en Administrator - Devices cree un dispositivo de tipo Telegram que corresponda a la línea de comunicación creada. Puede usar los asistentes mediante los botones <img src="../../common-images/add_line.png" /> y <img src="../../common-images/add_device.png" />.</li>
-        <li>En Communicator – Communication lines abra las propiedades del dispositivo creado con clic derecho. Ingrese el token del bot, obtenido cuando lo creó y genere una contraseña para el mismo. Esta contraseña se necesitará para administrar las suscripciones.<br />
+        <li>En Communicator – Communication lines abra las propiedades del dispositivo creado con clic derecho. Ingrese el token del bot, obtenido cuando lo creó y genere una contraseña para el mismo con el botón. Esta contraseña será necesaria para administrar las suscripciones.<br />
             <img src="kp-telegram-files/kp_telegram_config_en.png" alt="Telegram Driver configuración" class="sd-article-image" />
         </li>
         <li>Salve la configuración del controlador (driver).</li>
         <li>Suba el proyecto al Server con el botón <img src="../../common-images/upload.png" /> (Upload Configuration)..</li>
-        <li>Vaya a <em>Registration</em> y registre el controlador utilizando los hipervínculos que hallará en el formulario.<br />
+        <li>Vaya a la pestaña <em>Registration</em> y registre el controlador utilizando los hipervínculos que hallará en el formulario.<br />
             <img src="kp-telegram-files/kp_telegram_reg_en.png" alt="Telegram Driver registro" class="sd-article-image" />
         </li>
         <li>Guarde los cambios nuevamente y suba el proyecto al Server.</li>
@@ -53,14 +53,14 @@
     <p class="sd-article-image border">
         <img src="kp-telegram-files/group_chat_en.png" alt="Grupo de notificación de Telegram" /><br />
     </p>
-    <p>Para obtener la ID y el nombre de la suscripción, envíe el comando <em>/info</em> utilizando Telegram. Luego agregue los valores recibidos utilizando el formulario de configuración del dispositivo.</p>
+    <p>Para obtener la ID y el nombre de la suscripción, envíe el comando <em>/info</em> en el Grupo de Telegram. Luego agregue los valores recibidos utilizando el formulario de configuración del dispositivo.</p>
     <p>Método obsoleto: Para agregar o eliminar suscripciones al grupo, use los comandos <em>/start</em> y <em>/stop</em> con la contraseña generada anteriormente. Sin embargo, de forma predeterminada, los cambios de suscripciones están bloqueados. Para desbloquearlos, envíe el comando estándar número 2 con un valor de 1 por el Communicator. Ahora podrá añadir o eliminar suscripciones.</p>
 
     <h2>Envío de mensajes</h2>
-    <p>Para enviar un mensaje desde Rapid SCADA a un grupo de Telegram, necesita enviar el comando binario número 1, contenienedo el nombre del grupo (o identificador) y el texto del mensaje. Por ejemplo:<br />RapidScadaDemo; Mensaje de prueba.</p>
+    <p>Para enviar un mensaje desde Rapid SCADA a un grupo de Telegram, vaya a Communicator – Línea creada para Telegram – Dispositivo creado para Telegram – click derecho – Send Command. Ahora, necesita enviar el comando binario número 1, contenienedo el nombre del grupo (o ID);  texto del mensaje. Por ejemplo:<br />RapidScadaDemo; Mensaje de prueba.</p>
     <p class="sd-article-image">
         <img src="kp-telegram-files/send_cmd_en.png" alt="Enviar mensaje de Telegram" /><br />
     </p>
-    <p>El envío automático de notificaciones en caso de condiciones y eventos específicos se realiza mediante el <a href="mod-auto-control.html">Automatic Control Module</a>opcional que se puede adquirir de RapidSCADA.</p>
+    <p>El envío automático de notificaciones en caso de condiciones y eventos específicos se realiza mediante el <a href="mod-auto-control.html">Automatic Control Module</a>opcional.</p>
 </body>
 </html>
