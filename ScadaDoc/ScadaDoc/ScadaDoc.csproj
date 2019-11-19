@@ -313,6 +313,15 @@
     <Content Include="content\latest\es\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\latest\es\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\latest\es\use-cases\opc-standard.html" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_cmd_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_devices_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_email_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_general_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_lines_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_module_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_out_cnls_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_tasks_ru.png" />
+    <Content Include="content\latest\ru\additional-applications\auto-report-files\auto_report_users_ru.png" />
     <Content Include="content\latest\ru\additional-applications\auto-report.html" />
     <Content Include="content\latest\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\module-installation.html" />
