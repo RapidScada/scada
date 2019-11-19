@@ -313,6 +313,7 @@
     <Content Include="content\latest\es\use-cases\opc-standard-files\opc_config_en.png" />
     <Content Include="content\latest\es\use-cases\opc-standard-files\opc_vals_en.png" />
     <Content Include="content\latest\es\use-cases\opc-standard.html" />
+    <Content Include="content\latest\ru\additional-applications\auto-report.html" />
     <Content Include="content\latest\ru\installation-and-run\manual-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\module-installation.html" />
     <Content Include="content\latest\ru\installation-and-run\run-applications-files\instance_status_ru.png" />

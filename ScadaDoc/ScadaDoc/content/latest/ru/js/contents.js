@@ -44,6 +44,9 @@ function addContents(context) {
     addArticle(context, "modules/plg-map.html", "Плагин Карты", 1);
     addArticle(context, "modules/plg-notification.html", "Плагин Уведомления", 1);
 
+    addArticle(context, "additional-applications/", "Дополнительные приложения");
+    addArticle(context, "additional-applications/auto-report.html", "Приложение Автоотчёт", 1);
+
     addArticle(context, "use-cases/", "Сценарии использования");
     addArticle(context, "use-cases/modbus-protocol.html", "Подключение устройств по протоколу Modbus", 1);
     addArticle(context, "use-cases/opc-standard.html", "Подключение устройств с использованием стандарта OPC", 1);
