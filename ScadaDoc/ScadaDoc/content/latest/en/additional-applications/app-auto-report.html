@@ -13,7 +13,7 @@
 
     <h2>Overview</h2>
 
-    <p>The Auto Report application is designed to automatically generate various reports, save them to disk, and send emails. The schedule for generating reports is set using <a href="../modules/mod-auto-control.html">Automatic Control Module</a>. Sending reports by email is provided by the corresponding KpEmail.dll driver, which is included in the standard Rapid SCADA installation.</p>
+    <p>The Auto Report application is designed to automatically generate various reports, save them to disk and send by email. The schedule for generating reports is set using <a href="../modules/mod-auto-control.html">Automatic Control Module</a>. Sending reports by email is provided by the corresponding KpEmail.dll driver, which is included in the standard Rapid SCADA installation.</p>
 
     <p>The following types of reports are supported:</p>
 
@@ -42,8 +42,8 @@
 
     <p>The configuration of Auto Report is stored in the file C:\SCADA\ScadaAutoReport\Config\ScadaAutoReportConfig.xml. To edit the configuration, the ScadaAutoReportConfig.exe application is intended. Its user interface is shown in the following figures:</p>
 
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_general_en.png" alt="General options of Auto Report" /></p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_tasks_en.png" alt="Task options of Auto Report" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_general_en.png" alt="General options of Auto Report" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_tasks_en.png" alt="Task options of Auto Report" /></p>
 
     <p>To make Auto Report work, it is necessary to perform certain settings in the project:</p>
 
@@ -56,16 +56,16 @@
     </ol>
 
     <p>Actions 1, 2, and 3 are shown in the following figures:</p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_lines_en.png" alt="Communication lines" /></p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_devices_en.png" alt="Devices" /></p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_out_cnls_en.png" alt="Output channels" /></p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_users_en.png" alt="Users" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_lines_en.png" alt="Communication lines" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_devices_en.png" alt="Devices" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_out_cnls_en.png" alt="Output channels" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_users_en.png" alt="Users" /></p>
 
     <p>The settings of Automatic Control Module (item 4) are shown below:</p>
     <p class="sd-article-image"><img src="auto-report-files/auto_report_module_en.png" alt="Automatic control module" /></p>
 
     <p>An example of Communicator settings for sending emails (item 5) is contained in the DemoProject.en-GB.rsproj project. The following figure shows the device properties:</p>
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_email_en.png" alt="Email settings" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_email_en.png" alt="Email settings" /></p>
 
     <h2>Operation</h2>
 
@@ -73,7 +73,7 @@
 
     <p>To perform a check, run a task of generating report by <a href="../software-overview/applications/administrator-application.html">the Administrator application</a>. Open the <em>Generator</em> form and send a standard command, specifying the control channel that is responsible for generating reports. In this example, the output channel number is 201. Use the task ID as the command value. Then check the log files located in the directory C:\SCADA\ScadaAutoReport\Log\</p>
 
-    <p class="sd-article-image"><img src="auto-report-files/auto_report_cmd_en.png" alt="Telecontrol command" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_cmd_en.png" alt="Telecontrol command" /></p>
 
     <p>If the application works well, generated reports are saved in the directory specified in the general options, by default C:\SCADA\Reports\</p>
 </body>
