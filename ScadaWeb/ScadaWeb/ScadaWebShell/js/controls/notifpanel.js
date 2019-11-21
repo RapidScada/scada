@@ -178,12 +178,12 @@ scada.NotifPanel.prototype._getMuted = function () {
 scada.NotifPanel.prototype._mute = function () {
     this._stopSounds();
     this._displayMuteState(true);
-    sessionStorage.setItem(this._MUTE_NOTIF_KEY, true)
+    sessionStorage.setItem(this._MUTE_NOTIF_KEY, true);
 };
 
 // Unmute notification sound
 scada.NotifPanel.prototype._unmute = function () {
-    sessionStorage.removeItem(this._MUTE_NOTIF_KEY)
+    sessionStorage.removeItem(this._MUTE_NOTIF_KEY);
     this._continueSounds();
     this._displayMuteState(false);
 };
