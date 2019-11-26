@@ -341,7 +341,7 @@ namespace Scada.Admin.App.Code
             return TranslateHeaders("InterfaceTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("ItfID", new ColumnOptions(1, ushort.MaxValue)),
-                NewTextBoxColumn("Name", new ColumnOptions(ColumnKind.Path, ColumnLength.Path)),
+                NewTextBoxColumn("Name", new ColumnOptions(ColumnKind.Path, ColumnLength.Long)),
                 NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFileButton)),
                 NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFolderButton)),
                 NewTextBoxColumn("Args", new ColumnOptions(ColumnLength.Default)),

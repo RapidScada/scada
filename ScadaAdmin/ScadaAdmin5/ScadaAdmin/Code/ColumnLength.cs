@@ -32,11 +32,11 @@ namespace Scada.Admin.App.Code
     internal static class ColumnLength
     {
         public const int Default = 100;
+        public const int Long = 1000;
         public const int Name = 100;
         public const int Password = 100;
         public const int Enumeration = 1000;
         public const int Description = 1000;
-        public const int Path = 1000;
         public const int SourceCode = 10000;
     }
 }
