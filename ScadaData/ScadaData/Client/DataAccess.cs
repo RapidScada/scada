@@ -34,30 +34,30 @@ using Utils;
 namespace Scada.Client
 {
     /// <summary>
-    /// Handy and thread safe access to the client cache data
-    /// <para>Удобный и потокобезопасный доступ к данным кэша клиентов</para>
+    /// Handy and thread safe access to the client cache data.
+    /// <para>Удобный и потокобезопасный доступ к данным кэша клиентов.</para>
     /// </summary>
     public class DataAccess
     {
         /// <summary>
-        /// Кэш данных
+        /// Кэш данных.
         /// </summary>
         protected readonly DataCache dataCache;
         /// <summary>
-        /// Журнал
+        /// Журнал.
         /// </summary>
         protected readonly Log log;
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта без параметров.
         /// </summary>
         protected DataAccess()
         {
         }
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public DataAccess(DataCache dataCache, Log log)
         {
@@ -72,7 +72,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить кэш данных
+        /// Получить кэш данных.
         /// </summary>
         public DataCache DataCache
         {
@@ -84,7 +84,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить наименование роли по идентификатору из базы конфигурации
+        /// Получить наименование роли по идентификатору из базы конфигурации.
         /// </summary>
         protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
         {
@@ -139,7 +139,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить свойства входного канала по его номеру
+        /// Получить свойства входного канала по его номеру.
         /// </summary>
         public InCnlProps GetCnlProps(int cnlNum)
         {
@@ -171,7 +171,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства канала управления по его номеру
+        /// Получить свойства канала управления по его номеру.
         /// </summary>
         public CtrlCnlProps GetCtrlCnlProps(int ctrlCnlNum)
         {
@@ -196,7 +196,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства статуса входного канала по значению статуса
+        /// Получить свойства статуса входного канала по значению статуса.
         /// </summary>
         public CnlStatProps GetCnlStatProps(int stat)
         {
@@ -217,7 +217,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Привязать свойства входных каналов и каналов управления к элементам представления
+        /// Привязать свойства входных каналов и каналов управления к элементам представления.
         /// </summary>
         public void BindCnlProps(BaseView view)
         {
@@ -244,7 +244,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства объекта пользовательского интерфейса по идентификатору
+        /// Получить свойства объекта пользовательского интерфейса по идентификатору.
         /// </summary>
         public UiObjProps GetUiObjProps(int uiObjID)
         {
@@ -278,7 +278,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить список свойств объектов пользовательского интерфейса
+        /// Получить список свойств объектов пользовательского интерфейса.
         /// </summary>
         public List<UiObjProps> GetUiObjPropsList(UiObjProps.BaseUiTypes baseUiTypes)
         {
@@ -316,7 +316,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить права на объекты пользовательского интерфейса по идентификатору роли
+        /// Получить права на объекты пользовательского интерфейса по идентификатору роли.
         /// </summary>
         public Dictionary<int, EntityRights> GetUiObjRights(int roleID)
         {
@@ -352,7 +352,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить имя пользователя по идентификатору
+        /// Получить имя пользователя по идентификатору.
         /// </summary>
         public string GetUserName(int userID)
         {
@@ -380,7 +380,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства пользователя по идентификатору
+        /// Получить свойства пользователя по идентификатору.
         /// </summary>
         public UserProps GetUserProps(int userID)
         {
@@ -420,7 +420,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить идентификатор пользователя по имени
+        /// Получить идентификатор пользователя по имени.
         /// </summary>
         public int GetUserID(string username)
         {
@@ -449,7 +449,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование объекта по номеру
+        /// Получить наименование объекта по номеру.
         /// </summary>
         public string GetObjName(int objNum)
         {
@@ -477,7 +477,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование КП по номеру
+        /// Получить наименование КП по номеру.
         /// </summary>
         public string GetKPName(int kpNum)
         {
@@ -505,7 +505,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование роли по идентификатору
+        /// Получить наименование роли по идентификатору.
         /// </summary>
         public string GetRoleName(int roleID)
         {
@@ -517,7 +517,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить текущие данные входного канала
+        /// Получить текущие данные входного канала.
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum)
         {
@@ -526,7 +526,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить текущие данные входного канала
+        /// Получить текущие данные входного канала.
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dataAge)
         {
@@ -549,9 +549,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить отображаемое событие на основе данных события
+        /// Получить отображаемое событие на основе данных события.
         /// </summary>
-        /// <remarks>Метод всегда возвращает объект, не равный null</remarks>
+        /// <remarks>Метод всегда возвращает объект, не равный null.</remarks>
         public DispEvent GetDispEvent(EventTableLight.Event ev, DataFormatter dataFormatter)
         {
             DispEvent dispEvent = new DispEvent();

@@ -44,7 +44,7 @@ namespace Scada.Data.Entities
 
         public string Args { get; set; }
 
-        public int ObjNum { get; set; }
+        public int? ObjNum { get; set; }
 
         public string Descr { get; set; }
     }
