@@ -129,6 +129,11 @@ namespace Scada.Admin.Project
         public BaseTable<Role> RoleTable { get; protected set; }
 
         /// <summary>
+        /// Gets the role inheritance table.
+        /// </summary>
+        public BaseTable<RoleRef> RoleRefTable { get; protected set; }
+
+        /// <summary>
         /// Gets the unit table.
         /// </summary>
         public BaseTable<Unit> UnitTable { get; protected set; }
@@ -196,6 +201,7 @@ namespace Scada.Admin.Project
                 ParamTable = new BaseTable<Param>("Param", "ParamID", CommonPhrases.ParamTable),
                 RightTable = new BaseTable<Right>("Right", "RightID", CommonPhrases.RightTable),
                 RoleTable = new BaseTable<Role>("Role", "RoleID", CommonPhrases.RoleTable),
+                RoleRefTable = new BaseTable<RoleRef>("RoleRef", "RoleRefID", CommonPhrases.RoleRefTable),
                 UnitTable = new BaseTable<Unit>("Unit", "UnitID", CommonPhrases.UnitTable),
                 UserTable = new BaseTable<User>("User", "UserID", CommonPhrases.UserTable)
             };
@@ -206,9 +212,11 @@ namespace Scada.Admin.Project
         /// </summary>
         private void AddRelations()
         {
+            // relations of the Devices table
             AddRelation(KPTypeTable, KPTable, "KPTypeID");
             AddRelation(CommLineTable, KPTable, "CommLineNum");
 
+            // relations of the Input channels table
             AddRelation(CnlTypeTable, InCnlTable, "CnlTypeID");
             AddRelation(ObjTable, InCnlTable, "ObjNum");
             AddRelation(KPTable, InCnlTable, "KPNum");
@@ -216,15 +224,25 @@ namespace Scada.Admin.Project
             AddRelation(FormatTable, InCnlTable, "FormatID");
             AddRelation(UnitTable, InCnlTable, "UnitID");
 
+            // relations of the Output channels table
             AddRelation(CmdTypeTable, CtrlCnlTable, "CmdTypeID");
             AddRelation(ObjTable, CtrlCnlTable, "ObjNum");
             AddRelation(KPTable, CtrlCnlTable, "KPNum");
             AddRelation(CmdValTable, CtrlCnlTable, "CmdValID");
 
+            // relations of the Interface table
+            AddRelation(ObjTable, InterfaceTable, "ObjNum");
+
+            // relations of the Users table
             AddRelation(RoleTable, UserTable, "RoleID");
 
+            // relations of the Rights table
             AddRelation(InterfaceTable, RightTable, "ItfID");
             AddRelation(RoleTable, RightTable, "RoleID");
+
+            // relations of the Role inheritance table
+            AddRelation(RoleTable, RoleRefTable, "ParentRoleID");
+            AddRelation(RoleTable, RoleRefTable, "ChildRoleID");
         }
 
         /// <summary>

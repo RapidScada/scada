@@ -106,6 +106,9 @@
     <Phrase key="Name">Путь</Phrase>
     <Phrase key="NameSelectFileButton">Выбрать файл</Phrase>
     <Phrase key="NameSelectFolderButton">Выбрать папку</Phrase>
+    <Phrase key="TypeCode">Тип представления</Phrase>
+    <Phrase key="Args">Аргументы</Phrase>
+    <Phrase key="ObjNum">Объект</Phrase>
     <Phrase key="Descr">Заголовок</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
@@ -145,6 +148,11 @@
     <Phrase key="RoleID">Идент.</Phrase>
     <Phrase key="Name">Наименование</Phrase>
     <Phrase key="Descr">Описание</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RoleRefTable">
+    <Phrase key="RoleRefID">Идент.</Phrase>
+    <Phrase key="ParentRoleID">Родительская роль</Phrase>
+    <Phrase key="ChildRoleID">Дочерняя роль</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UnitTable">
     <Phrase key="UnitID">Идент.</Phrase>

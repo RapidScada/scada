@@ -124,6 +124,7 @@ namespace Scada.Admin.App.Code
             FillCnlTableNodes(inCnlTableNode, ctrlCnlTableNode, configBase);
 
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleTable));
+            sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RoleRefTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.UserTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.InterfaceTable));
             sysTableNode.Nodes.Add(CreateBaseTableNode(configBase.RightTable));

@@ -104,12 +104,19 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewColumn NewComboBoxColumn(
-            string dataPropertyName, string valueMember, string displayMember, object dataSource)
+        private DataGridViewColumn NewComboBoxColumn(string dataPropertyName, 
+            string valueMember, string displayMember, object dataSource, bool addEmptyRow = false)
         {
-            return ScadaUtils.IsRunningOnMono ?
-                NewTextBoxColumn(dataPropertyName) /*because of the bugs in Mono*/ :
-                new DataGridViewComboBoxColumn
+            if (ScadaUtils.IsRunningOnMono)
+            {
+                return NewTextBoxColumn(dataPropertyName); /*because of the bugs in Mono*/
+            }
+            else
+            {
+                if (dataSource is IBaseTable baseTable)
+                    dataSource = CreateComboBoxSource(baseTable, valueMember, displayMember, addEmptyRow);
+
+                return new DataGridViewComboBoxColumn
                 {
                     Name = dataPropertyName,
                     HeaderText = dataPropertyName,
@@ -120,16 +127,16 @@ namespace Scada.Admin.App.Code
                     SortMode = DataGridViewColumnSortMode.Automatic,
                     DisplayStyleForCurrentCellOnly = true
                 };
+            }
         }
 
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewColumn NewComboBoxColumn(
-            string dataPropertyName, string displayMember, IBaseTable dataSource, bool addEmptyRow = false)
+        private DataGridViewColumn NewComboBoxColumn(string dataPropertyName, 
+            string displayMember, IBaseTable dataSource, bool addEmptyRow = false)
         {
-            return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember,
-                CreateComboBoxSource(dataSource, dataPropertyName, displayMember, addEmptyRow));
+            return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember, dataSource, addEmptyRow);
         }
 
         /// <summary>
@@ -149,7 +156,6 @@ namespace Scada.Admin.App.Code
             }
 
             dataTable.DefaultView.Sort = displayMember;
-
             return dataTable;
         }
 
@@ -198,7 +204,7 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("CmdValID", new ColumnOptions(1, ushort.MaxValue)),
                 NewTextBoxColumn("Name", new ColumnOptions(ColumnLength.Name)),
-                NewTextBoxColumn("Val", new ColumnOptions(ColumnLength.StringValue)),
+                NewTextBoxColumn("Val", new ColumnOptions(ColumnLength.Enumeration)),
                 NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Description))
             });
         }
@@ -338,7 +344,10 @@ namespace Scada.Admin.App.Code
                 NewTextBoxColumn("Name", new ColumnOptions(ColumnKind.Path, ColumnLength.Path)),
                 NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFileButton)),
                 NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFolderButton)),
-                NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Description))
+                NewTextBoxColumn("Args", new ColumnOptions(ColumnLength.Default)),
+                NewTextBoxColumn("TypeCode", new ColumnOptions(ColumnLength.Default)),
+                NewComboBoxColumn("ObjNum","Name", configBase.ObjTable, true),
+                NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Default)) // Title
             });
         }
 
@@ -429,6 +438,19 @@ namespace Scada.Admin.App.Code
         }
 
         /// <summary>
+        /// Creates columns for the role inheritance table.
+        /// </summary>
+        private DataGridViewColumn[] CreateRoleRefTableColumns()
+        {
+            return TranslateHeaders("RoleRefTable", new DataGridViewColumn[]
+            {
+                NewTextBoxColumn("RoleRefID", new ColumnOptions(0, ushort.MaxValue)),
+                NewComboBoxColumn("ParentRoleID", "RoleID", "Name", configBase.RoleTable),
+                NewComboBoxColumn("ChildRoleID", "RoleID", "Name", configBase.RoleTable)
+            });
+        }
+
+        /// <summary>
         /// Creates columns for the unit table.
         /// </summary>
         private DataGridViewColumn[] CreateUnitTableColumns()
@@ -437,7 +459,7 @@ namespace Scada.Admin.App.Code
             {
                 NewTextBoxColumn("UnitID", new ColumnOptions(1, ushort.MaxValue)),
                 NewTextBoxColumn("Name", new ColumnOptions(ColumnLength.Name)),
-                NewTextBoxColumn("Sign", new ColumnOptions(ColumnLength.Default)),
+                NewTextBoxColumn("Sign", new ColumnOptions(ColumnLength.Enumeration)),
                 NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Description))
             });
         }
@@ -495,6 +517,8 @@ namespace Scada.Admin.App.Code
                 return CreateRightTableColumns();
             else if (itemType == typeof(Role))
                 return CreateRoleTableColumns();
+            else if (itemType == typeof(RoleRef))
+                return CreateRoleRefTableColumns();
             else if (itemType == typeof(Unit))
                 return CreateUnitTableColumns();
             else if (itemType == typeof(User))
