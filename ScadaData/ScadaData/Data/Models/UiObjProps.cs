@@ -88,8 +88,8 @@ namespace Scada.Data.Models
         {
             UiObjID = viewID;
             Path = "";
-            TypeCode = "";
             Args = "";
+            TypeCode = "";
             ObjNum = 0;
             Title = "";
             BaseUiType = BaseUiTypes.View;
@@ -107,14 +107,14 @@ namespace Scada.Data.Models
         public string Path { get; set; }
 
         /// <summary>
-        /// Получить или установить код типа.
-        /// </summary>
-        public string TypeCode { get; set; }
-
-        /// <summary>
         /// Получить или установить дополнительные аргументы.
         /// </summary>
         public string Args { get; set; }
+
+        /// <summary>
+        /// Получить или установить код типа.
+        /// </summary>
+        public string TypeCode { get; set; }
 
         /// <summary>
         /// Получить или установить номер объекта.

@@ -114,6 +114,7 @@ namespace Scada.Client
         /// <summary>
         /// Создать свойства объекта интерфейса на основе строки таблицы интерфейса.
         /// </summary>
+        /// <param name="rowView">The row from the Interface table.</param>
         /// <param name="v58plus">Indicates whether the version of Rapid SCADA 5.8 or higher.</param>
         protected UiObjProps GetUiObjFromRow(DataRowView rowView, bool v58plus)
         {

@@ -40,9 +40,9 @@ namespace Scada.Data.Entities
 
         public string Name { get; set; }
 
-        public string TypeCode { get; set; }
-
         public string Args { get; set; }
+
+        public string TypeCode { get; set; }
 
         public int? ObjNum { get; set; }
 

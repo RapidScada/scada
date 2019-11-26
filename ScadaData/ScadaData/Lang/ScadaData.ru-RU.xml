@@ -59,6 +59,7 @@
     <Phrase key="ParamTable">Величины</Phrase>
     <Phrase key="RightTable">Права</Phrase>
     <Phrase key="RoleTable">Роли</Phrase>
+    <Phrase key="RoleRefTable">Наследование ролей</Phrase>
     <Phrase key="UnitTable">Размерности</Phrase>
     <Phrase key="UserTable">Пользователи</Phrase>
     <Phrase key="ContinuePendingSvcState">ожидание продолжения</Phrase>
