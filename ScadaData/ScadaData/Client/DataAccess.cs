@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -109,6 +109,32 @@ namespace Scada.Client
                     "Error getting role name by ID {0}", roleID);
                 return defaultRoleName;
             }
+        }
+
+        /// <summary>
+        /// Создать свойства объекта интерфейса на основе строки таблицы интерфейса.
+        /// </summary>
+        /// <param name="v58plus">Indicates whether the version of Rapid SCADA 5.8 or higher.</param>
+        protected UiObjProps GetUiObjFromRow(DataRowView rowView, bool v58plus)
+        {
+            UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
+            uiObjProps.UiObjID = (int)rowView["ItfID"];
+            uiObjProps.Title = (string)rowView["Descr"];
+
+            if (v58plus)
+            {
+                string typeCode = (string)rowView["TypeCode"];
+                if (!string.IsNullOrEmpty(typeCode))
+                {
+                    uiObjProps.TypeCode = typeCode;
+                    uiObjProps.BaseUiType = UiObjProps.GetBaseUiType(typeCode);
+                }
+
+                uiObjProps.Args = (string)rowView["Args"];
+                uiObjProps.ObjNum = (int)rowView["ObjNum"];
+            }
+
+            return uiObjProps;
         }
 
 
@@ -236,18 +262,10 @@ namespace Scada.Client
                     viewInterface.Sort = "ItfID";
                     int rowInd = viewInterface.Find(uiObjID);
 
-                    if (rowInd >= 0)
-                    {
-                        DataRowView rowView = viewInterface[rowInd];
-                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
-                        uiObjProps.UiObjID = uiObjID;
-                        uiObjProps.Title = (string)rowView["Descr"];
-                        return uiObjProps;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    // столбец TypeCode добавлен в таблицу Интерфейс, начиная с версии 5.8
+                    return rowInd >= 0 ? 
+                        GetUiObjFromRow(viewInterface[rowInd], viewInterface.Table.Columns.Contains("TypeCode")) :
+                        null;
                 }
             }
             catch (Exception ex)
@@ -276,16 +294,14 @@ namespace Scada.Client
                     BaseTables.CheckColumnsExist(baseTables.InterfaceTable, true);
                     DataView viewInterface = baseTables.InterfaceTable.DefaultView;
                     viewInterface.Sort = "ItfID";
+                    bool v58plus = viewInterface.Table.Columns.Contains("TypeCode");
 
                     foreach (DataRowView rowView in viewInterface)
                     {
-                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
+                        UiObjProps uiObjProps = GetUiObjFromRow(rowView, v58plus);
+
                         if (baseUiTypes.HasFlag(uiObjProps.BaseUiType))
-                        {
-                            uiObjProps.UiObjID = (int)rowView["ItfID"];
-                            uiObjProps.Title = (string)rowView["Descr"];
                             list.Add(uiObjProps);
-                        }
                     }
                 }
             }

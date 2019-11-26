@@ -16,10 +16,10 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaData
- * Summary  : Represents a user interface object as the configuration database entity
+ * Summary  : Represents a reference between two roles
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
+ * Created  : 2019
  * Modified : 2019
  */
 
@@ -30,22 +30,16 @@ using System;
 namespace Scada.Data.Entities
 {
     /// <summary>
-    /// Represents a user interface object as the configuration database entity.
-    /// <para>Представляет объект пользовательского интерфейса как сущность базы конфигурации.</para>
+    /// Represents a reference between two roles.
+    /// <para>Представляет взаимосвязь между двумя ролями.</para>
     /// </summary>
     [Serializable]
-    public class Interface
+    public class RoleRef
     {
-        public int ItfID { get; set; }
+        public int RoleRefID { get; set; }
 
-        public string Name { get; set; }
+        public int ParentRoleID { get; set; }
 
-        public string TypeCode { get; set; }
-
-        public string Args { get; set; }
-
-        public int ObjNum { get; set; }
-
-        public string Descr { get; set; }
+        public int ChildRoleID { get; set; }
     }
 }
