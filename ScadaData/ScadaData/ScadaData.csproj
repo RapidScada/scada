@@ -64,6 +64,7 @@
     <Compile Include="Data\Entities\CtrlCnl.cs" />
     <Compile Include="Data\Entities\Interface.cs" />
     <Compile Include="Data\Entities\InCnl.cs" />
+    <Compile Include="Data\Entities\RoleRef.cs" />
     <Compile Include="Data\Entities\User.cs" />
     <Compile Include="Data\Entities\Unit.cs" />
     <Compile Include="Data\Entities\Role.cs" />
