@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,8 @@
  * Summary  : Scheme view
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
- * Modified : 2017
+ * Created  : 2019
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -34,19 +34,19 @@ using System.Xml;
 namespace Scada.Scheme
 {
     /// <summary>
-    /// Scheme view
-    /// <para>Представление схемы</para>
+    /// Scheme view.
+    /// <para>Представление схемы.</para>
     /// </summary>
     public class SchemeView : BaseView
     {
         /// <summary>
-        /// Максимальный идентификатор компонентов схемы
+        /// Максимальный идентификатор компонентов схемы.
         /// </summary>
         protected int maxComponentID;
 
         
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public SchemeView()
             : base()
@@ -59,24 +59,33 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Получить свойства документа схемы
+        /// Получить свойства документа схемы.
         /// </summary>
         public SchemeDocument SchemeDoc { get; protected set; }
 
         /// <summary>
-        /// Получить компоненты схемы, ключ - идентификатор компонента
+        /// Получить компоненты схемы, ключ - идентификатор компонента.
         /// </summary>
         public SortedList<int, BaseComponent> Components { get; protected set; }
 
         /// <summary>
-        /// Получить ошибки при загрузке схемы
+        /// Получить ошибки при загрузке схемы.
         /// </summary>
-        /// <remarks>Необходимо для контроля загрузки библиотек и компонентов</remarks>
+        /// <remarks>Необходимо для контроля загрузки библиотек и компонентов.</remarks>
         public List<string> LoadErrors { get; protected set; }
 
 
         /// <summary>
-        /// Загрузить представление из потока
+        /// Gets offsets for input and output channels to use the scheme in template mode.
+        /// </summary>
+        protected void GetCnlOffsets(out int inCnlOffset, out int ctrlCnlOffset)
+        {
+            int.TryParse(GetArg("inCnlOffset"), out inCnlOffset);
+            int.TryParse(GetArg("ctrlCnlOffset"), out ctrlCnlOffset);
+        }
+
+        /// <summary>
+        /// Загрузить представление из потока.
         /// </summary>
         public override void LoadFromStream(Stream stream)
         {
@@ -92,9 +101,11 @@ namespace Scada.Scheme
             if (!rootElem.Name.Equals("SchemeView", StringComparison.OrdinalIgnoreCase))
                 throw new ScadaException(SchemePhrases.IncorrectFileFormat);
 
+            // получение смещений каналов при работе схемы в режиме шаблона 
+            GetCnlOffsets(out int inCnlOffset, out int ctrlCnlOffset);
+
             // загрузка документа схемы
-            XmlNode documentNode = rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme");
-            if (documentNode != null)
+            if ((rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme")) is XmlNode documentNode)
             {
                 SchemeDoc.LoadFromXml(documentNode);
 
@@ -106,18 +117,20 @@ namespace Scada.Scheme
                 Title = SchemeDoc.Title;
 
                 // загрузка фильтра по входным каналам для старого формата
-                XmlNode cnlsFilterNode = rootElem.SelectSingleNode("CnlsFilter");
-                if (cnlsFilterNode != null)
+                if (rootElem.SelectSingleNode("CnlsFilter") is XmlNode cnlsFilterNode)
                     SchemeDoc.CnlFilter.ParseCnlFilter(cnlsFilterNode.InnerText);
 
                 // добавление входных каналов представления
                 foreach (int cnlNum in SchemeDoc.CnlFilter)
-                    AddCnlNum(cnlNum);
+                {
+                    if (cnlNum > 0)
+                        AddCnlNum(cnlNum + inCnlOffset);
+                }
             }
 
             // загрузка компонентов схемы
-            XmlNode componentsNode = rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements");
-            if (componentsNode != null)
+            if ((rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements"))
+                is XmlNode componentsNode)
             {
                 HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
                 CompManager compManager = CompManager.GetInstance();
@@ -126,12 +139,11 @@ namespace Scada.Scheme
                 foreach (XmlNode compNode in componentsNode.ChildNodes)
                 {
                     // создание компонента
-                    string errMsg;
-                    BaseComponent component = compManager.CreateComponent(compNode, out errMsg);
+                    BaseComponent component = compManager.CreateComponent(compNode, out string errMsg);
 
                     if (component == null)
                     {
-                        component = new UnknownComponent() { XmlNode = compNode };
+                        component = new UnknownComponent { XmlNode = compNode };
                         if (errNodeNames.Add(compNode.Name))
                             LoadErrors.Add(errMsg);
                     }
@@ -142,9 +154,13 @@ namespace Scada.Scheme
                     Components[component.ID] = component;
 
                     // добавление входных каналов представления
-                    if (component is IDynamicComponent)
+                    if (component is IDynamicComponent dynamicComponent)
                     {
-                        IDynamicComponent dynamicComponent = (IDynamicComponent)component;
+                        if (inCnlOffset > 0 && dynamicComponent.InCnlNum > 0)
+                            dynamicComponent.InCnlNum += inCnlOffset;
+                        if (ctrlCnlOffset > 0 && dynamicComponent.CtrlCnlNum > 0)
+                            dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
+
                         AddCnlNum(dynamicComponent.InCnlNum);
                         AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
                     }
@@ -172,7 +188,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Загрузить схему из файла
+        /// Загрузить схему из файла.
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
@@ -195,7 +211,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Сохранить схему в файле
+        /// Сохранить схему в файле.
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
@@ -278,7 +294,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Очистить представление
+        /// Очистить представление.
         /// </summary>
         public override void Clear()
         {
@@ -290,7 +306,7 @@ namespace Scada.Scheme
         }
 
         /// <summary>
-        /// Получить следующий идентификатор компонента схемы
+        /// Получить следующий идентификатор компонента схемы.
         /// </summary>
         public int GetNextComponentID()
         {

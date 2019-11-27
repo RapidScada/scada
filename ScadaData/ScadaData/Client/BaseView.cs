@@ -48,7 +48,7 @@ namespace Scada.Client
         {
             Title = "";
             Path = "";
-            Args = null;
+            Args = new SortedList<string, string>();
             CnlSet = new HashSet<int>();
             CnlList = new List<int>();
             CtrlCnlSet = new HashSet<int>();
@@ -139,6 +139,14 @@ namespace Scada.Client
 
 
         /// <summary>
+        /// Gets the argument by key.
+        /// </summary>
+        protected string GetArg(string key)
+        {
+            return Args.TryGetValue(key, out string s) ? s : "";
+        }
+
+        /// <summary>
         /// Добавить номер входного канала в множество и в список.
         /// </summary>
         protected void AddCnlNum(int cnlNum)
@@ -170,11 +178,9 @@ namespace Scada.Client
         /// </summary>
         public virtual void SetArgs(string args)
         {
-            if (string.IsNullOrEmpty(args))
-            {
-                Args = null;
-            }
-            else
+            Args.Clear();
+
+            if (!string.IsNullOrEmpty(args))
             {
                 Args = new SortedList<string, string>();
                 string[] parts = args.Split('&');

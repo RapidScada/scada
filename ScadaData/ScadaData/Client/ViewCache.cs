@@ -132,10 +132,9 @@ namespace Scada.Client
             {
                 // создание и загрузка нового представления
                 if (view == null)
-                {
                     view = (BaseView)Activator.CreateInstance(viewType);
-                    view.SetArgs(viewProps.Args);
-                }
+
+                view.SetArgs(viewProps.Args);
 
                 if (serverComm.ReceiveView(viewProps.Path, view))
                 {
