@@ -33,7 +33,7 @@ scada.utils = {
 
         if (offset >= 0) {
             offset += search.length;
-            var end = cookie.indexOf(";", offset)
+            var end = cookie.indexOf(";", offset);
 
             if (end < 0)
                 end = cookie.length;
@@ -49,7 +49,8 @@ scada.utils = {
         var expDays = opt_expDays ? opt_expDays : this.COOKIE_EXPIRATION;
         var expires = new Date();
         expires.setDate(expires.getDate() + expDays);
-        document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString();
+        document.cookie = name + "=" + encodeURIComponent(value) + "; expires=" + expires.toUTCString() +
+            "; samesite=lax";
     },
 
     // Get the query string parameter value
@@ -119,7 +120,7 @@ scada.utils = {
 
     // Convert array to a query string parameter by joining array elements with a comma
     arrayToQueryParam: function (arr) {
-        var queryParam = arr ? (Array.isArray(arr) ? arr.join(",") : arr) : "";
+        var queryParam = arr ? Array.isArray(arr) ? arr.join(",") : arr : "";
         // space instead of empty string is required by Mono WCF implementation
         return encodeURIComponent(queryParam ? queryParam : " ");
     },
@@ -297,7 +298,7 @@ scada.utils = {
     // Check that the frame is accessible due to the browser security
     checkAccessToFrame: function (frameWnd) {
         try {
-            return frameWnd.document != null;
+            return frameWnd.document !== null;
         } catch (ex) {
             return false;
         }

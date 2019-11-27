@@ -207,6 +207,15 @@ namespace Scada.Client
             }
         }
 
+        /// <summary>
+        /// Updates the view title.
+        /// </summary>
+        public virtual void UpdateTitle(string s)
+        {
+            if (string.IsNullOrEmpty(Title))
+                Title = s ?? "";
+        }
+
 		/// <summary>
 		/// Загрузить представление из потока.
 		/// </summary>

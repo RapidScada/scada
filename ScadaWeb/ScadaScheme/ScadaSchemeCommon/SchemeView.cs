@@ -85,6 +85,18 @@ namespace Scada.Scheme
         }
 
         /// <summary>
+        /// Updates the view title.
+        /// </summary>
+        public override void UpdateTitle(string s)
+        {
+            if (string.IsNullOrEmpty(Title))
+            {
+                Title = s ?? "";
+                SchemeDoc.Title = Title;
+            }
+        }
+
+        /// <summary>
         /// Загрузить представление из потока.
         /// </summary>
         public override void LoadFromStream(Stream stream)

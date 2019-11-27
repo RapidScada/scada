@@ -72,6 +72,11 @@ namespace Scada.Data.Models
             Url
         }
 
+        /// <summary>
+        /// The separator for a file path or title.
+        /// </summary>
+        public static readonly char[] PathSeparator = { '\\', '/' };
+
 
         /// <summary>
         /// Конструктор.
@@ -120,6 +125,7 @@ namespace Scada.Data.Models
         /// <summary>
         /// Получить или установить заголовок.
         /// </summary>
+        /// <remarks>Заголовок может содержать полный путь в дереве представлений.</remarks>
         public string Title { get; set; }
 
         /// <summary>
@@ -144,7 +150,7 @@ namespace Scada.Data.Models
         {
             get
             {
-                return string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Path);
+                return string.IsNullOrEmpty(Path) && string.IsNullOrEmpty(Title);
             }
         }
 
@@ -161,6 +167,19 @@ namespace Scada.Data.Models
                     return PathKinds.Url;
                 else
                     return PathKinds.File;
+            }
+        }
+
+        /// <summary>
+        /// Получить короткий заголовок.
+        /// </summary>
+        public string ShortTitle
+        {
+            get
+            {
+                string title = Title ?? "";
+                int idx = title.LastIndexOfAny(PathSeparator);
+                return idx >= 0 ? title.Substring(idx + 1) : title;
             }
         }
 

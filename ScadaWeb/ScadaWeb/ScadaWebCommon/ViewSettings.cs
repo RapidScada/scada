@@ -27,30 +27,29 @@ using Scada.Client;
 using Scada.Data.Models;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Xml;
 
 namespace Scada.Web
 {
     /// <summary>
-    /// View settings
-    /// <para>Настройки представлений</para>
+    /// View settings.
+    /// <para>Настройки представлений.</para>
     /// </summary>
     public class ViewSettings : ISettings
     {
         /// <summary>
-        /// Элемент настроек, соответствующий представлению
+        /// Элемент настроек, соответствующий представлению.
         /// </summary>
         public class ViewItem : IComparable<ViewItem>
         {
             /// <summary>
-            /// Сравнение элементов по пути
+            /// Сравнение элементов по пути.
             /// </summary>
             internal class PathComparer : IComparer<ViewItem>
             {
                 /// <summary>
-                /// Сравнить два объекта
+                /// Сравнить два объекта.
                 /// </summary>
                 public int Compare(ViewItem x, ViewItem y)
                 {
@@ -59,19 +58,19 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Объект для сравнения элементов по пути
+            /// Объект для сравнения элементов по пути.
             /// </summary>
             internal static readonly PathComparer PathComp = new PathComparer();
 
             /// <summary>
-            /// Конструктор
+            /// Конструктор.
             /// </summary>
             public ViewItem()
                 : this(0, "", 0)
             {
             }
             /// <summary>
-            /// Конструктор
+            /// Конструктор.
             /// </summary>
             public ViewItem(int viewID, string text, int alarmCnlNum)
             {
@@ -83,29 +82,29 @@ namespace Scada.Web
             }
 
             /// <summary>
-            /// Получить или установить идентификатор представления
+            /// Получить или установить идентификатор представления.
             /// </summary>
             public int ViewID { get; set; }
             /// <summary>
-            /// Получить или установить текст
+            /// Получить или установить текст.
             /// </summary>
             public string Text { get; set; }
             /// <summary>
-            /// Получить или установить часть пути, соответствующую элементу
+            /// Получить или установить часть пути, соответствующую элементу.
             /// </summary>
-            /// <remarks>Свойство необходимо для загрузки настроек из базы конфигурации</remarks>
+            /// <remarks>Свойство необходимо для загрузки настроек из базы конфигурации.</remarks>
             internal string PathPart { get; set; }
             /// <summary>
-            /// Получить или установить номер входного канала, информирующего о тревожном состоянии представления
+            /// Получить или установить номер входного канала, информирующего о тревожном состоянии представления.
             /// </summary>
             public int AlarmCnlNum { get; set; }
             /// <summary>
-            /// Получить дочерние элементы
+            /// Получить дочерние элементы.
             /// </summary>
             public List<ViewItem> Subitems { get; protected set; }
 
             /// <summary>
-            /// Сравнить текущий объект с другим объектом такого же типа
+            /// Сравнить текущий объект с другим объектом такого же типа.
             /// </summary>
             public int CompareTo(ViewItem other)
             {
@@ -127,13 +126,13 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Имя файла настроек по умолчанию
+        /// Имя файла настроек по умолчанию.
         /// </summary>
         public const string DefFileName = "ViewSettings.xml";
 
         
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public ViewSettings()
         {
@@ -142,36 +141,41 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Получить элементы настроек представлений
+        /// Получить элементы настроек представлений.
         /// </summary>
         public List<ViewItem> ViewItems { get; protected set; }
 
 
         /// <summary>
-        /// Рекурсивно загрузить элемент настроек представлений
+        /// Рекурсивно загрузить элемент настроек представлений.
         /// </summary>
+        /// <remarks>Метод используется только при загрузке из файла.</remarks>
         protected void LoadViewItem(XmlElement viewItemElem, List<ViewItem> viewItems)
         {
-            ViewItem viewItem = new ViewItem();
-            viewItem.ViewID = viewItemElem.GetAttrAsInt("viewID");
-            viewItem.Text = viewItemElem.GetAttribute("text");
-            viewItem.AlarmCnlNum = viewItemElem.GetAttrAsInt("alarmCnlNum");
+            ViewItem viewItem = new ViewItem
+            {
+                ViewID = viewItemElem.GetAttrAsInt("viewID"),
+                Text = viewItemElem.GetAttribute("text"),
+                AlarmCnlNum = viewItemElem.GetAttrAsInt("alarmCnlNum")
+            };
             viewItems.Add(viewItem);
 
             XmlNodeList viewItemNodes = viewItemElem.SelectNodes("ViewItem");
             foreach (XmlElement elem in viewItemNodes)
+            {
                 LoadViewItem(elem, viewItem.Subitems);
+            }
         }
 
         /// <summary>
-        /// Рекурсивно добавить элемент настроек представлений
+        /// Рекурсивно добавить элемент настроек представлений.
         /// </summary>
+        /// <remarks>Метод используется только при загрузке из базы конфигурации.</remarks>
         protected void AppendViewItem(int viewID, string text, 
             string[] pathParts, int pathPartInd, List<ViewItem> viewItems)
         {
             string pathPart = pathParts[pathPartInd];
-            ViewItem newViewItem = new ViewItem();
-            newViewItem.PathPart = pathPart;
+            ViewItem newViewItem = new ViewItem { PathPart = pathPart };
             int viewItemInd = viewItems.BinarySearch(newViewItem, ViewItem.PathComp);
 
             if (pathPartInd < pathParts.Length - 1) // не последние части пути
@@ -190,7 +194,7 @@ namespace Scada.Web
             }
             else // последняя часть пути
             {
-                newViewItem.ViewID = Path.GetExtension(pathPart) == null ? 0 : viewID;
+                newViewItem.ViewID = viewID;
                 newViewItem.Text = text;
 
                 if (viewItemInd < 0)
@@ -198,7 +202,7 @@ namespace Scada.Web
                     // добавить элемент, которого ещё не было в списке
                     viewItems.Insert(~viewItemInd, newViewItem);
                 }
-                else
+                else if (viewID > 0)
                 {
                     // добавить элемент, путь которого совпадает с уже имеющимся
                     viewItems.Insert(viewItemInd + 1, newViewItem);
@@ -207,7 +211,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Рекурсивно сортировать элементы настроек представлений
+        /// Рекурсивно сортировать элементы настроек представлений.
         /// </summary>
         protected void SortViewItems(List<ViewItem> viewItems)
         {
@@ -218,7 +222,7 @@ namespace Scada.Web
 
 
         /// <summary>
-        /// Создать новый объект настроек
+        /// Создать новый объект настроек.
         /// </summary>
         public ISettings Create()
         {
@@ -226,7 +230,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Определить, равны ли заданные настройки текущим настройкам
+        /// Определить, равны ли заданные настройки текущим настройкам.
         /// </summary>
         public bool Equals(ISettings settings)
         {
@@ -234,7 +238,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Загрузить настройки из файла
+        /// Загрузить настройки из файла.
         /// </summary>
         public bool LoadFromFile(string fileName, out string errMsg)
         {
@@ -265,7 +269,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Сохранить настройки в файле
+        /// Сохранить настройки в файле.
         /// </summary>
         public bool SaveToFile(string fileName, out string errMsg)
         {
@@ -274,7 +278,7 @@ namespace Scada.Web
         }
 
         /// <summary>
-        /// Загрузить настройки из базы конфигурации
+        /// Загрузить настройки из базы конфигурации.
         /// </summary>
         public bool LoadFromBase(DataAccess dataAccess, out string errMsg)
         {
@@ -284,31 +288,41 @@ namespace Scada.Web
             // загрузка настроек
             try
             {
-                char[] separator = { '\\', '/' };
                 List<UiObjProps> viewPropsList = dataAccess.GetUiObjPropsList(UiObjProps.BaseUiTypes.View);
 
                 foreach (UiObjProps viewProps in viewPropsList)
                 {
-                    if (!viewProps.IsEmpty)
+                    if (!(viewProps.Hidden || viewProps.IsEmpty))
                     {
-                        if (viewProps.PathKind == UiObjProps.PathKinds.File)
+                        string[] pathParts;
+                        string itemText;
+
+                        if (viewProps.Title.IndexOfAny(UiObjProps.PathSeparator) >= 0)
                         {
-                            // для PathKinds.File свойство Path не равно null
-                            string[] pathParts = viewProps.Path.Split(separator, StringSplitOptions.RemoveEmptyEntries);
-                            if (pathParts.Length > 0)
-                            {
-                                string itemText = string.IsNullOrEmpty(viewProps.Title) ?
-                                    pathParts[pathParts.Length - 1] : viewProps.Title;
-                                AppendViewItem(viewProps.UiObjID, itemText, pathParts, 0, ViewItems);
-                            }
+                            // путь элемента на основе заголовка
+                            pathParts = viewProps.Title.Split(UiObjProps.PathSeparator, 
+                                StringSplitOptions.RemoveEmptyEntries);
+                            itemText = pathParts[pathParts.Length - 1];
                         }
                         else
                         {
-                            string itemText = string.IsNullOrEmpty(viewProps.Title) ? 
-                                viewProps.Path : viewProps.Title;
-                            ViewItem viewItem = new ViewItem(viewProps.UiObjID, itemText, 0);
-                            ViewItems.Add(viewItem);
+                            if (viewProps.PathKind == UiObjProps.PathKinds.File)
+                            {
+                                // путь элемента на основе пути файла
+                                pathParts = viewProps.Path.Split(UiObjProps.PathSeparator, 
+                                    StringSplitOptions.RemoveEmptyEntries);
+                            }
+                            else
+                            {
+                                // элемент в корне проводника
+                                pathParts = new string[] { viewProps.Path };
+                            }
+
+                            itemText = viewProps.Title == "" ? pathParts[pathParts.Length - 1] : viewProps.Title;
                         }
+
+                        int viewID = string.IsNullOrEmpty(viewProps.TypeCode) ? 0 : viewProps.UiObjID;
+                        AppendViewItem(viewID, itemText, pathParts, 0, ViewItems);
                     }
                 }
 
