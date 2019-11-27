@@ -22,13 +22,13 @@ scada.scheme.ButtonRenderer.constructor = scada.scheme.ButtonRenderer;
 
 // Set enabled or visibility of the button
 scada.scheme.ButtonRenderer.prototype._setState = function (btnComp, boundProperty, state) {
-    if (boundProperty == 1 /*Enabled*/) {
+    if (boundProperty === 1 /*Enabled*/) {
         if (state) {
             btnComp.removeClass("disabled").prop("disabled", false);
         } else {
             btnComp.addClass("disabled").prop("disabled", true);
         }
-    } else if (boundProperty == 2 /*Visible*/) {
+    } else if (boundProperty === 2 /*Visible*/) {
         if (state) {
             btnComp.removeClass("hidden");
         } else {
@@ -91,7 +91,7 @@ scada.scheme.ButtonRenderer.prototype.updateData = function (component, renderCo
         var state = cnlDataExt.Val > 0 && cnlDataExt.Stat > 0;
         this._setState(btnComp, props.BoundProperty, state);
     }
-}
+};
 
 /********** Led Renderer **********/
 
@@ -138,7 +138,7 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         var backColor = props.BackColor;
 
         // define background color according to the channel status
-        if (backColor == this.STATUS_COLOR) {
+        if (backColor === this.STATUS_COLOR) {
             backColor = cnlDataExt.Color;
         }
 
@@ -158,7 +158,7 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
         divComp.css("background-color", backColor);
 
         // set border color
-        if (props.BorderColor == this.STATUS_COLOR) {
+        if (props.BorderColor === this.STATUS_COLOR) {
             var divBorder = divComp.children(".basic-led-border");
             divBorder.css("border-color", cnlDataExt.Color);
         }
@@ -220,7 +220,7 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
                 var url = props.Url;
 
                 if (props.ViewID > 0 && renderContext.schemeEnv.viewHub) {
-                    url = renderContext.schemeEnv.viewHub.getFullViewUrl(props.ViewID, props.Target == 2 /*Popup*/);
+                    url = renderContext.schemeEnv.viewHub.getFullViewUrl(props.ViewID, props.Target === 2 /*Popup*/);
                 }
 
                 if (url) {
@@ -333,10 +333,10 @@ scada.scheme.ToggleRenderer.prototype.updateData = function (component, renderCo
 
         // set colors that depend on status
         var statusColor = cnlDataExt.Color;
-        this.setBackColor(divComp, props.BackColor, true, statusColor)
-        this.setBorderColor(divComp, props.BorderColor, true, statusColor)
+        this.setBackColor(divComp, props.BackColor, true, statusColor);
+        this.setBorderColor(divComp, props.BorderColor, true, statusColor);
 
-        if (props.LeverColor == this.STATUS_COLOR) {
+        if (props.LeverColor === this.STATUS_COLOR) {
             // execute the find method if the color depends on status
             divComp.find(".basic-toggle-lever").css("background-color", statusColor);
         }
