@@ -132,6 +132,7 @@ namespace Scada.Client
                 }
 
                 uiObjProps.Args = (string)rowView["Args"];
+                uiObjProps.Hidden = (bool)rowView["Hidden"];
                 uiObjProps.ObjNum = (int)rowView["ObjNum"];
             }
 

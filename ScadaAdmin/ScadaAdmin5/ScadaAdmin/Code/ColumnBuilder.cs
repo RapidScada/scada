@@ -346,8 +346,9 @@ namespace Scada.Admin.App.Code
                 NewButtonColumn("Name", new ColumnOptions(ColumnKind.SelectFolderButton)),
                 NewTextBoxColumn("Args", new ColumnOptions(ColumnLength.Default)),
                 NewTextBoxColumn("TypeCode", new ColumnOptions(ColumnLength.Default)),
-                NewComboBoxColumn("ObjNum","Name", configBase.ObjTable, true),
-                NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Default)) // Title
+                NewTextBoxColumn("Descr", new ColumnOptions(ColumnLength.Default)), // Title
+                NewCheckBoxColumn("Hidden"),
+                NewComboBoxColumn("ObjNum","Name", configBase.ObjTable, true)
             });
         }
 

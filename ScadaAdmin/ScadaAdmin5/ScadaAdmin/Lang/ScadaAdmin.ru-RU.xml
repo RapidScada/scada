@@ -106,10 +106,11 @@
     <Phrase key="Name">Путь</Phrase>
     <Phrase key="NameSelectFileButton">Выбрать файл</Phrase>
     <Phrase key="NameSelectFolderButton">Выбрать папку</Phrase>
-    <Phrase key="TypeCode">Тип представления</Phrase>
     <Phrase key="Args">Аргументы</Phrase>
-    <Phrase key="ObjNum">Объект</Phrase>
+    <Phrase key="TypeCode">Тип представления</Phrase>
     <Phrase key="Descr">Заголовок</Phrase>
+    <Phrase key="Hidden">Скрыть</Phrase>
+    <Phrase key="ObjNum">Объект</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
     <Phrase key="KPNum">Номер</Phrase>

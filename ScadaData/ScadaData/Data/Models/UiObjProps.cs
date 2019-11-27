@@ -90,8 +90,9 @@ namespace Scada.Data.Models
             Path = "";
             Args = "";
             TypeCode = "";
-            ObjNum = 0;
             Title = "";
+            Hidden = false;
+            ObjNum = 0;
             BaseUiType = BaseUiTypes.View;
         }
 
@@ -117,14 +118,19 @@ namespace Scada.Data.Models
         public string TypeCode { get; set; }
 
         /// <summary>
-        /// Получить или установить номер объекта.
-        /// </summary>
-        public int ObjNum { get; set; }
-
-        /// <summary>
         /// Получить или установить заголовок.
         /// </summary>
         public string Title { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак, что объект интерфейса скрыт.
+        /// </summary>
+        public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер объекта.
+        /// </summary>
+        public int ObjNum { get; set; }
 
         /// <summary>
         /// Получить или установить базовый тип.
