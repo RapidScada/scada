@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Web.Shell;
@@ -29,10 +29,10 @@ using System;
 namespace Scada.Web
 {
     /// <summary>
-    /// Web form for displaying a view in a popup
-    /// <para>Веб-форма для отображения представления во всплывающем окне</para>
+    /// Web form for displaying a view in a frame.
+    /// <para>Веб-форма для отображения представления во фрейме.</para>
     /// </summary>
-    public partial class WFrmViewPopup : System.Web.UI.Page
+    public partial class WFrmViewFrame : System.Web.UI.Page
     {
         protected void Page_Load(object sender, EventArgs e)
         {

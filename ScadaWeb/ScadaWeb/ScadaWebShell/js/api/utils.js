@@ -291,8 +291,8 @@ scada.utils = {
     },
 
     // Get URL of the view by its ID
-    getViewUrl: function (viewID, opt_isPopup) {
-        return (opt_isPopup ? "ViewPopup.aspx?viewID=" : "View.aspx?viewID=") + viewID;
+    getViewUrl: function (viewID, opt_openInFrame) {
+        return (opt_openInFrame ? "ViewFrame.aspx?viewID=" : "View.aspx?viewID=") + viewID;
     },
 
     // Check that the frame is accessible due to the browser security

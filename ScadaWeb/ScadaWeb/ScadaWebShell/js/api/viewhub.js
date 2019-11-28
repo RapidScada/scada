@@ -94,9 +94,9 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
 };
 
 // Get absolute URL of the view
-scada.ViewHub.prototype.getFullViewUrl = function (viewID, opt_isPopup) {
+scada.ViewHub.prototype.getFullViewUrl = function (viewID, opt_openInFrame) {
     var env = this._getEnvObj();
-    return (env ? env.rootPath : "") + scada.utils.getViewUrl(viewID, opt_isPopup);
+    return (env ? env.rootPath : "") + scada.utils.getViewUrl(viewID, opt_openInFrame);
 };
 
 // View hub locator object
