@@ -171,7 +171,7 @@ scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext
             renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
         }
     }
-}
+};
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
     var divScheme = $("<div class='scheme'></div>");
@@ -681,9 +681,9 @@ scada.scheme.DynamicTextRenderer.prototype.updateData = function (component, ren
         var borderColor = this.chooseColor(isHovered, props.BorderColor, props.BorderColorOnHover);
         var foreColor = this.chooseColor(isHovered, props.ForeColor, props.ForeColorOnHover);
 
-        this.setBackColor(spanComp, backColor, true, statusColor)
-        this.setBorderColor(spanComp, borderColor, true, statusColor)
-        this.setForeColor(spanComp, foreColor, true, statusColor)
+        this.setBackColor(spanComp, backColor, true, statusColor);
+        this.setBorderColor(spanComp, borderColor, true, statusColor);
+        this.setForeColor(spanComp, foreColor, true, statusColor);
     }
 };
 
@@ -708,7 +708,7 @@ scada.scheme.StaticPictureRenderer.prototype.createDom = function (component, re
     switch (props.ImageStretch) {
         case ImageStretches.FILL:
             var borders = props.BorderWidth * 2;
-            divComp.css("background-size", (props.Size.Width - borders) + "px " +
+            divComp.css("background-size", props.Size.Width - borders + "px " +
                 (props.Size.Height - borders) + "px");
             break;
         case ImageStretches.ZOOM:

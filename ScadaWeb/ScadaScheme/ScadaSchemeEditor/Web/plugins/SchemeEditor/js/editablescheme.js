@@ -587,12 +587,12 @@ scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
         dataType: "json",
         cache: false
     })
-        .done(function () {
-            scada.utils.logSuccessfulRequest(operation);
-        })
-        .fail(function (jqXHR) {
-            scada.utils.logFailedRequest(operation, jqXHR);
-        });
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
 };
 
 // Send a request to change scheme component selection
