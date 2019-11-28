@@ -139,14 +139,6 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Gets the argument by key.
-        /// </summary>
-        protected string GetArg(string key)
-        {
-            return Args.TryGetValue(key, out string s) ? s : "";
-        }
-
-        /// <summary>
         /// Добавить номер входного канала в множество и в список.
         /// </summary>
         protected void AddCnlNum(int cnlNum)

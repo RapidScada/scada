@@ -40,11 +40,35 @@ namespace Scada.Scheme
     public class SchemeView : BaseView
     {
         /// <summary>
-        /// Максимальный идентификатор компонентов схемы.
+        /// Represents scheme arguments in template mode.
+        /// <para>Представляет аргументы схемы в режиме шаблона.</para>
+        /// </summary>
+        protected struct TemplateArgs
+        {
+            /// <summary>
+            /// Gets or sets the offset of input channel numbers.
+            /// </summary>
+            public int InCnlOffset { get; set; }
+            /// <summary>
+            /// Gets or sets the offset of output channel numbers.
+            /// </summary>
+            public int CtrlCnlOffset { get; set; }
+            /// <summary>
+            /// Gets or sets the ID of the component that displays a scheme title.
+            /// </summary>
+            public int TitleCompID { get; set; }
+        }
+
+        /// <summary>
+        /// The maximum ID of the scheme components.
         /// </summary>
         protected int maxComponentID;
+        /// <summary>
+        /// The scheme arguments in template mode.
+        /// </summary>
+        protected TemplateArgs templateArgs;
 
-        
+
         /// <summary>
         /// Конструктор.
         /// </summary>
@@ -52,6 +76,8 @@ namespace Scada.Scheme
             : base()
         {
             maxComponentID = 0;
+            templateArgs = new TemplateArgs();
+
             SchemeDoc = new SchemeDocument();
             Components = new SortedList<int, BaseComponent>();
             LoadErrors = new List<string>();
@@ -76,12 +102,14 @@ namespace Scada.Scheme
 
 
         /// <summary>
-        /// Gets offsets for input and output channels to use the scheme in template mode.
+        /// Sets the view arguments.
         /// </summary>
-        protected void GetCnlOffsets(out int inCnlOffset, out int ctrlCnlOffset)
+        public override void SetArgs(string args)
         {
-            int.TryParse(GetArg("inCnlOffset"), out inCnlOffset);
-            int.TryParse(GetArg("ctrlCnlOffset"), out ctrlCnlOffset);
+            base.SetArgs(args);
+            templateArgs.InCnlOffset = Args.GetValueAsInt("inCnlOffset");
+            templateArgs.CtrlCnlOffset = Args.GetValueAsInt("ctrlCnlOffset");
+            templateArgs.TitleCompID = Args.GetValueAsInt("titleCompID");
         }
 
         /// <summary>
@@ -93,6 +121,14 @@ namespace Scada.Scheme
             {
                 Title = s ?? "";
                 SchemeDoc.Title = Title;
+
+                // display title
+                if (templateArgs.TitleCompID > 0 && 
+                    Components.TryGetValue(templateArgs.TitleCompID, out BaseComponent titleComponent) &&
+                    titleComponent is StaticText staticText)
+                {
+                    staticText.Text = Title;
+                }                    
             }
         }
 
@@ -114,7 +150,8 @@ namespace Scada.Scheme
                 throw new ScadaException(SchemePhrases.IncorrectFileFormat);
 
             // получение смещений каналов при работе схемы в режиме шаблона 
-            GetCnlOffsets(out int inCnlOffset, out int ctrlCnlOffset);
+            int inCnlOffset = templateArgs.InCnlOffset;
+            int ctrlCnlOffset = templateArgs.CtrlCnlOffset;
 
             // загрузка документа схемы
             if ((rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme")) is XmlNode documentNode)

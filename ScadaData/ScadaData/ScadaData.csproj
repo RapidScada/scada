@@ -112,6 +112,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RangeUtils.cs" />
     <Compile Include="ScadaException.cs" />
+    <Compile Include="ScadaUtils.Collections.cs" />
     <Compile Include="ScadaUtils.Crypto.cs" />
     <Compile Include="ScadaUtils.cs" />
     <Compile Include="Data\Tables\SrezAdapter.cs" />
