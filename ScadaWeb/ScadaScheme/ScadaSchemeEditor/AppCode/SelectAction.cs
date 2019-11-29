@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Scheme Editor
- * Summary  : Specifies the main form actions
+ * Summary  : Specifies the actions when selecting scheme components
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -26,20 +26,29 @@
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Specifies the main form actions.
-    /// <para>Задаёт действия главной формы.</para>
+    /// Specifies the actions when selecting scheme components.
+    /// <para>Задаёт действия при выборе компонентов схемы.</para>
     /// </summary>
-    public enum FormAction
+    public enum SelectAction
     {
-        New,
-        Open,
-        Save,
-        Cut,
-        Copy,
-        Paste,
-        Undo,
-        Redo,
-        Pointer,
-        Delete
+        /// <summary>
+        /// Select component.
+        /// </summary>
+        Select,
+
+        /// <summary>
+        /// Append component to selection.
+        /// </summary>
+        Append,
+
+        /// <summary>
+        /// Deselect component.
+        /// </summary>
+        Deselect,
+
+        /// <summary>
+        /// Deselect all components.
+        /// </summary>
+        DeselectAll
     }
 }

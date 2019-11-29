@@ -36,54 +36,11 @@ using Utils;
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Editor data and logic
-    /// <para>Данные и логика редактора</para>
+    /// Editor data and logic.
+    /// <para>Данные и логика редактора.</para>
     /// </summary>
     internal sealed class Editor
     {
-        /// <summary>
-        /// Режимы указателя мыши редактора
-        /// </summary>
-        public enum PointerModes
-        {
-            /// <summary>
-            /// Выбор компонентов
-            /// </summary>
-            Select,
-            /// <summary>
-            /// Создание компонента
-            /// </summary>
-            Create,
-            /// <summary>
-            /// Вставка скопированных компонентов
-            /// </summary>
-            Paste
-        }
-
-        /// <summary>
-        /// Действия при выборе компонентов схемы
-        /// </summary>
-        public enum SelectActions
-        {
-            /// <summary>
-            /// Выбрать
-            /// </summary>
-            Select,
-            /// <summary>
-            /// Добавить к выбору
-            /// </summary>
-            Append,
-            /// <summary>
-            /// Отменить выбор
-            /// </summary>
-            Deselect,
-            /// <summary>
-            /// Отменить выбор всех компонентов
-            /// </summary>
-            DeselectAll
-        }
-
-
         /// <summary>
         /// Длина идентификатора редактора
         /// </summary>
@@ -106,35 +63,23 @@ namespace Scada.Scheme.Editor
         private List<Change> changes;              // изменения схемы
         private bool modified;                     // признак изменения схемы
         private long changeStampCntr;              // счётчик для генерации меток изменений схемы
-        private PointerModes pointerMode;          // режим указателя мыши редактора
+        private PointerMode pointerMode;          // режим указателя мыши редактора
         private string status;                     // статус редактора
         private List<BaseComponent> selComponents; // выбранные компоненты схемы
         private List<BaseComponent> clipboard;     // буфер обмена, содержащий скопированные компоненты
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
-        /// </summary>
-        private Editor()
-        {
-        }
-
-        /// <summary>
         /// Конструктор
         /// </summary>
         public Editor(CompManager compManager, Log log)
         {
-            if (compManager == null)
-                throw new ArgumentNullException("compManager");
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.compManager = compManager;
-            this.log = log;
+            this.compManager = compManager ?? throw new ArgumentNullException("compManager");
+            this.log = log ?? throw new ArgumentNullException("log");
             changes = new List<Change>();
             changeStampCntr = 0;
             modified = false;
-            pointerMode = PointerModes.Select;
+            pointerMode = PointerMode.Select;
             selComponents = new List<BaseComponent>();
             clipboard = new List<BaseComponent>();
 
@@ -142,6 +87,7 @@ namespace Scada.Scheme.Editor
             SchemeView = null;
             FileName = "";
             History = new History(log);
+            PasteSpecialParams = new PasteSpecialParams();
             NewComponentTypeName = "";
         }
 
@@ -217,7 +163,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Получить или установить режим указателя мыши редактора
         /// </summary>
-        public PointerModes PointerMode
+        public PointerMode PointerMode
         {
             get
             {
@@ -231,10 +177,15 @@ namespace Scada.Scheme.Editor
                     OnPointerModeChanged();
                 }
 
-                if (pointerMode != PointerModes.Create)
+                if (pointerMode != PointerMode.Create)
                     NewComponentTypeName = "";
             }
         }
+
+        /// <summary>
+        /// Gets the special paste parameters.
+        /// </summary>
+        public PasteSpecialParams PasteSpecialParams { get; private set; }
 
         /// <summary>
         /// Получить или установить статус редактора - полезную информацию для пользователя
@@ -312,7 +263,7 @@ namespace Scada.Scheme.Editor
             FileName = fileName;
             Modified = false;
             History.Clear();
-            PointerMode = PointerModes.Select;
+            PointerMode = PointerMode.Select;
             SubscribeToSchemeChanges();
             OnSelectionChanged();
             return loadOK;
@@ -439,7 +390,7 @@ namespace Scada.Scheme.Editor
             }
 
             OnSelectionChanged();
-            PointerMode = PointerModes.Select;
+            PointerMode = PointerMode.Select;
         }
 
         /// <summary>
@@ -601,8 +552,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void NewScheme()
         {
-            string errMsg;
-            InitScheme("", out errMsg);
+            InitScheme("", out string errMsg);
         }
 
         /// <summary>
@@ -757,7 +707,7 @@ namespace Scada.Scheme.Editor
                     }
 
                     OnSelectionChanged();
-                    PointerMode = PointerModes.Select;
+                    PointerMode = PointerMode.Select;
                     return true;
                 }
             }
@@ -969,20 +919,20 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Выполнить действие по выбору компонента
         /// </summary>
-        public void PerformSelectAction(SelectActions selectAction, int componentID)
+        public void PerformSelectAction(SelectAction selectAction, int componentID)
         {
             switch (selectAction)
             {
-                case SelectActions.Select:
+                case SelectAction.Select:
                     SelectComponent(componentID);
                     break;
-                case SelectActions.Append:
+                case SelectAction.Append:
                     SelectComponent(componentID, true);
                     break;
-                case SelectActions.Deselect:
+                case SelectAction.Deselect:
                     DeselectComponent(componentID);
                     break;
-                case SelectActions.DeselectAll:
+                case SelectAction.DeselectAll:
                     DeselectAll();
                     break;
             }
@@ -1037,36 +987,53 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Вставить компоненты схемы из буфера обмена
         /// </summary>
-        public bool PasteFromClipboard(int x, int y)
+        public bool PasteFromClipboard(int x, int y, bool pasteSpecial)
         {
             try
             {
                 if (SchemeView == null)
+                {
                     throw new ScadaException(Localization.UseRussian ?
                         "Схема не загружена." :
                         "Scheme is not loaded.");
+                }
 
-                lock (SchemeView.SyncRoot) lock (clipboard) lock (selComponents)
+                lock (SchemeView.SyncRoot)
                 {
-                    selComponents.Clear();
-                    History.BeginPoint();
-
-                    foreach (BaseComponent srcComponent in clipboard)
+                    lock (clipboard)
                     {
-                        BaseComponent newComponent = srcComponent.Clone();
-                        newComponent.ID = SchemeView.GetNextComponentID();
-                        newComponent.Location = new Point(newComponent.Location.X + x, newComponent.Location.Y + y);
+                        lock (selComponents)
+                        {
+                            selComponents.Clear();
+                            History.BeginPoint();
 
-                        SchemeView.Components[newComponent.ID] = newComponent;
-                        SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
-                        selComponents.Add(newComponent);
+                            int inCnlOffset = pasteSpecial ? PasteSpecialParams.InCnlOffset : 0;
+                            int ctrlCnlOffset = pasteSpecial ? PasteSpecialParams.CtrlCnlOffset : 0;
+
+                            foreach (BaseComponent srcComponent in clipboard)
+                            {
+                                BaseComponent newComponent = srcComponent.Clone();
+                                newComponent.ID = SchemeView.GetNextComponentID();
+                                newComponent.Location = new Point(newComponent.Location.X + x, newComponent.Location.Y + y);
+
+                                if (pasteSpecial && newComponent is IDynamicComponent dynamicComponent)
+                                {
+                                    dynamicComponent.InCnlNum += inCnlOffset;
+                                    dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
+                                }
+
+                                SchemeView.Components[newComponent.ID] = newComponent;
+                                SchemeView.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentAdded, newComponent);
+                                selComponents.Add(newComponent);
+                            }
+
+                            History.EndPoint();
+                        }
                     }
-
-                    History.EndPoint();
                 }
 
                 OnSelectionChanged();
-                PointerMode = PointerModes.Select;
+                PointerMode = PointerMode.Select;
                 return true;
             }
             catch (ScadaException ex)

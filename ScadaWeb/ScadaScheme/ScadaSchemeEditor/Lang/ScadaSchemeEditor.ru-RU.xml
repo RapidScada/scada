@@ -16,6 +16,7 @@
     <Phrase key="miEditCut">Вырезать</Phrase>
     <Phrase key="miEditCopy">Копировать</Phrase>
     <Phrase key="miEditPaste">Вставить</Phrase>
+    <Phrase key="miEditPasteSpecial">Специальная вставка...</Phrase>
     <Phrase key="miEditUndo">Отменить</Phrase>
     <Phrase key="miEditRedo">Вернуть</Phrase>
     <Phrase key="miEditPointer">Указатель</Phrase>
@@ -51,6 +52,13 @@
     <Phrase key="SchemeFileFilter">Схемы (*.sch)|*.sch|Все файлы (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">Схема была изменена. Сохранить изменения?</Phrase>
     <Phrase key="RestartNeeded">Изменения настроек вступят в силу после перезапуска приложения.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmPasteSpecial">
+    <Phrase key="this">Специальная вставка</Phrase>
+    <Phrase key="lblInCnlOffset">Увеличить номера входных каналов на</Phrase>
+    <Phrase key="lblCtrlCnlOffset">Увеличить номера каналов управления на</Phrase>
+    <Phrase key="btnPaste">Вставить</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmSettings">
     <Phrase key="this">Настройки</Phrase>

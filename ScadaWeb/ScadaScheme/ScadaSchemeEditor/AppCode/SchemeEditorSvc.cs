@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Scheme.DataTransfer;
@@ -36,33 +36,33 @@ using System.Web.Script.Serialization;
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// WCF service for interacting with the editor JavaScript code
-    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом редактора</para>
+    /// WCF service for interacting with the editor JavaScript code.
+    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом редактора.</para>
     /// </summary>
     [ServiceContract]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SchemeEditorSvc
     {
         /// <summary>
-        /// Максимальное количество символов строке данных в формате JSON, 10 МБ
+        /// Максимальное количество символов строке данных в формате JSON, 10 МБ.
         /// </summary>
         private const int MaxJsonLen = 10485760;
         /// <summary>
-        /// Обеспечивает сериализацию результатов методов сервиса
+        /// Обеспечивает сериализацию результатов методов сервиса.
         /// </summary>
         private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
         /// <summary>
-        /// Общие данные приложения
+        /// Общие данные приложения.
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
         /// <summary>
-        /// Редактор
+        /// Редактор.
         /// </summary>
         private static readonly Editor Editor = AppData.Editor;
 
 
         /// <summary>
-        /// Разрешить кросс-доменный доступ к сервису
+        /// Разрешить кросс-доменный доступ к сервису.
         /// </summary>
         private void AllowAccess()
         {
@@ -70,7 +70,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Проверить аргументы метода сервиса
+        /// Проверить аргументы метода сервиса.
         /// </summary>
         private bool CheckArguments(string editorID, long viewStamp, SchemeDTO dto)
         {
@@ -96,9 +96,9 @@ namespace Scada.Scheme.Editor
 
 
         /// <summary>
-        /// Получить свойства документа схемы
+        /// Получить свойства документа схемы.
         /// </summary>
-        /// <remarks>Возвращает SchemeDocDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDocDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetSchemeDoc(string editorID, long viewStamp)
@@ -128,9 +128,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить компоненты схемы
+        /// Получить компоненты схемы.
         /// </summary>
-        /// <remarks>Возвращает ComponentsDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает ComponentsDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetComponents(string editorID, long viewStamp, int startIndex, int count)
@@ -160,9 +160,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить изображения схемы
+        /// Получить изображения схемы.
         /// </summary>
-        /// <remarks>Возвращает ImagesDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает ImagesDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetImages(string editorID, long viewStamp, int startIndex, int totalDataSize)
@@ -192,9 +192,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить ошибки при загрузке схемы
+        /// Получить ошибки при загрузке схемы.
         /// </summary>
-        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetLoadErrors(string editorID, long viewStamp)
@@ -224,9 +224,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Получить изменения схемы
+        /// Получить изменения схемы.
         /// </summary>
-        /// <remarks>Возвращает ChangesDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает ChangesDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetChanges(string editorID, long viewStamp, long changeStamp, string status)
@@ -240,7 +240,7 @@ namespace Scada.Scheme.Editor
                 {
                     dto.Changes = Editor.GetChanges(changeStamp);
                     dto.SelCompIDs = Editor.GetSelectedComponentIDs();
-                    dto.NewCompMode = Editor.PointerMode != Editor.PointerModes.Select;
+                    dto.NewCompMode = Editor.PointerMode != PointerMode.Select;
                     dto.EditorTitle = Editor.Title;
                     dto.FormState = AppData.MainForm.GetFormState();
                     Editor.Status = status;
@@ -258,9 +258,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Добавить компонент на схему
+        /// Добавить компонент на схему.
         /// </summary>
-        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string AddComponent(string editorID, long viewStamp, int x, int y)
@@ -274,11 +274,14 @@ namespace Scada.Scheme.Editor
                 {
                     switch (Editor.PointerMode)
                     {
-                        case Editor.PointerModes.Create:
+                        case PointerMode.Create:
                             dto.Success = Editor.CreateComponent(x, y);
                             break;
-                        case Editor.PointerModes.Paste:
-                            dto.Success = Editor.PasteFromClipboard(x, y);
+                        case PointerMode.Paste:
+                            dto.Success = Editor.PasteFromClipboard(x, y, false);
+                            break;
+                        case PointerMode.PasteSpecial:
+                            dto.Success = Editor.PasteFromClipboard(x, y, true);
                             break;
                     }
                 }
@@ -295,9 +298,9 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Изменить выбор компонентов схемы
+        /// Изменить выбор компонентов схемы.
         /// </summary>
-        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string ChangeSelection(string editorID, long viewStamp, string action, int componentID)
@@ -306,10 +309,9 @@ namespace Scada.Scheme.Editor
             {
                 AllowAccess();
                 SchemeDTO dto = new SchemeDTO();
-                Editor.SelectActions selectAction;
 
                 if (CheckArguments(editorID, viewStamp, dto) &&
-                    Enum.TryParse(action, true, out selectAction))
+                    Enum.TryParse(action, true, out SelectAction selectAction))
                 {
                     Editor.PerformSelectAction(selectAction, componentID);
                 }
@@ -326,7 +328,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Переместить и изменить размер выбранных компонентов схемы
+        /// Переместить и изменить размер выбранных компонентов схемы.
         /// </summary>
         [OperationContract]
         [WebGet]
@@ -352,7 +354,7 @@ namespace Scada.Scheme.Editor
         }
 
         /// <summary>
-        /// Выполнить действие главной формы
+        /// Выполнить действие главной формы.
         /// </summary>
         [OperationContract]
         [WebGet]
@@ -362,10 +364,9 @@ namespace Scada.Scheme.Editor
             {
                 AllowAccess();
                 SchemeDTO dto = new SchemeDTO();
-                FormActions formAction;
 
                 if (CheckArguments(editorID, viewStamp, dto) &&
-                    Enum.TryParse(action, true, out formAction))
+                    Enum.TryParse(action, true, out FormAction formAction))
                 {
                     AppData.MainForm.PerformAction(formAction);
                 }

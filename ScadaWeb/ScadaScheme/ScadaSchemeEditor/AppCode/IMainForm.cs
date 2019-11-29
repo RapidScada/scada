@@ -34,7 +34,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Выполнить заданное действие
         /// </summary>
-        void PerformAction(FormActions formAction);
+        void PerformAction(FormAction formAction);
 
         /// <summary>
         /// Получить состояние формы

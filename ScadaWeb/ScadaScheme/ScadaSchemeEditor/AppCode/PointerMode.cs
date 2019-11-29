@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Scheme Editor
- * Summary  : Specifies the main form actions
+ * Summary  : Specifies the modes of the editor mouse pointer
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -26,20 +26,29 @@
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Specifies the main form actions.
-    /// <para>Задаёт действия главной формы.</para>
+    /// Specifies the modes of the editor mouse pointer.
+    /// <para>Определяет режимы указателя мыши редактора.</para>
     /// </summary>
-    public enum FormAction
+    public enum PointerMode
     {
-        New,
-        Open,
-        Save,
-        Cut,
-        Copy,
+        /// <summary>
+        /// Select components.
+        /// </summary>
+        Select,
+
+        /// <summary>
+        /// Create a new component.
+        /// </summary>
+        Create,
+
+        /// <summary>
+        /// Paste of the copied components.
+        /// </summary>
         Paste,
-        Undo,
-        Redo,
-        Pointer,
-        Delete
+
+        /// <summary>
+        /// Special paste of the copied components.
+        /// </summary>
+        PasteSpecial
     }
 }
