@@ -418,7 +418,7 @@ namespace Scada.Admin.App.Code
             return TranslateHeaders("RightTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("RightID", new ColumnOptions(1, ushort.MaxValue)),
-                NewComboBoxColumn("ItfID", "Name", configBase.InterfaceTable),
+                NewComboBoxColumn("ItfID", "Descr", configBase.InterfaceTable),
                 NewComboBoxColumn("RoleID", "Name", configBase.RoleTable),
                 NewCheckBoxColumn("ViewRight"),
                 NewCheckBoxColumn("CtrlRight")

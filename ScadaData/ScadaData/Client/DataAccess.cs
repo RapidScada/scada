@@ -84,34 +84,6 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить наименование роли по идентификатору из базы конфигурации.
-        /// </summary>
-        protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
-        {
-            try
-            {
-                dataCache.RefreshBaseTables();
-                BaseTables baseTables = dataCache.BaseTables;
-
-                lock (baseTables.SyncRoot)
-                {
-                    BaseTables.CheckColumnsExist(baseTables.RoleTable, true);
-                    DataView viewRole = baseTables.RoleTable.DefaultView;
-                    viewRole.Sort = "RoleID";
-                    int rowInd = viewRole.Find(roleID);
-                    return rowInd >= 0 ? (string)viewRole[rowInd]["Name"] : defaultRoleName;
-                }
-            }
-            catch (Exception ex)
-            {
-                log.WriteException(ex, Localization.UseRussian ?
-                    "Ошибка при получении наименования роли по идентификатору {0}" :
-                    "Error getting role name by ID {0}", roleID);
-                return defaultRoleName;
-            }
-        }
-
-        /// <summary>
         /// Создать свойства объекта интерфейса на основе строки таблицы интерфейса.
         /// </summary>
         /// <param name="rowView">The row from the Interface table.</param>
@@ -137,6 +109,52 @@ namespace Scada.Client
             }
 
             return uiObjProps;
+        }
+
+        /// <summary>
+        /// Appends parent role IDs recursively.
+        /// </summary>
+        protected void AppendParentRoles(HashSet<int> roleIDSet, List<int> roleIDList, int childRoleID)
+        {
+            foreach (DataRowView rowView in dataCache.BaseTables.RoleRefTable.DefaultView.FindRows(childRoleID))
+            {
+                int parentRoleID = (int)rowView["ParentRoleID"];
+
+                if (!roleIDSet.Contains(parentRoleID))
+                {
+                    roleIDSet.Add(parentRoleID);
+                    roleIDList.Add(parentRoleID);
+                    AppendParentRoles(roleIDSet, roleIDList, parentRoleID);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получить наименование роли по идентификатору из базы конфигурации.
+        /// </summary>
+        protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+                BaseTables baseTables = dataCache.BaseTables;
+
+                lock (baseTables.SyncRoot)
+                {
+                    BaseTables.CheckColumnsExist(baseTables.RoleTable, true);
+                    DataView viewRole = baseTables.RoleTable.DefaultView;
+                    viewRole.Sort = "RoleID";
+                    int rowInd = viewRole.Find(roleID);
+                    return rowInd >= 0 ? (string)viewRole[rowInd]["Name"] : defaultRoleName;
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении наименования роли по идентификатору {0}" :
+                    "Error getting role name by ID {0}", roleID);
+                return defaultRoleName;
+            }
         }
 
 
@@ -331,15 +349,33 @@ namespace Scada.Client
 
                 lock (baseTables.SyncRoot)
                 {
+                    // consider role inheritance
+                    HashSet<int> roleIDSet = new HashSet<int>(); // set of parent roles and the specified role
+                    List<int> roleIDList = new List<int>();      // similar role list ordered by inheritance
+                    roleIDSet.Add(roleID); // to avoid infinite loop
+
+                    // the RoleRef table has been added since version 5.8
+                    if (BaseTables.CheckColumnsExist(baseTables.RoleRefTable))
+                    {
+                        baseTables.RoleRefTable.DefaultView.Sort = "ChildRoleID";
+                        AppendParentRoles(roleIDSet, roleIDList, roleID);
+                    }
+
+                    roleIDList.Add(roleID);
+
+                    // retrieve rights
                     BaseTables.CheckColumnsExist(baseTables.RightTable, true);
                     DataView viewRight = baseTables.RightTable.DefaultView;
                     viewRight.Sort = "RoleID";
 
-                    foreach (DataRowView rowView in viewRight.FindRows(roleID))
+                    foreach (int includedRoleID in roleIDList)
                     {
-                        int uiObjID = (int)rowView["ItfID"];
-                        EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
-                        rightsDict[uiObjID] = rights;
+                        foreach (DataRowView rowView in viewRight.FindRows(includedRoleID))
+                        {
+                            int uiObjID = (int)rowView["ItfID"];
+                            EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
+                            rightsDict[uiObjID] = rights;
+                        }
                     }
                 }
             }
