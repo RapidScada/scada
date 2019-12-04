@@ -118,6 +118,7 @@ namespace Scada.Web
         /// <summary>
         /// Преобразовать значение параметра запроса в массив целых чисел.
         /// </summary>
+        [Obsolete("Use ScadaUtils.ParseIntArray")]
         public static int[] QueryParamToIntArray(string paramVal)
         {
             try
@@ -140,6 +141,7 @@ namespace Scada.Web
         /// <summary>
         /// Преобразовать значение параметра запроса в множество целых чисел.
         /// </summary>
+        [Obsolete("Use ScadaUtils.ParseIntSet")]
         public static HashSet<int> QueryParamToIntSet(string paramVal)
         {
             try

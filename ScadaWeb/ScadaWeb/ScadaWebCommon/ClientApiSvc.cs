@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -185,14 +185,14 @@ namespace Scada.Web
             {
                 if (!userRights.ViewAllRight)
                 {
-                    int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                    int[] viewIDArr = WebUtils.QueryParamToIntArray(viewIDs);
+                    int[] cnlNumArr = ScadaUtils.ParseIntArray(cnlNums);
+                    int[] viewIDArr = ScadaUtils.ParseIntArray(viewIDs);
 
                     if (!userRights.CheckInCnlRights(cnlNumArr, viewIDArr))
                         throw new ScadaException(CommonPhrases.NoRights);
                 }
 
-                return WebUtils.QueryParamToIntSet(cnlNums);
+                return ScadaUtils.ParseIntSet(cnlNums);
             }
             else if (viewID > 0)
             {
@@ -212,8 +212,8 @@ namespace Scada.Web
         {
             if (!string.IsNullOrWhiteSpace(cnlNums))
             {
-                int[] cnlNumArr = WebUtils.QueryParamToIntArray(cnlNums);
-                int[] viewIDArr = WebUtils.QueryParamToIntArray(viewIDs);
+                int[] cnlNumArr = ScadaUtils.ParseIntArray(cnlNums);
+                int[] viewIDArr = ScadaUtils.ParseIntArray(viewIDs);
 
                 if (!userRights.CheckInCnlRights(cnlNumArr, viewIDArr))
                     throw new ScadaException(CommonPhrases.NoRights);

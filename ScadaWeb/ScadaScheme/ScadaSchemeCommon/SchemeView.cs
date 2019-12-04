@@ -158,16 +158,8 @@ namespace Scada.Scheme
             {
                 SchemeDoc.LoadFromXml(documentNode);
 
-                // загрузка заголовка схемы для старого формата
-                if (SchemeDoc.Title == "")
-                    SchemeDoc.Title = rootElem.GetAttribute("title");
-
                 // установка заголовка представления
                 Title = SchemeDoc.Title;
-
-                // загрузка фильтра по входным каналам для старого формата
-                if (rootElem.SelectSingleNode("CnlsFilter") is XmlNode cnlsFilterNode)
-                    SchemeDoc.CnlFilter.ParseCnlFilter(cnlsFilterNode.InnerText);
 
                 // добавление входных каналов представления
                 foreach (int cnlNum in SchemeDoc.CnlFilter)

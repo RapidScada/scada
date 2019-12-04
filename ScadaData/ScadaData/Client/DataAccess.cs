@@ -112,6 +112,27 @@ namespace Scada.Client
         }
 
         /// <summary>
+        /// Gets the parent roles of the specified role including the specified role itself.
+        /// </summary>
+        protected List<int> GetParentRoles(int roleID)
+        {
+            HashSet<int> roleIDSet = new HashSet<int>(); // set of parent roles and the specified role
+            List<int> roleIDList = new List<int>();      // similar role list ordered by inheritance
+
+            roleIDSet.Add(roleID); // to avoid infinite loop
+
+            // the RoleRef table has been added since version 5.8
+            if (BaseTables.CheckColumnsExist(dataCache.BaseTables.RoleRefTable))
+            {
+                dataCache.BaseTables.RoleRefTable.DefaultView.Sort = "ChildRoleID";
+                AppendParentRoles(roleIDSet, roleIDList, roleID);
+            }
+
+            roleIDList.Add(roleID);
+            return roleIDList;
+        }
+
+        /// <summary>
         /// Appends parent role IDs recursively.
         /// </summary>
         protected void AppendParentRoles(HashSet<int> roleIDSet, List<int> roleIDList, int childRoleID)
@@ -283,7 +304,7 @@ namespace Scada.Client
                     int rowInd = viewInterface.Find(uiObjID);
 
                     // столбец TypeCode добавлен в таблицу Интерфейс, начиная с версии 5.8
-                    return rowInd >= 0 ? 
+                    return rowInd >= 0 ?
                         GetUiObjFromRow(viewInterface[rowInd], viewInterface.Table.Columns.Contains("TypeCode")) :
                         null;
                 }
@@ -350,18 +371,7 @@ namespace Scada.Client
                 lock (baseTables.SyncRoot)
                 {
                     // consider role inheritance
-                    HashSet<int> roleIDSet = new HashSet<int>(); // set of parent roles and the specified role
-                    List<int> roleIDList = new List<int>();      // similar role list ordered by inheritance
-                    roleIDSet.Add(roleID); // to avoid infinite loop
-
-                    // the RoleRef table has been added since version 5.8
-                    if (BaseTables.CheckColumnsExist(baseTables.RoleRefTable))
-                    {
-                        baseTables.RoleRefTable.DefaultView.Sort = "ChildRoleID";
-                        AppendParentRoles(roleIDSet, roleIDList, roleID);
-                    }
-
-                    roleIDList.Add(roleID);
+                    List<int> roleIDList = GetParentRoles(roleID);
 
                     // retrieve rights
                     BaseTables.CheckColumnsExist(baseTables.RightTable, true);
@@ -387,6 +397,29 @@ namespace Scada.Client
             }
 
             return rightsDict;
+        }
+
+        /// <summary>
+        /// Gets the ID of the role and all its parents.
+        /// </summary>
+        public List<int> GetRoleHierarchy(int roleID)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+
+                lock (dataCache.BaseTables.SyncRoot)
+                {
+                    return GetParentRoles(roleID);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении иерархии ролей" :
+                    "Error getting the role hierarchy");
+                return new List<int> { roleID };
+            }
         }
 
         /// <summary>
