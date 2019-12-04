@@ -163,7 +163,7 @@ function updateLayout() {
     var divNotif = $("#divNotif");
     var divSchWrapper = $("#divSchWrapper");
     var divToolbar = $("#divToolbar");
-    var notifHeight = divNotif.css("display") == "block" ? divNotif.outerHeight() : 0;
+    var notifHeight = divNotif.css("display") === "block" ? divNotif.outerHeight() : 0;
     var windowWidth = $(window).width();
 
     $("body").css("padding-top", notifHeight);
