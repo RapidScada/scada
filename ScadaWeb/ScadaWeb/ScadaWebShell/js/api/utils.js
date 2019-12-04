@@ -165,6 +165,50 @@ scada.utils = {
             (opt_message ? ": " + opt_message : ""));
     },
 
+    // Perform an Ajax request in assumption that response is a DataTransferObject in JSON format.
+    // ajaxObj is AjaxQueue or jQuery,
+    // url is relative to the site root,
+    // action is a function (data),
+    // callback is a function (success)
+    request: function (ajaxObj, url, action, callback) {
+        var thisObj = this;
+        var searchInd = url.indexOf('?');
+        var operation = searchInd >= 0 ? url.substr(0, searchInd) : url;
+
+        if (ajaxObj) {
+            ajaxObj
+                .ajax({
+                    url: (ajaxObj.rootPath || "") + url,
+                    method: "GET",
+                    dataType: "json",
+                    cache: false
+                })
+                .done(function (data, textStatus, jqXHR) {
+                    try {
+                        var parsedData = $.parseJSON(data.d);
+                        if (parsedData.Success) {
+                            thisObj.logSuccessfulRequest(operation);
+                            action(parsedData.Data);
+                            callback(true);
+                        } else {
+                            thisObj.logServiceError(operation, parsedData.ErrorMessage);
+                            callback(false);
+                        }
+                    }
+                    catch (ex) {
+                        thisObj.logProcessingError(operation, ex.message);
+                        callback(false);
+                    }
+                })
+                .fail(function (jqXHR, textStatus, errorThrown) {
+                    thisObj.logFailedRequest(operation, jqXHR);
+                    callback(false);
+                });
+        } else {
+            console.error(this.getCurTime() + " Unable to send request '" + operation + "'");
+        }
+    },
+
     // Check that the frame is accessible by the same-origin policy
     frameAvailable(frameWnd) {
         try {
