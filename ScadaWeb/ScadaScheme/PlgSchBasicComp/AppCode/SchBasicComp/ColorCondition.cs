@@ -83,7 +83,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         public override object Clone()
         {
             Condition clonedCondition = ScadaUtils.DeepClone(this, PlgUtils.SerializationBinder);
-            clonedCondition.SchemeDoc = SchemeDoc;
+            clonedCondition.SchemeView = SchemeView;
             return clonedCondition;
         }
     }

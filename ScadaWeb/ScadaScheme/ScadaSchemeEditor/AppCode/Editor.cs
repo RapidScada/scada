@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model;
@@ -688,7 +688,7 @@ namespace Scada.Scheme.Editor
                 {
                     component.ID = SchemeView.GetNextComponentID();
                     component.Location = new Point(x, y);
-                    component.SchemeDoc = SchemeView.SchemeDoc;
+                    component.SchemeView = SchemeView;
                     component.ItemChanged += Scheme_ItemChanged;
 
                     // добавление компонента на схему

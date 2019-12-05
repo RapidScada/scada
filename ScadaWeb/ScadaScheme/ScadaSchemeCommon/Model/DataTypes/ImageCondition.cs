@@ -36,7 +36,7 @@ namespace Scada.Scheme.Model.DataTypes
     /// <para>Условие, которое определяет изображение</para>
     /// </summary>
     [Serializable]
-    public class ImageCondition : Condition, ISchemeDocAvailable
+    public class ImageCondition : Condition
     {
         /// <summary>
         /// Конструктор

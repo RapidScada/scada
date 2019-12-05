@@ -139,6 +139,7 @@ namespace Scada.Scheme
         {
             // очистка представления
             Clear();
+            SchemeDoc.SchemeView = this;
 
             // загрузка XML-документа
             XmlDocument xmlDoc = new XmlDocument();
@@ -189,7 +190,7 @@ namespace Scada.Scheme
                     }
 
                     // загрузка компонента и добавление его в представление
-                    component.SchemeDoc = SchemeDoc;
+                    component.SchemeView = this;
                     component.LoadFromXml(compNode);
                     Components[component.ID] = component;
 

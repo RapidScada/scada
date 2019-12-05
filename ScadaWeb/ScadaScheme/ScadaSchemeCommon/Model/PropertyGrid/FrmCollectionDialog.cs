@@ -38,7 +38,7 @@ namespace Scada.Scheme.Model.PropertyGrid
     {
         private IList collection; // the edited collection
         private Type itemType;    // the type of collection items
-        ISchemeDocAvailable schemeDocAvailable; // provides scheme properties
+        private ISchemeViewAvailable schemeViewAvailable; // the scheme view reference
 
 
         /// <summary>
@@ -52,12 +52,12 @@ namespace Scada.Scheme.Model.PropertyGrid
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public FrmCollectionDialog(IList collection, Type itemType, ISchemeDocAvailable schemeDocAvailable)
+        public FrmCollectionDialog(IList collection, Type itemType, ISchemeViewAvailable schemeViewAvailable)
             : this()
         {
             this.collection = collection ?? throw new ArgumentNullException("collection");
             this.itemType = itemType ?? throw new ArgumentNullException("itemType");
-            this.schemeDocAvailable = schemeDocAvailable ?? throw new ArgumentNullException("schemeDocAvailable");
+            this.schemeViewAvailable = schemeViewAvailable ?? throw new ArgumentNullException("schemeViewAvailable");
         }
 
 
@@ -133,8 +133,8 @@ namespace Scada.Scheme.Model.PropertyGrid
             // добавление элемента
             object item = Activator.CreateInstance(itemType);
 
-            if (item is ISchemeDocAvailable schemeDocAvailable)
-                schemeDocAvailable.SchemeDoc = schemeDocAvailable.SchemeDoc;
+            if (item is ISchemeViewAvailable schemeViewAvailable)
+                schemeViewAvailable.SchemeView = this.schemeViewAvailable.SchemeView;
 
             lbItems.SelectedIndex = lbItems.Items.Add(item);
             propGrid.Select();

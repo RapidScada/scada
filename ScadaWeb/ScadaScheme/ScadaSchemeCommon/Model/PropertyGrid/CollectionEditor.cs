@@ -48,7 +48,7 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 Type itemType = valueType.GetGenericArguments()[0];
                 if (editorService.ShowDialog(new FrmCollectionDialog(list, itemType, component)) == DialogResult.OK)
-                    component.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentChanged, component);
+                    component.OnItemChanged(SchemeChangeTypes.ComponentChanged, component);
             }
 
             return value;

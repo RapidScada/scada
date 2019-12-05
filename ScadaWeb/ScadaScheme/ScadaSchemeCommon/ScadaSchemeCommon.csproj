@@ -78,7 +78,7 @@
     <Compile Include="Model\IDynamicComponent.cs" />
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\IObservableItem.cs" />
-    <Compile Include="Model\ISchemeDocAvailable.cs" />
+    <Compile Include="Model\ISchemeViewAvailable.cs" />
     <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
     <Compile Include="Model\PropertyGrid\AttrTranslator.cs" />

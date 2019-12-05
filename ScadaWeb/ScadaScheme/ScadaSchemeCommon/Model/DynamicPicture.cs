@@ -148,7 +148,7 @@ namespace Scada.Scheme.Model
                 XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
-                    ImageCondition condition = new ImageCondition { SchemeDoc = SchemeDoc };
+                    ImageCondition condition = new ImageCondition { SchemeView = SchemeView };
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);
                 }
@@ -190,7 +190,7 @@ namespace Scada.Scheme.Model
 
             foreach (Condition condition in clonedComponent.Conditions)
             {
-                condition.SchemeDoc = SchemeDoc;
+                condition.SchemeView = SchemeView;
             }
 
             return clonedComponent;

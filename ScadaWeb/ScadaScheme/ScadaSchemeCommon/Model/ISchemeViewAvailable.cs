@@ -16,24 +16,24 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Specifies objects which provide scheme document properties
+ * Summary  : Defines the scheme view reference
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
+ * Created  : 2019
  * Modified : 2019
  */
 
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Specifies objects which provide scheme document properties.
-    /// <para>Определяет объекты, который предоставляет свойства документа схемы.</para>
+    /// Defines the scheme view reference.
+    /// <para>Определяет ссылку на представление схемы.</para>
     /// </summary>
-    public interface ISchemeDocAvailable
+    public interface ISchemeViewAvailable
     {
         /// <summary>
-        /// Получить или установить ссылку на свойства документа схемы.
+        /// Gets or sets the reference to a scheme view.
         /// </summary>
-        SchemeDocument SchemeDoc { get; set; }
+        SchemeView SchemeView { get; set; }
     }
 }

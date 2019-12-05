@@ -37,18 +37,18 @@ namespace Scada.Scheme.Model.DataTypes
     /// <para>Базовый класс, определяющий условие.</para>
     /// </summary>
     [Serializable]
-    public abstract class Condition : ISchemeDocAvailable, ICloneable
+    public abstract class Condition : ISchemeViewAvailable, ICloneable
     {
         /// <summary>
         /// Наименование категории условия.
         /// </summary>
         protected const string ConditionCat = "Condition";
-        
+
         /// <summary>
-        /// Ссылка на свойства документа схемы.
+        /// Ссылка на представление схемы.
         /// </summary>
         [NonSerialized]
-        protected SchemeDocument schemeDoc;
+        protected SchemeView schemeView;
 
 
         /// <summary>
@@ -61,7 +61,7 @@ namespace Scada.Scheme.Model.DataTypes
             LogicalOperator = LogicalOperators.None;
             CompareOperator2 = CompareOperators.LessThan;
             CompareArgument2 = 0.0;
-            SchemeDoc = null;
+            SchemeView = null;
         }
 
 
@@ -109,18 +109,18 @@ namespace Scada.Scheme.Model.DataTypes
         public double CompareArgument2 { get; set; }
 
         /// <summary>
-        /// Получить или установить ссылку на свойства документа схемы.
+        /// Получить или установить ссылку на представление схемы.
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc
+        public SchemeView SchemeView
         {
             get
             {
-                return schemeDoc;
+                return schemeView;
             }
             set
             {
-                schemeDoc = value;
+                schemeView = value;
             }
         }
 
@@ -200,7 +200,7 @@ namespace Scada.Scheme.Model.DataTypes
         public virtual object Clone()
         {
             Condition clonedCondition = ScadaUtils.DeepClone(this);
-            clonedCondition.SchemeDoc = SchemeDoc;
+            clonedCondition.SchemeView = SchemeView;
             return clonedCondition;
         }
 

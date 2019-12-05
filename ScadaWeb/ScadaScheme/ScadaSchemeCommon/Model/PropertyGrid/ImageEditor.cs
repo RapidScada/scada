@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
@@ -36,44 +36,39 @@ using System.Windows.Forms.Design;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Editor of images for PropertyGrid
-    /// <para>Редактор изображений для PropertyGrid</para>
+    /// Editor of images for PropertyGrid.
+    /// <para>Редактор изображений для PropertyGrid.</para>
     /// </summary>
     public class ImageEditor : UITypeEditor
     {
         /// <summary>
-        /// Директория, из которой открывались изображения
+        /// Директория, из которой открывались изображения.
         /// </summary>
         public static string ImageDir = "";
 
 
         private SchemeDocument GetSchemeDoc(object instance)
         {
-            SchemeDocument schemeDoc = null;
-
-            if (instance is ISchemeDocAvailable)
+            if (instance is ISchemeViewAvailable schemeViewAvailable1)
             {
-                schemeDoc = ((ISchemeDocAvailable)instance).SchemeDoc;
+                return schemeViewAvailable1.SchemeView.SchemeDoc;
             }
-            else if (instance is ICollection)
+            else if (instance is ICollection collection)
             {
-                foreach (object obj in (ICollection)instance)
+                foreach (object obj in collection)
                 {
-                    schemeDoc = GetSchemeDoc(obj);
-                    if (schemeDoc == null)
-                        break;
+                    if (obj is ISchemeViewAvailable schemeViewAvailable2)
+                        return schemeViewAvailable2.SchemeView.SchemeDoc;
                 }
             }
 
-            return schemeDoc;
+            return null;
         }
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            IWindowsFormsEditorService editorSvc = provider == null ? null :
-                (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-
-            if (context != null && context.Instance != null && editorSvc != null)
+            if (context?.Instance != null &&
+                provider?.GetService(typeof(IWindowsFormsEditorService)) is IWindowsFormsEditorService editorSvc)
             {
                 SchemeDocument schemeDoc = GetSchemeDoc(context.Instance);
 
