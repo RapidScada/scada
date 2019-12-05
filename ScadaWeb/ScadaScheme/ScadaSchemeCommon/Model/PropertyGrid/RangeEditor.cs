@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,37 +16,44 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Editor of channel filter for PropertyGrid
+ * Summary  : Integer range editor for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
- * Modified : 2017
+ * Created  : 2019
+ * Modified : 2019
  */
 
+#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Editor of channel filter for PropertyGrid
-    /// <para>Редактор фильтра по каналам для PropertyGrid</para>
+    /// Integer range editor for PropertyGrid.
+    /// <para>Редактор диапазона целых числел для PropertyGrid.</para>
     /// </summary>
-    internal class CnlFilterEditor : UITypeEditor
+    public class RangeEditor : UITypeEditor
     {
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            IWindowsFormsEditorService editorSvc = provider == null ? null :
-                (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-
-            if (context != null && context.Instance is SchemeDocument && editorSvc != null)
+            if (context.Instance != null &&
+                provider?.GetService(typeof(IWindowsFormsEditorService)) is IWindowsFormsEditorService editorService &&
+                value is ICollection<int> collection)
             {
-                List<int> cnlFilter = (List<int>)value;
-                SchemeDocument schemeDoc = (SchemeDocument)context.Instance;
-                editorSvc.ShowDialog(new FrmCnlFilterDialog(cnlFilter, schemeDoc));
+                if (editorService.ShowDialog(new FrmRangeDialog(collection)) == DialogResult.OK)
+                {
+                    if (context.Instance is SchemeDocument schemeDoc)
+                        schemeDoc.OnItemChanged(SchemeChangeTypes.SchemeDocChanged, schemeDoc);
+                    else if (context.Instance is BaseComponent component)
+                        component.OnItemChanged(SchemeChangeTypes.ComponentChanged, component);
+                }
             }
 
             return value;

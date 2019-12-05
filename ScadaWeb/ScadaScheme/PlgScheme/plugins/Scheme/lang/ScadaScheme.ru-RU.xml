@@ -101,6 +101,12 @@
     <Phrase key="LoadImageError">Ошибка при загрузке изображения</Phrase>
     <Phrase key="SaveImageError">Ошибка при сохранении изображения</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmRangeDialog">
+    <Phrase key="this">Диапазон целых чисел</Phrase>
+    <Phrase key="lblExample">Например: 1 - 5, 10</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.ImageListItem">
     <Phrase key="Name.DisplayName">Наименование</Phrase>
     <Phrase key="Name.Category">Изображение</Phrase>

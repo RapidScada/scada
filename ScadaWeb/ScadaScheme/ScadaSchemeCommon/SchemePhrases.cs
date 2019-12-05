@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
@@ -28,28 +28,23 @@
 namespace Scada.Scheme
 {
     /// <summary>
-    /// The common phrases for schemes
-    /// <para>Общие фразы для схем</para>
+    /// The common phrases for schemes.
+    /// <para>Общие фразы для схем.</para>
     /// </summary>
     public static class SchemePhrases
     {
-        static SchemePhrases()
-        {
-            SetToDefault();
-        }
-
-        // Словарь Scada.Scheme.CompManager
+        // Scada.Scheme.CompManager
         public static string UnknownComponent { get; private set; }
         public static string CompLibraryNotFound { get; private set; }
         public static string UnableCreateComponent { get; private set; }
         public static string ErrorCreatingComponent { get; private set; }
 
-        // Словарь Scada.Scheme.SchemeView
+        // Scada.Scheme.SchemeView
         public static string LoadSchemeViewError { get; private set; }
         public static string SaveSchemeViewError { get; private set; }
         public static string IncorrectFileFormat { get; private set; }
 
-        // Словарь Scada.Scheme.Model.PropertyGrid
+        // Scada.Scheme.Model.PropertyGrid
         public static string StringConvertError { get; private set; }
         public static string StringUniqueError { get; private set; }
         public static string TrueValue { get; private set; }
@@ -61,79 +56,48 @@ namespace Scada.Scheme
         public static string ItalicSymbol { get; private set; }
         public static string UnderlineSymbol { get; private set; }
 
-        // Словарь Scada.Scheme.Model.PropertyGrid.FrmImageDialog
+        // Scada.Scheme.Model.PropertyGrid.FrmImageDialog
         public static string ImageFileFilter { get; private set; }
         public static string DisplayImageError { get; private set; }
         public static string LoadImageError { get; private set; }
         public static string SaveImageError { get; private set; }
 
-        private static void SetToDefault()
-        {
-            UnknownComponent = Localization.Dict.GetEmptyPhrase("UnknownComponent");
-            CompLibraryNotFound = Localization.Dict.GetEmptyPhrase("CompLibraryNotFound");
-            UnableCreateComponent = Localization.Dict.GetEmptyPhrase("UnableCreateComponent");
-            ErrorCreatingComponent = Localization.Dict.GetEmptyPhrase("ErrorCreatingComponent");
-
-            LoadSchemeViewError = Localization.Dict.GetEmptyPhrase("LoadSchemeViewError");
-            SaveSchemeViewError = Localization.Dict.GetEmptyPhrase("SaveSchemeViewError");
-            IncorrectFileFormat = Localization.Dict.GetEmptyPhrase("IncorrectFileFormat");
-
-            StringConvertError = Localization.Dict.GetEmptyPhrase("StringConvertError");
-            StringUniqueError = Localization.Dict.GetEmptyPhrase("StringUniqueError");
-            TrueValue = Localization.Dict.GetEmptyPhrase("TrueValue");
-            FalseValue = Localization.Dict.GetEmptyPhrase("FalseValue");
-            EmptyValue = Localization.Dict.GetEmptyPhrase("EmptyValue");
-            ObjectValue = Localization.Dict.GetEmptyPhrase("ObjectValue");
-            CollectionValue = Localization.Dict.GetEmptyPhrase("CollectionValue");
-            BoldSymbol = Localization.Dict.GetEmptyPhrase("BoldSymbol");
-            ItalicSymbol = Localization.Dict.GetEmptyPhrase("ItalicSymbol");
-            UnderlineSymbol = Localization.Dict.GetEmptyPhrase("UnderlineSymbol");
-
-            ImageFileFilter = Localization.Dict.GetEmptyPhrase("ImageFileFilter");
-            DisplayImageError = Localization.Dict.GetEmptyPhrase("DisplayImageError");
-            LoadImageError = Localization.Dict.GetEmptyPhrase("LoadImageError");
-            SaveImageError = Localization.Dict.GetEmptyPhrase("SaveImageError");
-        }
+        // Scada.Scheme.Model.PropertyGrid.FrmRangeDialog
+        public static string RangeNotValid { get; private set; }
 
         public static void Init()
         {
-            Localization.Dict dict;
-            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.CompManager", out dict))
-            {
-                UnknownComponent = dict.GetPhrase("UnknownComponent", UnknownComponent);
-                CompLibraryNotFound = dict.GetPhrase("CompLibraryNotFound", CompLibraryNotFound);
-                UnableCreateComponent = dict.GetPhrase("UnableCreateComponent", UnableCreateComponent);
-                ErrorCreatingComponent = dict.GetPhrase("ErrorCreatingComponent", ErrorCreatingComponent);
-            }
+            Localization.Dict dict = Localization.GetDictionary("Scada.Scheme.CompManager");
+            UnknownComponent = dict.GetPhrase("UnknownComponent");
+            CompLibraryNotFound = dict.GetPhrase("CompLibraryNotFound");
+            UnableCreateComponent = dict.GetPhrase("UnableCreateComponent");
+            ErrorCreatingComponent = dict.GetPhrase("ErrorCreatingComponent");
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.SchemeView", out dict))
-            {
-                LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError", LoadSchemeViewError);
-                SaveSchemeViewError = dict.GetPhrase("SaveSchemeViewError", SaveSchemeViewError);
-                IncorrectFileFormat = dict.GetPhrase("IncorrectFileFormat", IncorrectFileFormat);
-            }
+            dict = Localization.GetDictionary("Scada.Scheme.SchemeView");
+            LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError");
+            SaveSchemeViewError = dict.GetPhrase("SaveSchemeViewError");
+            IncorrectFileFormat = dict.GetPhrase("IncorrectFileFormat");
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Model.PropertyGrid", out dict))
-            {
-                StringConvertError = dict.GetPhrase("StringConvertError", StringConvertError);
-                StringUniqueError = dict.GetPhrase("StringUniqueError", StringUniqueError);
-                TrueValue = dict.GetPhrase("TrueValue", TrueValue);
-                FalseValue = dict.GetPhrase("FalseValue", FalseValue);
-                EmptyValue = dict.GetPhrase("EmptyValue", EmptyValue);
-                ObjectValue = dict.GetPhrase("ObjectValue", ObjectValue);
-                CollectionValue = dict.GetPhrase("CollectionValue", CollectionValue);
-                BoldSymbol = dict.GetPhrase("BoldSymbol", BoldSymbol);
-                ItalicSymbol = dict.GetPhrase("ItalicSymbol", ItalicSymbol);
-                UnderlineSymbol = dict.GetPhrase("UnderlineSymbol", UnderlineSymbol);
-            }
+            dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid");
+            StringConvertError = dict.GetPhrase("StringConvertError");
+            StringUniqueError = dict.GetPhrase("StringUniqueError");
+            TrueValue = dict.GetPhrase("TrueValue");
+            FalseValue = dict.GetPhrase("FalseValue");
+            EmptyValue = dict.GetPhrase("EmptyValue");
+            ObjectValue = dict.GetPhrase("ObjectValue");
+            CollectionValue = dict.GetPhrase("CollectionValue");
+            BoldSymbol = dict.GetPhrase("BoldSymbol");
+            ItalicSymbol = dict.GetPhrase("ItalicSymbol");
+            UnderlineSymbol = dict.GetPhrase("UnderlineSymbol");
 
-            if (Localization.Dictionaries.TryGetValue("Scada.Scheme.Model.PropertyGrid.FrmImageDialog", out dict))
-            {
-                ImageFileFilter = dict.GetPhrase("ImageFileFilter", ImageFileFilter);
-                DisplayImageError = dict.GetPhrase("DisplayImageError", DisplayImageError);
-                LoadImageError = dict.GetPhrase("LoadImageError", LoadImageError);
-                SaveImageError = dict.GetPhrase("SaveImageError", SaveImageError);
-            }
+            dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid.FrmImageDialog");
+            ImageFileFilter = dict.GetPhrase("ImageFileFilter");
+            DisplayImageError = dict.GetPhrase("DisplayImageError");
+            LoadImageError = dict.GetPhrase("LoadImageError");
+            SaveImageError = dict.GetPhrase("SaveImageError");
+
+            dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid.FrmRangeDialog");
+            RangeNotValid = dict.GetPhrase("RangeNotValid");
         }
     }
 }

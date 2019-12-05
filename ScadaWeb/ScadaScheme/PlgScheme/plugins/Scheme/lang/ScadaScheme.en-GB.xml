@@ -52,6 +52,12 @@
     <Phrase key="LoadImageError">Error loading image</Phrase>
     <Phrase key="SaveImageError">Error saving image</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmRangeDialog">
+    <Phrase key="this">Range of Integers</Phrase>
+    <Phrase key="lblExample">For example: 1 - 5, 10</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Unknown component {0}</Phrase>
     <Phrase key="CompLibraryNotFound">No library found for component {0}</Phrase>

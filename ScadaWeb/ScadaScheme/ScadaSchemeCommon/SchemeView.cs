@@ -154,9 +154,9 @@ namespace Scada.Scheme
             int ctrlCnlOffset = templateArgs.CtrlCnlOffset;
 
             // загрузка документа схемы
-            if ((rootElem.SelectSingleNode("Document") ?? rootElem.SelectSingleNode("Scheme")) is XmlNode documentNode)
+            if (rootElem.SelectSingleNode("Scheme") is XmlNode schemeNode)
             {
-                SchemeDoc.LoadFromXml(documentNode);
+                SchemeDoc.LoadFromXml(schemeNode);
 
                 // установка заголовка представления
                 Title = SchemeDoc.Title;
@@ -170,8 +170,7 @@ namespace Scada.Scheme
             }
 
             // загрузка компонентов схемы
-            if ((rootElem.SelectSingleNode("Components") ?? rootElem.SelectSingleNode("Elements"))
-                is XmlNode componentsNode)
+            if (rootElem.SelectSingleNode("Components") is XmlNode componentsNode)
             {
                 HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
                 CompManager compManager = CompManager.GetInstance();
@@ -267,7 +266,6 @@ namespace Scada.Scheme
                 rootElem.SetAttribute("title", SchemeDoc.Title);
                 xmlDoc.AppendChild(rootElem);
 
-                // пока используется старый формат файла
                 // запись документа схемы
                 XmlElement documentElem = xmlDoc.CreateElement("Scheme");
                 rootElem.AppendChild(documentElem);
@@ -317,11 +315,6 @@ namespace Scada.Scheme
                     imagesElem.AppendChild(imageElem);
                     image.SaveToXml(imageElem);
                 }
-
-                // запись фильтра по входным каналам
-                XmlElement cnlsFilterElem = xmlDoc.CreateElement("CnlsFilter");
-                cnlsFilterElem.InnerText = SchemeDoc.CnlFilter.CnlFilterToString();
-                rootElem.AppendChild(cnlsFilterElem);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

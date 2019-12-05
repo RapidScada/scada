@@ -63,7 +63,6 @@
     <Compile Include="ISchemeComp.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
-    <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />
     <Compile Include="Model\DataTypes\CompareOperators.cs" />
     <Compile Include="Model\DataTypes\Condition.cs" />
     <Compile Include="Model\DataTypes\ImageCondition.cs" />
@@ -86,8 +85,14 @@
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
-    <Compile Include="Model\PropertyGrid\CnlFilterConverter.cs" />
-    <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
+    <Compile Include="Model\PropertyGrid\RangeEditor.cs" />
+    <Compile Include="Model\PropertyGrid\FrmRangeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\FrmRangeDialog.designer.cs">
+      <DependentUpon>FrmRangeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\RangeConverter.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionEditor.cs" />
@@ -109,12 +114,6 @@
     <Compile Include="Model\PropertyGrid\EnumConverter.cs" />
     <Compile Include="Model\PropertyGrid\FontConverter.cs" />
     <Compile Include="Model\PropertyGrid\FontEditor.cs" />
-    <Compile Include="Model\PropertyGrid\FrmCnlFilterDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmCnlFilterDialog.designer.cs">
-      <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\PropertyGrid\FrmFontDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -148,9 +147,6 @@
     <EmbeddedResource Include="Model\PropertyGrid\CtrlSvgViewer.resx">
       <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\PropertyGrid\FrmCnlFilterDialog.resx">
-      <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmCollectionDialog.resx">
       <DependentUpon>FrmCollectionDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -159,6 +155,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmImageDialog.resx">
       <DependentUpon>FrmImageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\PropertyGrid\FrmRangeDialog.resx">
+      <DependentUpon>FrmRangeDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

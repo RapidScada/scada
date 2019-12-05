@@ -35,8 +35,8 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Scheme document properties
-    /// <para>Свойства документа схемы</para>
+    /// Scheme document properties.
+    /// <para>Свойства документа схемы.</para>
     /// </summary>
     public class SchemeDocument : IObservableItem, ISchemeDocAvailable
     {
@@ -130,7 +130,8 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Channel filter"), Category(Categories.Data)]
         [Description("The input channels used as a filter for displaying events filtered by view.")]
-        [CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
+        [CM.TypeConverter(typeof(RangeConverter)), CM.Editor(typeof(RangeEditor), typeof(UITypeEditor))]
+        //[CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
         [ScriptIgnore]
         #endregion
         public List<int> CnlFilter { get; protected set; }
@@ -196,7 +197,7 @@ namespace Scada.Scheme.Model
             Font = Font.GetChildAsFont(xmlNode, "Font");
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Title = xmlNode.GetChildAsString("Title");
-            CnlFilter.ParseCnlFilter(xmlNode.GetChildAsString("CnlFilter"));
+            CnlFilter.AddRange(ScadaUtils.ParseIntArray(xmlNode.GetChildAsString("CnlFilter")));
         }
 
         /// <summary>
@@ -215,7 +216,7 @@ namespace Scada.Scheme.Model
             Font.AppendElem(xmlElem, "Font", Font);
             xmlElem.AppendElem("ForeColor", ForeColor);
             xmlElem.AppendElem("Title", Title);
-            xmlElem.AppendElem("CnlFilter", CnlFilter.CnlFilterToString());
+            xmlElem.AppendElem("CnlFilter", ScadaUtils.IntCollectionToStr(CnlFilter));
         }
 
 
