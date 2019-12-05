@@ -64,12 +64,6 @@
     <Phrase key="ItalicSymbol">К</Phrase>
     <Phrase key="UnderlineSymbol">П</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
-    <Phrase key="this">Фильтр по каналам</Phrase>
-    <Phrase key="lblCnlNums">Номера входных каналов</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCollectionDialog">
     <Phrase key="this">Коллекция элементов типа &quot;{0}&quot;</Phrase>
     <Phrase key="lblItems">Элементы</Phrase>

@@ -15,12 +15,6 @@
     <Phrase key="ItalicSymbol">I</Phrase>
     <Phrase key="UnderlineSymbol">U</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
-    <Phrase key="this">Channel Filter</Phrase>
-    <Phrase key="lblCnlNums">Input channels numbers</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCollectionDialog">
     <Phrase key="this">{0} Collection</Phrase>
     <Phrase key="lblItems">Items</Phrase>
