@@ -84,7 +84,7 @@ namespace Scada.Admin.App.Controls.Deployment
                 return false;
             }
 
-            if (!RangeUtils.StrToRange(txtObjFilter.Text, true, out ICollection<int> collection))
+            if (!RangeUtils.StrToRange(txtObjFilter.Text, true, true, out ICollection<int> collection))
             {
                 ScadaUiUtils.ShowError(AppPhrases.IncorrectObjFilter);
                 return false;
@@ -153,7 +153,7 @@ namespace Scada.Admin.App.Controls.Deployment
             {
                 uploadSettings.RestartServer = chkRestartServer.Checked;
                 uploadSettings.RestartComm = chkRestartComm.Checked;
-                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true));
+                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true, true));
             }
         }
 

@@ -81,7 +81,7 @@ namespace Scada.Admin.Deployment
             base.LoadFromXml(xmlNode);
             RestartServer = xmlNode.GetChildAsBool("RestartServer");
             RestartComm = xmlNode.GetChildAsBool("RestartComm");
-            SetObjNums(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true));
+            SetObjNums(RangeUtils.StrToRange(xmlNode.GetChildAsString("ObjNums"), true, true));
         }
 
         /// <summary>
