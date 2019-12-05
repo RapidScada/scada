@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,51 +16,39 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : The base class of condition editor for PropertyGrid
+ * Summary  : Collection editor for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
- * Modified : 2018
+ * Created  : 2019
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
 
-using Scada.Scheme.Model.DataTypes;
 using System;
-using System.Collections.Generic;
+using System.Collections;
 using System.ComponentModel;
 using System.Drawing.Design;
+using System.Windows.Forms;
 using System.Windows.Forms.Design;
 
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// The base class of condition editor for PropertyGrid
-    /// <para>Базовый класс редактора условий для PropertyGrid</para>
+    /// Collection editor for PropertyGrid.
+    /// <para>Редактор коллекции для PropertyGrid.</para>
     /// </summary>
-    public abstract class ConditionEditor : UITypeEditor
+    public class CollectionEditor : UITypeEditor
     {
-        protected readonly Type conditionType;
-
-        public ConditionEditor(Type conditionType)
-            : base()
-        {
-            if (conditionType == null)
-                throw new ArgumentNullException("conditionType");
-
-            this.conditionType = conditionType;
-        }
-
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            IWindowsFormsEditorService editorSvc = provider == null ? null :
-                (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
-
-            if (context != null && context.Instance is BaseComponent && editorSvc != null)
+            if (context?.Instance is BaseComponent component &&
+                provider?.GetService(typeof(IWindowsFormsEditorService)) is IWindowsFormsEditorService editorService &&
+                value is IList list && value.GetType() is Type valueType && valueType.IsGenericType)
             {
-                List<Condition> conditions = (List<Condition>)value;
-                BaseComponent component = (BaseComponent)context.Instance;
-                editorSvc.ShowDialog(new FrmConditionDialog(conditions, conditionType, component));
+                Type itemType = valueType.GetGenericArguments()[0];
+                if (editorService.ShowDialog(new FrmCollectionDialog(list, itemType, component)) == DialogResult.OK)
+                    component.SchemeDoc.OnItemChanged(SchemeChangeTypes.ComponentChanged, component);
             }
 
             return value;
@@ -68,7 +56,7 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         public override UITypeEditorEditStyle GetEditStyle(ITypeDescriptorContext context)
         {
-            return context != null && context.Instance is BaseComponent ?
+            return context?.Instance is BaseComponent ?
                 UITypeEditorEditStyle.Modal : UITypeEditorEditStyle.None;
         }
     }

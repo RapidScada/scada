@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -33,14 +33,14 @@ using CM = System.ComponentModel;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// Condition that defines a color
-    /// <para>Условие, которое определяет цвет</para>
+    /// Condition that defines a color.
+    /// <para>Условие, которое определяет цвет.</para>
     /// </summary>
     [Serializable]
     public class ColorCondition : Condition
     {
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public ColorCondition()
             : base()
@@ -50,7 +50,7 @@ namespace Scada.Web.Plugins.SchBasicComp
 
 
         /// <summary>
-        /// Получить или установить цвет, отображаемый при выполнении условия
+        /// Получить или установить цвет, отображаемый при выполнении условия.
         /// </summary>
         #region Attributes
         [DisplayName("Color"), Category(Categories.Appearance)]
@@ -60,7 +60,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         
         
         /// <summary>
-        /// Загрузить условие из XML-узла
+        /// Загрузить условие из XML-узла.
         /// </summary>
         public override void LoadFromXml(XmlNode xmlNode)
         {
@@ -69,7 +69,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         }
 
         /// <summary>
-        /// Сохранить условие в XML-узле
+        /// Сохранить условие в XML-узле.
         /// </summary>
         public override void SaveToXml(XmlElement xmlElem)
         {
@@ -78,11 +78,11 @@ namespace Scada.Web.Plugins.SchBasicComp
         }
 
         /// <summary>
-        /// Клонировать объект
+        /// Клонировать объект.
         /// </summary>
-        public override Condition Clone()
+        public override object Clone()
         {
-            Condition clonedCondition = (Condition)ScadaUtils.DeepClone(this, PlgUtils.SerializationBinder);
+            Condition clonedCondition = ScadaUtils.DeepClone(this, PlgUtils.SerializationBinder);
             clonedCondition.SchemeDoc = SchemeDoc;
             return clonedCondition;
         }

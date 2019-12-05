@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
@@ -33,8 +33,8 @@ using System.Globalization;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Converter of collections for PropertyGrid which reflects existence of items
-    /// <para>Преобразователь коллекций для PropertyGrid, который отображает существование элементов</para>
+    /// Converter of collections for PropertyGrid which reflects existence of items.
+    /// <para>Преобразователь коллекций для PropertyGrid, который отображает существование элементов.</para>
     /// </summary>
     public class CollectionConverter : System.ComponentModel.CollectionConverter
     {
@@ -42,10 +42,9 @@ namespace Scada.Scheme.Model.PropertyGrid
         {
             if (destinationType == typeof(string))
             {
-                ICollection collection = value as ICollection;
-                return collection == null || collection.Count == 0 ? 
-                    SchemePhrases.EmptyValue : 
-                    SchemePhrases.CollectionValue;
+                return value is ICollection collection && collection.Count > 0 ? 
+                    SchemePhrases.CollectionValue : 
+                    SchemePhrases.EmptyValue;
             }
             else
             {

@@ -90,6 +90,7 @@
     <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\CollectionEditor.cs" />
     <Compile Include="Model\PropertyGrid\CtrlSvgViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,8 +98,12 @@
       <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PropertyGrid\ExpandableObjectConverter.cs" />
-    <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
-    <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
+    <Compile Include="Model\PropertyGrid\FrmCollectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\FrmCollectionDialog.designer.cs">
+      <DependentUpon>FrmCollectionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />
     <Compile Include="Model\PropertyGrid\EnumConverter.cs" />
@@ -109,12 +114,6 @@
     </Compile>
     <Compile Include="Model\PropertyGrid\FrmCnlFilterDialog.designer.cs">
       <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmConditionDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmConditionDialog.designer.cs">
-      <DependentUpon>FrmConditionDialog.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PropertyGrid\FrmFontDialog.cs">
       <SubType>Form</SubType>
@@ -152,8 +151,8 @@
     <EmbeddedResource Include="Model\PropertyGrid\FrmCnlFilterDialog.resx">
       <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\PropertyGrid\FrmConditionDialog.resx">
-      <DependentUpon>FrmConditionDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Model\PropertyGrid\FrmCollectionDialog.resx">
+      <DependentUpon>FrmCollectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmFontDialog.resx">
       <DependentUpon>FrmFontDialog.cs</DependentUpon>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model;
@@ -60,7 +60,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             BorderWidth = 3;
             BorderOpacity = 30;
             Action = Actions.None;
-            Conditions = new List<Condition>();
+            Conditions = new List<ColorCondition>();
             AddDefaultConditions();
             InCnlNum = 0;
             CtrlCnlNum = 0;
@@ -94,9 +94,9 @@ namespace Scada.Web.Plugins.SchBasicComp
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions determining the fill color depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        [CM.Editor(typeof(ColorConditionEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
         #endregion
-        public List<Condition> Conditions { get; protected set; }
+        public List<ColorCondition> Conditions { get; protected set; }
 
         /// <summary>
         /// Получить или установить номер входного канала
@@ -150,12 +150,11 @@ namespace Scada.Web.Plugins.SchBasicComp
             XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
             if (conditionsNode != null)
             {
-                Conditions = new List<Condition>();
+                Conditions = new List<ColorCondition>();
                 XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
-                    Condition condition = new ColorCondition();
-                    condition.SchemeDoc = SchemeDoc;
+                    ColorCondition condition = new ColorCondition { SchemeDoc = SchemeDoc };
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);
                 }

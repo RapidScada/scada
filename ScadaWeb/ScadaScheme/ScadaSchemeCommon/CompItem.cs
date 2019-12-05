@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -49,12 +49,10 @@ namespace Scada.Scheme
         {
             if (string.IsNullOrEmpty(displayName))
                 throw new ArgumentException("Display name must not be empty.", "displayName");
-            if (compType == null)
-                throw new ArgumentNullException("compType");
 
             Icon = icon;
             DisplayName = displayName;
-            CompType = compType;
+            CompType = compType ?? throw new ArgumentNullException("compType");
         }
 
 
@@ -79,10 +77,7 @@ namespace Scada.Scheme
         /// </summary>
         private static string GetDisplayName(Type compType)
         {
-            Localization.Dict dict;
-            return Localization.Dictionaries.TryGetValue(compType.FullName, out dict) ?
-                dict.GetPhrase("DisplayName", compType.Name) :
-                compType.Name;
+            return Localization.GetDictionary(compType.FullName).GetPhrase("DisplayName", compType.Name);
         }
     }
 }

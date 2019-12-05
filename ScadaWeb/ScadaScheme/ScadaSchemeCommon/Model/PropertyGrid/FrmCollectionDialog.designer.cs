@@ -1,6 +1,6 @@
 ﻿namespace Scada.Scheme.Model.PropertyGrid
 {
-    partial class FrmConditionDialog
+    partial class FrmCollectionDialog
     {
         /// <summary>
         /// Required designer variable.
@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmConditionDialog));
-            this.lblCond = new System.Windows.Forms.Label();
-            this.lbCond = new System.Windows.Forms.ListBox();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCollectionDialog));
+            this.lblItems = new System.Windows.Forms.Label();
+            this.lbItems = new System.Windows.Forms.ListBox();
             this.propGrid = new System.Windows.Forms.PropertyGrid();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
@@ -41,24 +41,24 @@
             this.btnDel = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
-            // lblCond
+            // lblItems
             // 
-            this.lblCond.AutoSize = true;
-            this.lblCond.Location = new System.Drawing.Point(9, 9);
-            this.lblCond.Name = "lblCond";
-            this.lblCond.Size = new System.Drawing.Size(56, 13);
-            this.lblCond.TabIndex = 0;
-            this.lblCond.Text = "Conditions";
+            this.lblItems.AutoSize = true;
+            this.lblItems.Location = new System.Drawing.Point(9, 9);
+            this.lblItems.Name = "lblItems";
+            this.lblItems.Size = new System.Drawing.Size(32, 13);
+            this.lblItems.TabIndex = 0;
+            this.lblItems.Text = "Items";
             // 
-            // lbCond
+            // lbItems
             // 
-            this.lbCond.FormattingEnabled = true;
-            this.lbCond.IntegralHeight = false;
-            this.lbCond.Location = new System.Drawing.Point(12, 25);
-            this.lbCond.Name = "lbCond";
-            this.lbCond.Size = new System.Drawing.Size(200, 234);
-            this.lbCond.TabIndex = 1;
-            this.lbCond.SelectedIndexChanged += new System.EventHandler(this.lbCond_SelectedIndexChanged);
+            this.lbItems.FormattingEnabled = true;
+            this.lbItems.IntegralHeight = false;
+            this.lbItems.Location = new System.Drawing.Point(12, 25);
+            this.lbItems.Name = "lbItems";
+            this.lbItems.Size = new System.Drawing.Size(200, 234);
+            this.lbItems.TabIndex = 1;
+            this.lbItems.SelectedIndexChanged += new System.EventHandler(this.lbItems_SelectedIndexChanged);
             // 
             // propGrid
             // 
@@ -96,9 +96,9 @@
             this.lblProps.AutoSize = true;
             this.lblProps.Location = new System.Drawing.Point(244, 9);
             this.lblProps.Name = "lblProps";
-            this.lblProps.Size = new System.Drawing.Size(100, 13);
+            this.lblProps.Size = new System.Drawing.Size(76, 13);
             this.lblProps.TabIndex = 6;
-            this.lblProps.Text = "Condition properties";
+            this.lblProps.Text = "Item properties";
             // 
             // btnAdd
             // 
@@ -147,7 +147,7 @@
             this.btnDel.UseVisualStyleBackColor = true;
             this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
             // 
-            // FrmConditionDialog
+            // FrmCollectionDialog
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -162,15 +162,15 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
             this.Controls.Add(this.propGrid);
-            this.Controls.Add(this.lbCond);
-            this.Controls.Add(this.lblCond);
+            this.Controls.Add(this.lbItems);
+            this.Controls.Add(this.lblItems);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
-            this.Name = "FrmConditionDialog";
+            this.Name = "FrmCollectionDialog";
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Conditions";
+            this.Text = "{0} Collection";
             this.Load += new System.EventHandler(this.FrmConditionDialog_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -179,8 +179,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Label lblCond;
-        private System.Windows.Forms.ListBox lbCond;
+        private System.Windows.Forms.Label lblItems;
+        private System.Windows.Forms.ListBox lbItems;
         private System.Windows.Forms.PropertyGrid propGrid;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
