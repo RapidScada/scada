@@ -33,17 +33,6 @@ namespace Scada.Scheme
     /// </summary>
     public static class SchemePhrases
     {
-        // Scada.Scheme.CompManager
-        public static string UnknownComponent { get; private set; }
-        public static string CompLibraryNotFound { get; private set; }
-        public static string UnableCreateComponent { get; private set; }
-        public static string ErrorCreatingComponent { get; private set; }
-
-        // Scada.Scheme.SchemeView
-        public static string LoadSchemeViewError { get; private set; }
-        public static string SaveSchemeViewError { get; private set; }
-        public static string IncorrectFileFormat { get; private set; }
-
         // Scada.Scheme.Model.PropertyGrid
         public static string StringConvertError { get; private set; }
         public static string StringUniqueError { get; private set; }
@@ -52,6 +41,7 @@ namespace Scada.Scheme
         public static string EmptyValue { get; private set; }
         public static string ObjectValue { get; private set; }
         public static string CollectionValue { get; private set; }
+        public static string ComponentNotFound { get; private set; }
         public static string BoldSymbol { get; private set; }
         public static string ItalicSymbol { get; private set; }
         public static string UnderlineSymbol { get; private set; }
@@ -65,20 +55,20 @@ namespace Scada.Scheme
         // Scada.Scheme.Model.PropertyGrid.FrmRangeDialog
         public static string RangeNotValid { get; private set; }
 
+        // Scada.Scheme.CompManager
+        public static string UnknownComponent { get; private set; }
+        public static string CompLibraryNotFound { get; private set; }
+        public static string UnableCreateComponent { get; private set; }
+        public static string ErrorCreatingComponent { get; private set; }
+
+        // Scada.Scheme.SchemeView
+        public static string LoadSchemeViewError { get; private set; }
+        public static string SaveSchemeViewError { get; private set; }
+        public static string IncorrectFileFormat { get; private set; }
+
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Scheme.CompManager");
-            UnknownComponent = dict.GetPhrase("UnknownComponent");
-            CompLibraryNotFound = dict.GetPhrase("CompLibraryNotFound");
-            UnableCreateComponent = dict.GetPhrase("UnableCreateComponent");
-            ErrorCreatingComponent = dict.GetPhrase("ErrorCreatingComponent");
-
-            dict = Localization.GetDictionary("Scada.Scheme.SchemeView");
-            LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError");
-            SaveSchemeViewError = dict.GetPhrase("SaveSchemeViewError");
-            IncorrectFileFormat = dict.GetPhrase("IncorrectFileFormat");
-
-            dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid");
             StringConvertError = dict.GetPhrase("StringConvertError");
             StringUniqueError = dict.GetPhrase("StringUniqueError");
             TrueValue = dict.GetPhrase("TrueValue");
@@ -86,6 +76,7 @@ namespace Scada.Scheme
             EmptyValue = dict.GetPhrase("EmptyValue");
             ObjectValue = dict.GetPhrase("ObjectValue");
             CollectionValue = dict.GetPhrase("CollectionValue");
+            ComponentNotFound = dict.GetPhrase("ComponentNotFound");
             BoldSymbol = dict.GetPhrase("BoldSymbol");
             ItalicSymbol = dict.GetPhrase("ItalicSymbol");
             UnderlineSymbol = dict.GetPhrase("UnderlineSymbol");
@@ -98,6 +89,17 @@ namespace Scada.Scheme
 
             dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid.FrmRangeDialog");
             RangeNotValid = dict.GetPhrase("RangeNotValid");
+
+            dict = Localization.GetDictionary("Scada.Scheme.CompManager");
+            UnknownComponent = dict.GetPhrase("UnknownComponent");
+            CompLibraryNotFound = dict.GetPhrase("CompLibraryNotFound");
+            UnableCreateComponent = dict.GetPhrase("UnableCreateComponent");
+            ErrorCreatingComponent = dict.GetPhrase("ErrorCreatingComponent");
+
+            dict = Localization.GetDictionary("Scada.Scheme.SchemeView");
+            LoadSchemeViewError = dict.GetPhrase("LoadSchemeViewError");
+            SaveSchemeViewError = dict.GetPhrase("SaveSchemeViewError");
+            IncorrectFileFormat = dict.GetPhrase("IncorrectFileFormat");
         }
     }
 }

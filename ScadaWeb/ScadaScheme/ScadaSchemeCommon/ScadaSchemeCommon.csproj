@@ -85,6 +85,8 @@
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
+    <Compile Include="Model\PropertyGrid\ComponentConverter.cs" />
+    <Compile Include="Model\PropertyGrid\ComponentEditor.cs" />
     <Compile Include="Model\PropertyGrid\RangeEditor.cs" />
     <Compile Include="Model\PropertyGrid\FrmRangeDialog.cs">
       <SubType>Form</SubType>

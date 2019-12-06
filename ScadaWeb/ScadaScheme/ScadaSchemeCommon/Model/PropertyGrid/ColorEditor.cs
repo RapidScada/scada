@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
@@ -36,13 +36,13 @@ using System.Windows.Forms.Design;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Editor of color for PropertyGrid
-    /// <para>Редактор цвета для PropertyGrid</para>
+    /// Editor of color for PropertyGrid.
+    /// <para>Редактор цвета для PropertyGrid.</para>
     /// </summary>
     public class ColorEditor : UITypeEditor
     {
         /// <summary>
-        /// Сравнение цветов по восприятию
+        /// Сравнение цветов по восприятию.
         /// </summary>
         private class ColorComparer : IComparer<object>
         {
@@ -73,7 +73,6 @@ namespace Scada.Scheme.Model.PropertyGrid
             }
         }
 
-
         private const int ItemCount = 12;
         private static readonly object[] ColorArr = null;
 
@@ -86,9 +85,8 @@ namespace Scada.Scheme.Model.PropertyGrid
             // заполнение и сортировка массива цветов
             List<object> colorList = new List<object>();
             Array knownColorArr = Enum.GetValues(typeof(KnownColor));
-            int len = knownColorArr.Length;
 
-            for (int i = 0; i < len; i++)
+            for (int i = 0, len = knownColorArr.Length; i < len; i++)
             {
                 Color color = Color.FromKnownColor((KnownColor)knownColorArr.GetValue(i));
                 if (!color.IsSystemColor)
@@ -103,65 +101,62 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         public override object EditValue(ITypeDescriptorContext context, IServiceProvider provider, object value)
         {
-            editorSvc = provider == null ? null :
-                (IWindowsFormsEditorService)provider.GetService(typeof(IWindowsFormsEditorService));
+            editorSvc = provider?.GetService(typeof(IWindowsFormsEditorService)) as IWindowsFormsEditorService;
 
             if (context != null && context.Instance != null && editorSvc != null)
             {
                 // создание и заполнение выпадающего списка
-                ListBox listBox = new ListBox();
-                textBrush = new SolidBrush(listBox.ForeColor);
+                ListBox listBox = new ListBox
+                {
+                    BorderStyle = BorderStyle.None,
+                    ItemHeight = 16,
+                    IntegralHeight = false,
+                    DrawMode = DrawMode.OwnerDrawFixed
+                };
 
-                listBox.BorderStyle = BorderStyle.None;
-                listBox.ItemHeight = 16;
-                listBox.IntegralHeight = false;
-                listBox.DrawMode = DrawMode.OwnerDrawFixed;
                 listBox.Items.AddRange(ColorArr);
-
-                int n = listBox.Items.Count <= ItemCount ? listBox.Items.Count : ItemCount;
-                listBox.Height = n * listBox.ItemHeight;
-
+                listBox.Height = Math.Min(listBox.Items.Count, ItemCount) * listBox.ItemHeight;
                 listBox.DrawItem += listBox_DrawItem;
                 listBox.Click += listBox_Click;
                 listBox.KeyDown += listBox_KeyDown;
 
                 // выбор элемента в выпадающем списке
-                string selColor = value is string ? ((string)value).Trim().ToLowerInvariant() : "";
-
-                if (selColor != "")
+                if (value is string valStr && !string.IsNullOrWhiteSpace(valStr))
                 {
-                    int cnt = listBox.Items.Count;
-                    for (int i = 0; i < cnt; i++)
+                    valStr = valStr.Trim().ToLowerInvariant();
+                    int index = 0;
+
+                    foreach (object item in listBox.Items)
                     {
-                        object item = listBox.Items[i];
-                        if (item is string)
+                        if (item is string s)
                         {
-                            if (selColor == ((string)item).ToLowerInvariant())
+                            if (valStr == s.ToLowerInvariant())
                             {
-                                listBox.SelectedIndex = i;
+                                listBox.SelectedIndex = index;
                                 break;
                             }
                         }
-                        else if (item is Color)
+                        else if (item is Color color)
                         {
-                            if (selColor == ((Color)item).Name.ToLowerInvariant())
+                            if (valStr == color.Name.ToLowerInvariant())
                             {
-                                listBox.SelectedIndex = i;
+                                listBox.SelectedIndex = index;
                                 break;
                             }
                         }
+                        index++;
                     }
                 }
 
                 // отображение выпадающего списка
+                textBrush = new SolidBrush(listBox.ForeColor);
                 editorSvc.DropDownControl(listBox);
 
                 // установка выбранного значения
-                object selItem = listBox.SelectedItem;
-                if (selItem is string)
-                    value = selItem;
-                else if (selItem is Color)
-                    value = ((Color)selItem).Name;
+                if (listBox.SelectedItem is string strVal)
+                    value = strVal;
+                else if (listBox.SelectedItem is Color colorVal)
+                    value = colorVal.Name;
 
                 // очистка ресурсов выпадающего списка и кисти
                 listBox.Dispose();
@@ -213,14 +208,13 @@ namespace Scada.Scheme.Model.PropertyGrid
 
         private void listBox_Click(object sender, EventArgs e)
         {
-            if (editorSvc != null)
-                editorSvc.CloseDropDown();
+            editorSvc?.CloseDropDown();
         }
 
         private void listBox_KeyDown(object sender, KeyEventArgs e)
         {
-            if ((e.KeyCode == Keys.Escape || e.KeyCode == Keys.Enter) && editorSvc != null)
-                editorSvc.CloseDropDown();
+            if (e.KeyCode == Keys.Escape || e.KeyCode == Keys.Enter)
+                editorSvc?.CloseDropDown();
         }
     }
 }

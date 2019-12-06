@@ -60,6 +60,7 @@
     <Phrase key="EmptyValue">(Нет)</Phrase>
     <Phrase key="ObjectValue">(Объект)</Phrase>
     <Phrase key="CollectionValue">(Коллекция)</Phrase>
+    <Phrase key="ComponentNotFound">Компонент не найден</Phrase>
     <Phrase key="BoldSymbol">Ж</Phrase>
     <Phrase key="ItalicSymbol">К</Phrase>
     <Phrase key="UnderlineSymbol">П</Phrase>

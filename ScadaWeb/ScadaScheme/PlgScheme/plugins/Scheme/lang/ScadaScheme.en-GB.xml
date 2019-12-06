@@ -11,6 +11,7 @@
     <Phrase key="EmptyValue">(None)</Phrase>
     <Phrase key="ObjectValue">(Object)</Phrase>
     <Phrase key="CollectionValue">(Collection)</Phrase>
+    <Phrase key="ComponentNotFound">Component not found</Phrase>
     <Phrase key="BoldSymbol">B</Phrase>
     <Phrase key="ItalicSymbol">I</Phrase>
     <Phrase key="UnderlineSymbol">U</Phrase>
