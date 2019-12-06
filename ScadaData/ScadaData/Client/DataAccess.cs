@@ -141,9 +141,8 @@ namespace Scada.Client
             {
                 int parentRoleID = (int)rowView["ParentRoleID"];
 
-                if (!roleIDSet.Contains(parentRoleID))
+                if (roleIDSet.Add(parentRoleID))
                 {
-                    roleIDSet.Add(parentRoleID);
                     roleIDList.Add(parentRoleID);
                     AppendParentRoles(roleIDSet, roleIDList, parentRoleID);
                 }
