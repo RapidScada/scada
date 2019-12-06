@@ -104,7 +104,7 @@ namespace Scada.Web
         /// </summary>
         public static int[] GetParamAsIntArray(this NameValueCollection queryString, string paramName)
         {
-            return QueryParamToIntArray(queryString[paramName]);
+            return ScadaUtils.ParseIntArray(queryString[paramName]);
         }
 
         /// <summary>
@@ -112,53 +112,7 @@ namespace Scada.Web
         /// </summary>
         public static HashSet<int> GetParamAsIntSet(this NameValueCollection queryString, string paramName)
         {
-            return QueryParamToIntSet(queryString[paramName]);
-        }
-
-        /// <summary>
-        /// Преобразовать значение параметра запроса в массив целых чисел.
-        /// </summary>
-        [Obsolete("Use ScadaUtils.ParseIntArray")]
-        public static int[] QueryParamToIntArray(string paramVal)
-        {
-            try
-            {
-                string[] elems = (paramVal ?? "").Split(QueryParamSeparator, StringSplitOptions.None);
-                int len = elems.Length;
-                int[] arr = new int[len];
-
-                for (int i = 0; i < len; i++)
-                    arr[i] = int.Parse(elems[i]);
-
-                return arr;
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException("Query parameter is not array of integers.", ex);
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать значение параметра запроса в множество целых чисел.
-        /// </summary>
-        [Obsolete("Use ScadaUtils.ParseIntSet")]
-        public static HashSet<int> QueryParamToIntSet(string paramVal)
-        {
-            try
-            {
-                string[] elems = (paramVal ?? "").Split(QueryParamSeparator, StringSplitOptions.None);
-                int len = elems.Length;
-                HashSet<int> hashSet = new HashSet<int>();
-
-                for (int i = 0; i < len; i++)
-                    hashSet.Add(int.Parse(elems[i]));
-
-                return hashSet;
-            }
-            catch (FormatException ex)
-            {
-                throw new FormatException("Query parameter is not set of integers.", ex);
-            }
+            return ScadaUtils.ParseIntSet(queryString[paramName]);
         }
 
         /// <summary>
