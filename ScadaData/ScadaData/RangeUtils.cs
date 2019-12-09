@@ -166,14 +166,16 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в коллекцию целых чисел, вызвав исключение в случае ошибки.
+        /// Преобразовать строку в коллекцию целых чисел.
         /// </summary>
-        public static ICollection<int> StrToRange(string s, bool allowEmpty, bool unique)
+        public static ICollection<int> StrToRange(string s, bool allowEmpty, bool unique, bool throwOnFail = true)
         {
             if (StrToRange(s, allowEmpty, unique, out ICollection<int> collection))
                 return collection;
-            else
+            else if (throwOnFail)
                 throw new FormatException("The given string is not a valid range of integers.");
+            else
+                return null;
         }
     }
 }

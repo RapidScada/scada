@@ -215,6 +215,7 @@
     <Phrase key="chkIgnoreRegKeys">Регистрационные ключи</Phrase>
     <Phrase key="chkIgnoreWebStorage">Хранилище Вебстанции</Phrase>
     <Phrase key="lblObjFilter">Фильтр объектов:</Phrase>
+    <Phrase key="btnSelectObj">Выбрать...</Phrase>
     <Phrase key="ConfigNotSelected">Конфигурация не выбрана.</Phrase>
     <Phrase key="IncorrectObjFilter">Некорректный фильтр объектов.</Phrase>
   </Dictionary>

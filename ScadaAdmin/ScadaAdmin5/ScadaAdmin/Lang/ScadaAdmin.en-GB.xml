@@ -215,6 +215,7 @@
     <Phrase key="chkIgnoreRegKeys">Registration keys</Phrase>
     <Phrase key="chkIgnoreWebStorage">Webstation storage</Phrase>
     <Phrase key="lblObjFilter">Object filter:</Phrase>
+    <Phrase key="btnSelectObj">Select...</Phrase>
     <Phrase key="ConfigNotSelected">Configuration is not selected.</Phrase>
     <Phrase key="IncorrectObjFilter">Object filter is incorrect.</Phrase>
   </Dictionary>
