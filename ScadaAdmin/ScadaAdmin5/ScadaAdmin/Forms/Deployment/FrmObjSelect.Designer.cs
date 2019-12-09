@@ -28,13 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.lblFilter = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.btnApplyFilter = new System.Windows.Forms.Button();
+            this.txtFilter = new System.Windows.Forms.TextBox();
             this.dataGridView = new System.Windows.Forms.DataGridView();
             this.btnSelect = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
+            this.bindingSource = new System.Windows.Forms.BindingSource(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).BeginInit();
             this.SuspendLayout();
             // 
             // lblFilter
@@ -46,40 +48,35 @@
             this.lblFilter.TabIndex = 0;
             this.lblFilter.Text = "Filter";
             // 
-            // textBox1
+            // txtFilter
             // 
-            this.textBox1.Location = new System.Drawing.Point(12, 25);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(279, 20);
-            this.textBox1.TabIndex = 1;
-            // 
-            // btnApplyFilter
-            // 
-            this.btnApplyFilter.Location = new System.Drawing.Point(297, 24);
-            this.btnApplyFilter.Name = "btnApplyFilter";
-            this.btnApplyFilter.Size = new System.Drawing.Size(75, 23);
-            this.btnApplyFilter.TabIndex = 2;
-            this.btnApplyFilter.Text = "Apply";
-            this.btnApplyFilter.UseVisualStyleBackColor = true;
+            this.txtFilter.Location = new System.Drawing.Point(12, 25);
+            this.txtFilter.Name = "txtFilter";
+            this.txtFilter.Size = new System.Drawing.Size(360, 20);
+            this.txtFilter.TabIndex = 1;
+            this.txtFilter.KeyDown += new System.Windows.Forms.KeyEventHandler(this.txtFilter_KeyDown);
             // 
             // dataGridView
             // 
             this.dataGridView.AllowUserToAddRows = false;
             this.dataGridView.AllowUserToDeleteRows = false;
+            this.dataGridView.AllowUserToResizeRows = false;
+            this.dataGridView.AutoGenerateColumns = false;
             this.dataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridView.DataSource = this.bindingSource;
             this.dataGridView.Location = new System.Drawing.Point(12, 51);
             this.dataGridView.Name = "dataGridView";
             this.dataGridView.RowHeadersVisible = false;
             this.dataGridView.Size = new System.Drawing.Size(360, 319);
             this.dataGridView.StandardTab = true;
-            this.dataGridView.TabIndex = 3;
+            this.dataGridView.TabIndex = 2;
             // 
             // btnSelect
             // 
             this.btnSelect.Location = new System.Drawing.Point(216, 376);
             this.btnSelect.Name = "btnSelect";
             this.btnSelect.Size = new System.Drawing.Size(75, 23);
-            this.btnSelect.TabIndex = 4;
+            this.btnSelect.TabIndex = 3;
             this.btnSelect.Text = "Select";
             this.btnSelect.UseVisualStyleBackColor = true;
             this.btnSelect.Click += new System.EventHandler(this.btnSelect_Click);
@@ -90,9 +87,13 @@
             this.btnCancel.Location = new System.Drawing.Point(297, 376);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 5;
+            this.btnCancel.TabIndex = 4;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
+            // 
+            // bindingSource
+            // 
+            this.bindingSource.AllowNew = false;
             // 
             // FrmObjSelect
             // 
@@ -103,8 +104,7 @@
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnSelect);
             this.Controls.Add(this.dataGridView);
-            this.Controls.Add(this.btnApplyFilter);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtFilter);
             this.Controls.Add(this.lblFilter);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -114,6 +114,7 @@
             this.Text = "Select Objects";
             this.Load += new System.EventHandler(this.FrmObjSelect_Load);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bindingSource)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -122,10 +123,10 @@
         #endregion
 
         private System.Windows.Forms.Label lblFilter;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button btnApplyFilter;
+        private System.Windows.Forms.TextBox txtFilter;
         private System.Windows.Forms.DataGridView dataGridView;
         private System.Windows.Forms.Button btnSelect;
         private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.BindingSource bindingSource;
     }
 }

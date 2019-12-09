@@ -26,11 +26,11 @@
 using Scada.Admin.App.Code;
 using Scada.Admin.Project;
 using Scada.Data.Entities;
-using Scada.Data.Tables;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Windows.Forms;
 
 namespace Scada.Admin.App.Forms.Deployment
@@ -41,8 +41,25 @@ namespace Scada.Admin.App.Forms.Deployment
     /// </summary>
     public partial class FrmObjSelect : Form
     {
+        /// <summary>
+        /// Represents an object that can be selected.
+        /// <para>Представляет объект, который может быть выбран.</para>
+        /// </summary>
+        private class SelectableObject : Obj
+        {
+            public SelectableObject(Obj obj)
+            {
+                ObjNum = obj.ObjNum;
+                Name = obj.Name;
+                Descr = obj.Descr;
+            }
+
+            public bool Selected { get; set; }
+        }
+
         private readonly ConfigBase configBase; // the configuration database
         private DataTable dataTable;            // the table used by a grid view control
+        private List<SelectableObject> objects; // the objects to select
 
 
         /// <summary>
@@ -61,12 +78,13 @@ namespace Scada.Admin.App.Forms.Deployment
         {
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             dataTable = null;
+            objects = null;
             ObjNums = null;
         }
 
 
         /// <summary>
-        /// Gets or sets the object numbers.
+        /// Gets or sets the numbers of selected objects.
         /// </summary>
         public ICollection<int> ObjNums { get; set; }
 
@@ -77,24 +95,42 @@ namespace Scada.Admin.App.Forms.Deployment
         private void ShowObjects()
         {
             // create table columns
-            dataGridView.Columns.Add(new DataGridViewCheckBoxColumn
-            {
-                Name = "Select",
-                HeaderText = "Select",
-                DataPropertyName = "Select",
-                SortMode = DataGridViewColumnSortMode.Automatic
-            });
-
             dataGridView.Columns.AddRange(new ColumnBuilder(configBase).CreateColumns(typeof(Obj)));
 
-            // prepare table data
-            dataTable = configBase.ObjTable.ToDataTable();
-
-            foreach (DataColumn column in dataTable.Columns)
+            foreach (DataGridViewColumn column in dataGridView.Columns)
             {
                 column.ReadOnly = true;
             }
 
+            dataGridView.Columns.Insert(0, new DataGridViewCheckBoxColumn
+            {
+                Name = "Selected",
+                HeaderText = "Selected",
+                DataPropertyName = "Selected",
+                SortMode = DataGridViewColumnSortMode.Automatic
+            });
+
+            // prepare table data
+            HashSet<int> objNumSet = ObjNums == null ? 
+                new HashSet<int>() : 
+                new HashSet<int>(ObjNums);
+            objects = new List<SelectableObject>();
+
+            foreach (Obj obj in configBase.ObjTable.Items.Values)
+            {
+                objects.Add(new SelectableObject(obj)
+                {
+                    Selected = objNumSet.Contains(obj.ObjNum)
+                });
+            }
+
+            // display data
+            bindingSource.DataSource = objects;
+            dataGridView.AutoSizeColumns();
+
+            /*
+            // prepare table data
+            dataTable = configBase.ObjTable.ToDataTable();
             dataTable.Columns.Add("Select", typeof(bool));
 
             // select rows
@@ -111,7 +147,26 @@ namespace Scada.Admin.App.Forms.Deployment
 
             // display data
             dataGridView.DataSource = dataTable;
-            dataGridView.AutoSizeColumns();
+            dataGridView.AutoSizeColumns();*/
+        }
+
+        /// <summary>
+        /// Applies the object filter.
+        /// </summary>
+        private void ApplyFilter()
+        {
+            string filterText = txtFilter.Text.Trim();
+            bindingSource.DataSource = filterText == "" ?
+                objects :
+                objects.Where(obj => StringContains(obj.Name, filterText) || StringContains(obj.Descr, filterText));
+        }
+
+        /// <summary>
+        /// Determines whether the string contains the specified text.
+        /// </summary>
+        private bool StringContains(string s, string text)
+        {
+            return (s ?? "").IndexOf(text, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
 
@@ -121,18 +176,34 @@ namespace Scada.Admin.App.Forms.Deployment
             ShowObjects();
         }
 
+        private void txtFilter_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                ApplyFilter();
+        }
+
         private void btnSelect_Click(object sender, EventArgs e)
         {
-            // get selected rows
-            List<int> objNums = new List<int>();
+            // get selected objects
+            ObjNums = (from obj in objects
+                       where obj.Selected
+                       select obj.ObjNum).ToArray();
 
-            foreach (DataRow dataRow in dataTable.Rows)
+            /*List<int> objNums = new List<int>();
+
+            foreach (SelectableObject obj in objects)
+            {
+                if (obj.Selected)
+                    objNums.Add(obj.ObjNum);
+            };*/
+
+            /*foreach (DataRow dataRow in dataTable.Rows)
             {
                 if ((bool)dataRow["Select"])
                     objNums.Add((int)dataRow["ObjNum"]);
             }
 
-            ObjNums = objNums;
+            ObjNums = objNums;*/
             DialogResult = DialogResult.OK;
         }
     }
