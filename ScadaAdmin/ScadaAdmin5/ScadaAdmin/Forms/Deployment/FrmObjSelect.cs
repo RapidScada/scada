@@ -92,14 +92,9 @@ namespace Scada.Admin.App.Forms.Deployment
         private void ShowObjects()
         {
             // create table columns
-            dataGridView.Columns.AddRange(new ColumnBuilder(configBase).CreateColumns(typeof(Obj)));
-
-            foreach (DataGridViewColumn column in dataGridView.Columns)
-            {
-                column.ReadOnly = true;
-            }
-
-            dataGridView.Columns.Insert(0, new DataGridViewCheckBoxColumn
+            List<DataGridViewColumn> columns = new ColumnBuilder(configBase).CreateColumns(typeof(Obj)).ToList();
+            columns.ForEach(column => column.ReadOnly = true);
+            columns.Insert(0, new DataGridViewCheckBoxColumn
             {
                 Name = "Selected",
                 HeaderText = AppPhrases.SelectedColumn,
@@ -122,7 +117,17 @@ namespace Scada.Admin.App.Forms.Deployment
             }
 
             // display data
-            bindingSource.DataSource = objects;
+            if (ScadaUtils.IsRunningOnMono)
+            {
+                bindingSource.DataSource = objects;
+                dataGridView.Columns.AddRange(columns.ToArray());
+            }
+            else
+            {
+                dataGridView.Columns.AddRange(columns.ToArray());
+                bindingSource.DataSource = objects;
+            }
+
             dataGridView.AutoSizeColumns();
         }
 
