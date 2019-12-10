@@ -29,7 +29,6 @@ using Scada.Data.Entities;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 
@@ -58,7 +57,6 @@ namespace Scada.Admin.App.Forms.Deployment
         }
 
         private readonly ConfigBase configBase; // the configuration database
-        private DataTable dataTable;            // the table used by a grid view control
         private List<SelectableObject> objects; // the objects to select
 
 
@@ -77,7 +75,6 @@ namespace Scada.Admin.App.Forms.Deployment
             : this()
         {
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
-            dataTable = null;
             objects = null;
             ObjNums = null;
         }
@@ -127,27 +124,6 @@ namespace Scada.Admin.App.Forms.Deployment
             // display data
             bindingSource.DataSource = objects;
             dataGridView.AutoSizeColumns();
-
-            /*
-            // prepare table data
-            dataTable = configBase.ObjTable.ToDataTable();
-            dataTable.Columns.Add("Select", typeof(bool));
-
-            // select rows
-            if (ObjNums != null)
-            {
-                HashSet<int> objNumSet = new HashSet<int>(ObjNums);
-
-                foreach (DataRow dataRow in dataTable.Rows)
-                {
-                    if (objNumSet.Contains((int)dataRow["ObjNum"]))
-                        dataRow["Select"] = true;
-                }
-            }
-
-            // display data
-            dataGridView.DataSource = dataTable;
-            dataGridView.AutoSizeColumns();*/
         }
 
         /// <summary>
@@ -189,21 +165,6 @@ namespace Scada.Admin.App.Forms.Deployment
                        where obj.Selected
                        select obj.ObjNum).ToArray();
 
-            /*List<int> objNums = new List<int>();
-
-            foreach (SelectableObject obj in objects)
-            {
-                if (obj.Selected)
-                    objNums.Add(obj.ObjNum);
-            };*/
-
-            /*foreach (DataRow dataRow in dataTable.Rows)
-            {
-                if ((bool)dataRow["Select"])
-                    objNums.Add((int)dataRow["ObjNum"]);
-            }
-
-            ObjNums = objNums;*/
             DialogResult = DialogResult.OK;
         }
     }
