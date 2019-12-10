@@ -102,7 +102,7 @@ namespace Scada.Admin.App.Forms.Deployment
             dataGridView.Columns.Insert(0, new DataGridViewCheckBoxColumn
             {
                 Name = "Selected",
-                HeaderText = "Selected",
+                HeaderText = AppPhrases.SelectedColumn,
                 DataPropertyName = "Selected",
                 SortMode = DataGridViewColumnSortMode.Automatic
             });

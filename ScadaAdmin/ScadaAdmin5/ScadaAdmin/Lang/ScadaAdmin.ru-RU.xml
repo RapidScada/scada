@@ -3,9 +3,6 @@
   <Dictionary key="Scada.Admin">
     <Phrase key="IndexNotFound">Индекс не найден.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App">
-    <Phrase key="CorrectErrors">Пожалуйста исправьте следующие ошибки.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.AppState">
     <Phrase key="LoadAppStateError">Ошибка при загрузке состояния приложения</Phrase>
     <Phrase key="SaveAppStateError">Ошибка при сохранении состояния приложения</Phrase>
@@ -220,7 +217,9 @@
     <Phrase key="IncorrectObjFilter">Некорректный фильтр объектов.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms">
+    <Phrase key="CorrectErrors">Пожалуйста исправьте следующие ошибки.</Phrase>
     <Phrase key="AllCommLines">&lt;Все линии связи&gt;</Phrase>
+    <Phrase key="SelectedColumn">Выбор</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
     <Phrase key="this">Скачивание конфигурации</Phrase>
@@ -261,6 +260,12 @@
     <Phrase key="ServiceCommandComplete">Команда сервису выполнена успешно.</Phrase>
     <Phrase key="UnableControlService">Невозможно выполнить команду сервису.</Phrase>
     <Phrase key="ControlServiceError">Ошибка при отправке команды сервису.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmObjSelect">
+    <Phrase key="this">Выбор объектов</Phrase>
+    <Phrase key="lblFilter">Фильтр</Phrase>
+    <Phrase key="btnSelect">Выбрать</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmProfileEdit">
     <Phrase key="this">Редактирование профиля</Phrase>
