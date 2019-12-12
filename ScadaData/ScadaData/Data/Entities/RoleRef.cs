@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,31 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
- * Summary  : Image condition editor for PropertyGrid
+ * Module   : ScadaData
+ * Summary  : Represents a reference between two roles
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
- * Modified : 2018
+ * Created  : 2019
+ * Modified : 2019
  */
 
-using Scada.Scheme.Model.DataTypes;
+#pragma warning disable 1591 // Missing XML comment for publicly visible type or member
 
-namespace Scada.Scheme.Model.PropertyGrid
+using System;
+
+namespace Scada.Data.Entities
 {
     /// <summary>
-    /// Image condition editor for PropertyGrid
-    /// <para>Редактор условий вывода изображений для PropertyGrid</para>
+    /// Represents a reference between two roles.
+    /// <para>Представляет взаимосвязь между двумя ролями.</para>
     /// </summary>
-    public class ImageConditionEditor : ConditionEditor
+    [Serializable]
+    public class RoleRef
     {
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public ImageConditionEditor()
-            : base(typeof(ImageCondition))
-        {
-        }
+        public int RoleRefID { get; set; }
+
+        public int ParentRoleID { get; set; }
+
+        public int ChildRoleID { get; set; }
     }
 }

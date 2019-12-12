@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,14 +16,15 @@
  * 
  * Product  : Rapid SCADA
  * Module   : ScadaSchemeCommon
- * Summary  : Converter of channel filter for PropertyGrid
+ * Summary  : Converter of integer range for PropertyGrid
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2017
- * Modified : 2017
+ * Created  : 2019
+ * Modified : 2019
  */
 
-using Scada.Scheme.Model.DataTypes;
+#pragma warning disable 1591 // CS1591: Missing XML comment for publicly visible type or member
+
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,22 +33,17 @@ using System.Globalization;
 namespace Scada.Scheme.Model.PropertyGrid
 {
     /// <summary>
-    /// Converter of channel filter for PropertyGrid
-    /// <para>Преобразователь фильтра по каналам для PropertyGrid</para>
+    /// Converter of integer range for PropertyGrid.
+    /// <para>Преобразователь диапазона целых числел для PropertyGrid.</para>
     /// </summary>
-    internal class CnlFilterConverter : System.ComponentModel.CollectionConverter
+    public class RangeConverter : System.ComponentModel.CollectionConverter
     {
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
         {
-            if (destinationType == typeof(string))
-            {
-                List<int> cnlFilter = value as List<int>;
-                return cnlFilter == null ? "" : cnlFilter.CnlFilterToString();
-            }
+            if (destinationType == typeof(string) && value is ICollection<int> collection)
+                return RangeUtils.RangeToStr(collection);
             else
-            {
                 return base.ConvertTo(context, culture, value, destinationType);
-            }
         }
     }
 }

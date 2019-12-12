@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -35,22 +35,29 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Scheme document properties
-    /// <para>Свойства документа схемы</para>
+    /// Scheme document properties.
+    /// <para>Свойства документа схемы.</para>
     /// </summary>
-    public class SchemeDocument : IObservableItem, ISchemeDocAvailable
+    public class SchemeDocument : IObservableItem, ISchemeViewAvailable
     {
         /// <summary>
-        /// Размер схемы по умолчанию
+        /// Размер схемы по умолчанию.
         /// </summary>
         public static readonly Size DefaultSize = new Size(800, 600);
 
+        /// <summary>
+        /// Ссылка на представление схемы.
+        /// </summary>
+        [NonSerialized]
+        protected SchemeView schemeView;
+
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public SchemeDocument()
         {
+            schemeView = null;
             CnlFilter = new List<int>();
             Images = new Dictionary<string, Image>();
             SetToDefault();
@@ -58,7 +65,7 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Получить версию редактора схем, в котором сохранён файл схемы
+        /// Получить версию редактора схем, в котором сохранён файл схемы.
         /// </summary>
         #region Attributes
         [DisplayName("Version"), Category(Categories.Design)]
@@ -67,7 +74,7 @@ namespace Scada.Scheme.Model
         public string Version { get; protected set; }
 
         /// <summary>
-        /// Получить или установить размер
+        /// Получить или установить размер.
         /// </summary>
         #region Attributes
         [DisplayName("Size"), Category(Categories.Layout)]
@@ -76,7 +83,7 @@ namespace Scada.Scheme.Model
         public Size Size { get; set; }
 
         /// <summary>
-        /// Получить или установить цвет фона
+        /// Получить или установить цвет фона.
         /// </summary>
         #region Attributes
         [DisplayName("Background color"), Category(Categories.Appearance)]
@@ -86,7 +93,7 @@ namespace Scada.Scheme.Model
         public string BackColor { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование фонового изображения
+        /// Получить или установить наименование фонового изображения.
         /// </summary>
         #region Attributes
         [DisplayName("Background image"), Category(Categories.Appearance)]
@@ -97,7 +104,7 @@ namespace Scada.Scheme.Model
         public string BackImageName { get; set; }
 
         /// <summary>
-        /// Получить или установить шрифт
+        /// Получить или установить шрифт.
         /// </summary>
         #region Attributes
         [DisplayName("Font"), Category(Categories.Appearance)]
@@ -106,7 +113,7 @@ namespace Scada.Scheme.Model
         public Font Font { get; set; }
 
         /// <summary>
-        /// Получить или установить основной цвет
+        /// Получить или установить основной цвет.
         /// </summary>
         #region Attributes
         [DisplayName("Foreground color"), Category(Categories.Appearance)]
@@ -116,7 +123,7 @@ namespace Scada.Scheme.Model
         public string ForeColor { get; set; }
 
         /// <summary>
-        /// Получить или установить заголовок
+        /// Получить или установить заголовок.
         /// </summary>
         #region Attributes
         [DisplayName("Title"), Category(Categories.Appearance)]
@@ -125,18 +132,18 @@ namespace Scada.Scheme.Model
         public string Title { get; set; }
 
         /// <summary>
-        /// Получить фильтр по входным каналам
+        /// Получить фильтр по входным каналам.
         /// </summary>
         #region Attributes
         [DisplayName("Channel filter"), Category(Categories.Data)]
         [Description("The input channels used as a filter for displaying events filtered by view.")]
-        [CM.TypeConverter(typeof(CnlFilterConverter)), CM.Editor(typeof(CnlFilterEditor), typeof(UITypeEditor))]
+        [CM.TypeConverter(typeof(RangeConverter)), CM.Editor(typeof(RangeEditor), typeof(UITypeEditor))]
         [ScriptIgnore]
         #endregion
         public List<int> CnlFilter { get; protected set; }
 
         /// <summary>
-        /// Получить словарь изображений схемы
+        /// Получить словарь изображений схемы.
         /// </summary>
         #region Attributes
         [DisplayName("Images"), Category(Categories.Data)]
@@ -147,20 +154,24 @@ namespace Scada.Scheme.Model
         public Dictionary<string, Image> Images { get; protected set; }
 
         /// <summary>
-        /// Получить ссылку на свойства документа схемы
+        /// Получить или установить ссылку на представление схемы.
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc
+        public SchemeView SchemeView
         {
             get
             {
-                return this;
+                return schemeView;
+            }
+            set
+            {
+                schemeView = value;
             }
         }
 
 
         /// <summary>
-        /// Установить значения свойств документа схемы по умолчанию
+        /// Установить значения свойств документа схемы по умолчанию.
         /// </summary>
         public void SetToDefault()
         {
@@ -176,7 +187,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Загрузить свойства документа схемы из XML-узла
+        /// Загрузить свойства документа схемы из XML-узла.
         /// </summary>
         public void LoadFromXml(XmlNode xmlNode)
         {
@@ -192,11 +203,11 @@ namespace Scada.Scheme.Model
             Font = Font.GetChildAsFont(xmlNode, "Font");
             ForeColor = xmlNode.GetChildAsString("ForeColor");
             Title = xmlNode.GetChildAsString("Title");
-            CnlFilter.ParseCnlFilter(xmlNode.GetChildAsString("CnlFilter"));
+            CnlFilter.AddRange(ScadaUtils.ParseIntArray(xmlNode.GetChildAsString("CnlFilter")));
         }
 
         /// <summary>
-        /// Сохранить свойства документа схемы в XML-узле
+        /// Сохранить свойства документа схемы в XML-узле.
         /// </summary>
         public void SaveToXml(XmlElement xmlElem)
         {
@@ -211,12 +222,12 @@ namespace Scada.Scheme.Model
             Font.AppendElem(xmlElem, "Font", Font);
             xmlElem.AppendElem("ForeColor", ForeColor);
             xmlElem.AppendElem("Title", Title);
-            xmlElem.AppendElem("CnlFilter", CnlFilter.CnlFilterToString());
+            xmlElem.AppendElem("CnlFilter", ScadaUtils.IntCollectionToStr(CnlFilter));
         }
 
 
         /// <summary>
-        /// Вернуть строковое представление объекта
+        /// Вернуть строковое представление объекта.
         /// </summary>
         public override string ToString()
         {
@@ -224,13 +235,14 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Копировать свойства объекта в заданный объект
+        /// Копировать свойства объекта в заданный объект.
         /// </summary>
         public void CopyTo(SchemeDocument schemeDoc)
         {
             if (schemeDoc == null)
                 throw new ArgumentNullException("schemeDoc");
 
+            // not copied: Images, SchemeView and ItemChanged
             schemeDoc.Size = Size;
             schemeDoc.BackColor = BackColor;
             schemeDoc.BackImageName = BackImageName;
@@ -242,7 +254,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Копировать объект
+        /// Копировать объект.
         /// </summary>
         public SchemeDocument Copy()
         {
@@ -252,7 +264,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Вызвать событие ItemChanged
+        /// Вызвать событие ItemChanged.
         /// </summary>
         public void OnItemChanged(SchemeChangeTypes changeType, object changedObject, object oldKey = null)
         {
@@ -261,8 +273,9 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Событие возникающее при изменении документа схемы
+        /// Событие возникающее при изменении документа схемы.
         /// </summary>
+        [field: NonSerialized]
         public event ItemChangedEventHandler ItemChanged;
     }
 }

@@ -24,7 +24,9 @@
  */
 
 using Scada.Admin.App.Code;
+using Scada.Admin.App.Forms.Deployment;
 using Scada.Admin.Deployment;
+using Scada.Admin.Project;
 using Scada.UI;
 using System;
 using System.Collections.Generic;
@@ -39,7 +41,8 @@ namespace Scada.Admin.App.Controls.Deployment
     /// </summary>
     public partial class CtrlTransferSettings : UserControl
     {
-        private bool changing; // controls are being changed programmatically
+        private ConfigBase configBase; // the configuration database
+        private bool changing;         // controls are being changed programmatically
 
 
         /// <summary>
@@ -48,6 +51,7 @@ namespace Scada.Admin.App.Controls.Deployment
         public CtrlTransferSettings()
         {
             InitializeComponent();
+            configBase = null;
             changing = false;
         }
 
@@ -74,6 +78,14 @@ namespace Scada.Admin.App.Controls.Deployment
         }
 
         /// <summary>
+        /// Initializes the control.
+        /// </summary>
+        public void Init(ConfigBase configBase)
+        {
+            this.configBase = configBase;
+        }
+
+        /// <summary>
         /// Validates the form fields.
         /// </summary>
         public bool ValidateFields()
@@ -84,7 +96,7 @@ namespace Scada.Admin.App.Controls.Deployment
                 return false;
             }
 
-            if (!RangeUtils.StrToRange(txtObjFilter.Text, true, out ICollection<int> collection))
+            if (!RangeUtils.StrToRange(txtObjFilter.Text, true, true, out ICollection<int> collection))
             {
                 ScadaUiUtils.ShowError(AppPhrases.IncorrectObjFilter);
                 return false;
@@ -117,6 +129,7 @@ namespace Scada.Admin.App.Controls.Deployment
                 chkRestartComm.Visible = true;
                 lblObjFilter.Visible = true;
                 txtObjFilter.Visible = true;
+                btnSelectObj.Visible = true;
 
                 chkRestartServer.Checked = uploadSettings.RestartServer;
                 chkRestartComm.Checked = uploadSettings.RestartComm;
@@ -128,6 +141,7 @@ namespace Scada.Admin.App.Controls.Deployment
                 chkRestartComm.Visible = false;
                 lblObjFilter.Visible = false;
                 txtObjFilter.Visible = false;
+                btnSelectObj.Visible = false;
             }
 
             changing = false;
@@ -153,7 +167,7 @@ namespace Scada.Admin.App.Controls.Deployment
             {
                 uploadSettings.RestartServer = chkRestartServer.Checked;
                 uploadSettings.RestartComm = chkRestartComm.Checked;
-                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true));
+                uploadSettings.SetObjNums(RangeUtils.StrToRange(txtObjFilter.Text, true, true));
             }
         }
 
@@ -170,6 +184,7 @@ namespace Scada.Admin.App.Controls.Deployment
             chkIncludeWeb.Checked = false;
             chkIgnoreRegKeys.Checked = false;
             chkIgnoreWebStorage.Checked = false;
+            txtObjFilter.Text = "";
             gbOptions.Enabled = false;
             changing = false;
         }
@@ -186,6 +201,18 @@ namespace Scada.Admin.App.Controls.Deployment
         {
             if (!changing)
                 OnSettingsChanged();
+        }
+
+        private void btnSelectObj_Click(object sender, EventArgs e)
+        {
+            // show a dialog to select objects
+            FrmObjSelect frmObjSelect = new FrmObjSelect(configBase)
+            {
+                ObjNums = RangeUtils.StrToRange(txtObjFilter.Text, true, false, false)
+            };
+
+            if (frmObjSelect.ShowDialog() == DialogResult.OK)
+                txtObjFilter.Text = RangeUtils.RangeToStr(frmObjSelect.ObjNums);
         }
     }
 }

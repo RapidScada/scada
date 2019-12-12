@@ -76,6 +76,8 @@ namespace Scada.Admin.App.Forms.Tools
             this.configBase = configBase ?? throw new ArgumentNullException("configBase");
             this.appData = appData ?? throw new ArgumentNullException("appData");
             InCnlsSelected = true;
+            InCnlsCloned = false;
+            OutCnlsCloned = false;
         }
 
 
@@ -83,6 +85,16 @@ namespace Scada.Admin.App.Forms.Tools
         /// Gets or sets a value indicating whether to select input channels by default.
         /// </summary>
         public bool InCnlsSelected { get; set; }
+
+        /// <summary>
+        /// Gets a value indicating whether input channels have been cloned.
+        /// </summary>
+        public bool InCnlsCloned { get; private set; }
+
+        /// <summary>
+        /// Gets a value indicating whether output channels have been cloned.
+        /// </summary>
+        public bool OutCnlsCloned { get; private set; }
 
 
         /// <summary>
@@ -345,13 +357,15 @@ namespace Scada.Admin.App.Forms.Tools
             int replaceKpNum = (int)cbReplaceKP.SelectedValue;
             bool updateFormulas = chkUpdateFormulas.Checked;
 
-            if (rbInCnls.Checked && 
-                CloneInCnls(srcStartNum, srcEndNum, destStartNum, replaceObjNum, replaceKpNum, updateFormulas) ||
-                rbOutCnls.Checked && 
-                CloneCtrlCnls(srcStartNum, srcEndNum, destStartNum, replaceObjNum, replaceKpNum, updateFormulas))
+            if (rbInCnls.Checked)
             {
-                InCnlsSelected = rbInCnls.Checked;
-                DialogResult = DialogResult.OK;
+                if (CloneInCnls(srcStartNum, srcEndNum, destStartNum, replaceObjNum, replaceKpNum, updateFormulas))
+                    InCnlsCloned = true;
+            }
+            else if (rbOutCnls.Checked)
+            {
+                if (CloneCtrlCnls(srcStartNum, srcEndNum, destStartNum, replaceObjNum, replaceKpNum, updateFormulas))
+                    OutCnlsCloned = true;
             }
         }
     }

@@ -255,7 +255,7 @@
     <Content Include="sounds\notif_error.mp3" />
     <Content Include="User.aspx" />
     <Content Include="View.aspx" />
-    <Content Include="ViewPopup.aspx" />
+    <Content Include="ViewFrame.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -333,12 +333,12 @@
     <Compile Include="View.aspx.designer.cs">
       <DependentUpon>View.aspx</DependentUpon>
     </Compile>
-    <Compile Include="ViewPopup.aspx.cs">
-      <DependentUpon>ViewPopup.aspx</DependentUpon>
+    <Compile Include="ViewFrame.aspx.cs">
+      <DependentUpon>ViewFrame.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="ViewPopup.aspx.designer.cs">
-      <DependentUpon>ViewPopup.aspx</DependentUpon>
+    <Compile Include="ViewFrame.aspx.designer.cs">
+      <DependentUpon>ViewFrame.aspx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>

@@ -145,6 +145,12 @@
     <Compile Include="Controls\Tools\CtrlCnlCreate3.Designer.cs">
       <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\Deployment\FrmObjSelect.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\Deployment\FrmObjSelect.Designer.cs">
+      <DependentUpon>FrmObjSelect.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\Deployment\FrmProfileEdit.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -353,6 +359,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\Tools\CtrlCnlCreate3.resx">
       <DependentUpon>CtrlCnlCreate3.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\Deployment\FrmObjSelect.resx">
+      <DependentUpon>FrmObjSelect.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\Deployment\FrmProfileEdit.resx">
       <DependentUpon>FrmProfileEdit.cs</DependentUpon>

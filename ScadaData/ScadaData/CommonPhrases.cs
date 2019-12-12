@@ -97,6 +97,7 @@ namespace Scada
         public static string ParamTable { get; private set; }
         public static string RightTable { get; private set; }
         public static string RoleTable { get; private set; }
+        public static string RoleRefTable { get; private set; }
         public static string UnitTable { get; private set; }
         public static string UserTable { get; private set; }
 
@@ -245,6 +246,7 @@ namespace Scada
                 ParamTable = dict.GetPhrase("ParamTable", ParamTable);
                 RightTable = dict.GetPhrase("RightTable", RightTable);
                 RoleTable = dict.GetPhrase("RoleTable", RoleTable);
+                RoleRefTable = dict.GetPhrase("RoleRefTable", RoleRefTable);
                 UnitTable = dict.GetPhrase("UnitTable", UnitTable);
                 UserTable = dict.GetPhrase("UserTable", UserTable);
 

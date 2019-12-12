@@ -134,8 +134,11 @@ namespace Scada.Client
                 if (view == null)
                     view = (BaseView)Activator.CreateInstance(viewType);
 
+                view.SetArgs(viewProps.Args);
+
                 if (serverComm.ReceiveView(viewProps.Path, view))
                 {
+                    view.UpdateTitle(viewProps.ShortTitle);
                     return true;
                 }
                 else
@@ -189,6 +192,8 @@ namespace Scada.Client
                         {
                             UiObjProps viewProps = GetViewProps(viewID);
                             view.Path = viewProps.Path;
+                            view.SetArgs(viewProps.Args);
+                            view.UpdateTitle(viewProps.ShortTitle);
                             Cache.UpdateItem(cacheItem, view, DateTime.Now, utcNowDT);
                         }
                     }

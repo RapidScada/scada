@@ -10,6 +10,6 @@
 namespace Scada.Web {
     
     
-    public partial class WFrmViewPopup {
+    public partial class WFrmViewFrame {
     }
 }

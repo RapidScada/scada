@@ -9,13 +9,14 @@
     <Phrase key="miFileOpen">Open...</Phrase>
     <Phrase key="miFileSave">Save</Phrase>
     <Phrase key="miFileSaveAs">Save As...</Phrase>
-    <Phrase key="miFileOpenBrowser">Open browser</Phrase>
+    <Phrase key="miFileOpenBrowser">Open Browser</Phrase>
     <Phrase key="miFileImport">Import...</Phrase>
     <Phrase key="miFileExit">Exit</Phrase>
     <Phrase key="miEdit">&amp;Edit</Phrase>
     <Phrase key="miEditCut">Cut</Phrase>
     <Phrase key="miEditCopy">Copy</Phrase>
     <Phrase key="miEditPaste">Paste</Phrase>
+    <Phrase key="miEditPasteSpecial">Paste Special...</Phrase>
     <Phrase key="miEditUndo">Undo</Phrase>
     <Phrase key="miEditRedo">Redo</Phrase>
     <Phrase key="miEditPointer">Pointer</Phrase>
@@ -51,6 +52,13 @@
     <Phrase key="SchemeFileFilter">Schemes (*.sch)|*.sch|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveSchemeConfirm">The scheme has been modified. Save the changes?</Phrase>
     <Phrase key="RestartNeeded">Settings changes will take effect after restarting the application.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Editor.FrmPasteSpecial">
+    <Phrase key="this">Paste Special</Phrase>
+    <Phrase key="lblInCnlOffset">Increase input channel numbers by</Phrase>
+    <Phrase key="lblCtrlCnlOffset">Increase output channel numbers by</Phrase>
+    <Phrase key="btnPaste">Paste</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Editor.FrmSettings">
     <Phrase key="this">Options</Phrase>

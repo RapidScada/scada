@@ -59,6 +59,7 @@
     <Phrase key="ParamTable">Quantities</Phrase>
     <Phrase key="RightTable">Rights</Phrase>
     <Phrase key="RoleTable">Roles</Phrase>
+    <Phrase key="RoleRefTable">Role inheritance</Phrase>
     <Phrase key="UnitTable">Units</Phrase>
     <Phrase key="UserTable">Users</Phrase>
     <Phrase key="ContinuePendingSvcState">continue pending</Phrase>

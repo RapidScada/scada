@@ -86,6 +86,9 @@
     <Compile Include="AppCode\FormStateDTO.cs" />
     <Compile Include="AppCode\History.cs" />
     <Compile Include="AppCode\IMainForm.cs" />
+    <Compile Include="AppCode\PasteSpecialParams.cs" />
+    <Compile Include="AppCode\PointerMode.cs" />
+    <Compile Include="AppCode\SelectAction.cs" />
     <Compile Include="AppCode\Settings.cs" />
     <Compile Include="FrmAbout.cs">
       <SubType>Form</SubType>
@@ -98,6 +101,12 @@
     </Compile>
     <Compile Include="FrmMain.Designer.cs">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmPasteSpecial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmPasteSpecial.Designer.cs">
+      <DependentUpon>FrmPasteSpecial.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmSettings.cs">
       <SubType>Form</SubType>
@@ -113,6 +122,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmMain.resx">
       <DependentUpon>FrmMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmPasteSpecial.resx">
+      <DependentUpon>FrmPasteSpecial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmSettings.resx">
       <DependentUpon>FrmSettings.cs</DependentUpon>

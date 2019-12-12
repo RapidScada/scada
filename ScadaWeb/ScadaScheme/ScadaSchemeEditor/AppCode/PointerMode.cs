@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,25 +15,40 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : ScadaSchemeCommon
- * Summary  : Specifies objects which provide scheme document properties
+ * Module   : Scheme Editor
+ * Summary  : Specifies the modes of the editor mouse pointer
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
-namespace Scada.Scheme.Model
+namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Specifies objects which provide scheme document properties
-    /// <para>Определяет объекты, который предоставляет свойства документа схемы</para>
+    /// Specifies the modes of the editor mouse pointer.
+    /// <para>Определяет режимы указателя мыши редактора.</para>
     /// </summary>
-    public interface ISchemeDocAvailable
+    public enum PointerMode
     {
         /// <summary>
-        /// Получить ссылку на свойства документа схемы
+        /// Select components.
         /// </summary>
-        SchemeDocument SchemeDoc { get; }
+        Select,
+
+        /// <summary>
+        /// Create a new component.
+        /// </summary>
+        Create,
+
+        /// <summary>
+        /// Paste of the copied components.
+        /// </summary>
+        Paste,
+
+        /// <summary>
+        /// Special paste of the copied components.
+        /// </summary>
+        PasteSpecial
     }
 }

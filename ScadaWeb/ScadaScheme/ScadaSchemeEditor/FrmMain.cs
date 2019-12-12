@@ -455,11 +455,14 @@ namespace Scada.Scheme.Editor
         /// </summary>
         private void SetButtonsEnabled()
         {
-            btnEditCut.Enabled = btnEditCopy.Enabled = btnEditDelete.Enabled = editor.SelectionNotEmpty;
-            btnEditPaste.Enabled = editor.ClipboardNotEmpty;
-            btnEditPointer.Enabled = editor.PointerMode != Editor.PointerModes.Select;
-            btnEditUndo.Enabled = editor.History.CanUndo;
-            btnEditRedo.Enabled = editor.History.CanRedo;
+            miEditCut.Enabled = btnEditCut.Enabled = editor.SelectionNotEmpty;
+            miEditCopy.Enabled = btnEditCopy.Enabled = editor.SelectionNotEmpty;
+            miEditDelete.Enabled = btnEditDelete.Enabled = editor.SelectionNotEmpty;
+            miEditPaste.Enabled = btnEditPaste.Enabled = editor.ClipboardNotEmpty;
+            miEditPasteSpecial.Enabled = editor.ClipboardNotEmpty;
+            miEditPointer.Enabled = btnEditPointer.Enabled = editor.PointerMode != PointerMode.Select;
+            miEditUndo.Enabled = btnEditUndo.Enabled = editor.History.CanUndo;
+            miEditRedo.Enabled = btnEditRedo.Enabled = editor.History.CanRedo;
         }
 
         /// <summary>
@@ -493,7 +496,7 @@ namespace Scada.Scheme.Editor
         /// <summary>
         /// Выполнить заданное действие.
         /// </summary>
-        public void PerformAction(FormActions formAction)
+        public void PerformAction(FormAction formAction)
         {
             ExecuteAction(() =>
             {
@@ -501,34 +504,34 @@ namespace Scada.Scheme.Editor
 
                 switch (formAction)
                 {
-                    case FormActions.New:
+                    case FormAction.New:
                         miFileNew_Click(null, null);
                         break;
-                    case FormActions.Open:
+                    case FormAction.Open:
                         miFileOpen_Click(null, null);
                         break;
-                    case FormActions.Save:
+                    case FormAction.Save:
                         miFileSave_Click(null, null);
                         break;
-                    case FormActions.Cut:
+                    case FormAction.Cut:
                         miEditCut_Click(null, null);
                         break;
-                    case FormActions.Copy:
+                    case FormAction.Copy:
                         miEditCopy_Click(null, null);
                         break;
-                    case FormActions.Paste:
+                    case FormAction.Paste:
                         miEditPaste_Click(null, null);
                         break;
-                    case FormActions.Undo:
+                    case FormAction.Undo:
                         miEditUndo_Click(null, null);
                         break;
-                    case FormActions.Redo:
+                    case FormAction.Redo:
                         miEditRedo_Click(null, null);
                         break;
-                    case FormActions.Pointer:
+                    case FormAction.Pointer:
                         miEditPointer_Click(null, null);
                         break;
-                    case FormActions.Delete:
+                    case FormAction.Delete:
                         miEditDelete_Click(null, null);
                         break;
                 }
@@ -591,7 +594,7 @@ namespace Scada.Scheme.Editor
             ExecuteAction(() =>
             {
                 // очистка типа создаваемых компонентов, если режим создания выключен
-                if (!compTypesChanging && editor.PointerMode != Editor.PointerModes.Create)
+                if (!compTypesChanging && editor.PointerMode != PointerMode.Create)
                 {
                     lvCompTypes.SelectedIndexChanged -= lvCompTypes_SelectedIndexChanged;
                     lvCompTypes.SelectedItems.Clear();
@@ -822,7 +825,19 @@ namespace Scada.Scheme.Editor
         private void miEditPaste_Click(object sender, EventArgs e)
         {
             // включение режима вставки компонентов
-            editor.PointerMode = Editor.PointerModes.Paste;
+            editor.PointerMode = PointerMode.Paste;
+        }
+
+        private void miEditPasteSpecial_Click(object sender, EventArgs e)
+        {
+            // включение режима специальной вставки компонентов
+            FrmPasteSpecial frmPasteSpecial = new FrmPasteSpecial()
+            {
+                PasteSpecialParams = editor.PasteSpecialParams
+            };
+
+            if (frmPasteSpecial.ShowDialog() == DialogResult.OK)
+                editor.PointerMode = PointerMode.PasteSpecial;
         }
 
         private void miEditUndo_Click(object sender, EventArgs e)
@@ -852,7 +867,7 @@ namespace Scada.Scheme.Editor
         private void miEditPointer_Click(object sender, EventArgs e)
         {
             // включение режима выбора компонентов
-            editor.PointerMode = Editor.PointerModes.Select;
+            editor.PointerMode = PointerMode.Select;
         }
 
         private void miEditDelete_Click(object sender, EventArgs e)
@@ -895,13 +910,13 @@ namespace Scada.Scheme.Editor
             if (string.IsNullOrEmpty(typeName))
             {
                 // включение режима выбора компонентов
-                editor.PointerMode = Editor.PointerModes.Select;
+                editor.PointerMode = PointerMode.Select;
             }
             else
             {
                 // включение режима создания компонента
                 editor.NewComponentTypeName = typeName;
-                editor.PointerMode = Editor.PointerModes.Create;
+                editor.PointerMode = PointerMode.Create;
             }
 
             compTypesChanging = false;

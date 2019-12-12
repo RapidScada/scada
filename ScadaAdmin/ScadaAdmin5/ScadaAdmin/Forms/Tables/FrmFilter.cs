@@ -329,7 +329,7 @@ namespace Scada.Admin.App.Forms.Tables
                 DataTable.DefaultView.RowFilter = currentFilter == null ? "" : currentFilter.GetRowFilter();
                 DialogResult = DialogResult.OK;
             }
-            catch (Exception ex)
+            catch
             {
                 ScadaUiUtils.ShowError(AppPhrases.IncorrectTableFilter);
             }

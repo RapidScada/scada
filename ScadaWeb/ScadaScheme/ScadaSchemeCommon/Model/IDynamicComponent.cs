@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -28,24 +28,24 @@ using Scada.Scheme.Model.DataTypes;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Specifies scheme components bound to input or output channels
-    /// <para>Определяет компоненты схемы, привязаные к входным каналам или каналам управления</para>
+    /// Specifies scheme components bound to input or output channels.
+    /// <para>Определяет компоненты схемы, привязаные к входным каналам или каналам управления.</para>
     /// </summary>
     public interface IDynamicComponent
     {
         /// <summary>
-        /// Получить действие
+        /// Получить или установить действие.
         /// </summary>
-        Actions Action { get; }
+        Actions Action { get; set; }
 
         /// <summary>
-        /// Получить номер входного канала
+        /// Получить или установить номер входного канала.
         /// </summary>
-        int InCnlNum { get; }
+        int InCnlNum { get; set; }
 
         /// <summary>
-        /// Получить номер канала управления
+        /// Получить или установить номер канала управления.
         /// </summary>
-        int CtrlCnlNum { get; }
+        int CtrlCnlNum { get; set; }
     }
 }

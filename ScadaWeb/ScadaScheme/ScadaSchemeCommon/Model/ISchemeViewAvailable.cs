@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,30 +15,25 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : PlgSchBasicComp
- * Summary  : Color condition editor for PropertyGrid
+ * Module   : ScadaSchemeCommon
+ * Summary  : Defines the scheme view reference
  * 
  * Author   : Mikhail Shiryaev
- * Created  : 2018
- * Modified : 2018
+ * Created  : 2019
+ * Modified : 2019
  */
 
-using Scada.Scheme.Model.PropertyGrid;
-
-namespace Scada.Web.Plugins.SchBasicComp
+namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// Color condition editor for PropertyGrid
-    /// <para>Редактор условий вывода цветов для PropertyGrid</para>
+    /// Defines the scheme view reference.
+    /// <para>Определяет ссылку на представление схемы.</para>
     /// </summary>
-    public class ColorConditionEditor : ConditionEditor
+    public interface ISchemeViewAvailable
     {
         /// <summary>
-        /// Конструктор
+        /// Gets or sets the reference to a scheme view.
         /// </summary>
-        public ColorConditionEditor()
-            : base(typeof(ColorCondition))
-        {
-        }
+        SchemeView SchemeView { get; set; }
     }
 }

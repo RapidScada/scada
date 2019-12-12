@@ -197,13 +197,13 @@ scada.scheme.Dragging.prototype.defineCursor = function (jqObj, pageX, pageY, si
         if (compElem.parent(".comp-wrapper").is(".selected")) {
             var dragMode = this._getDragMode(compElem, pageX, pageY, singleSelection);
 
-            if (dragMode == DragModes.NW_RESIZE || dragMode == DragModes.SE_RESIZE) {
+            if (dragMode === DragModes.NW_RESIZE || dragMode === DragModes.SE_RESIZE) {
                 cursor = "nwse-resize";
-            } else if (dragMode == DragModes.NE_RESIZE || dragMode == DragModes.SW_RESIZE) {
+            } else if (dragMode === DragModes.NE_RESIZE || dragMode === DragModes.SW_RESIZE) {
                 cursor = "nesw-resize";
-            } else if (dragMode == DragModes.E_RESIZE || dragMode == DragModes.W_RESIZE) {
+            } else if (dragMode === DragModes.E_RESIZE || dragMode === DragModes.W_RESIZE) {
                 cursor = "ew-resize";
-            } else if (dragMode == DragModes.N_RESIZE || dragMode == DragModes.S_RESIZE) {
+            } else if (dragMode === DragModes.N_RESIZE || dragMode === DragModes.S_RESIZE) {
                 cursor = "ns-resize";
             } else {
                 cursor = "move";
@@ -250,8 +250,8 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
     var dy = pageY - this.startY;
 
     if (this.draggedElem.length > 0 &&
-        ((this.moved || this.resized) || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING)) {
-        if (this.mode == DragModes.MOVE) {
+        (this.moved || this.resized || Math.abs(dx) >= this.MIN_MOVING || Math.abs(dy) >= this.MIN_MOVING)) {
+        if (this.mode === DragModes.MOVE) {
             // move elements
             this.lastDx = dx;
             this.lastDy = dy;
@@ -262,14 +262,14 @@ scada.scheme.Dragging.prototype.continueDragging = function (pageX, pageY) {
                 component.renderer.setLocation(component, startLocation.x + dx, startLocation.y + dy);
             });
         } else {
-            var resizeLeft = this.mode == DragModes.NW_RESIZE ||
-                this.mode == DragModes.SW_RESIZE || this.mode == DragModes.W_RESIZE;
-            var resizeRight = this.mode == DragModes.NE_RESIZE ||
-                this.mode == DragModes.SE_RESIZE || this.mode == DragModes.E_RESIZE;
-            var resizeTop = this.mode == DragModes.NW_RESIZE ||
-                this.mode == DragModes.NE_RESIZE || this.mode == DragModes.N_RESIZE;
-            var resizeBot = this.mode == DragModes.SW_RESIZE ||
-                this.mode == DragModes.SE_RESIZE || this.mode == DragModes.S_RESIZE;
+            var resizeLeft = this.mode === DragModes.NW_RESIZE ||
+                this.mode === DragModes.SW_RESIZE || this.mode === DragModes.W_RESIZE;
+            var resizeRight = this.mode === DragModes.NE_RESIZE ||
+                this.mode === DragModes.SE_RESIZE || this.mode === DragModes.E_RESIZE;
+            var resizeTop = this.mode === DragModes.NW_RESIZE ||
+                this.mode === DragModes.NE_RESIZE || this.mode === DragModes.N_RESIZE;
+            var resizeBot = this.mode === DragModes.SW_RESIZE ||
+                this.mode === DragModes.SE_RESIZE || this.mode === DragModes.S_RESIZE;
             var elem = this.draggedElem.eq(0);
             var startSize = elem.data("start-size");
             var newWidth = startSize.width;
@@ -322,14 +322,14 @@ scada.scheme.Dragging.prototype.stopDragging = function (callback) {
 scada.scheme.Dragging.prototype.getStatus = function () {
     var DragModes = scada.scheme.DragModes;
 
-    if (this.mode == DragModes.NONE) {
+    if (this.mode === DragModes.NONE) {
         return "";
     } else {
         var component = this.draggedElem.data("component");
         var location = component.renderer.getLocation(component);
         var locationStr = "X: " + location.x + ", Y: " + location.y;
 
-        if (this.mode == DragModes.MOVE) {
+        if (this.mode === DragModes.MOVE) {
             return locationStr;
         } else {
             var size = component.renderer.getSize(component);
@@ -503,7 +503,7 @@ scada.scheme.EditableScheme.prototype._processSelection = function (selCompIDs) 
 scada.scheme.EditableScheme.prototype._processMode = function (mode) {
     mode = !!mode;
 
-    if (this.newComponentMode != mode) {
+    if (this.newComponentMode !== mode) {
         if (mode) {
             this._getSchemeDiv().addClass("new-component-mode");
         } else {
@@ -516,7 +516,7 @@ scada.scheme.EditableScheme.prototype._processMode = function (mode) {
 
 // Proccess editor title
 scada.scheme.EditableScheme.prototype._processTitle = function (editorTitle) {
-    if (editorTitle && document.title != editorTitle) {
+    if (editorTitle && document.title !== editorTitle) {
         document.title = editorTitle;
     }
 };
@@ -531,7 +531,7 @@ scada.scheme.EditableScheme.prototype._processFormState = function (opt_formStat
     var changed = false;
 
     if (opt_formState && opt_formState.StickToLeft && opt_formState.Width > 0) {
-        if (!(stickToLeft && width == opt_formState.Width)) {
+        if (!(stickToLeft && width === opt_formState.Width)) {
             // add space to the left
             changed = true;
             divSchWrapper.css({
@@ -540,7 +540,7 @@ scada.scheme.EditableScheme.prototype._processFormState = function (opt_formStat
             });
         }
     } else if (opt_formState && opt_formState.StickToRight && opt_formState.Width > 0) {
-        if (!(stickToRight && width == opt_formState.Width)) {
+        if (!(stickToRight && width === opt_formState.Width)) {
             // add space to the right
             changed = true;
             divSchWrapper.css({
@@ -587,12 +587,12 @@ scada.scheme.EditableScheme.prototype._addComponent = function (x, y) {
         dataType: "json",
         cache: false
     })
-        .done(function () {
-            scada.utils.logSuccessfulRequest(operation);
-        })
-        .fail(function (jqXHR) {
-            scada.utils.logFailedRequest(operation, jqXHR);
-        });
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
 };
 
 // Send a request to change scheme component selection
@@ -654,12 +654,12 @@ scada.scheme.EditableScheme.prototype._formAction = function (action) {
         dataType: "json",
         cache: false
     })
-        .done(function () {
-            scada.utils.logSuccessfulRequest(operation);
-        })
-        .fail(function (jqXHR) {
-            scada.utils.logFailedRequest(operation, jqXHR);
-        });
+    .done(function () {
+        scada.utils.logSuccessfulRequest(operation);
+    })
+    .fail(function (jqXHR) {
+        scada.utils.logFailedRequest(operation, jqXHR);
+    });
 };
 
 // Create DOM content of the scheme
@@ -717,7 +717,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
             }
         })
         .on("mousemove", function (event) {
-            if (thisScheme.dragging.mode == DragModes.NONE) {
+            if (thisScheme.dragging.mode === DragModes.NONE) {
                 thisScheme.dragging.defineCursor($(event.target), event.pageX, event.pageY,
                     thisScheme.selComponentIDs.length <= 1);
 
@@ -734,7 +734,7 @@ scada.scheme.EditableScheme.prototype.createDom = function (opt_controlRight) {
             }
         })
         .on("mouseup mouseleave", function () {
-            if (thisScheme.dragging.mode != DragModes.NONE) {
+            if (thisScheme.dragging.mode !== DragModes.NONE) {
                 thisScheme.dragging.stopDragging(function (dx, dy, w, h) {
                     // send changes to server under the assumption that the selection was not changed during dragging
                     thisScheme._moveResize(dx, dy, w, h);
@@ -774,7 +774,7 @@ scada.scheme.EditableScheme.prototype.getChanges = function (callback) {
                     console.error(scada.utils.getCurTime() + " Editor is unknown. Normal operation is impossible.");
                     callback(GetChangesResults.EDITOR_UNKNOWN);
                 } else if (thisScheme.viewStamp && parsedData.ViewStamp) {
-                    if (thisScheme.viewStamp == parsedData.ViewStamp) {
+                    if (thisScheme.viewStamp === parsedData.ViewStamp) {
                         thisScheme._processChanges(parsedData.Changes);
                         thisScheme._processSelection(parsedData.SelCompIDs);
                         thisScheme._processMode(parsedData.NewCompMode);
@@ -812,19 +812,19 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
 
     // use keyCode instead of keyChar to provide case insensitiveness and culture independence
     if (37 <= keyCode && keyCode <= 40 /*arrow keys*/ &&
-        this.dragging.mode == DragModes.NONE) {
+        this.dragging.mode === DragModes.NONE) {
         // move selected components
         var move = ctrlKey ? 1 : this.GRID_STEP;
         var dx = 0;
         var dy = 0;
 
-        if (keyCode == 37 /*left arrow*/) {
+        if (keyCode === 37 /*left arrow*/) {
             dx = -move;
-        } else if (keyCode == 39 /*right arrow*/) {
+        } else if (keyCode === 39 /*right arrow*/) {
             dx = move;
-        } else if (keyCode == 38 /*up arrow*/) {
+        } else if (keyCode === 38 /*up arrow*/) {
             dy = -move;
-        } else if (keyCode == 40 /*down arrow*/) {
+        } else if (keyCode === 40 /*down arrow*/) {
             dy = move;
         }
 
@@ -836,28 +836,28 @@ scada.scheme.EditableScheme.prototype.processKey = function (keyChar, keyCode, c
         // send changes to server
         this._moveResize(dx, dy, 0, 0);
     } else if (ctrlKey) {
-        if (keyCode == 78 /*N*/) {
+        if (keyCode === 78 /*N*/) {
             this._formAction(FormActions.NEW); // doesn't work
-        } else if (keyCode == 79 /*O*/) {
+        } else if (keyCode === 79 /*O*/) {
             this._formAction(FormActions.OPEN);
-        } else if (keyCode == 83 /*S*/) {
+        } else if (keyCode === 83 /*S*/) {
             this._formAction(FormActions.SAVE);
-        } else if (keyCode == 88 /*X*/) {
+        } else if (keyCode === 88 /*X*/) {
             this._formAction(FormActions.CUT);
-        } else if (keyCode == 67 /*C*/) {
+        } else if (keyCode === 67 /*C*/) {
             this._formAction(FormActions.COPY);
-        } else if (keyCode == 86 /*V*/) {
+        } else if (keyCode === 86 /*V*/) {
             this._formAction(FormActions.PASTE);
-        } else if (keyCode == 90 /*Z*/) {
+        } else if (keyCode === 90 /*Z*/) {
             this._formAction(FormActions.UNDO);
-        } else if (keyCode == 89 /*Y*/) {
+        } else if (keyCode === 89 /*Y*/) {
             this._formAction(FormActions.REDO);
         } else {
             return true;
         }
-    } else if (keyCode == 27 /*Escape*/) {
+    } else if (keyCode === 27 /*Escape*/) {
         this._formAction(FormActions.POINTER);
-    } else if (keyCode == 46 /*Delete*/) {
+    } else if (keyCode === 46 /*Delete*/) {
         this._formAction(FormActions.DELETE);
     } else {
         return true;

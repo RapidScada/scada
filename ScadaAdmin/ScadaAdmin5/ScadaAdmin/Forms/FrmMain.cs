@@ -1581,8 +1581,13 @@ namespace Scada.Admin.App.Forms
                         frmBaseTable.ItemType == typeof(CtrlCnl))
                 };
 
-                if (frmCnlClone.ShowDialog() == DialogResult.OK)
-                    RefreshBaseTables(frmCnlClone.InCnlsSelected ? typeof(InCnl) : typeof(CtrlCnl));
+                frmCnlClone.ShowDialog();
+
+                if (frmCnlClone.InCnlsCloned)
+                    RefreshBaseTables(typeof(InCnl));
+
+                if (frmCnlClone.OutCnlsCloned)
+                    RefreshBaseTables(typeof(CtrlCnl));
             }
         }
 

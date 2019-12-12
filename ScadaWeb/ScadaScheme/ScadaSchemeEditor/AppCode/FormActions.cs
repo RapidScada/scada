@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,20 @@
  * 
  * Product  : Rapid SCADA
  * Module   : Scheme Editor
- * Summary  : Main form actions
+ * Summary  : Specifies the main form actions
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2019
  */
 
 namespace Scada.Scheme.Editor
 {
     /// <summary>
-    /// Main form actions
-    /// <para>Действия главной формы</para>
+    /// Specifies the main form actions.
+    /// <para>Задаёт действия главной формы.</para>
     /// </summary>
-    public enum FormActions
+    public enum FormAction
     {
         New,
         Open,
