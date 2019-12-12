@@ -1125,21 +1125,28 @@ namespace Scada.Comm.Engine
             double reqPeriod = kpLogic.ReqParams.Period.TotalDays; // период опроса КП, дн.
             if (kpLogic.ReqParams.Time > DateTime.MinValue || reqPeriod > 0)
             {
-                TimeSpan nowTime = DateTime.Now.TimeOfDay;            // текущее время
+                DateTime nowDT = DateTime.Now;
+                TimeSpan nowTime = nowDT.TimeOfDay;                   // текущее время
                 TimeSpan reqTime = kpLogic.ReqParams.Time.TimeOfDay;  // время опроса КП
                 TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay; // время последнего сеанса связи с КП
 
                 if (reqPeriod > 0)
                 {
+                    // периодичный опрос
                     double t = (nowTime - reqTime).TotalDays / reqPeriod;
                     return t >= 0 &&
                         ((int)t * reqPeriod + reqTime.TotalDays > lastSessTime.TotalDays ||
                         lastSessTime > nowTime /*новый день*/);
                 }
+                else if (reqTime.TotalDays <= 0)
+                {
+                    // постоянный опрос
+                    return true;
+                }
                 else
                 {
-                    return reqTime.TotalDays <= 0 ||
-                        reqTime <= nowTime && reqTime > lastSessTime;
+                    // опрос 1 раз в сутки по времени
+                    return reqTime <= nowTime && nowDT.Date > kpLogic.LastSessDT.Date;
                 }
             }
             else
