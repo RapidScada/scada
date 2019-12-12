@@ -31,9 +31,6 @@ namespace Scada.Admin.App.Code
     /// </summary>
     internal static class AppPhrases
     {
-        // Scada.Admin.App
-        public static string CorrectErrors { get; private set; }
-
         // Scada.Admin.App.Code.AppState
         public static string LoadAppStateError { get; private set; }
         public static string SaveAppStateError { get; private set; }
@@ -83,7 +80,9 @@ namespace Scada.Admin.App.Code
         public static string IncorrectObjFilter { get; private set; }
 
         // Scada.Admin.App.Forms
+        public static string CorrectErrors { get; private set; }
         public static string AllCommLines { get; private set; }
+        public static string SelectedColumn { get; private set; }
 
         // Scada.Admin.App.Forms.Deployment.FrmDownloadConfig
         public static string NothingToDownload { get; private set; }
@@ -226,10 +225,7 @@ namespace Scada.Admin.App.Code
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App");
-            CorrectErrors = dict.GetPhrase("CorrectErrors");
-
-            dict = Localization.GetDictionary("Scada.Admin.App.Code.AppState");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Admin.App.Code.AppState");
             LoadAppStateError = dict.GetPhrase("LoadAppStateError");
             SaveAppStateError = dict.GetPhrase("SaveAppStateError");
 
@@ -278,7 +274,9 @@ namespace Scada.Admin.App.Code
             IncorrectObjFilter = dict.GetPhrase("IncorrectObjFilter");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms");
+            CorrectErrors = dict.GetPhrase("CorrectErrors");
             AllCommLines = dict.GetPhrase("AllCommLines");
+            SelectedColumn = dict.GetPhrase("SelectedColumn");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Deployment.FrmDownloadConfig");
             NothingToDownload = dict.GetPhrase("NothingToDownload");

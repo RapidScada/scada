@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.PropertyGrid;
@@ -33,26 +33,26 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model.DataTypes
 {
     /// <summary>
-    /// The base class defining the condition
-    /// <para>Базовый класс, определяющий условие</para>
+    /// The base class defining the condition.
+    /// <para>Базовый класс, определяющий условие.</para>
     /// </summary>
     [Serializable]
-    public abstract class Condition : ISchemeDocAvailable
+    public abstract class Condition : ISchemeViewAvailable, ICloneable
     {
         /// <summary>
-        /// Наименование категории условия
+        /// Наименование категории условия.
         /// </summary>
         protected const string ConditionCat = "Condition";
-        
+
         /// <summary>
-        /// Ссылка на свойства документа схемы
+        /// Ссылка на представление схемы.
         /// </summary>
         [NonSerialized]
-        protected SchemeDocument schemeDoc;
+        protected SchemeView schemeView;
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public Condition()
         {
@@ -61,12 +61,12 @@ namespace Scada.Scheme.Model.DataTypes
             LogicalOperator = LogicalOperators.None;
             CompareOperator2 = CompareOperators.LessThan;
             CompareArgument2 = 0.0;
-            SchemeDoc = null;
+            SchemeView = null;
         }
 
 
         /// <summary>
-        /// Получить или установить 1-й оператор сравнения
+        /// Получить или установить 1-й оператор сравнения.
         /// </summary>
         #region Attributes
         [DisplayName("Compare oper. 1"), Category(ConditionCat)]
@@ -74,7 +74,7 @@ namespace Scada.Scheme.Model.DataTypes
         public CompareOperators CompareOperator1 { get; set; }
 
         /// <summary>
-        /// Получить или установить аргумент для сравнения 1-м оператором
+        /// Получить или установить аргумент для сравнения 1-м оператором.
         /// </summary>
         #region Attributes
         [DisplayName("Argument 1"), Category(ConditionCat)]
@@ -83,7 +83,7 @@ namespace Scada.Scheme.Model.DataTypes
         public double CompareArgument1 { get; set; }
 
         /// <summary>
-        /// Получить или установить логический оператор, применяемый к результатам сравнения
+        /// Получить или установить логический оператор, применяемый к результатам сравнения.
         /// </summary>
         #region Attributes
         [DisplayName("Logical oper."), Category(ConditionCat)]
@@ -92,7 +92,7 @@ namespace Scada.Scheme.Model.DataTypes
         public LogicalOperators LogicalOperator { get; set; }
 
         /// <summary>
-        /// Получить или установить 2-й оператор сравнения
+        /// Получить или установить 2-й оператор сравнения.
         /// </summary>
         #region Attributes
         [DisplayName("Compare oper. 2"), Category(ConditionCat)]
@@ -100,7 +100,7 @@ namespace Scada.Scheme.Model.DataTypes
         public CompareOperators CompareOperator2 { get; set; }
 
         /// <summary>
-        /// Получить или установить аргумент для сравнения 2-м оператором
+        /// Получить или установить аргумент для сравнения 2-м оператором.
         /// </summary>
         #region Attributes
         [DisplayName("Argument 2"), Category(ConditionCat)]
@@ -109,24 +109,24 @@ namespace Scada.Scheme.Model.DataTypes
         public double CompareArgument2 { get; set; }
 
         /// <summary>
-        /// Получить или установить ссылку на свойства документа схемы
+        /// Получить или установить ссылку на представление схемы.
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc
+        public SchemeView SchemeView
         {
             get
             {
-                return schemeDoc;
+                return schemeView;
             }
             set
             {
-                schemeDoc = value;
+                schemeView = value;
             }
         }
 
 
         /// <summary>
-        /// Преобразовать оператор сравнения в строку
+        /// Преобразовать оператор сравнения в строку.
         /// </summary>
         private string OperToString(CompareOperators oper)
         {
@@ -148,7 +148,7 @@ namespace Scada.Scheme.Model.DataTypes
         }
 
         /// <summary>
-        /// Преобразовать логический оператор в строку
+        /// Преобразовать логический оператор в строку.
         /// </summary>
         private string OperToString(LogicalOperators oper)
         {
@@ -165,7 +165,7 @@ namespace Scada.Scheme.Model.DataTypes
 
 
         /// <summary>
-        /// Загрузить условие из XML-узла
+        /// Загрузить условие из XML-узла.
         /// </summary>
         public virtual void LoadFromXml(XmlNode xmlNode)
         {
@@ -180,7 +180,7 @@ namespace Scada.Scheme.Model.DataTypes
         }
 
         /// <summary>
-        /// Сохранить условие в XML-узле
+        /// Сохранить условие в XML-узле.
         /// </summary>
         public virtual void SaveToXml(XmlElement xmlElem)
         {
@@ -195,17 +195,17 @@ namespace Scada.Scheme.Model.DataTypes
         }
 
         /// <summary>
-        /// Клонировать объект
+        /// Клонировать объект.
         /// </summary>
-        public virtual Condition Clone()
+        public virtual object Clone()
         {
-            Condition clonedCondition = (Condition)ScadaUtils.DeepClone(this);
-            clonedCondition.SchemeDoc = SchemeDoc;
+            Condition clonedCondition = ScadaUtils.DeepClone(this);
+            clonedCondition.SchemeView = SchemeView;
             return clonedCondition;
         }
 
         /// <summary>
-        /// Получить строковое представление объекта
+        /// Получить строковое представление объекта.
         /// </summary>
         public override string ToString()
         {

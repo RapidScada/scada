@@ -16,7 +16,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : PlgSchBasicComp
- * Summary  : The factory for creating basic scheme components
+ * Summary  : Factory for creating basic scheme components
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
@@ -29,23 +29,23 @@ using Scada.Scheme.Model;
 namespace Scada.Web.Plugins.SchBasicComp
 {
     /// <summary>
-    /// The factory for creating basic scheme components
-    /// <para>Фабрика для для создания основных компонентов схемы</para>
+    /// Factory for creating basic scheme components.
+    /// <para>Фабрика для создания основных компонентов схемы.</para>
     /// </summary>
     public class BasicCompFactory : CompFactory
     {
         /// <summary>
-        /// Создать компонент схемы
+        /// Создать компонент схемы.
         /// </summary>
         public override BaseComponent CreateComponent(string typeName, bool nameIsShort)
         {
-            if (NameEquals("Button", (typeof(Button)).FullName, typeName, nameIsShort))
+            if (NameEquals("Button", typeof(Button).FullName, typeName, nameIsShort))
                 return new Button();
-            else if (NameEquals("Led", (typeof(Led)).FullName, typeName, nameIsShort))
+            else if (NameEquals("Led", typeof(Led).FullName, typeName, nameIsShort))
                 return new Led();
-            else if (NameEquals("Link", (typeof(Link)).FullName, typeName, nameIsShort))
+            else if (NameEquals("Link", typeof(Link).FullName, typeName, nameIsShort))
                 return new Link();
-            else if (NameEquals("Toggle", (typeof(Toggle)).FullName, typeName, nameIsShort))
+            else if (NameEquals("Toggle", typeof(Toggle).FullName, typeName, nameIsShort))
                 return new Toggle();
             else
                 return null;

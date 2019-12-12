@@ -107,6 +107,14 @@ namespace Scada.Comm.Channels
             /// <summary>
             /// Initializes a new instance of the class.
             /// </summary>
+            protected TextStopCondition()
+            {
+                StopEndings = null;
+                MaxLineCount = int.MaxValue;
+            }
+            /// <summary>
+            /// Initializes a new instance of the class.
+            /// </summary>
             public TextStopCondition(params string[] stopEndings)
             {
                 StopEndings = stopEndings;

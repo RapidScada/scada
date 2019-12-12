@@ -35,6 +35,7 @@ using System.Data;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using Interface = Scada.Data.Entities.Interface;
 
 namespace Scada.Admin
 {
@@ -164,6 +165,20 @@ namespace Scada.Admin
         }
 
         /// <summary>
+        /// Adds the specified files to the archive.
+        /// </summary>
+        private void PackFiles(ZipArchive zipArchive, string srcDir, List<string> srcFileNames, string entryPrefix)
+        {
+            int srcDirLen = srcDir.Length;
+
+            foreach (string srcFileName in srcFileNames)
+            {
+                string entryName = entryPrefix + srcFileName.Substring(srcDirLen).Replace('\\', '/');
+                zipArchive.CreateEntryFromFile(srcFileName, entryName, CompressionLevel.Fastest);
+            }
+        }
+
+        /// <summary>
         /// Gets a new table from the source table filtered by objects.
         /// </summary>
         private IBaseTable GetFilteredTable<T>(IBaseTable srcTable, List<int> objNums)
@@ -189,6 +204,37 @@ namespace Scada.Admin
             }
 
             return destTable;
+        }
+
+        /// <summary>
+        /// Gets the existing interface files filtered by objects.
+        /// </summary>
+        private List<string> GetInterfaceFiles(BaseTable<Interface> interfaceTable, 
+            string interfaceDir, List<int> objNums)
+        {
+            if (interfaceTable.TryGetIndex("ObjNum", out TableIndex index))
+            {
+                List<string> fileNames = new List<string>();
+
+                foreach (int objNum in objNums)
+                {
+                    if (index.ItemGroups.TryGetValue(objNum, out SortedDictionary<int, object> itemGroup))
+                    {
+                        foreach (Interface item in itemGroup.Values)
+                        {
+                            string fileName = Path.Combine(interfaceDir, item.Name /*path*/);
+                            if (File.Exists(fileName))
+                                fileNames.Add(fileName);
+                        }
+                    }
+                }
+
+                return fileNames;
+            }
+            else
+            {
+                throw new ScadaException(AdminPhrases.IndexNotFound);
+            }
         }
 
 
@@ -328,13 +374,14 @@ namespace Scada.Admin
             {
                 fileStream = new FileStream(destFileName, FileMode.Create, FileAccess.Write, FileShare.Read);
                 zipArchive = new ZipArchive(fileStream, ZipArchiveMode.Create);
+
+                List<int> objNums = uploadSettings.ObjNums;
+                bool filterByObj = objNums.Count > 0;
                 bool ignoreRegKeys = uploadSettings.IgnoreRegKeys;
 
                 // add the configuration database to the archive
                 if (uploadSettings.IncludeBase)
                 {
-                    bool filterByObj = uploadSettings.ObjNums.Count > 0;
-
                     foreach (IBaseTable srcTable in project.ConfigBase.AllTables)
                     {
                         string entryName = "BaseDAT/" + srcTable.Name.ToLowerInvariant() + ".dat";
@@ -348,9 +395,11 @@ namespace Scada.Admin
                             if (filterByObj)
                             {
                                 if (srcTable.ItemType == typeof(InCnl))
-                                    baseTable = GetFilteredTable<InCnl>(srcTable, uploadSettings.ObjNums);
+                                    baseTable = GetFilteredTable<InCnl>(srcTable, objNums);
                                 else if (srcTable.ItemType == typeof(CtrlCnl))
-                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, uploadSettings.ObjNums);
+                                    baseTable = GetFilteredTable<CtrlCnl>(srcTable, objNums);
+                                else if (srcTable.ItemType == typeof(Interface))
+                                    baseTable = GetFilteredTable<Interface>(srcTable, objNums);
                             }
 
                             // convert the table to DAT format
@@ -363,8 +412,19 @@ namespace Scada.Admin
                 // add the interface files to the archive
                 if (uploadSettings.IncludeInterface)
                 {
-                    PackDirectory(zipArchive, project.Interface.InterfaceDir, 
-                        DirectoryBuilder.GetDirectory(ConfigParts.Interface, '/'), ignoreRegKeys);
+                    string interfaceDir = project.Interface.InterfaceDir;
+                    string entryPrefix = DirectoryBuilder.GetDirectory(ConfigParts.Interface, '/');
+
+                    if (filterByObj)
+                    {
+                        PackFiles(zipArchive, interfaceDir, 
+                            GetInterfaceFiles(project.ConfigBase.InterfaceTable, interfaceDir, objNums), 
+                            entryPrefix);
+                    }
+                    else
+                    {
+                        PackDirectory(zipArchive, interfaceDir, entryPrefix, ignoreRegKeys);
+                    }
                 }
 
                 // add the Server settings to the archive

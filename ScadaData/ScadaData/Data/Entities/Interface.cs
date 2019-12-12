@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2019
  */
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
@@ -40,6 +40,14 @@ namespace Scada.Data.Entities
 
         public string Name { get; set; }
 
+        public string Args { get; set; }
+
+        public string TypeCode { get; set; }
+
         public string Descr { get; set; }
+
+        public bool Hidden { get; set; }
+
+        public int? ObjNum { get; set; }
     }
 }

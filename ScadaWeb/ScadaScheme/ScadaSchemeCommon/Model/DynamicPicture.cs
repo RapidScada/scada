@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -50,7 +50,7 @@ namespace Scada.Scheme.Model
             BorderColorOnHover = "";
             ImageOnHoverName = "";
             Action = Actions.None;
-            Conditions = new List<Condition>();
+            Conditions = new List<ImageCondition>();
             InCnlNum = 0;
             CtrlCnlNum = 0;
         }
@@ -104,9 +104,9 @@ namespace Scada.Scheme.Model
         [DisplayName("Conditions"), Category(Categories.Behavior)]
         [Description("The conditions for image output depending on the value of the input channel.")]
         [CM.DefaultValue(null), CM.TypeConverter(typeof(CollectionConverter))]
-        [CM.Editor(typeof(ImageConditionEditor), typeof(UITypeEditor))]
+        [CM.Editor(typeof(CollectionEditor), typeof(UITypeEditor))]
         #endregion
-        public List<Condition> Conditions { get; protected set; }
+        public List<ImageCondition> Conditions { get; protected set; }
 
         /// <summary>
         /// Получить или установить номер входного канала
@@ -144,12 +144,11 @@ namespace Scada.Scheme.Model
             XmlNode conditionsNode = xmlNode.SelectSingleNode("Conditions");
             if (conditionsNode != null)
             {
-                Conditions = new List<Condition>();
+                Conditions = new List<ImageCondition>();
                 XmlNodeList conditionNodes = conditionsNode.SelectNodes("Condition");
                 foreach (XmlNode conditionNode in conditionNodes)
                 {
-                    Condition condition = new ImageCondition();
-                    condition.SchemeDoc = SchemeDoc;
+                    ImageCondition condition = new ImageCondition { SchemeView = SchemeView };
                     condition.LoadFromXml(conditionNode);
                     Conditions.Add(condition);
                 }
@@ -191,7 +190,7 @@ namespace Scada.Scheme.Model
 
             foreach (Condition condition in clonedComponent.Conditions)
             {
-                condition.SchemeDoc = SchemeDoc;
+                condition.SchemeView = SchemeView;
             }
 
             return clonedComponent;

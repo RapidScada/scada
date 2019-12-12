@@ -63,7 +63,6 @@
     <Compile Include="ISchemeComp.cs" />
     <Compile Include="Model\BaseComponent.cs" />
     <Compile Include="Model\DataTypes\Actions.cs" />
-    <Compile Include="Model\DataTypes\CnlFilterExtenstions.cs" />
     <Compile Include="Model\DataTypes\CompareOperators.cs" />
     <Compile Include="Model\DataTypes\Condition.cs" />
     <Compile Include="Model\DataTypes\ImageCondition.cs" />
@@ -79,17 +78,26 @@
     <Compile Include="Model\IDynamicComponent.cs" />
     <Compile Include="Model\Image.cs" />
     <Compile Include="Model\IObservableItem.cs" />
-    <Compile Include="Model\ISchemeDocAvailable.cs" />
+    <Compile Include="Model\ISchemeViewAvailable.cs" />
     <Compile Include="Model\ItemChangedEventHandler.cs" />
     <Compile Include="Model\IUniqueItem.cs" />
     <Compile Include="Model\PropertyGrid\AttrTranslator.cs" />
     <Compile Include="Model\PropertyGrid\BooleanConverter.cs" />
     <Compile Include="Model\PropertyGrid\Categories.cs" />
     <Compile Include="Model\PropertyGrid\CategoryAttribute.cs" />
-    <Compile Include="Model\PropertyGrid\CnlFilterConverter.cs" />
-    <Compile Include="Model\PropertyGrid\CnlFilterEditor.cs" />
+    <Compile Include="Model\PropertyGrid\ComponentConverter.cs" />
+    <Compile Include="Model\PropertyGrid\ComponentEditor.cs" />
+    <Compile Include="Model\PropertyGrid\RangeEditor.cs" />
+    <Compile Include="Model\PropertyGrid\FrmRangeDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\FrmRangeDialog.designer.cs">
+      <DependentUpon>FrmRangeDialog.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\RangeConverter.cs" />
     <Compile Include="Model\PropertyGrid\CollectionConverter.cs" />
     <Compile Include="Model\PropertyGrid\ColorEditor.cs" />
+    <Compile Include="Model\PropertyGrid\CollectionEditor.cs" />
     <Compile Include="Model\PropertyGrid\CtrlSvgViewer.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -97,25 +105,17 @@
       <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\PropertyGrid\ExpandableObjectConverter.cs" />
-    <Compile Include="Model\PropertyGrid\ImageConditionEditor.cs" />
-    <Compile Include="Model\PropertyGrid\ConditionEditor.cs" />
+    <Compile Include="Model\PropertyGrid\FrmCollectionDialog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Model\PropertyGrid\FrmCollectionDialog.designer.cs">
+      <DependentUpon>FrmCollectionDialog.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\PropertyGrid\DescriptionAttribute.cs" />
     <Compile Include="Model\PropertyGrid\DisplayNameAttribute.cs" />
     <Compile Include="Model\PropertyGrid\EnumConverter.cs" />
     <Compile Include="Model\PropertyGrid\FontConverter.cs" />
     <Compile Include="Model\PropertyGrid\FontEditor.cs" />
-    <Compile Include="Model\PropertyGrid\FrmCnlFilterDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmCnlFilterDialog.designer.cs">
-      <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmConditionDialog.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Model\PropertyGrid\FrmConditionDialog.designer.cs">
-      <DependentUpon>FrmConditionDialog.cs</DependentUpon>
-    </Compile>
     <Compile Include="Model\PropertyGrid\FrmFontDialog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -149,17 +149,17 @@
     <EmbeddedResource Include="Model\PropertyGrid\CtrlSvgViewer.resx">
       <DependentUpon>CtrlSvgViewer.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Model\PropertyGrid\FrmCnlFilterDialog.resx">
-      <DependentUpon>FrmCnlFilterDialog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Model\PropertyGrid\FrmConditionDialog.resx">
-      <DependentUpon>FrmConditionDialog.cs</DependentUpon>
+    <EmbeddedResource Include="Model\PropertyGrid\FrmCollectionDialog.resx">
+      <DependentUpon>FrmCollectionDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmFontDialog.resx">
       <DependentUpon>FrmFontDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Model\PropertyGrid\FrmImageDialog.resx">
       <DependentUpon>FrmImageDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Model\PropertyGrid\FrmRangeDialog.resx">
+      <DependentUpon>FrmRangeDialog.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

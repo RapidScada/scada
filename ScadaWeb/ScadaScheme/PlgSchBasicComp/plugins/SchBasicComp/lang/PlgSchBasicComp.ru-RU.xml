@@ -36,6 +36,7 @@
     <Phrase key="CtrlCnlNum.Description">Номер канала управления, связанного с компонентом.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.SchBasicComp.ColorCondition">
+    <Phrase key="DisplayName">Условие цвета</Phrase>
     <Phrase key="Color.DisplayName">Цвет</Phrase>
     <Phrase key="Color.Category">Внешний вид</Phrase>
   </Dictionary>

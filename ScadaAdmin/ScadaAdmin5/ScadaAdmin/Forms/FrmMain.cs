@@ -61,11 +61,11 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// The hyperlink to the documentation in English.
         /// </summary>
-        private const string DocEnUrl = "http://doc.rapidscada.net/content/en/";
+        private const string DocEnUrl = "http://doc.rapidscada.net/content/latest/en/";
         /// <summary>
         /// The hyperlink to the documentation in Russian.
         /// </summary>
-        private const string DocRuUrl = "http://doc.rapidscada.net/content/ru/";
+        private const string DocRuUrl = "http://doc.rapidscada.net/content/latest/ru/";
         /// <summary>
         /// The hyperlink to the support in English.
         /// </summary>
@@ -1581,8 +1581,13 @@ namespace Scada.Admin.App.Forms
                         frmBaseTable.ItemType == typeof(CtrlCnl))
                 };
 
-                if (frmCnlClone.ShowDialog() == DialogResult.OK)
-                    RefreshBaseTables(frmCnlClone.InCnlsSelected ? typeof(InCnl) : typeof(CtrlCnl));
+                frmCnlClone.ShowDialog();
+
+                if (frmCnlClone.InCnlsCloned)
+                    RefreshBaseTables(typeof(InCnl));
+
+                if (frmCnlClone.OutCnlsCloned)
+                    RefreshBaseTables(typeof(CtrlCnl));
             }
         }
 

@@ -1,0 +1,86 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Conexión de dispositivos utilizando el estándar OPC - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Conexión de dispositivos utilizando el estándar OPC</h1>
+
+    <p class="sd-article-meta">
+        Written by Rapid SCADA on January 5, 2015<br />
+        Updated on July 15, 2019
+    </p>
+
+    <p>Este artículo describe cómo configurar la comunicación con dispositivos utilizando el estándar OPC. OPC está diseñado para proporcionar un puente común para el software y los dispositivos de control de procesos de diferentes fabricantes (ver <a href="https://en.wikipedia.org/wiki/Open_Platform_Communications" target="_blank">Wikipedia</a>). Rapid SCADA soporta las siguientes especificaciones OPC::</p>
+
+    <ul>
+        <li>OPC DA (Data Access) para leer y escribir datos actuales del dispositivo.</li>
+        <li>OPC AE (Alarms & Events) para recibir notificaciones y eventos.</li>
+    </ul>
+
+    <p>La aplicación Communicator proporciona una implementación Rapid SCADA para clientes OPC, para ser exactos, mediante el driver KpOpc.dll. El objetivo de este artículo es aprender sobre los detalles de la configuración de Communicator para usar OPC.</p>
+
+    <p>Secuencia de configuración general:</p>
+
+    <ol>
+        <li>Baje e instale los Componentes Núcleo de OPC (OPC Core Components). Estos pueden  obtenerse  de <a href="http://opcfoundation.org/" target="_blank">opcfoundation.org</a> y <a href="http://rapidscada.org/download-all-files/" target="_blank">rapidscada.org</a>.</li>
+        <il>Cree un proyecto utilizando la aplicación Administrator.</il>
+        <li>Cree un objeto, una línea de comunicación y dispositivos en la base de datos de configuración.</li>
+        <li>Configure la comunicación entre Communicator y los servidores OPC como se describe en este artículo.</li>
+        <li>Cree canales de entrada en la base de datos de configuración de acuerdo con las etiquetas de los dispositivos. Cree canales de salida de acuerdo con los comandos.</li>
+        <li>Cree vistas (tablas o esquemas) para mostrar datos en la aplicación Webstation. Defina las vistas en la base de datos de configuración.</li>
+    </ol>
+
+    <p>Los detalles de los pasos anteriores, excluyendo el paso 4, se describen en la sección <a href="../software-configuration/">Software Configuration</a>. Se recomienda ver el proyecto DemoProject.en-GB, que se instala junto con Rapid SCADA. El dispositivo 21 "OPC Demo" es un ejemplo del uso de OPC. Las etiquetas del dispositivo se muestran en la vista de tabla OpcDemo.tbl. Este ejemplo requiere <a href="https://www.matrikonopc.com/downloads/178/productsoftware/index.aspx" target="_blank">MatrikonOPC Simulation Server</a>, que proporciona los datos.</p>
+
+    <p>Cree una línea de comunicación separada para cada servidor OPC que se utilice. Este es el enfoque más eficiente porque permite la comunicación con los servidores OPC en paralelo. Establezca el tipo de canal de comunicación <em>Undefined</em> (no definido) para las líneas de comunicación creadas en Communicator. Luego agregue dispositivos a las líneas de comunicación.</p>
+
+    <p>Vaya a la configuración del Comunicador y abra las propiedades del dispositivo. El formulario de configuración que se muestra en la Figura 1, permite seleccionar qué etiquetas OPC se reciben del servidor OPC.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/opc_config_en.png" alt="Selección de etiquetas OPC" /><br />
+        Figura 1. Selección de etiquetas OPC
+    </p>
+
+    <p>Los servidores OPC instalados en la computadora local están disponibles para Communicator. Si se requieren datos de un servidor OPC instalado en otra computadora dentro de una red, implemente una instancia adicional de Communicator en esa computadora y configúrelo adecuadamente para conectarse a la aplicación Server.</p>
+
+    <p>Hay dos formas de vincular las etiquetas OPC a los canales de entrada de la base de datos de configuración:</p>
+
+    <ol>
+        <li>Usando el campo <em>Signal</em> de etiquetas de dispositivo y de los canales de entrada para identificar etiquetas.</li>
+        <li>Establecer los números de los canales de entrada directamente en el formulario de configuración que muestra la Figura 1.</li>
+    </ol>
+
+    <p>Seleccione la forma más adecuada en una configuración particular de un sistema automatizado.</p>
+
+    <p>Cuando se haya completado la configuración, suba el proyecto al Server con el botón <img src="../../common-images/upload.png" /> Verifique el estado de la comunicación OPC y los datos recibidos utilizando los registros de Communicator (vea la Figura 2). Si los datos en Communicator parecen ser verdaderos, abra un navegador y busque los mismos datos en la aplicación Webstation.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/opc_vals_en.png" alt="Valores de las etiquetas OPC" /><br />
+        Figura 2. Valores de las etiquetas OPC
+    </p>
+
+    <p><strong>Problema conocido al usar OPC:</strong> unable to receive data from OPC server while OPC tag properties are available in the device configuration form, no error messages are raised. No se pueden recibir datos del servidor OPC mientras las propiedades de la etiqueta OPC están disponibles en el formulario de configuración del dispositivo, no se generan mensajes de error.</p>
+
+    <p>La posible razón es que el servicio Communicator funciona como usuario del sistema, pero el servidor OPC prohíbe interactuar con el usuario del sistema.</p>
+
+    <p><strong>Solución 1</strong>. SEspecifique una cuenta de usuario que se utilice para ejecutar el servidor OPS. Para abrir la configuración DCOM siga la ruta <em>Control Panel\System and Security\Administrative Tools\Component Services</em> (refiérase a la Figura 3), o simplemente ejecute <em>comexp.msc</em></p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/dcom_config_en.png" alt="Configuración DCOM" /><br />
+        Figura 3. Configuración DCOM
+    </p>
+
+    <p><strong>Solución 2</strong>. Especifique una cuenta de usuario que se use para ejecutar el servicio Communicator. Vaya a <em>Control Panel\System and Security\Administrative Tools\Services</em> o ejecute <em>services.msc</em>, busque ScadaCommService y abra las propiedades del servicio. Luego ingrese la cuenta de usuario y la contraseña en la página Log On (Iniciar sesión) como muestra la Figura 4. El usuario especificado debe ser un administrador de la computadora.</p>
+
+    <p class="sd-article-image">
+        <img src="opc-standard-files/comm_svc_logon_en.png" alt="Propiedades del servicio" /><br />
+        Figura 4. Propiedades del servicio
+    </p>
+</body>
+</html>

@@ -46,7 +46,7 @@ namespace Scada
         /// <summary>
         /// Разделитель чисел, используемый при разборе строки.
         /// </summary>
-        private static char[] ParseSep = new char[] { ',' };
+        private static readonly char[] ParseSep = new char[] { ',' };
         /// <summary>
         /// Разделитель чисел, используемый при разборе строки.
         /// </summary>
@@ -105,11 +105,12 @@ namespace Scada
         /// Попытаться преобразовать строку в коллекцию целых чисел.
         /// </summary>
         /// <remarks>Например: 1-5, 10</remarks>
-        public static bool StrToRange(string s, bool allowEmpty, out ICollection<int> collection)
+        public static bool StrToRange(string s, bool allowEmpty, bool unique, out ICollection<int> collection)
         {
             collection = null;
             string[] parts = (s ?? "").Split(ParseSep, StringSplitOptions.RemoveEmptyEntries);
             List<int> list = new List<int>();
+            HashSet<int> set = unique ? new HashSet<int>() : null;
 
             foreach (string part in parts)
             {
@@ -126,7 +127,10 @@ namespace Scada
                         if (int.TryParse(s1, out int n1) && int.TryParse(s2, out int n2))
                         {
                             for (int n = n1; n <= n2; n++)
-                                list.Add(n);
+                            {
+                                if (set == null || set.Add(n))
+                                    list.Add(n);
+                            }
                         }
                         else
                         {
@@ -138,7 +142,8 @@ namespace Scada
                         // одно число
                         if (int.TryParse(part, out int n))
                         {
-                            list.Add(n);
+                            if (set == null || set.Add(n))
+                                list.Add(n);
                         }
                         else
                         {
@@ -161,14 +166,16 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку в коллекцию целых чисел, вызвав исключение в случае ошибки.
+        /// Преобразовать строку в коллекцию целых чисел.
         /// </summary>
-        public static ICollection<int> StrToRange(string s, bool allowEmpty)
+        public static ICollection<int> StrToRange(string s, bool allowEmpty, bool unique, bool throwOnFail = true)
         {
-            if (StrToRange(s, allowEmpty, out ICollection<int> collection))
+            if (StrToRange(s, allowEmpty, unique, out ICollection<int> collection))
                 return collection;
-            else
+            else if (throwOnFail)
                 throw new FormatException("The given string is not a valid range of integers.");
+            else
+                return null;
         }
     }
 }

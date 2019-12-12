@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -33,41 +33,38 @@ using Utils;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Content accessible to the web application user
-    /// <para>Контент, доступный пользователю веб-приложения</para>
+    /// Content accessible to the web application user.
+    /// <para>Контент, доступный пользователю веб-приложения.</para>
     /// </summary>
     public class UserContent
     {
         /// <summary>
-        /// Журнал
+        /// Журнал.
         /// </summary>
         protected readonly Log log;
         /// <summary>
-        /// Словарь элементов отчётов, ключ - ид. отчёта
+        /// Словарь элементов отчётов, ключ - ид. отчёта.
         /// </summary>
         protected readonly Dictionary<int, ReportItem> reportItemDict;
         /// <summary>
-        /// Словарь элементов окон данных, ключ - ид. окна данных
+        /// Словарь элементов окон данных, ключ - ид. окна данных.
         /// </summary>
         protected readonly Dictionary<int, DataWndItem> dataWndItemDict;
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта без параметров.
         /// </summary>
         protected UserContent()
         {
         }
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public UserContent(Log log)
         {
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.log = log;
+            this.log = log ?? throw new ArgumentNullException("log");
             reportItemDict = new Dictionary<int, ReportItem>();
             dataWndItemDict = new Dictionary<int, DataWndItem>();
 
@@ -77,18 +74,18 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
-        /// Получить элементы отчётов, доступные пользователю
+        /// Получить элементы отчётов, доступные пользователю.
         /// </summary>
         public List<ReportItem> ReportItems { get; protected set; }
 
         /// <summary>
-        /// Получить элементы окон данных, доступные пользователю
+        /// Получить элементы окон данных, доступные пользователю.
         /// </summary>
         public List<DataWndItem> DataWndItems { get; protected set; }
 
 
         /// <summary>
-        /// Добавление контента, прописанного в базе конфигурации
+        /// Добавление контента, прописанного в базе конфигурации.
         /// </summary>
         protected void AddContentFromBase(UserRights userRights, Dictionary<string, UiObjSpec> uiObjSpecs, 
             DataAccess dataAccess)
@@ -102,10 +99,9 @@ namespace Scada.Web.Shell
                 {
                     int uiObjID = uiObjProps.UiObjID;
 
-                    if (userRights.GetUiObjRights(uiObjID).ViewRight)
+                    if (!uiObjProps.Hidden && userRights.GetUiObjRights(uiObjID).ViewRight)
                     {
-                        UiObjSpec uiObjSpec;
-                        uiObjSpecs.TryGetValue(uiObjProps.TypeCode, out uiObjSpec);
+                        uiObjSpecs.TryGetValue(uiObjProps.TypeCode, out UiObjSpec uiObjSpec);
 
                         if (uiObjProps.BaseUiType == UiObjProps.BaseUiTypes.Report)
                         {
@@ -117,9 +113,8 @@ namespace Scada.Web.Shell
                                 Path = uiObjProps.Path
                             };
 
-                            if (uiObjSpec is ReportSpec)
+                            if (uiObjSpec is ReportSpec reportSpec)
                             {
-                                ReportSpec reportSpec = (ReportSpec)uiObjSpec;
                                 if (string.IsNullOrEmpty(reportItem.Text))
                                     reportItem.Text = reportSpec.Name;
                                 reportItem.Url = uiObjSpec.GetUrl(uiObjID);
@@ -142,9 +137,8 @@ namespace Scada.Web.Shell
                                 Path = uiObjProps.Path
                             };
 
-                            if (uiObjSpec is DataWndSpec)
+                            if (uiObjSpec is DataWndSpec dataWndSpec)
                             {
-                                DataWndSpec dataWndSpec = (DataWndSpec)uiObjSpec;
                                 if (string.IsNullOrEmpty(dataWndItem.Text))
                                     dataWndItem.Text = dataWndSpec.Name;
                                 dataWndItem.Url = uiObjSpec.GetUrl(uiObjID);
@@ -163,7 +157,7 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Добавление контента, доступного всем, который задаётся спецификациями плагинов
+        /// Добавление контента, доступного всем, который задаётся спецификациями плагинов.
         /// </summary>
         protected void AddContentFromPlugins(List<PluginSpec> pluginSpecs)
         {
@@ -210,7 +204,7 @@ namespace Scada.Web.Shell
 
 
         /// <summary>
-        /// Инициализировать доступный контент пользователя
+        /// Инициализировать доступный контент пользователя.
         /// </summary>
         public void Init(UserData userData, DataAccess dataAccess)
         {
@@ -239,16 +233,15 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Получить элемент отчёта по идентификатору
+        /// Получить элемент отчёта по идентификатору.
         /// </summary>
         public ReportItem GetReportItem(int reportID)
         {
-            ReportItem reportItem;
-            return reportItemDict.TryGetValue(reportID, out reportItem) ? reportItem : null;
+            return reportItemDict.TryGetValue(reportID, out ReportItem reportItem) ? reportItem : null;
         }
 
         /// <summary>
-        /// Получить элемент отчёта, имеющий спецификацию заданного типа, по идентификатору
+        /// Получить элемент отчёта, имеющий спецификацию заданного типа, по идентификатору.
         /// </summary>
         public ReportItem GetReportItem(int reportID, Type specType, bool throwOnFail = false)
         {
@@ -275,16 +268,15 @@ namespace Scada.Web.Shell
         }
 
         /// <summary>
-        /// Получить элемент окна данных по идентификатору
+        /// Получить элемент окна данных по идентификатору.
         /// </summary>
         public DataWndItem GetDataWndItem(int dataWndID)
         {
-            DataWndItem dataWndItem;
-            return dataWndItemDict.TryGetValue(dataWndID, out dataWndItem) ? dataWndItem : null;
+            return dataWndItemDict.TryGetValue(dataWndID, out DataWndItem dataWndItem) ? dataWndItem : null;
         }
 
         /// <summary>
-        /// Получить элемент окна данных, имеющий спецификацию заданного типа, по идентификатору
+        /// Получить элемент окна данных, имеющий спецификацию заданного типа, по идентификатору.
         /// </summary>
         public DataWndItem GetDataWndItem(int dataWndID, Type specType, bool throwOnFail = false)
         {

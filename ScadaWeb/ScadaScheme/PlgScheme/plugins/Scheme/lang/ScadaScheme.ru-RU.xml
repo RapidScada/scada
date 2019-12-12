@@ -1,15 +1,56 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ScadaSchemeDictionaries>
-  <Dictionary key="Scada.Scheme.CompManager">
-    <Phrase key="UnknownComponent">Неизвестный компонент {0}</Phrase>
-    <Phrase key="CompLibraryNotFound">Не найдена библиотека для компонента {0}</Phrase>
-    <Phrase key="UnableCreateComponent">Невозможно создать компонент {0}</Phrase>
-    <Phrase key="ErrorCreatingComponent">Ошибка при создании компонента {0}</Phrase>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Actions">
+    <Phrase key="None">Не задано</Phrase>
+    <Phrase key="DrawDiagram">Построить график</Phrase>
+    <Phrase key="SendCommand">Отправить команду</Phrase>
+    <Phrase key="SendCommandNow">Отправить команду сразу</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.SchemeView">
-    <Phrase key="LoadSchemeViewError">Ошибка при загрузке схемы из файла</Phrase>
-    <Phrase key="SaveSchemeViewError">Ошибка при сохранении схемы в файл</Phrase>
-    <Phrase key="IncorrectFileFormat">Некорректный формат файла схемы</Phrase>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Condition">
+    <Phrase key="CompareOperator1.DisplayName">Опер. сравн. 1</Phrase>
+    <Phrase key="CompareOperator1.Category">Условие</Phrase>
+    <Phrase key="CompareArgument1.DisplayName">Аргумент 1</Phrase>
+    <Phrase key="CompareArgument1.Category">Условие</Phrase>
+    <Phrase key="LogicalOperator.DisplayName">Логич. опер.</Phrase>
+    <Phrase key="LogicalOperator.Category">Условие</Phrase>
+    <Phrase key="CompareOperator2.DisplayName">Опер. сравн. 2</Phrase>
+    <Phrase key="CompareOperator2.Category">Условие</Phrase>
+    <Phrase key="CompareArgument2.DisplayName">Аргумент 2</Phrase>
+    <Phrase key="CompareArgument2.Category">Условие</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.HorizontalAlignments">
+    <Phrase key="Left">Слева</Phrase>
+    <Phrase key="Center">По центру</Phrase>
+    <Phrase key="Right">Справа</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageCondition">
+    <Phrase key="DisplayName">Условие изображения</Phrase>
+    <Phrase key="ImageName.DisplayName">Изображение</Phrase>
+    <Phrase key="ImageName.Category">Внешний вид</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageStretches">
+    <Phrase key="None">Не задано</Phrase>
+    <Phrase key="Fill">Заполнить размер</Phrase>
+    <Phrase key="Zoom">Растянуть пропорционально</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.LogicalOperators">
+    <Phrase key="None">Не задан</Phrase>
+    <Phrase key="And">И</Phrase>
+    <Phrase key="Or">Или</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ShowValueKinds">
+    <Phrase key="NotShow">Нет</Phrase>
+    <Phrase key="ShowWithUnit">С размерностью</Phrase>
+    <Phrase key="ShowWithoutUnit">Без размерности</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.Size">
+    <Phrase key="Width.DisplayName">Ширина</Phrase>
+    <Phrase key="Height.DisplayName">Высота</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.VerticalAlignments">
+    <Phrase key="Top">Сверху</Phrase>
+    <Phrase key="Center">По центру</Phrase>
+    <Phrase key="Bottom">Снизу</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid">
     <Phrase key="StringConvertError">Невозможно преобразовать строку</Phrase>
@@ -19,20 +60,15 @@
     <Phrase key="EmptyValue">(Нет)</Phrase>
     <Phrase key="ObjectValue">(Объект)</Phrase>
     <Phrase key="CollectionValue">(Коллекция)</Phrase>
+    <Phrase key="ComponentNotFound">Компонент не найден</Phrase>
     <Phrase key="BoldSymbol">Ж</Phrase>
     <Phrase key="ItalicSymbol">К</Phrase>
     <Phrase key="UnderlineSymbol">П</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCnlFilterDialog">
-    <Phrase key="this">Фильтр по каналам</Phrase>
-    <Phrase key="lblCnlNums">Номера входных каналов</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmConditionDialog">
-    <Phrase key="this">Условия</Phrase>
-    <Phrase key="lblCond">Условия</Phrase>
-    <Phrase key="lblProps">Свойства условия</Phrase>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCollectionDialog">
+    <Phrase key="this">Коллекция элементов типа &quot;{0}&quot;</Phrase>
+    <Phrase key="lblItems">Элементы</Phrase>
+    <Phrase key="lblProps">Свойства элемента</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
@@ -59,6 +95,12 @@
     <Phrase key="DisplayImageError">Ошибка при отображении изображения</Phrase>
     <Phrase key="LoadImageError">Ошибка при загрузке изображения</Phrase>
     <Phrase key="SaveImageError">Ошибка при сохранении изображения</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmRangeDialog">
+    <Phrase key="this">Диапазон целых чисел</Phrase>
+    <Phrase key="lblExample">Например: 1 - 5, 10</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.ImageListItem">
     <Phrase key="Name.DisplayName">Наименование</Phrase>
@@ -219,55 +261,15 @@
     <Phrase key="XmlNodeName.Category">Дизайн</Phrase>
     <Phrase key="XmlNodeName.Description">XML-узел, содержащий свойства компонента в файле схемы.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.Actions">
-    <Phrase key="None">Не задано</Phrase>
-    <Phrase key="DrawDiagram">Построить график</Phrase>
-    <Phrase key="SendCommand">Отправить команду</Phrase>
-    <Phrase key="SendCommandNow">Отправить команду сразу</Phrase>
+  <Dictionary key="Scada.Scheme.CompManager">
+    <Phrase key="UnknownComponent">Неизвестный компонент {0}</Phrase>
+    <Phrase key="CompLibraryNotFound">Не найдена библиотека для компонента {0}</Phrase>
+    <Phrase key="UnableCreateComponent">Невозможно создать компонент {0}</Phrase>
+    <Phrase key="ErrorCreatingComponent">Ошибка при создании компонента {0}</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.Condition">
-    <Phrase key="CompareOperator1.DisplayName">Опер. сравн. 1</Phrase>
-    <Phrase key="CompareOperator1.Category">Условие</Phrase>
-    <Phrase key="CompareArgument1.DisplayName">Аргумент 1</Phrase>
-    <Phrase key="CompareArgument1.Category">Условие</Phrase>
-    <Phrase key="LogicalOperator.DisplayName">Логич. опер.</Phrase>
-    <Phrase key="LogicalOperator.Category">Условие</Phrase>
-    <Phrase key="CompareOperator2.DisplayName">Опер. сравн. 2</Phrase>
-    <Phrase key="CompareOperator2.Category">Условие</Phrase>
-    <Phrase key="CompareArgument2.DisplayName">Аргумент 2</Phrase>
-    <Phrase key="CompareArgument2.Category">Условие</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.HorizontalAlignments">
-    <Phrase key="Left">Слева</Phrase>
-    <Phrase key="Center">По центру</Phrase>
-    <Phrase key="Right">Справа</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageCondition">
-    <Phrase key="ImageName.DisplayName">Изображение</Phrase>
-    <Phrase key="ImageName.Category">Внешний вид</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageStretches">
-    <Phrase key="None">Не задано</Phrase>
-    <Phrase key="Fill">Заполнить размер</Phrase>
-    <Phrase key="Zoom">Растянуть пропорционально</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.LogicalOperators">
-    <Phrase key="None">Не задан</Phrase>
-    <Phrase key="And">И</Phrase>
-    <Phrase key="Or">Или</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.ShowValueKinds">
-    <Phrase key="NotShow">Нет</Phrase>
-    <Phrase key="ShowWithUnit">С размерностью</Phrase>
-    <Phrase key="ShowWithoutUnit">Без размерности</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.Size">
-    <Phrase key="Width.DisplayName">Ширина</Phrase>
-    <Phrase key="Height.DisplayName">Высота</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Scheme.Model.DataTypes.VerticalAlignments">
-    <Phrase key="Top">Сверху</Phrase>
-    <Phrase key="Center">По центру</Phrase>
-    <Phrase key="Bottom">Снизу</Phrase>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="LoadSchemeViewError">Ошибка при загрузке схемы из файла</Phrase>
+    <Phrase key="SaveSchemeViewError">Ошибка при сохранении схемы в файл</Phrase>
+    <Phrase key="IncorrectFileFormat">Некорректный формат файла схемы</Phrase>
   </Dictionary>
 </ScadaSchemeDictionaries>

@@ -187,6 +187,7 @@ namespace Scada.Admin.App.Forms.Deployment
             ProfileChanged = false;
             ConnSettingsModified = false;
 
+            ctrlTransferSettings.Init(project.ConfigBase);
             ctrlTransferSettings.Disable();
             ctrlProfileSelector.Init(appData, project.DeploymentSettings, instance);
 

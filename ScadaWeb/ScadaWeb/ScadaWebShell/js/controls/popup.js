@@ -178,7 +178,7 @@ scada.Popup.prototype.showDropdown = function (url, anchorElem, opt_callback) {
         if (event.which === 27 /*Escape*/) {
             thisObj._cancelDropdown(popupElem);
         }
-    }
+    };
 
     $(document)
     .off("keydown.scada.dropdown", removePopupOnEscapeFunc)
@@ -310,7 +310,7 @@ scada.Popup.prototype.showModal = function (url, opt_options, opt_callback) {
         if (event.which === 27 /*Escape*/) {
             modalElem.modal("hide");
         }
-    }
+    };
 
     // load the frame
     var thisObj = this;

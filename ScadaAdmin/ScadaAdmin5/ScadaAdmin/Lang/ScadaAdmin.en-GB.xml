@@ -3,9 +3,6 @@
   <Dictionary key="Scada.Admin">
     <Phrase key="IndexNotFound">Index not found.</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Admin.App">
-    <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
-  </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.AppState">
     <Phrase key="LoadAppStateError">Error loading application state</Phrase>
     <Phrase key="SaveAppStateError">Error saving application state</Phrase>
@@ -106,7 +103,11 @@
     <Phrase key="Name">Path</Phrase>
     <Phrase key="NameSelectFileButton">Select File</Phrase>
     <Phrase key="NameSelectFolderButton">Select Folder</Phrase>
+    <Phrase key="Args">Arguments</Phrase>
+    <Phrase key="TypeCode">View Type</Phrase>
     <Phrase key="Descr">Title</Phrase>
+    <Phrase key="Hidden">Hidden</Phrase>
+    <Phrase key="ObjNum">Object</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.KPTable">
     <Phrase key="KPNum">Number</Phrase>
@@ -145,6 +146,11 @@
     <Phrase key="RoleID">ID</Phrase>
     <Phrase key="Name">Name</Phrase>
     <Phrase key="Descr">Description</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.RoleRefTable">
+    <Phrase key="RoleRefID">ID</Phrase>
+    <Phrase key="ParentRoleID">Parent Role</Phrase>
+    <Phrase key="ChildRoleID">Child Role</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Code.ColumnBuilder.UnitTable">
     <Phrase key="UnitID">ID</Phrase>
@@ -206,11 +212,14 @@
     <Phrase key="chkIgnoreRegKeys">Registration keys</Phrase>
     <Phrase key="chkIgnoreWebStorage">Webstation storage</Phrase>
     <Phrase key="lblObjFilter">Object filter:</Phrase>
+    <Phrase key="btnSelectObj">Select...</Phrase>
     <Phrase key="ConfigNotSelected">Configuration is not selected.</Phrase>
     <Phrase key="IncorrectObjFilter">Object filter is incorrect.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms">
+    <Phrase key="CorrectErrors">Please correct the following errors.</Phrase>
     <Phrase key="AllCommLines">&lt;All communication lines&gt;</Phrase>
+    <Phrase key="SelectedColumn">Selected</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmDownloadConfig">
     <Phrase key="this">Download Configuration</Phrase>
@@ -251,6 +260,12 @@
     <Phrase key="ServiceCommandComplete">Service command completed successfully.</Phrase>
     <Phrase key="UnableControlService">Unable to execute service command.</Phrase>
     <Phrase key="ControlServiceError">Error sending service command.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmObjSelect">
+    <Phrase key="this">Select Objects</Phrase>
+    <Phrase key="lblFilter">Filter</Phrase>
+    <Phrase key="btnSelect">Select</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Deployment.FrmProfileEdit">
     <Phrase key="this">Edit Profile</Phrase>

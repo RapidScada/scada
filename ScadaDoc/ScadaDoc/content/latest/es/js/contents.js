@@ -42,9 +42,9 @@ function addContents(context) {
     addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
     addArticle(context, "modules/plg-notification.html", "Notification Plugin", 1);
 
-    //addArticle(context, "use-cases/", "Use Cases");
-    //addArticle(context, "use-cases/modbus-protocol.html", "Connecting Devices Using Modbus Protocol", 1);
-    //addArticle(context, "use-cases/opc-standard.html", "Connecting Devices Using OPC Standard", 1);
+    addArticle(context, "use-cases/", "Use Cases");
+    addArticle(context, "use-cases/modbus-protocol.html", "Conexión de dispositivos mediante protocolo Modbus", 1);
+    addArticle(context, "use-cases/opc-standard.html", "Conexión de dispositivos utilizando el estándar OPC", 1);
     //addArticle(context, "use-cases/remote-server-management.html", "Managing Remote Server using Agent", 1);
 
     //addArticle(context, "version-history/", "Version History");

@@ -40,7 +40,7 @@ namespace Scada.Web
         /// <summary>
         /// Версия веб-приложения.
         /// </summary>
-        public const string AppVersion = "5.0.9.1";
+        public const string AppVersion = "5.1.0.0";
         /// <summary>
         /// Шиблон для вставки стилей на веб-страницу.
         /// </summary>

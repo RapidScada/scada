@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -35,24 +35,24 @@ using CM = System.ComponentModel;
 namespace Scada.Scheme.Model
 {
     /// <summary>
-    /// The base class for scheme component
-    /// <para>Базовый класс компонента схемы</para>
+    /// The base class for scheme component.
+    /// <para>Базовый класс компонента схемы.</para>
     /// </summary>
     [Serializable]
-    public abstract class BaseComponent : IObservableItem, ISchemeDocAvailable
+    public abstract class BaseComponent : IObservableItem, ISchemeViewAvailable
     {
         /// <summary>
-        /// Макс. длина произвольного текста в отображаемом имени
+        /// Макс. длина произвольного текста в отображаемом имени.
         /// </summary>
         protected readonly int MaxAuxTextLength = 20;
 
         /// <summary>
-        /// Ссылка на свойства документа схемы
+        /// Ссылка на представление схемы.
         /// </summary>
         [NonSerialized]
-        protected SchemeDocument schemeDoc;
+        protected SchemeView schemeView;
         /// <summary>
-        /// Ссылка на объект, контролирующий загрузку классов при клонировании
+        /// Ссылка на объект, контролирующий загрузку классов при клонировании.
         /// </summary>
         [NonSerialized]
         protected SerializationBinder serBinder;
@@ -63,7 +63,7 @@ namespace Scada.Scheme.Model
         /// </summary>
         public BaseComponent()
         {
-            schemeDoc = null;
+            schemeView = null;
             serBinder = null;
 
             BackColor = "";
@@ -79,7 +79,7 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Получить или установить цвет фона
+        /// Получить или установить цвет фона.
         /// </summary>
         #region Attributes
         [DisplayName("Background color"), Category(Categories.Appearance)]
@@ -89,7 +89,7 @@ namespace Scada.Scheme.Model
         public string BackColor { get; set; }
 
         /// <summary>
-        /// Получить или установить цвет границы
+        /// Получить или установить цвет границы.
         /// </summary>
         #region Attributes
         [DisplayName("Border color"), Category(Categories.Appearance)]
@@ -99,7 +99,7 @@ namespace Scada.Scheme.Model
         public string BorderColor { get; set; }
 
         /// <summary>
-        /// Получить или установить ширину границы
+        /// Получить или установить ширину границы.
         /// </summary>
         #region Attributes
         [DisplayName("Border width"), Category(Categories.Appearance)]
@@ -108,7 +108,7 @@ namespace Scada.Scheme.Model
         public int BorderWidth { get; set; }
 
         /// <summary>
-        /// Получить или установить подсказку
+        /// Получить или установить подсказку.
         /// </summary>
         #region Attributes
         [DisplayName("Tooltip"), Category(Categories.Behavior)]
@@ -117,7 +117,7 @@ namespace Scada.Scheme.Model
         public string ToolTip { get; set; }
 
         /// <summary>
-        /// Получить или установить идентификатор
+        /// Получить или установить идентификатор.
         /// </summary>
         #region Attributes
         [DisplayName("ID"), Category(Categories.Design), CM.ReadOnly(true)]
@@ -126,7 +126,7 @@ namespace Scada.Scheme.Model
         public int ID { get; set; }
 
         /// <summary>
-        /// Получить или установить наименование
+        /// Получить или установить наименование.
         /// </summary>
         #region Attributes
         [DisplayName("Name"), Category(Categories.Design)]
@@ -135,7 +135,7 @@ namespace Scada.Scheme.Model
         public string Name { get; set; }
 
         /// <summary>
-        /// Получить имя типа компонента
+        /// Получить имя типа компонента.
         /// </summary>
         #region Attributes
         [DisplayName("Type name"), Category(Categories.Design), CM.ReadOnly(true)]
@@ -150,7 +150,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Получить или установить положение
+        /// Получить или установить положение.
         /// </summary>
         #region Attributes
         [DisplayName("Location"), Category(Categories.Layout)]
@@ -159,7 +159,7 @@ namespace Scada.Scheme.Model
         public Point Location { get; set; }
 
         /// <summary>
-        /// Получить или установить размер
+        /// Получить или установить размер.
         /// </summary>
         #region Attributes
         [DisplayName("Size"), Category(Categories.Layout)]
@@ -168,7 +168,7 @@ namespace Scada.Scheme.Model
         public Size Size { get; set; }
 
         /// <summary>
-        /// Получить или установить порядок отображения
+        /// Получить или установить порядок отображения.
         /// </summary>
         #region Attributes
         [DisplayName("ZIndex"), Category(Categories.Layout), CM.DefaultValue(0)]
@@ -177,24 +177,24 @@ namespace Scada.Scheme.Model
         public int ZIndex { get; set; }
 
         /// <summary>
-        /// Получить или установить ссылку на свойства документа схемы
+        /// Получить или установить ссылку на представление схемы.
         /// </summary>
         [CM.Browsable(false), ScriptIgnore]
-        public SchemeDocument SchemeDoc
+        public SchemeView SchemeView
         {
             get
             {
-                return schemeDoc;
+                return schemeView;
             }
             set
             {
-                schemeDoc = value;
+                schemeView = value;
             }
         }
 
 
         /// <summary>
-        /// Сформировать отображаемое имя для редактора
+        /// Сформировать отображаемое имя для редактора.
         /// </summary>
         protected string BuildDisplayName(string auxText = "")
         {
@@ -210,7 +210,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Загрузить конфигурацию компонента из XML-узла
+        /// Загрузить конфигурацию компонента из XML-узла.
         /// </summary>
         public virtual void LoadFromXml(XmlNode xmlNode)
         {
@@ -231,7 +231,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Сохранить конфигурацию компонента в XML-узле
+        /// Сохранить конфигурацию компонента в XML-узле.
         /// </summary>
         public virtual void SaveToXml(XmlElement xmlElem)
         {
@@ -250,19 +250,19 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Клонировать объект
+        /// Клонировать объект.
         /// </summary>
         public virtual BaseComponent Clone()
         {
-            BaseComponent clonedComponent = (BaseComponent)ScadaUtils.DeepClone(this, serBinder);
-            clonedComponent.schemeDoc = SchemeDoc;
+            BaseComponent clonedComponent = ScadaUtils.DeepClone(this, serBinder);
+            clonedComponent.schemeView = SchemeView;
             clonedComponent.serBinder = serBinder;
             clonedComponent.ItemChanged += ItemChanged;
             return clonedComponent;
         }
 
         /// <summary>
-        /// Вернуть строковое представление объекта
+        /// Вернуть строковое представление объекта.
         /// </summary>
         public override string ToString()
         {
@@ -270,7 +270,7 @@ namespace Scada.Scheme.Model
         }
 
         /// <summary>
-        /// Вызвать событие ItemChanged
+        /// Вызвать событие ItemChanged.
         /// </summary>
         public void OnItemChanged(SchemeChangeTypes changeType, object changedObject, object oldKey = null)
         {
@@ -279,7 +279,7 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Событие возникающее при изменении компонента
+        /// Событие возникающее при изменении компонента.
         /// </summary>
         [field: NonSerialized]
         public event ItemChangedEventHandler ItemChanged;

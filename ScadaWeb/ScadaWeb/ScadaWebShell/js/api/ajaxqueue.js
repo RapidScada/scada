@@ -117,7 +117,7 @@ scada.AjaxRequest.prototype.always = function (alwaysCallback) {
 scada.AjaxRequest.prototype.appendTo = function (ajaxQueue) {
     ajaxQueue.append(this);
     return this;
-}
+};
 
 /********** Ajax Queue Locator **********/
 

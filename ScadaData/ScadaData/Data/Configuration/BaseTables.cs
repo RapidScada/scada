@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using System;
@@ -29,16 +29,16 @@ using System.Data;
 namespace Scada.Data.Configuration
 {
     /// <summary>
-    /// The tables of the configuration database
-    /// <para>Таблицы базы конфигурации</para>
+    /// The tables of the configuration database.
+    /// <para>Таблицы базы конфигурации.</para>
     /// </summary>
     /// <remarks>
-    /// After using DataTable.DefaultView.RowFilter restore the empty value
-    /// <para>После использования DataTable.DefaultView.RowFilter нужно вернуть пустое значение</para></remarks>
+    /// After using DataTable.DefaultView.RowFilter restore the empty value.
+    /// <para>После использования DataTable.DefaultView.RowFilter нужно вернуть пустое значение.</para></remarks>
     public class BaseTables
     {
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public BaseTables()
         {
@@ -50,6 +50,7 @@ namespace Scada.Data.Configuration
                 InCnlTable = new DataTable("InCnl"),
                 CtrlCnlTable = new DataTable("CtrlCnl"),
                 RoleTable = new DataTable("Role"),
+                RoleRefTable = new DataTable("RoleRef"),
                 UserTable = new DataTable("User"),
                 InterfaceTable = new DataTable("Interface"),
                 RightTable = new DataTable("Right"),
@@ -69,107 +70,112 @@ namespace Scada.Data.Configuration
 
 
         /// <summary>
-        /// Получить таблицу объектов
+        /// Получить таблицу объектов.
         /// </summary>
         public DataTable ObjTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу линий связи
+        /// Получить таблицу линий связи.
         /// </summary>
         public DataTable CommLineTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу КП
+        /// Получить таблицу КП.
         /// </summary>
         public DataTable KPTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу входных каналов
+        /// Получить таблицу входных каналов.
         /// </summary>
         public DataTable InCnlTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу каналов управления
+        /// Получить таблицу каналов управления.
         /// </summary>
         public DataTable CtrlCnlTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу ролей
+        /// Получить таблицу ролей.
         /// </summary>
         public DataTable RoleTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу пользователей
+        /// Получить таблицу наследования ролей.
+        /// </summary>
+        public DataTable RoleRefTable { get; protected set; }
+
+        /// <summary>
+        /// Получить таблицу пользователей.
         /// </summary>
         public DataTable UserTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу объектов интерфейса
+        /// Получить таблицу объектов интерфейса.
         /// </summary>
         public DataTable InterfaceTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу прав на объекты интерфейса
+        /// Получить таблицу прав на объекты интерфейса.
         /// </summary>
         public DataTable RightTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу типов входных каналов
+        /// Получить таблицу типов входных каналов.
         /// </summary>
         public DataTable CnlTypeTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу типов команд
+        /// Получить таблицу типов команд.
         /// </summary>
         public DataTable CmdTypeTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу типов событий
+        /// Получить таблицу типов событий.
         /// </summary>
         public DataTable EvTypeTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу типов КП
+        /// Получить таблицу типов КП.
         /// </summary>
         public DataTable KPTypeTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу величин (параметров)
+        /// Получить таблицу величин (параметров).
         /// </summary>
         public DataTable ParamTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу размерностей
+        /// Получить таблицу размерностей.
         /// </summary>
         public DataTable UnitTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу значений команд
+        /// Получить таблицу значений команд.
         /// </summary>
         public DataTable CmdValTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу форматов чисел
+        /// Получить таблицу форматов чисел.
         /// </summary>
         public DataTable FormatTable { get; protected set; }
 
         /// <summary>
-        /// Получить таблицу формул
+        /// Получить таблицу формул.
         /// </summary>
         public DataTable FormulaTable { get; protected set; }
 
         /// <summary>
-        /// Получить массив ссылок на все таблицы базы конфигурации
+        /// Получить массив ссылок на все таблицы базы конфигурации.
         /// </summary>
         public DataTable[] AllTables { get; protected set; }
 
         /// <summary>
-        /// Получить или установить время последнего изменения успешно считанной базы конфигурации
+        /// Получить или установить время последнего изменения успешно считанной базы конфигурации.
         /// </summary>
         public DateTime BaseAge { get; set; }
 
         /// <summary>
-        /// Получить объект для синхронизации доступа к таблицам
+        /// Получить объект для синхронизации доступа к таблицам.
         /// </summary>
         public object SyncRoot
         {
@@ -181,7 +187,7 @@ namespace Scada.Data.Configuration
 
 
         /// <summary>
-        /// Получить имя файла таблицы без директории
+        /// Получить имя файла таблицы без директории.
         /// </summary>
         public static string GetFileName(DataTable dataTable)
         {
@@ -192,7 +198,7 @@ namespace Scada.Data.Configuration
         }
 
         /// <summary>
-        /// Проверить, что колонки таблицы существуют
+        /// Проверить, что колонки таблицы существуют.
         /// </summary>
         public static bool CheckColumnsExist(DataTable dataTable, bool throwOnFail = false)
         {

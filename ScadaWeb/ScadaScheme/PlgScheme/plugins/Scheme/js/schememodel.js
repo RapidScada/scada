@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * Requires:
  * - jquery
@@ -136,18 +136,18 @@ scada.scheme.Scheme.prototype._loadPart = function (viewOrEditorID, callback) {
     if (this.editMode) {
         if (!this.editorID) {
             this.editorID = viewOrEditorID;
-        } else if (this.editorID != viewOrEditorID) {
+        } else if (this.editorID !== viewOrEditorID) {
             console.warn(scada.utils.getCurTime() + " Scheme editor ID mismatch. The existing ID=" +
                 this.editorID + ". The requsested ID=" + viewOrEditorID);
             callback(false, false);
             return;
         }
     } else {
-        if (this.viewID == 0) {
+        if (this.viewID === 0) {
             this.viewID = viewOrEditorID;
             this._cnlFilter = new scada.CnlFilter();
             this._cnlFilter.viewID = viewOrEditorID;
-        } else if (this.viewID != viewOrEditorID) {
+        } else if (this.viewID !== viewOrEditorID) {
             console.warn(scada.utils.getCurTime() + " Scheme view ID mismatch. The existing ID=" +
                 this.viewID + ". The requsested ID=" + viewOrEditorID);
             callback(false, false);
@@ -156,7 +156,7 @@ scada.scheme.Scheme.prototype._loadPart = function (viewOrEditorID, callback) {
     }
 
     // loading data depending on the state
-    if (this.loadState == LoadStates.UNDEFINED) {
+    if (this.loadState === LoadStates.UNDEFINED) {
         this.loadState = LoadStates.DOC_LOADING;
     }
 
@@ -192,7 +192,7 @@ scada.scheme.Scheme.prototype._getAccessParamStr = function (viewOrEditorID) {
 // Check whether the newly received data are matched with the existing
 scada.scheme.Scheme.prototype._viewStampsMatched = function (browserViewStamp, serverViewStamp) {
     if (Number.isInteger(browserViewStamp) && Number.isInteger(serverViewStamp) &&
-        serverViewStamp > 0 && (browserViewStamp == 0 || browserViewStamp == serverViewStamp)) {
+        serverViewStamp > 0 && (browserViewStamp === 0 || browserViewStamp == serverViewStamp)) {
         return true;
     } else {
         console.warn(scada.utils.getCurTime() + " Scheme view stamp mismatch");
@@ -529,7 +529,7 @@ scada.scheme.Scheme.prototype._openCommandFrame = function () {
     } else {
         return null;
     }
-}
+};
 
 // Close frame of sending command
 scada.scheme.Scheme.prototype._closeCommandFrame = function (opt_frameID) {
@@ -542,7 +542,7 @@ scada.scheme.Scheme.prototype._closeCommandFrame = function (opt_frameID) {
             this.dom.children(".cmd-frame").remove();
         }
     }
-}
+};
 
 // Clear the scheme
 scada.scheme.Scheme.prototype.clear = function () {
@@ -689,7 +689,7 @@ scada.scheme.Scheme.prototype.sendCommand = function (ctrlCnlNum, cmdVal, viewID
         scada.utils.logFailedRequest(operation, jqXHR);
         failCallback();
     });
-}
+};
 
 /********** Component **********/
 

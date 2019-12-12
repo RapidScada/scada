@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using System;
@@ -28,27 +28,27 @@ using System;
 namespace Scada.Data.Models
 {
     /// <summary>
-    /// User interface object properties
-    /// <para>Свойства объекта пользовательского интерфейса</para>
+    /// User interface object properties.
+    /// <para>Свойства объекта пользовательского интерфейса.</para>
     /// </summary>
     public class UiObjProps
     {
         /// <summary>
-        /// Базовые типы объектов пользовательского интерфейса
+        /// Базовые типы объектов пользовательского интерфейса.
         /// </summary>
         [Flags]
         public enum BaseUiTypes
         {
             /// <summary>
-            /// Представление (по умолчанию)
+            /// Представление (по умолчанию).
             /// </summary>
             View,
             /// <summary>
-            /// Отчёт
+            /// Отчёт.
             /// </summary>
             Report,
             /// <summary>
-            /// Окно данных
+            /// Окно данных.
             /// </summary>
             DataWnd
         }
@@ -59,22 +59,27 @@ namespace Scada.Data.Models
         public enum PathKinds
         {
             /// <summary>
-            /// Не определён
+            /// Не определён.
             /// </summary>
             Undefined,
             /// <summary>
-            /// Файл
+            /// Файл.
             /// </summary>
             File,
             /// <summary>
-            /// Ссылка
+            /// Ссылка.
             /// </summary>
             Url
         }
 
+        /// <summary>
+        /// The separator for a file path or title.
+        /// </summary>
+        public static readonly char[] PathSeparator = { '\\', '/' };
+
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public UiObjProps()
             : this(0)
@@ -82,56 +87,75 @@ namespace Scada.Data.Models
         }
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public UiObjProps(int viewID)
         {
             UiObjID = viewID;
-            Title = "";
             Path = "";
+            Args = "";
             TypeCode = "";
+            Title = "";
+            Hidden = false;
+            ObjNum = 0;
             BaseUiType = BaseUiTypes.View;
         }
 
 
         /// <summary>
-        /// Получить или установить идентификатор объекта пользовательского интерфейса
+        /// Получить или установить идентификатор объекта пользовательского интерфейса.
         /// </summary>
         public int UiObjID { get; set; }
 
         /// <summary>
-        /// Получить или установить заголовок
-        /// </summary>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Получить или установить путь
+        /// Получить или установить путь.
         /// </summary>
         public string Path { get; set; }
 
         /// <summary>
-        /// Получить или установить код типа
+        /// Получить или установить дополнительные аргументы.
+        /// </summary>
+        public string Args { get; set; }
+
+        /// <summary>
+        /// Получить или установить код типа.
         /// </summary>
         public string TypeCode { get; set; }
 
         /// <summary>
-        /// Получить или установить базовый тип
+        /// Получить или установить заголовок.
+        /// </summary>
+        /// <remarks>Заголовок может содержать полный путь в дереве представлений.</remarks>
+        public string Title { get; set; }
+
+        /// <summary>
+        /// Получить или установить признак, что объект интерфейса скрыт.
+        /// </summary>
+        public bool Hidden { get; set; }
+
+        /// <summary>
+        /// Получить или установить номер объекта.
+        /// </summary>
+        public int ObjNum { get; set; }
+
+        /// <summary>
+        /// Получить или установить базовый тип.
         /// </summary>
         public BaseUiTypes BaseUiType { get; set; }
 
         /// <summary>
-        /// Получить признак, что объект интерфейса пустой
+        /// Получить признак, что объект интерфейса пустой.
         /// </summary>
         public bool IsEmpty
         {
             get
             {
-                return string.IsNullOrEmpty(Title) && string.IsNullOrEmpty(Path);
+                return string.IsNullOrEmpty(Path) && string.IsNullOrEmpty(Title);
             }
         }
 
         /// <summary>
-        /// Получить вид пути
+        /// Получить вид пути.
         /// </summary>
         public PathKinds PathKind
         {
@@ -146,9 +170,37 @@ namespace Scada.Data.Models
             }
         }
 
+        /// <summary>
+        /// Получить короткий заголовок.
+        /// </summary>
+        public string ShortTitle
+        {
+            get
+            {
+                string title = Title ?? "";
+                int idx = title.LastIndexOfAny(PathSeparator);
+                return idx >= 0 ? title.Substring(idx + 1) : title;
+            }
+        }
+
 
         /// <summary>
-        /// Извлечь путь, код типа и базовый тип объекта интерфейса из заданной строки
+        /// Определить базовый тип по коду типа объекта интерфейса.
+        /// </summary>
+        public static BaseUiTypes GetBaseUiType(string typeCode)
+        {
+            if (string.IsNullOrEmpty(typeCode))
+                return BaseUiTypes.View;
+            else if (typeCode.EndsWith("Rep", StringComparison.Ordinal))
+                return BaseUiTypes.Report;
+            else if (typeCode.EndsWith("Wnd", StringComparison.Ordinal))
+                return BaseUiTypes.DataWnd;
+            else
+                return BaseUiTypes.View;
+        }
+
+        /// <summary>
+        /// Извлечь путь, код типа и базовый тип объекта интерфейса из заданной строки.
         /// </summary>
         public static UiObjProps Parse(string s)
         {
@@ -156,17 +208,8 @@ namespace Scada.Data.Models
             int sepInd = s.IndexOf('@');
             string path = (sepInd >= 0 ? s.Substring(0, sepInd) : s).Trim();
             string typeCode = sepInd >= 0 ? s.Substring(sepInd + 1).Trim() : "";
-            BaseUiTypes baseUiType = BaseUiTypes.View;
 
-            if (typeCode.EndsWith("Rep", StringComparison.Ordinal))
-            {
-                baseUiType = BaseUiTypes.Report;
-            }
-            else if (typeCode.EndsWith("Wnd", StringComparison.Ordinal))
-            {
-                baseUiType = BaseUiTypes.DataWnd;
-            }
-            else if (typeCode == "")
+            if (typeCode == "")
             {
                 if (path.StartsWith("http://", StringComparison.OrdinalIgnoreCase) ||
                     path.StartsWith("https://", StringComparison.OrdinalIgnoreCase))
@@ -184,7 +227,7 @@ namespace Scada.Data.Models
             {
                 Path = path,
                 TypeCode = typeCode,
-                BaseUiType = baseUiType
+                BaseUiType = GetBaseUiType(typeCode)
             };
         }
     }

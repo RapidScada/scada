@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Configuration;
@@ -34,30 +34,30 @@ using Utils;
 namespace Scada.Client
 {
     /// <summary>
-    /// Handy and thread safe access to the client cache data
-    /// <para>Удобный и потокобезопасный доступ к данным кэша клиентов</para>
+    /// Handy and thread safe access to the client cache data.
+    /// <para>Удобный и потокобезопасный доступ к данным кэша клиентов.</para>
     /// </summary>
     public class DataAccess
     {
         /// <summary>
-        /// Кэш данных
+        /// Кэш данных.
         /// </summary>
         protected readonly DataCache dataCache;
         /// <summary>
-        /// Журнал
+        /// Журнал.
         /// </summary>
         protected readonly Log log;
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Конструктор, ограничивающий создание объекта без параметров.
         /// </summary>
         protected DataAccess()
         {
         }
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public DataAccess(DataCache dataCache, Log log)
         {
@@ -72,7 +72,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить кэш данных
+        /// Получить кэш данных.
         /// </summary>
         public DataCache DataCache
         {
@@ -84,7 +84,73 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить наименование роли по идентификатору из базы конфигурации
+        /// Создать свойства объекта интерфейса на основе строки таблицы интерфейса.
+        /// </summary>
+        /// <param name="rowView">The row from the Interface table.</param>
+        /// <param name="v58plus">Indicates whether the version of Rapid SCADA 5.8 or higher.</param>
+        protected UiObjProps GetUiObjFromRow(DataRowView rowView, bool v58plus)
+        {
+            UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
+            uiObjProps.UiObjID = (int)rowView["ItfID"];
+            uiObjProps.Title = (string)rowView["Descr"];
+
+            if (v58plus)
+            {
+                string typeCode = (string)rowView["TypeCode"];
+                if (!string.IsNullOrEmpty(typeCode))
+                {
+                    uiObjProps.TypeCode = typeCode;
+                    uiObjProps.BaseUiType = UiObjProps.GetBaseUiType(typeCode);
+                }
+
+                uiObjProps.Args = (string)rowView["Args"];
+                uiObjProps.Hidden = (bool)rowView["Hidden"];
+                uiObjProps.ObjNum = (int)rowView["ObjNum"];
+            }
+
+            return uiObjProps;
+        }
+
+        /// <summary>
+        /// Gets the parent roles of the specified role including the specified role itself.
+        /// </summary>
+        protected List<int> GetParentRoles(int roleID)
+        {
+            HashSet<int> roleIDSet = new HashSet<int>(); // set of parent roles and the specified role
+            List<int> roleIDList = new List<int>();      // similar role list ordered by inheritance
+
+            roleIDSet.Add(roleID); // to avoid infinite loop
+
+            // the RoleRef table has been added since version 5.8
+            if (BaseTables.CheckColumnsExist(dataCache.BaseTables.RoleRefTable))
+            {
+                dataCache.BaseTables.RoleRefTable.DefaultView.Sort = "ChildRoleID";
+                AppendParentRoles(roleIDSet, roleIDList, roleID);
+            }
+
+            roleIDList.Add(roleID);
+            return roleIDList;
+        }
+
+        /// <summary>
+        /// Appends parent role IDs recursively.
+        /// </summary>
+        protected void AppendParentRoles(HashSet<int> roleIDSet, List<int> roleIDList, int childRoleID)
+        {
+            foreach (DataRowView rowView in dataCache.BaseTables.RoleRefTable.DefaultView.FindRows(childRoleID))
+            {
+                int parentRoleID = (int)rowView["ParentRoleID"];
+
+                if (roleIDSet.Add(parentRoleID))
+                {
+                    roleIDList.Add(parentRoleID);
+                    AppendParentRoles(roleIDSet, roleIDList, parentRoleID);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Получить наименование роли по идентификатору из базы конфигурации.
         /// </summary>
         protected string GetRoleNameFromBase(int roleID, string defaultRoleName)
         {
@@ -113,7 +179,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить свойства входного канала по его номеру
+        /// Получить свойства входного канала по его номеру.
         /// </summary>
         public InCnlProps GetCnlProps(int cnlNum)
         {
@@ -145,7 +211,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства канала управления по его номеру
+        /// Получить свойства канала управления по его номеру.
         /// </summary>
         public CtrlCnlProps GetCtrlCnlProps(int ctrlCnlNum)
         {
@@ -170,7 +236,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства статуса входного канала по значению статуса
+        /// Получить свойства статуса входного канала по значению статуса.
         /// </summary>
         public CnlStatProps GetCnlStatProps(int stat)
         {
@@ -191,7 +257,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Привязать свойства входных каналов и каналов управления к элементам представления
+        /// Привязать свойства входных каналов и каналов управления к элементам представления.
         /// </summary>
         public void BindCnlProps(BaseView view)
         {
@@ -218,7 +284,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства объекта пользовательского интерфейса по идентификатору
+        /// Получить свойства объекта пользовательского интерфейса по идентификатору.
         /// </summary>
         public UiObjProps GetUiObjProps(int uiObjID)
         {
@@ -236,18 +302,10 @@ namespace Scada.Client
                     viewInterface.Sort = "ItfID";
                     int rowInd = viewInterface.Find(uiObjID);
 
-                    if (rowInd >= 0)
-                    {
-                        DataRowView rowView = viewInterface[rowInd];
-                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
-                        uiObjProps.UiObjID = uiObjID;
-                        uiObjProps.Title = (string)rowView["Descr"];
-                        return uiObjProps;
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    // столбец TypeCode добавлен в таблицу Интерфейс, начиная с версии 5.8
+                    return rowInd >= 0 ?
+                        GetUiObjFromRow(viewInterface[rowInd], viewInterface.Table.Columns.Contains("TypeCode")) :
+                        null;
                 }
             }
             catch (Exception ex)
@@ -260,7 +318,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить список свойств объектов пользовательского интерфейса
+        /// Получить список свойств объектов пользовательского интерфейса.
         /// </summary>
         public List<UiObjProps> GetUiObjPropsList(UiObjProps.BaseUiTypes baseUiTypes)
         {
@@ -276,16 +334,14 @@ namespace Scada.Client
                     BaseTables.CheckColumnsExist(baseTables.InterfaceTable, true);
                     DataView viewInterface = baseTables.InterfaceTable.DefaultView;
                     viewInterface.Sort = "ItfID";
+                    bool v58plus = viewInterface.Table.Columns.Contains("TypeCode");
 
                     foreach (DataRowView rowView in viewInterface)
                     {
-                        UiObjProps uiObjProps = UiObjProps.Parse((string)rowView["Name"]);
+                        UiObjProps uiObjProps = GetUiObjFromRow(rowView, v58plus);
+
                         if (baseUiTypes.HasFlag(uiObjProps.BaseUiType))
-                        {
-                            uiObjProps.UiObjID = (int)rowView["ItfID"];
-                            uiObjProps.Title = (string)rowView["Descr"];
                             list.Add(uiObjProps);
-                        }
                     }
                 }
             }
@@ -300,7 +356,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить права на объекты пользовательского интерфейса по идентификатору роли
+        /// Получить права на объекты пользовательского интерфейса по идентификатору роли.
         /// </summary>
         public Dictionary<int, EntityRights> GetUiObjRights(int roleID)
         {
@@ -313,15 +369,22 @@ namespace Scada.Client
 
                 lock (baseTables.SyncRoot)
                 {
+                    // consider role inheritance
+                    List<int> roleIDList = GetParentRoles(roleID);
+
+                    // retrieve rights
                     BaseTables.CheckColumnsExist(baseTables.RightTable, true);
                     DataView viewRight = baseTables.RightTable.DefaultView;
                     viewRight.Sort = "RoleID";
 
-                    foreach (DataRowView rowView in viewRight.FindRows(roleID))
+                    foreach (int includedRoleID in roleIDList)
                     {
-                        int uiObjID = (int)rowView["ItfID"];
-                        EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
-                        rightsDict[uiObjID] = rights;
+                        foreach (DataRowView rowView in viewRight.FindRows(includedRoleID))
+                        {
+                            int uiObjID = (int)rowView["ItfID"];
+                            EntityRights rights = new EntityRights((bool)rowView["ViewRight"], (bool)rowView["CtrlRight"]);
+                            rightsDict[uiObjID] = rights;
+                        }
                     }
                 }
             }
@@ -336,7 +399,30 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить имя пользователя по идентификатору
+        /// Gets the ID of the role and all its parents.
+        /// </summary>
+        public List<int> GetRoleHierarchy(int roleID)
+        {
+            try
+            {
+                dataCache.RefreshBaseTables();
+
+                lock (dataCache.BaseTables.SyncRoot)
+                {
+                    return GetParentRoles(roleID);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении иерархии ролей" :
+                    "Error getting the role hierarchy");
+                return new List<int> { roleID };
+            }
+        }
+
+        /// <summary>
+        /// Получить имя пользователя по идентификатору.
         /// </summary>
         public string GetUserName(int userID)
         {
@@ -364,7 +450,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить свойства пользователя по идентификатору
+        /// Получить свойства пользователя по идентификатору.
         /// </summary>
         public UserProps GetUserProps(int userID)
         {
@@ -404,7 +490,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить идентификатор пользователя по имени
+        /// Получить идентификатор пользователя по имени.
         /// </summary>
         public int GetUserID(string username)
         {
@@ -433,7 +519,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование объекта по номеру
+        /// Получить наименование объекта по номеру.
         /// </summary>
         public string GetObjName(int objNum)
         {
@@ -461,7 +547,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование КП по номеру
+        /// Получить наименование КП по номеру.
         /// </summary>
         public string GetKPName(int kpNum)
         {
@@ -489,7 +575,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить наименование роли по идентификатору
+        /// Получить наименование роли по идентификатору.
         /// </summary>
         public string GetRoleName(int roleID)
         {
@@ -501,7 +587,7 @@ namespace Scada.Client
 
 
         /// <summary>
-        /// Получить текущие данные входного канала
+        /// Получить текущие данные входного канала.
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum)
         {
@@ -510,7 +596,7 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить текущие данные входного канала
+        /// Получить текущие данные входного канала.
         /// </summary>
         public SrezTableLight.CnlData GetCurCnlData(int cnlNum, out DateTime dataAge)
         {
@@ -533,9 +619,9 @@ namespace Scada.Client
         }
 
         /// <summary>
-        /// Получить отображаемое событие на основе данных события
+        /// Получить отображаемое событие на основе данных события.
         /// </summary>
-        /// <remarks>Метод всегда возвращает объект, не равный null</remarks>
+        /// <remarks>Метод всегда возвращает объект, не равный null.</remarks>
         public DispEvent GetDispEvent(EventTableLight.Event ev, DataFormatter dataFormatter)
         {
             DispEvent dispEvent = new DispEvent();
