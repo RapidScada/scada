@@ -107,7 +107,9 @@ namespace Scada.Comm.Devices
         {
             smtpClient.Host = config.Host;
             smtpClient.Port = config.Port;
-            smtpClient.Credentials = new NetworkCredential(config.User, config.Password);
+            smtpClient.Credentials = string.IsNullOrEmpty(config.Password) ? 
+                CredentialCache.DefaultNetworkCredentials : 
+                new NetworkCredential(config.User, config.Password);
             smtpClient.Timeout = ReqParams.Timeout;
             smtpClient.EnableSsl = config.EnableSsl;
         }
