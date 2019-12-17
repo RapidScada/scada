@@ -1126,8 +1126,10 @@ namespace Scada.Comm.Engine
             if (kpLogic.ReqParams.Time > DateTime.MinValue || reqPeriod > 0)
             {
                 DateTime nowDT = DateTime.Now;
-                TimeSpan nowTime = nowDT.TimeOfDay;                   // текущее время
-                TimeSpan reqTime = kpLogic.ReqParams.Time.TimeOfDay;  // время опроса КП
+                DateTime nowDate = nowDT.Date;
+                TimeSpan nowTime = nowDT.TimeOfDay;
+                TimeSpan reqTime = kpLogic.ReqParams.Time.TimeOfDay;  // заданное время опроса КП
+                DateTime lastSessDate = kpLogic.LastSessDT.Date;      // дата последнего сеанса связи с КП
                 TimeSpan lastSessTime = kpLogic.LastSessDT.TimeOfDay; // время последнего сеанса связи с КП
 
                 if (reqPeriod > 0)
@@ -1146,7 +1148,8 @@ namespace Scada.Comm.Engine
                 else
                 {
                     // опрос 1 раз в сутки по времени
-                    return reqTime <= nowTime && nowDT.Date > kpLogic.LastSessDT.Date;
+                    return reqTime <= nowTime /*настало время опроса*/ && 
+                        (lastSessDate < nowDate || lastSessTime < reqTime /*после внеочередного опроса*/);
                 }
             }
             else
