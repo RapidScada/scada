@@ -75,6 +75,7 @@
     <Content Include="css\controls\notifier.min.css">
       <DependentUpon>notifier.css</DependentUpon>
     </Content>
+    <Content Include="examples\TemplateBindings.xml" />
     <Content Include="js\api\ajaxqueue.js" />
     <Content Include="js\api\clientapi.js" />
     <Content Include="js\api\eventtypes.js" />
