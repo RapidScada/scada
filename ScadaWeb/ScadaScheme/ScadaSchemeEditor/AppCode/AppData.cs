@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -47,6 +47,7 @@ namespace Scada.Scheme.Editor
 
         private ServiceHost schemeEditorSvcHost; // хост WCF-службы для взаимодействия с веб-интерфейсом
         private long viewStampCntr;              // счётчик для генерации меток представлений
+        private Web.AppDirs webAppDirs;          // директории веб-приложения
 
 
         /// <summary>
@@ -64,6 +65,7 @@ namespace Scada.Scheme.Editor
         {
             schemeEditorSvcHost = null;
             viewStampCntr = 0;
+            webAppDirs = new Web.AppDirs();
 
             AppDirs = new AppDirs();
             Settings = new Settings();
@@ -169,8 +171,10 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void Init(string exeDir, IMainForm mainForm)
         {
-            // инициализация директорий приложения
+            // инициализация директорий приложения и контекста схем
             AppDirs.Init(exeDir);
+            webAppDirs.Init(AppDirs.WebDir);
+            SchemeContext.GetInstance().Init(webAppDirs);
 
             // установка интерфейса главной формы
             MainForm = mainForm;
@@ -200,8 +204,6 @@ namespace Scada.Scheme.Editor
                     "Web interface directory, specified in the settings, does not exist");
             }
 
-            Web.AppDirs webAppDirs = new Web.AppDirs();
-            webAppDirs.Init(AppDirs.WebDir);
             CompManager.Init(webAppDirs, Log);
             CompManager.LoadCompFromFiles();
         }

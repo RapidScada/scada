@@ -53,6 +53,9 @@
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Scheme.Template.TemplateBindings">
+    <Phrase key="LoadTemplateBindingsError">Error loading scheme template bindings from file</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Unknown component {0}</Phrase>
     <Phrase key="CompLibraryNotFound">No library found for component {0}</Phrase>

@@ -140,10 +140,14 @@
     <Compile Include="Model\StaticText.cs" />
     <Compile Include="Model\DataTypes\VerticalAlignments.cs" />
     <Compile Include="Model\UnknownComponent.cs" />
+    <Compile Include="SchemeContext.cs" />
     <Compile Include="SchemeUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SchemeView.cs" />
     <Compile Include="SchemePhrases.cs" />
+    <Compile Include="Template\ComponentBinding.cs" />
+    <Compile Include="Template\TemplateArgs.cs" />
+    <Compile Include="Template\TemplateBindings.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Model\PropertyGrid\CtrlSvgViewer.resx">

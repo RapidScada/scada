@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme;
@@ -110,9 +110,10 @@ namespace Scada.Web.Plugins
             schemeDictUpdater = new DictUpdater(dir, "ScadaScheme", null, Log);
             pluginDictUpdater = new DictUpdater(dir, "PlgScheme", SchemePhrases.Init, Log);
 
-            // инициализация менеджера компонентов
-            CompManager compManager = CompManager.GetInstance();
-            compManager.Init(AppData.GetAppData().AppDirs, Log);
+            // инициализация контекста схем и менеджера компонентов
+            AppDirs appDirs = AppData.GetAppData().AppDirs;
+            SchemeContext.GetInstance().Init(appDirs);
+            CompManager.GetInstance().Init(appDirs, Log);
         }
 
         /// <summary>
@@ -125,8 +126,7 @@ namespace Scada.Web.Plugins
             pluginDictUpdater.Update();
 
             // извлечение компонентов из плагинов
-            CompManager compManager = CompManager.GetInstance();
-            compManager.RetrieveCompFromPlugins(userData.PluginSpecs);
+            CompManager.GetInstance().RetrieveCompFromPlugins(userData.PluginSpecs);
         }
     }
 }

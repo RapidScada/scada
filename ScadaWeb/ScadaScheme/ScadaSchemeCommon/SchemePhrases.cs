@@ -55,6 +55,9 @@ namespace Scada.Scheme
         // Scada.Scheme.Model.PropertyGrid.FrmRangeDialog
         public static string RangeNotValid { get; private set; }
 
+        // Scada.Scheme.Template.TemplateBindings
+        public static string LoadTemplateBindingsError { get; private set; }
+
         // Scada.Scheme.CompManager
         public static string UnknownComponent { get; private set; }
         public static string CompLibraryNotFound { get; private set; }
@@ -89,6 +92,9 @@ namespace Scada.Scheme
 
             dict = Localization.GetDictionary("Scada.Scheme.Model.PropertyGrid.FrmRangeDialog");
             RangeNotValid = dict.GetPhrase("RangeNotValid");
+
+            dict = Localization.GetDictionary("Scada.Scheme.Template.TemplateBindings");
+            LoadTemplateBindingsError = dict.GetPhrase("LoadTemplateBindingsError");
 
             dict = Localization.GetDictionary("Scada.Scheme.CompManager");
             UnknownComponent = dict.GetPhrase("UnknownComponent");

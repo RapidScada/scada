@@ -25,7 +25,7 @@
 
 using Scada.Client;
 using Scada.Scheme.Model;
-using Scada.Scheme.Model.DataTypes;
+using Scada.Scheme.Template;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -39,26 +39,6 @@ namespace Scada.Scheme
     /// </summary>
     public class SchemeView : BaseView
     {
-        /// <summary>
-        /// Represents scheme arguments in template mode.
-        /// <para>Представляет аргументы схемы в режиме шаблона.</para>
-        /// </summary>
-        protected struct TemplateArgs
-        {
-            /// <summary>
-            /// Gets or sets the offset of input channel numbers.
-            /// </summary>
-            public int InCnlOffset { get; set; }
-            /// <summary>
-            /// Gets or sets the offset of output channel numbers.
-            /// </summary>
-            public int CtrlCnlOffset { get; set; }
-            /// <summary>
-            /// Gets or sets the ID of the component that displays a scheme title.
-            /// </summary>
-            public int TitleCompID { get; set; }
-        }
-
         /// <summary>
         /// The maximum ID of the scheme components.
         /// </summary>
@@ -78,7 +58,7 @@ namespace Scada.Scheme
             maxComponentID = 0;
             templateArgs = new TemplateArgs();
 
-            SchemeDoc = new SchemeDocument();
+            SchemeDoc = new SchemeDocument() { SchemeView = this } ;
             Components = new SortedList<int, BaseComponent>();
             LoadErrors = new List<string>();
         }
@@ -107,9 +87,7 @@ namespace Scada.Scheme
         public override void SetArgs(string args)
         {
             base.SetArgs(args);
-            templateArgs.InCnlOffset = Args.GetValueAsInt("inCnlOffset");
-            templateArgs.CtrlCnlOffset = Args.GetValueAsInt("ctrlCnlOffset");
-            templateArgs.TitleCompID = Args.GetValueAsInt("titleCompID");
+            templateArgs.Init(Args);
         }
 
         /// <summary>
@@ -137,24 +115,33 @@ namespace Scada.Scheme
         /// </summary>
         public override void LoadFromStream(Stream stream)
         {
-            // очистка представления
+            // clear the view
             Clear();
-            SchemeDoc.SchemeView = this;
 
-            // загрузка XML-документа
+            // load component bindings
+            SortedDictionary<int, ComponentBinding> componentBindings = null;
+            if (!string.IsNullOrEmpty(templateArgs.BindingFileName))
+            {
+                TemplateBindings templateBindings = new TemplateBindings();
+                templateBindings.Load(System.IO.Path.Combine(
+                    SchemeContext.GetInstance().AppDirs.ConfigDir, templateArgs.BindingFileName));
+                componentBindings = templateBindings.ComponentBindings;
+            }
+
+            // load XML document
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(stream);
 
-            // проверка формата файла (потока)
+            // check data format
             XmlElement rootElem = xmlDoc.DocumentElement;
             if (!rootElem.Name.Equals("SchemeView", StringComparison.OrdinalIgnoreCase))
                 throw new ScadaException(SchemePhrases.IncorrectFileFormat);
 
-            // получение смещений каналов при работе схемы в режиме шаблона 
+            // get channel offsets in template mode
             int inCnlOffset = templateArgs.InCnlOffset;
             int ctrlCnlOffset = templateArgs.CtrlCnlOffset;
 
-            // загрузка документа схемы
+            // load scheme document
             if (rootElem.SelectSingleNode("Scheme") is XmlNode schemeNode)
             {
                 SchemeDoc.LoadFromXml(schemeNode);
@@ -170,7 +157,7 @@ namespace Scada.Scheme
                 }
             }
 
-            // загрузка компонентов схемы
+            // load scheme components
             if (rootElem.SelectSingleNode("Components") is XmlNode componentsNode)
             {
                 HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
@@ -197,10 +184,19 @@ namespace Scada.Scheme
                     // добавление входных каналов представления
                     if (component is IDynamicComponent dynamicComponent)
                     {
-                        if (inCnlOffset > 0 && dynamicComponent.InCnlNum > 0)
-                            dynamicComponent.InCnlNum += inCnlOffset;
-                        if (ctrlCnlOffset > 0 && dynamicComponent.CtrlCnlNum > 0)
-                            dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
+                        if (componentBindings != null &&
+                            componentBindings.TryGetValue(component.ID, out ComponentBinding binding))
+                        {
+                            dynamicComponent.InCnlNum = binding.InCnlNum;
+                            dynamicComponent.CtrlCnlNum = binding.CtrlCnlNum;
+                        }
+                        else
+                        {
+                            if (inCnlOffset > 0 && dynamicComponent.InCnlNum > 0)
+                                dynamicComponent.InCnlNum += inCnlOffset;
+                            if (ctrlCnlOffset > 0 && dynamicComponent.CtrlCnlNum > 0)
+                                dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
+                        }
 
                         AddCnlNum(dynamicComponent.InCnlNum);
                         AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
@@ -212,9 +208,8 @@ namespace Scada.Scheme
                 }
             }
 
-            // загрузка изображений схемы
-            XmlNode imagesNode = rootElem.SelectSingleNode("Images");
-            if (imagesNode != null)
+            // load scheme images
+            if (rootElem.SelectSingleNode("Images") is XmlNode imagesNode)
             {
                 Dictionary<string, Image> images = SchemeDoc.Images;
                 XmlNodeList imageNodes = imagesNode.SelectNodes("Image");
@@ -336,6 +331,7 @@ namespace Scada.Scheme
             base.Clear();
             maxComponentID = 0;
             SchemeDoc.SetToDefault();
+            SchemeDoc.SchemeView = this;
             Components.Clear();
             LoadErrors.Clear();
         }
