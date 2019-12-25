@@ -63,14 +63,14 @@ namespace Scada.Scheme.Template
         /// <summary>
         /// Loads the bindongs from the XML node.
         /// </summary>
-        public void LoadFromXml(XmlNode xmlNode)
+        public void LoadFromXml(XmlElement xmlElem)
         {
-            if (xmlNode == null)
-                throw new ArgumentNullException("xmlNode");
+            if (xmlElem == null)
+                throw new ArgumentNullException("xmlElem");
 
-            CompID = xmlNode.GetChildAsInt("CompID");
-            InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
-            CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
+            CompID = xmlElem.GetAttrAsInt("compID");
+            InCnlNum = xmlElem.GetAttrAsInt("inCnlNum");
+            CtrlCnlNum = xmlElem.GetAttrAsInt("ctrlCnlNum");
         }
     }
 }

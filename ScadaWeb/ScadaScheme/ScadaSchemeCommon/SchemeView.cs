@@ -47,6 +47,10 @@ namespace Scada.Scheme
         /// The scheme arguments in template mode.
         /// </summary>
         protected TemplateArgs templateArgs;
+        /// <summary>
+        /// The scheme template bindings.
+        /// </summary>
+        protected TemplateBindings templateBindings;
 
 
         /// <summary>
@@ -57,6 +61,7 @@ namespace Scada.Scheme
         {
             maxComponentID = 0;
             templateArgs = new TemplateArgs();
+            templateBindings = null;
 
             SchemeDoc = new SchemeDocument() { SchemeView = this } ;
             Components = new SortedList<int, BaseComponent>();
@@ -101,8 +106,9 @@ namespace Scada.Scheme
                 SchemeDoc.Title = Title;
 
                 // display title
-                if (templateArgs.TitleCompID > 0 && 
-                    Components.TryGetValue(templateArgs.TitleCompID, out BaseComponent titleComponent) &&
+                int titleCompID = templateBindings == null ? templateArgs.TitleCompID : templateBindings.TitleCompID;
+                if (titleCompID > 0 && 
+                    Components.TryGetValue(titleCompID, out BaseComponent titleComponent) &&
                     titleComponent is StaticText staticText)
                 {
                     staticText.Text = Title;
@@ -119,13 +125,15 @@ namespace Scada.Scheme
             Clear();
 
             // load component bindings
-            SortedDictionary<int, ComponentBinding> componentBindings = null;
-            if (!string.IsNullOrEmpty(templateArgs.BindingFileName))
+            if (string.IsNullOrEmpty(templateArgs.BindingFileName))
             {
-                TemplateBindings templateBindings = new TemplateBindings();
+                templateBindings = null;
+            }
+            else
+            {
+                templateBindings = new TemplateBindings();
                 templateBindings.Load(System.IO.Path.Combine(
                     SchemeContext.GetInstance().AppDirs.ConfigDir, templateArgs.BindingFileName));
-                componentBindings = templateBindings.ComponentBindings;
             }
 
             // load XML document
@@ -163,6 +171,7 @@ namespace Scada.Scheme
                 HashSet<string> errNodeNames = new HashSet<string>(); // имена узлов незагруженных компонентов
                 CompManager compManager = CompManager.GetInstance();
                 LoadErrors.AddRange(compManager.LoadErrors);
+                SortedDictionary<int, ComponentBinding> componentBindings = templateBindings?.ComponentBindings;
 
                 foreach (XmlNode compNode in componentsNode.ChildNodes)
                 {

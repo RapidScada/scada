@@ -47,7 +47,6 @@ namespace Scada.Scheme.Editor
 
         private ServiceHost schemeEditorSvcHost; // хост WCF-службы для взаимодействия с веб-интерфейсом
         private long viewStampCntr;              // счётчик для генерации меток представлений
-        private Web.AppDirs webAppDirs;          // директории веб-приложения
 
 
         /// <summary>
@@ -65,7 +64,6 @@ namespace Scada.Scheme.Editor
         {
             schemeEditorSvcHost = null;
             viewStampCntr = 0;
-            webAppDirs = new Web.AppDirs();
 
             AppDirs = new AppDirs();
             Settings = new Settings();
@@ -171,10 +169,8 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public void Init(string exeDir, IMainForm mainForm)
         {
-            // инициализация директорий приложения и контекста схем
+            // инициализация директорий приложения
             AppDirs.Init(exeDir);
-            webAppDirs.Init(AppDirs.WebDir);
-            SchemeContext.GetInstance().Init(webAppDirs);
 
             // установка интерфейса главной формы
             MainForm = mainForm;
@@ -204,8 +200,11 @@ namespace Scada.Scheme.Editor
                     "Web interface directory, specified in the settings, does not exist");
             }
 
+            Web.AppDirs webAppDirs = new Web.AppDirs();
+            webAppDirs.Init(AppDirs.WebDir);
             CompManager.Init(webAppDirs, Log);
             CompManager.LoadCompFromFiles();
+            SchemeContext.GetInstance().Init(webAppDirs);
         }
 
         /// <summary>
@@ -213,8 +212,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool StartEditor()
         {
-            string serviceUrl;
-            return StartWcfService(out serviceUrl) && Editor.CreateWebPage(AppDirs.WebDir, serviceUrl);
+            return StartWcfService(out string serviceUrl) && Editor.CreateWebPage(AppDirs.WebDir, serviceUrl);
         }
 
         /// <summary>

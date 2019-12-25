@@ -51,6 +51,11 @@ namespace Scada.Scheme.Template
         public string TemplateFileName { get; set; }
 
         /// <summary>
+        /// Gets or sets the ID of the component that displays a scheme title.
+        /// </summary>
+        public int TitleCompID { get; set; }
+
+        /// <summary>
         /// Gets the bindings of the scheme components.
         /// </summary>
         public SortedDictionary<int, ComponentBinding> ComponentBindings { get; private set; }
@@ -62,6 +67,7 @@ namespace Scada.Scheme.Template
         private void SetToDefault()
         {
             TemplateFileName = "";
+            TitleCompID = 0;
             ComponentBindings = new SortedDictionary<int, ComponentBinding>();
         }
 
@@ -80,12 +86,14 @@ namespace Scada.Scheme.Template
                 XmlDocument xmlDoc = new XmlDocument();
                 xmlDoc.Load(fileName);
                 XmlElement rootElem = xmlDoc.DocumentElement;
-                TemplateFileName = rootElem.GetChildAsString("TemplateFileName");
 
-                foreach (XmlNode bindingNode in rootElem.SelectNodes("Binding"))
+                TemplateFileName = rootElem.GetChildAsString("TemplateFileName");
+                TitleCompID = rootElem.GetChildAsInt("TitleCompID");
+
+                foreach (XmlElement bindingElem in rootElem.SelectNodes("Binding"))
                 {
                     ComponentBinding binding = new ComponentBinding();
-                    binding.LoadFromXml(bindingNode);
+                    binding.LoadFromXml(bindingElem);
 
                     if (binding.CompID > 0)
                         ComponentBindings[binding.CompID] = binding;
@@ -93,7 +101,7 @@ namespace Scada.Scheme.Template
             }
             catch (Exception ex)
             {
-                throw new ScadaException(SchemePhrases.LoadTemplateBindingsError, ex);
+                throw new ScadaException(SchemePhrases.LoadTemplateBindingsError + ": " + ex.Message);
             }
         }
     }
