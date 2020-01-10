@@ -54,9 +54,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\ScadaServer\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
     </Reference>
-    <Reference Include="ScadaWebCommon5">
-      <HintPath>..\..\..\ScadaWeb\ScadaWebCommon5\bin\Release\ScadaWebCommon5.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.IO.Compression" />

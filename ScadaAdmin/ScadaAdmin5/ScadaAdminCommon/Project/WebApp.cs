@@ -23,7 +23,6 @@
  * Modified : 2018
  */
 
-using Scada.Web;
 using System;
 using System.IO;
 
