@@ -263,6 +263,7 @@
   </Dictionary>
   <Dictionary key="Scada.Scheme.Template.TemplateBindings">
     <Phrase key="LoadTemplateBindingsError">Ошибка при загрузке привязок шаблона схемы из файла</Phrase>
+    <Phrase key="SaveTemplateBindingsError">Ошибка при сохранении привязок шаблона схемы в файл</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Неизвестный компонент {0}</Phrase>

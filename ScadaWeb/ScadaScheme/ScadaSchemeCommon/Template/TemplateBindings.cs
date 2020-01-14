@@ -104,5 +104,62 @@ namespace Scada.Scheme.Template
                 throw new ScadaException(SchemePhrases.LoadTemplateBindingsError + ": " + ex.Message);
             }
         }
+
+        /// <summary>
+        /// Loads the bindings from the specified file.
+        /// </summary>
+        public bool Load(string fileName, out string errMsg)
+        {
+            try
+            {
+                Load(fileName);
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = ex.Message;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Saves the bindings from the specified file.
+        /// </summary>
+        public bool Save(string fileName, out string errMsg)
+        {
+            try
+            {
+                XmlDocument xmlDoc = new XmlDocument();
+                XmlDeclaration xmlDecl = xmlDoc.CreateXmlDeclaration("1.0", "utf-8", null);
+                xmlDoc.AppendChild(xmlDecl);
+
+                XmlElement rootElem = xmlDoc.CreateElement("TemplateBindings");
+                xmlDoc.AppendChild(rootElem);
+
+                rootElem.AppendElem("TemplateFileName", TemplateFileName);
+                rootElem.AppendElem("TitleCompID", TitleCompID);
+
+                foreach (ComponentBinding binding in ComponentBindings.Values)
+                {
+                    XmlElement bindingElem = rootElem.AppendElem("Binding");
+                    bindingElem.SetAttribute("compID", binding.CompID);
+
+                    if (binding.InCnlNum > 0)
+                        bindingElem.SetAttribute("inCnlNum", binding.InCnlNum);
+
+                    if (binding.CtrlCnlNum > 0)
+                        bindingElem.SetAttribute("ctrlCnlNum", binding.CtrlCnlNum);
+                }
+
+                errMsg = "";
+                return true;
+            }
+            catch (Exception ex)
+            {
+                errMsg = SchemePhrases.SaveTemplateBindingsError + ": " + ex.Message;
+                return false;
+            }
+        }
     }
 }

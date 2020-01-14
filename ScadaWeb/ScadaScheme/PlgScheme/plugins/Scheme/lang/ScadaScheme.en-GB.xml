@@ -55,6 +55,7 @@
   </Dictionary>
   <Dictionary key="Scada.Scheme.Template.TemplateBindings">
     <Phrase key="LoadTemplateBindingsError">Error loading scheme template bindings from file</Phrase>
+    <Phrase key="SaveTemplateBindingsError">Error saving scheme template bindings to file</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.CompManager">
     <Phrase key="UnknownComponent">Unknown component {0}</Phrase>

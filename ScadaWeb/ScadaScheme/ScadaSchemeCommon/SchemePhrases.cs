@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2020
  */
 
 #pragma warning disable 1591 // Missing XML comment for publicly visible type or member
@@ -57,6 +57,7 @@ namespace Scada.Scheme
 
         // Scada.Scheme.Template.TemplateBindings
         public static string LoadTemplateBindingsError { get; private set; }
+        public static string SaveTemplateBindingsError { get; private set; }
 
         // Scada.Scheme.CompManager
         public static string UnknownComponent { get; private set; }
@@ -95,6 +96,7 @@ namespace Scada.Scheme
 
             dict = Localization.GetDictionary("Scada.Scheme.Template.TemplateBindings");
             LoadTemplateBindingsError = dict.GetPhrase("LoadTemplateBindingsError");
+            SaveTemplateBindingsError = dict.GetPhrase("SaveTemplateBindingsError");
 
             dict = Localization.GetDictionary("Scada.Scheme.CompManager");
             UnknownComponent = dict.GetPhrase("UnknownComponent");
