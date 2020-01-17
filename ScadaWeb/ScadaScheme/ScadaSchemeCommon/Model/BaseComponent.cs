@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Scheme.Model.DataTypes;
@@ -44,7 +44,7 @@ namespace Scada.Scheme.Model
         /// <summary>
         /// Макс. длина произвольного текста в отображаемом имени.
         /// </summary>
-        protected readonly int MaxAuxTextLength = 20;
+        protected const int MaxAuxTextLength = 20;
 
         /// <summary>
         /// Ссылка на представление схемы.
@@ -194,18 +194,26 @@ namespace Scada.Scheme.Model
 
 
         /// <summary>
-        /// Сформировать отображаемое имя для редактора.
+        /// Builds the display name for an editor.
         /// </summary>
         protected string BuildDisplayName(string auxText = "")
         {
-            return (new StringBuilder())
-                .Append("[").Append(ID).Append("] ")
-                .Append(auxText == null || auxText.Length <= MaxAuxTextLength ? 
+            return BuildDisplayName(ID, Name, auxText, GetType().Name);
+        }
+
+        /// <summary>
+        /// Builds the display name for an editor.
+        /// </summary>
+        public static string BuildDisplayName(int id, string name, string auxText, string typeName)
+        {
+            return new StringBuilder()
+                .Append("[").Append(id).Append("] ")
+                .Append(auxText == null || auxText.Length <= MaxAuxTextLength ?
                     auxText : auxText.Substring(0, MaxAuxTextLength) + "...")
                 .Append(string.IsNullOrEmpty(auxText) ? "" : " - ")
-                .Append(Name)
-                .Append(string.IsNullOrEmpty(Name) ? "" : " - ")
-                .Append(GetType().Name)
+                .Append(name)
+                .Append(string.IsNullOrEmpty(name) ? "" : " - ")
+                .Append(typeName)
                 .ToString();
         }
 

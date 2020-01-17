@@ -152,6 +152,7 @@ namespace Scada.Scheme.Template
                         bindingElem.SetAttribute("ctrlCnlNum", binding.CtrlCnlNum);
                 }
 
+                xmlDoc.Save(fileName);
                 errMsg = "";
                 return true;
             }

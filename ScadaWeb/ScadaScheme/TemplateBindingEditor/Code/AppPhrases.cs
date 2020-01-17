@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : Administrator
+ * Module   : Template Binding Editor
  * Summary  : The phrases used in the application
  * 
  * Author   : Mikhail Shiryaev
@@ -31,15 +31,23 @@ namespace Scada.Scheme.TemplateBindingEditor.Code
     /// </summary>
     internal static class AppPhrases
     {
+        // Scada.Scheme.TemplateBindingEditor.Code.SchemeParser
+        public static string ErrorParsingScheme { get; private set; }
+
         // Scada.Scheme.TemplateBindingEditor.Forms.FrmMain
         public static string EditorTitle { get; private set; }
+        public static string BindingsFileFilter { get; private set; }
         public static string SaveBindingsConfirm { get; private set; }
         public static string InterfaceDirNotFound { get; private set; }
 
         public static void Init()
         {
-            Localization.Dict dict = Localization.GetDictionary("Scada.Scheme.TemplateBindingEditor.Forms.FrmMain");
+            Localization.Dict dict = Localization.GetDictionary("Scada.Scheme.TemplateBindingEditor.Code.SchemeParser");
+            ErrorParsingScheme = dict.GetPhrase("ErrorParsingScheme");
+
+            dict = Localization.GetDictionary("Scada.Scheme.TemplateBindingEditor.Forms.FrmMain");
             EditorTitle = dict.GetPhrase("EditorTitle");
+            BindingsFileFilter = dict.GetPhrase("BindingsFileFilter");
             SaveBindingsConfirm = dict.GetPhrase("SaveBindingsConfirm");
             InterfaceDirNotFound = dict.GetPhrase("InterfaceDirNotFound");
         }

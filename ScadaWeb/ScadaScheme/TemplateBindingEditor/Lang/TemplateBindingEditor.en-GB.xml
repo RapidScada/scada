@@ -1,7 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <TemplateBindingEditorDictionaries>
+  <Dictionary key="Scada.Scheme.TemplateBindingEditor.Code.SchemeParser">
+    <Phrase key="ErrorParsingScheme">Error parsing scheme</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Scheme.TemplateBindingEditor.Forms.FrmMain">
     <Phrase key="EditorTitle">{0} - Template Binding Editor</Phrase>
+    <Phrase key="BindingsFileFilter">Template Bindings (*.stb)|*.stb|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveBindingsConfirm">The bindings have been modified. Save the changes?</Phrase>
     <Phrase key="lblInterfaceDir.ToolTip">The interface directory of the project</Phrase>
     <Phrase key="InterfaceDirNotFound">The interface directory not found</Phrase>

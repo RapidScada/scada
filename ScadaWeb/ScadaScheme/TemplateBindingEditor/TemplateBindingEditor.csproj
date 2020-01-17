@@ -41,9 +41,13 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Code\AppPhrases.cs" />
+    <Compile Include="Code\ComponentBindingItem.cs" />
+    <Compile Include="Code\ComponentItem.cs" />
+    <Compile Include="Code\SchemeParser.cs" />
     <Compile Include="Forms\FrmMain.cs">
       <SubType>Form</SubType>
     </Compile>

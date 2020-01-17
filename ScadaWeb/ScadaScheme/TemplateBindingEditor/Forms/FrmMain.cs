@@ -52,7 +52,6 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         private readonly string langDir; // the directory of language files
 
         private TemplateBindings templateBindings; // the edited bindings
-        private SchemeView schemeTemplate;         // the scheme template
         private string fileName;                   // the bindings file name
         private bool modified;                     // the bindings were modified
 
@@ -68,10 +67,10 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             langDir = Path.Combine(exeDir, "Lang");
 
             templateBindings = null;
-            schemeTemplate = null;
             fileName = "";
             modified = false;
         }
+
 
         /// <summary>
         /// Gets or sets a value indicating whether the bindings were modified.
@@ -106,8 +105,8 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             if (appDictLoaded)
             {
                 Translator.TranslateForm(this, GetType().FullName, null);
-                //ofdTable.SetFilter(TablePhrases.TableFileFilter);
-                //sfdTable.SetFilter(TablePhrases.TableFileFilter);
+                ofdBindings.SetFilter(AppPhrases.BindingsFileFilter);
+                sfdBindings.SetFilter(AppPhrases.BindingsFileFilter);
             }
         }
 
@@ -245,7 +244,11 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         /// </summary>
         private void DisplayBindings()
         {
+            txtTemplateFileName.TextChanged -= txtTemplateFileName_TextChanged;
             txtTemplateFileName.Text = templateBindings.TemplateFileName;
+            txtTemplateFileName.TextChanged += txtTemplateFileName_TextChanged;
+
+            LoadSchemeTemplate();
         }
 
         /// <summary>
@@ -279,7 +282,9 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         /// </summary>
         private void LoadSchemeTemplate()
         {
-            schemeTemplate = null;
+            // display empty data
+            cbTitleComponent.DataSource = null;
+            bsBindings.DataSource = null;
 
             if (FindInterfaceDir(out string interfaceDir))
             {
@@ -287,14 +292,40 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
 
                 if (File.Exists(schemeFileName))
                 {
-                    schemeTemplate = new SchemeView();
-                    if (!schemeTemplate.LoadFromFile(schemeFileName, out string errMsg))
-                        ScadaUiUtils.ShowError(errMsg);
-                    else if (schemeTemplate.LoadErrors.Count > 0)
-                        ScadaUiUtils.ShowError(schemeTemplate.LoadErrors[0]);
+                    if (SchemeParser.Parse(schemeFileName, out List<ComponentItem> components, 
+                        out List<ComponentBindingItem> newComponentBindings, out string errMsg))
+                    {
+                        // merge bindings
+                        foreach (ComponentBindingItem bindingItem in newComponentBindings)
+                        {
+                            if (templateBindings.ComponentBindings.TryGetValue(bindingItem.CompID, 
+                                out ComponentBinding binding))
+                            {
+                                bindingItem.InCnlNum = binding.InCnlNum;
+                                bindingItem.CtrlCnlNum = binding.CtrlCnlNum;
+                            }
+                        }
 
-                    //
-                    List<ComponentBinding> componentBindings = new List<ComponentBinding>(); // SchemeParser.Parse(schemeFileName)
+                        templateBindings.ComponentBindings.Clear();
+                        newComponentBindings.ForEach(x => { templateBindings.ComponentBindings[x.CompID] = x; });
+
+                        // fill the component combo box
+                        components.Sort();
+                        cbTitleComponent.SelectedIndexChanged -= cbTitleComponent_SelectedIndexChanged;
+                        cbTitleComponent.ValueMember = "ID";
+                        cbTitleComponent.DisplayMember = "DisplayName";
+                        cbTitleComponent.DataSource = components;
+                        cbTitleComponent.SelectedValue = templateBindings.TitleCompID;
+                        cbTitleComponent.SelectedIndexChanged += cbTitleComponent_SelectedIndexChanged;
+
+                        // display bindings
+                        bsBindings.DataSource = templateBindings.ComponentBindings.Values;
+                    }
+                    else
+                    {
+                        bsBindings.DataSource = null;
+                        ScadaUiUtils.ShowError(errMsg);
+                    }
                 }
             }
 
@@ -310,6 +341,12 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             LocalizeForm();
             string[] args = Environment.GetCommandLineArgs();
             OpenOrCreateBindings(args.Length > 1 ? args[1] : "");
+        }
+
+        private void FrmMain_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            // confirm saving the bindings before closing
+            e.Cancel = !ConfirmCloseBindings();
         }
 
         private void btnFileNew_Click(object sender, EventArgs e)
@@ -350,6 +387,18 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         private void btnReloadTemplate_Click(object sender, EventArgs e)
         {
             LoadSchemeTemplate();
+        }
+
+        private void txtTemplateFileName_TextChanged(object sender, EventArgs e)
+        {
+            templateBindings.TemplateFileName = txtTemplateFileName.Text;
+            Modified = true;
+        }
+
+        private void cbTitleComponent_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            templateBindings.TitleCompID = cbTitleComponent.SelectedValue is int id ? id : 0;
+            Modified = true;
         }
     }
 }
