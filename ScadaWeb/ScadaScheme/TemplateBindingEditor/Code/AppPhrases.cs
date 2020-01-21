@@ -39,6 +39,10 @@ namespace Scada.Scheme.TemplateBindingEditor.Code
         public static string BindingsFileFilter { get; private set; }
         public static string SaveBindingsConfirm { get; private set; }
         public static string InterfaceDirNotFound { get; private set; }
+        public static string UnableOpenTemplate { get; private set; }
+        public static string UnableLoadTemplate { get; private set; }
+        public static string TemplateNotFound { get; private set; }
+        public static string WrongTemplatePath { get; private set; }
 
         public static void Init()
         {
@@ -50,6 +54,10 @@ namespace Scada.Scheme.TemplateBindingEditor.Code
             BindingsFileFilter = dict.GetPhrase("BindingsFileFilter");
             SaveBindingsConfirm = dict.GetPhrase("SaveBindingsConfirm");
             InterfaceDirNotFound = dict.GetPhrase("InterfaceDirNotFound");
+            UnableLoadTemplate = dict.GetPhrase("UnableLoadTemplate");
+            UnableOpenTemplate = dict.GetPhrase("UnableOpenTemplate");
+            TemplateNotFound = dict.GetPhrase("TemplateNotFound");
+            WrongTemplatePath = dict.GetPhrase("WrongTemplatePath");
         }
     }
 }

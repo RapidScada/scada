@@ -53,6 +53,8 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
 
         private TemplateBindings templateBindings; // the edited bindings
         private string fileName;                   // the bindings file name
+        private string interfaceDir;               // the interface directory of the project
+        private bool changing;                     // controls are being changed programmatically
         private bool modified;                     // the bindings were modified
 
 
@@ -68,6 +70,8 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
 
             templateBindings = null;
             fileName = "";
+            interfaceDir = "";
+            changing = false;
             modified = false;
         }
 
@@ -116,7 +120,9 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         private void NewBindings()
         {
             fileName = "";
+            interfaceDir = "";
             templateBindings = new TemplateBindings();
+            DisplayInterfaceDir();
             DisplayBindings();
             Modified = false;
         }
@@ -132,6 +138,8 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             if (!templateBindings.Load(fileName, out string errMsg))
                 ScadaUiUtils.ShowError(errMsg);
 
+            FindInterfaceDir();
+            DisplayInterfaceDir();
             DisplayBindings();
             Modified = false;
         }
@@ -166,6 +174,8 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             if (templateBindings.Save(fileName, out string errMsg))
             {
                 this.fileName = fileName;
+                FindInterfaceDir();
+                DisplayInterfaceDir();
                 Modified = false;
                 return true;
             }
@@ -191,15 +201,7 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
                 sfdBindings.FileName = Path.GetFileName(fileName);
             }
 
-            if (sfdBindings.ShowDialog() == DialogResult.OK && SaveBindings(sfdBindings.FileName))
-            {
-                //RefreshBase();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return sfdBindings.ShowDialog() == DialogResult.OK && SaveBindings(sfdBindings.FileName);
         }
 
         /// <summary>
@@ -240,21 +242,32 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         }
 
         /// <summary>
+        /// Displays the interface directory.
+        /// </summary>
+        private void DisplayInterfaceDir()
+        {
+            lblInterfaceDir.Text = string.IsNullOrEmpty(interfaceDir) ?
+              AppPhrases.InterfaceDirNotFound :
+              interfaceDir;
+        }
+
+        /// <summary>
         /// Displays the edited bindings.
         /// </summary>
         private void DisplayBindings()
         {
-            txtTemplateFileName.TextChanged -= txtTemplateFileName_TextChanged;
+            changing = true;
             txtTemplateFileName.Text = templateBindings.TemplateFileName;
             txtTemplateFileName.TextChanged += txtTemplateFileName_TextChanged;
+            changing = false;
 
-            LoadSchemeTemplate();
+            LoadSchemeTemplate(false);
         }
 
         /// <summary>
         /// Finds the interface directory, relative to the bindings file name.
         /// </summary>
-        private bool FindInterfaceDir(out string interfaceDir)
+        private bool FindInterfaceDir()
         {
             if (!string.IsNullOrEmpty(fileName))
             {
@@ -280,19 +293,25 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
         /// <summary>
         /// Loads a scheme template if possible. 
         /// </summary>
-        private void LoadSchemeTemplate()
+        private void LoadSchemeTemplate(bool showMsg)
         {
             // display empty data
+            changing = true;
             cbTitleComponent.DataSource = null;
             bsBindings.DataSource = null;
 
-            if (FindInterfaceDir(out string interfaceDir))
+            if (string.IsNullOrEmpty(interfaceDir))
             {
-                string schemeFileName = Path.Combine(interfaceDir, txtTemplateFileName.Text);
+                if (showMsg)
+                    ScadaUiUtils.ShowWarning(AppPhrases.UnableLoadTemplate);
+            }
+            else
+            {
+                string templateFileName = Path.Combine(interfaceDir, txtTemplateFileName.Text);
 
-                if (File.Exists(schemeFileName))
+                if (File.Exists(templateFileName))
                 {
-                    if (SchemeParser.Parse(schemeFileName, out List<ComponentItem> components, 
+                    if (SchemeParser.Parse(templateFileName, out List<ComponentItem> components, 
                         out List<ComponentBindingItem> newComponentBindings, out string errMsg))
                     {
                         // merge bindings
@@ -311,12 +330,10 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
 
                         // fill the component combo box
                         components.Sort();
-                        cbTitleComponent.SelectedIndexChanged -= cbTitleComponent_SelectedIndexChanged;
                         cbTitleComponent.ValueMember = "ID";
                         cbTitleComponent.DisplayMember = "DisplayName";
                         cbTitleComponent.DataSource = components;
                         cbTitleComponent.SelectedValue = templateBindings.TitleCompID;
-                        cbTitleComponent.SelectedIndexChanged += cbTitleComponent_SelectedIndexChanged;
 
                         // display bindings
                         bsBindings.DataSource = templateBindings.ComponentBindings.Values;
@@ -327,12 +344,13 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
                         ScadaUiUtils.ShowError(errMsg);
                     }
                 }
+                else if (showMsg)
+                {
+                    ScadaUiUtils.ShowWarning(string.Format(AppPhrases.TemplateNotFound, templateFileName));
+                }
             }
 
-            // display the interface directory
-            lblInterfaceDir.Text = string.IsNullOrEmpty(interfaceDir) ? 
-                AppPhrases.InterfaceDirNotFound : 
-                interfaceDir;
+            changing = false;
         }
 
 
@@ -379,26 +397,49 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
             SaveBindingsAs();
         }
 
-        private void btnOpenTemplate_Click(object sender, EventArgs e)
+        private void btnBrowseTemplate_Click(object sender, EventArgs e)
         {
+            ofdScheme.FileName = "";
 
+            if (string.IsNullOrEmpty(interfaceDir))
+            {
+                ScadaUiUtils.ShowWarning(AppPhrases.UnableOpenTemplate);
+            }
+            else if (ofdScheme.ShowDialog() == DialogResult.OK)
+            {
+                if (ofdScheme.FileName.StartsWith(interfaceDir, StringComparison.OrdinalIgnoreCase))
+                {
+                    txtTemplateFileName.Text = ofdScheme.FileName.Substring(interfaceDir.Length);
+                    LoadSchemeTemplate(true);
+                }
+                else
+                {
+                    ScadaUiUtils.ShowWarning(AppPhrases.WrongTemplatePath);
+                }
+            }
         }
 
         private void btnReloadTemplate_Click(object sender, EventArgs e)
         {
-            LoadSchemeTemplate();
+            LoadSchemeTemplate(true);
         }
 
         private void txtTemplateFileName_TextChanged(object sender, EventArgs e)
         {
-            templateBindings.TemplateFileName = txtTemplateFileName.Text;
-            Modified = true;
+            if (!changing)
+            {
+                templateBindings.TemplateFileName = txtTemplateFileName.Text;
+                Modified = true;
+            }
         }
 
         private void cbTitleComponent_SelectedIndexChanged(object sender, EventArgs e)
         {
-            templateBindings.TitleCompID = cbTitleComponent.SelectedValue is int id ? id : 0;
-            Modified = true;
+            if (!changing)
+            {
+                templateBindings.TitleCompID = cbTitleComponent.SelectedValue is int id ? id : 0;
+                Modified = true;
+            }
         }
     }
 }

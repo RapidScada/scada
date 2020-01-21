@@ -30,7 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmMain));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.btnFileNew = new System.Windows.Forms.ToolStripButton();
             this.btnFileOpen = new System.Windows.Forms.ToolStripButton();
@@ -41,27 +41,27 @@
             this.cbTitleComponent = new System.Windows.Forms.ComboBox();
             this.lblTitleComponent = new System.Windows.Forms.Label();
             this.btnReloadTemplate = new System.Windows.Forms.Button();
-            this.btnOpenTemplate = new System.Windows.Forms.Button();
+            this.btnBrowseTemplate = new System.Windows.Forms.Button();
             this.txtTemplateFileName = new System.Windows.Forms.TextBox();
             this.lblTemplateFileName = new System.Windows.Forms.Label();
             this.tabBindings = new System.Windows.Forms.TabPage();
             this.dgvBindings = new System.Windows.Forms.DataGridView();
+            this.colComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.bsBindings = new System.Windows.Forms.BindingSource(this.components);
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.lblInterfaceDir = new System.Windows.Forms.ToolStripStatusLabel();
             this.ofdBindings = new System.Windows.Forms.OpenFileDialog();
             this.sfdBindings = new System.Windows.Forms.SaveFileDialog();
             this.ofdScheme = new System.Windows.Forms.OpenFileDialog();
-            this.bsBindings = new System.Windows.Forms.BindingSource(this.components);
-            this.colComponent = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colCtrlCnlNum = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.toolStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.tabGeneral.SuspendLayout();
             this.tabBindings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvBindings)).BeginInit();
-            this.statusStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.bsBindings)).BeginInit();
+            this.statusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolStrip
@@ -134,7 +134,7 @@
             this.tabGeneral.Controls.Add(this.cbTitleComponent);
             this.tabGeneral.Controls.Add(this.lblTitleComponent);
             this.tabGeneral.Controls.Add(this.btnReloadTemplate);
-            this.tabGeneral.Controls.Add(this.btnOpenTemplate);
+            this.tabGeneral.Controls.Add(this.btnBrowseTemplate);
             this.tabGeneral.Controls.Add(this.txtTemplateFileName);
             this.tabGeneral.Controls.Add(this.lblTemplateFileName);
             this.tabGeneral.Location = new System.Drawing.Point(4, 22);
@@ -174,15 +174,15 @@
             this.btnReloadTemplate.UseVisualStyleBackColor = true;
             this.btnReloadTemplate.Click += new System.EventHandler(this.btnReloadTemplate_Click);
             // 
-            // btnOpenTemplate
+            // btnBrowseTemplate
             // 
-            this.btnOpenTemplate.Location = new System.Drawing.Point(412, 18);
-            this.btnOpenTemplate.Name = "btnOpenTemplate";
-            this.btnOpenTemplate.Size = new System.Drawing.Size(75, 23);
-            this.btnOpenTemplate.TabIndex = 2;
-            this.btnOpenTemplate.Text = "Browse...";
-            this.btnOpenTemplate.UseVisualStyleBackColor = true;
-            this.btnOpenTemplate.Click += new System.EventHandler(this.btnOpenTemplate_Click);
+            this.btnBrowseTemplate.Location = new System.Drawing.Point(412, 18);
+            this.btnBrowseTemplate.Name = "btnBrowseTemplate";
+            this.btnBrowseTemplate.Size = new System.Drawing.Size(75, 23);
+            this.btnBrowseTemplate.TabIndex = 2;
+            this.btnBrowseTemplate.Text = "Browse...";
+            this.btnBrowseTemplate.UseVisualStyleBackColor = true;
+            this.btnBrowseTemplate.Click += new System.EventHandler(this.btnBrowseTemplate_Click);
             // 
             // txtTemplateFileName
             // 
@@ -218,14 +218,14 @@
             this.dgvBindings.AllowUserToDeleteRows = false;
             this.dgvBindings.AllowUserToResizeRows = false;
             this.dgvBindings.AutoGenerateColumns = false;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvBindings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleCenter;
+            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle1.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvBindings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
             this.dgvBindings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvBindings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.colComponent,
@@ -237,6 +237,35 @@
             this.dgvBindings.Name = "dgvBindings";
             this.dgvBindings.Size = new System.Drawing.Size(720, 432);
             this.dgvBindings.TabIndex = 0;
+            // 
+            // colComponent
+            // 
+            this.colComponent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
+            this.colComponent.DataPropertyName = "CompDisplayName";
+            this.colComponent.HeaderText = "Component";
+            this.colComponent.Name = "colComponent";
+            this.colComponent.ReadOnly = true;
+            this.colComponent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            // 
+            // colCnlNum
+            // 
+            this.colCnlNum.DataPropertyName = "InCnlNum";
+            this.colCnlNum.HeaderText = "Input Channel";
+            this.colCnlNum.Name = "colCnlNum";
+            this.colCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colCnlNum.Width = 120;
+            // 
+            // colCtrlCnlNum
+            // 
+            this.colCtrlCnlNum.DataPropertyName = "CtrlCnlNum";
+            this.colCtrlCnlNum.HeaderText = "Output Channel";
+            this.colCtrlCnlNum.Name = "colCtrlCnlNum";
+            this.colCtrlCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
+            this.colCtrlCnlNum.Width = 120;
+            // 
+            // bsBindings
+            // 
+            this.bsBindings.AllowNew = false;
             // 
             // statusStrip
             // 
@@ -272,35 +301,6 @@
             this.ofdScheme.DefaultExt = "*.sch";
             this.ofdScheme.Filter = "Schemes (*.sch)|*.sch|All Files (*.*)|*.*";
             // 
-            // bsBindings
-            // 
-            this.bsBindings.AllowNew = false;
-            // 
-            // colComponent
-            // 
-            this.colComponent.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.Fill;
-            this.colComponent.DataPropertyName = "CompDisplayName";
-            this.colComponent.HeaderText = "Component";
-            this.colComponent.Name = "colComponent";
-            this.colComponent.ReadOnly = true;
-            this.colComponent.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            // 
-            // colCnlNum
-            // 
-            this.colCnlNum.DataPropertyName = "InCnlNum";
-            this.colCnlNum.HeaderText = "Input Channel";
-            this.colCnlNum.Name = "colCnlNum";
-            this.colCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCnlNum.Width = 120;
-            // 
-            // colCtrlCnlNum
-            // 
-            this.colCtrlCnlNum.DataPropertyName = "CtrlCnlNum";
-            this.colCtrlCnlNum.HeaderText = "Output Channel";
-            this.colCtrlCnlNum.Name = "colCtrlCnlNum";
-            this.colCtrlCnlNum.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.NotSortable;
-            this.colCtrlCnlNum.Width = 120;
-            // 
             // FrmMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -321,9 +321,9 @@
             this.tabGeneral.PerformLayout();
             this.tabBindings.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dgvBindings)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.bsBindings)).EndInit();
             this.statusStrip.ResumeLayout(false);
             this.statusStrip.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.bsBindings)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -342,7 +342,7 @@
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.Label lblTemplateFileName;
         private System.Windows.Forms.TextBox txtTemplateFileName;
-        private System.Windows.Forms.Button btnOpenTemplate;
+        private System.Windows.Forms.Button btnBrowseTemplate;
         private System.Windows.Forms.ComboBox cbTitleComponent;
         private System.Windows.Forms.Label lblTitleComponent;
         private System.Windows.Forms.Button btnReloadTemplate;

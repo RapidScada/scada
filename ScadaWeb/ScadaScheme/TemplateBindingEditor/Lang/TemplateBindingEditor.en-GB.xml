@@ -8,7 +8,11 @@
     <Phrase key="BindingsFileFilter">Template Bindings (*.stb)|*.stb|All Files (*.*)|*.*</Phrase>
     <Phrase key="SaveBindingsConfirm">The bindings have been modified. Save the changes?</Phrase>
     <Phrase key="lblInterfaceDir.ToolTip">The interface directory of the project</Phrase>
-    <Phrase key="InterfaceDirNotFound">The interface directory not found</Phrase>
+    <Phrase key="InterfaceDirNotFound">The interface directory not found. Save the bindings in the Webstation configuration directory of the project.</Phrase>
+    <Phrase key="UnableOpenTemplate">Unable to open a scheme template in case the interface directory not found.</Phrase>
+    <Phrase key="UnableLoadTemplate">Unable to load a scheme template in case the interface directory not found.</Phrase>
+    <Phrase key="TemplateNotFound">Scheme template not found:&#13;&#10;{0}</Phrase>
+    <Phrase key="WrongTemplatePath">The scheme must be located inside the interface directory.</Phrase>
     <Phrase key=""></Phrase>
   </Dictionary>
 </TemplateBindingEditorDictionaries>
