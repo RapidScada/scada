@@ -29,15 +29,6 @@
         private void InitializeComponent()
         {
             this.gbPathOptions = new System.Windows.Forms.GroupBox();
-            this.btnBrowseTextEditorPath = new System.Windows.Forms.Button();
-            this.txtTextEditorPath = new System.Windows.Forms.TextBox();
-            this.lblTextEditorPath = new System.Windows.Forms.Label();
-            this.btnBrowseTableEditorPath = new System.Windows.Forms.Button();
-            this.txtTableEditorPath = new System.Windows.Forms.TextBox();
-            this.lblTableEditorPath = new System.Windows.Forms.Label();
-            this.btnBrowseSchemeEditorPath = new System.Windows.Forms.Button();
-            this.txtSchemeEditorPath = new System.Windows.Forms.TextBox();
-            this.lblSchemeEditorPath = new System.Windows.Forms.Label();
             this.btnBrowseCommDir = new System.Windows.Forms.Button();
             this.txtCommDir = new System.Windows.Forms.TextBox();
             this.lblCommDir = new System.Windows.Forms.Label();
@@ -57,118 +48,40 @@
             this.btnCancel = new System.Windows.Forms.Button();
             this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
+            this.lvFileAssociations = new System.Windows.Forms.ListView();
+            this.btnAddFileAssociation = new System.Windows.Forms.Button();
+            this.btnEditFileAssociation = new System.Windows.Forms.Button();
+            this.btnDeleteFileAssociation = new System.Windows.Forms.Button();
+            this.colExt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.colPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabGeneral = new System.Windows.Forms.TabPage();
+            this.tabFileAssociations = new System.Windows.Forms.TabPage();
             this.gbPathOptions.SuspendLayout();
             this.gbChannelOptions.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlGap)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlShift)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlMult)).BeginInit();
+            this.tabControl.SuspendLayout();
+            this.tabGeneral.SuspendLayout();
+            this.tabFileAssociations.SuspendLayout();
             this.SuspendLayout();
             // 
             // gbPathOptions
             // 
-            this.gbPathOptions.Controls.Add(this.btnBrowseTextEditorPath);
-            this.gbPathOptions.Controls.Add(this.txtTextEditorPath);
-            this.gbPathOptions.Controls.Add(this.lblTextEditorPath);
-            this.gbPathOptions.Controls.Add(this.btnBrowseTableEditorPath);
-            this.gbPathOptions.Controls.Add(this.txtTableEditorPath);
-            this.gbPathOptions.Controls.Add(this.lblTableEditorPath);
-            this.gbPathOptions.Controls.Add(this.btnBrowseSchemeEditorPath);
-            this.gbPathOptions.Controls.Add(this.txtSchemeEditorPath);
-            this.gbPathOptions.Controls.Add(this.lblSchemeEditorPath);
             this.gbPathOptions.Controls.Add(this.btnBrowseCommDir);
             this.gbPathOptions.Controls.Add(this.txtCommDir);
             this.gbPathOptions.Controls.Add(this.lblCommDir);
             this.gbPathOptions.Controls.Add(this.btnBrowseServerDir);
             this.gbPathOptions.Controls.Add(this.txtServerDir);
             this.gbPathOptions.Controls.Add(this.lblServerDir);
-            this.gbPathOptions.Location = new System.Drawing.Point(12, 12);
+            this.gbPathOptions.Location = new System.Drawing.Point(6, 6);
             this.gbPathOptions.Name = "gbPathOptions";
             this.gbPathOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbPathOptions.Size = new System.Drawing.Size(410, 223);
+            this.gbPathOptions.Size = new System.Drawing.Size(410, 106);
             this.gbPathOptions.TabIndex = 0;
             this.gbPathOptions.TabStop = false;
             this.gbPathOptions.Text = "Paths";
-            // 
-            // btnBrowseTextEditorPath
-            // 
-            this.btnBrowseTextEditorPath.Location = new System.Drawing.Point(322, 187);
-            this.btnBrowseTextEditorPath.Name = "btnBrowseTextEditorPath";
-            this.btnBrowseTextEditorPath.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowseTextEditorPath.TabIndex = 14;
-            this.btnBrowseTextEditorPath.Text = "Browse...";
-            this.btnBrowseTextEditorPath.UseVisualStyleBackColor = true;
-            this.btnBrowseTextEditorPath.Click += new System.EventHandler(this.btnBrowseTextEditorPath_Click);
-            // 
-            // txtTextEditorPath
-            // 
-            this.txtTextEditorPath.Location = new System.Drawing.Point(13, 188);
-            this.txtTextEditorPath.Name = "txtTextEditorPath";
-            this.txtTextEditorPath.Size = new System.Drawing.Size(303, 20);
-            this.txtTextEditorPath.TabIndex = 13;
-            this.txtTextEditorPath.TextChanged += new System.EventHandler(this.control_Changed);
-            // 
-            // lblTextEditorPath
-            // 
-            this.lblTextEditorPath.AutoSize = true;
-            this.lblTextEditorPath.Location = new System.Drawing.Point(10, 172);
-            this.lblTextEditorPath.Name = "lblTextEditorPath";
-            this.lblTextEditorPath.Size = new System.Drawing.Size(57, 13);
-            this.lblTextEditorPath.TabIndex = 12;
-            this.lblTextEditorPath.Text = "Text editor";
-            // 
-            // btnBrowseTableEditorPath
-            // 
-            this.btnBrowseTableEditorPath.Location = new System.Drawing.Point(322, 148);
-            this.btnBrowseTableEditorPath.Name = "btnBrowseTableEditorPath";
-            this.btnBrowseTableEditorPath.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowseTableEditorPath.TabIndex = 11;
-            this.btnBrowseTableEditorPath.Text = "Browse...";
-            this.btnBrowseTableEditorPath.UseVisualStyleBackColor = true;
-            this.btnBrowseTableEditorPath.Click += new System.EventHandler(this.btnBrowseTableEditorPath_Click);
-            // 
-            // txtTableEditorPath
-            // 
-            this.txtTableEditorPath.Location = new System.Drawing.Point(13, 149);
-            this.txtTableEditorPath.Name = "txtTableEditorPath";
-            this.txtTableEditorPath.Size = new System.Drawing.Size(303, 20);
-            this.txtTableEditorPath.TabIndex = 10;
-            this.txtTableEditorPath.TextChanged += new System.EventHandler(this.control_Changed);
-            // 
-            // lblTableEditorPath
-            // 
-            this.lblTableEditorPath.AutoSize = true;
-            this.lblTableEditorPath.Location = new System.Drawing.Point(10, 133);
-            this.lblTableEditorPath.Name = "lblTableEditorPath";
-            this.lblTableEditorPath.Size = new System.Drawing.Size(63, 13);
-            this.lblTableEditorPath.TabIndex = 9;
-            this.lblTableEditorPath.Text = "Table editor";
-            // 
-            // btnBrowseSchemeEditorPath
-            // 
-            this.btnBrowseSchemeEditorPath.Location = new System.Drawing.Point(322, 109);
-            this.btnBrowseSchemeEditorPath.Name = "btnBrowseSchemeEditorPath";
-            this.btnBrowseSchemeEditorPath.Size = new System.Drawing.Size(75, 23);
-            this.btnBrowseSchemeEditorPath.TabIndex = 8;
-            this.btnBrowseSchemeEditorPath.Text = "Browse...";
-            this.btnBrowseSchemeEditorPath.UseVisualStyleBackColor = true;
-            this.btnBrowseSchemeEditorPath.Click += new System.EventHandler(this.btnBrowseSchemeEditorPath_Click);
-            // 
-            // txtSchemeEditorPath
-            // 
-            this.txtSchemeEditorPath.Location = new System.Drawing.Point(13, 110);
-            this.txtSchemeEditorPath.Name = "txtSchemeEditorPath";
-            this.txtSchemeEditorPath.Size = new System.Drawing.Size(303, 20);
-            this.txtSchemeEditorPath.TabIndex = 7;
-            this.txtSchemeEditorPath.TextChanged += new System.EventHandler(this.control_Changed);
-            // 
-            // lblSchemeEditorPath
-            // 
-            this.lblSchemeEditorPath.AutoSize = true;
-            this.lblSchemeEditorPath.Location = new System.Drawing.Point(10, 94);
-            this.lblSchemeEditorPath.Name = "lblSchemeEditorPath";
-            this.lblSchemeEditorPath.Size = new System.Drawing.Size(75, 13);
-            this.lblSchemeEditorPath.TabIndex = 6;
-            this.lblSchemeEditorPath.Text = "Scheme editor";
             // 
             // btnBrowseCommDir
             // 
@@ -229,12 +142,12 @@
             this.gbChannelOptions.Controls.Add(this.chkPrependDeviceName);
             this.gbChannelOptions.Controls.Add(this.numCnlGap);
             this.gbChannelOptions.Controls.Add(this.lblCnlGap);
-            this.gbChannelOptions.Controls.Add(this.lblCnlShift);
             this.gbChannelOptions.Controls.Add(this.numCnlShift);
+            this.gbChannelOptions.Controls.Add(this.lblCnlShift);
             this.gbChannelOptions.Controls.Add(this.lblExplanation);
             this.gbChannelOptions.Controls.Add(this.numCnlMult);
             this.gbChannelOptions.Controls.Add(this.lblCnlMult);
-            this.gbChannelOptions.Location = new System.Drawing.Point(12, 241);
+            this.gbChannelOptions.Location = new System.Drawing.Point(6, 118);
             this.gbChannelOptions.Name = "gbChannelOptions";
             this.gbChannelOptions.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
             this.gbChannelOptions.Size = new System.Drawing.Size(410, 104);
@@ -350,10 +263,10 @@
             // 
             // btnOK
             // 
-            this.btnOK.Location = new System.Drawing.Point(266, 351);
+            this.btnOK.Location = new System.Drawing.Point(266, 260);
             this.btnOK.Name = "btnOK";
             this.btnOK.Size = new System.Drawing.Size(75, 23);
-            this.btnOK.TabIndex = 2;
+            this.btnOK.TabIndex = 1;
             this.btnOK.Text = "OK";
             this.btnOK.UseVisualStyleBackColor = true;
             this.btnOK.Click += new System.EventHandler(this.btnOK_Click);
@@ -361,10 +274,10 @@
             // btnCancel
             // 
             this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.btnCancel.Location = new System.Drawing.Point(347, 351);
+            this.btnCancel.Location = new System.Drawing.Point(347, 260);
             this.btnCancel.Name = "btnCancel";
             this.btnCancel.Size = new System.Drawing.Size(75, 23);
-            this.btnCancel.TabIndex = 3;
+            this.btnCancel.TabIndex = 2;
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
@@ -372,17 +285,107 @@
             // 
             this.openFileDialog.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
             // 
+            // lvFileAssociations
+            // 
+            this.lvFileAssociations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.colExt,
+            this.colPath});
+            this.lvFileAssociations.FullRowSelect = true;
+            this.lvFileAssociations.GridLines = true;
+            this.lvFileAssociations.HideSelection = false;
+            this.lvFileAssociations.Location = new System.Drawing.Point(6, 35);
+            this.lvFileAssociations.MultiSelect = false;
+            this.lvFileAssociations.Name = "lvFileAssociations";
+            this.lvFileAssociations.ShowItemToolTips = true;
+            this.lvFileAssociations.Size = new System.Drawing.Size(414, 187);
+            this.lvFileAssociations.TabIndex = 3;
+            this.lvFileAssociations.UseCompatibleStateImageBehavior = false;
+            this.lvFileAssociations.View = System.Windows.Forms.View.Details;
+            // 
+            // btnAddFileAssociation
+            // 
+            this.btnAddFileAssociation.Location = new System.Drawing.Point(6, 6);
+            this.btnAddFileAssociation.Name = "btnAddFileAssociation";
+            this.btnAddFileAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnAddFileAssociation.TabIndex = 0;
+            this.btnAddFileAssociation.Text = "Add";
+            this.btnAddFileAssociation.UseVisualStyleBackColor = true;
+            // 
+            // btnEditFileAssociation
+            // 
+            this.btnEditFileAssociation.Location = new System.Drawing.Point(87, 6);
+            this.btnEditFileAssociation.Name = "btnEditFileAssociation";
+            this.btnEditFileAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnEditFileAssociation.TabIndex = 1;
+            this.btnEditFileAssociation.Text = "Edit";
+            this.btnEditFileAssociation.UseVisualStyleBackColor = true;
+            // 
+            // btnDeleteFileAssociation
+            // 
+            this.btnDeleteFileAssociation.Location = new System.Drawing.Point(168, 6);
+            this.btnDeleteFileAssociation.Name = "btnDeleteFileAssociation";
+            this.btnDeleteFileAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteFileAssociation.TabIndex = 2;
+            this.btnDeleteFileAssociation.Text = "Delete";
+            this.btnDeleteFileAssociation.UseVisualStyleBackColor = true;
+            // 
+            // colExt
+            // 
+            this.colExt.Text = "File Extenstion";
+            this.colExt.Width = 90;
+            // 
+            // colPath
+            // 
+            this.colPath.Text = "Excutable Path";
+            this.colPath.Width = 300;
+            // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabGeneral);
+            this.tabControl.Controls.Add(this.tabFileAssociations);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Top;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(434, 254);
+            this.tabControl.TabIndex = 0;
+            // 
+            // tabGeneral
+            // 
+            this.tabGeneral.Controls.Add(this.gbPathOptions);
+            this.tabGeneral.Controls.Add(this.gbChannelOptions);
+            this.tabGeneral.Location = new System.Drawing.Point(4, 22);
+            this.tabGeneral.Name = "tabGeneral";
+            this.tabGeneral.Padding = new System.Windows.Forms.Padding(3);
+            this.tabGeneral.Size = new System.Drawing.Size(426, 228);
+            this.tabGeneral.TabIndex = 0;
+            this.tabGeneral.Text = "General";
+            this.tabGeneral.UseVisualStyleBackColor = true;
+            // 
+            // tabFileAssociations
+            // 
+            this.tabFileAssociations.Controls.Add(this.lvFileAssociations);
+            this.tabFileAssociations.Controls.Add(this.btnDeleteFileAssociation);
+            this.tabFileAssociations.Controls.Add(this.btnEditFileAssociation);
+            this.tabFileAssociations.Controls.Add(this.btnAddFileAssociation);
+            this.tabFileAssociations.Location = new System.Drawing.Point(4, 22);
+            this.tabFileAssociations.Name = "tabFileAssociations";
+            this.tabFileAssociations.Padding = new System.Windows.Forms.Padding(3);
+            this.tabFileAssociations.Size = new System.Drawing.Size(426, 228);
+            this.tabFileAssociations.TabIndex = 1;
+            this.tabFileAssociations.Text = "File Associations";
+            this.tabFileAssociations.UseVisualStyleBackColor = true;
+            // 
             // FrmSettings
             // 
             this.AcceptButton = this.btnOK;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnCancel;
-            this.ClientSize = new System.Drawing.Size(434, 386);
+            this.ClientSize = new System.Drawing.Size(434, 295);
+            this.Controls.Add(this.tabControl);
             this.Controls.Add(this.btnCancel);
             this.Controls.Add(this.btnOK);
-            this.Controls.Add(this.gbChannelOptions);
-            this.Controls.Add(this.gbPathOptions);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -398,6 +401,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.numCnlGap)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlShift)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numCnlMult)).EndInit();
+            this.tabControl.ResumeLayout(false);
+            this.tabGeneral.ResumeLayout(false);
+            this.tabFileAssociations.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -411,12 +417,6 @@
         private System.Windows.Forms.Button btnBrowseCommDir;
         private System.Windows.Forms.TextBox txtCommDir;
         private System.Windows.Forms.Label lblCommDir;
-        private System.Windows.Forms.Button btnBrowseSchemeEditorPath;
-        private System.Windows.Forms.TextBox txtSchemeEditorPath;
-        private System.Windows.Forms.Label lblSchemeEditorPath;
-        private System.Windows.Forms.Button btnBrowseTableEditorPath;
-        private System.Windows.Forms.TextBox txtTableEditorPath;
-        private System.Windows.Forms.Label lblTableEditorPath;
         private System.Windows.Forms.GroupBox gbChannelOptions;
         private System.Windows.Forms.NumericUpDown numCnlMult;
         private System.Windows.Forms.Label lblCnlMult;
@@ -427,11 +427,17 @@
         private System.Windows.Forms.Label lblCnlGap;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.Button btnBrowseTextEditorPath;
-        private System.Windows.Forms.TextBox txtTextEditorPath;
-        private System.Windows.Forms.Label lblTextEditorPath;
         private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.CheckBox chkPrependDeviceName;
+        private System.Windows.Forms.Button btnDeleteFileAssociation;
+        private System.Windows.Forms.Button btnEditFileAssociation;
+        private System.Windows.Forms.Button btnAddFileAssociation;
+        private System.Windows.Forms.ListView lvFileAssociations;
+        private System.Windows.Forms.ColumnHeader colExt;
+        private System.Windows.Forms.ColumnHeader colPath;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabGeneral;
+        private System.Windows.Forms.TabPage tabFileAssociations;
     }
 }

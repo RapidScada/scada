@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Config;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -91,15 +92,33 @@ namespace Scada.Admin.App.Forms.Tools
             PathOptions pathOptions = settings.PathOptions;
             txtServerDir.Text = pathOptions.ServerDir;
             txtCommDir.Text = pathOptions.CommDir;
-            txtSchemeEditorPath.Text = pathOptions.SchemeEditorPath;
-            txtTableEditorPath.Text = pathOptions.TableEditorPath;
-            txtTextEditorPath.Text = pathOptions.TextEditorPath;
+            //txtSchemeEditorPath.Text = pathOptions.SchemeEditorPath;
+            //txtTableEditorPath.Text = pathOptions.TableEditorPath;
+            //txtTextEditorPath.Text = pathOptions.TextEditorPath;
 
             ChannelOptions channelOptions = settings.ChannelOptions;
             numCnlMult.SetValue(channelOptions.CnlMult);
             numCnlShift.SetValue(channelOptions.CnlShift);
             numCnlGap.SetValue(channelOptions.CnlGap);
             chkPrependDeviceName.Checked = channelOptions.PrependDeviceName;
+
+            try
+            {
+                lvFileAssociations.BeginUpdate();
+                lvFileAssociations.Items.Clear();
+
+                foreach (KeyValuePair<string, string> pair in settings.FileAssociations)
+                {
+                    lvFileAssociations.Items.Add(new ListViewItem(new string[] { pair.Key, pair.Value }));
+                }
+
+                if (lvFileAssociations.Items.Count > 0)
+                    lvFileAssociations.Items[0].Selected = true;
+            }
+            finally
+            {
+                lvFileAssociations.EndUpdate();
+            }
 
             modified = false;
         }
@@ -112,9 +131,9 @@ namespace Scada.Admin.App.Forms.Tools
             PathOptions pathOptions = settings.PathOptions;
             pathOptions.ServerDir = txtServerDir.Text;
             pathOptions.CommDir = txtCommDir.Text;
-            pathOptions.SchemeEditorPath = txtSchemeEditorPath.Text;
-            pathOptions.TableEditorPath = txtTableEditorPath.Text;
-            pathOptions.TextEditorPath = txtTextEditorPath.Text;
+            //pathOptions.SchemeEditorPath = txtSchemeEditorPath.Text;
+            //pathOptions.TableEditorPath = txtTableEditorPath.Text;
+            //pathOptions.TextEditorPath = txtTextEditorPath.Text;
 
             ChannelOptions channelOptions = settings.ChannelOptions;
             channelOptions.CnlMult = Convert.ToInt32(numCnlMult.Value);
@@ -182,14 +201,14 @@ namespace Scada.Admin.App.Forms.Tools
             // warnings
             StringBuilder sbWarn = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(txtSchemeEditorPath.Text) && !File.Exists(txtSchemeEditorPath.Text))
+            /*if (!string.IsNullOrWhiteSpace(txtSchemeEditorPath.Text) && !File.Exists(txtSchemeEditorPath.Text))
                 sbWarn.AppendError(lblSchemeEditorPath, CommonPhrases.FileNotFound);
 
             if (!string.IsNullOrWhiteSpace(txtTableEditorPath.Text) && !File.Exists(txtTableEditorPath.Text))
                 sbWarn.AppendError(lblTableEditorPath, CommonPhrases.FileNotFound);
 
             if (!string.IsNullOrWhiteSpace(txtTextEditorPath.Text) && !File.Exists(txtTextEditorPath.Text))
-                sbWarn.AppendError(lblTextEditorPath, CommonPhrases.FileNotFound);
+                sbWarn.AppendError(lblTextEditorPath, CommonPhrases.FileNotFound);*/
 
             if (sbWarn.Length > 0)
                 ScadaUiUtils.ShowWarning(sbWarn.ToString());
@@ -220,17 +239,17 @@ namespace Scada.Admin.App.Forms.Tools
 
         private void btnBrowseSchemeEditorPath_Click(object sender, EventArgs e)
         {
-            SelectFile(txtSchemeEditorPath);
+            //SelectFile(txtSchemeEditorPath);
         }
 
         private void btnBrowseTableEditorPath_Click(object sender, EventArgs e)
         {
-            SelectFile(txtTableEditorPath);
+            //SelectFile(txtTableEditorPath);
         }
 
         private void btnBrowseTextEditorPath_Click(object sender, EventArgs e)
         {
-            SelectFile(txtTextEditorPath);
+            //SelectFile(txtTextEditorPath);
         }
 
         private void control_Changed(object sender, EventArgs e)

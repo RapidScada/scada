@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Code;
@@ -350,10 +350,16 @@ namespace Scada.Admin.App.Forms
             {
                 if (tag.ExistingForm == null)
                 {
-                    KnownFileType fileType = fileItem.FileType;
-                    PathOptions pathOptions = appData.AppSettings.PathOptions;
+                    //KnownFileType fileType = fileItem.FileType;
+                    //PathOptions pathOptions = appData.AppSettings.PathOptions;
+                    string ext = Path.GetExtension(fileItem.Name).TrimStart('.').ToLowerInvariant();
 
-                    if (fileType == KnownFileType.SchemeView && File.Exists(pathOptions.SchemeEditorPath))
+                    if (appData.AppSettings.FileAssociations.TryGetValue(ext, out string path) && File.Exists(path))
+                    {
+                        // run external editor
+                        Process.Start(path, string.Format("\"{0}\"", fileItem.Path));
+                    }
+                    /*if (fileType == KnownFileType.SchemeView && File.Exists(pathOptions.SchemeEditorPath))
                     {
                         // run Scheme Editor
                         Process.Start(pathOptions.SchemeEditorPath, string.Format("\"{0}\"", fileItem.Path));
@@ -367,7 +373,7 @@ namespace Scada.Admin.App.Forms
                     {
                         // run text editor
                         Process.Start(pathOptions.TextEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }
+                    }*/
                     else
                     {
                         // create and display a new text editor form
