@@ -94,7 +94,7 @@ namespace Scada.Comm.Shell.Controls
         /// </summary>
         private ListViewItem CreateCustomParamItem(string name, string value)
         {
-            return new ListViewItem(new string[] {name, value });
+            return new ListViewItem(new string[] { name, value });
         }
 
         /// <summary>
