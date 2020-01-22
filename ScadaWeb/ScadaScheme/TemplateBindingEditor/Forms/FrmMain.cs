@@ -337,6 +337,9 @@ namespace Scada.Scheme.TemplateBindingEditor.Forms
 
                         // display bindings
                         bsBindings.DataSource = templateBindings.ComponentBindings.Values;
+
+                        if (showMsg)
+                            ScadaUiUtils.ShowInfo(AppPhrases.TemplateLoaded);
                     }
                     else
                     {

@@ -42,6 +42,7 @@ namespace Scada.Scheme.TemplateBindingEditor.Code
         public static string UnableOpenTemplate { get; private set; }
         public static string UnableLoadTemplate { get; private set; }
         public static string TemplateNotFound { get; private set; }
+        public static string TemplateLoaded { get; private set; }
         public static string WrongTemplatePath { get; private set; }
 
         public static void Init()
@@ -57,6 +58,7 @@ namespace Scada.Scheme.TemplateBindingEditor.Code
             UnableLoadTemplate = dict.GetPhrase("UnableLoadTemplate");
             UnableOpenTemplate = dict.GetPhrase("UnableOpenTemplate");
             TemplateNotFound = dict.GetPhrase("TemplateNotFound");
+            TemplateLoaded = dict.GetPhrase("TemplateLoaded");
             WrongTemplatePath = dict.GetPhrase("WrongTemplatePath");
         }
     }

@@ -158,7 +158,7 @@
             // lblTitleComponent
             // 
             this.lblTitleComponent.AutoSize = true;
-            this.lblTitleComponent.Location = new System.Drawing.Point(6, 42);
+            this.lblTitleComponent.Location = new System.Drawing.Point(3, 42);
             this.lblTitleComponent.Name = "lblTitleComponent";
             this.lblTitleComponent.Size = new System.Drawing.Size(83, 13);
             this.lblTitleComponent.TabIndex = 4;
