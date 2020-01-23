@@ -66,29 +66,6 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public bool IsDirectory { get; private set; }
 
-        /// <summary>
-        /// Gets the file type if known.
-        /// </summary>
-        [Obsolete]
-        public KnownFileType FileType
-        {
-            get
-            {
-                string ext = System.IO.Path.GetExtension(Name).ToLowerInvariant();
-
-                if (ext == ".sch")
-                    return KnownFileType.SchemeView;
-                if (ext == ".tbl")
-                    return KnownFileType.TableView;
-                if (ext == ".txt")
-                    return KnownFileType.TextFile;
-                if (ext == ".xml")
-                    return KnownFileType.XmlFile;
-                else
-                    return KnownFileType.None;
-            }
-        }
-
 
         /// <summary>
         /// Updates the properties according to the specified directory.

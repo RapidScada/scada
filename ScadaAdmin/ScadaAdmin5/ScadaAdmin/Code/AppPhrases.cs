@@ -160,11 +160,13 @@ namespace Scada.Admin.App.Code
         public static string DeviceAlreadyExists { get; private set; }
         public static string CommLineNotFound { get; private set; }
 
+        // Scada.Admin.App.Forms.Tools.FrmFileAssociation
+        public static string ExecutableFileFilter { get; private set; }
+
         // Scada.Admin.App.Forms.Tools.FrmLineAdd
         public static string LineAlreadyExists { get; private set; }
 
         // Scada.Admin.App.Forms.Tools.FrmSettings
-        public static string ExecutableFileFilter { get; private set; }
         public static string ChooseServerDir { get; private set; }
         public static string ChooseCommDir { get; private set; }
 
@@ -354,11 +356,13 @@ namespace Scada.Admin.App.Code
             DeviceAlreadyExists = dict.GetPhrase("DeviceAlreadyExists");
             CommLineNotFound = dict.GetPhrase("CommLineNotFound");
 
+            dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmFileAssociation");
+            ExecutableFileFilter = dict.GetPhrase("ExecutableFileFilter");
+
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmLineAdd");
             LineAlreadyExists = dict.GetPhrase("LineAlreadyExists");
 
             dict = Localization.GetDictionary("Scada.Admin.App.Forms.Tools.FrmSettings");
-            ExecutableFileFilter = dict.GetPhrase("ExecutableFileFilter");
             ChooseServerDir = dict.GetPhrase("ChooseServerDir");
             ChooseCommDir = dict.GetPhrase("ChooseCommDir");
 

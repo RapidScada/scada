@@ -39,21 +39,20 @@
             this.chkPrependDeviceName = new System.Windows.Forms.CheckBox();
             this.numCnlGap = new System.Windows.Forms.NumericUpDown();
             this.lblCnlGap = new System.Windows.Forms.Label();
-            this.lblCnlShift = new System.Windows.Forms.Label();
             this.numCnlShift = new System.Windows.Forms.NumericUpDown();
+            this.lblCnlShift = new System.Windows.Forms.Label();
             this.lblExplanation = new System.Windows.Forms.Label();
             this.numCnlMult = new System.Windows.Forms.NumericUpDown();
             this.lblCnlMult = new System.Windows.Forms.Label();
             this.btnOK = new System.Windows.Forms.Button();
             this.btnCancel = new System.Windows.Forms.Button();
-            this.openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.lvFileAssociations = new System.Windows.Forms.ListView();
-            this.btnAddFileAssociation = new System.Windows.Forms.Button();
-            this.btnEditFileAssociation = new System.Windows.Forms.Button();
-            this.btnDeleteFileAssociation = new System.Windows.Forms.Button();
+            this.lvAssociations = new System.Windows.Forms.ListView();
             this.colExt = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.colPath = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.btnAddAssociation = new System.Windows.Forms.Button();
+            this.btnEditAssociation = new System.Windows.Forms.Button();
+            this.btnDeleteAssociation = new System.Windows.Forms.Button();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.tabGeneral = new System.Windows.Forms.TabPage();
             this.tabFileAssociations = new System.Windows.Forms.TabPage();
@@ -193,15 +192,6 @@
             this.lblCnlGap.TabIndex = 5;
             this.lblCnlGap.Text = "Gap";
             // 
-            // lblCnlShift
-            // 
-            this.lblCnlShift.AutoSize = true;
-            this.lblCnlShift.Location = new System.Drawing.Point(155, 16);
-            this.lblCnlShift.Name = "lblCnlShift";
-            this.lblCnlShift.Size = new System.Drawing.Size(28, 13);
-            this.lblCnlShift.TabIndex = 3;
-            this.lblCnlShift.Text = "Shift";
-            // 
             // numCnlShift
             // 
             this.numCnlShift.Location = new System.Drawing.Point(158, 32);
@@ -219,6 +209,15 @@
             0,
             0});
             this.numCnlShift.ValueChanged += new System.EventHandler(this.control_Changed);
+            // 
+            // lblCnlShift
+            // 
+            this.lblCnlShift.AutoSize = true;
+            this.lblCnlShift.Location = new System.Drawing.Point(155, 16);
+            this.lblCnlShift.Name = "lblCnlShift";
+            this.lblCnlShift.Size = new System.Drawing.Size(28, 13);
+            this.lblCnlShift.TabIndex = 3;
+            this.lblCnlShift.Text = "Shift";
             // 
             // lblExplanation
             // 
@@ -281,53 +280,25 @@
             this.btnCancel.Text = "Cancel";
             this.btnCancel.UseVisualStyleBackColor = true;
             // 
-            // openFileDialog
+            // lvAssociations
             // 
-            this.openFileDialog.Filter = "Executable files (*.exe)|*.exe|All Files (*.*)|*.*";
-            // 
-            // lvFileAssociations
-            // 
-            this.lvFileAssociations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvAssociations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.colExt,
             this.colPath});
-            this.lvFileAssociations.FullRowSelect = true;
-            this.lvFileAssociations.GridLines = true;
-            this.lvFileAssociations.HideSelection = false;
-            this.lvFileAssociations.Location = new System.Drawing.Point(6, 35);
-            this.lvFileAssociations.MultiSelect = false;
-            this.lvFileAssociations.Name = "lvFileAssociations";
-            this.lvFileAssociations.ShowItemToolTips = true;
-            this.lvFileAssociations.Size = new System.Drawing.Size(414, 187);
-            this.lvFileAssociations.TabIndex = 3;
-            this.lvFileAssociations.UseCompatibleStateImageBehavior = false;
-            this.lvFileAssociations.View = System.Windows.Forms.View.Details;
-            // 
-            // btnAddFileAssociation
-            // 
-            this.btnAddFileAssociation.Location = new System.Drawing.Point(6, 6);
-            this.btnAddFileAssociation.Name = "btnAddFileAssociation";
-            this.btnAddFileAssociation.Size = new System.Drawing.Size(75, 23);
-            this.btnAddFileAssociation.TabIndex = 0;
-            this.btnAddFileAssociation.Text = "Add";
-            this.btnAddFileAssociation.UseVisualStyleBackColor = true;
-            // 
-            // btnEditFileAssociation
-            // 
-            this.btnEditFileAssociation.Location = new System.Drawing.Point(87, 6);
-            this.btnEditFileAssociation.Name = "btnEditFileAssociation";
-            this.btnEditFileAssociation.Size = new System.Drawing.Size(75, 23);
-            this.btnEditFileAssociation.TabIndex = 1;
-            this.btnEditFileAssociation.Text = "Edit";
-            this.btnEditFileAssociation.UseVisualStyleBackColor = true;
-            // 
-            // btnDeleteFileAssociation
-            // 
-            this.btnDeleteFileAssociation.Location = new System.Drawing.Point(168, 6);
-            this.btnDeleteFileAssociation.Name = "btnDeleteFileAssociation";
-            this.btnDeleteFileAssociation.Size = new System.Drawing.Size(75, 23);
-            this.btnDeleteFileAssociation.TabIndex = 2;
-            this.btnDeleteFileAssociation.Text = "Delete";
-            this.btnDeleteFileAssociation.UseVisualStyleBackColor = true;
+            this.lvAssociations.FullRowSelect = true;
+            this.lvAssociations.GridLines = true;
+            this.lvAssociations.HideSelection = false;
+            this.lvAssociations.Location = new System.Drawing.Point(6, 35);
+            this.lvAssociations.MultiSelect = false;
+            this.lvAssociations.Name = "lvAssociations";
+            this.lvAssociations.ShowItemToolTips = true;
+            this.lvAssociations.Size = new System.Drawing.Size(414, 187);
+            this.lvAssociations.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lvAssociations.TabIndex = 3;
+            this.lvAssociations.UseCompatibleStateImageBehavior = false;
+            this.lvAssociations.View = System.Windows.Forms.View.Details;
+            this.lvAssociations.SelectedIndexChanged += new System.EventHandler(this.lvAssociations_SelectedIndexChanged);
+            this.lvAssociations.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.lvAssociations_MouseDoubleClick);
             // 
             // colExt
             // 
@@ -338,6 +309,36 @@
             // 
             this.colPath.Text = "Excutable Path";
             this.colPath.Width = 300;
+            // 
+            // btnAddAssociation
+            // 
+            this.btnAddAssociation.Location = new System.Drawing.Point(6, 6);
+            this.btnAddAssociation.Name = "btnAddAssociation";
+            this.btnAddAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnAddAssociation.TabIndex = 0;
+            this.btnAddAssociation.Text = "Add";
+            this.btnAddAssociation.UseVisualStyleBackColor = true;
+            this.btnAddAssociation.Click += new System.EventHandler(this.btnAddAssociation_Click);
+            // 
+            // btnEditAssociation
+            // 
+            this.btnEditAssociation.Location = new System.Drawing.Point(87, 6);
+            this.btnEditAssociation.Name = "btnEditAssociation";
+            this.btnEditAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnEditAssociation.TabIndex = 1;
+            this.btnEditAssociation.Text = "Edit";
+            this.btnEditAssociation.UseVisualStyleBackColor = true;
+            this.btnEditAssociation.Click += new System.EventHandler(this.btnEditAssociation_Click);
+            // 
+            // btnDeleteAssociation
+            // 
+            this.btnDeleteAssociation.Location = new System.Drawing.Point(168, 6);
+            this.btnDeleteAssociation.Name = "btnDeleteAssociation";
+            this.btnDeleteAssociation.Size = new System.Drawing.Size(75, 23);
+            this.btnDeleteAssociation.TabIndex = 2;
+            this.btnDeleteAssociation.Text = "Delete";
+            this.btnDeleteAssociation.UseVisualStyleBackColor = true;
+            this.btnDeleteAssociation.Click += new System.EventHandler(this.btnDeleteAssociation_Click);
             // 
             // tabControl
             // 
@@ -364,10 +365,10 @@
             // 
             // tabFileAssociations
             // 
-            this.tabFileAssociations.Controls.Add(this.lvFileAssociations);
-            this.tabFileAssociations.Controls.Add(this.btnDeleteFileAssociation);
-            this.tabFileAssociations.Controls.Add(this.btnEditFileAssociation);
-            this.tabFileAssociations.Controls.Add(this.btnAddFileAssociation);
+            this.tabFileAssociations.Controls.Add(this.lvAssociations);
+            this.tabFileAssociations.Controls.Add(this.btnDeleteAssociation);
+            this.tabFileAssociations.Controls.Add(this.btnEditAssociation);
+            this.tabFileAssociations.Controls.Add(this.btnAddAssociation);
             this.tabFileAssociations.Location = new System.Drawing.Point(4, 22);
             this.tabFileAssociations.Name = "tabFileAssociations";
             this.tabFileAssociations.Padding = new System.Windows.Forms.Padding(3);
@@ -427,13 +428,12 @@
         private System.Windows.Forms.Label lblCnlGap;
         private System.Windows.Forms.Button btnOK;
         private System.Windows.Forms.Button btnCancel;
-        private System.Windows.Forms.OpenFileDialog openFileDialog;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
         private System.Windows.Forms.CheckBox chkPrependDeviceName;
-        private System.Windows.Forms.Button btnDeleteFileAssociation;
-        private System.Windows.Forms.Button btnEditFileAssociation;
-        private System.Windows.Forms.Button btnAddFileAssociation;
-        private System.Windows.Forms.ListView lvFileAssociations;
+        private System.Windows.Forms.Button btnDeleteAssociation;
+        private System.Windows.Forms.Button btnEditAssociation;
+        private System.Windows.Forms.Button btnAddAssociation;
+        private System.Windows.Forms.ListView lvAssociations;
         private System.Windows.Forms.ColumnHeader colExt;
         private System.Windows.Forms.ColumnHeader colPath;
         private System.Windows.Forms.TabControl tabControl;

@@ -350,30 +350,14 @@ namespace Scada.Admin.App.Forms
             {
                 if (tag.ExistingForm == null)
                 {
-                    //KnownFileType fileType = fileItem.FileType;
-                    //PathOptions pathOptions = appData.AppSettings.PathOptions;
                     string ext = Path.GetExtension(fileItem.Name).TrimStart('.').ToLowerInvariant();
 
-                    if (appData.AppSettings.FileAssociations.TryGetValue(ext, out string path) && File.Exists(path))
+                    if (appData.AppSettings.FileAssociations.TryGetValue(ext, out string exePath) && 
+                        File.Exists(exePath))
                     {
                         // run external editor
-                        Process.Start(path, string.Format("\"{0}\"", fileItem.Path));
+                        Process.Start(exePath, string.Format("\"{0}\"", fileItem.Path));
                     }
-                    /*if (fileType == KnownFileType.SchemeView && File.Exists(pathOptions.SchemeEditorPath))
-                    {
-                        // run Scheme Editor
-                        Process.Start(pathOptions.SchemeEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }
-                    else if (fileType == KnownFileType.TableView && File.Exists(pathOptions.TableEditorPath))
-                    {
-                        // run Table Editor
-                        Process.Start(pathOptions.TableEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }
-                    else if (fileType != KnownFileType.None && File.Exists(pathOptions.TextEditorPath))
-                    {
-                        // run text editor
-                        Process.Start(pathOptions.TextEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }*/
                     else
                     {
                         // create and display a new text editor form

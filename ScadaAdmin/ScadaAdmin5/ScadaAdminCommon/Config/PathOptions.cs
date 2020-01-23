@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -43,17 +43,11 @@ namespace Scada.Admin.Config
             {
                 ServerDir = @"C:\SCADA\ScadaServer\";
                 CommDir = @"C:\SCADA\ScadaComm\";
-                SchemeEditorPath = @"C:\SCADA\ScadaSchemeEditor\ScadaSchemeEditor.exe";
-                TableEditorPath = @"C:\SCADA\ScadaTableEditor\ScadaTableEditor.exe";
-                TextEditorPath = "";
             }
             else
             {
                 ServerDir = "/opt/scada/ScadaServer/";
                 CommDir = "/opt/scada/ScadaComm/";
-                SchemeEditorPath = "/opt/scada/ScadaSchemeEditor/ScadaSchemeEditor.exe";
-                TableEditorPath = "/opt/scada/ScadaTableEditor/ScadaTableEditor.exe";
-                TextEditorPath = "";
             }
         }
 
@@ -67,21 +61,6 @@ namespace Scada.Admin.Config
         /// Gets or sets the directory of the Communicator application.
         /// </summary>
         public string CommDir { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a scheme editor.
-        /// </summary>
-        public string SchemeEditorPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a table editor.
-        /// </summary>
-        public string TableEditorPath { get; set; }
-
-        /// <summary>
-        /// Gets or sets the full file name of a text editor.
-        /// </summary>
-        public string TextEditorPath { get; set; }
         
         
         /// <summary>
@@ -102,12 +81,6 @@ namespace Scada.Admin.Config
                     ServerDir = ScadaUtils.NormalDir(val);
                 else if (nameL == "commdir")
                     CommDir = ScadaUtils.NormalDir(val);
-                else if (nameL == "schemeeditorpath")
-                    SchemeEditorPath = val;
-                else if (nameL == "tableeditorpath")
-                    TableEditorPath = val;
-                else if (nameL == "texteditorpath")
-                    TextEditorPath = val;
             }
         }
 
@@ -125,15 +98,6 @@ namespace Scada.Admin.Config
             xmlElem.AppendParamElem("CommDir", CommDir,
                 "Директория Коммуникатора",
                 "Communicator directory");
-            xmlElem.AppendParamElem("SchemeEditorPath", SchemeEditorPath,
-                "Полное имя файла редактора схем",
-                "Full file name of a scheme editor");
-            xmlElem.AppendParamElem("TableEditorPath", TableEditorPath,
-                "Полное имя файла редактора таблиц",
-                "Full file name of a table editor");
-            xmlElem.AppendParamElem("TextEditorPath", TextEditorPath,
-                "Полное имя файла текстового редактора",
-                "Full file name of a text editor");
         }
     }
 }
