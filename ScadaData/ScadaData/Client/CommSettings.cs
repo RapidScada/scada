@@ -39,7 +39,17 @@ namespace Scada.Client
         /// <summary>
         /// Формат сохранения и загрузки из XML.
         /// </summary>
-        public enum XmlFormat { Attr, Elem }
+        public enum XmlFormat
+        {
+            /// <summary>
+            /// Retrieve properties from XML attributes.
+            /// </summary>
+            Attr,
+            /// <summary>
+            /// Retrieve properties from XML elements.
+            /// </summary>
+            Elem
+        }
 
         /// <summary>
         /// Имя файла настроек по умолчанию.

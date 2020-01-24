@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2017
+ * Modified : 2020
  */
 
 using System;
@@ -88,7 +88,7 @@ namespace Scada
         /// </summary>
         public static DateTime XmlParseDate(string s)
         {
-            return DateTime.Parse(s, DateTimeFormatInfo.InvariantInfo).Date;
+            return XmlParseDateTime(s).Date;
         }
 
         /// <summary>
