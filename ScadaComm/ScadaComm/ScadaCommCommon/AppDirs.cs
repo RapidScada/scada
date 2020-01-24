@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System.IO;
@@ -39,11 +39,12 @@ namespace Scada.Comm
         public AppDirs()
         {
             ExeDir = "";
+            CmdDir = "";
             ConfigDir = "";
+            KPDir = "";
             LangDir = "";
             LogDir = "";
-            KPDir = "";
-            CmdDir = "";
+            StorageDir = "";
         }
 
 
@@ -51,12 +52,22 @@ namespace Scada.Comm
         /// Получить директорию исполняемого файла
         /// </summary>
         public string ExeDir { get; protected set; }
-        
+
+        /// <summary>
+        /// Получить директорию команд
+        /// </summary>
+        public string CmdDir { get; protected set; }
+
         /// <summary>
         /// Получить директорию конфигурации
         /// </summary>
         public string ConfigDir { get; protected set; }
-        
+
+        /// <summary>
+        /// Получить директорию библиотек КП
+        /// </summary>
+        public string KPDir { get; protected set; }
+
         /// <summary>
         /// Получить директорию языковых файлов
         /// </summary>
@@ -68,14 +79,9 @@ namespace Scada.Comm
         public string LogDir { get; protected set; }
         
         /// <summary>
-        /// Получить директорию библиотек КП
+        /// Gets the storage directory.
         /// </summary>
-        public string KPDir { get; protected set; }
-        
-        /// <summary>
-        /// Получить директорию команд
-        /// </summary>
-        public string CmdDir { get; protected set; }
+        public string StorageDir { get; protected set; }
 
         /// <summary>
         /// Проверить существование директорий
@@ -84,9 +90,7 @@ namespace Scada.Comm
         {
             get
             {
-                string[] dirs = GetRequiredDirs();
-
-                foreach (string dir in dirs)
+                foreach (string dir in GetRequiredDirs())
                 {
                     if (!Directory.Exists(dir))
                         return false;
@@ -103,11 +107,12 @@ namespace Scada.Comm
         public void Init(string exeDir)
         {
             ExeDir = ScadaUtils.NormalDir(exeDir);
+            CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
             ConfigDir = ExeDir + "Config" + Path.DirectorySeparatorChar;
+            KPDir = ExeDir + "KP" + Path.DirectorySeparatorChar;
             LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
-            KPDir = ExeDir + "KP" + Path.DirectorySeparatorChar;
-            CmdDir = ExeDir + "Cmd" + Path.DirectorySeparatorChar;
+            StorageDir = ExeDir + "Storage" + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
@@ -115,7 +120,7 @@ namespace Scada.Comm
         /// </summary>
         public string[] GetRequiredDirs()
         {
-            return new string[] { ConfigDir, LangDir, LogDir, KPDir, CmdDir };
+            return new string[] { CmdDir, ConfigDir, KPDir, LangDir, LogDir, StorageDir };
         }
     }
 }
