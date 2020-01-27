@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCmdType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CmdType>
+    <CmdTypeID>0</CmdTypeID>
+    <Name>Standard</Name>
+    <Descr>Standard command. Command parameter is a float number</Descr>
+  </CmdType>
+  <CmdType>
+    <CmdTypeID>1</CmdTypeID>
+    <Name>Binary</Name>
+    <Descr>Binary command. Command parameters are custom data</Descr>
+  </CmdType>
+  <CmdType>
+    <CmdTypeID>2</CmdTypeID>
+    <Name>Request</Name>
+    <Descr>Out of order device request</Descr>
+  </CmdType>
+</ArrayOfCmdType>

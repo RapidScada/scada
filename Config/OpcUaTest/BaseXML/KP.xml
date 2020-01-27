@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfKP xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KP>
+    <KPNum>1</KPNum>
+    <Name>OpcUa Device</Name>
+    <KPTypeID>232</KPTypeID>
+    <Address xsi:nil="true" />
+    <CallNum />
+    <CommLineNum>1</CommLineNum>
+    <Descr>https://www.prosysopc.com/products/opc-ua-simulation-server/</Descr>
+  </KP>
+  <KP>
+    <KPNum>2</KPNum>
+    <Name>OpcClassic Device</Name>
+    <KPTypeID>215</KPTypeID>
+    <Address xsi:nil="true" />
+    <CommLineNum>2</CommLineNum>
+    <Descr>https://www.matrikonopc.com/products/opc-drivers/opc-simulation-server.aspx</Descr>
+  </KP>
+</ArrayOfKP>

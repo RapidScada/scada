@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KpOpcUa>
+  <ConnectionOptions>
+    <ServerUrl>opc.tcp://localhost:53530/OPCUA/SimulationServer</ServerUrl>
+    <SecurityMode>SignAndEncrypt</SecurityMode>
+    <SecurityPolicy>Basic128Rsa15</SecurityPolicy>
+    <AuthenticationMode>Anonymous</AuthenticationMode>
+    <Username />
+    <Password>C8080E774B59B0C6694063BDE2428352</Password>
+  </ConnectionOptions>
+  <Subscriptions>
+    <Subscription active="true" displayName="Demo Subscription" publishingInterval="1000">
+      <Item active="true" nodeID="ns=5;s=Counter1" displayName="Counter1" isArray="false" arrayLen="1" cnlNum="0" />
+      <Item active="true" nodeID="ns=5;s=Random1" displayName="DisplayName Random1" isArray="false" arrayLen="1" cnlNum="0" />
+      <Item active="true" nodeID="ns=5;s=Sinusoid1" displayName="Sinusoid1" isArray="false" arrayLen="1" cnlNum="0" />
+      <Item active="true" nodeID="ns=3;s=Int32AnalogItem" displayName="Int32AnalogItem" isArray="false" arrayLen="1" cnlNum="0" />
+      <Item active="true" nodeID="ns=3;s=DoubleAnalogItem" displayName="DoubleAnalogItem" isArray="false" arrayLen="1" cnlNum="0" />
+      <Item active="true" nodeID="ns=3;s=DoubleAnalogItemArray" displayName="DoubleAnalogItemArray" isArray="true" arrayLen="5" cnlNum="0" />
+    </Subscription>
+  </Subscriptions>
+  <Commands>
+    <Command nodeID="ns=3;s=Int32AnalogItem" displayName="Int32AnalogItem" dataType="System.Int32" cmdNum="1" />
+    <Command nodeID="ns=3;s=DoubleAnalogItem" displayName="DoubleAnalogItem" dataType="System.Double" cmdNum="2" />
+  </Commands>
+</KpOpcUa>

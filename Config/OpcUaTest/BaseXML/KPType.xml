@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfKPType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <KPType>
+    <KPTypeID>201</KPTypeID>
+    <Name>VKT-4M rev. 1.2</Name>
+    <DllFileName>KpVkt4M.dll</DllFileName>
+    <Descr>Heat meter VKT-4M rev. 1.2 manufactured by Teplocom</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>202</KPTypeID>
+    <Name>VKT-7 model 01-03</Name>
+    <DllFileName>KpVkt7.dll</DllFileName>
+    <Descr>Heat meter VKT-7 model 01 - 03 manufactured by Teplocom</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>203</KPTypeID>
+    <Name>Parsec NC-xxxx</Name>
+    <DllFileName>KpNc.dll</DllFileName>
+    <Descr>Access controller Parsec NC-xxxx manufactured by Relvest</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>204</KPTypeID>
+    <Name>Bolid S2000</Name>
+    <DllFileName>KpS2000.dll</DllFileName>
+    <Descr>Security alarm system including S2000 panel manufactured by Bolid</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>205</KPTypeID>
+    <Name>SMS centre</Name>
+    <DllFileName>KpSms.dll</DllFileName>
+    <Descr>Sending and receiving SMS messages using AT commands</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>206</KPTypeID>
+    <Name>Signal-3</Name>
+    <DllFileName>KpSignal3.dll</DllFileName>
+    <Descr>Alarm system Signal-3</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>207</KPTypeID>
+    <Name>ACC-RS-232</Name>
+    <DllFileName>KpClockE.dll</DllFileName>
+    <Descr>ACC-RS-232 clock manufactured by Etalon</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>208</KPTypeID>
+    <Name>CE6850</Name>
+    <DllFileName>KpCE6850.dll</DllFileName>
+    <Descr>Electricity meter CE6850 (6822, 6823, 6827, 6828, 6850М) manufactured by Energomera</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>209</KPTypeID>
+    <Name>ADAM-6015</Name>
+    <DllFileName>KpAdam6015.dll</DllFileName>
+    <Descr>7-ch isolated RTD input Modbus TCP module Advantech ADAM-6015</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>210</KPTypeID>
+    <Name>ADAM-4068</Name>
+    <DllFileName>KpAdam4068.dll</DllFileName>
+    <Descr>8-ch relay output module Advantech ADAM-4068 with Modbus</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>211</KPTypeID>
+    <Name>BarcodeScanner</Name>
+    <DllFileName>KpBarcodeScanner.dll</DllFileName>
+    <Descr>Receiving data from barcode scanner</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>212</KPTypeID>
+    <Name>Access</Name>
+    <DllFileName>KpAccess.dll</DllFileName>
+    <Descr>Access control: interacting with readers, relay modules, access controllers</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>213</KPTypeID>
+    <Name>Guard</Name>
+    <DllFileName>KpGuardGate.dll</DllFileName>
+    <Descr>Export arrivals and departures to Guard system</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>214</KPTypeID>
+    <Name>Modbus</Name>
+    <DllFileName>KpModbus.dll</DllFileName>
+    <Descr>Interacting with controllers via Modbus protocol</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>215</KPTypeID>
+    <Name>OPC</Name>
+    <DllFileName>KpOpc.dll</DllFileName>
+    <Descr>Interacting with controllers using OPC specification</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>216</KPTypeID>
+    <Name>Bolid S2000-PP</Name>
+    <DllFileName>KpS2000PP.dll</DllFileName>
+    <Descr>Protocol converter S2000-PP manufactured by Bolid</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>217</KPTypeID>
+    <Name>SI IGLA</Name>
+    <DllFileName>KpIgla.dll</DllFileName>
+    <Descr>Measurement System IGLA manufactured by NPP IIT</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>218</KPTypeID>
+    <Name>IVTM-7M</Name>
+    <DllFileName>KpIvtm7M.dll</DllFileName>
+    <Descr>Thermohygrometer IVTM-7M manufactured by EKSIS</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>219</KPTypeID>
+    <Name>SPT943</Name>
+    <DllFileName>KpSPT943.dll</DllFileName>
+    <Descr>Heat meter SPT943 manufactured by LOGIKA</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>220</KPTypeID>
+    <Name>SNMP</Name>
+    <DllFileName>KpSnmp.dll</DllFileName>
+    <Descr>Interacting with controllers via SNMP protocol</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>221</KPTypeID>
+    <Name>Email</Name>
+    <DllFileName>KpEmail.dll</DllFileName>
+    <Descr>Sending email notifications</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>222</KPTypeID>
+    <Name>Wiren Board ST</Name>
+    <DllFileName>KpWirenBoardST.dll</DllFileName>
+    <Descr>Wiren Board controller with the custom Sensor-Tools firmware</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>223</KPTypeID>
+    <Name>HTTP Notification</Name>
+    <DllFileName>KpHttpNotif.dll</DllFileName>
+    <Descr>Sending notifications via HTTP requests</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>224</KPTypeID>
+    <Name>Telegram</Name>
+    <DllFileName>KpTelegram.dll</DllFileName>
+    <Descr>Sending notifications by Telegram</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>225</KPTypeID>
+    <Name>Rateos Azimuth</Name>
+    <DllFileName>KpAzimuth.dll</DllFileName>
+    <Descr>Azimuth controllers manufactured by Rateos</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>226</KPTypeID>
+    <Name>CE30X</Name>
+    <DllFileName>KpCE301.dll</DllFileName>
+    <Descr>Electricity meters CE30X, which use IEC 61107-2011, manufactured by Energomera</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>227</KPTypeID>
+    <Name>DB Import</Name>
+    <DllFileName>KpDbImport.dll</DllFileName>
+    <Descr>Import data from a database</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>228</KPTypeID>
+    <Name>Modbus YLC</Name>
+    <DllFileName>KpModbusYlc.dll</DllFileName>
+    <Descr>Extends the Modbus driver according to Coster Group specification</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>229</KPTypeID>
+    <Name>Modbus Slave</Name>
+    <DllFileName>KpModbusSlave.dll</DllFileName>
+    <Descr>Reserved for the Modbus Slave driver</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>230</KPTypeID>
+    <Name>Simulator</Name>
+    <DllFileName>KpSimulator.dll</DllFileName>
+    <Descr>Device simulator</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>231</KPTypeID>
+    <Name>MQTT</Name>
+    <DllFileName>KpMqtt.dll</DllFileName>
+    <Descr>Interacting with controllers via MQTT protocol</Descr>
+  </KPType>
+  <KPType>
+    <KPTypeID>232</KPTypeID>
+    <Name>OPC UA</Name>
+    <DllFileName>KpOpcUa.dll</DllFileName>
+    <Descr>Interacting with controllers using OPC UA specification</Descr>
+  </KPType>
+</ArrayOfKPType>
