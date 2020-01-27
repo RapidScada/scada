@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.UI;
@@ -97,8 +97,8 @@ namespace Scada.Web.Plugins.Chart
             // добавление каналов
             if (hidAddedCnlNums.Value != "")
             {
-                int[] addedCnls = WebUtils.QueryParamToIntArray(hidAddedCnlNums.Value);
-                int[] addedViewIDs = WebUtils.QueryParamToIntArray(hidAddedViewIDs.Value);
+                int[] addedCnls = ScadaUtils.ParseIntArray(hidAddedCnlNums.Value);
+                int[] addedViewIDs = ScadaUtils.ParseIntArray(hidAddedViewIDs.Value);
                 HashSet<int> selCnlSet = ChartUtils.GetCnlSet(selCnls);
 
                 for (int i = 0, cnt = Math.Min(addedCnls.Length, addedViewIDs.Length); i < cnt; i++)
