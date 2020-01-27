@@ -4,10 +4,14 @@
     <ItfID>1</ItfID>
     <Name>HelloWorld\</Name>
     <Descr>Hello World</Descr>
+    <Hidden>false</Hidden>
+    <ObjNum xsi:nil="true" />
   </Interface>
   <Interface>
     <ItfID>2</ItfID>
     <Name>HelloWorld\Simulator.tbl</Name>
     <Descr>Simulator</Descr>
+    <Hidden>false</Hidden>
+    <ObjNum xsi:nil="true" />
   </Interface>
 </ArrayOfInterface>
