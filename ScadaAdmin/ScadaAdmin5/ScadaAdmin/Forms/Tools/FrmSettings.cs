@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Code;
 using Scada.Admin.Config;
 using Scada.UI;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Windows.Forms;
@@ -53,6 +54,8 @@ namespace Scada.Admin.App.Forms.Tools
         private FrmSettings()
         {
             InitializeComponent();
+            colExt.Name = "colExt";
+            colPath.Name = "colPath";
         }
 
         /// <summary>
@@ -91,15 +94,30 @@ namespace Scada.Admin.App.Forms.Tools
             PathOptions pathOptions = settings.PathOptions;
             txtServerDir.Text = pathOptions.ServerDir;
             txtCommDir.Text = pathOptions.CommDir;
-            txtSchemeEditorPath.Text = pathOptions.SchemeEditorPath;
-            txtTableEditorPath.Text = pathOptions.TableEditorPath;
-            txtTextEditorPath.Text = pathOptions.TextEditorPath;
 
             ChannelOptions channelOptions = settings.ChannelOptions;
             numCnlMult.SetValue(channelOptions.CnlMult);
             numCnlShift.SetValue(channelOptions.CnlShift);
             numCnlGap.SetValue(channelOptions.CnlGap);
             chkPrependDeviceName.Checked = channelOptions.PrependDeviceName;
+
+            try
+            {
+                lvAssociations.BeginUpdate();
+                lvAssociations.Items.Clear();
+
+                foreach (KeyValuePair<string, string> pair in settings.FileAssociations)
+                {
+                    lvAssociations.Items.Add(CreateAssociationItem(pair.Key, pair.Value));
+                }
+
+                if (lvAssociations.Items.Count > 0)
+                    lvAssociations.Items[0].Selected = true;
+            }
+            finally
+            {
+                lvAssociations.EndUpdate();
+            }
 
             modified = false;
         }
@@ -112,15 +130,22 @@ namespace Scada.Admin.App.Forms.Tools
             PathOptions pathOptions = settings.PathOptions;
             pathOptions.ServerDir = txtServerDir.Text;
             pathOptions.CommDir = txtCommDir.Text;
-            pathOptions.SchemeEditorPath = txtSchemeEditorPath.Text;
-            pathOptions.TableEditorPath = txtTableEditorPath.Text;
-            pathOptions.TextEditorPath = txtTextEditorPath.Text;
 
             ChannelOptions channelOptions = settings.ChannelOptions;
             channelOptions.CnlMult = Convert.ToInt32(numCnlMult.Value);
             channelOptions.CnlShift = Convert.ToInt32(numCnlShift.Value);
             channelOptions.CnlGap = Convert.ToInt32(numCnlGap.Value);
             channelOptions.PrependDeviceName = chkPrependDeviceName.Checked;
+
+            SortedList<string, string> fileAssociations = settings.FileAssociations;
+            fileAssociations.Clear();
+
+            foreach (ListViewItem item in lvAssociations.Items)
+            {
+                string ext = item.SubItems[0].Text;
+                string path = item.SubItems[1].Text;
+                fileAssociations[ext] = path;
+            }
         }
 
         /// <summary>
@@ -136,22 +161,20 @@ namespace Scada.Admin.App.Forms.Tools
         }
 
         /// <summary>
-        /// Shows a file open dialog to select a file.
+        /// Creates a new list view item represents a file association.
         /// </summary>
-        private void SelectFile(TextBox textBox)
+        private ListViewItem CreateAssociationItem(string ext, string path, bool selected = false)
         {
-            if (File.Exists(textBox.Text))
-            {
-                openFileDialog.InitialDirectory = Path.GetDirectoryName(textBox.Text);
-                openFileDialog.FileName = Path.GetFileName(textBox.Text);
-            }
-            else
-            {
-                openFileDialog.FileName = "";
-            }
+            return new ListViewItem(new string[] { ext, path }) { Selected = selected };
+        }
 
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-                textBox.Text = openFileDialog.FileName;
+        /// <summary>
+        /// Enables or disables the file association buttons.
+        /// </summary>
+        private void SetAssociationButtonsEnabled()
+        {
+            btnEditAssociation.Enabled = btnDeleteAssociation.Enabled =
+                lvAssociations.SelectedItems.Count > 0;
         }
         
         /// <summary>
@@ -182,14 +205,12 @@ namespace Scada.Admin.App.Forms.Tools
             // warnings
             StringBuilder sbWarn = new StringBuilder();
 
-            if (!string.IsNullOrWhiteSpace(txtSchemeEditorPath.Text) && !File.Exists(txtSchemeEditorPath.Text))
-                sbWarn.AppendError(lblSchemeEditorPath, CommonPhrases.FileNotFound);
-
-            if (!string.IsNullOrWhiteSpace(txtTableEditorPath.Text) && !File.Exists(txtTableEditorPath.Text))
-                sbWarn.AppendError(lblTableEditorPath, CommonPhrases.FileNotFound);
-
-            if (!string.IsNullOrWhiteSpace(txtTextEditorPath.Text) && !File.Exists(txtTextEditorPath.Text))
-                sbWarn.AppendError(lblTextEditorPath, CommonPhrases.FileNotFound);
+            foreach (ListViewItem item in lvAssociations.Items)
+            {
+                string path = item.SubItems[1].Text;
+                if (!string.IsNullOrWhiteSpace(path) && !File.Exists(path))
+                    sbWarn.AppendLine(string.Format(CommonPhrases.NamedFileNotFound, path));
+            }
 
             if (sbWarn.Length > 0)
                 ScadaUiUtils.ShowWarning(sbWarn.ToString());
@@ -201,11 +222,8 @@ namespace Scada.Admin.App.Forms.Tools
         private void FrmSettings_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
-            openFileDialog.SetFilter(AppPhrases.ExecutableFileFilter);
             SettingsToControls();
-
-            if (!ScadaUtils.IsRunningOnWin)
-                openFileDialog.FilterIndex = 2; // all files
+            SetAssociationButtonsEnabled();
         }
 
         private void btnBrowseServerDir_Click(object sender, EventArgs e)
@@ -218,19 +236,68 @@ namespace Scada.Admin.App.Forms.Tools
             SelectDirectory(txtCommDir, AppPhrases.ChooseCommDir);
         }
 
-        private void btnBrowseSchemeEditorPath_Click(object sender, EventArgs e)
+        private void btnAddAssociation_Click(object sender, EventArgs e)
         {
-            SelectFile(txtSchemeEditorPath);
+            // add a new file association
+            FrmFileAssociation form = new FrmFileAssociation();
+
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                lvAssociations.Items.Add(CreateAssociationItem(form.FileExtension, form.ExecutablePath, true));
+                lvAssociations.Focus();
+                modified = true;
+            }
         }
 
-        private void btnBrowseTableEditorPath_Click(object sender, EventArgs e)
+        private void btnEditAssociation_Click(object sender, EventArgs e)
         {
-            SelectFile(txtTableEditorPath);
+            // edit the selected file association
+            if (lvAssociations.SelectedItems.Count > 0)
+            {
+                ListViewItem item = lvAssociations.SelectedItems[0];
+                FrmFileAssociation form = new FrmFileAssociation
+                {
+                    FileExtension = item.SubItems[0].Text,
+                    ExecutablePath = item.SubItems[1].Text
+                };
+
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    lvAssociations.Items.RemoveAt(item.Index);
+                    lvAssociations.Items.Add(CreateAssociationItem(form.FileExtension, form.ExecutablePath, true));
+                    lvAssociations.Focus();
+                    modified = true;
+                }
+            }
         }
 
-        private void btnBrowseTextEditorPath_Click(object sender, EventArgs e)
+        private void btnDeleteAssociation_Click(object sender, EventArgs e)
         {
-            SelectFile(txtTextEditorPath);
+            // delete the selected file association
+            if (lvAssociations.SelectedItems.Count > 0)
+            {
+                int index = lvAssociations.SelectedIndices[0];
+                lvAssociations.Items.RemoveAt(index);
+
+                if (lvAssociations.Items.Count > 0)
+                {
+                    index = Math.Min(index, lvAssociations.Items.Count - 1);
+                    lvAssociations.Items[index].Selected = true;
+                }
+
+                lvAssociations.Focus();
+                modified = true;
+            }
+        }
+
+        private void lvAssociations_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            SetAssociationButtonsEnabled();
+        }
+
+        private void lvAssociations_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            btnEditAssociation_Click(null, null);
         }
 
         private void control_Changed(object sender, EventArgs e)

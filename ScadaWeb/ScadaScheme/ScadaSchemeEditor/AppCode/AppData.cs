@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Client;
@@ -204,6 +204,7 @@ namespace Scada.Scheme.Editor
             webAppDirs.Init(AppDirs.WebDir);
             CompManager.Init(webAppDirs, Log);
             CompManager.LoadCompFromFiles();
+            SchemeContext.GetInstance().Init(webAppDirs);
         }
 
         /// <summary>
@@ -211,8 +212,7 @@ namespace Scada.Scheme.Editor
         /// </summary>
         public bool StartEditor()
         {
-            string serviceUrl;
-            return StartWcfService(out serviceUrl) && Editor.CreateWebPage(AppDirs.WebDir, serviceUrl);
+            return StartWcfService(out string serviceUrl) && Editor.CreateWebPage(AppDirs.WebDir, serviceUrl);
         }
 
         /// <summary>

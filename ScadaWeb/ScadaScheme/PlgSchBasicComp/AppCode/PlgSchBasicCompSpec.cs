@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Scheme;
@@ -96,12 +96,11 @@ namespace Scada.Web.Plugins
         /// </summary>
         public override void Init()
         {
-            if (SchemeUtils.EditorMode)
+            if (SchemeContext.GetInstance().EditorMode)
             {
                 // загрузка словарей
-                string errMsg;
                 if (!Localization.LoadDictionaries(Path.Combine(AppDirs.PluginsDir, "SchBasicComp", "lang"),
-                    "PlgSchBasicComp", out errMsg))
+                    "PlgSchBasicComp", out string errMsg))
                 {
                     Log.WriteError(errMsg);
                 }

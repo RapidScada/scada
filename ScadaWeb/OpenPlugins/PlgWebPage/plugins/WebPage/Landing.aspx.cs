@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2019
  */
 
 using Scada.Data.Models;
@@ -53,7 +53,7 @@ namespace Scada.Web.Plugins.WebPage
             WebPageView view = appData.ViewCache.GetView<WebPageView>(viewID);
 
             // переход на соответствующую веб-страницу
-            Response.Redirect(view == null ? UrlTemplates.NoView : view.Path);
+            Response.Redirect(view == null ? UrlTemplates.NoView : view.Path, false);
         }
     }
 }

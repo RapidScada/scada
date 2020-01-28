@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TableView title="OPC Test">
+  <Param>OpcUa Device</Param>
+  <Param cnlNum="101">OpcUa Device - Counter1</Param>
+  <Param cnlNum="102">OpcUa Device - Random1</Param>
+  <Param cnlNum="103">OpcUa Device - Sinusoid1</Param>
+  <Param cnlNum="104">OpcUa Device - Int32AnalogItem</Param>
+  <Param cnlNum="105">OpcUa Device - DoubleAnalogItem</Param>
+  <Param cnlNum="106">OpcUa Device - DoubleAnalogItemArray[0]</Param>
+  <Param cnlNum="107">OpcUa Device - DoubleAnalogItemArray[1]</Param>
+  <Param cnlNum="108">OpcUa Device - DoubleAnalogItemArray[2]</Param>
+  <Param cnlNum="109">OpcUa Device - DoubleAnalogItemArray[3]</Param>
+  <Param cnlNum="110">OpcUa Device - DoubleAnalogItemArray[4]</Param>
+  <Param />
+  <Param>OpcClassic Device</Param>
+  <Param cnlNum="201">OpcClassic Device - Saw-toothed Waves.Real8</Param>
+  <Param cnlNum="202">OpcClassic Device - Triangle Waves.Real4</Param>
+  <Param cnlNum="203">OpcClassic Device - Triangle Waves.Int2</Param>
+</TableView>

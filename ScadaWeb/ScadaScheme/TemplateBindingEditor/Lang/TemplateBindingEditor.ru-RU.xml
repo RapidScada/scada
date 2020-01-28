@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TemplateBindingEditorDictionaries>
+  <Dictionary key="Scada.Scheme.TemplateBindingEditor.Code.SchemeParser">
+    <Phrase key="ErrorParsingScheme">Ошибка при разборе схемы</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.TemplateBindingEditor.Forms.FrmMain">
+    <Phrase key="btnFileNew.ToolTip">Новые привязки (Ctrl + N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Открыть привязки (Ctrl + O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Сохранить привязки (Ctrl + S)</Phrase>
+    <Phrase key="btnFileSaveAs.ToolTip">Сохранить привязки как</Phrase>
+    <Phrase key="tabGeneral">Основные параметры</Phrase>
+    <Phrase key="lblTemplateFileName">Шаблон схемы</Phrase>
+    <Phrase key="btnBrowseTemplate">Обзор...</Phrase>
+    <Phrase key="btnReloadTemplate">Загрузить</Phrase>
+    <Phrase key="lblTitleComponent">Компонент заголовка</Phrase>
+    <Phrase key="tabBindings">Привязки компонентов</Phrase>
+    <Phrase key="colComponent">Компонент</Phrase>
+    <Phrase key="colCnlNum">Входной канал</Phrase>
+    <Phrase key="colCtrlCnlNum">Канал управления</Phrase>
+    <Phrase key="EditorTitle">{0} - Редактор привязок шаблона</Phrase>
+    <Phrase key="BindingsFileFilter">Привязки шаблона (*.stb)|*.stb|Все файлы (*.*)|*.*</Phrase>
+    <Phrase key="SaveBindingsConfirm">Привязки были изменены. Сохранить изменения?</Phrase>
+    <Phrase key="lblInterfaceDir.ToolTip">Директория интерфейса проекта</Phrase>
+    <Phrase key="InterfaceDirNotFound">Директория интерфейса не найдена. Сохраните привязки в директории конфигурации Вебстанции в проекте.</Phrase>
+    <Phrase key="UnableOpenTemplate">Невозможно открыть шаблон схемы, если директория интерфейса не найдена.</Phrase>
+    <Phrase key="UnableLoadTemplate">Невозможно загрузить шаблон схемы, если директория интерфейса не найдена.</Phrase>
+    <Phrase key="TemplateNotFound">Шаблон схемы не найден:&#13;&#10;{0}</Phrase>
+    <Phrase key="TemplateLoaded">Шаблон схемы загружен.</Phrase>
+    <Phrase key="WrongTemplatePath">Схема должна раполагаться внутри директории интерфейса.</Phrase>
+  </Dictionary>
+</TemplateBindingEditorDictionaries>

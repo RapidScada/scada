@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
+using Scada.Data.Configuration;
+using Scada.Data.Models;
 using Scada.Scheme;
 using Scada.Scheme.DataTransfer;
 using Scada.Scheme.Model;
@@ -36,29 +38,29 @@ using System.Web.Script.Serialization;
 namespace Scada.Web.Plugins.Scheme
 {
     /// <summary>
-    /// WCF service for interacting with the scheme JavaScript code
-    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом схемы</para>
+    /// WCF service for interacting with the scheme JavaScript code.
+    /// <para>WCF-сервис для взаимодействия с JavaScript-кодом схемы.</para>
     /// </summary>
     [ServiceContract(Namespace = "")]
     [AspNetCompatibilityRequirements(RequirementsMode = AspNetCompatibilityRequirementsMode.Allowed)]
     public class SchemeSvc
     {
         /// <summary>
-        /// Максимальное количество символов строке данных в формате JSON, 10 МБ
+        /// Максимальное количество символов строке данных в формате JSON, 10 МБ.
         /// </summary>
         private const int MaxJsonLen = 10485760;
         /// <summary>
-        /// Обеспечивает сериализацию результатов методов сервиса
+        /// Обеспечивает сериализацию результатов методов сервиса.
         /// </summary>
         private static readonly JavaScriptSerializer JsSerializer = new JavaScriptSerializer() { MaxJsonLength = MaxJsonLen };
         /// <summary>
-        /// Общие данные веб-приложения
+        /// Общие данные веб-приложения.
         /// </summary>
         private static readonly AppData AppData = AppData.GetAppData();
 
 
         /// <summary>
-        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON
+        /// Получить объект для передачи данных, содержащий информацию об ошибке, в формате JSON.
         /// </summary>
         private string GetErrorDtoJs(Exception ex)
         {
@@ -66,7 +68,7 @@ namespace Scada.Web.Plugins.Scheme
         }
         
         /// <summary>
-        /// Получить схему из кеша или от сервера с проверкой прав на неё
+        /// Получить схему из кеша или от сервера с проверкой прав на неё.
         /// </summary>
         private SchemeView GetSchemeView(int viewID, UserRights userRights)
         {
@@ -78,21 +80,18 @@ namespace Scada.Web.Plugins.Scheme
 
 
         /// <summary>
-        /// Получить свойства документа схемы
+        /// Получить свойства документа схемы.
         /// </summary>
-        /// <remarks>Возвращает SchemeDocDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDocDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetSchemeDoc(int viewID, long viewStamp)
         {
             try
             {
-                UserRights userRights;
-                AppData.CheckLoggedOn(out userRights);
-
+                AppData.CheckLoggedOn(out UserRights userRights);
                 SchemeView schemeView = GetSchemeView(viewID, userRights);
-                SchemeDocDTO dto = new SchemeDocDTO();
-                dto.ViewStamp = schemeView.Stamp;
+                SchemeDocDTO dto = new SchemeDocDTO() { ViewStamp = schemeView.Stamp };
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
                     dto.SchemeDoc = schemeView.SchemeDoc;
@@ -109,21 +108,18 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Получить компоненты схемы
+        /// Получить компоненты схемы.
         /// </summary>
-        /// <remarks>Возвращает ComponentsDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает ComponentsDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetComponents(int viewID, long viewStamp, int startIndex, int count)
         {
             try
             {
-                UserRights userRights;
-                AppData.CheckLoggedOn(out userRights);
-
+                AppData.CheckLoggedOn(out UserRights userRights);
                 SchemeView schemeView = GetSchemeView(viewID, userRights);
-                ComponentsDTO dto = new ComponentsDTO(count);
-                dto.ViewStamp = schemeView.Stamp;
+                ComponentsDTO dto = new ComponentsDTO(count) { ViewStamp = schemeView.Stamp };
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
                     dto.CopyComponents(schemeView.Components.Values, startIndex, count);
@@ -140,21 +136,18 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Получить изображения схемы
+        /// Получить изображения схемы.
         /// </summary>
-        /// <remarks>Возвращает ImagesDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает ImagesDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetImages(int viewID, long viewStamp, int startIndex, int totalDataSize)
         {
             try
             {
-                UserRights userRights;
-                AppData.CheckLoggedOn(out userRights);
-
+                AppData.CheckLoggedOn(out UserRights userRights);
                 SchemeView schemeView = GetSchemeView(viewID, userRights);
-                ImagesDTO dto = new ImagesDTO();
-                dto.ViewStamp = schemeView.Stamp;
+                ImagesDTO dto = new ImagesDTO() { ViewStamp = schemeView.Stamp };
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
                     dto.CopyImages(schemeView.SchemeDoc.Images.Values, startIndex, totalDataSize);
@@ -171,21 +164,19 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Получить ошибки при загрузке схемы
+        /// Получить ошибки при загрузке схемы.
         /// </summary>
-        /// <remarks>Возвращает SchemeDTO в формате в JSON</remarks>
+        /// <remarks>Возвращает SchemeDTO в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string GetLoadErrors(int viewID, long viewStamp)
         {
             try
             {
-                UserRights userRights;
-                AppData.CheckLoggedOn(out userRights);
+                AppData.CheckLoggedOn(out UserRights userRights);
 
                 SchemeView schemeView = GetSchemeView(viewID, userRights);
-                SchemeDTO dto = new SchemeDTO();
-                dto.ViewStamp = schemeView.Stamp;
+                SchemeDTO dto = new SchemeDTO() { ViewStamp = schemeView.Stamp };
 
                 if (SchemeUtils.ViewStampsMatched(viewStamp, schemeView.Stamp))
                     dto.Data = schemeView.LoadErrors.ToArray();
@@ -202,37 +193,47 @@ namespace Scada.Web.Plugins.Scheme
         }
 
         /// <summary>
-        /// Отправить команду ТУ со схемы
+        /// Отправить команду ТУ со схемы.
         /// </summary>
-        /// <remarks>Возвращает DataTransferObject в формате в JSON</remarks>
+        /// <remarks>Возвращает DataTransferObject в формате в JSON.</remarks>
         [OperationContract]
         [WebGet]
         public string SendCommand(int ctrlCnlNum, double cmdVal, int viewID, int componentID)
         {
             try
             {
-                UserShot userShot;
-                AppData.UserMonitor.CheckLoggedOn(out userShot);
+                AppData.UserMonitor.CheckLoggedOn(out UserShot userShot);
 
                 if (!(userShot.WebSettings.CmdEnabled && userShot.UserRights.GetUiObjRights(viewID).ControlRight))
                     throw new ScadaException(CommonPhrases.NoRights);
 
+                CtrlCnlProps ctrlCnlProps = AppData.DataAccess.GetCtrlCnlProps(ctrlCnlNum);
                 SchemeView schemeView = AppData.ViewCache.GetView<SchemeView>(viewID, true);
-                BaseComponent comp;
-                bool sendOK;
-                bool result;
+                bool sendOK = false;
+                bool result = false;
 
-                if (schemeView.Components.TryGetValue(componentID, out comp) && comp is IDynamicComponent &&
-                    ((IDynamicComponent)comp).Action == Actions.SendCommandNow &&
-                    ((IDynamicComponent)comp).CtrlCnlNum == ctrlCnlNum)
+                if (ctrlCnlProps != null &&
+                    schemeView.Components.TryGetValue(componentID, out BaseComponent component) &&
+                    component is IDynamicComponent dynamicComponent &&
+                    dynamicComponent.Action == Actions.SendCommandNow &&
+                    dynamicComponent.CtrlCnlNum == ctrlCnlNum)
                 {
-                    sendOK = AppData.ServerComm.SendStandardCommand(
-                        userShot.UserProps.UserID, ctrlCnlNum, cmdVal, out result);
-                }
-                else
-                {
-                    sendOK = false;
-                    result = false;
+                    int userID = userShot.UserProps.UserID;
+                    switch (ctrlCnlProps.CmdTypeID)
+                    {
+                        case BaseValues.CmdTypes.Standard:
+                            sendOK = AppData.ServerComm.SendStandardCommand(
+                                userID, ctrlCnlNum, cmdVal, out result);
+                            break;
+                        case BaseValues.CmdTypes.Binary:
+                            sendOK = AppData.ServerComm.SendBinaryCommand(
+                                userID, ctrlCnlNum, BitConverter.GetBytes(cmdVal), out result);
+                            break;
+                        case BaseValues.CmdTypes.Request:
+                            sendOK = AppData.ServerComm.SendRequestCommand(
+                                userID, ctrlCnlNum, ctrlCnlProps.KPNum, out result);
+                            break;
+                    }
                 }
 
                 return JsSerializer.Serialize(new DataTransferObject(sendOK && result));

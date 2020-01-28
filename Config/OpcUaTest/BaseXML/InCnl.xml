@@ -1,0 +1,315 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfInCnl xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <InCnl>
+    <CnlNum>101</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - Counter1</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>102</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - Random1</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>103</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - Sinusoid1</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>3</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>104</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - Int32AnalogItem</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>4</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum>101</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>105</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItem</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>5</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum>102</CtrlCnlNum>
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>106</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItemArray[0]</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>6</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>107</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItemArray[1]</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>7</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>108</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItemArray[2]</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>8</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>109</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItemArray[3]</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>9</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>110</CnlNum>
+    <Active>true</Active>
+    <Name>OpcUa Device - DoubleAnalogItemArray[4]</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>1</KPNum>
+    <Signal>10</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>201</CnlNum>
+    <Active>true</Active>
+    <Name>OpcClassic Device - Saw-toothed Waves.Real8</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>2</KPNum>
+    <Signal>1</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>202</CnlNum>
+    <Active>true</Active>
+    <Name>OpcClassic Device - Triangle Waves.Real4</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>2</KPNum>
+    <Signal>2</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>3</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+  <InCnl>
+    <CnlNum>203</CnlNum>
+    <Active>true</Active>
+    <Name>OpcClassic Device - Triangle Waves.Int2</Name>
+    <CnlTypeID>2</CnlTypeID>
+    <ObjNum>1</ObjNum>
+    <KPNum>2</KPNum>
+    <Signal>3</Signal>
+    <FormulaUsed>false</FormulaUsed>
+    <Formula />
+    <Averaging>false</Averaging>
+    <ParamID xsi:nil="true" />
+    <FormatID>0</FormatID>
+    <UnitID xsi:nil="true" />
+    <CtrlCnlNum xsi:nil="true" />
+    <EvEnabled>false</EvEnabled>
+    <EvSound>false</EvSound>
+    <EvOnChange>false</EvOnChange>
+    <EvOnUndef>false</EvOnUndef>
+    <LimLowCrash xsi:nil="true" />
+    <LimLow xsi:nil="true" />
+    <LimHigh xsi:nil="true" />
+    <LimHighCrash xsi:nil="true" />
+  </InCnl>
+</ArrayOfInCnl>

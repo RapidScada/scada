@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Data.Models;
@@ -60,8 +60,7 @@ namespace Scada.Web.Plugins.Scheme
         private string GetCompStyles()
         {
             StringBuilder sbCompStyles = new StringBuilder();
-            CompManager compManager = CompManager.GetInstance();
-            List<string> compStyles = compManager.GetAllStyles();
+            List<string> compStyles = CompManager.GetInstance().GetAllStyles();
 
             foreach (string stylePath in compStyles)
             {
@@ -77,8 +76,7 @@ namespace Scada.Web.Plugins.Scheme
         private string GetCompScripts()
         {
             StringBuilder sbCompScripts = new StringBuilder();
-            CompManager compManager = CompManager.GetInstance();
-            List<string> compScripts = compManager.GetAllScripts();
+            List<string> compScripts = CompManager.GetInstance().GetAllScripts();
 
             foreach (string scriptPath in compScripts)
             {

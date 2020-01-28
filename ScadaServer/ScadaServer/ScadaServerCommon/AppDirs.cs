@@ -43,6 +43,7 @@ namespace Scada.Server
             LangDir = "";
             LogDir = "";
             ModDir = "";
+            StorageDir = "";
         }
 
 
@@ -70,7 +71,12 @@ namespace Scada.Server
         /// Gets the modules directory.
         /// </summary>
         public string ModDir { get; protected set; }
-        
+
+        /// <summary>
+        /// Gets the storage directory.
+        /// </summary>
+        public string StorageDir { get; protected set; }
+
         /// <summary>
         /// Checks that the directories exist.
         /// </summary>
@@ -78,9 +84,7 @@ namespace Scada.Server
         {
             get
             {
-                string[] dirs = GetRequiredDirs();
-
-                foreach (string dir in dirs)
+                foreach (string dir in GetRequiredDirs())
                 {
                     if (!Directory.Exists(dir))
                         return false;
@@ -101,6 +105,7 @@ namespace Scada.Server
             LangDir = ExeDir + "Lang" + Path.DirectorySeparatorChar;
             LogDir = ExeDir + "Log" + Path.DirectorySeparatorChar;
             ModDir = ExeDir + "Mod" + Path.DirectorySeparatorChar;
+            StorageDir = ExeDir + "Storage" + Path.DirectorySeparatorChar;
         }
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace Scada.Server
         /// </summary>
         public string[] GetRequiredDirs()
         {
-            return new string[] { ConfigDir, LangDir, LogDir, ModDir };
+            return new string[] { ConfigDir, LangDir, LogDir, ModDir, StorageDir };
         }
     }
 }

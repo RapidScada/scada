@@ -1,0 +1,7 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TemplateBindings>
+  <TemplateFileName>MyScheme.sch</TemplateFileName>
+  <TitleCompID>3</TitleCompID>
+  <Binding compID="1" inCnlNum="101" ctrlCnlNum="101" />
+  <Binding compID="2" inCnlNum="102" />
+</TemplateBindings>

@@ -518,6 +518,15 @@
     <Phrase key="DeviceAlreadyExists">A device with the same number already exists.</Phrase>
     <Phrase key="CommLineNotFound">Communication line not found in Communicator.</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Admin.App.Forms.Tools.FrmFileAssociation">
+    <Phrase key="this">File Association</Phrase>
+    <Phrase key="lblExt">File extension</Phrase>
+    <Phrase key="lblPath">Executable path</Phrase>
+    <Phrase key="btnBrowse">Browse...</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="ExecutableFileFilter">Executable files (*.exe)|*.exe|All Files (*.*)|*.*</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmLineAdd">
     <Phrase key="this">Add Communication Line</Phrase>
     <Phrase key="gbLine">Communication Line</Phrase>
@@ -533,25 +542,25 @@
   </Dictionary>
   <Dictionary key="Scada.Admin.App.Forms.Tools.FrmSettings">
     <Phrase key="this">Options</Phrase>
+    <Phrase key="tabGeneral">General</Phrase>
     <Phrase key="gbPathOptions">Paths</Phrase>
     <Phrase key="lblServerDir">Server directory</Phrase>
     <Phrase key="btnBrowseServerDir">Browse...</Phrase>
     <Phrase key="lblCommDir">Communicator directory</Phrase>
     <Phrase key="btnBrowseCommDir">Browse...</Phrase>
-    <Phrase key="lblSchemeEditorPath">Scheme editor</Phrase>
-    <Phrase key="btnBrowseSchemeEditorPath">Browse...</Phrase>
-    <Phrase key="lblTableEditorPath">Table editor</Phrase>
-    <Phrase key="btnBrowseTableEditorPath">Browse...</Phrase>
-    <Phrase key="lblTextEditorPath">Text editor</Phrase>
-    <Phrase key="btnBrowseTextEditorPath">Browse...</Phrase>
     <Phrase key="gbChannelOptions">Channel Generation</Phrase>
     <Phrase key="lblCnlMult">Multiplicity</Phrase>
     <Phrase key="lblCnlShift">Shift</Phrase>
     <Phrase key="lblCnlGap">Gap</Phrase>
     <Phrase key="chkPrependDeviceName">Prepend device name</Phrase>
+    <Phrase key="tabFileAssociations">File Associations</Phrase>
+    <Phrase key="btnAddAssociation">Add</Phrase>
+    <Phrase key="btnEditAssociation">Edit</Phrase>
+    <Phrase key="btnDeleteAssociation">Delete</Phrase>
+    <Phrase key="colExt">File Extension</Phrase>
+    <Phrase key="colPath">Executable Path</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
-    <Phrase key="ExecutableFileFilter">Executable files (*.exe)|*.exe|All Files (*.*)|*.*</Phrase>
     <Phrase key="ChooseServerDir">Choose the Server directory.</Phrase>
     <Phrase key="ChooseCommDir">Choose the Communicator directory.</Phrase>
   </Dictionary>

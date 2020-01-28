@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Code;
@@ -350,23 +350,13 @@ namespace Scada.Admin.App.Forms
             {
                 if (tag.ExistingForm == null)
                 {
-                    KnownFileType fileType = fileItem.FileType;
-                    PathOptions pathOptions = appData.AppSettings.PathOptions;
+                    string ext = Path.GetExtension(fileItem.Name).TrimStart('.').ToLowerInvariant();
 
-                    if (fileType == KnownFileType.SchemeView && File.Exists(pathOptions.SchemeEditorPath))
+                    if (appData.AppSettings.FileAssociations.TryGetValue(ext, out string exePath) && 
+                        File.Exists(exePath))
                     {
-                        // run Scheme Editor
-                        Process.Start(pathOptions.SchemeEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }
-                    else if (fileType == KnownFileType.TableView && File.Exists(pathOptions.TableEditorPath))
-                    {
-                        // run Table Editor
-                        Process.Start(pathOptions.TableEditorPath, string.Format("\"{0}\"", fileItem.Path));
-                    }
-                    else if (fileType != KnownFileType.None && File.Exists(pathOptions.TextEditorPath))
-                    {
-                        // run text editor
-                        Process.Start(pathOptions.TextEditorPath, string.Format("\"{0}\"", fileItem.Path));
+                        // run external editor
+                        Process.Start(exePath, string.Format("\"{0}\"", fileItem.Path));
                     }
                     else
                     {

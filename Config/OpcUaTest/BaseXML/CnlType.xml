@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ArrayOfCnlType xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <CnlType>
+    <CnlTypeID>1</CnlTypeID>
+    <Name>Discrete</Name>
+    <ShtName>Discrete</ShtName>
+    <Descr>Channel values are discrete</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>2</CnlTypeID>
+    <Name>Real</Name>
+    <ShtName>Real</ShtName>
+    <Descr>Channel values are real numbers</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>3</CnlTypeID>
+    <Name>Calculated real</Name>
+    <ShtName>CalcReal</ShtName>
+    <Descr>Real value of a channel is calculated using the formula</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>4</CnlTypeID>
+    <Name>Minute real</Name>
+    <ShtName>MinReal</ShtName>
+    <Descr>Real value of a channel is calculated using the formula once in every minute</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>5</CnlTypeID>
+    <Name>Hourly real</Name>
+    <ShtName>HourReal</ShtName>
+    <Descr>Real value of a channel is calculated using the formula once in every hour</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>6</CnlTypeID>
+    <Name>Switching counter</Name>
+    <ShtName>SwCntr</ShtName>
+    <Descr>Switching counter. Counts transitions over 0 of a value calculated using the formula</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>7</CnlTypeID>
+    <Name>Calculated discrete</Name>
+    <ShtName>CalcDiscrete</ShtName>
+    <Descr>Discrete value of a channel is calculated using the formula</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>8</CnlTypeID>
+    <Name>Minute discrete</Name>
+    <ShtName>MinDiscrete</ShtName>
+    <Descr>Discrete value of a channel is calculated using the formula once in every minute</Descr>
+  </CnlType>
+  <CnlType>
+    <CnlTypeID>9</CnlTypeID>
+    <Name>Hourly discrete</Name>
+    <ShtName>HourDiscrete</ShtName>
+    <Descr>Discrete value of a channel is calculated using the formula once in every hour</Descr>
+  </CnlType>
+</ArrayOfCnlType>

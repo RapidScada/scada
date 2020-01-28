@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaProject>
+  <AdminVersion>5.5.1.0</AdminVersion>
+  <ProjectVersion>0.0</ProjectVersion>
+  <Description />
+  <Instances>
+    <Instance>
+      <ID>1</ID>
+      <Name>Default</Name>
+      <ServerApp enabled="true" />
+      <CommApp enabled="true" />
+      <WebApp enabled="true" />
+      <DeploymentProfile>Default Profile</DeploymentProfile>
+    </Instance>
+  </Instances>
+</ScadaProject>

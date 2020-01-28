@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2019 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2019
  */
 
 using Scada.Comm.Channels;
@@ -60,6 +60,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public ModbusPoll(int inBufSize)
         {
             InBuf = new byte[inBufSize];
+            TransactionID = 0;
             Timeout = 0;
             Connection = null;
             WriteToLog = null;
@@ -70,6 +71,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// Получить буфер входных данных
         /// </summary>
         public byte[] InBuf { get; protected set; }
+
+        /// <summary>
+        /// Gets the current transaction ID in the TCP mode.
+        /// </summary>
+        public ushort TransactionID { get; protected set; }
 
         /// <summary>
         /// Получить или установить таймаут запросов через последовательный порт
@@ -290,6 +296,13 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
             bool result = false;
 
+            // specify transaction ID
+            if (++TransactionID == 0)
+                TransactionID = 1;
+
+            dataUnit.ReqADU[0] = (byte)(TransactionID / 256);
+            dataUnit.ReqADU[1] = (byte)(TransactionID % 256);
+
             // отправка запроса
             WriteToLog(dataUnit.ReqDescr);
             Connection.Write(dataUnit.ReqADU, 0, dataUnit.ReqADU.Length,
@@ -305,7 +318,8 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 int pduLen = InBuf[4] * 256 + InBuf[5] - 1;
 
-                if (InBuf[0] == 0 && InBuf[1] == 0 && InBuf[2] == 0 && InBuf[3] == 0 && pduLen > 0 &&
+                if (InBuf[0] == dataUnit.ReqADU[0] && InBuf[1] == dataUnit.ReqADU[1] && 
+                    InBuf[2] == 0 && InBuf[3] == 0 && pduLen > 0 &&
                     InBuf[6] == dataUnit.ReqADU[6])
                 {
                     // считывание PDU

@@ -103,6 +103,7 @@
             // chkIgnoreWebStorage
             // 
             this.chkIgnoreWebStorage.AutoSize = true;
+            this.chkIgnoreWebStorage.Enabled = false;
             this.chkIgnoreWebStorage.Location = new System.Drawing.Point(13, 193);
             this.chkIgnoreWebStorage.Name = "chkIgnoreWebStorage";
             this.chkIgnoreWebStorage.Size = new System.Drawing.Size(118, 17);

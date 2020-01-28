@@ -43,18 +43,6 @@ namespace Scada.Scheme
         public const string StatusColor = "Status";
 
         /// <summary>
-        /// Gets a value indicating that the current application is Scheme Editor.
-        /// </summary>
-        public static bool EditorMode
-        {
-            get
-            {
-                Assembly asm = Assembly.GetEntryAssembly();
-                return asm != null && asm.GetName().Name == "ScadaSchemeEditor";
-            }
-        }
-
-        /// <summary>
         /// Checks that the view stamps are matched.
         /// </summary>
         public static bool ViewStampsMatched(long browserViewStamp, long serverViewStamp)

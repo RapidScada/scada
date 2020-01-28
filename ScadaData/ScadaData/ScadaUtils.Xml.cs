@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2014
- * Modified : 2017
+ * Modified : 2020
  */
 
 using System;
@@ -32,7 +32,7 @@ namespace Scada
 	partial class ScadaUtils
 	{
         /// <summary>
-        /// Создать исключение FormatException для XML-узла
+        /// Создать исключение FormatException для XML-узла.
         /// </summary>
         private static FormatException NewXmlNodeFormatException(string nodeName)
         {
@@ -40,7 +40,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Создать исключение FormatException для XML-атрибута
+        /// Создать исключение FormatException для XML-атрибута.
         /// </summary>
         private static FormatException NewXmlAttrFormatException(string attrName)
         {
@@ -49,7 +49,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Преобразовать значение, предназначенное для записи в XML-файл, в строку
+        /// Преобразовать значение, предназначенное для записи в XML-файл, в строку.
         /// </summary>
         public static string XmlValToStr(object value)
         {
@@ -68,31 +68,33 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в вещественное число
+        /// Преобразовать строку, считанную из XML-документа, в вещественное число.
         /// </summary>
         public static double XmlParseDouble(string s)
         {
             return double.Parse(s, NumberFormatInfo.InvariantInfo);
         }
-        
+
         /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в дату и время
+        /// Converts the specified string read from an XML document to a DateTime structure.
         /// </summary>
+        /// <remarks>The Kind property of the returned structure is Unspecified.</remarks>
         public static DateTime XmlParseDateTime(string s)
         {
             return DateTime.Parse(s, DateTimeFormatInfo.InvariantInfo);
         }
 
         /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в дату
+        /// Converts the specified string read from an XML document to a date.
+        /// Преобразовать строку, считанную из XML-документа, в дату.
         /// </summary>
         public static DateTime XmlParseDate(string s)
         {
-            return DateTime.Parse(s, DateTimeFormatInfo.InvariantInfo).Date;
+            return XmlParseDateTime(s).Date;
         }
 
         /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в интервал времени
+        /// Преобразовать строку, считанную из XML-документа, в интервал времени.
         /// </summary>
         public static TimeSpan XmlParseTimeSpan(string s)
         {
@@ -100,7 +102,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Преобразовать строку, считанную из XML-документа, в перечислимое значение
+        /// Преобразовать строку, считанную из XML-документа, в перечислимое значение.
         /// </summary>
         public static T XmlParseEnum<T>(string s) where T : struct
         {
@@ -109,7 +111,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Создать и добавить XML-элемент
+        /// Создать и добавить XML-элемент.
         /// </summary>
         public static XmlElement AppendElem(this XmlElement parentXmlElem, string elemName, object innerText = null)
         {
@@ -121,7 +123,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Создать и добавить XML-элемент параметра
+        /// Создать и добавить XML-элемент параметра.
         /// </summary>
         public static XmlElement AppendParamElem(this XmlElement parentXmlElem, string paramName, object value,
             string descr = "")
@@ -135,7 +137,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Создать и добавить XML-элемент параметра, автоматически выбрав язык описания
+        /// Создать и добавить XML-элемент параметра, автоматически выбрав язык описания.
         /// </summary>
         public static XmlElement AppendParamElem(this XmlElement parentXmlElem, string paramName, object value,
             string descrRu, string descrEn)
@@ -144,7 +146,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить XML-элемент параметра
+        /// Получить XML-элемент параметра.
         /// </summary>
         public static XmlElement GetParamElem(this XmlElement parentXmlElem, string paramName)
         {
@@ -153,9 +155,9 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить строковое значение дочернего XML-узла
+        /// Получить строковое значение дочернего XML-узла.
         /// </summary>
-        /// <remarks>Если XML-узел не существует, вызывается исключение InvalidOperationException</remarks>
+        /// <remarks>Если XML-узел не существует, вызывается исключение InvalidOperationException.</remarks>
         public static string GetChildAsString(this XmlNode parentXmlNode, string childNodeName, string defaultVal = "")
         {
             XmlNode node = parentXmlNode.SelectSingleNode(childNodeName);
@@ -163,7 +165,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить логическое значение дочернего XML-узла
+        /// Получить логическое значение дочернего XML-узла.
         /// </summary>
         public static bool GetChildAsBool(this XmlNode parentXmlNode, string childNodeName, bool defaultVal = false)
         {
@@ -179,7 +181,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить целое значение дочернего XML-узла
+        /// Получить целое значение дочернего XML-узла.
         /// </summary>
         public static int GetChildAsInt(this XmlNode parentXmlNode, string childNodeName, int defaultVal = 0)
         {
@@ -195,7 +197,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить 64-битное целое значение дочернего XML-узла
+        /// Получить 64-битное целое значение дочернего XML-узла.
         /// </summary>
         public static long GetChildAsLong(this XmlNode parentXmlNode, string childNodeName, long defaultVal = 0)
         {
@@ -211,7 +213,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить вещественное значение дочернего XML-узла
+        /// Получить вещественное значение дочернего XML-узла.
         /// </summary>
         public static double GetChildAsDouble(this XmlNode parentXmlNode, string childNodeName, double defaultVal = 0)
         {
@@ -227,7 +229,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение даты и времени дочернего XML-узла
+        /// Gets the child XML node value as a date and time.
         /// </summary>
         public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName, DateTime defaultVal)
         {
@@ -243,7 +245,15 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение даты и времени дочернего XML-узла
+        /// Gets the child XML node value as a date and time.
+        /// </summary>
+        public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName, DateTimeKind kind)
+        {
+            return DateTime.SpecifyKind(parentXmlNode.GetChildAsDateTime(childNodeName, DateTime.MinValue), kind);
+        }
+
+        /// <summary>
+        /// Gets the child XML node value as a date and time.
         /// </summary>
         public static DateTime GetChildAsDateTime(this XmlNode parentXmlNode, string childNodeName)
         {
@@ -251,7 +261,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение интервала времени дочернего XML-узла
+        /// Получить значение интервала времени дочернего XML-узла.
         /// </summary>
         public static TimeSpan GetChildAsTimeSpan(this XmlNode parentXmlNode, string childNodeName, TimeSpan defaultVal)
         {
@@ -267,7 +277,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение интервала времени дочернего XML-узла
+        /// Получить значение интервала времени дочернего XML-узла.
         /// </summary>
         public static TimeSpan GetChildAsTimeSpan(this XmlNode parentXmlNode, string childNodeName)
         {
@@ -275,7 +285,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить перечислимое значение дочернего XML-узла
+        /// Получить перечислимое значение дочернего XML-узла.
         /// </summary>
         public static T GetChildAsEnum<T>(this XmlNode parentXmlNode, string childNodeName, 
             T defaultVal = default(T)) where T : struct
@@ -293,7 +303,7 @@ namespace Scada
 
 
         /// <summary>
-        /// Установить значение атрибута XML-элемента
+        /// Установить значение атрибута XML-элемента.
         /// </summary>
         public static void SetAttribute(this XmlElement xmlElem, string attrName, object value)
         {
@@ -301,7 +311,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить строковое значение атрибута XML-элемента
+        /// Получить строковое значение атрибута XML-элемента.
         /// </summary>
         public static string GetAttrAsString(this XmlElement xmlElem, string attrName, string defaultVal = "")
         {
@@ -310,7 +320,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить логическое значение атрибута XML-элемента
+        /// Получить логическое значение атрибута XML-элемента.
         /// </summary>
         public static bool GetAttrAsBool(this XmlElement xmlElem, string attrName, bool defaultVal = false)
         {
@@ -326,7 +336,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить целое значение атрибута XML-элемента
+        /// Получить целое значение атрибута XML-элемента.
         /// </summary>
         public static int GetAttrAsInt(this XmlElement xmlElem, string attrName, int defaultVal = 0)
         {
@@ -342,7 +352,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить 64-битное целое значение атрибута XML-элемента
+        /// Получить 64-битное целое значение атрибута XML-элемента.
         /// </summary>
         public static long GetAttrAsLong(this XmlElement xmlElem, string attrName, long defaultVal = 0)
         {
@@ -358,7 +368,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить вещественное значение атрибута XML-элемента
+        /// Получить вещественное значение атрибута XML-элемента.
         /// </summary>
         public static double GetAttrAsDouble(this XmlElement xmlElem, string attrName, double defaultVal = 0)
         {
@@ -374,7 +384,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение даты и времени атрибута XML-элемента
+        /// Gets the XML attribute value as a date and time.
         /// </summary>
         public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName, DateTime defaultVal)
         {
@@ -390,7 +400,15 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение даты и времени атрибута XML-элемента
+        /// Gets the XML attribute value as a date and time.
+        /// </summary>
+        public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName, DateTimeKind kind)
+        {
+            return DateTime.SpecifyKind(xmlElem.GetAttrAsDateTime(attrName, DateTime.MinValue), kind);
+        }
+
+        /// <summary>
+        /// Gets the XML attribute value as a date and time.
         /// </summary>
         public static DateTime GetAttrAsDateTime(this XmlElement xmlElem, string attrName)
         {
@@ -398,7 +416,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение интервала времени атрибута XML-элемента
+        /// Получить значение интервала времени атрибута XML-элемента.
         /// </summary>
         public static TimeSpan GetAttrAsTimeSpan(this XmlElement xmlElem, string attrName, TimeSpan defaultVal)
         {
@@ -414,7 +432,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить значение интервала времени атрибута XML-элемента
+        /// Получить значение интервала времени атрибута XML-элемента.
         /// </summary>
         public static TimeSpan GetAttrAsTimeSpan(this XmlElement xmlElem, string attrName)
         {
@@ -422,7 +440,7 @@ namespace Scada
         }
 
         /// <summary>
-        /// Получить перечислимое значение атрибута XML-элемента
+        /// Получить перечислимое значение атрибута XML-элемента.
         /// </summary>
         public static T GetAttrAsEnum<T>(this XmlElement xmlElem, string attrName, 
             T defaultVal = default(T)) where T : struct

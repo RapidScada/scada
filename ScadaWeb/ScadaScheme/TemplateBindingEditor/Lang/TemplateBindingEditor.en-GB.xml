@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TemplateBindingEditorDictionaries>
+  <Dictionary key="Scada.Scheme.TemplateBindingEditor.Code.SchemeParser">
+    <Phrase key="ErrorParsingScheme">Error parsing scheme</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.TemplateBindingEditor.Forms.FrmMain">
+    <Phrase key="btnFileNew.ToolTip">New Bindings (Ctrl + N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">Open Bindings (Ctrl + O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">Save Bindings (Ctrl + S)</Phrase>
+    <Phrase key="btnFileSaveAs.ToolTip">Save Bindings As</Phrase>
+    <Phrase key="tabGeneral">General Parameters</Phrase>
+    <Phrase key="lblTemplateFileName">Scheme template</Phrase>
+    <Phrase key="btnBrowseTemplate">Browse...</Phrase>
+    <Phrase key="btnReloadTemplate">Reload</Phrase>
+    <Phrase key="lblTitleComponent">Title component</Phrase>
+    <Phrase key="tabBindings">Component Bindings</Phrase>
+    <Phrase key="colComponent">Component</Phrase>
+    <Phrase key="colCnlNum">Input Channel</Phrase>
+    <Phrase key="colCtrlCnlNum">Output Channel</Phrase>
+    <Phrase key="EditorTitle">{0} - Template Binding Editor</Phrase>
+    <Phrase key="BindingsFileFilter">Template Bindings (*.stb)|*.stb|All Files (*.*)|*.*</Phrase>
+    <Phrase key="SaveBindingsConfirm">The bindings have been modified. Save the changes?</Phrase>
+    <Phrase key="lblInterfaceDir.ToolTip">The interface directory of the project</Phrase>
+    <Phrase key="InterfaceDirNotFound">The interface directory not found. Save the bindings in the Webstation configuration directory of the project.</Phrase>
+    <Phrase key="UnableOpenTemplate">Unable to open a scheme template in case the interface directory not found.</Phrase>
+    <Phrase key="UnableLoadTemplate">Unable to load a scheme template in case the interface directory not found.</Phrase>
+    <Phrase key="TemplateNotFound">Scheme template not found:&#13;&#10;{0}</Phrase>
+    <Phrase key="TemplateLoaded">Scheme template loaded.</Phrase>
+    <Phrase key="WrongTemplatePath">The scheme must be located inside the interface directory.</Phrase>
+  </Dictionary>
+</TemplateBindingEditorDictionaries>

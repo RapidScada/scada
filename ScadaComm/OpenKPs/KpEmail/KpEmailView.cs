@@ -38,7 +38,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП
         /// </summary>
-        internal const string KpVersion = "5.0.1.0";
+        internal const string KpVersion = "5.0.1.1";
 
 
         /// <summary>

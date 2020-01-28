@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Scheme.Model;
@@ -1018,8 +1018,10 @@ namespace Scada.Scheme.Editor
 
                                 if (pasteSpecial && newComponent is IDynamicComponent dynamicComponent)
                                 {
-                                    dynamicComponent.InCnlNum += inCnlOffset;
-                                    dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
+                                    if (dynamicComponent.InCnlNum > 0)
+                                        dynamicComponent.InCnlNum += inCnlOffset;
+                                    if (dynamicComponent.CtrlCnlNum > 0)
+                                        dynamicComponent.CtrlCnlNum += ctrlCnlOffset;
                                 }
 
                                 SchemeView.Components[newComponent.ID] = newComponent;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
@@ -60,6 +61,11 @@ namespace Scada.Admin.Config
         /// </summary>
         public ChannelOptions ChannelOptions { get; private set; }
 
+        /// <summary>
+        /// Gets the associations between file extensions and editors.
+        /// </summary>
+        public SortedList<string, string> FileAssociations { get; private set; }
+
 
         /// <summary>
         /// Sets the default values.
@@ -68,6 +74,18 @@ namespace Scada.Admin.Config
         {
             PathOptions = new PathOptions();
             ChannelOptions = new ChannelOptions();
+            FileAssociations = new SortedList<string, string>();
+
+            if (ScadaUtils.IsRunningOnWin)
+            {
+                FileAssociations.Add("sch", @"C:\SCADA\ScadaSchemeEditor\ScadaSchemeEditor.exe");
+                FileAssociations.Add("tbl", @"C:\SCADA\ScadaTableEditor\ScadaTableEditor.exe");
+            }
+            else
+            {
+                FileAssociations.Add("sch", "/opt/scada/ScadaSchemeEditor/ScadaSchemeEditor.exe");
+                FileAssociations.Add("tbl", "/opt/scada/ScadaTableEditor/ScadaTableEditor.exe");
+            }
         }
 
         /// <summary>
@@ -91,6 +109,16 @@ namespace Scada.Admin.Config
 
                 if (rootElem.SelectSingleNode("ChannelOptions") is XmlNode channelOptionsNode)
                     ChannelOptions.LoadFromXml(channelOptionsNode);
+
+                if (rootElem.SelectSingleNode("FileAssociations") is XmlNode fileAssociationsNode)
+                {
+                    foreach (XmlElement associationElem in fileAssociationsNode.SelectNodes("Association"))
+                    {
+                        string ext = associationElem.GetAttrAsString("ext").ToLowerInvariant();
+                        string path = associationElem.GetAttrAsString("path");
+                        FileAssociations[ext] = path;
+                    }
+                }
 
                 errMsg = "";
                 return true;
@@ -118,6 +146,14 @@ namespace Scada.Admin.Config
 
                 PathOptions.SaveToXml(rootElem.AppendElem("PathOptions"));
                 ChannelOptions.SaveToXml(rootElem.AppendElem("ChannelOptions"));
+
+                XmlElement fileAssociationsElem = rootElem.AppendElem("FileAssociations");
+                foreach (KeyValuePair<string, string> pair in FileAssociations)
+                {
+                    XmlElement associationElem = fileAssociationsElem.AppendElem("Association");
+                    associationElem.SetAttribute("ext", pair.Key);
+                    associationElem.SetAttribute("path", pair.Value);
+                }
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

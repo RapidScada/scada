@@ -9,7 +9,8 @@
     <Param name="ServerPwd" value="12345" descr="Пароль пользователя для подключения к SCADA-Серверу" />
     <Param name="ServerTimeout" value="10000" descr="Таймаут ожидания ответа SCADA-Сервера, мс" />
     <Param name="WaitForStop" value="10000" descr="Ожидание остановки линий связи, мс" />
-    <Param name="SendAllDataPer" value="60" descr="Период передачи всех данных КП, с" />
+    <Param name="SendModData" value="true" descr="Передавать только изменившиеся теги КП" />
+    <Param name="SendAllDataPer" value="60" descr="Период передачи всех тегов КП, с" />
   </CommonParams>
   <!--Линии связи-->
   <CommLines>
@@ -25,6 +26,7 @@
         <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
         <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
         <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="ReqAfterCmd" value="false" descr="Опрос КП после команды ТУ" />
         <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
       </LineParams>
       <CustomParams>
@@ -41,6 +43,7 @@
         <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
         <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
         <Param name="CmdEnabled" value="false" descr="Команды ТУ разрешены" />
+        <Param name="ReqAfterCmd" value="false" descr="Опрос КП после команды ТУ" />
         <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
       </LineParams>
       <CustomParams />
@@ -64,6 +67,7 @@
         <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
         <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
         <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="ReqAfterCmd" value="false" descr="Опрос КП после команды ТУ" />
         <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
       </LineParams>
       <CustomParams />
@@ -78,6 +82,7 @@
         <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
         <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
         <Param name="CmdEnabled" value="true" descr="Команды ТУ разрешены" />
+        <Param name="ReqAfterCmd" value="false" descr="Опрос КП после команды ТУ" />
         <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
       </LineParams>
       <CustomParams />
@@ -92,6 +97,7 @@
         <Param name="ReqTriesCnt" value="3" descr="Количество попыток перезапроса КП при ошибке" />
         <Param name="CycleDelay" value="0" descr="Задержка после цикла опроса, мс" />
         <Param name="CmdEnabled" value="false" descr="Команды ТУ разрешены" />
+        <Param name="ReqAfterCmd" value="false" descr="Опрос КП после команды ТУ" />
         <Param name="DetailedLog" value="true" descr="Записывать в журнал подробную информацию" />
       </LineParams>
       <CustomParams />
