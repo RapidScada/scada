@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2017
+ * Modified : 2020
  */
 
 using System;
@@ -29,23 +29,24 @@ using System.Collections.Generic;
 namespace Scada.Data.Tables
 {
     /// <summary>
-    /// Snapshot table for fast read data access
-    /// <para>Таблица срезов для быстрого доступа к данным на чтение</para>
+    /// Snapshot table for fast read data access.
+    /// <para>Таблица срезов для быстрого доступа к данным на чтение.</para>
     /// </summary>
     public class SrezTableLight
     {
         /// <summary>
-        /// Данные входного канала
+        /// Represents input channel data.
+        /// <para>Представляет данные входного канала.</para>
         /// </summary>
         public struct CnlData
         {
             /// <summary>
-            /// Пустые данные входного канала
+            /// Пустые данные входного канала.
             /// </summary>
             public static readonly CnlData Empty = new CnlData(0.0, 0);
 
             /// <summary>
-            /// Конструктор
+            /// Конструктор.
             /// </summary>
             public CnlData(double val, int stat)
                 : this()
@@ -55,13 +56,42 @@ namespace Scada.Data.Tables
             }
 
             /// <summary>
-            /// Получить или установить значение
+            /// Получить или установить значение.
             /// </summary>
             public double Val { get; set; }
             /// <summary>
-            /// Получить или установить статус
+            /// Получить или установить статус.
             /// </summary>
             public int Stat { get; set; }
+
+            /// <summary>
+            /// Determines whether the specified object is equal to the current object.
+            /// </summary>
+            public override bool Equals(object obj)
+            {
+                return this is CnlData cnlData && this == cnlData;
+            }
+            /// <summary>
+            /// Returns the hash code for this instance.
+            /// </summary>
+            public override int GetHashCode()
+            {
+                return Tuple.Create(Val, Stat).GetHashCode();
+            }
+            /// <summary>
+            /// Returns a value that indicates whether two specified inctances are equal.
+            /// </summary>
+            public static bool operator ==(CnlData x, CnlData y)
+            {
+                return x.Val == y.Val && x.Stat == y.Stat;
+            }
+            /// <summary>
+            /// Returns a value that indicates whether two specified inctances are not equal.
+            /// </summary>
+            public static bool operator !=(CnlData x, CnlData y)
+            {
+                return !(x == y);
+            }
         }
 
         /// <summary>

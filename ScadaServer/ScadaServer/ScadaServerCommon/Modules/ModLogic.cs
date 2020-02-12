@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.Data.Configuration;
@@ -32,13 +32,13 @@ using Utils;
 namespace Scada.Server.Modules
 {
     /// <summary>
-    /// The base class for server module logic
-    /// <para>Родительский класс логики работы серверного модуля</para>
+    /// The base class for server module logic.
+    /// <para>Родительский класс логики работы серверного модуля.</para>
     /// </summary>
     public abstract class ModLogic
     {
         /// <summary>
-        /// Время ожидания остановки работы модуля, мс
+        /// Время ожидания остановки работы модуля, мс.
         /// </summary>
         public const int WaitForStop = 7000;
 
@@ -46,7 +46,7 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
-        /// Конструктор
+        /// Конструктор.
         /// </summary>
         public ModLogic()
         {
@@ -59,12 +59,12 @@ namespace Scada.Server.Modules
 
 
         /// <summary>
-        /// Получить имя модуля
+        /// Получить имя модуля.
         /// </summary>
         public abstract string Name { get; }
 
         /// <summary>
-        /// Получить или установить директории приложения
+        /// Получить или установить директории приложения.
         /// </summary>
         public AppDirs AppDirs
         {
@@ -81,28 +81,28 @@ namespace Scada.Server.Modules
         }
 
         /// <summary>
-        /// Получить или установить настройки SCADA-Сервера
+        /// Получить или установить настройки SCADA-Сервера.
         /// </summary>
         public Settings Settings { get; set; }
 
         /// <summary>
-        /// Получить или установить метод записи в журнал приложения
+        /// Получить или установить метод записи в журнал приложения.
         /// </summary>
         public Log.WriteActionDelegate WriteToLog { get; set; }
 
         /// <summary>
-        /// Получить или установить объект для доступа к данным сервера
+        /// Получить или установить объект для доступа к данным сервера.
         /// </summary>
         public IServerData ServerData { get; set; }
 
         /// <summary>
-        /// Получить или установить объект для отправки команд
+        /// Получить или установить объект для отправки команд.
         /// </summary>
         public IServerCommands ServerCommands { get; set; }
 
 
         /// <summary>
-        /// Выполнить действия при запуске работы сервера
+        /// Выполнить действия при запуске работы сервера.
         /// </summary>
         public virtual void OnServerStart()
         {
@@ -112,7 +112,7 @@ namespace Scada.Server.Modules
         }
 
         /// <summary>
-        /// Выполнить действия при остановке работы сервера
+        /// Выполнить действия при остановке работы сервера.
         /// </summary>
         public virtual void OnServerStop()
         {
@@ -120,72 +120,86 @@ namespace Scada.Server.Modules
                 WriteToLog(string.Format(Localization.UseRussian ? "Завершение работы модуля {0}" :
                     "Stop {0} module", Name), Log.ActTypes.Action);
         }
+        
+        /// <summary>
+        /// Performs actions after receiving and before processing new current data.
+        /// </summary>
+        public virtual void OnCurDataProcessing(SrezTableLight.Srez receivedSrez)
+        {
+        }
 
         /// <summary>
-        /// Выполнить действия после обработки новых текущих данных
+        /// Выполнить действия после обработки новых текущих данных.
         /// </summary>
         /// <remarks>Номера каналов упорядочены по возрастанию.
-        /// Вычисление дорасчётных каналов текущего среза в момент вызова метода не выполнено</remarks>
+        /// Вычисление дорасчётных каналов текущего среза в момент вызова метода не выполнено.</remarks>
         public virtual void OnCurDataProcessed(int[] cnlNums, SrezTableLight.Srez curSrez)
         {
         }
 
         /// <summary>
-        /// Выполнить действия после вычисления дорасчётных каналов текущего среза
+        /// Выполнить действия после вычисления дорасчётных каналов текущего среза.
         /// </summary>
-        /// <remarks>Номера каналов упорядочены по возрастанию</remarks>
+        /// <remarks>Номера каналов упорядочены по возрастанию.</remarks>
         public virtual void OnCurDataCalculated(int[] cnlNums, SrezTableLight.Srez curSrez)
         {
         }
 
         /// <summary>
-        /// Выполнить действия после обработки новых архивных данных
+        /// Performs actions after receiving and before processing new archive data.
+        /// </summary>
+        public virtual void OnArcDataProcessing(SrezTableLight.Srez receivedSrez)
+        {
+        }
+
+        /// <summary>
+        /// Выполнить действия после обработки новых архивных данных.
         /// </summary>
         /// <remarks>
         /// Номера каналов упорядочены по возрастанию.
         /// Вычисление дорасчётных каналов архивного среза в момент вызова метода завершено.
-        /// Параметр arcSrez равен null, если запись архивных срезов отключена
+        /// Параметр arcSrez равен null, если запись архивных срезов отключена.
         /// </remarks>
         public virtual void OnArcDataProcessed(int[] cnlNums, SrezTableLight.Srez arcSrez)
         {
         }
 
         /// <summary>
-        /// Выполнить действия при создании события
+        /// Выполнить действия при создании события.
         /// </summary>
-        /// <remarks>Метод вызывается до записи события на диск, поэтому свойства события можно изменить</remarks>
+        /// <remarks>Метод вызывается до записи события на диск, поэтому свойства события можно изменить.</remarks>
         public virtual void OnEventCreating(EventTableLight.Event ev)
         {
         }
 
         /// <summary>
-        /// Выполнить действия после создания события и записи на диск
+        /// Выполнить действия после создания события и записи на диск.
         /// </summary>
-        /// <remarks>Метод вызывается после записи на события диск</remarks>
+        /// <remarks>Метод вызывается после записи на события диск.</remarks>
         public virtual void OnEventCreated(EventTableLight.Event ev)
         {
         }
 
         /// <summary>
-        /// Выполнить действия после квитирования события
+        /// Выполнить действия после квитирования события.
         /// </summary>
         public virtual void OnEventChecked(DateTime date, int evNum, int userID)
         {
         }
 
         /// <summary>
-        /// Выполнить действия после приёма команды ТУ
+        /// Выполнить действия после приёма команды ТУ.
         /// </summary>
         /// <remarks>Метод вызывается после приёма команды ТУ от подключенных клиентов и 
-        /// не вызывается после передачи команды ТУ серверными модулями</remarks>
+        /// не вызывается после передачи команды ТУ серверными модулями.</remarks>
         public virtual void OnCommandReceived(int ctrlCnlNum, Command cmd, int userID, ref bool passToClients)
         {
         }
 
         /// <summary>
-        /// Проверить имя и пароль пользователя, получить его роль
+        /// Проверить имя и пароль пользователя, получить его роль.
         /// </summary>
-        /// <remarks>Если пароль пустой, то он не проверяется</remarks>
+        /// <remarks>Если пароль пустой, то он не проверяется.</remarks>
         public virtual bool ValidateUser(string username, string password, out int roleID, out bool handled)
         {
             roleID = BaseValues.Roles.Err;

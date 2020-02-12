@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Data.Configuration;
@@ -1750,6 +1750,30 @@ namespace Scada.Server.Engine
         }
 
         /// <summary>
+        /// Executes the OnCurDataProcessing method for the modules.
+        /// </summary>
+        private void RaiseOnCurDataProcessing(SrezTableLight.Srez receivedSrez)
+        {
+            lock (modules)
+            {
+                foreach (ModLogic modLogic in modules)
+                {
+                    try
+                    {
+                        modLogic.OnCurDataProcessing(receivedSrez);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при выполнении действий при обработке новых текущих данных в модуле {0}: {1}" :
+                            "Error executing actions on current data processing in module {0}: {1}",
+                            modLogic.Name, ex.Message), Log.ActTypes.Exception);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Вызвать событие OnCurDataProcessed для модулей
         /// </summary>
         private void RaiseOnCurDataProcessed(int[] cnlNums, SrezTableLight.Srez curSrez)
@@ -1791,6 +1815,30 @@ namespace Scada.Server.Engine
                         AppLog.WriteAction(string.Format(Localization.UseRussian ? "Ошибка при выполнении действий " + 
                             "после вычисления дорасчётных каналов текущего среза в модуле {0}: {1}" :
                             "Error executing actions on current data calculated in module {0}: {1}",
+                            modLogic.Name, ex.Message), Log.ActTypes.Exception);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Executes the OnArcDataProcessing method for the modules.
+        /// </summary>
+        private void RaiseOnArcDataProcessing(SrezTableLight.Srez receivedSrez)
+        {
+            lock (modules)
+            {
+                foreach (ModLogic modLogic in modules)
+                {
+                    try
+                    {
+                        modLogic.OnArcDataProcessing(receivedSrez);
+                    }
+                    catch (Exception ex)
+                    {
+                        AppLog.WriteAction(string.Format(Localization.UseRussian ?
+                            "Ошибка при выполнении действий при обработке новых архивных данных в модуле {0}: {1}" :
+                            "Error executing actions on archive data processing in module {0}: {1}",
                             modLogic.Name, ex.Message), Log.ActTypes.Exception);
                     }
                 }
@@ -2160,6 +2208,14 @@ namespace Scada.Server.Engine
         }
 
         /// <summary>
+        /// Gets active channel numbers.
+        /// </summary>
+        public IList<int> GetCnlNums()
+        {
+            return inCnls.Keys;
+        }
+
+        /// <summary>
         /// Получить текущий срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
@@ -2232,6 +2288,7 @@ namespace Scada.Server.Engine
 
                     if (cnlCnt > 0)
                     {
+                        RaiseOnCurDataProcessing(receivedSrez);
                         List<EventTableLight.Event> events = new List<EventTableLight.Event>();
 
                         lock (curSrez) lock (calculator)
@@ -2333,6 +2390,9 @@ namespace Scada.Server.Engine
 
                     if (cnlCnt > 0)
                     {
+                        // выполнение действий модулей
+                        RaiseOnArcDataProcessing(receivedSrez);
+
                         // определение времени, на которое записывются архивные данные
                         DateTime paramSrezDT = receivedSrez.DateTime;
                         DateTime paramSrezDate = paramSrezDT.Date;
