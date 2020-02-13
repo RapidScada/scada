@@ -38,7 +38,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Gets active channel numbers.
         /// </summary>
-        IList<int> GetCnlNums();
+        int[] GetCnlNums();
 
         /// <summary>
         /// Получить текущий срез, содержащий данные заданных каналов
@@ -50,7 +50,12 @@ namespace Scada.Server.Modules
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
-        SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotTypes snapshotType, int[] cnlNums);
+        SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotType snapshotType, int[] cnlNums);
+
+        /// <summary>
+        /// Gets timestamps of snapshots available on the specified date.
+        /// </summary>
+        DateTime[] GetAvailableSnapshots(DateTime date, SnapshotType snapshotType);
 
         /// <summary>
         /// Обработать (записать) новые текущие данные

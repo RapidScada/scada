@@ -31,6 +31,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -886,13 +887,13 @@ namespace Scada.Server.Engine
                         {
                             if (writeCurOnMod)
                             {
-                                WriteSrez(SnapshotTypes.Cur, nowDT);
+                                WriteSrez(SnapshotType.Cur, nowDT);
                                 curSrezMod = false;
                                 writeCurSrezDT = DateTime.MaxValue;
                             }
                             else
                             {
-                                WriteSrez(SnapshotTypes.Cur, writeCurSrezDT);
+                                WriteSrez(SnapshotType.Cur, writeCurSrezDT);
                                 writeCurSrezDT = CalcNextTime(nowDT, Settings.WriteCurPer);
                             }
                         }
@@ -900,14 +901,14 @@ namespace Scada.Server.Engine
                         // запись минутного среза
                         if (writeMinSrezDT <= nowDT && writeMin)
                         {
-                            WriteSrez(SnapshotTypes.Min, writeMinSrezDT);
+                            WriteSrez(SnapshotType.Min, writeMinSrezDT);
                             writeMinSrezDT = CalcNextTime(nowDT, Settings.WriteMinPer);
                         }
 
                         // запись часового среза
                         if (writeHrSrezDT <= nowDT && writeHr)
                         {
-                            WriteSrez(SnapshotTypes.Hour, writeHrSrezDT);
+                            WriteSrez(SnapshotType.Hour, writeHrSrezDT);
                             writeHrSrezDT = CalcNextTime(nowDT, Settings.WriteHrPer);
                         }
                     }
@@ -972,14 +973,14 @@ namespace Scada.Server.Engine
         /// <summary>
         /// Получить кэш таблицы срезов, создав его при необходимости
         /// </summary>
-        private SrezTableCache GetSrezTableCache(DateTime date, SnapshotTypes srezType)
+        private SrezTableCache GetSrezTableCache(DateTime date, SnapshotType srezType)
         {
             SortedList<DateTime, SrezTableCache> srezTableCacheList;
             SrezTableCache srezTableCache;
 
-            if (srezType == SnapshotTypes.Min)
+            if (srezType == SnapshotType.Min)
                 srezTableCacheList = minSrezTableCache;
-            else if (srezType == SnapshotTypes.Hour)
+            else if (srezType == SnapshotType.Hour)
                 srezTableCacheList = hrSrezTableCache;
             else
                 throw new ArgumentException(Localization.UseRussian ? 
@@ -997,7 +998,7 @@ namespace Scada.Server.Engine
                     srezTableCache = new SrezTableCache(date);
                     srezTableCacheList.Add(date, srezTableCache);
 
-                    if (srezType == SnapshotTypes.Min)
+                    if (srezType == SnapshotType.Min)
                     {
                         if (Localization.UseRussian)
                         {
@@ -1137,9 +1138,9 @@ namespace Scada.Server.Engine
         /// <summary>
         /// Записать срез в таблицы срезов, выбрав нужные таблицы
         /// </summary>
-        private void WriteSrez(SnapshotTypes srezType, DateTime srezDT)
+        private void WriteSrez(SnapshotType srezType, DateTime srezDT)
         {
-            if (srezType == SnapshotTypes.Cur)
+            if (srezType == SnapshotType.Cur)
             {
                 // запись нового текущего среза
                 if (Settings.WriteCur)
@@ -1155,7 +1156,7 @@ namespace Scada.Server.Engine
                 bool writeCopy;
                 AvgData[] avgData;
 
-                if (srezType == SnapshotTypes.Min)
+                if (srezType == SnapshotType.Min)
                 {
                     writeMain = Settings.WriteMin;
                     writeCopy = Settings.WriteMinCopy;
@@ -2134,7 +2135,7 @@ namespace Scada.Server.Engine
         /// Получить таблицу срезов, содержащую данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
-        public SrezTableLight GetSnapshotTable(DateTime date, SnapshotTypes snapshotType, int[] cnlNums)
+        public SrezTableLight GetSnapshotTable(DateTime date, SnapshotType snapshotType, int[] cnlNums)
         {
             try
             {
@@ -2145,7 +2146,7 @@ namespace Scada.Server.Engine
                 {
                     destSnapshotTable = new SrezTableLight();
 
-                    if (snapshotType == SnapshotTypes.Cur)
+                    if (snapshotType == SnapshotType.Cur)
                     {
                         lock (curSrez)
                         {
@@ -2210,9 +2211,9 @@ namespace Scada.Server.Engine
         /// <summary>
         /// Gets active channel numbers.
         /// </summary>
-        public IList<int> GetCnlNums()
+        public int[] GetCnlNums()
         {
-            return inCnls.Keys;
+            return inCnls.Keys.ToArray();
         }
 
         /// <summary>
@@ -2221,14 +2222,14 @@ namespace Scada.Server.Engine
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
         public SrezTableLight.Srez GetCurSnapshot(int[] cnlNums)
         {
-            return GetSnapshot(DateTime.MinValue, SnapshotTypes.Cur, cnlNums);
+            return GetSnapshot(DateTime.MinValue, SnapshotType.Cur, cnlNums);
         }
 
         /// <summary>
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
-        public SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotTypes snapshotType, int[] cnlNums)
+        public SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotType snapshotType, int[] cnlNums)
         {
             try
             {
@@ -2236,7 +2237,7 @@ namespace Scada.Server.Engine
 
                 if (serverIsReady && cnlCnt > 0)
                 {
-                    if (snapshotType == SnapshotTypes.Cur)
+                    if (snapshotType == SnapshotType.Cur)
                     {
                         lock (curSrez)
                         {
@@ -2271,6 +2272,44 @@ namespace Scada.Server.Engine
                 AppLog.WriteException(ex, Localization.UseRussian ?
                     "Ошибка при получении среза" :
                     "Error getting snapshot");
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Gets timestamps of snapshots available on the specified date.
+        /// </summary>
+        public DateTime[] GetAvailableSnapshots(DateTime date, SnapshotType snapshotType)
+        {
+            try
+            {
+                if (serverIsReady)
+                {
+                    if (snapshotType == SnapshotType.Cur)
+                    {
+                        return new DateTime[1] { DateTime.MinValue };
+                    }
+                    else
+                    {
+                        SrezTableCache srezTableCache = GetSrezTableCache(date.Date, snapshotType);
+
+                        lock (srezTableCache)
+                        {
+                            srezTableCache.FillSrezTable();
+                            return srezTableCache.SrezTable.SrezList.Keys.ToArray();
+                        }
+                    }
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                AppLog.WriteException(ex, Localization.UseRussian ?
+                    "Ошибка при получении меток времени срезов" :
+                    "Error getting snapshot timestamps");
                 return null;
             }
         }
@@ -2401,10 +2440,10 @@ namespace Scada.Server.Engine
 
                         // получение кэша таблиц срезов
                         SrezTableCache minCache = Settings.WriteMin || Settings.WriteMinCopy ?
-                            GetSrezTableCache(paramSrezDate, SnapshotTypes.Min) : null;
+                            GetSrezTableCache(paramSrezDate, SnapshotType.Min) : null;
                         SrezTableCache hrCache = 
                             nearestHrDT == paramSrezDT && (Settings.WriteHr || Settings.WriteHrCopy) ?
-                                GetSrezTableCache(paramSrezDate, SnapshotTypes.Hour) : null;
+                                GetSrezTableCache(paramSrezDate, SnapshotType.Hour) : null;
                         SrezTableLight.Srez arcSrez = null;
 
                         // запись минутных данных

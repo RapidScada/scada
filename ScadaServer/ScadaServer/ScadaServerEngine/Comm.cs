@@ -976,17 +976,17 @@ namespace Scada.Server.Engine
                     break;
                 case 0x0D: // запрос данных из таблицы среза
                     byte srezTypeNum = inBuf[3];
-                    SnapshotTypes srezType;
+                    SnapshotType srezType;
                     DateTime srezDate;
 
                     if (srezTypeNum == 0x01)
                     {
-                        srezType = SnapshotTypes.Cur;
+                        srezType = SnapshotType.Cur;
                         srezDate = DateTime.MinValue;
                     }
                     else
                     {
-                        srezType = srezTypeNum == 0x02 ? SnapshotTypes.Hour : SnapshotTypes.Min;
+                        srezType = srezTypeNum == 0x02 ? SnapshotType.Hour : SnapshotType.Min;
                         srezDate = new DateTime(inBuf[4] + 2000, inBuf[5], inBuf[6]);
                     }
 
@@ -999,9 +999,9 @@ namespace Scada.Server.Engine
                     if (settings.DetailedLog)
                     {
                         string srezTypeStr;
-                        if (srezType == SnapshotTypes.Cur)
+                        if (srezType == SnapshotType.Cur)
                             srezTypeStr = Localization.UseRussian ? "текущие" : "current";
-                        else if (srezType == SnapshotTypes.Min)
+                        else if (srezType == SnapshotType.Min)
                             srezTypeStr = Localization.UseRussian ? "минутные" : "minute";
                         else
                             srezTypeStr = Localization.UseRussian ? "часовые" : "hourly";
