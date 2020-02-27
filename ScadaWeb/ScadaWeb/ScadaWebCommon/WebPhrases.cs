@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 #pragma warning disable 1591 // отключение warning CS1591: Missing XML comment for publicly visible type or member
@@ -73,6 +73,10 @@ namespace Scada.Web
         public static string RightYes { get; private set; }
         public static string RightNo { get; private set; }
 
+        // Словарь Scada.Web.Plugins
+        public static string LoadPluginConfigError { get; private set; }
+        public static string SavePluginConfigError { get; private set; }
+
         // Словарь Scada.Web.Shell.MenuItem
         public static string ReportsMenuItem { get; private set; }
         public static string AdminMenuItem { get; private set; }
@@ -119,6 +123,9 @@ namespace Scada.Web
 
             RightYes = Localization.Dict.GetEmptyPhrase("RightYes");
             RightNo = Localization.Dict.GetEmptyPhrase("RightNo");
+
+            LoadPluginConfigError = Localization.Dict.GetEmptyPhrase("LoadPluginConfigError");
+            SavePluginConfigError = Localization.Dict.GetEmptyPhrase("SavePluginConfigError");
 
             ReportsMenuItem = Localization.Dict.GetEmptyPhrase("ReportsMenuItem");
             AdminMenuItem = Localization.Dict.GetEmptyPhrase("AdminMenuItem");
@@ -185,6 +192,12 @@ namespace Scada.Web
             {
                 RightYes = dict.GetPhrase("RightYes", RightYes);
                 RightNo = dict.GetPhrase("RightNo", RightNo);
+            }
+
+            if (Localization.Dictionaries.TryGetValue("Scada.Web.Plugins", out dict))
+            {
+                LoadPluginConfigError = dict.GetPhrase("LoadPluginConfigError", LoadPluginConfigError);
+                SavePluginConfigError = dict.GetPhrase("SavePluginConfigError", SavePluginConfigError);
             }
 
             if (Localization.Dictionaries.TryGetValue("Scada.Web.Shell.MenuItem", out dict))

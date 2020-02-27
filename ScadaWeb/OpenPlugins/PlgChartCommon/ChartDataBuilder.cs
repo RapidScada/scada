@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -34,8 +34,8 @@ using System.Web;
 namespace Scada.Web.Plugins.Chart
 {
     /// <summary>
-    /// Builds JavaScript of chart properties and data
-    /// <para>Строит JavaScript свойств и данных графика</para>
+    /// Builds JavaScript of chart properties and data.
+    /// <para>Строит JavaScript свойств и данных графика.</para>
     /// </summary>
     public class ChartDataBuilder
     {
@@ -358,21 +358,19 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Преобразовать свойства графика в JavaScript
+        /// Converts the chart data to JavaScript.
         /// </summary>
-        public string ToJs()
+        public string ToJs(StringBuilder stringBuilder)
         {
-            StringBuilder sbJs = new StringBuilder();
-
             // настройки отображения
-            sbJs
+            stringBuilder
                 .AppendLine("var displaySettings = new scada.chart.DisplaySettings();")
                 .Append("displaySettings.locale = '").Append(Localization.Culture.Name).AppendLine("';")
                 .Append("displaySettings.chartGap = ").Append(chartGap).AppendLine(" / scada.chart.const.SEC_PER_DAY;")
                 .AppendLine();
 
             // интервал времени
-            sbJs
+            stringBuilder
                 .AppendLine("var timeRange = new scada.chart.TimeRange();")
                 .Append("timeRange.startDate = Date.UTC(")
                 .AppendFormat("{0}, {1}, {2}", startDate.Year, startDate.Month - 1, startDate.Day).AppendLine(");")
@@ -389,7 +387,7 @@ namespace Scada.Web.Plugins.Chart
                 string trendName = "trend" + i;
                 sbTrends.Append(trendName).Append(", ");
 
-                sbJs
+                stringBuilder
                     .Append("var ").Append(trendName).AppendLine(" = new scada.chart.TrendExt();")
                     .Append(trendName).Append(".cnlNum = ").Append(cnlNums[i]).AppendLine(";")
                     .Append(trendName).Append(".cnlName = '")
@@ -402,7 +400,7 @@ namespace Scada.Web.Plugins.Chart
 
             sbTrends.Append("];");
 
-            sbJs
+            stringBuilder
                 .AppendLine("var chartData = new scada.chart.ChartData();")
                 .Append("chartData.timePoints = ")
                 .Append(single ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
@@ -410,7 +408,7 @@ namespace Scada.Web.Plugins.Chart
                 .Append("chartData.quantityName = '")
                 .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';");
 
-            return sbJs.ToString();
+            return stringBuilder.ToString();
         }
     }
 }
