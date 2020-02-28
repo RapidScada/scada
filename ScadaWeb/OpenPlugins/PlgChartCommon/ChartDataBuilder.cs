@@ -360,7 +360,7 @@ namespace Scada.Web.Plugins.Chart
         /// <summary>
         /// Converts the chart data to JavaScript.
         /// </summary>
-        public string ToJs(StringBuilder stringBuilder)
+        public void ToJs(StringBuilder stringBuilder)
         {
             // настройки отображения
             stringBuilder
@@ -406,9 +406,8 @@ namespace Scada.Web.Plugins.Chart
                 .Append(single ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
                 .Append("chartData.trends = ").Append(sbTrends).AppendLine()
                 .Append("chartData.quantityName = '")
-                .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';");
-
-            return stringBuilder.ToString();
+                .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';")
+                .AppendLine();
         }
     }
 }
