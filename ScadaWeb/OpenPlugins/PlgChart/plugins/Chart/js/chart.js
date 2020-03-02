@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -23,6 +23,84 @@ scada.chart.const = {
     SEC_PER_DAY: 86400,
     // Milliseconds per day
     MS_PER_DAY: 86400 * 1000
+};
+
+/********** AreaPosition Enumeration **********/
+
+// Specifies the chart area positions
+scada.chart.AreaPosition = {
+    NONE: 0,
+    TOP: 1,
+    RIGHT: 2,
+    BOTTOM: 3,
+    LEFT: 4
+};
+
+/********** Display Options **********/
+
+scada.chart.DisplayOptions = function () {
+    this.locale = "en-GB";
+    this.gapBetweenPoints = 90;
+
+    this.chartArea = {
+        chartPadding: [],
+        fontName: "Arial",
+        backColor: "#ffffff"
+    };
+
+    this.titleConfig = {
+        showTitle: true,
+        showMenu: true,
+        showTimestamp: true,
+        height: 30,
+        fontSize: 17,
+        foreColor: "#000000"
+    };
+
+    this.plotArea = {
+        frameColor: "#808080",
+        gridColor: "#e0e0e0",
+        backColor: "#ffffff",
+        trendColors: ["#ff0000", "#0000ff", "#008000", "#ff00ff", "#ffa500",
+            "#00ffff", "#00ff00", "#4b0082", "#ff1493", "#8b4513"]
+    };
+
+    this.xAxis = {
+        height: 30,
+        majorTickSize: 4,
+        minorTickSize: 3,
+        showMinorTicks: true,
+        fontSize: 12,
+        lineColor: "#808080",
+        textColor: "#000000"
+    };
+
+    this.yAxes = [{
+        position: scada.chart.AreaPosition.LEFT,
+        showTitle: true,
+        autoWidth: true,
+        width: 0,
+        majorTickSize: 4,
+        minorTickSize: 3,
+        minorTickCount: 4,
+        labelMargin: [0, 3],
+        fontSize: 12,
+        lineColor: "#808080",
+        textColor: "#000000",
+        quantityIDs: []
+    }];
+
+    this.legend = {
+        position: scada.chart.AreaPosition.BOTTOM,
+        columnWidth: 300,
+        columnMargin: [0, 10],
+        columnCount: 1,
+        lineHeight: 18,
+        iconWidth: 12,
+        iconHeight: 12,
+        fontSize: 12,
+        foreColor: "#000000"
+    };
 };
 
 /********** Display Settings **********/
@@ -204,7 +282,7 @@ scada.chart.ChartLayout.prototype._calcGridY = function (context, minY, maxY) {
         while (this.gridYStep < 1) {
             this.gridYStep *= 10;
             n /= 10;
-            this.gridYDecDig++
+            this.gridYDecDig++;
         }
     }
 
@@ -335,7 +413,7 @@ scada.chart.Chart = function (canvasJqObj) {
 
 // Initialize displayed range according to the chart time range and data
 scada.chart.Chart.prototype._initRange = function (opt_reinit) {
-    if (this._minX == this._maxX /*not initialized yet*/ || opt_reinit) {
+    if (this._minX === this._maxX /*not initialized yet*/ || opt_reinit) {
         this._minX = Math.min(this.timeRange.startTime, 0);
         this._maxX = Math.max(this.timeRange.endTime, 1);
         this._zoomMode = false;
@@ -380,7 +458,7 @@ scada.chart.Chart.prototype._calcYRange = function (opt_startPtInd) {
         maxY = 1;
     } else {
         // calculate extra space
-        var extraSpace = minY == maxY ? 1 : (maxY - minY) * 0.05;
+        var extraSpace = minY === maxY ? 1 : (maxY - minY) * 0.05;
 
         // include zero if zoom is off
         var origMinY = minY;
@@ -459,7 +537,7 @@ scada.chart.Chart.prototype._getPointIndex = function (pageX) {
         var x = this._pageXToTrendX(pageX);
         var ptInd = 0;
 
-        if (ptCnt == 1) {
+        if (ptCnt === 1) {
             ptInd = 0;
         } else {
             // binary search
@@ -473,7 +551,7 @@ scada.chart.Chart.prototype._getPointIndex = function (pageX) {
                 var iM = Math.floor((iR + iL) / 2);
                 var xM = timePoints[iM];
 
-                if (xM == x)
+                if (xM === x)
                     return iM;
                 else if (xM < x)
                     iL = iM;
@@ -547,11 +625,11 @@ scada.chart.Chart.prototype._drawPixel = function (x, y, opt_checkBounds) {
 // Draw line on the chart
 scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBounds) {
     if (opt_checkBounds) {
-        var layout = this._chartLayout;
-        var minX = Math.min(x1, x2);
-        var maxX = Math.max(x1, x2);
-        var minY = Math.min(y1, y2);
-        var maxY = Math.max(y1, y2);
+        let layout = this._chartLayout;
+        let minX = Math.min(x1, x2);
+        let maxX = Math.max(x1, x2);
+        let minY = Math.min(y1, y2);
+        let maxY = Math.max(y1, y2);
 
         if (layout.plotAreaLeft <= minX && maxX <= layout.plotAreaRight &&
             layout.plotAreaTop <= minY && maxY <= layout.plotAreaBottom) {
@@ -562,13 +640,13 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBound
         }
     }
 
-    var dx = x2 - x1;
-    var dy = y2 - y1;
+    let dx = x2 - x1;
+    let dy = y2 - y1;
 
-    if (dx != 0 || dy != 0) {
+    if (dx !== 0 || dy !== 0) {
         if (Math.abs(dx) > Math.abs(dy)) {
-            var a = dy / dx;
-            var b = -a * x1 + y1;
+            let a = dy / dx;
+            let b = -a * x1 + y1;
 
             if (dx < 0) {
                 var x0 = x1;
@@ -576,13 +654,13 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBound
                 x2 = x0;
             }
 
-            for (var x = x1; x <= x2; x++) {
-                var y = Math.round(a * x + b);
+            for (let x = x1; x <= x2; x++) {
+                let y = Math.round(a * x + b);
                 this._drawPixel(x, y, opt_checkBounds);
             }
         } else {
-            var a = dx / dy;
-            var b = -a * y1 + x1;
+            let a = dx / dy;
+            let b = -a * y1 + x1;
 
             if (dy < 0) {
                 var y0 = y1;
@@ -590,8 +668,8 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_checkBound
                 y2 = y0;
             }
 
-            for (var y = y1; y <= y2; y++) {
-                var x = Math.round(a * y + b);
+            for (let y = y1; y <= y2; y++) {
+                let x = Math.round(a * y + b);
                 this._drawPixel(x, y, opt_checkBounds);
             }
         }
@@ -664,7 +742,7 @@ scada.chart.Chart.prototype._drawGridX = function () {
 
         if (isNaN(prevLblX) || lblX - lblHalfW > prevLblX + prevLblHalfW + layout.LBL_LR_MARGIN) {
             this._context.fillText(timeText, lblX, lblY);
-            if (this._showDates && timeText == dayBegTimeText) {
+            if (this._showDates && timeText === dayBegTimeText) {
                 this._context.fillText(this.dateToStr(x), lblX, lblDateY);
             }
             prevLblX = lblX;
@@ -784,11 +862,12 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, color, opt
             var ptY = this._trendYToChartY(y);
 
             if (isNaN(prevX)) {
+                // do nothing
             }
             else if (x - prevX > chartGap) {
                 this._drawPixel(prevPtX, prevPtY, true);
                 this._drawPixel(ptX, ptY, true);
-            } else if (prevPtX != ptX || prevPtY != ptY) {
+            } else if (prevPtX !== ptX || prevPtY !== ptY) {
                 this._drawLine(prevPtX, prevPtY, ptX, ptY, true);
             }
 
@@ -860,7 +939,7 @@ scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
                     .css({
                         "left": ptPageX - layout.absCanvasLeft,
                         "top": layout.canvasTopBorder + layout.plotAreaTop,
-                        "height": layout.plotAreaHeight,
+                        "height": layout.plotAreaHeight
                     });
 
                 // set text, position and show the trend hint
@@ -970,7 +1049,7 @@ scada.chart.Chart.prototype.setRange = function (startX, endX) {
     endX = Math.min(endX, this.timeRange.endTime);
 
     // apply the new range
-    if (startX != endX) {
+    if (startX !== endX) {
         this._minX = startX;
         this._maxX = endX;
         this._zoomMode = this._minX > this.timeRange.startTime || this._maxX < this.timeRange.endTime;
@@ -1011,11 +1090,11 @@ scada.chart.Chart.prototype.bindHintEvents = function () {
                 var touch = false;
                 var stopEvent = false;
 
-                if (event.type == "touchstart") {
+                if (event.type === "touchstart") {
                     event = event.originalEvent.touches[0];
                     touch = true;
                 }
-                else if (event.type == "touchmove") {
+                else if (event.type === "touchmove") {
                     $(this).off("mousemove");
                     event = event.originalEvent.touches[0];
                     touch = true;
