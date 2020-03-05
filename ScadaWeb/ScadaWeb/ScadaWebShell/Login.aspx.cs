@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.UI;
@@ -43,8 +43,6 @@ namespace Scada.Web
 
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
-
-        protected string phrases;  // локализованные фразы
 
 
         /// <summary>
@@ -110,9 +108,6 @@ namespace Scada.Web
                 // перевод веб-страницы
                 Translator.TranslatePage(this, "Scada.Web.WFrmLogin");
                 ViewState["Title"] = Title;
-
-                Localization.Dictionaries.TryGetValue("Scada.Web.WFrmLogin.Js", out Localization.Dict dict);
-                phrases = WebUtils.DictionaryToJs(dict);
 
                 // вход в систему по умолчанию
                 string alert = Request.QueryString["alert"];
