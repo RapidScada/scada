@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Agent.Connector;
@@ -53,6 +53,7 @@ namespace Scada.Comm.Shell.Code
 
             AppDirs = appDirs ?? throw new ArgumentNullException("appDirs");
             ErrLog = errLog ?? throw new ArgumentNullException("errLog");
+            AgentClient = null;
         }
 
 
