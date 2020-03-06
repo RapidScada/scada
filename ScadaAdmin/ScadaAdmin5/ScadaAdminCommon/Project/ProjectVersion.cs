@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 namespace Scada.Admin.Project
@@ -31,6 +31,12 @@ namespace Scada.Admin.Project
     /// </summary>
     public struct ProjectVersion
     {
+        /// <summary>
+        /// The default project version.
+        /// </summary>
+        public static ProjectVersion Default = new ProjectVersion(1, 0);
+
+
         /// <summary>
         /// Initializes a new instance of the structure.
         /// </summary>
@@ -65,10 +71,17 @@ namespace Scada.Admin.Project
         /// </summary>
         public static ProjectVersion Parse(string s)
         {
-            string[] parts = (s ?? "").Split('.');
-            return new ProjectVersion(
-                parts.Length > 0 && int.TryParse(parts[0], out int n) ? n : 0,
-                parts.Length > 1 && int.TryParse(parts[1], out n) ? n : 0);
+            if (string.IsNullOrEmpty(s))
+            {
+                return Default;
+            }
+            else
+            {
+                string[] parts = s.Split('.');
+                return new ProjectVersion(
+                    parts.Length > 0 && int.TryParse(parts[0], out int n) ? n : 0,
+                    parts.Length > 1 && int.TryParse(parts[1], out n) ? n : 0);
+            }
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.Deployment;
@@ -154,7 +154,7 @@ namespace Scada.Admin.Project
             fileName = "";
 
             Name = DefaultName;
-            Version = new ProjectVersion(1, 0);
+            Version = ProjectVersion.Default;
             Description = "";
             ConfigBase = new ConfigBase();
             Interface = new Interface();
