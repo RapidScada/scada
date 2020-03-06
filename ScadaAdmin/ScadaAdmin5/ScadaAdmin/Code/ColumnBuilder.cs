@@ -104,8 +104,8 @@ namespace Scada.Admin.App.Code
         /// <summary>
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
-        private DataGridViewColumn NewComboBoxColumn(string dataPropertyName, 
-            string valueMember, string displayMember, object dataSource, bool addEmptyRow = false)
+        private DataGridViewColumn NewComboBoxColumn(string dataPropertyName, string valueMember, 
+            string displayMember, object dataSource, bool addEmptyRow = false, bool prependID = false)
         {
             if (ScadaUtils.IsRunningOnMono)
             {
@@ -114,7 +114,7 @@ namespace Scada.Admin.App.Code
             else
             {
                 if (dataSource is IBaseTable baseTable)
-                    dataSource = CreateComboBoxSource(baseTable, valueMember, displayMember, addEmptyRow);
+                    dataSource = CreateComboBoxSource(baseTable, valueMember, ref displayMember, addEmptyRow, prependID);
 
                 return new DataGridViewComboBoxColumn
                 {
@@ -134,18 +134,33 @@ namespace Scada.Admin.App.Code
         /// Creates a new column that hosts cells which values are selected from a combo box.
         /// </summary>
         private DataGridViewColumn NewComboBoxColumn(string dataPropertyName, 
-            string displayMember, IBaseTable dataSource, bool addEmptyRow = false)
+            string displayMember, IBaseTable dataSource, bool addEmptyRow = false, bool prependID = false)
         {
-            return NewComboBoxColumn(dataPropertyName, dataPropertyName, displayMember, dataSource, addEmptyRow);
+            return NewComboBoxColumn(dataPropertyName, dataPropertyName, 
+                displayMember, dataSource, addEmptyRow, prependID);
         }
 
         /// <summary>
         /// Creates a data table for using as a data source of a combo box.
         /// </summary>
         private DataTable CreateComboBoxSource(
-            IBaseTable baseTable, string valueMember, string displayMember, bool addEmptyRow)
+            IBaseTable baseTable, string valueMember, ref string displayMember, bool addEmptyRow, bool prependID)
         {
             DataTable dataTable = baseTable.ToDataTable(true);
+
+            if (prependID)
+            {
+                // display ID and name
+                string columnName = valueMember + "_" + displayMember;
+                dataTable.Columns.Add(columnName, typeof(string), 
+                    string.Format("'[' + {0} + '] ' + {1}", valueMember, displayMember));
+                displayMember = columnName;
+                dataTable.DefaultView.Sort = valueMember;
+            }
+            else
+            {
+                dataTable.DefaultView.Sort = displayMember;
+            }
 
             if (addEmptyRow)
             {
@@ -155,7 +170,6 @@ namespace Scada.Admin.App.Code
                 dataTable.Rows.Add(emptyRow);
             }
 
-            dataTable.DefaultView.Sort = displayMember;
             return dataTable;
         }
 
@@ -418,7 +432,7 @@ namespace Scada.Admin.App.Code
             return TranslateHeaders("RightTable", new DataGridViewColumn[]
             {
                 NewTextBoxColumn("RightID", new ColumnOptions(1, ushort.MaxValue)),
-                NewComboBoxColumn("ItfID", "Descr", configBase.InterfaceTable),
+                NewComboBoxColumn("ItfID", "Descr", configBase.InterfaceTable, false, true),
                 NewComboBoxColumn("RoleID", "Name", configBase.RoleTable),
                 NewCheckBoxColumn("ViewRight"),
                 NewCheckBoxColumn("CtrlRight")
