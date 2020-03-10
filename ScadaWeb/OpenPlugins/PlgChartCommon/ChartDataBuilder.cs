@@ -39,7 +39,7 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     public class ChartDataBuilder
     {
-        private int cnlCnt; // количество каналов
+        private readonly int cnlCnt; // количество каналов
 
 
         /// <summary>
@@ -54,20 +54,20 @@ namespace Scada.Web.Plugins.Chart
         /// <summary>
         /// Номера каналов отображаемого графика
         /// </summary>
-        protected int[] cnlNums;
+        protected readonly int[] cnlNums;
         /// <summary>
         /// Начальная дата отображаемых данных
         /// </summary>
-        protected DateTime startDate;
+        protected readonly DateTime startDate;
         /// <summary>
         /// Период отображаемых данных, дн.
         /// </summary>
         /// <remarks>Если период отрицательный, то используется интервал времени влево от начальной даты</remarks>
-        protected int period;
+        protected readonly int period;
         /// <summary>
         /// Расстояние между разделяемыми точками графика, с
         /// </summary>
-        protected int chartGap;
+        protected readonly int chartGap;
 
         /// <summary>
         /// Свойства каналов отображаемого графика
@@ -408,6 +408,16 @@ namespace Scada.Web.Plugins.Chart
                 .Append("chartData.quantityName = '")
                 .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';")
                 .AppendLine();
+        }
+
+        /// <summary>
+        /// Converts the chart data to JavaScript.
+        /// </summary>
+        public string ToJs()
+        {
+            StringBuilder stringBuilder = new StringBuilder();
+            ToJs(stringBuilder);
+            return stringBuilder.ToString();
         }
     }
 }
