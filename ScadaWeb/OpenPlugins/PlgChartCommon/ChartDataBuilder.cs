@@ -160,11 +160,11 @@ namespace Scada.Web.Plugins.Chart
         /// <summary>
         /// Получить имя величины с указанием размерности
         /// </summary>
-        protected string GetQuantityName(string paramName, string singleUnit)
+        protected string GetQuantityName(InCnlProps cnlProps)
         {
-            return !string.IsNullOrEmpty(paramName) && !string.IsNullOrEmpty(singleUnit) ?
-                paramName + ", " + singleUnit :
-                paramName + singleUnit;
+            return !string.IsNullOrEmpty(cnlProps.ParamName) && !string.IsNullOrEmpty(cnlProps.SingleUnit) ?
+                cnlProps.ParamName + ", " + cnlProps.SingleUnit :
+                cnlProps.ParamName + cnlProps.SingleUnit;
         }
 
         /// <summary>
@@ -191,7 +191,7 @@ namespace Scada.Web.Plugins.Chart
 
                     if (quantitiesAreEqual)
                     {
-                        string qname = GetQuantityName(cnlProps.ParamName, cnlProps.SingleUnit);
+                        string qname = GetQuantityName(cnlProps);
 
                         if (!quantityIsInited)
                         {
@@ -385,13 +385,17 @@ namespace Scada.Web.Plugins.Chart
             for (int i = 0; i < cnlCnt; i++)
             {
                 string trendName = "trend" + i;
+                InCnlProps cnlProps = cnlPropsArr[i];
                 sbTrends.Append(trendName).Append(", ");
 
                 stringBuilder
-                    .Append("var ").Append(trendName).AppendLine(" = new scada.chart.TrendExt();")
-                    .Append(trendName).Append(".cnlNum = ").Append(cnlNums[i]).AppendLine(";")
+                    .Append("var ").Append(trendName).AppendLine(" = new scada.chart.Trend();")
+                    .Append(trendName).Append(".cnlNum = ").Append(cnlProps.CnlNum).AppendLine(";")
                     .Append(trendName).Append(".cnlName = '")
-                    .Append(HttpUtility.JavaScriptStringEncode(cnlNames[i])).AppendLine("';")
+                    .Append(HttpUtility.JavaScriptStringEncode(cnlProps.CnlName)).AppendLine("';")
+                    .Append(trendName).Append(".quantityID = ").Append(cnlProps.ParamID).AppendLine(";")
+                    .Append(trendName).Append(".quantityName = '")
+                    .Append(HttpUtility.JavaScriptStringEncode(GetQuantityName(cnlProps))).AppendLine("';")
                     .Append(trendName).Append(".trendPoints = ")
                     .Append(single ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
                     .AppendLine(";")
