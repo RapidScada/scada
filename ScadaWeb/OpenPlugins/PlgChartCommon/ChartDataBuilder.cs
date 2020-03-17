@@ -43,62 +43,47 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Обеспечивает форматирование данных входных каналов
+        /// Обеспечивает форматирование данных входных каналов.
         /// </summary>
         protected readonly DataFormatter dataFormatter;
         /// <summary>
-        /// Объект для доступа к данным
+        /// Объект для доступа к данным.
         /// </summary>
         protected readonly DataAccess dataAccess;
 
         /// <summary>
-        /// Номера каналов отображаемого графика
+        /// Номера каналов отображаемого графика.
         /// </summary>
         protected readonly int[] cnlNums;
         /// <summary>
-        /// Начальная дата отображаемых данных
+        /// Начальная дата отображаемых данных.
         /// </summary>
         protected readonly DateTime startDate;
         /// <summary>
         /// Период отображаемых данных, дн.
         /// </summary>
-        /// <remarks>Если период отрицательный, то используется интервал времени влево от начальной даты</remarks>
+        /// <remarks>Если период отрицательный, то используется интервал времени влево от начальной даты.</remarks>
         protected readonly int period;
         /// <summary>
-        /// Расстояние между разделяемыми точками графика, с
+        /// Расстояние между разделяемыми точками графика, с.
         /// </summary>
         protected readonly int chartGap;
 
         /// <summary>
-        /// Свойства каналов отображаемого графика
+        /// Свойства каналов отображаемого графика.
         /// </summary>
         protected InCnlProps[] cnlPropsArr;
         /// <summary>
-        /// Имена каналов отображаемого графика
-        /// </summary>
-        protected string[] cnlNames;
-        /// <summary>
-        /// Имя величины с указанием размерности, общее для всех каналов
-        /// </summary>
-        protected string quantityName;
-        /// <summary>
         /// Одиночный тренд
         /// </summary>
-        /// <remarks>Если количество каналов равно 1</remarks>
+        /// <remarks>Если количество каналов равно 1.</remarks>
         protected Trend singleTrend;
         /// <summary>
         /// Связка трендов
         /// </summary>
-        /// <remarks>Если количество каналов больше 1</remarks>
+        /// <remarks>Если количество каналов больше 1.</remarks>
         protected TrendBundle trendBundle;
 
-
-        /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
-        /// </summary>
-        protected ChartDataBuilder()
-        {
-        }
 
         /// <summary>
         /// Конструктор
@@ -116,15 +101,13 @@ namespace Scada.Web.Plugins.Chart
 
             cnlCnt = cnlNums.Length;
             cnlPropsArr = new InCnlProps[cnlCnt];
-            cnlNames = new string[cnlCnt];
-            quantityName = "";
             singleTrend = null;
             trendBundle = null;
         }
 
 
         /// <summary>
-        /// Получить нормализованную начальную дату отображаемых данных
+        /// Получить нормализованную начальную дату отображаемых данных.
         /// </summary>
         public DateTime StartDate
         {
@@ -135,7 +118,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить нормализованную конечную дату отображаемых данных
+        /// Получить нормализованную конечную дату отображаемых данных.
         /// </summary>
         public DateTime EndDate
         {
@@ -146,7 +129,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить нормализованный период отображаемых данных
+        /// Получить нормализованный период отображаемых данных.
         /// </summary>
         public int Period
         {
@@ -158,59 +141,32 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Получить имя величины с указанием размерности
+        /// Получить имя величины с указанием размерности.
         /// </summary>
         protected string GetQuantityName(InCnlProps cnlProps)
         {
-            return !string.IsNullOrEmpty(cnlProps.ParamName) && !string.IsNullOrEmpty(cnlProps.SingleUnit) ?
-                cnlProps.ParamName + ", " + cnlProps.SingleUnit :
-                cnlProps.ParamName + cnlProps.SingleUnit;
+            string quantityName = cnlProps.ParamName;
+            string singleUnit = cnlProps.SingleUnit;
+
+            return string.IsNullOrEmpty(quantityName) || string.IsNullOrEmpty(singleUnit) ?
+                quantityName + singleUnit :
+                quantityName + ", " + singleUnit;
         }
 
         /// <summary>
-        /// Заполнить свойства каналов и определить имя величины
+        /// Заполнить свойства каналов и определить имя величины.
         /// </summary>
         protected void FillCnlProps()
         {
-            quantityName = "";
-            bool quantityIsInited = false;
-            bool quantitiesAreEqual = true;
-
             for (int i = 0; i < cnlCnt; i++)
             {
                 InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNums[i]);
                 cnlPropsArr[i] = cnlProps;
-
-                if (cnlProps == null)
-                {
-                    cnlNames[i] = "";
-                }
-                else
-                {
-                    cnlNames[i] = cnlProps.CnlName;
-
-                    if (quantitiesAreEqual)
-                    {
-                        string qname = GetQuantityName(cnlProps);
-
-                        if (!quantityIsInited)
-                        {
-                            quantityName = qname;
-                            quantityIsInited = true;
-                        }
-
-                        if (quantityName != qname)
-                        {
-                            quantityName = "";
-                            quantitiesAreEqual = false;
-                        }
-                    }
-                }
             }
         }
 
         /// <summary>
-        /// Заполнить данные одиночного тренда
+        /// Заполнить данные одиночного тренда.
         /// </summary>
         protected void FillSingleTrend()
         {
@@ -219,7 +175,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Заполнить данные связки трендов
+        /// Заполнить данные связки трендов.
         /// </summary>
         protected void FillTrendBundle()
         {
@@ -234,7 +190,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Преобразовать точку тренда в запись JavaScript
+        /// Преобразовать точку тренда в запись JavaScript.
         /// </summary>
         protected string TrendPointToJs(double val, int stat, InCnlProps cnlProps)
         {
@@ -259,7 +215,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить точки одиночного тренда в виде JavaScript
+        /// Получить точки одиночного тренда в виде JavaScript.
         /// </summary>
         protected string GetTrendPointsJs(Trend trend, InCnlProps cnlProps)
         {
@@ -280,7 +236,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить точки связки трендов в виде JavaScript
+        /// Получить точки связки трендов в виде JavaScript.
         /// </summary>
         protected string GetTrendPointsJs(TrendBundle trendBundle, int trendInd)
         {
@@ -303,7 +259,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить метки времени одиночного тренда в виде JavaScript
+        /// Получить метки времени одиночного тренда в виде JavaScript.
         /// </summary>
         protected string GetTimePointsJs(Trend trend)
         {
@@ -324,7 +280,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Получить метки времени связки трендов в виде JavaScript
+        /// Получить метки времени связки трендов в виде JavaScript.
         /// </summary>
         protected string GetTimePointsJs(TrendBundle trendBundle)
         {
@@ -345,7 +301,7 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Заполнить данные графика только за нормализованную начальную дату
+        /// Заполнить данные графика только за нормализованную начальную дату.
         /// </summary>
         public void FillData()
         {
@@ -362,13 +318,6 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         public void ToJs(StringBuilder stringBuilder)
         {
-            // настройки отображения
-            stringBuilder
-                .AppendLine("var displaySettings = new scada.chart.DisplaySettings();")
-                .Append("displaySettings.locale = '").Append(Localization.Culture.Name).AppendLine("';")
-                .Append("displaySettings.chartGap = ").Append(chartGap).AppendLine(" / scada.chart.const.SEC_PER_DAY;")
-                .AppendLine();
-
             // интервал времени
             stringBuilder
                 .AppendLine("var timeRange = new scada.chart.TimeRange();")
@@ -380,7 +329,7 @@ namespace Scada.Web.Plugins.Chart
 
             // данные графика
             StringBuilder sbTrends = new StringBuilder("[");
-            bool single = singleTrend != null;
+            bool isSingle = singleTrend != null;
 
             for (int i = 0; i < cnlCnt; i++)
             {
@@ -397,7 +346,7 @@ namespace Scada.Web.Plugins.Chart
                     .Append(trendName).Append(".quantityName = '")
                     .Append(HttpUtility.JavaScriptStringEncode(GetQuantityName(cnlProps))).AppendLine("';")
                     .Append(trendName).Append(".trendPoints = ")
-                    .Append(single ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
+                    .Append(isSingle ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
                     .AppendLine(";")
                     .AppendLine();
             }
@@ -407,10 +356,8 @@ namespace Scada.Web.Plugins.Chart
             stringBuilder
                 .AppendLine("var chartData = new scada.chart.ChartData();")
                 .Append("chartData.timePoints = ")
-                .Append(single ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
+                .Append(isSingle ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
                 .Append("chartData.trends = ").Append(sbTrends).AppendLine()
-                .Append("chartData.quantityName = '")
-                .Append(HttpUtility.JavaScriptStringEncode(quantityName)).AppendLine("';")
                 .AppendLine();
         }
 
