@@ -82,7 +82,7 @@ namespace Scada.Web.Plugins.Chart
 
             // подготовка данных графика
             chartDataBuilder = new ChartDataBuilder(
-                new int[] { cnlNum }, startDate, 1, userData.WebSettings.ChartGap, appData.DataAccess);
+                new int[] { cnlNum }, startDate, 1, /*userData.WebSettings.ChartGap,*/ appData.DataAccess);
             chartDataBuilder.FillData();
         }
     }

@@ -64,10 +64,6 @@ namespace Scada.Web.Plugins.Chart
         /// </summary>
         /// <remarks>Если период отрицательный, то используется интервал времени влево от начальной даты.</remarks>
         protected readonly int period;
-        /// <summary>
-        /// Расстояние между разделяемыми точками графика, с.
-        /// </summary>
-        protected readonly int chartGap;
 
         /// <summary>
         /// Свойства каналов отображаемого графика.
@@ -88,7 +84,7 @@ namespace Scada.Web.Plugins.Chart
         /// <summary>
         /// Конструктор
         /// </summary>
-        public ChartDataBuilder(int[] cnlNums, DateTime startDate, int period, int chartGap, DataAccess dataAccess)
+        public ChartDataBuilder(int[] cnlNums, DateTime startDate, int period, DataAccess dataAccess)
         {
             dataFormatter = new DataFormatter();
             this.dataAccess = dataAccess;
@@ -96,7 +92,6 @@ namespace Scada.Web.Plugins.Chart
             this.cnlNums = cnlNums;
             this.startDate = startDate;
             this.period = period;
-            this.chartGap = chartGap;
             RepUtils.NormalizeTimeRange(ref this.startDate, ref this.period);
 
             cnlCnt = cnlNums.Length;
@@ -154,18 +149,6 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Заполнить свойства каналов и определить имя величины.
-        /// </summary>
-        protected void FillCnlProps()
-        {
-            for (int i = 0; i < cnlCnt; i++)
-            {
-                InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNums[i]);
-                cnlPropsArr[i] = cnlProps;
-            }
-        }
-
-        /// <summary>
         /// Заполнить данные одиночного тренда.
         /// </summary>
         protected void FillSingleTrend()
@@ -184,7 +167,9 @@ namespace Scada.Web.Plugins.Chart
 
             Trend[] trends = new Trend[cnlCnt];
             for (int i = 0; i < cnlCnt; i++)
+            {
                 trends[i] = dataAccess.DataCache.GetMinTrend(startDate, cnlNums[i]);
+            }
 
             trendBundle.Init(trends);
         }
@@ -301,12 +286,22 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
+        /// Заполнить свойства каналов и определить имя величины.
+        /// </summary>
+        public void FillCnlProps()
+        {
+            for (int i = 0; i < cnlCnt; i++)
+            {
+                InCnlProps cnlProps = dataAccess.GetCnlProps(cnlNums[i]);
+                cnlPropsArr[i] = cnlProps;
+            }
+        }
+
+        /// <summary>
         /// Заполнить данные графика только за нормализованную начальную дату.
         /// </summary>
         public void FillData()
         {
-            FillCnlProps();
-
             if (cnlCnt <= 1)
                 FillSingleTrend();
             else
