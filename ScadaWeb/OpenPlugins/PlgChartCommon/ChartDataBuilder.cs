@@ -255,8 +255,10 @@ namespace Scada.Web.Plugins.Chart
             {
                 foreach (Trend.Point point in trend.Points)
                 {
-                    double time = point.DateTime.TimeOfDay.TotalDays;
-                    sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                    //double time = point.DateTime.TimeOfDay.TotalDays;
+                    //sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                    sbTimePoints.Append(ScadaUtils.EncodeDateTime(point.DateTime)
+                        .ToString(CultureInfo.InvariantCulture)).Append(", ");
                 }
             }
 
@@ -286,7 +288,7 @@ namespace Scada.Web.Plugins.Chart
 
 
         /// <summary>
-        /// Заполнить свойства каналов и определить имя величины.
+        /// Fills the channel properies.
         /// </summary>
         public void FillCnlProps()
         {
@@ -298,7 +300,7 @@ namespace Scada.Web.Plugins.Chart
         }
 
         /// <summary>
-        /// Заполнить данные графика только за нормализованную начальную дату.
+        /// Fills chart data for the normalized start date.
         /// </summary>
         public void FillData()
         {
@@ -314,12 +316,11 @@ namespace Scada.Web.Plugins.Chart
         public void ToJs(StringBuilder stringBuilder)
         {
             // интервал времени
+            int startDateEnc = (int)ScadaUtils.EncodeDateTime(startDate);
             stringBuilder
                 .AppendLine("var timeRange = new scada.chart.TimeRange();")
-                .Append("timeRange.startDate = Date.UTC(")
-                .AppendFormat("{0}, {1}, {2}", startDate.Year, startDate.Month - 1, startDate.Day).AppendLine(");")
-                .AppendLine("timeRange.startTime = 0;")
-                .Append("timeRange.endTime = ").Append(period).AppendLine(";")
+                .AppendFormat("timeRange.startTime = {0};", startDateEnc).AppendLine()
+                .AppendFormat("timeRange.endTime = {0};", startDateEnc + period).AppendLine()
                 .AppendLine();
 
             // данные графика
@@ -334,15 +335,15 @@ namespace Scada.Web.Plugins.Chart
 
                 stringBuilder
                     .Append("var ").Append(trendName).AppendLine(" = new scada.chart.Trend();")
-                    .Append(trendName).Append(".cnlNum = ").Append(cnlProps.CnlNum).AppendLine(";")
-                    .Append(trendName).Append(".cnlName = '")
-                    .Append(HttpUtility.JavaScriptStringEncode(cnlProps.CnlName)).AppendLine("';")
-                    .Append(trendName).Append(".quantityID = ").Append(cnlProps.ParamID).AppendLine(";")
-                    .Append(trendName).Append(".quantityName = '")
-                    .Append(HttpUtility.JavaScriptStringEncode(GetQuantityName(cnlProps))).AppendLine("';")
-                    .Append(trendName).Append(".trendPoints = ")
-                    .Append(isSingle ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
-                    .AppendLine(";")
+                    .Append(trendName).AppendFormat(".cnlNum = {0};", cnlProps.CnlNum).AppendLine()
+                    .Append(trendName).AppendFormat(".cnlName = '{0}';", 
+                        HttpUtility.JavaScriptStringEncode(cnlProps.CnlName)).AppendLine()
+                    .Append(trendName).AppendFormat(".quantityID = {0};", cnlProps.ParamID).AppendLine()
+                    .Append(trendName).AppendFormat(".quantityName = '{0}';", 
+                        HttpUtility.JavaScriptStringEncode(GetQuantityName(cnlProps))).AppendLine()
+                    .Append(trendName).AppendFormat(".trendPoints = {0};", 
+                        isSingle ? GetTrendPointsJs(singleTrend, cnlPropsArr[i]) : GetTrendPointsJs(trendBundle, i))
+                    .AppendLine()
                     .AppendLine();
             }
 
