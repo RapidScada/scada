@@ -1,46 +1,16 @@
 ﻿@import "../../../css/common/globalvar.less";
 
-@chart-title-fore-color: black;
-@chart-status-fore-color: #777;
-@chart-status-error-fore-color: red;
-
 body {
     margin: 0;
-    padding: 10px;
+    padding: 0;
     background-color: @popup-back-color;
+    color: @content-fore-color;
+    overflow: hidden;
 }
 
 /* Inclusion font in the body adds unexpected pixel to the document height */
 div {
     font-family: @default-font-family;
     font-size: @form-font-size;
-}
-
-.chart-header {
-    overflow: hidden; /* to expand the container according to a float div  */
-}
-
-.chart-title {
-    color: @chart-title-fore-color;
-    display: inline-block;
-    font-size: 17px;
-    line-height: 20px;
-    margin-bottom: 10px;
-}
-
-.chart-status {
-    color: @chart-status-fore-color;
-    display: inline-block;
-    font-size: 11px;
-    float: right;
-    line-height: 20px;
-}
-
-.chart-status.error {
-    color: @chart-status-error-fore-color;
-}
-
-.chart-canvas {
-    min-width: 200px;
-    min-height: 150px;
+    box-sizing: border-box;
 }

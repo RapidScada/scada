@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WebSettings>
+  <CommSettings>
+    <Param name="ServerHost" value="localhost" descr="SCADA-Server host or IP address" />
+    <Param name="ServerPort" value="10000" descr="SCADA-Server TCP port number" />
+    <Param name="ServerUser" value="ScadaWeb" descr="User name for the connection" />
+    <Param name="ServerPwd" value="12345" descr="User password for the connection" />
+    <Param name="ServerTimeout" value="10000" descr="Response timeout, ms" />
+  </CommSettings>
+  <CommonParams>
+    <Param name="Culture" value="" descr="Web application culture" />
+    <Param name="DataRefrRate" value="1000" descr="Current data and events refresh rate, ms" />
+    <Param name="ArcRefrRate" value="10000" descr="Archive data refresh rate, ms" />
+    <Param name="DispEventCnt" value="100" descr="Display events count" />
+    <Param name="ChartGap" value="90" descr="Distance between chart points to make a gap, sec" />
+    <Param name="StartPage" value="" descr="Start page after login" />
+    <Param name="CmdEnabled" value="true" descr="Enable commands" />
+    <Param name="CmdPassword" value="true" descr="Require password to send command" />
+    <Param name="RemEnabled" value="true" descr="Allow to remember logged on user" />
+    <Param name="ViewsFromBase" value="true" descr="Load view settings from the database" />
+    <Param name="ShareStats" value="true" descr="Share depersonalized stats with the developers" />
+  </CommonParams>
+  <ScriptPaths>
+    <Script name="ChartScript" path="~/plugins/Chart/js/chartdialog.js" />
+    <Script name="CmdScript" path="~/plugins/Table/js/cmddialog.js" />
+    <Script name="EventAckScript" path="~/plugins/Table/js/eventackdialog.js" />
+  </ScriptPaths>
+  <Plugins>
+    <Plugin fileName="PlgChart.dll" />
+    <Plugin fileName="PlgConfig.dll" />
+    <Plugin fileName="PlgRegistration.dll" />
+    <Plugin fileName="PlgSchBasicComp.dll" />
+    <Plugin fileName="PlgScheme.dll" />
+    <Plugin fileName="PlgStore.dll" />
+    <Plugin fileName="PlgTable.dll" />
+    <Plugin fileName="PlgWebPage.dll" />
+  </Plugins>
+</WebSettings>

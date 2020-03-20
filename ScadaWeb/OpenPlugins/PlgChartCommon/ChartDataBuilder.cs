@@ -87,9 +87,8 @@ namespace Scada.Web.Plugins.Chart
         public ChartDataBuilder(int[] cnlNums, DateTime startDate, int period, DataAccess dataAccess)
         {
             dataFormatter = new DataFormatter();
-            this.dataAccess = dataAccess;
-
-            this.cnlNums = cnlNums;
+            this.dataAccess = dataAccess ?? throw new ArgumentNullException("dataAccess");
+            this.cnlNums = cnlNums ?? throw new ArgumentNullException("cnlNums");
             this.startDate = startDate;
             this.period = period;
             RepUtils.NormalizeTimeRange(ref this.startDate, ref this.period);
@@ -255,8 +254,6 @@ namespace Scada.Web.Plugins.Chart
             {
                 foreach (Trend.Point point in trend.Points)
                 {
-                    //double time = point.DateTime.TimeOfDay.TotalDays;
-                    //sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
                     sbTimePoints.Append(ScadaUtils.EncodeDateTime(point.DateTime)
                         .ToString(CultureInfo.InvariantCulture)).Append(", ");
                 }
@@ -278,7 +275,8 @@ namespace Scada.Web.Plugins.Chart
                 foreach (TrendBundle.Point point in trendBundle.Series)
                 {
                     double time = point.DateTime.TimeOfDay.TotalDays;
-                    sbTimePoints.Append(time.ToString(CultureInfo.InvariantCulture)).Append(", ");
+                    sbTimePoints.Append(ScadaUtils.EncodeDateTime(point.DateTime)
+                        .ToString(CultureInfo.InvariantCulture)).Append(", ");
                 }
             }
 
@@ -330,7 +328,7 @@ namespace Scada.Web.Plugins.Chart
             for (int i = 0; i < cnlCnt; i++)
             {
                 string trendName = "trend" + i;
-                InCnlProps cnlProps = cnlPropsArr[i];
+                InCnlProps cnlProps = cnlPropsArr[i] ?? new InCnlProps() { CnlNum = cnlNums[i] };
                 sbTrends.Append(trendName).Append(", ");
 
                 stringBuilder
@@ -355,16 +353,6 @@ namespace Scada.Web.Plugins.Chart
                 .Append(isSingle ? GetTimePointsJs(singleTrend) : GetTimePointsJs(trendBundle)).AppendLine(";")
                 .Append("chartData.trends = ").Append(sbTrends).AppendLine()
                 .AppendLine();
-        }
-
-        /// <summary>
-        /// Converts the chart data to JavaScript.
-        /// </summary>
-        public string ToJs()
-        {
-            StringBuilder stringBuilder = new StringBuilder();
-            ToJs(stringBuilder);
-            return stringBuilder.ToString();
         }
     }
 }

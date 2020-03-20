@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,14 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Client;
 using Scada.UI;
 using System;
+using System.Text;
+using System.Web;
 
 namespace Scada.Web.Plugins.Chart
 {
@@ -35,7 +37,10 @@ namespace Scada.Web.Plugins.Chart
     /// </summary>
     public partial class WFrmChart : System.Web.UI.Page
     {
-        protected ChartDataBuilder chartDataBuilder; // объект, задающий данные графика
+        /// <summary>
+        /// The script to add to a web page.
+        /// </summary>
+        protected StringBuilder sbClientScript;
 
         protected void Page_Load(object sender, EventArgs e)
         {
@@ -44,6 +49,7 @@ namespace Scada.Web.Plugins.Chart
 
 #if DEBUG
             userData.LoginForDebug();
+            string chartTitle = "Debug";
 #endif
 
             // перевод веб-страницы
@@ -71,19 +77,30 @@ namespace Scada.Web.Plugins.Chart
             if (!view.ContainsCnl(cnlNum))
                 throw new ScadaException(CommonPhrases.NoRights);
 
-            // вывод заголовков
+            // вывод заголовка
             Title = cnlNum + " - " + Title;
-            lblTitle.Text = view.Title;
+            string chartTitle = view.Title;
 #endif
 
             // вывод дополнительной информации
-            lblStartDate.Text = (string.IsNullOrEmpty(lblTitle.Text) ? "" : ", ") + startDate.ToLocalizedDateString();
-            lblGenDT.Text = DateTime.Now.ToLocalizedString();
+            chartTitle += (string.IsNullOrEmpty(chartTitle) ? "" : ", ") + startDate.ToLocalizedDateString();
+            string chartStatus = DateTime.Now.ToLocalizedString();
 
             // подготовка данных графика
-            chartDataBuilder = new ChartDataBuilder(
-                new int[] { cnlNum }, startDate, 1, /*userData.WebSettings.ChartGap,*/ appData.DataAccess);
-            chartDataBuilder.FillData();
+            ChartDataBuilder dataBuilder = new ChartDataBuilder(new int[] { cnlNum }, startDate, 1, appData.DataAccess);
+            dataBuilder.FillCnlProps();
+            dataBuilder.FillData();
+
+            // build client script
+            sbClientScript = new StringBuilder();
+            dataBuilder.ToJs(sbClientScript);
+
+            sbClientScript
+                .AppendFormat("var locale = '{0}';", Localization.Culture.Name).AppendLine()
+                .AppendFormat("var gapBetweenPoints = {0};", userData.WebSettings.ChartGap).AppendLine()
+                .AppendFormat("var chartTitle = '{0}';", HttpUtility.JavaScriptStringEncode(chartTitle)).AppendLine()
+                .AppendFormat("var chartStatus = '{0}';", chartStatus).AppendLine()
+                .AppendLine();
         }
     }
 }

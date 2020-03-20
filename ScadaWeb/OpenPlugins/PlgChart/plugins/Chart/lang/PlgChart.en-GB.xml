@@ -18,7 +18,9 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
     <Phrase key="this">Chart - Rapid SCADA</Phrase>
-    <Phrase key="lblGenerated">Generated</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart.Js">
+    <Phrase key="Generated">Generated </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmMinDataRep">
     <Phrase key="this">Minute Data Report - Rapid SCADA</Phrase>
