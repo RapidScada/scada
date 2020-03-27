@@ -18,7 +18,7 @@ scada.chart.dialog = {
     // Get chart URL
     getChartUrl: function (cnlNums, viewIDs, date) {
         return "plugins/Chart/Chart.aspx?cnlNum=" + cnlNums + "&viewID=" + viewIDs +
-            "&" + scada.utils.dateToQueryString(date);
+            (date ? "&" + scada.utils.dateToQueryString(date) : "");
     },
 
     // Open chart in the new tab
