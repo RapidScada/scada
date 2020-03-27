@@ -52,6 +52,7 @@
     <Phrase key="lblExample">For example: 1 - 5, 10</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="RangeNotValid">Range is not valid</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Template.TemplateBindings">
     <Phrase key="LoadTemplateBindingsError">Error loading scheme template bindings from file</Phrase>
