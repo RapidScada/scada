@@ -1,8 +1,8 @@
 ﻿/*
- * Common dialogs
+ * The common dialogs object
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -15,21 +15,26 @@
  * - scada.eventAck.dialog
  */
 
-// Rapid SCADA namespace
+// Rapid SCADA namespace.
 var scada = scada || {};
-// Chart namespace
+// Chart namespace.
 scada.chart = scada.chart || {};
-// Command namespace
+// Command namespace.
 scada.cmd = scada.cmd || {};
-// Event acknowledgement namespace
+// Event acknowledgement namespace.
 scada.eventAck = scada.eventAck || {};
 
-// Common dialogs object
+// The common dialogs object.
 scada.dialogs = {
-    // Web application root path
+    // The web application root path.
     rootPath: "",
 
-    // Show chart web page
+    // Gets the chart dialog object.
+    getChartDialog: function () {
+        return scada.chart.dialog;
+    },
+
+    // Shows a chart web page.
     showChart: function (cnlNums, viewIDs, date) {
         if (scada.chart.dialog && scada.chart.dialog.show) {
             scada.chart.dialog.show(this.rootPath, cnlNums, viewIDs, date);
@@ -38,9 +43,9 @@ scada.dialogs = {
         }
     },
 
-    // Show command dialog.
+    // Shows a command dialog.
     // opt_callback is a function (dialogResult),
-    // dialogResult is true or false
+    // dialogResult can be true or false
     showCmd: function (ctrlCnlNum, viewID, opt_callback) {
         if (scada.cmd.dialog && scada.cmd.dialog.show) {
             scada.cmd.dialog.show(this.rootPath, ctrlCnlNum, viewID, opt_callback);
@@ -49,10 +54,10 @@ scada.dialogs = {
         }
     },
 
-    // Show event acknowledgement dialog.
+    // Shows event acknowledgement dialog.
     // date is a JavaScript date object,
     // opt_callback is a function (dialogResult),
-    // dialogResult is true or false
+    // dialogResult can be true or false
     showEventAck: function (date, evNum, viewID, opt_callback) {
         if (scada.eventAck.dialog && scada.eventAck.dialog.show) {
             scada.eventAck.dialog.show(this.rootPath, date, evNum, viewID, opt_callback);
@@ -61,10 +66,10 @@ scada.dialogs = {
         }
     },
 
-    // Show calendar dropdown form.
+    // Shows calendar dropdown form.
     // selectedDate is a string date representation,
     // callback is a function (dialogResult, extraParams),
-    // dialogResult is true or false,
+    // dialogResult can be true or false,
     // extraParams is object { date, dateStr }
     showCalendar: function (anchorElem, selectedDate, callback) {
         var popup = scada.popupLocator.getPopup();
@@ -74,7 +79,7 @@ scada.dialogs = {
         }
     },
 
-    // Show confirmation dialog.
+    // Shows a confirmation dialog.
     // callback is a function (dialogResult)
     showConfirm: function (callback) {
         var popup = scada.popupLocator.getPopup();
