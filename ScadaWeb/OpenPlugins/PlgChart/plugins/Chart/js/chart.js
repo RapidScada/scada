@@ -99,6 +99,7 @@ scada.chart.DisplayOptions = function () {
         fontSize: 12,
         lineColor: "#808080",
         textColor: "#000000",
+        trendColor: "",
         quantityIDs: []
     }];
 
@@ -550,6 +551,7 @@ scada.chart.Chart.prototype._initAxisTags = function (opt_reinit) {
 
             for (var trend of this.chartData.trends) {
                 var tag = axisTagMap.has(trend.quantityID) ? axisTagMap.get(trend.quantityID) : firstTag;
+                trend.color = tag.axisConfig.trendColor;
                 tag.trends.push(trend);
             }
         }
@@ -656,7 +658,7 @@ scada.chart.Chart.prototype._calcYRange = function (yAxisTag, opt_startPtInd) {
 scada.chart.Chart.prototype._initTrendFields = function () {
     var trendInd = 0;
     for (var trend of this.chartData.trends) {
-        trend.color = this._getColorByTrend(trendInd);
+        trend.color = trend.color || this._getColorByTrend(trendInd);
         trend.caption = "[" + trend.cnlNum + "] " + trend.cnlName;
         trendInd++;
     }
@@ -1173,7 +1175,7 @@ scada.chart.Chart.prototype._initTrendHint = function () {
     }
 };
 
-// Show hint with the values nearest to the pointer
+// Shows a hint with the values nearest to the pointer.
 scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
     this._chartLayout.updateAbsCoordinates(this._canvasJqElem);
     var hideHint = true;
@@ -1241,9 +1243,14 @@ scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
     }
 
     if (hideHint) {
-        this._timeMarkJqElem.addClass("hidden");
-        this._trendHintJqElem.addClass("hidden");
+        this._hideHint();
     }
+};
+
+// Hides the hint.
+scada.chart.Chart.prototype._hideHint = function () {
+    this._timeMarkJqElem.addClass("hidden");
+    this._trendHintJqElem.addClass("hidden");
 };
 
 // Draws chart areas as colored rectangles for testing.
@@ -1492,6 +1499,9 @@ scada.chart.Chart.prototype.bindHintEvents = function () {
 
                 thisObj._showHint(event.pageX, event.pageY, touch);
                 return !stopEvent;
+            })
+            .on("mouseleave.scada.chart.hint", function () {
+                thisObj._hideHint();
             });
     }
 };
