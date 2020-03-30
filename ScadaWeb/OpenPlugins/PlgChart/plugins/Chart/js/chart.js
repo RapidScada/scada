@@ -326,7 +326,7 @@ scada.chart.ChartLayout.prototype._calcYLayout = function (yAxisTag, fontName, c
     var yAxisLayout = yAxisTag.axisLayout;
     yAxisLayout.gridStart = gridYStart;
     yAxisLayout.gridStep = gridYStep;
-    yAxisLayout.minorTickStep = yAxisConfig.minorTickCount > 0 ? gridYStep / yAxisConfig.minorTickCount : 0;
+    yAxisLayout.minorTickStep = yAxisConfig.minorTickCount > 0 ? gridYStep / (yAxisConfig.minorTickCount + 1) : 0;
     yAxisLayout.gridDigits = gridYDecDig;
     yAxisLayout.areaWidth = yAxisConfig.majorTickSize + Math.ceil(maxLabelWidth) +
         scada.chart.DisplayOptions.getMargin(yAxisConfig.labelMargin, 1) +
