@@ -76,6 +76,7 @@ scada.chart.DisplayOptions = function () {
     this.xAxis = {
         height: 30,
         showGridLines: true,
+        showDates: true,
         majorTickSize: 4,
         minorTickSize: 2,
         showMinorTicks: true,
@@ -414,28 +415,49 @@ scada.chart.ChartLayout.prototype.calculate = function (displayOptions, chartJqE
     var xLeft = mainLeft;
     var xRight = legendAtRight ? this.legendAreaRect.left : mainRight;
 
-    for (var yAxisTag of yAxisTags) {
-        var yAxisLayout = new scada.chart.AxisLayout();
-        yAxisTag.axisLayout = yAxisLayout;
-        this._calcYLayout(yAxisTag, displayOptions.chartArea.fontName, context);
+    // Y-axes on the left
+    for (let i = 0, len = yAxisTags.length; i < len; i++) {
+        let yAxisTag = yAxisTags[i];
 
-        var yAxisConfig = yAxisTag.axisConfig;
-        var yAxisWidth = yAxisConfig.autoWidth ? yAxisLayout.areaWidth : yAxisConfig.width;
-        var yAxisLeft;
+        if (yAxisTag.axisConfig.position === scada.chart.AreaPosition.LEFT) {
+            yAxisTag.coef = (plotAreaHeight - 3) / (yAxisTag.max - yAxisTag.min);
+            yAxisTag.axisLayout = new scada.chart.AxisLayout();
+            this._calcYLayout(yAxisTag, displayOptions.chartArea.fontName, context);
 
-        if (yAxisConfig.position === scada.chart.AreaPosition.LEFT) {
-            yAxisLeft = xLeft;
+            let yAxisConfig = yAxisTag.axisConfig;
+            let yAxisLayout = yAxisTag.axisLayout;
+            let yAxisWidth = yAxisConfig.autoWidth ? yAxisLayout.areaWidth : yAxisConfig.width;
+
+            let yAxisLeft = xLeft;
             xLeft += yAxisWidth;
-        } else {
-            xRight -= yAxisWidth;
-            yAxisLeft = xRight;
-        }
 
-        yAxisTag.coef = (plotAreaHeight - 3) / (yAxisTag.max - yAxisTag.min);
-        yAxisLayout.areaRect = new DOMRect(yAxisLeft, plotAreaTop, yAxisWidth, plotAreaHeight);
-        this.yAxisLayouts.push(yAxisLayout);
+            yAxisLayout.areaRect = new DOMRect(yAxisLeft, plotAreaTop, yAxisWidth, plotAreaHeight);
+            this.yAxisLayouts.push(yAxisLayout);
+        }
     }
 
+    // Y-axes on the right
+    for (let i = yAxisTags.length - 1; i >= 0; i--) {
+        let yAxisTag = yAxisTags[i];
+
+        if (yAxisTag.axisConfig.position === scada.chart.AreaPosition.RIGHT) {
+            yAxisTag.coef = (plotAreaHeight - 3) / (yAxisTag.max - yAxisTag.min);
+            yAxisTag.axisLayout = new scada.chart.AxisLayout();
+            this._calcYLayout(yAxisTag, displayOptions.chartArea.fontName, context);
+
+            let yAxisConfig = yAxisTag.axisConfig;
+            let yAxisLayout = yAxisTag.axisLayout;
+            let yAxisWidth = yAxisConfig.autoWidth ? yAxisLayout.areaWidth : yAxisConfig.width;
+
+            xRight -= yAxisWidth;
+            let yAxisLeft = xRight;
+
+            yAxisLayout.areaRect = new DOMRect(yAxisLeft, plotAreaTop, yAxisWidth, plotAreaHeight);
+            this.yAxisLayouts.push(yAxisLayout);
+        }
+    }
+
+    // plot area
     this.plotAreaRect = new DOMRect(xLeft, plotAreaTop, xRight - xLeft, plotAreaHeight);
     this.canvasPlotAreaRect = this._offsetRect(this.plotAreaRect, this.canvasXOffset, this.canvasYOffset);
     xAxisTag.coef = (this.plotAreaRect.width - 1) / (xAxisTag.max - xAxisTag.min);
@@ -925,7 +947,7 @@ scada.chart.Chart.prototype._drawXGrid = function () {
         if (isNaN(prevLblX) || lblX - lblHalfW - labelMarginL > prevLblX + prevLblHalfW + labelMarginR) {
             this._context.fillText(timeText, lblX, lblY);
 
-            if (timeText === dayBegTimeText) {
+            if (xAxisConfig.showDates && timeText === dayBegTimeText) {
                 this._context.fillText(this.dateToStr(x), lblX, lblDateY);
             }
 
