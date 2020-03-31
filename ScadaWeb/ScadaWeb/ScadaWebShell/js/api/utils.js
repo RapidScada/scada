@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  *
  * No dependencies
  */
@@ -126,8 +126,9 @@ scada.utils = {
     },
 
     // Extract year, month and day from the date, and join them into a query string
-    dateToQueryString: function (date) {
+    dateToQueryString: function (date, opt_prependAmp) {
         return date ? 
+            (opt_prependAmp ? "&" : "") +
             "year=" + date.getFullYear() +
             "&month=" + (date.getMonth() + 1) +
             "&day=" + date.getDate() :
