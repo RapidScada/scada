@@ -484,8 +484,14 @@ scada.chart.Chart = function (chartJqElem) {
     this._DATE_OPTIONS = { month: "short", day: "2-digit", timeZone: "UTC" };
     // The time format options.
     this._TIME_OPTIONS = { hour: "2-digit", minute: "2-digit", timeZone: "UTC" };
+    // The time format options that include seconds.
+    this._TIME_OPTIONS_SEC = { hour: "2-digit", minute: "2-digit", second: "2-digit", timeZone: "UTC" };
     // The date and time format options.
     this._DATE_TIME_OPTIONS = $.extend({}, this._DATE_OPTIONS, this._TIME_OPTIONS);
+    // The date and time format options that include seconds.
+    this._DATE_TIME_OPTIONS_SEC = $.extend({}, this._DATE_OPTIONS, this._TIME_OPTIONS_SEC);
+    // The threshold that determines whether to show seconds on X-axis. Equals 1 hour.
+    this.SHOW_SEC_THRESHOLD = 1 / 24;
     // The default fore color.
     this.DEFAULT_FORE_COLOR = "#000000";
 
@@ -753,38 +759,39 @@ scada.chart.Chart.prototype._getPointIndex = function (pageX) {
 };
 
 // Converts the X-coordinate that means a time into a date and time string.
-scada.chart.Chart.prototype._dateTimeToStr = function (t) {
+scada.chart.Chart.prototype._dateTimeToStr = function (t, showSeconds) {
     var dateTime = this._trendXToDate(t);
 
     if (scada.utils.iOS()) {
         var date = new Date(dateTime.getTime());
         date.setUTCMinutes(date.getUTCMinutes() + date.getTimezoneOffset());
         return date.toLocaleDateString(this.displayOptions.locale, this._DATE_OPTIONS) + ", " +
-            this._simpleTimeToStr(dateTime);
+            this._simpleTimeToStr(dateTime, showSeconds);
     } else {
-        return dateTime.toLocaleString(this.displayOptions.locale, this._DATE_TIME_OPTIONS);
+        return dateTime.toLocaleString(this.displayOptions.locale,
+            showSeconds ? this._DATE_TIME_OPTIONS_SEC : this._DATE_TIME_OPTIONS);
     }
 };
 
+// Converts the X-coordinate that means a time into a time string.
+scada.chart.Chart.prototype._timeToStr = function (t, showSeconds) {
+    var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
+    return scada.utils.iOS() ? // iOS requires manual time formatting
+        this._simpleTimeToStr(time, showSeconds) :
+        time.toLocaleTimeString(this.displayOptions.locale, showSeconds ? this._TIME_OPTIONS_SEC : this._TIME_OPTIONS);
+};
+
 // Converts the time to a string using explicit transformations.
-scada.chart.Chart.prototype._simpleTimeToStr = function (time, opt_showSeconds) {
+scada.chart.Chart.prototype._simpleTimeToStr = function (time, showSeconds) {
     var min = time.getUTCMinutes();
     var timeStr = time.getUTCHours() + ":" + (min < 10 ? "0" + min : min);
 
-    if (opt_showSeconds) {
+    if (showSeconds) {
         var sec = time.getUTCSeconds();
         timeStr += ":" + (sec < 10 ? "0" + sec : sec);
     }
 
     return timeStr;
-};
-
-// Converts the X-coordinate that means a time into a time string.
-scada.chart.Chart.prototype._timeToStr = function (t) {
-    var time = new Date(Math.round(t * scada.chart.const.MS_PER_DAY));
-    return scada.utils.iOS() ? // iOS requires manual time formatting
-        this._simpleTimeToStr(time) :
-        time.toLocaleTimeString(this.displayOptions.locale, this._TIME_OPTIONS);
 };
 
 // Draws the pixel on the chart.
@@ -914,7 +921,8 @@ scada.chart.Chart.prototype._drawXGrid = function () {
     var lblDateY = lblY + xAxisConfig.fontSize + labelMarginB + labelMarginT;
     var gridStep = layout.xAxisLayout.gridStep;
     var minorTickStep = this.displayOptions.xAxis.showMinorTicks ? layout.xAxisLayout.minorTickStep : 0;
-    var dayBegTimeText = this._timeToStr(0);
+    var showSeconds = this._xAxisTag.max - this._xAxisTag.min <= this.SHOW_SEC_THRESHOLD;
+    var dayBegTimeText = this._timeToStr(0, showSeconds);
 
     for (var x = this._xAxisTag.min; x <= this._xAxisTag.max; x += gridStep) {
         var ptX = this._trendXToCanvasX(x);
@@ -943,7 +951,7 @@ scada.chart.Chart.prototype._drawXGrid = function () {
         // label
         this._setColor(xAxisConfig.textColor);
         var lblX = ptX;
-        var timeText = this._timeToStr(x);
+        var timeText = this._timeToStr(x, showSeconds);
         var lblHalfW = this._context.measureText(timeText).width / 2;
 
         if (isNaN(prevLblX) || lblX - lblHalfW - labelMarginL > prevLblX + prevLblHalfW + labelMarginR) {
@@ -1203,7 +1211,7 @@ scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
                     });
 
                 // set text, position and show the trend hint
-                this._trendHintJqElem.find("div.time").text(this._dateTimeToStr(x));
+                this._trendHintJqElem.find("div.time").text(this._dateTimeToStr(x, true));
                 var trendCnt = this.chartData.trends.length;
                 var hintValCells = this._trendHintJqElem.find("td.val");
 
