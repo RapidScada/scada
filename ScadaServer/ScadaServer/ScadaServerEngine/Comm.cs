@@ -567,7 +567,7 @@ namespace Scada.Server.Engine
                 if (formatError)
                 {
                     appLog.WriteAction(string.Format(Localization.UseRussian ? 
-                        "Некорректный формат полученных данных от клиента {1}" : 
+                        "Некорректный формат полученных данных от клиента {0}" : 
                         "Incorrect format of the data received from the client {0}", 
                         client.Address), Log.ActTypes.Error);
 
