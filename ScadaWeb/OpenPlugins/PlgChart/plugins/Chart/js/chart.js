@@ -40,6 +40,15 @@ scada.chart.AreaPosition = {
     LEFT: 4
 };
 
+/********** Include Zero Enumeration **********/
+
+// Specifies the options for including zero in the Y-axis range.
+scada.chart.IncludeZero = {
+    OFF: 0,
+    ON: 1,
+    WITHOUT_ZOOM: 2
+};
+
 /********** Display Options **********/
 
 // Represents chart display options.
@@ -69,6 +78,7 @@ scada.chart.DisplayOptions = function () {
         backColor: "#ffffff",
         markerColor: "#000000",
         selectionColor: "#6aaaea",
+        lineWidth: 1,
         trendColors: ["#ff0000", "#0000ff", "#008000", "#ff00ff", "#ffa500",
             "#00ffff", "#00ff00", "#4b0082", "#ff1493", "#8b4513"]
     };
@@ -100,6 +110,7 @@ scada.chart.DisplayOptions = function () {
         lineColor: "#808080",
         textColor: "#000000",
         trendColor: "",
+        includeZero: scada.chart.IncludeZero.WITHOUT_ZOOM,
         quantityIDs: []
     }];
 
@@ -795,16 +806,25 @@ scada.chart.Chart.prototype._simpleTimeToStr = function (time, showSeconds) {
 };
 
 // Draws the pixel on the chart.
-scada.chart.Chart.prototype._drawPixel = function (x, y, opt_boundRect) {
+scada.chart.Chart.prototype._drawPixel = function (x, y, opt_boundRect, opt_size) {
+    if (opt_size && opt_size > 1) {
+        var size = opt_size;
+        let offset = size / 2;
+        x -= offset;
+        y -= offset;
+    } else {
+        size = 1;
+    }
+
     if (opt_boundRect) {
         // check if the given coordinates are located within the drawing area
-        if (opt_boundRect.left <= x && x < opt_boundRect.right &&
-            opt_boundRect.top <= y && y < opt_boundRect.bottom) {
-            this._context.fillRect(x, y, 1, 1);
+        if (opt_boundRect.left <= x && x + size <= opt_boundRect.right &&
+            opt_boundRect.top <= y && y + size <= opt_boundRect.bottom) {
+            this._context.fillRect(x, y, size, size);
         }
     } else {
         // just draw a pixel
-        this._context.fillRect(x, y, 1, 1);
+        this._context.fillRect(x, y, size, size);
     }
 };
 
@@ -834,7 +854,7 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_boundRect)
             let b = -a * x1 + y1;
 
             if (dx < 0) {
-                var x0 = x1;
+                let x0 = x1;
                 x1 = x2;
                 x2 = x0;
             }
@@ -848,7 +868,7 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_boundRect)
             let b = -a * y1 + x1;
 
             if (dy < 0) {
-                var y0 = y1;
+                let y0 = y1;
                 y1 = y2;
                 y2 = y0;
             }
@@ -858,6 +878,31 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_boundRect)
                 this._drawPixel(x, y, opt_boundRect);
             }
         }
+    }
+};
+
+// Draws the trend line on the chart.
+scada.chart.Chart.prototype._drawTrendLine = function (x1, y1, x2, y2, boundRect, lineWidth) {
+    if (lineWidth > 1) {
+        // draw the line if it is fully inside the drawing area
+        // to draw a part of the line, use the context.clip() method
+        let minX = Math.min(x1, x2);
+        let maxX = Math.max(x1, x2);
+        let minY = Math.min(y1, y2);
+        let maxY = Math.max(y1, y2);
+
+        if (boundRect.left <= minX && maxX < boundRect.right &&
+            boundRect.top <= minY && maxY < boundRect.bottom) {
+            let ctx = this._context;
+            ctx.lineWidth = lineWidth;
+            ctx.beginPath();
+            ctx.moveTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+            ctx.lineWidth = 1;
+        }
+    } else {
+        this._drawLine(x1, y1, x2, y2, boundRect);
     }
 };
 
@@ -1111,6 +1156,7 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, yAxisTag, 
     var trendPoints = trend.trendPoints;
     var chartGap = this.displayOptions.gapBetweenPoints / scada.chart.const.SEC_PER_DAY;
     var boundRect = this._chartLayout.canvasPlotAreaRect;
+    var lineWidth = this.displayOptions.plotArea.lineWidth;
     var VAL_IND = scada.chart.TrendPointIndex.VAL_IND;
 
     this._setColor(trend.color);
@@ -1134,10 +1180,10 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, yAxisTag, 
                 // do nothing
             }
             else if (x - prevX > chartGap) {
-                this._drawPixel(prevPtX, prevPtY, boundRect);
-                this._drawPixel(ptX, ptY, boundRect);
+                this._drawPixel(prevPtX, prevPtY, boundRect, lineWidth);
+                this._drawPixel(ptX, ptY, boundRect, lineWidth);
             } else if (prevPtX !== ptX || prevPtY !== ptY) {
-                this._drawLine(prevPtX, prevPtY, ptX, ptY, boundRect);
+                this._drawTrendLine(prevPtX, prevPtY, ptX, ptY, boundRect, lineWidth);
             }
 
             prevX = x;
@@ -1147,7 +1193,7 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, yAxisTag, 
     }
 
     if (!isNaN(prevPtX))
-        this._drawPixel(prevPtX, prevPtY, boundRect);
+        this._drawPixel(prevPtX, prevPtY, boundRect, lineWidth);
 };
 
 // Creates a time mark jQuery element if it doesn't exist.
