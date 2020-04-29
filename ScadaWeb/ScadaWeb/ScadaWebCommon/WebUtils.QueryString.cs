@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -97,6 +97,16 @@ namespace Scada.Web
             {
                 throw new ScadaException(WebPhrases.IncorrectDate);
             }
+        }
+
+        /// <summary>
+        /// Gets the XML attribute value as an enumeration element.
+        /// </summary>
+        public static T GetParamAsEnum<T>(this NameValueCollection queryString, string paramName,
+            T defaultVal = default(T)) where T : struct
+        {
+            return Enum.TryParse(queryString[paramName], true, out T paramVal) ?
+                paramVal : defaultVal;
         }
 
         /// <summary>
