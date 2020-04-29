@@ -638,11 +638,10 @@ scada.chart.Chart.prototype._calcYRange = function (yAxisTag, opt_startPtInd) {
         const EXTRA_SPACE_COEF = 0.05;
         var extraSpace = minY === maxY && typeof opt_startPtInd === "undefined" ?
             1 : (maxY - minY) * EXTRA_SPACE_COEF;
+        var includeZero = yAxisTag.axisConfig.includeZero === scada.chart.IncludeZero.ON ||
+            yAxisTag.axisConfig.includeZero === scada.chart.IncludeZero.WITHOUT_ZOOM && !this._zoomMode;
 
-        if (this._zoomMode) {
-            minY -= extraSpace;
-            maxY += extraSpace;
-        } else {
+        if (includeZero) {
             // include zero in the Y-range
             var origMinY = minY;
             var origMaxY = maxY;
@@ -663,6 +662,10 @@ scada.chart.Chart.prototype._calcYRange = function (yAxisTag, opt_startPtInd) {
             if (maxY - origMaxY < extraSpace) {
                 maxY += extraSpace;
             }
+        } else {
+            // add extra space
+            minY -= extraSpace;
+            maxY += extraSpace;
         }
     }
 
