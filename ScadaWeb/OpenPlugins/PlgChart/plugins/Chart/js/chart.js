@@ -887,22 +887,20 @@ scada.chart.Chart.prototype._drawLine = function (x1, y1, x2, y2, opt_boundRect)
 // Draws the trend line on the chart.
 scada.chart.Chart.prototype._drawTrendLine = function (x1, y1, x2, y2, boundRect, lineWidth) {
     if (lineWidth > 1) {
-        // draw the line if it is fully inside the drawing area
-        // to draw a part of the line, use the context.clip() method
+        // draw the line if at least a part is inside the drawing area
         let minX = Math.min(x1, x2);
         let maxX = Math.max(x1, x2);
         let minY = Math.min(y1, y2);
         let maxY = Math.max(y1, y2);
 
-        if (boundRect.left <= minX && maxX < boundRect.right &&
-            boundRect.top <= minY && maxY < boundRect.bottom) {
+        if (!(boundRect.left > maxX || minX >= boundRect.right ||
+            boundRect.top > maxY && minY >= boundRect.bottom)) {
+            // line width already set
             let ctx = this._context;
-            ctx.lineWidth = lineWidth;
             ctx.beginPath();
             ctx.moveTo(x1, y1);
             ctx.lineTo(x2, y2);
             ctx.stroke();
-            ctx.lineWidth = 1;
         }
     } else {
         this._drawLine(x1, y1, x2, y2, boundRect);
@@ -1162,8 +1160,18 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, yAxisTag, 
     var lineWidth = this.displayOptions.plotArea.lineWidth;
     var VAL_IND = scada.chart.TrendPointIndex.VAL_IND;
 
+    // set clipping region and line width
+    if (lineWidth > 1) {
+        this._context.save();
+        this._context.rect(boundRect.left, boundRect.top, boundRect.width, boundRect.height);
+        this._context.clip();
+        this._context.lineWidth = lineWidth;
+    }
+
+    // set color
     this._setColor(trend.color);
 
+    // draw lines
     var prevX = NaN;
     var prevPtX = NaN;
     var prevPtY = NaN;
@@ -1197,6 +1205,11 @@ scada.chart.Chart.prototype._drawTrend = function (timePoints, trend, yAxisTag, 
 
     if (!isNaN(prevPtX))
         this._drawPixel(prevPtX, prevPtY, boundRect, lineWidth);
+
+    // restore clipping region and line width
+    if (lineWidth > 1) {
+        this._context.restore();
+    }
 };
 
 // Creates a time mark jQuery element if it doesn't exist.
