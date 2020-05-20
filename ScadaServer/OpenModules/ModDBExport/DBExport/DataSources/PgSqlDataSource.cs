@@ -47,7 +47,7 @@ namespace Scada.Server.Modules.DBExport
         public PgSqlDataSource()
             : base()
         {
-            DBType = DBTypes.PostgreSQL;
+            DBType = DBType.PostgreSQL;
         }
 
 

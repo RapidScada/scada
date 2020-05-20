@@ -44,7 +44,7 @@ namespace Scada.Server.Modules.DBExport
         public OraDataSource()
             : base()
         {
-            DBType = DBTypes.Oracle;
+            DBType = DBType.Oracle;
         }
 
 

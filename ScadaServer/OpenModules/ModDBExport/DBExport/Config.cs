@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2020
  */
 
 using System;
@@ -34,13 +34,13 @@ using System.Xml;
 namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
-    /// Module configuration
-    /// <para>Конфигурация модуля</para>
+    /// Module configuration.
+    /// <para>Конфигурация модуля.</para>
     /// </summary>
     internal class Config
     {
         /// <summary>
-        /// Параметры экспорта
+        /// Параметры экспорта.
         /// </summary>
         public class ExportParams
         {
@@ -55,6 +55,7 @@ namespace Scada.Server.Modules.DBExport
                 ExportArcDataQuery = "";
                 ExportEvents = false;
                 ExportEventQuery = "";
+                MaxQueueSize = 100;
             }
 
             /// <summary>
@@ -81,6 +82,44 @@ namespace Scada.Server.Modules.DBExport
             /// Получить или установить SQL-запрос для экспорта событий
             /// </summary>
             public string ExportEventQuery { get; set; }
+            /// <summary>
+            /// Gets or sets the maximum queue size.
+            /// </summary>
+            public int MaxQueueSize { get; set; }
+
+            /// <summary>
+            /// Loads the parameters from the XML node.
+            /// </summary>
+            public void LoadFromXml(XmlNode xmlNode)
+            {
+                if (xmlNode == null)
+                    throw new ArgumentNullException("xmlNode");
+
+                ExportCurDataQuery = xmlNode.GetChildAsString("ExportCurDataQuery");
+                ExportCurData = !string.IsNullOrEmpty(ExportCurDataQuery) && xmlNode.GetChildAsBool("ExportCurData");
+                ExportArcDataQuery = xmlNode.GetChildAsString("ExportArcDataQuery");
+                ExportArcData = !string.IsNullOrEmpty(ExportArcDataQuery) && xmlNode.GetChildAsBool("ExportArcData");
+                ExportEventQuery = xmlNode.GetChildAsString("ExportEventQuery");
+                ExportEvents = !string.IsNullOrEmpty(ExportEventQuery) && xmlNode.GetChildAsBool("ExportEvents");
+                MaxQueueSize = xmlNode.GetChildAsInt("MaxQueueSize", MaxQueueSize);
+            }
+
+            /// <summary>
+            /// Saves the parameters into the XML node.
+            /// </summary>
+            public void SaveToXml(XmlElement xmlElem)
+            {
+                if (xmlElem == null)
+                    throw new ArgumentNullException("xmlElem");
+
+                xmlElem.AppendElem("ExportCurData", ExportCurData);
+                xmlElem.AppendElem("ExportCurDataQuery", ExportCurDataQuery);
+                xmlElem.AppendElem("ExportArcData", ExportArcData);
+                xmlElem.AppendElem("ExportArcDataQuery", ExportArcDataQuery);
+                xmlElem.AppendElem("ExportEvents", ExportEvents);
+                xmlElem.AppendElem("ExportEventQuery", ExportEventQuery);
+                xmlElem.AppendElem("MaxQueueSize", MaxQueueSize);
+            }
 
             /// <summary>
             /// Клонировать параметры экспорта
@@ -89,12 +128,13 @@ namespace Scada.Server.Modules.DBExport
             {
                 return new ExportParams()
                     {
-                        ExportCurData = this.ExportCurData,
-                        ExportCurDataQuery = this.ExportCurDataQuery,
-                        ExportArcData = this.ExportArcData,
-                        ExportArcDataQuery = this.ExportArcDataQuery,
-                        ExportEvents = this.ExportEvents,
-                        ExportEventQuery = this.ExportEventQuery
+                        ExportCurData = ExportCurData,
+                        ExportCurDataQuery = ExportCurDataQuery,
+                        ExportArcData = ExportArcData,
+                        ExportArcDataQuery = ExportArcDataQuery,
+                        ExportEvents = ExportEvents,
+                        ExportEventQuery = ExportEventQuery,
+                        MaxQueueSize = MaxQueueSize
                     };
             }
         }
@@ -235,31 +275,29 @@ namespace Scada.Server.Modules.DBExport
                     {
                         // загрузка источника данных
                         DataSource dataSource = null;
-                        XmlNode dataSourceNode = expDestElem.SelectSingleNode("DataSource");
 
-                        if (dataSourceNode != null)
+                        if (expDestElem.SelectSingleNode("DataSource") is XmlNode dataSourceNode)
                         {
                             // получение типа источника данных
-                            DBTypes dbType;
-                            if (!Enum.TryParse<DBTypes>(dataSourceNode.GetChildAsString("DBType"), out dbType))
-                                dbType = DBTypes.Undefined;
+                            if (!Enum.TryParse(dataSourceNode.GetChildAsString("DBType"), out DBType dbType))
+                                dbType = DBType.Undefined;
 
                             // создание источника данных
                             switch (dbType)
                             {
-                                case DBTypes.MSSQL:
+                                case DBType.MSSQL:
                                     dataSource = new SqlDataSource();
                                     break;
-                                case DBTypes.Oracle:
+                                case DBType.Oracle:
                                     dataSource = new OraDataSource();
                                     break;
-                                case DBTypes.PostgreSQL:
+                                case DBType.PostgreSQL:
                                     dataSource = new PgSqlDataSource();
                                     break;
-                                case DBTypes.MySQL:
+                                case DBType.MySQL:
                                     dataSource = new MySqlDataSource();
                                     break;
-                                case DBTypes.OLEDB:
+                                case DBType.OLEDB:
                                     dataSource = new OleDbDataSource();
                                     break;
                                 default:
@@ -280,27 +318,14 @@ namespace Scada.Server.Modules.DBExport
                             }
                         }
 
-                        // загрузка параметров экспорта
-                        ExportParams exportParams = null;
-                        XmlNode exportParamsNode = expDestElem.SelectSingleNode("ExportParams");
-
-                        if (dataSource != null && exportParamsNode != null)
+                        if (dataSource != null && 
+                            expDestElem.SelectSingleNode("ExportParams") is XmlNode exportParamsNode)
                         {
-                            exportParams = new ExportParams();
-                            exportParams.ExportCurDataQuery = exportParamsNode.GetChildAsString("ExportCurDataQuery");
-                            exportParams.ExportCurData = !string.IsNullOrEmpty(exportParams.ExportCurDataQuery) && 
-                                exportParamsNode.GetChildAsBool("ExportCurData");
-                            exportParams.ExportArcDataQuery = exportParamsNode.GetChildAsString("ExportArcDataQuery");
-                            exportParams.ExportArcData = !string.IsNullOrEmpty(exportParams.ExportArcDataQuery) && 
-                                exportParamsNode.GetChildAsBool("ExportArcData");
-                            exportParams.ExportEventQuery = exportParamsNode.GetChildAsString("ExportEventQuery");
-                            exportParams.ExportEvents = !string.IsNullOrEmpty(exportParams.ExportEventQuery) &&
-                                exportParamsNode.GetChildAsBool("ExportEvents");
-                        }
+                            // загрузка параметров экспорта
+                            ExportParams exportParams = new ExportParams();
+                            exportParams.LoadFromXml(exportParamsNode);
 
-                        // создание назначения экспорта
-                        if (dataSource != null && exportParams != null)
-                        {
+                            // создание назначения экспорта
                             ExportDestination expDest = new ExportDestination(dataSource, exportParams);
                             ExportDestinations.Add(expDest);
                         }
@@ -311,8 +336,7 @@ namespace Scada.Server.Modules.DBExport
                 }
 
                 // загрузка номеров каналов управления для экспорта в ручном режиме
-                XmlNode manExpNode = xmlDoc.DocumentElement.SelectSingleNode("ManualExport");
-                if (manExpNode != null)
+                if (xmlDoc.DocumentElement.SelectSingleNode("ManualExport") is XmlNode manExpNode)
                 {
                     CurDataCtrlCnlNum = manExpNode.GetChildAsInt("CurDataCtrlCnlNum");
                     ArcDataCtrlCnlNum = manExpNode.GetChildAsInt("ArcDataCtrlCnlNum");
@@ -351,17 +375,15 @@ namespace Scada.Server.Modules.DBExport
                 xmlDoc.AppendChild(rootElem);
 
                 // сохранение назначений экспорта
-                XmlElement expDestsElem = xmlDoc.CreateElement("ExportDestinations");
-                rootElem.AppendChild(expDestsElem);
+                XmlElement expDestsElem = rootElem.AppendElem("ExportDestinations");
 
                 foreach (ExportDestination expDest in ExportDestinations)
                 {
-                    XmlElement expDestElem = xmlDoc.CreateElement("ExportDestination");
-                    expDestsElem.AppendChild(expDestElem);
+                    XmlElement expDestElem = expDestsElem.AppendElem("ExportDestination");
 
                     // сохранение источника данных
                     DataSource dataSource = expDest.DataSource;
-                    XmlElement dataSourceElem = xmlDoc.CreateElement("DataSource");
+                    XmlElement dataSourceElem = expDestElem.AppendElem("DataSource");
                     dataSourceElem.AppendElem("DBType", dataSource.DBType);
                     dataSourceElem.AppendElem("Server", dataSource.Server);
                     dataSourceElem.AppendElem("Database", dataSource.Database);
@@ -371,23 +393,13 @@ namespace Scada.Server.Modules.DBExport
                     string bldConnStr = dataSource.BuildConnectionString();
                     dataSourceElem.AppendElem("ConnectionString", 
                         !string.IsNullOrEmpty(bldConnStr) && bldConnStr == connStr ? "" : connStr);
-                    expDestElem.AppendChild(dataSourceElem);
 
                     // сохранение параметров экспорта
-                    ExportParams exportParams = expDest.ExportParams;
-                    XmlElement exportParamsElem = xmlDoc.CreateElement("ExportParams");
-                    exportParamsElem.AppendElem("ExportCurData", exportParams.ExportCurData);
-                    exportParamsElem.AppendElem("ExportCurDataQuery", exportParams.ExportCurDataQuery);
-                    exportParamsElem.AppendElem("ExportArcData", exportParams.ExportArcData);
-                    exportParamsElem.AppendElem("ExportArcDataQuery", exportParams.ExportArcDataQuery);
-                    exportParamsElem.AppendElem("ExportEvents", exportParams.ExportEvents);
-                    exportParamsElem.AppendElem("ExportEventQuery", exportParams.ExportEventQuery);
-                    expDestElem.AppendChild(exportParamsElem);
+                    expDest.ExportParams.SaveToXml(expDestElem.AppendElem("ExportParams"));
                 }
 
                 // сохранение номеров каналов управления для экспорта в ручном режиме
-                XmlElement manExpElem = xmlDoc.CreateElement("ManualExport");
-                rootElem.AppendChild(manExpElem);
+                XmlElement manExpElem = rootElem.AppendElem("ManualExport");
                 manExpElem.AppendElem("CurDataCtrlCnlNum", CurDataCtrlCnlNum);
                 manExpElem.AppendElem("ArcDataCtrlCnlNum", ArcDataCtrlCnlNum);
                 manExpElem.AppendElem("EventsCtrlCnlNum", EventsCtrlCnlNum);
@@ -408,12 +420,16 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public Config Clone()
         {
-            Config configCopy = new Config();
-            configCopy.FileName = FileName;
-            configCopy.ExportDestinations = new List<ExportDestination>();
+            Config configCopy = new Config
+            {
+                FileName = FileName,
+                ExportDestinations = new List<ExportDestination>()
+            };
 
             foreach (ExportDestination expDest in ExportDestinations)
+            {
                 configCopy.ExportDestinations.Add(expDest.Clone());
+            }
 
             configCopy.CurDataCtrlCnlNum = CurDataCtrlCnlNum;
             configCopy.ArcDataCtrlCnlNum = ArcDataCtrlCnlNum;

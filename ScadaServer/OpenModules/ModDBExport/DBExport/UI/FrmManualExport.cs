@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -33,8 +33,8 @@ using System.Windows.Forms;
 namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
-    /// Manual export form
-    /// <para>Форма экспорта в ручном режиме</para>
+    /// Manual export form.
+    /// <para>Форма экспорта в ручном режиме.</para>
     /// </summary>
     internal partial class FrmManualExport : Form
     {
@@ -145,9 +145,26 @@ namespace Scada.Server.Modules.DBExport
             // настройка элементов управления
             if (cbDataSource.SelectedIndex < 0 && cbDataSource.Items.Count > 0)
                 cbDataSource.SelectedIndex = 0;
-            btnExportCurData.Enabled = btnExportArcData.Enabled = btnExportEvents.Enabled = 
+            gbCurData.Enabled = gbArcData.Enabled = gbEvents.Enabled = 
                 cbDataSource.Items.Count > 0;
             dtpArcDataDate.Value = dtpEventsDate.Value = dtpArcDataTime.Value = DateTime.Today;
+        }
+
+        private void numCurDataCtrlCnlNum_ValueChanged(object sender, EventArgs e)
+        {
+            btnExportCurData.Enabled = numCurDataCtrlCnlNum.Value > 0;
+        }
+
+        private void numArcDataCtrlCnlNum_ValueChanged(object sender, EventArgs e)
+        {
+            dtpArcDataDate.Enabled = dtpArcDataTime.Enabled = btnExportArcData.Enabled =
+                numArcDataCtrlCnlNum.Value > 0;
+        }
+
+        private void numEventsCtrlCnlNum_ValueChanged(object sender, EventArgs e)
+        {
+            dtpEventsDate.Enabled = btnExportEvents.Enabled =
+                numEventsCtrlCnlNum.Value > 0;
         }
 
         private void btnExport_Click(object sender, EventArgs e)
