@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using System;
@@ -110,7 +110,7 @@ namespace Scada.Comm.Devices.KpEmail
                 Port = rootElem.GetChildAsInt("Port");
                 User = rootElem.GetChildAsString("User");
                 UserDisplayName = rootElem.GetChildAsString("UserDisplayName");
-                Password = rootElem.GetChildAsString("Password");
+                Password = ScadaUtils.Decrypt(rootElem.GetChildAsString("Password"));
                 EnableSsl = rootElem.GetChildAsBool("EnableSsl");
 
                 errMsg = "";
@@ -142,7 +142,7 @@ namespace Scada.Comm.Devices.KpEmail
                 rootElem.AppendElem("Port", Port);
                 rootElem.AppendElem("User", User);
                 rootElem.AppendElem("UserDisplayName", UserDisplayName);
-                rootElem.AppendElem("Password", Password);
+                rootElem.AppendElem("Password", ScadaUtils.Encrypt(Password));
                 rootElem.AppendElem("EnableSsl", EnableSsl);
 
                 xmlDoc.Save(fileName);
