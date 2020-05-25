@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -101,7 +101,7 @@ namespace Scada.Agent.Connector
             Port = xmlNode.GetChildAsInt("Port", 10002);
             Username = xmlNode.GetChildAsString("Username", "admin");
             string encryptedPassword = xmlNode.GetChildAsString("Password");
-            Password = string.IsNullOrEmpty(encryptedPassword) ? "" : ScadaUtils.Decrypt(encryptedPassword);
+            Password = ScadaUtils.Decrypt(encryptedPassword);
             ScadaInstance = xmlNode.GetChildAsString("ScadaInstance");
             SecretKey = ScadaUtils.HexToBytes(xmlNode.GetChildAsString("SecretKey"));
         }
