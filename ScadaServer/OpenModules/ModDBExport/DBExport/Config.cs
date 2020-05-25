@@ -310,7 +310,7 @@ namespace Scada.Server.Modules.DBExport
                                 dataSource.Server = dataSourceNode.GetChildAsString("Server");
                                 dataSource.Database = dataSourceNode.GetChildAsString("Database");
                                 dataSource.User = dataSourceNode.GetChildAsString("User");
-                                dataSource.Password = dataSourceNode.GetChildAsString("Password");
+                                dataSource.Password = ScadaUtils.Decrypt(dataSourceNode.GetChildAsString("Password"));
                                 dataSource.ConnectionString = dataSourceNode.GetChildAsString("ConnectionString");
 
                                 if (string.IsNullOrEmpty(dataSource.ConnectionString))
@@ -388,7 +388,7 @@ namespace Scada.Server.Modules.DBExport
                     dataSourceElem.AppendElem("Server", dataSource.Server);
                     dataSourceElem.AppendElem("Database", dataSource.Database);
                     dataSourceElem.AppendElem("User", dataSource.User);
-                    dataSourceElem.AppendElem("Password", dataSource.Password);
+                    dataSourceElem.AppendElem("Password", ScadaUtils.Encrypt(dataSource.Password));
                     string connStr = dataSource.ConnectionString;
                     string bldConnStr = dataSource.BuildConnectionString();
                     dataSourceElem.AppendElem("ConnectionString", 
