@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2020
  */
 
 using System;
@@ -101,9 +101,10 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
         /// </summary>
-        public override string BuildConnectionString()
+        public override string BuildConnectionString(bool hidePassword)
         {
-            return string.Format("Server={0};Database={1};User ID={2};Password={3}", Server, Database, User, Password);
+            return string.Format("Server={0};Database={1};User ID={2};Password={3}", 
+                Server, Database, User, hidePassword ? HiddenPassword : Password);
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2020
  */
 
 using MySql.Data.MySqlClient;
@@ -107,18 +107,18 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
         /// </summary>
-        public override string BuildConnectionString()
+        public override string BuildConnectionString(bool hidePassword)
         {
-            string host;
-            int port;
-            ExtractHostAndPort(Server, DefaultPort, out host, out port);
+            ExtractHostAndPort(Server, DefaultPort, out string host, out int port);
 
-            MySqlConnectionStringBuilder csb = new MySqlConnectionStringBuilder();
-            csb.Server = host;
-            csb.Port = (uint)port;
-            csb.Database = Database;
-            csb.UserID = User;
-            csb.Password = Password;
+            MySqlConnectionStringBuilder csb = new MySqlConnectionStringBuilder
+            {
+                Server = host,
+                Port = (uint)port,
+                Database = Database,
+                UserID = User,
+                Password = hidePassword ? HiddenPassword : Password
+            };
 
             return csb.ToString();
         }

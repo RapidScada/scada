@@ -258,12 +258,14 @@ namespace Scada.Server.Modules
                         .AppendLine("------------");
                 }
 
-                int cnt = exporters.Count;
+                int cnt = exporters == null ? 0 : exporters.Count;
                 if (cnt > 0)
                 {
                     for (int i = 0; i < cnt; i++)
+                    {
                         sbInfo.Append((i + 1).ToString()).Append(". ").
                             AppendLine(exporters[i].GetInfo());
+                    }
                 }
                 else
                 {
@@ -272,7 +274,9 @@ namespace Scada.Server.Modules
 
                 // вывод в файл
                 using (StreamWriter writer = new StreamWriter(infoFileName, false, Encoding.UTF8))
+                {
                     writer.Write(sbInfo.ToString());
+                }
             }
             catch (ThreadAbortException)
             {
@@ -290,9 +294,11 @@ namespace Scada.Server.Modules
         public override void OnServerStart()
         {
             // вывод в журнал
-            log = new Log(Log.Formats.Simple);
-            log.Encoding = Encoding.UTF8;
-            log.FileName = AppDirs.LogDir + LogFileName;
+            log = new Log(Log.Formats.Simple)
+            {
+                Encoding = Encoding.UTF8,
+                FileName = AppDirs.LogDir + LogFileName
+            };
             log.WriteBreak();
             log.WriteAction(string.Format(ModPhrases.StartModule, Name));
 
@@ -301,9 +307,8 @@ namespace Scada.Server.Modules
 
             // загрука конфигурации
             config = new Config(AppDirs.ConfigDir);
-            string errMsg;
 
-            if (config.Load(out errMsg))
+            if (config.Load(out string errMsg))
             {
                 // создание и запуск экспортёров
                 exporters = new List<Exporter>();

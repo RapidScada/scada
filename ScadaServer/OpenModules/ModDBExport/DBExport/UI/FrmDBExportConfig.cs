@@ -172,25 +172,20 @@ namespace Scada.Server.Modules.DBExport
                 txtDatabase.Text = dataSource.Database;
                 txtUser.Text = dataSource.User;
                 txtPassword.Text = dataSource.Password;
-                txtConnectionString.Text = dataSource.ConnectionString;
 
-                // установка фона элементов управления, соответствующих параметрам соединения с БД
+                // вывод строки соединения
                 string bldConnStr = dataSource.BuildConnectionString();
-                KnownColor connParamsColor;
-                KnownColor connStrColor;
 
                 if (!string.IsNullOrEmpty(bldConnStr) && bldConnStr == dataSource.ConnectionString)
                 {
-                    connParamsColor = KnownColor.Window;
-                    connStrColor = KnownColor.Control;
+                    txtConnectionString.Text = dataSource.BuildConnectionString(true);
+                    SetConnControlsBackColor(KnownColor.Window, KnownColor.Control);
                 }
                 else
                 {
-                    connParamsColor = KnownColor.Control;
-                    connStrColor = KnownColor.Window;
+                    txtConnectionString.Text = dataSource.ConnectionString;
+                    SetConnControlsBackColor(KnownColor.Control, KnownColor.Window);
                 }
-
-                SetConnControlsBackColor(connParamsColor, connStrColor);
 
                 // вывод параметров экспорта
                 Config.ExportParams expParams = selExpDest.ExportParams;
@@ -225,7 +220,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (selExpDest != null)
             {
-                string bldConnStr = selExpDest.DataSource.BuildConnectionString();
+                string bldConnStr = selExpDest.DataSource.BuildConnectionString(true);
                 if (!string.IsNullOrEmpty(bldConnStr))
                 {
                     selExpDest.DataSource.ConnectionString = bldConnStr;
