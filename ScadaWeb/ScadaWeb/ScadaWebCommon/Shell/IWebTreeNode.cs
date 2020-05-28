@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using System.Collections;
@@ -29,8 +29,8 @@ using System.Collections.Generic;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Interface that represents tree node to display on a web page
-    /// <para>Интерфейс, представляющий узел дерева для отображения на веб-странице</para>
+    /// Interface that represents tree node to display on a web page.
+    /// <para>Интерфейс, представляющий узел дерева для отображения на веб-странице.</para>
     /// </summary>
     public interface IWebTreeNode
     {
@@ -38,6 +38,11 @@ namespace Scada.Web.Shell
         /// Получить текст
         /// </summary>
         string Text { get; }
+
+        /// <summary>
+        /// Получить признак, что узел скрыт.
+        /// </summary>
+        bool Hidden { get; }
 
         /// <summary>
         /// Получить ссылку

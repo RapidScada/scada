@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using System.Collections;
@@ -31,8 +31,8 @@ using System.Web;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Renders tree view HTML
-    /// <para>Формирует HTML код дерева</para>
+    /// Renders tree view HTML.
+    /// <para>Формирует HTML код дерева.</para>
     /// </summary>
     public class TreeViewRenderer
     {
@@ -105,8 +105,8 @@ namespace Scada.Web.Shell
             {
                 foreach (object treeNode in treeNodes)
                 {
-                    IWebTreeNode webTreeNode = treeNode as IWebTreeNode;
-                    if (webTreeNode != null)
+                    if (treeNode is IWebTreeNode webTreeNode &&
+                        !webTreeNode.Hidden)
                     {
                         bool containsSubitems = webTreeNode.Children.Count > 0;
                         bool urlIsEmpty = string.IsNullOrEmpty(webTreeNode.Url);
@@ -114,18 +114,14 @@ namespace Scada.Web.Shell
                             (!containsSubitems && urlIsEmpty ? " disabled" : "");
                         string dataAttrs = GenDataAttrsHtml(webTreeNode);
                         string expanderCssClass = containsSubitems ? "" : " empty";
+                        string icon = "";
 
-                        string icon;
                         if (options.ShowIcons)
                         {
                             string iconUrl = string.IsNullOrEmpty(webTreeNode.IconUrl) ? 
                                 (containsSubitems ? options.FolderImageUrl : options.DocumentImageUrl) : 
                                 webTreeNode.IconUrl;
                             icon = string.Format(IconTemplate, iconUrl);
-                        }
-                        else
-                        {
-                            icon = "";
                         }
 
                         sbHtml.AppendLine(string.Format(NodeTemplate,

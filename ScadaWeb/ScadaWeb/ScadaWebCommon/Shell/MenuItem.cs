@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using System;
@@ -31,8 +31,8 @@ using System.Web;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Menu item
-    /// <para>Элемент меню</para>
+    /// Menu item.
+    /// <para>Элемент меню.</para>
     /// </summary>
     public class MenuItem : IWebTreeNode, IComparable<MenuItem>
     {
@@ -61,6 +61,17 @@ namespace Scada.Web.Shell
         /// Получить текст
         /// </summary>
         public string Text { get; protected set; }
+
+        /// <summary>
+        /// Получить признак, что элемент скрыт.
+        /// </summary>
+        public bool Hidden
+        {
+            get
+            {
+                return false;
+            }
+        }
 
         /// <summary>
         /// Получить ссылку
