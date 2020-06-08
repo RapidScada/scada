@@ -90,9 +90,7 @@
     <None Include="Script\Common\restart_apache.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="Script\Common\restart_xsp.sh">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="Script\Common\restart_xsp.sh" />
     <None Include="Script\Common\scadarestart.sh">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

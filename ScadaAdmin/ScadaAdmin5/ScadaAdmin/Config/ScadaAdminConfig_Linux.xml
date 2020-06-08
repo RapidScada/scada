@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaAdminConfig>
+  <PathOptions>
+    <Param name="ServerDir" value="/opt/scada/ScadaServer/" descr="Server directory" />
+    <Param name="CommDir" value="/opt/scada/ScadaComm/" descr="Communicator directory" />
+  </PathOptions>
+  <ChannelOptions>
+    <Param name="CnlMult" value="100" descr="Multiplicity of the first channel of a device" />
+    <Param name="CnlShift" value="1" descr="Shift of the first channel of a device" />
+    <Param name="CnlGap" value="10" descr="Gap between channel numbers of different devices" />
+    <Param name="PrependDeviceName" value="true" descr="To prepend a device name in channel names" />
+  </ChannelOptions>
+  <FileAssociations>
+    <Association ext="sch" path="/opt/scada/ScadaSchemeEditor/ScadaSchemeEditor.exe" />
+    <Association ext="tbl" path="/opt/scada/ScadaTableEditor/ScadaTableEditor.exe" />
+  </FileAssociations>
+</ScadaAdminConfig>
