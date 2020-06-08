@@ -1,0 +1,90 @@
+Installation of Rapid SCADA on Linux
+------------------------------------
+
+1. Copy all the files of Rapid SCADA Mono from the scada folder to /opt/scada
+
+2. Copy the scripts from the daemons folder to /etc/init.d
+
+3. Grant full access to the following folders of the Webstation application:
+
+   sudo chmod -R ugo+rwx /opt/scada/ScadaWeb/config
+   sudo chmod -R ugo+rwx /opt/scada/ScadaWeb/log
+   sudo chmod -R ugo+rwx /opt/scada/ScadaWeb/storage
+
+4. Make the scripts executable:
+
+   sudo chmod +x /opt/scada/make_executable.sh
+   sudo /opt/scada/make_executable.sh
+
+5. Add the Mono repository to your system.
+   Open https://www.mono-project.com/download/stable/#download-lin and follow the instructions of paragraph 1.
+
+   Example for Debian:
+   sudo apt install apt-transport-https dirmngr gnupg ca-certificates
+   sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
+   echo "deb https://download.mono-project.com/repo/debian stable-buster main" | sudo tee /etc/apt/sources.list.d/mono-official-stable.list
+   sudo apt update
+
+6. Install Mono .NET Framework:
+
+   sudo apt-get install mono-complete
+
+7. Check whether Apache web server already installed or not:
+   sudo service apache2 status
+
+   Install Apache web server if needed:
+   sudo apt-get install apache2
+
+   Note: Apache configuration files are located in /etc/apache2
+
+8. Install the required modules: 
+
+   sudo apt-get install libapache2-mod-mono mono-apache-server4
+
+9. Create a link to the web application files:
+
+   sudo ln -s /opt/scada/ScadaWeb /var/www/html/scada
+
+10. Configure the web application.
+    Copy scada.conf from the apache folder to /etc/apache2/sites-available and run:
+
+    sudo a2ensite scada.conf
+
+    Note: 
+    http://go-mono.com/config-mod-mono/Default.aspx (currently not available) can be used to generate a configuration.
+    After downloading the configuration file as scada.conf, set the parameter:
+    MonoServerPath scada "/usr/bin/mod-mono-server4"
+
+11. Execute the script to install daemons:
+
+    sudo /opt/scada/svc_install.sh
+
+12. In case of using SD card, protect it by moving frequently used folders to RAM. 
+    Skip this step if you use a regular HDD.
+    Add the lines below to /etc/fstab
+
+tmpfs           /tmp                        tmpfs    defaults,noatime,size=50m     0    0
+tmpfs           /var/log                    tmpfs    defaults,noatime,size=25m     0    0
+tmpfs           /var/log/apache2            tmpfs    defaults,noatime,size=25m     0    0
+tmpfs           /opt/scada/ScadaAgent/Log   tmpfs    defaults,noatime,size=10m     0    0
+tmpfs           /opt/scada/ScadaAgent/Temp  tmpfs    defaults,noatime,size=50m     0    0
+tmpfs           /opt/scada/ScadaComm/Log    tmpfs    defaults,noatime,size=100m    0    0
+tmpfs           /opt/scada/ScadaServer/Log  tmpfs    defaults,noatime,size=10m     0    0
+tmpfs           /opt/scada/ScadaWeb/log     tmpfs    defaults,noatime,size=10m     0    0
+tmpfs           /opt/scada/ArchiveDAT/Cur   tmpfs    defaults,noatime,size=10m     0    0
+
+13. Restart your computer:
+
+    sudo reboot
+
+14. Open Webstation (Google Chrome is recommended).
+    Default login and password are admin/12345 
+    
+    http://<Host name or IP address>/scada
+
+15. Check logs in the following locations:
+
+    /opt/scada/ScadaAgent/Log
+    /opt/scada/ScadaComm/Log
+    /opt/scada/ScadaServer/Log
+    /opt/scada/ScadaWeb/log
