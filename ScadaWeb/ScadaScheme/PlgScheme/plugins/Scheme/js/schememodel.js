@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -107,21 +107,16 @@ scada.scheme.Scheme.constructor = scada.scheme.Scheme;
 // Continue scheme loading process
 // callback is a function (success)
 scada.scheme.Scheme.prototype._continueLoading = function (viewOrEditorID, callback) {
-    var getCurTime = scada.utils.getCurTime;
     var thisScheme = this;
 
     this._loadPart(viewOrEditorID, function (success, complete) {
         if (success) {
             if (complete) {
-                console.info(getCurTime() + " Scheme loading completed successfully");
-                thisScheme.parentDomElem.removeClass("loading");
                 callback(true);
             } else {
                 setTimeout(thisScheme._continueLoading.bind(thisScheme), 0, viewOrEditorID, callback);
             }
         } else {
-            console.error(getCurTime() + " Scheme loading failed");
-            thisScheme.parentDomElem.removeClass("loading");
             callback(false);
         }
     });
@@ -192,7 +187,7 @@ scada.scheme.Scheme.prototype._getAccessParamStr = function (viewOrEditorID) {
 // Check whether the newly received data are matched with the existing
 scada.scheme.Scheme.prototype._viewStampsMatched = function (browserViewStamp, serverViewStamp) {
     if (Number.isInteger(browserViewStamp) && Number.isInteger(serverViewStamp) &&
-        serverViewStamp > 0 && (browserViewStamp === 0 || browserViewStamp == serverViewStamp)) {
+        serverViewStamp > 0 && (browserViewStamp === 0 || browserViewStamp === serverViewStamp)) {
         return true;
     } else {
         console.warn(scada.utils.getCurTime() + " Scheme view stamp mismatch");
@@ -566,10 +561,25 @@ scada.scheme.Scheme.prototype.clear = function () {
 // Load the scheme
 // callback is a function (success)
 scada.scheme.Scheme.prototype.load = function (viewOrEditorID, callback) {
-    console.info(scada.utils.getCurTime() + " Start loading scheme");
+    var getCurTime = scada.utils.getCurTime;
+    var thisScheme = this;
+    var startTime = Date.now();
+
+    console.info(getCurTime() + " Start loading scheme");
     this.parentDomElem.addClass("loading");
     this.clear();
-    this._continueLoading(viewOrEditorID, callback);
+
+    this._continueLoading(viewOrEditorID, function (success) {
+        if (success) {
+            console.info(getCurTime() + " Scheme loading completed successfully in " +
+                (Date.now() - startTime) + " ms");
+        } else {
+            console.error(getCurTime() + " Scheme loading failed");
+        }
+
+        thisScheme.parentDomElem.removeClass("loading");
+        callback(success);
+    });
 };
 
 // Create DOM content of the scheme
@@ -580,6 +590,7 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
     this.renderContext.imageMap = this.imageMap;
     this.renderContext.controlRight = typeof opt_controlRight === "undefined" ?
         true : opt_controlRight;
+    var startTime = Date.now();
 
     try
     {
@@ -606,6 +617,9 @@ scada.scheme.Scheme.prototype.createDom = function (opt_controlRight) {
             component.dom = null;
         }
     }
+
+    console.info(scada.utils.getCurTime() + " Scheme document object model created in " +
+        (Date.now() - startTime) + " ms");
 };
 
 // Update the scheme components according to the current input channel data
