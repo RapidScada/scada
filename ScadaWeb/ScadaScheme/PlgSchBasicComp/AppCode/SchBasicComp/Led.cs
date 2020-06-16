@@ -160,7 +160,6 @@ namespace Scada.Web.Plugins.SchBasicComp
                 }
             }
 
-            ToolTip = xmlNode.GetChildAsString("ToolTip");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
             CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
         }
