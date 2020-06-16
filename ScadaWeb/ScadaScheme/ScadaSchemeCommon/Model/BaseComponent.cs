@@ -27,6 +27,7 @@ using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Text;
 using System.Web.Script.Serialization;
@@ -114,6 +115,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Tooltip"), Category(Categories.Behavior)]
         [Description("The pop-up hint that displays when user rests the pointer on the component.")]
+        [CM.Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         #endregion
         public string ToolTip { get; set; }
 
