@@ -909,6 +909,7 @@ namespace Scada.Admin.App.Forms
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
                 {
                     appData.AppState.AddRecentProject(newProject.FileName);
+                    appData.AppState.RecentSelection.Reset();
                     project = newProject;
                     LoadConfigBase();
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);

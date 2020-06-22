@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 namespace Scada.Admin.App.Code
@@ -36,11 +36,7 @@ namespace Scada.Admin.App.Code
         /// </summary>
         public RecentSelection()
         {
-            InstanceName = "";
-            CommLineNum = 0;
-            KPNum = 0;
-            KPTypeID = 0;
-            ObjNum = 0;
+            Reset();
         }
 
 
@@ -68,5 +64,18 @@ namespace Scada.Admin.App.Code
         /// Gets or sets the ID of the recently selected object.
         /// </summary>
         public int ObjNum { get; set; }
+
+
+        /// <summary>
+        /// Resets the selected objects.
+        /// </summary>
+        public void Reset()
+        {
+            InstanceName = "";
+            CommLineNum = 0;
+            KPNum = 0;
+            KPTypeID = 0;
+            ObjNum = 0;
+        }
     }
 }
