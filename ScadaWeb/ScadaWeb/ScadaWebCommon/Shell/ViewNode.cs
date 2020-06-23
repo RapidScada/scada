@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Web.Plugins;
@@ -32,8 +32,8 @@ using System.Web;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// View tree node
-    /// <para>Узел дерева представлений</para>
+    /// View tree node.
+    /// <para>Узел дерева представлений.</para>
     /// </summary>
     public class ViewNode : IWebTreeNode
     {
@@ -61,6 +61,7 @@ namespace Scada.Web.Shell
             ViewID = viewItem.ViewID;
             Text = viewItem.Text ?? "";
             AlarmCnlNum = viewItem.AlarmCnlNum;
+            Hidden = viewItem.Hidden;
             ViewSpec = viewSpec;
 
             if (ViewSpec == null)
@@ -98,6 +99,11 @@ namespace Scada.Web.Shell
         /// Получить номер входного канала, информирующего о тревожном состоянии представления
         /// </summary>
         public int AlarmCnlNum { get; protected set; }
+
+        /// <summary>
+        /// Получить признак, что узел скрыт.
+        /// </summary>
+        public bool Hidden { get; protected set; }
 
         /// <summary>
         /// Получить спецификацию представления

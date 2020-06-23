@@ -61,11 +61,11 @@ namespace Scada.Admin.App.Forms
         /// <summary>
         /// The hyperlink to the documentation in English.
         /// </summary>
-        private const string DocEnUrl = "http://doc.rapidscada.net/content/latest/en/";
+        private const string DocEnUrl = "https://rapidscada.net/doc/content/latest/en/";
         /// <summary>
         /// The hyperlink to the documentation in Russian.
         /// </summary>
-        private const string DocRuUrl = "http://doc.rapidscada.net/content/latest/ru/";
+        private const string DocRuUrl = "https://rapidscada.net/doc/content/latest/ru/";
         /// <summary>
         /// The hyperlink to the support in English.
         /// </summary>
@@ -692,14 +692,12 @@ namespace Scada.Admin.App.Forms
         {
             if (!liveInstance.IsReady)
             {
-                Instance instance = liveInstance.Instance;
-
-                if (instance.LoadAppSettings(out string errMsg))
+                if (liveInstance.Instance.LoadAppSettings(out string errMsg))
                 {
                     LoadDeploymentSettings();
-                    IAgentClient agentClient = CreateAgentClient(instance);
-                    liveInstance.ServerEnvironment = CreateServerEnvironment(instance, agentClient);
-                    liveInstance.CommEnvironment = CreateCommEnvironment(instance, agentClient);
+                    InitAgentClient(liveInstance);
+                    liveInstance.ServerEnvironment = CreateServerEnvironment(liveInstance);
+                    liveInstance.CommEnvironment = CreateCommEnvironment(liveInstance);
                     explorerBuilder.FillInstanceNode(instanceNode);
                     liveInstance.IsReady = true;
                 }
@@ -733,24 +731,38 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
+        /// Recreates Server and Communicator environments of the instance, if the instance is ready.
+        /// </summary>
+        private void RefreshEnvironments(LiveInstance liveInstance)
+        {
+            if (liveInstance.IsReady)
+            {
+                liveInstance.ServerEnvironment = CreateServerEnvironment(liveInstance);
+                liveInstance.CommEnvironment = CreateCommEnvironment(liveInstance);
+            }
+        }
+
+        /// <summary>
         /// Creates a new Server environment for the specified instance.
         /// </summary>
-        private ServerEnvironment CreateServerEnvironment(Instance instance, IAgentClient agentClient)
+        private ServerEnvironment CreateServerEnvironment(LiveInstance liveInstance)
         {
-            return new ServerEnvironment(new ServerDirs(appData.AppSettings.PathOptions.ServerDir, instance), log)
+            return new ServerEnvironment(
+                new ServerDirs(appData.AppSettings.PathOptions.ServerDir, liveInstance.Instance), log)
             {
-                AgentClient = agentClient
+                AgentClient = liveInstance.AgentClient
             };
         }
 
         /// <summary>
         /// Creates a new Communicator environment for the specified instance.
         /// </summary>
-        private CommEnvironment CreateCommEnvironment(Instance instance, IAgentClient agentClient)
+        private CommEnvironment CreateCommEnvironment(LiveInstance liveInstance)
         {
-            return new CommEnvironment(new CommDirs(appData.AppSettings.PathOptions.CommDir, instance), log)
+            return new CommEnvironment(
+                new CommDirs(appData.AppSettings.PathOptions.CommDir, liveInstance.Instance), log)
             {
-                AgentClient = agentClient
+                AgentClient = liveInstance.AgentClient
             };
         }
 
@@ -771,38 +783,38 @@ namespace Scada.Admin.App.Forms
         }
 
         /// <summary>
-        /// Creates a new Agent client.
+        /// Initializes an Agent client of the specified instance.
         /// </summary>
-        private IAgentClient CreateAgentClient(Instance instance)
+        private void InitAgentClient(LiveInstance liveInstance)
         {
-            DeploymentProfile profile = GetDeploymentProfile(instance.DeploymentProfile);
+            DeploymentProfile profile = GetDeploymentProfile(liveInstance.Instance.DeploymentProfile);
 
             if (profile == null)
             {
-                return null;
+                liveInstance.AgentClient = null;
             }
             else
             {
                 ConnectionSettings connSettings = profile.ConnectionSettings.Clone();
-                connSettings.ScadaInstance = instance.Name;
-                return new AgentWcfClient(connSettings);
+                connSettings.ScadaInstance = liveInstance.Instance.Name;
+                liveInstance.AgentClient = new AgentWcfClient(connSettings);
             }
         }
 
         /// <summary>
-        /// Updates the Agent client of the instance.
+        /// Updates the Agent client of the specified instance.
         /// </summary>
         private void UpdateAgentClient(LiveInstance liveInstance)
         {
             if (liveInstance.ServerEnvironment != null || liveInstance.CommEnvironment != null)
             {
-                IAgentClient agentClient = CreateAgentClient(liveInstance.Instance);
+                InitAgentClient(liveInstance);
 
                 if (liveInstance.ServerEnvironment != null)
-                    liveInstance.ServerEnvironment.AgentClient = agentClient;
+                    liveInstance.ServerEnvironment.AgentClient = liveInstance.AgentClient;
 
                 if (liveInstance.CommEnvironment != null)
-                    liveInstance.CommEnvironment.AgentClient = agentClient;
+                    liveInstance.CommEnvironment.AgentClient = liveInstance.AgentClient;
             }
         }
 
@@ -897,6 +909,7 @@ namespace Scada.Admin.App.Forms
                     frmNewProject.ProjectTemplate, out ScadaProject newProject, out string errMsg))
                 {
                     appData.AppState.AddRecentProject(newProject.FileName);
+                    appData.AppState.RecentSelection.Reset();
                     project = newProject;
                     LoadConfigBase();
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
@@ -1681,7 +1694,8 @@ namespace Scada.Admin.App.Forms
 
                     Text = string.Format(AppPhrases.ProjectTitle, project.Name);
                     selectedNode.Text = project.Name;
-                    UpdateChildFormHints(selectedNode);
+                    CloseChildForms(selectedNode);
+                    explorerBuilder.FillInstancesNode();
                     SaveProjectSettings();
                 }
             }
@@ -2186,7 +2200,9 @@ namespace Scada.Admin.App.Forms
                         appData.ProcError(errMsg);
 
                     selectedNode.Text = instance.Name;
-                    UpdateChildFormHints(selectedNode);
+                    CloseChildForms(selectedNode);
+                    RefreshEnvironments(liveInstance);
+                    RefreshInstanceNode(selectedNode, liveInstance);
                     SaveProjectSettings();
                 }
             }

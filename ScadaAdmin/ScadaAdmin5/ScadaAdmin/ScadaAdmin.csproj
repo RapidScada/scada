@@ -534,6 +534,12 @@
       <Link>Lang\ScadaServer.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Config\ScadaAdminConfig.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Config\ScadaAdminConfig_Linux.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="lamp.ico" />
     <Content Include="Lang\ScadaAdmin.ru-RU.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Code;
@@ -294,37 +294,40 @@ namespace Scada.Admin.App.Forms.Tools
         /// </summary>
         private string UpdateFormula(string formula, int shiftNum)
         {
-            StringBuilder sbFormula = new StringBuilder();
-
-            foreach (string knownFunc in KnownFunctions)
+            if (!string.IsNullOrEmpty(formula))
             {
-                bool funcFound;
-                int searchInd = 0;
-                int formulaEndInd = formula.Length - 1;
+                StringBuilder sbFormula = new StringBuilder();
 
-                do
+                foreach (string knownFunc in KnownFunctions)
                 {
-                    funcFound = false;
-                    int funcStart = formula.IndexOf(knownFunc, searchInd);
+                    bool funcFound;
+                    int searchInd = 0;
+                    int formulaEndInd = formula.Length - 1;
 
-                    if (funcStart == 0 || funcStart > 0 && !char.IsLetter(formula, funcStart - 1))
+                    do
                     {
-                        int argStart = funcStart + knownFunc.Length;
-                        int argEnd = formula.IndexOfAny(ArgumentEnds, argStart);
+                        funcFound = false;
+                        int funcStart = formula.IndexOf(knownFunc, searchInd);
 
-                        if (argEnd >= 0)
+                        if (funcStart == 0 || funcStart > 0 && !char.IsLetter(formula, funcStart - 1))
                         {
-                            string cnlNumStr = formula.Substring(argStart, argEnd - argStart);
-                            if (int.TryParse(cnlNumStr, out int cnlNum))
+                            int argStart = funcStart + knownFunc.Length;
+                            int argEnd = formula.IndexOfAny(ArgumentEnds, argStart);
+
+                            if (argEnd >= 0)
                             {
-                                funcFound = true;
-                                searchInd = argEnd;
-                                formula = formula.Substring(0, argStart) + (cnlNum + shiftNum) + formula.Substring(argEnd);
+                                string cnlNumStr = formula.Substring(argStart, argEnd - argStart);
+                                if (int.TryParse(cnlNumStr, out int cnlNum))
+                                {
+                                    funcFound = true;
+                                    searchInd = argEnd;
+                                    formula = formula.Substring(0, argStart) + (cnlNum + shiftNum) + formula.Substring(argEnd);
+                                }
                             }
                         }
                     }
+                    while (funcFound && searchInd < formulaEndInd);
                 }
-                while (funcFound && searchInd < formulaEndInd);
             }
 
             return formula;

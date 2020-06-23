@@ -1,12 +1,30 @@
-﻿.chart-wrapper {
+﻿.chart {
   position: relative;
 }
+.chart-title {
+  width: 100%;
+}
+.chart-title table {
+  border-collapse: collapse;
+  width: 100%;
+}
+.chart-menu-holder {
+  vertical-align: top;
+}
+.chart-status {
+  text-align: right;
+}
+.chart-status span {
+  font-size: 66%;
+  opacity: 0.8;
+}
+.chart-status.error {
+  color: red;
+}
 .chart-canvas {
-  border: 1px solid gray;
   display: block;
 }
-.chart-time-mark {
-  background-color: black;
+.chart-time-marker {
   opacity: 0.25;
   position: absolute;
   width: 1px;
@@ -37,11 +55,11 @@
 }
 .chart-trend-hint td.color span {
   border: 1px solid black;
-  display: inline-block;
+  display: block;
   height: 12px;
   width: 12px;
 }
-.chart-time-mark.hidden,
+.chart-time-marker.hidden,
 .chart-trend-hint.hidden {
   display: none;
 }

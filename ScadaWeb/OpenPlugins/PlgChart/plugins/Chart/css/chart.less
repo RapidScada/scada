@@ -1,26 +1,49 @@
 ﻿@import "../../../css/common/globalvar.less";
 
-@mark-color: black;
+@status-error-fore-color: red;
 @hint-back-color: white;
 @hint-fore-color: @content-fore-color;
 @hint-border-color: #888;
 @hint-shadow-color: #aaa;
 @hint-opacity: 0.9;
-@chart-border-color: gray;
 @square-border-color: black;
 @chart-font-family: Arial, Helvetica, sans-serif;
 
-.chart-wrapper {
+.chart {
     position: relative;
 }
 
+.chart-title {
+    width: 100%;
+}
+
+.chart-title table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.chart-menu-holder {
+    vertical-align: top;
+}
+
+.chart-status {
+    text-align: right;
+}
+
+.chart-status span {
+    font-size: 66%;
+    opacity: 0.8;
+}
+
+.chart-status.error {
+    color: @status-error-fore-color;
+}
+
 .chart-canvas {
-    border: 1px solid @chart-border-color;
     display: block;
 }
 
-.chart-time-mark {
-    background-color: @mark-color;
+.chart-time-marker {
     opacity: 0.25;
     position: absolute;
     width: 1px;
@@ -56,12 +79,12 @@
 
 .chart-trend-hint td.color span {
     border: 1px solid @square-border-color;
-    display: inline-block;
+    display: block;
     height: 12px;
     width: 12px;
 }
 
-.chart-time-mark.hidden,
+.chart-time-marker.hidden,
 .chart-trend-hint.hidden {
     display: none;
 }

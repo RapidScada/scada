@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2018
+ * Modified : 2020
  * 
  * Description
  * Server module for real time data export from Rapid SCADA to DB.
@@ -37,16 +37,17 @@ using Utils;
 namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
-    /// Exporter for one export destination
-    /// <para>Экспортёр для одного назначения экспорта</para>
+    /// Exporter for one export destination.
+    /// <para>Экспортёр для одного назначения экспорта.</para>
     /// </summary>
     internal class Exporter
     {
-        private const int MaxQueueSize = 100; // максимальный размер очередей экспортируемых данных
         private const int BundleSize = 10;    // количество объектов очереди, экспортируемых за один проход цикла
         private const int ErrorDelay = 1000;  // задержка в случае ошибки экспорта, мс
 
-        private Log log; // журнал работы модуля
+        private readonly Log log;             // журнал работы модуля
+        private readonly int maxQueueSize;    // максимальный размер очередей экспортируемых данных
+
         private Queue<SrezTableLight.Srez> curSrezQueue; // очередь экспортируемых текущих срезов
         private Queue<SrezTableLight.Srez> arcSrezQueue; // очередь экспортируемых архивных срезов
         private Queue<EventTableLight.Event> evQueue;    // очередь экспортируемых событий
@@ -80,10 +81,12 @@ namespace Scada.Server.Modules.DBExport
             if (expDest == null)
                 throw new ArgumentNullException("expDest");
 
-            this.log = log;
-            curSrezQueue = new Queue<SrezTableLight.Srez>(MaxQueueSize);
-            arcSrezQueue = new Queue<SrezTableLight.Srez>(MaxQueueSize);
-            evQueue = new Queue<EventTableLight.Event>(MaxQueueSize);
+            this.log = log ?? throw new ArgumentNullException("log");
+            maxQueueSize = expDest.ExportParams.MaxQueueSize;
+
+            curSrezQueue = new Queue<SrezTableLight.Srez>(maxQueueSize);
+            arcSrezQueue = new Queue<SrezTableLight.Srez>(maxQueueSize);
+            evQueue = new Queue<EventTableLight.Event>(maxQueueSize);
             thread = null;
             terminated = false;
             running = false;
@@ -493,7 +496,7 @@ namespace Scada.Server.Modules.DBExport
             {
                 lock (curSrezQueue)
                 {
-                    if (curSrezQueue.Count < MaxQueueSize)
+                    if (curSrezQueue.Count < maxQueueSize)
                     {
                         curSrezQueue.Enqueue(curSrez);
                     }
@@ -503,7 +506,7 @@ namespace Scada.Server.Modules.DBExport
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно добавить в очередь текущие данные. Максимальный размер очереди {0} превышен" :
                             "Unable to enqueue current data. The maximum size of the queue {0} is exceeded",
-                            MaxQueueSize));
+                            maxQueueSize));
                     }
                 }
             }
@@ -518,7 +521,7 @@ namespace Scada.Server.Modules.DBExport
             {
                 lock (arcSrezQueue)
                 {
-                    if (arcSrezQueue.Count < MaxQueueSize)
+                    if (arcSrezQueue.Count < maxQueueSize)
                     {
                         arcSrezQueue.Enqueue(arcSrez);
                     }
@@ -528,7 +531,7 @@ namespace Scada.Server.Modules.DBExport
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно добавить в очередь архивные данные. Максимальный размер очереди {0} превышен" :
                             "Unable to enqueue archive data. The maximum size of the queue {0} is exceeded",
-                            MaxQueueSize));
+                            maxQueueSize));
                     }
                 }
             }
@@ -543,7 +546,7 @@ namespace Scada.Server.Modules.DBExport
             {
                 lock (evQueue)
                 {
-                    if (evQueue.Count < MaxQueueSize)
+                    if (evQueue.Count < maxQueueSize)
                     {
                         evQueue.Enqueue(ev);
                     }
@@ -553,7 +556,7 @@ namespace Scada.Server.Modules.DBExport
                         log.WriteAction(string.Format(Localization.UseRussian ?
                             "Невозможно добавить в очередь событие. Максимальный размер очереди {0} превышен" :
                             "Unable to enqueue an event. The maximum size of the queue {0} is exceeded",
-                            MaxQueueSize));
+                            maxQueueSize));
                     }
                 }
             }

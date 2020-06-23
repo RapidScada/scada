@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Data.Tables;
 using System;
+using System.Collections.Generic;
 
 namespace Scada.Server.Modules
 {
@@ -35,6 +36,11 @@ namespace Scada.Server.Modules
     public interface IServerData
     {
         /// <summary>
+        /// Gets active channel numbers.
+        /// </summary>
+        int[] GetCnlNums();
+
+        /// <summary>
         /// Получить текущий срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
@@ -44,7 +50,12 @@ namespace Scada.Server.Modules
         /// Получить срез, содержащий данные заданных каналов
         /// </summary>
         /// <remarks>Номера каналов должны быть упорядочены по возрастанию</remarks>
-        SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotTypes snapshotType, int[] cnlNums);
+        SrezTableLight.Srez GetSnapshot(DateTime dateTime, SnapshotType snapshotType, int[] cnlNums);
+
+        /// <summary>
+        /// Gets timestamps of snapshots available on the specified date.
+        /// </summary>
+        DateTime[] GetAvailableSnapshots(DateTime date, SnapshotType snapshotType);
 
         /// <summary>
         /// Обработать (записать) новые текущие данные

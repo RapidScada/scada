@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Admin.App.Forms.Tables;
@@ -372,6 +372,27 @@ namespace Scada.Admin.App.Code
         {
             Project.Interface interfaceObj = (Project.Interface)((TreeNodeTag)interfaceNode.Tag).RelatedObject;
             FillFileNode(interfaceNode, interfaceObj.InterfaceDir);
+        }
+
+        /// <summary>
+        /// Fills the instances node without creating child nodes.
+        /// </summary>
+        public void FillInstancesNode()
+        {
+            try
+            {
+                treeView.BeginUpdate();
+                InstancesNode.Nodes.Clear();
+
+                foreach (Instance instance in project.Instances)
+                {
+                    InstancesNode.Nodes.Add(CreateInstanceNode(instance));
+                }
+            }
+            finally
+            {
+                treeView.EndUpdate();
+            }
         }
 
         /// <summary>

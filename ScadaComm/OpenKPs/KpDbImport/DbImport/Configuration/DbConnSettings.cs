@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2020
  */
 
 using System;
@@ -84,7 +84,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             Server = xmlNode.GetChildAsString("Server");
             Database = xmlNode.GetChildAsString("Database");
             User = xmlNode.GetChildAsString("User");
-            Password = xmlNode.GetChildAsString("Password");
+            Password = ScadaUtils.Decrypt(xmlNode.GetChildAsString("Password"));
             ConnectionString = xmlNode.GetChildAsString("ConnectionString");
         }
 
@@ -99,7 +99,7 @@ namespace Scada.Comm.Devices.DbImport.Configuration
             xmlElem.AppendElem("Server", Server);
             xmlElem.AppendElem("Database", Database);
             xmlElem.AppendElem("User", User);
-            xmlElem.AppendElem("Password", Password);
+            xmlElem.AppendElem("Password", ScadaUtils.Encrypt(Password));
             xmlElem.AppendElem("ConnectionString", ConnectionString);
         }
     }

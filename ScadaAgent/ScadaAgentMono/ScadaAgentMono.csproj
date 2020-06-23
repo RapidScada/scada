@@ -49,10 +49,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Script\scadaagent" />
-    <None Include="Script\svc_restart.sh" />
-    <None Include="Script\svc_start.sh" />
-    <None Include="Script\svc_stop.sh" />
+    <None Include="Script\scadaagent">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_restart.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_start.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_stop.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScadaAgentCommon\ScadaAgentCommon.csproj">

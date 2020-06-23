@@ -107,6 +107,10 @@
   <Dictionary key="Scada.Web.WFrmView.Js">
     <Phrase key="ExternalLinkTitle">External Link - Rapid SCADA</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins">
+    <Phrase key="LoadPluginConfigError">Error loading {0} plugin configuration: {1}</Phrase>
+    <Phrase key="SavePluginConfigError">Error saving {0} plugin configuration: {1}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Reports</Phrase>
     <Phrase key="AdminMenuItem">Administration</Phrase>

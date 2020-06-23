@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -85,6 +85,36 @@ namespace Scada.Scheme
         /// <remarks>Необходимо для контроля загрузки библиотек и компонентов.</remarks>
         public List<string> LoadErrors { get; protected set; }
 
+
+        /// <summary>
+        /// Adds the input channels to the view.
+        /// </summary>
+        private void AddInCnlNums(List<int> inCnlNums, int offset)
+        {
+            if (inCnlNums != null)
+            {
+                foreach (int cnlNum in inCnlNums)
+                {
+                    if (cnlNum > 0)
+                        AddCnlNum(cnlNum + offset);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Adds the ouput channels to the view.
+        /// </summary>
+        private void AddCtrlCnlNums(List<int> ctrlCnlNums, int offset)
+        {
+            if (ctrlCnlNums != null)
+            {
+                foreach (int ctrlCnlNum in ctrlCnlNums)
+                {
+                    if (ctrlCnlNum > 0)
+                        AddCtrlCnlNum(ctrlCnlNum + offset);
+                }
+            }
+        }
 
         /// <summary>
         /// Sets the view arguments.
@@ -153,16 +183,10 @@ namespace Scada.Scheme
             if (rootElem.SelectSingleNode("Scheme") is XmlNode schemeNode)
             {
                 SchemeDoc.LoadFromXml(schemeNode);
-
                 // установка заголовка представления
                 Title = SchemeDoc.Title;
-
                 // добавление входных каналов представления
-                foreach (int cnlNum in SchemeDoc.CnlFilter)
-                {
-                    if (cnlNum > 0)
-                        AddCnlNum(cnlNum + inCnlOffset);
-                }
+                AddInCnlNums(SchemeDoc.CnlFilter, inCnlOffset);
             }
 
             // load scheme components
@@ -210,6 +234,9 @@ namespace Scada.Scheme
                         AddCnlNum(dynamicComponent.InCnlNum);
                         AddCtrlCnlNum(dynamicComponent.CtrlCnlNum);
                     }
+
+                    AddInCnlNums(component.GetInCnlNums(), inCnlOffset);
+                    AddCtrlCnlNums(component.GetCtrlCnlNums(), ctrlCnlOffset);
 
                     // определение макс. идентификатора компонентов
                     if (component.ID > maxComponentID)

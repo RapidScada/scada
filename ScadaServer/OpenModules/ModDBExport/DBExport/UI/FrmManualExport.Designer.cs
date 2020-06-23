@@ -96,11 +96,6 @@
             0,
             0,
             0});
-            this.numCurDataCtrlCnlNum.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numCurDataCtrlCnlNum.Name = "numCurDataCtrlCnlNum";
             this.numCurDataCtrlCnlNum.Size = new System.Drawing.Size(70, 20);
             this.numCurDataCtrlCnlNum.TabIndex = 1;
@@ -109,6 +104,7 @@
             0,
             0,
             0});
+            this.numCurDataCtrlCnlNum.ValueChanged += new System.EventHandler(this.numCurDataCtrlCnlNum_ValueChanged);
             // 
             // lblCurDataCtrlCnlNum
             // 
@@ -181,11 +177,6 @@
             0,
             0,
             0});
-            this.numArcDataCtrlCnlNum.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numArcDataCtrlCnlNum.Name = "numArcDataCtrlCnlNum";
             this.numArcDataCtrlCnlNum.Size = new System.Drawing.Size(70, 20);
             this.numArcDataCtrlCnlNum.TabIndex = 1;
@@ -194,6 +185,7 @@
             0,
             0,
             0});
+            this.numArcDataCtrlCnlNum.ValueChanged += new System.EventHandler(this.numArcDataCtrlCnlNum_ValueChanged);
             // 
             // lblArcDataCtrlCnlNum
             // 
@@ -255,11 +247,6 @@
             0,
             0,
             0});
-            this.numEventsCtrlCnlNum.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
             this.numEventsCtrlCnlNum.Name = "numEventsCtrlCnlNum";
             this.numEventsCtrlCnlNum.Size = new System.Drawing.Size(70, 20);
             this.numEventsCtrlCnlNum.TabIndex = 1;
@@ -268,6 +255,7 @@
             0,
             0,
             0});
+            this.numEventsCtrlCnlNum.ValueChanged += new System.EventHandler(this.numEventsCtrlCnlNum_ValueChanged);
             // 
             // lblEventsCtrlCnlNum
             // 

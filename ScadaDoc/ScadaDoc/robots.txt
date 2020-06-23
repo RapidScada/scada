@@ -1,4 +1,4 @@
 User-agent: *
 Disallow: 
 Disallow: /bin/
-Sitemap: http://doc.rapidscada.net/sitemap.xml
+Sitemap: https://rapidscada.net/doc/Sitemap.ashx

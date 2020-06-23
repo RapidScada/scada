@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -66,18 +66,19 @@ namespace Scada.Web
             /// Конструктор.
             /// </summary>
             public ViewItem()
-                : this(0, "", 0)
+                : this(0, "", 0, false)
             {
             }
             /// <summary>
             /// Конструктор.
             /// </summary>
-            public ViewItem(int viewID, string text, int alarmCnlNum)
+            public ViewItem(int viewID, string text, int alarmCnlNum, bool hidden)
             {
                 ViewID = viewID;
                 Text = text;
                 PathPart = "";
                 AlarmCnlNum = alarmCnlNum;
+                Hidden = hidden;
                 Subitems = new List<ViewItem>();
             }
 
@@ -98,6 +99,10 @@ namespace Scada.Web
             /// Получить или установить номер входного канала, информирующего о тревожном состоянии представления.
             /// </summary>
             public int AlarmCnlNum { get; set; }
+            /// <summary>
+            /// Получить или установить признак, что элемент скрыт.
+            /// </summary>
+            public bool Hidden { get; set; }
             /// <summary>
             /// Получить дочерние элементы.
             /// </summary>
@@ -171,11 +176,11 @@ namespace Scada.Web
         /// Рекурсивно добавить элемент настроек представлений.
         /// </summary>
         /// <remarks>Метод используется только при загрузке из базы конфигурации.</remarks>
-        protected void AppendViewItem(int viewID, string text, 
+        protected void AppendViewItem(int viewID, string text, bool hidden,
             string[] pathParts, int pathPartInd, List<ViewItem> viewItems)
         {
             string pathPart = pathParts[pathPartInd];
-            ViewItem newViewItem = new ViewItem { PathPart = pathPart };
+            ViewItem newViewItem = new ViewItem { PathPart = pathPart, Hidden = hidden };
             int viewItemInd = viewItems.BinarySearch(newViewItem, ViewItem.PathComp);
 
             if (pathPartInd < pathParts.Length - 1) // не последние части пути
@@ -183,6 +188,8 @@ namespace Scada.Web
                 if (viewItemInd >= 0)
                 {
                     newViewItem = viewItems[viewItemInd];
+                    if (!hidden)
+                        newViewItem.Hidden = false;
                 }
                 else
                 {
@@ -190,7 +197,7 @@ namespace Scada.Web
                     viewItems.Insert(~viewItemInd, newViewItem);
                 }
 
-                AppendViewItem(viewID, text, pathParts, pathPartInd + 1, newViewItem.Subitems);
+                AppendViewItem(viewID, text, hidden, pathParts, pathPartInd + 1, newViewItem.Subitems);
             }
             else // последняя часть пути
             {
@@ -292,7 +299,7 @@ namespace Scada.Web
 
                 foreach (UiObjProps viewProps in viewPropsList)
                 {
-                    if (!(viewProps.Hidden || viewProps.IsEmpty))
+                    if (!viewProps.IsEmpty)
                     {
                         string[] pathParts;
                         string itemText;
@@ -322,7 +329,7 @@ namespace Scada.Web
                         }
 
                         int viewID = string.IsNullOrEmpty(viewProps.TypeCode) ? 0 : viewProps.UiObjID;
-                        AppendViewItem(viewID, itemText, pathParts, 0, ViewItems);
+                        AppendViewItem(viewID, itemText, viewProps.Hidden, pathParts, 0, ViewItems);
                     }
                 }
 

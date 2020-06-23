@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Scheme.Model;
@@ -160,7 +160,6 @@ namespace Scada.Web.Plugins.SchBasicComp
                 }
             }
 
-            ToolTip = xmlNode.GetChildAsString("ToolTip");
             InCnlNum = xmlNode.GetChildAsInt("InCnlNum");
             CtrlCnlNum = xmlNode.GetChildAsInt("CtrlCnlNum");
         }
@@ -182,7 +181,6 @@ namespace Scada.Web.Plugins.SchBasicComp
                 condition.SaveToXml(conditionElem);
             }
 
-            xmlElem.AppendElem("ToolTip", ToolTip);
             xmlElem.AppendElem("InCnlNum", InCnlNum);
             xmlElem.AppendElem("CtrlCnlNum", CtrlCnlNum);
         }

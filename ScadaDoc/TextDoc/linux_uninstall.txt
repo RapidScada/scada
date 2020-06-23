@@ -1,0 +1,30 @@
+Uninstallation of Rapid SCADA on Linux
+--------------------------------------
+
+1. Execute the script to uninstall deamons:
+
+   sudo /opt/scada/svc_uninstall.sh
+
+2. In case of using Apache web server:
+
+   Remove a link to the web application files:
+   sudo rm /var/www/html/scada
+
+   Uninstall Apache web server and its modules (optional):
+   sudo apt-get --purge remove libapache2-mod-mono
+   sudo apt-get --purge remove mono-apache-server4
+   sudo apt-get --purge remove apache2
+
+3. Remove previously added lines from /etc/fstab
+
+4. Delete the folder 
+   /opt/scada
+
+   and the files 
+   /etc/init.d/scadaagent
+   /etc/init.d/scadacomm
+   /etc/init.d/scadaserver
+
+5. Uninstall Mono .NET Framework (optional):
+
+   sudo apt-get --purge remove mono-complete

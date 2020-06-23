@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2006
- * Modified : 2019
+ * Modified : 2020
  */
 
 #undef DETAILED_LOG // enable output the detailed information to the log
@@ -1573,6 +1573,24 @@ namespace Scada.Client
         public bool SendRequestCommand(int userID, int ctrlCnl, int kpNum, out bool result)
         {
             return SendCommand(userID, ctrlCnl, double.NaN, null, kpNum, out result);
+        }
+
+        /// <summary>
+        /// Sends the telecontrol command.
+        /// </summary>
+        public bool SendCommand(int userID, int ctrlCnl, Command cmd, out bool result)
+        {
+            switch (cmd.CmdTypeID)
+            {
+                case BaseValues.CmdTypes.Standard:
+                    return SendCommand(userID, ctrlCnl, cmd.CmdVal, null, 0, out result);
+                case BaseValues.CmdTypes.Binary:
+                    return SendCommand(userID, ctrlCnl, double.NaN, cmd.CmdData, 0, out result);
+                case BaseValues.CmdTypes.Request:
+                    return SendCommand(userID, ctrlCnl, double.NaN, null, cmd.KPNum, out result);
+                default:
+                    throw new InvalidOperationException("Unknown command type.");
+            }
         }
 
         /// <summary>

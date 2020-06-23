@@ -107,6 +107,10 @@
   <Dictionary key="Scada.Web.WFrmView.Js">
     <Phrase key="ExternalLinkTitle">Внешняя ссылка - Rapid SCADA</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Plugins">
+    <Phrase key="LoadPluginConfigError">Ошибка при загрузке конфигурации плагина {0}: {1}</Phrase>
+    <Phrase key="SavePluginConfigError">Ошибка при сохранении конфигурации плагина {0}: {1}</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">Отчёты</Phrase>
     <Phrase key="AdminMenuItem">Администрирование</Phrase>

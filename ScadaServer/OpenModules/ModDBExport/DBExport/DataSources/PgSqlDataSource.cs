@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2020
  */
 
 using Npgsql;
@@ -47,7 +47,7 @@ namespace Scada.Server.Modules.DBExport
         public PgSqlDataSource()
             : base()
         {
-            DBType = DBTypes.PostgreSQL;
+            DBType = DBType.PostgreSQL;
         }
 
 
@@ -106,13 +106,11 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Построить строку соединения с БД на основе остальных свойств соединения
         /// </summary>
-        public override string BuildConnectionString()
+        public override string BuildConnectionString(bool hidePassword)
         {
-            string host;
-            int port;
-            ExtractHostAndPort(Server, DefaultPort, out host, out port);
+            ExtractHostAndPort(Server, DefaultPort, out string host, out int port);
             return string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4}", 
-                host, port, Database, User, Password);
+                host, port, Database, User, hidePassword ? HiddenPassword : Password);
         }
     }
 }

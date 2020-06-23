@@ -53,6 +53,9 @@
             this.ctrlExportArcDataQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
             this.pageExportEventQuery = new System.Windows.Forms.TabPage();
             this.ctrlExportEventQuery = new Scada.Server.Modules.DBExport.CtrlExportQuery();
+            this.pageMisc = new System.Windows.Forms.TabPage();
+            this.numMaxQueueSize = new System.Windows.Forms.NumericUpDown();
+            this.lblMaxQueueSize = new System.Windows.Forms.Label();
             this.toolStrip = new System.Windows.Forms.ToolStrip();
             this.ddbAddDataSource = new System.Windows.Forms.ToolStripDropDownButton();
             this.miAddSqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,14 +64,16 @@
             this.miAddMySqlDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.miAddOleDbDataSource = new System.Windows.Forms.ToolStripMenuItem();
             this.btnDelDataSource = new System.Windows.Forms.ToolStripButton();
-            this.lblInstruction = new System.Windows.Forms.Label();
             this.sep1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnManualExport = new System.Windows.Forms.ToolStripButton();
+            this.lblInstruction = new System.Windows.Forms.Label();
             this.tabControl.SuspendLayout();
             this.pageConnection.SuspendLayout();
             this.pageExportCurDataQuery.SuspendLayout();
             this.pageExportArcDataQuery.SuspendLayout();
             this.pageExportEventQuery.SuspendLayout();
+            this.pageMisc.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMaxQueueSize)).BeginInit();
             this.toolStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -131,6 +136,7 @@
             this.tabControl.Controls.Add(this.pageExportCurDataQuery);
             this.tabControl.Controls.Add(this.pageExportArcDataQuery);
             this.tabControl.Controls.Add(this.pageExportEventQuery);
+            this.tabControl.Controls.Add(this.pageMisc);
             this.tabControl.Location = new System.Drawing.Point(200, 28);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
@@ -307,6 +313,50 @@
             this.ctrlExportEventQuery.TabIndex = 2;
             this.ctrlExportEventQuery.PropChanged += new System.EventHandler(this.ctrlExportEventQuery_PropChanged);
             // 
+            // pageMisc
+            // 
+            this.pageMisc.Controls.Add(this.numMaxQueueSize);
+            this.pageMisc.Controls.Add(this.lblMaxQueueSize);
+            this.pageMisc.Location = new System.Drawing.Point(4, 22);
+            this.pageMisc.Name = "pageMisc";
+            this.pageMisc.Padding = new System.Windows.Forms.Padding(3);
+            this.pageMisc.Size = new System.Drawing.Size(477, 367);
+            this.pageMisc.TabIndex = 4;
+            this.pageMisc.Text = "Разное";
+            this.pageMisc.UseVisualStyleBackColor = true;
+            // 
+            // numMaxQueueSize
+            // 
+            this.numMaxQueueSize.Location = new System.Drawing.Point(6, 19);
+            this.numMaxQueueSize.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this.numMaxQueueSize.Minimum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numMaxQueueSize.Name = "numMaxQueueSize";
+            this.numMaxQueueSize.Size = new System.Drawing.Size(120, 20);
+            this.numMaxQueueSize.TabIndex = 1;
+            this.numMaxQueueSize.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.numMaxQueueSize.ValueChanged += new System.EventHandler(this.numMaxQueueSize_ValueChanged);
+            // 
+            // lblMaxQueueSize
+            // 
+            this.lblMaxQueueSize.AutoSize = true;
+            this.lblMaxQueueSize.Location = new System.Drawing.Point(3, 3);
+            this.lblMaxQueueSize.Name = "lblMaxQueueSize";
+            this.lblMaxQueueSize.Size = new System.Drawing.Size(122, 13);
+            this.lblMaxQueueSize.TabIndex = 0;
+            this.lblMaxQueueSize.Text = "Макс. размер очереди";
+            // 
             // toolStrip
             // 
             this.toolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -385,17 +435,6 @@
             this.btnDelDataSource.ToolTipText = "Удалить источник данных";
             this.btnDelDataSource.Click += new System.EventHandler(this.btnDelDataSource_Click);
             // 
-            // lblInstruction
-            // 
-            this.lblInstruction.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.lblInstruction.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblInstruction.Location = new System.Drawing.Point(200, 250);
-            this.lblInstruction.Name = "lblInstruction";
-            this.lblInstruction.Size = new System.Drawing.Size(485, 23);
-            this.lblInstruction.TabIndex = 2;
-            this.lblInstruction.Text = "Добавьте источники данных";
-            this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
             // sep1
             // 
             this.sep1.Name = "sep1";
@@ -410,6 +449,17 @@
             this.btnManualExport.Size = new System.Drawing.Size(23, 22);
             this.btnManualExport.ToolTipText = "Экспорт в ручном режиме";
             this.btnManualExport.Click += new System.EventHandler(this.btnManualExport_Click);
+            // 
+            // lblInstruction
+            // 
+            this.lblInstruction.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lblInstruction.ForeColor = System.Drawing.SystemColors.GrayText;
+            this.lblInstruction.Location = new System.Drawing.Point(200, 250);
+            this.lblInstruction.Name = "lblInstruction";
+            this.lblInstruction.Size = new System.Drawing.Size(485, 23);
+            this.lblInstruction.TabIndex = 2;
+            this.lblInstruction.Text = "Добавьте источники данных";
+            this.lblInstruction.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // FrmDBExportConfig
             // 
@@ -439,6 +489,9 @@
             this.pageExportCurDataQuery.ResumeLayout(false);
             this.pageExportArcDataQuery.ResumeLayout(false);
             this.pageExportEventQuery.ResumeLayout(false);
+            this.pageMisc.ResumeLayout(false);
+            this.pageMisc.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMaxQueueSize)).EndInit();
             this.toolStrip.ResumeLayout(false);
             this.toolStrip.PerformLayout();
             this.ResumeLayout(false);
@@ -482,5 +535,8 @@
         private System.Windows.Forms.ImageList ilTree;
         private System.Windows.Forms.ToolStripSeparator sep1;
         private System.Windows.Forms.ToolStripButton btnManualExport;
+        private System.Windows.Forms.TabPage pageMisc;
+        private System.Windows.Forms.Label lblMaxQueueSize;
+        private System.Windows.Forms.NumericUpDown numMaxQueueSize;
     }
 }

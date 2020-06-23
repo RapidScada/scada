@@ -24,6 +24,7 @@
  */
 
 using Scada.Admin.Project;
+using Scada.Agent.Connector;
 using Scada.Comm.Shell.Code;
 using Scada.Server.Shell.Code;
 using System;
@@ -42,6 +43,7 @@ namespace Scada.Admin.App.Code
         public LiveInstance(Instance instance)
         {
             Instance = instance ?? throw new ArgumentNullException("instance");
+            AgentClient = null;
             ServerEnvironment = null;
             CommEnvironment = null;
             IsReady = false;
@@ -52,7 +54,12 @@ namespace Scada.Admin.App.Code
         /// Gets the system instance.
         /// </summary>
         public Instance Instance { get; private set; }
-        
+
+        /// <summary>
+        /// Gets or sets the client of the Agent service.
+        /// </summary>
+        public IAgentClient AgentClient { get; set; }
+
         /// <summary>
         /// Gets or sets the Server environment.
         /// </summary>
@@ -64,7 +71,7 @@ namespace Scada.Admin.App.Code
         public CommEnvironment CommEnvironment { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether this object is not ready to use.
+        /// Gets or sets a value indicating whether this object is ready to use.
         /// </summary>
         public bool IsReady { get; set; }
     }

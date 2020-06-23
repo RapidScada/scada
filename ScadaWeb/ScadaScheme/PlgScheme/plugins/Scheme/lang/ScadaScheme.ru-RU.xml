@@ -101,6 +101,7 @@
     <Phrase key="lblExample">Например: 1 - 5, 10</Phrase>
     <Phrase key="btnOK">OK</Phrase>
     <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="RangeNotValid">Некорректный диапазон</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Scheme.Model.PropertyGrid.ImageListItem">
     <Phrase key="Name.DisplayName">Наименование</Phrase>

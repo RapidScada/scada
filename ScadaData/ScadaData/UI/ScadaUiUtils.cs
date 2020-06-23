@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -190,8 +190,7 @@ namespace Scada.UI
         /// </summary>
         public static object GetSelectedItem(this ComboBox comboBox, Dictionary<int, object> itemIndexToValue)
         {
-            object val;
-            if (itemIndexToValue.TryGetValue(comboBox.SelectedIndex, out val))
+            if (itemIndexToValue.TryGetValue(comboBox.SelectedIndex, out object val))
                 return val;
             else
                 throw new InvalidOperationException("Unable to find combo box selected index in the dictionary.");
@@ -211,8 +210,7 @@ namespace Scada.UI
         /// </summary>
         public static T ParseText<T>(this Control control) where T : struct
         {
-            T val;
-            if (Enum.TryParse<T>(control.Text, true, out val))
+            if (Enum.TryParse<T>(control.Text, true, out T val))
                 return val;
             else
                 throw new FormatException("Unable to parse text of the control.");
@@ -417,10 +415,9 @@ namespace Scada.UI
                             if (!string.IsNullOrEmpty(pos))
                             {
                                 string[] parts = pos.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-                                int x, y, w, h;
 
-                                if (parts.Length >= 4 && int.TryParse(parts[0], out x) && int.TryParse(parts[1], out y) &&
-                                    int.TryParse(parts[2], out w) && int.TryParse(parts[3], out h))
+                                if (parts.Length >= 4 && int.TryParse(parts[0], out int x) && int.TryParse(parts[1], out int y) &&
+                                    int.TryParse(parts[2], out int w) && int.TryParse(parts[3], out int h))
                                 {
                                     // проверка положения и размеров
                                     if (x < 0) 
@@ -476,17 +473,17 @@ namespace Scada.UI
         /// </summary>
         public static string GetKeyGenUrl(string prod, bool trial, bool? useRussian = null)
         {
-            if (useRussian.HasValue ? useRussian.Value : Localization.UseRussian)
+            if (useRussian ?? Localization.UseRussian)
             {
                 return trial ?
-                    "http://trial.rapidscada.net/?prod=" + prod + "&lang=ru" :
-                    "http://rapidscada.ru/download-all-files/purchase-module/";
+                    "https://rapidscada.net/trial/?prod=" + prod + "&lang=ru" :
+                    "https://rapidscada.ru/download-all-files/purchase-module/";
             }
             else
             {
                 return trial ?
-                    "http://trial.rapidscada.net/?prod=" + prod :
-                    "http://rapidscada.org/download-all-files/purchase-module/";
+                    "https://rapidscada.net/trial/?prod=" + prod :
+                    "https://rapidscada.org/download-all-files/purchase-module/";
             }
         }
     }

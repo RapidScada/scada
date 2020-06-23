@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -42,7 +42,7 @@ scada.scheme.Renderer.prototype.setBackColor = function (jqObj, backColor, opt_r
     if (backColor) {
         if (backColor === this.STATUS_COLOR) {
             jqObj.css("background-color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
-        } else {
+        } else if (typeof opt_statusColor === "undefined") {
             jqObj.css("background-color", backColor);
         }
     } else if (opt_removeIfEmpty) {
@@ -55,7 +55,7 @@ scada.scheme.Renderer.prototype.setBorderColor = function (jqObj, borderColor, o
     if (borderColor) {
         if (borderColor === this.STATUS_COLOR) {
             jqObj.css("border-color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
-        } else {
+        } else if (typeof opt_statusColor === "undefined") {
             jqObj.css("border-color", borderColor);
         }
     } else if (opt_removeIfEmpty) {
@@ -83,7 +83,7 @@ scada.scheme.Renderer.prototype.setForeColor = function (jqObj, foreColor, opt_r
     if (foreColor) {
         if (foreColor === this.STATUS_COLOR) {
             jqObj.css("color", opt_statusColor ? opt_statusColor : this.STATUS_DISPLAY_COLOR);
-        } else {
+        } else if (typeof opt_statusColor === "undefined") {
             jqObj.css("color", foreColor);
         }
     } else if (opt_removeIfEmpty) {

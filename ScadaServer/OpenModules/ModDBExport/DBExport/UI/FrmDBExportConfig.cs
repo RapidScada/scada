@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -33,8 +33,8 @@ using System.Windows.Forms;
 namespace Scada.Server.Modules.DBExport
 {
     /// <summary>
-    /// Module configuration form
-    /// <para>Форма конфигурации КП</para>
+    /// Module configuration form.
+    /// <para>Форма конфигурации КП.</para>
     /// </summary>
     internal partial class FrmDBExportConfig : Form
     {
@@ -106,19 +106,19 @@ namespace Scada.Server.Modules.DBExport
             string imageKey;
             switch (expDest.DataSource.DBType)
             {
-                case DBTypes.MSSQL:
+                case DBType.MSSQL:
                     imageKey = "mssql.png";
                     break;
-                case DBTypes.Oracle:
+                case DBType.Oracle:
                     imageKey = "oracle.png";
                     break;
-                case DBTypes.PostgreSQL:
+                case DBType.PostgreSQL:
                     imageKey = "postgresql.png";
                     break;
-                case DBTypes.MySQL:
+                case DBType.MySQL:
                     imageKey = "mysql.png";
                     break;
-                case DBTypes.OLEDB:
+                case DBType.OLEDB:
                     imageKey = "oledb.png";
                     break;
                 default:
@@ -172,25 +172,20 @@ namespace Scada.Server.Modules.DBExport
                 txtDatabase.Text = dataSource.Database;
                 txtUser.Text = dataSource.User;
                 txtPassword.Text = dataSource.Password;
-                txtConnectionString.Text = dataSource.ConnectionString;
 
-                // установка фона элементов управления, соответствующих параметрам соединения с БД
+                // вывод строки соединения
                 string bldConnStr = dataSource.BuildConnectionString();
-                KnownColor connParamsColor;
-                KnownColor connStrColor;
 
                 if (!string.IsNullOrEmpty(bldConnStr) && bldConnStr == dataSource.ConnectionString)
                 {
-                    connParamsColor = KnownColor.Window;
-                    connStrColor = KnownColor.Control;
+                    txtConnectionString.Text = dataSource.BuildConnectionString(true);
+                    SetConnControlsBackColor(KnownColor.Window, KnownColor.Control);
                 }
                 else
                 {
-                    connParamsColor = KnownColor.Control;
-                    connStrColor = KnownColor.Window;
+                    txtConnectionString.Text = dataSource.ConnectionString;
+                    SetConnControlsBackColor(KnownColor.Control, KnownColor.Window);
                 }
-
-                SetConnControlsBackColor(connParamsColor, connStrColor);
 
                 // вывод параметров экспорта
                 Config.ExportParams expParams = selExpDest.ExportParams;
@@ -200,6 +195,10 @@ namespace Scada.Server.Modules.DBExport
                 ctrlExportArcDataQuery.Query = expParams.ExportArcDataQuery;
                 ctrlExportEventQuery.Export = expParams.ExportEvents;
                 ctrlExportEventQuery.Query = expParams.ExportEventQuery;
+
+                // вывод разных параметров
+                numMaxQueueSize.SetValue(expParams.MaxQueueSize);
+
                 changing = false;
             }
         }
@@ -221,7 +220,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (selExpDest != null)
             {
-                string bldConnStr = selExpDest.DataSource.BuildConnectionString();
+                string bldConnStr = selExpDest.DataSource.BuildConnectionString(true);
                 if (!string.IsNullOrEmpty(bldConnStr))
                 {
                     selExpDest.DataSource.ConnectionString = bldConnStr;
@@ -502,6 +501,16 @@ namespace Scada.Server.Modules.DBExport
             {
                 selExpDest.ExportParams.ExportEvents = ctrlExportEventQuery.Export;
                 selExpDest.ExportParams.ExportEventQuery = ctrlExportEventQuery.Query;
+                Modified = true;
+            }
+        }
+
+
+        private void numMaxQueueSize_ValueChanged(object sender, EventArgs e)
+        {
+            if (!changing && selExpDest != null)
+            {
+                selExpDest.ExportParams.MaxQueueSize = Convert.ToInt32(numMaxQueueSize.Value);
                 Modified = true;
             }
         }

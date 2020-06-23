@@ -41,7 +41,7 @@ namespace Scada
         /// <summary>
         /// Версия данной библиотеки
         /// </summary>
-        internal const string LibVersion = "5.1.3.0";
+        internal const string LibVersion = "5.1.4.0";
         /// <summary>
         /// Формат вещественных чисел с разделителем точкой
         /// </summary>

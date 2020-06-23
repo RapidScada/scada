@@ -26,6 +26,8 @@
 using Scada.Scheme.Model.DataTypes;
 using Scada.Scheme.Model.PropertyGrid;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Drawing.Design;
 using System.Text;
 using System.Web.Script.Serialization;
@@ -113,6 +115,7 @@ namespace Scada.Scheme.Model
         #region Attributes
         [DisplayName("Tooltip"), Category(Categories.Behavior)]
         [Description("The pop-up hint that displays when user rests the pointer on the component.")]
+        [CM.Editor(typeof(MultilineStringEditor), typeof(UITypeEditor))]
         #endregion
         public string ToolTip { get; set; }
 
@@ -215,6 +218,22 @@ namespace Scada.Scheme.Model
                 .Append(string.IsNullOrEmpty(name) ? "" : " - ")
                 .Append(typeName)
                 .ToString();
+        }
+
+        /// <summary>
+        /// Gets the input channel numbers associated with the component.
+        /// </summary>
+        public virtual List<int> GetInCnlNums()
+        {
+            return null;
+        }
+
+        /// <summary>
+        /// Gets the output channel numbers associated with the component.
+        /// </summary>
+        public virtual List<int> GetCtrlCnlNums()
+        {
+            return null;
         }
 
         /// <summary>

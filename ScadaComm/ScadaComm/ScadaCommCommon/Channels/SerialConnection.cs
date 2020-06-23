@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -210,7 +210,7 @@ namespace Scada.Comm.Channels
                 DateTime utcNowDT = DateTime.UtcNow;
                 DateTime startDT = utcNowDT;
                 DateTime stopDT = startDT.AddMilliseconds(timeout);
-                SerialPort.ReadTimeout = 0;
+                SerialPort.ReadTimeout = ScadaUtils.IsRunningOnMono ? timeout : 0;
 
                 while (!stopReceived && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {

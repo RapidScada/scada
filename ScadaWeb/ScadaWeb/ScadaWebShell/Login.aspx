@@ -16,7 +16,7 @@
     <script type="text/javascript" src="lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="lib/bootstrap/js/bootstrap.min.js"></script>
     <script type="text/javascript">
-        var phrases = <%= phrases %>;
+        var phrases = <%= Scada.Web.WebUtils.DictionaryToJs("Scada.Web.WFrmLogin.Js") %>;
     </script>
     <script type="text/javascript" src="js/api/checkbrowser.js"></script>
     <script type="text/javascript" src="js/login.js"></script>

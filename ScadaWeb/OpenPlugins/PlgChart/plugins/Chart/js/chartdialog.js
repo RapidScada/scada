@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  *
  * Requires:
  * - utils.js
@@ -18,11 +18,11 @@ scada.chart.dialog = {
     // Get chart URL
     getChartUrl: function (cnlNums, viewIDs, date) {
         return "plugins/Chart/Chart.aspx?cnlNum=" + cnlNums + "&viewID=" + viewIDs +
-            "&" + scada.utils.dateToQueryString(date);
+            scada.utils.dateToQueryString(date, true);
     },
 
     // Open chart in the new tab
     show: function (rootPath, cnlNums, viewIDs, date) {
         window.open(rootPath + this.getChartUrl(cnlNums, viewIDs, date));
     }
-}
+};

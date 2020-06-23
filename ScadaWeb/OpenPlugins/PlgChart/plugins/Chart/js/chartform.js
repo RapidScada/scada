@@ -1,17 +1,29 @@
-﻿// Set the chart width and height
+﻿// The variables below must be defined in Chart.aspx
+// object timeRange
+// object chartData
+// string locale
+// int gapBetweenPoints
+// string chartTitle
+// string chartStatus
+// object phrases
+
+// Set the chart width and height
 function updateLayout() {
-    var BODY_PADDING = 20;
-    $("#cnvChart")
-        .outerWidth($(window).width() - BODY_PADDING)
-        .outerHeight($(window).height() - $("#divHeader").outerHeight() - BODY_PADDING);
+    $("#divChart")
+        .outerWidth($(window).width())
+        .outerHeight($(window).height());
 }
 
 $(document).ready(function () {
     // chart parameters must be defined in Chart.aspx
-    var chart = new scada.chart.Chart($("#cnvChart"));
-    chart.displaySettings = displaySettings;
+    var chart = new scada.chart.Chart($("#divChart"));
+    chart.displayOptions.locale = locale;
+    chart.displayOptions.gapBetweenPoints = gapBetweenPoints;
     chart.timeRange = timeRange;
     chart.chartData = chartData;
+    chart.buildDom();
+    chart.showTitle(chartTitle);
+    chart.showStatus(phrases.Generated + chartStatus);
 
     setTimeout(function () {
         updateLayout();

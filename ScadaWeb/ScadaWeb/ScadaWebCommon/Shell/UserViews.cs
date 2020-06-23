@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -33,8 +33,8 @@ using Utils;
 namespace Scada.Web.Shell
 {
     /// <summary>
-    /// Views accessible to the web application user
-    /// <para>Представления, доступные пользователю веб-приложения</para>
+    /// Views accessible to the web application user.
+    /// <para>Представления, доступные пользователю веб-приложения.</para>
     /// </summary>
     public class UserViews
     {
@@ -83,13 +83,8 @@ namespace Scada.Web.Shell
         /// </summary>
         public UserViews(ViewCache viewCache, Log log)
         {
-            if (viewCache == null)
-                throw new ArgumentNullException("viewCache");
-            if (log == null)
-                throw new ArgumentNullException("log");
-
-            this.viewCache = viewCache;
-            this.log = log;
+            this.viewCache = viewCache ?? throw new ArgumentNullException("viewCache");
+            this.log = log ?? throw new ArgumentNullException("log");
             viewNodeDict = new Dictionary<int, ViewNode>();
 
             ViewNodes = new List<ViewNode>();           
@@ -110,9 +105,8 @@ namespace Scada.Web.Shell
         {
             foreach (ViewSettings.ViewItem viewItem in srcViewItems)
             {
-                int viewID = viewItem.ViewID;
-
                 // пропуск представления, на которое нет прав
+                int viewID = viewItem.ViewID;
                 if (viewID > 0 && !dataContext.UserRights.GetUiObjRights(viewID).ViewRight)
                     continue;
 
@@ -121,11 +115,10 @@ namespace Scada.Web.Shell
                 if (viewID > 0)
                 {
                     UiObjProps viewProps = dataContext.DataAccess.GetUiObjProps(viewID);
-                    if (viewProps != null)
+                    if (viewProps != null &&
+                        dataContext.UiObjSpecs.TryGetValue(viewProps.TypeCode, out UiObjSpec uiObjSpec))
                     {
-                        UiObjSpec uiObjSpec;
-                        if (dataContext.UiObjSpecs.TryGetValue(viewProps.TypeCode, out uiObjSpec))
-                            viewSpec = uiObjSpec as ViewSpec;
+                        viewSpec = uiObjSpec as ViewSpec;
                     }
                 }
 
@@ -172,8 +165,7 @@ namespace Scada.Web.Shell
         /// </summary>
         protected Type GetViewType(int viewID)
         {
-            ViewNode viewNode;
-            return viewNodeDict.TryGetValue(viewID, out viewNode) && viewNode.ViewSpec != null ?
+            return viewNodeDict.TryGetValue(viewID, out ViewNode viewNode) && viewNode.ViewSpec != null ?
                 viewNode.ViewSpec.ViewType : null;
         }
 
@@ -231,8 +223,7 @@ namespace Scada.Web.Shell
         /// </summary>
         public ViewNode GetViewNode(int viewID)
         {
-            ViewNode viewNode;
-            return viewNodeDict.TryGetValue(viewID, out viewNode) ? viewNode : null;
+            return viewNodeDict.TryGetValue(viewID, out ViewNode viewNode) ? viewNode : null;
         }
 
         /// <summary>

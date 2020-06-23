@@ -84,18 +84,40 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Script\Common\make_executable.sh" />
-    <None Include="Script\Common\restart_apache.sh" />
+    <None Include="Script\Common\make_executable.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\Common\restart_apache.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Script\Common\restart_xsp.sh" />
-    <None Include="Script\Common\scadarestart.sh" />
-    <None Include="Script\Common\scadastart.sh" />
-    <None Include="Script\Common\scadastop.sh" />
-    <None Include="Script\Common\svc_install.sh" />
-    <None Include="Script\Common\svc_uninstall.sh" />
-    <None Include="Script\scadaserver" />
-    <None Include="Script\svc_restart.sh" />
-    <None Include="Script\svc_start.sh" />
-    <None Include="Script\svc_stop.sh" />
+    <None Include="Script\Common\scadarestart.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\Common\scadastart.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\Common\scadastop.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\Common\svc_install.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\Common\svc_uninstall.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\scadaserver">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_restart.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_start.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="Script\svc_stop.sh">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -16,6 +16,8 @@
     <Phrase key="pageExportArcDataQuery">Archive Data</Phrase>
     <Phrase key="pageExportEventQuery">Events</Phrase>
     <Phrase key="chkExport">Export</Phrase>
+    <Phrase key="pageMisc">Misc</Phrase>
+    <Phrase key="lblMaxQueueSize">Max. queue size</Phrase>
     <Phrase key="btnSave">Save</Phrase>
     <Phrase key="btnCancel">Cancel</Phrase>
     <Phrase key="btnClose">Close</Phrase>
