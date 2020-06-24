@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpDbImportDictionaries>
+  <Dictionary key="Scada.Comm.Devices.DbImport.UI.FrmConfig">
+    <Phrase key="this">数据库导入 - 设备 {0} 属性</Phrase>
+    <Phrase key="pageDatabase">数据库</Phrase>
+    <Phrase key="gbDataSourceType">数据源类型</Phrase>
+    <Phrase key="gbConnection">连接</Phrase>
+    <Phrase key="lblServer">服务器</Phrase>
+    <Phrase key="lblDatabase">数据库</Phrase>
+    <Phrase key="lblUser">用户</Phrase>
+    <Phrase key="lblPassword">密码</Phrase>
+    <Phrase key="lblConnectionString">连接字符串</Phrase>
+    <Phrase key="pageQuery">数据获取</Phrase>
+    <Phrase key="lblSelectQuery">SQL</Phrase>
+    <Phrase key="lblTagCount">Tag计数</Phrase>
+    <Phrase key="chkAutoTagCount">自动</Phrase>
+    <Phrase key="pageCommands">命令</Phrase>
+    <Phrase key="gbCommand">命令</Phrase>
+    <Phrase key="btnCreateCommand">创建</Phrase>
+    <Phrase key="btnDeleteCommand">删除</Phrase>
+    <Phrase key="gbCommandParams">命令参数</Phrase>
+    <Phrase key="lblCmdNum">命令编号</Phrase>
+    <Phrase key="lblName">名称</Phrase>
+    <Phrase key="lblCmdQuery">SQL</Phrase>
+    <Phrase key="btnSave">保存</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+  </Dictionary>
+</KpDbImportDictionaries>

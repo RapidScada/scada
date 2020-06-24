@@ -11,17 +11,9 @@
   </Dictionary>
   <Dictionary key="Scada.Web.Dialogs.WFrmConfirm">
     <Phrase key="this">确认</Phrase>
-    <Phrase key="lblConfirm">你确定吗?</Phrase>
+    <Phrase key="lblConfirm">确定吗?</Phrase>
   </Dictionary>
-  <Dictionary key="Scada.Web.MasterMain">
-    <Phrase key="lbtnMainLogout">注销</Phrase>
-    <Phrase key="lblMainFullscreenBtn.ToolTip">全屏</Phrase>
-    <Phrase key="lblMainNormalViewBtn.ToolTip">正常视图</Phrase>
-    <Phrase key="lblMainMenuTab">主菜单</Phrase>
-    <Phrase key="lblMainExplorerTab">查看</Phrase>
-    <Phrase key="lblMainCollapseMenu">折叠菜单</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.ModalButtons.Js">
+  <Dictionary key="Scada.Web.Js.ModalButtons">
     <Phrase key="ok">确认</Phrase>
     <Phrase key="yes">是</Phrase>
     <Phrase key="no">否</Phrase>
@@ -29,8 +21,22 @@
     <Phrase key="cancel">取消</Phrase>
     <Phrase key="close">关闭</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Js.NotifPanel">
+    <Phrase key="unmute">启用通知</Phrase>
+    <Phrase key="mute">禁用通知</Phrase>
+    <Phrase key="emptyNotif">无通知</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.MasterMain">
+    <Phrase key="lblMainNotifBtn.ToolTip">通知</Phrase>
+    <Phrase key="lbtnMainLogout">注销</Phrase>
+    <Phrase key="lblMainFullscreenBtn.ToolTip">全屏</Phrase>
+    <Phrase key="lblMainMenuTab">主菜单</Phrase>
+    <Phrase key="lblMainExplorerTab">视图</Phrase>
+    <Phrase key="lblMainCollapseMenu">折叠菜单</Phrase>
+    <Phrase key="lblMainNormalViewBtn.ToolTip">标准视图</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.Report">
-    <Phrase key="GenReport">生成 &quot;{0}&quot; 用户报表{1}</Phrase>
+    <Phrase key="GenReport">生成 &quot;{0}&quot; 报表。（用户{1}）</Phrase>
     <Phrase key="IncorrectRepTemplate">报表模板不正确。</Phrase>
     <Phrase key="IncorrectStartDate">开始日期不正确。</Phrase>
     <Phrase key="IncorrectEndDate">结束日期不正确。</Phrase>
@@ -39,8 +45,8 @@
     <Phrase key="MonthPeriodTooLong">最长期限为{0}个月。</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.UserRights">
-    <Phrase key="CnlNumsEmptyError">未指定信道号。</Phrase>
-    <Phrase key="CnlsViewsCountError">信道数量和视图ID不匹配。</Phrase>
+    <Phrase key="CnlNumsEmptyError">未指定通道号。</Phrase>
+    <Phrase key="CnlsViewsCountError">通道数量和视图ID不匹配。</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.ViewSettings">
     <Phrase key="LoadViewSettingsError">加载视图设置时出错。</Phrase>
@@ -52,18 +58,18 @@
     <Phrase key="SaveWebSettingsError">保存Web应用程序设置时出错。</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmAbout">
-    <Phrase key="this">中科航宇<小车控制系统>—关于</Phrase>
+    <Phrase key="this">关于 - Rapid SCADA</Phrase>
     <Phrase key="hlAppName">网站</Phrase>
     <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmError">
-    <Phrase key="this">应用程序错误—中科航宇<小车控制系统></Phrase>
+    <Phrase key="this">应用程序错误 — Rapid SCADA</Phrase>
     <Phrase key="lblTitle">应用程序错误</Phrase>
-    <Phrase key="lblErrMsg">发生应用程序错误。如果经常重复，请联系支持。</Phrase>
+    <Phrase key="lblErrMsg">发生应用程序错误。如果经常发生，请联系支持。</Phrase>
     <Phrase key="lblErrDetailsCaption">详情:</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
-    <Phrase key="this">中科航宇<小车控制系统>—登录</Phrase>
+    <Phrase key="this">登录 - Rapid SCADA</Phrase>
     <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>
     <Phrase key="lblUsername">用户名</Phrase>
     <Phrase key="lblPassword">密码</Phrase>
@@ -71,21 +77,21 @@
     <Phrase key="btnLogin">登录</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin.Js">
-    <Phrase key="BrowserOutdated">您的浏览器版本过低。&lt;br/&gt;请更新到最新版本。</Phrase>
+    <Phrase key="BrowserOutdated">浏览器已过时。&lt;br/&gt;请更新到最新版本。</Phrase>
     <Phrase key="CookiesDisabled">Cookie已禁用。请启用Cookie。</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
-    <Phrase key="this">中科航宇<小车控制系统>—无视图</Phrase>
+    <Phrase key="this">无视图 - Rapid SCADA</Phrase>
     <Phrase key="lblViewNotExist">请求的视图不存在或您没有足够的访问权限。</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmReports">
-    <Phrase key="this">中科航宇<小车控制系统>—报表</Phrase>
+    <Phrase key="this">报表 - Rapid SCADA</Phrase>
     <Phrase key="lblTitle">可用报表</Phrase>
-    <Phrase key="lblNoReports">N无可用报表</Phrase>
+    <Phrase key="lblNoReports">无可用报表</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmUser">
-    <Phrase key="this">中科航宇<小车控制系统>—用户资料</Phrase>
-    <Phrase key="lblTitle">用户资料</Phrase>
+    <Phrase key="this">用户档案 — Rapid SCADA</Phrase>
+    <Phrase key="lblTitle">用户档案</Phrase>
     <Phrase key="lblUserNameCaption">用户名:</Phrase>
     <Phrase key="lblRoleNameCaption">权限:</Phrase>
     <Phrase key="lblGeneralRightsTitle">一般权限</Phrase>
@@ -96,15 +102,21 @@
     <Phrase key="RightNo">否</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
-    <Phrase key="this">中科航宇<小车控制系统>—查看</Phrase>
+    <Phrase key="this">视图 - Rapid SCADA</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView.Js">
-    <Phrase key="ExternalLinkTitle">中科航宇<小车控制系统>—外部链接</Phrase>
+    <Phrase key="ExternalLinkTitle">外部链接 - Rapid SCADA</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins">
+    <Phrase key="LoadPluginConfigError">加载{0}插件配置时发生错误： {1}</Phrase>
+    <Phrase key="SavePluginConfigError">保存{0}差年配置时发生错误： {1}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.MenuItem">
     <Phrase key="ReportsMenuItem">报表</Phrase>
     <Phrase key="AdminMenuItem">管理</Phrase>
     <Phrase key="ConfigMenuItem">配置</Phrase>
+    <Phrase key="RegMenuItem">注册</Phrase>
+    <Phrase key="PluginsMenuItem">插件</Phrase>
     <Phrase key="AboutMenuItem">关于</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Shell.RememberMe">
