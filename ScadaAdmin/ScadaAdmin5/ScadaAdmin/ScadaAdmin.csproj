@@ -514,6 +514,10 @@
       <Link>Lang\ScadaComm.en-GB.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\..\ScadaComm\ScadaComm\ScadaCommShell\Lang\ScadaComm.zh-CN.xml">
+      <Link>Lang\ScadaComm.zh-CN.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\..\ScadaComm\ScadaComm\ScadaCommShell\Lang\ScadaComm.ru-RU.xml">
       <Link>Lang\ScadaComm.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -522,12 +526,20 @@
       <Link>Lang\ScadaData.en-GB.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.zh-CN.xml">
+      <Link>Lang\ScadaData.zh-CN.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="..\..\..\ScadaData\ScadaData\Lang\ScadaData.ru-RU.xml">
       <Link>Lang\ScadaData.ru-RU.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.en-GB.xml">
       <Link>Lang\ScadaServer.en-GB.xml</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.zh-CN.xml">
+      <Link>Lang\ScadaServer.zh-CN.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="..\..\..\ScadaServer\ScadaServer\ScadaServerShell\Lang\ScadaServer.ru-RU.xml">
@@ -542,6 +554,9 @@
     </Content>
     <Content Include="lamp.ico" />
     <Content Include="Lang\ScadaAdmin.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\ScadaAdmin.zh-CN.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Lang\ScadaAdmin.en-GB.xml">
