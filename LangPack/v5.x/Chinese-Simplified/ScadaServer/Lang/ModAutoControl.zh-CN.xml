@@ -3,7 +3,7 @@
   <Dictionary key="Scada.Server.Module.FrmAutoControl">
     <Phrase key="this">自动控制</Phrase>
     <Phrase key="pageConfig">配置</Phrase>
-    <Phrase key="btnAddCnlDataTrigger.ToolTip">添加信道数据</Phrase>
+    <Phrase key="btnAddCnlDataTrigger.ToolTip">添加通道数据</Phrase>
     <Phrase key="btnAddEvTrigger.ToolTip">添加事件触发器</Phrase>
     <Phrase key="btnAddTimeTrigger.ToolTip">添加时间触发</Phrase>
     <Phrase key="btnAddCmdTrigger.ToolTip">添加命令触发器</Phrase>
@@ -17,7 +17,7 @@
     <Phrase key="lblName">名称</Phrase>
     <Phrase key="lblDescr">描述</Phrase>
     <Phrase key="txtCmdTrDescr">命令触发描述</Phrase>
-    <Phrase key="lblCmdTrCtrlCnlNum">信道号</Phrase>
+    <Phrase key="lblCmdTrCtrlCnlNum">通道号</Phrase>
     <Phrase key="rbCmdTrCmdStand">标准</Phrase>
     <Phrase key="rbCmdTrCmdBin">二进制</Phrase>
     <Phrase key="lblCmdTrCmdVal">值</Phrase>
@@ -29,14 +29,14 @@
     <Phrase key="cbCmdTrDataCompareOper.Items[2]">包含</Phrase>
     <Phrase key="chkCmdTrPassCmd">密码</Phrase>
     <Phrase key="txtCnlDataTrDescr">描述</Phrase>
-    <Phrase key="lblCnlDataTrCnlNum">信道号</Phrase>
+    <Phrase key="lblCnlDataTrCnlNum">通道号</Phrase>
     <Phrase key="lblCnlDataTrCnlValCond">值</Phrase>
     <Phrase key="lblCnlDataTrCnlStat">状态</Phrase>
     <Phrase key="txtEvTrDescr">事件</Phrase>
     <Phrase key="lblEvTrObjNum">对象</Phrase>
     <Phrase key="lblEvTrKPNum">设备</Phrase>
     <Phrase key="lblEvTrParamID">参数</Phrase>
-    <Phrase key="lblEvTrCnlNum">信道号</Phrase>
+    <Phrase key="lblEvTrCnlNum">通道号</Phrase>
     <Phrase key="lblEvTrNewCnlValCond">新值</Phrase>
     <Phrase key="lblEvTrNewCnlStat">新状态</Phrase>
     <Phrase key="lblEvTrDescrCompareOper">描述</Phrase>

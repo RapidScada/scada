@@ -1247,14 +1247,15 @@ scada.chart.Chart.prototype._initTrendHint = function () {
 
 // Shows a hint with the values nearest to the pointer.
 scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
-    this._chartLayout.updateAbsCoordinates(this._canvasJqElem);
+    var layout = this._chartLayout;
     var hideHint = true;
+    layout.updateAbsCoordinates(this._canvasJqElem);
 
-    if (this._hintEnabled && this._chartLayout.pointInPlotArea(pageX, pageY)) {
+    if (this._hintEnabled && layout.pointInPlotArea(pageX, pageY)) {
         var ptInd = this._getPointIndex(pageX);
 
         if (ptInd >= 0) {
-            var areaRect = this._chartLayout.absPlotAreaRect;
+            var areaRect = layout.absPlotAreaRect;
             var chartOffset = this._chartJqElem.offset();
 
             var x = this.chartData.timePoints[ptInd];
@@ -1298,7 +1299,7 @@ scada.chart.Chart.prototype._showHint = function (pageX, pageY, opt_touch) {
                 var hintHeight = this._trendHintJqElem.outerHeight();
                 var winScrollLeft = $(window).scrollLeft();
                 var winRight = winScrollLeft + $(window).width();
-                var chartRight = winScrollLeft + areaRect.left + this._chartLayout.width;
+                var chartRight = winScrollLeft + areaRect.left + layout.width;
                 var maxRight = Math.min(winRight, chartRight);
                 var absHintLeft = pageX + hintWidth < maxRight ? pageX : Math.max(pageX - hintWidth, 0);
 
@@ -1383,19 +1384,19 @@ scada.chart.Chart.prototype.buildDom = function () {
                 "color": titleConfig.foreColor
             });
 
-            var menuHolderHtml = titleConfig.showMenu && menuExists ? "<td class='chart-menu-holder'></td>" : "";
-            var statusHtml = titleConfig.showStatus ? "<td class='chart-status'><span></span></td>" : "";
-            var titleTableElem = $("<table><tr>" + menuHolderHtml +
-                "<td class='chart-title-text'></td>" + statusHtml + "</tr></table>");
-            this._titleJqElem.append(titleTableElem);
+            var menuHolderHtml = titleConfig.showMenu && menuExists ? "<div class='chart-menu-holder'></div>" : "";
+            var titleTextHtml = "<div class='chart-title-text'></div>";
+            var statusHtml = titleConfig.showStatus ? "<div class='chart-status'></div>" : "";
+
+            this._titleJqElem.append(menuHolderHtml + titleTextHtml + statusHtml);
             this._chartJqElem.append(this._titleJqElem);
 
             if (menuHolderHtml) {
                 // insert menu
-                var menuHolderElem = titleTableElem.find(".chart-menu-holder");
                 var menuBtnWidth = menuJqElem.css("width");
                 menuJqElem.detach();
-                menuHolderElem.css("width", menuBtnWidth).append(menuJqElem);
+                this._titleJqElem.find(".chart-menu-holder:first").append(menuJqElem);
+                this._titleJqElem.find(".chart-title-text:first").css("padding-left", menuBtnWidth);
             } else {
                 menuJqElem.remove();
             }
@@ -1427,14 +1428,14 @@ scada.chart.Chart.prototype.buildDom = function () {
 // Shows the chart title.
 scada.chart.Chart.prototype.showTitle = function (s) {
     if (this._titleJqElem) {
-        this._titleJqElem.find(".chart-title-text").text(s);
+        this._titleJqElem.find(".chart-title-text:first").text(s);
     }
 };
 
 // Shows the chart status.
 scada.chart.Chart.prototype.showStatus = function (s, opt_error) {
     if (this._titleJqElem) {
-        var statusElem = this._titleJqElem.find(".chart-status span");
+        var statusElem = this._titleJqElem.find(".chart-status:first");
         statusElem.text(s);
 
         if (opt_error) {
