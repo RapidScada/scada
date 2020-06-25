@@ -2,19 +2,19 @@
   position: relative;
 }
 .chart-title {
-  width: 100%;
-}
-.chart-title table {
-  border-collapse: collapse;
+  overflow: hidden;
   width: 100%;
 }
 .chart-menu-holder {
-  vertical-align: top;
+  position: absolute;
+}
+.chart-title-text {
+  display: inline-block;
+  font-size: 100%;
 }
 .chart-status {
-  text-align: right;
-}
-.chart-status span {
+  display: inline-block;
+  float: right;
   font-size: 66%;
   opacity: 0.8;
 }
