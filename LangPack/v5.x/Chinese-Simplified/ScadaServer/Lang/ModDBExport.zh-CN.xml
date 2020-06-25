@@ -16,6 +16,8 @@
     <Phrase key="pageExportArcDataQuery">存档数据</Phrase>
     <Phrase key="pageExportEventQuery">事件</Phrase>
     <Phrase key="chkExport">导出</Phrase>
+    <Phrase key="pageMisc">杂项</Phrase>
+    <Phrase key="lblMaxQueueSize">最大队列数量</Phrase>
     <Phrase key="btnSave">保存</Phrase>
     <Phrase key="btnCancel">取消</Phrase>
     <Phrase key="btnClose">关闭</Phrase>
@@ -24,14 +26,14 @@
     <Phrase key="this">手动导出</Phrase>
     <Phrase key="lblDataSource">数据源</Phrase>
     <Phrase key="gbCurData">当前数据</Phrase>
-    <Phrase key="lblCurDataCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="lblCurDataCtrlCnlNum">输出通道</Phrase>
     <Phrase key="btnExportCurData">导出</Phrase>
     <Phrase key="gbArcData">存档数据</Phrase>
-    <Phrase key="lblArcDataCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="lblArcDataCtrlCnlNum">输出通道</Phrase>
     <Phrase key="lblArcDataDateTime">日期和时间</Phrase>
     <Phrase key="btnExportArcData">导出</Phrase>
     <Phrase key="gbEvents">事件</Phrase>
-    <Phrase key="lblEventsCtrlCnlNum">输出信道</Phrase>
+    <Phrase key="lblEventsCtrlCnlNum">输出通道</Phrase>
     <Phrase key="lblEventsDate">日期</Phrase>
     <Phrase key="btnExportEvents">导出</Phrase>
     <Phrase key="btnOK">确认</Phrase>

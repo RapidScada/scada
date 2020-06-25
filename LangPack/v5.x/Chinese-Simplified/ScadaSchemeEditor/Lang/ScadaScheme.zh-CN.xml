@@ -1,0 +1,72 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ScadaSchemeDictionaries>
+  <Dictionary key="Scada.Scheme.Model.DataTypes.ImageCondition">
+    <Phrase key="DisplayName">图片状态</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid">
+    <Phrase key="StringConvertError">无法转换string</Phrase>
+    <Phrase key="StringUniqueError">属性值必须唯一</Phrase>
+    <Phrase key="TrueValue">是</Phrase>
+    <Phrase key="FalseValue">否</Phrase>
+    <Phrase key="EmptyValue">(None)</Phrase>
+    <Phrase key="ObjectValue">(Object)</Phrase>
+    <Phrase key="CollectionValue">(Collection)</Phrase>
+    <Phrase key="ComponentNotFound">找不到组件</Phrase>
+    <Phrase key="BoldSymbol">B</Phrase>
+    <Phrase key="ItalicSymbol">I</Phrase>
+    <Phrase key="UnderlineSymbol">U</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmCollectionDialog">
+    <Phrase key="this">{0} 集合</Phrase>
+    <Phrase key="lblItems">项</Phrase>
+    <Phrase key="lblProps">项属性</Phrase>
+    <Phrase key="btnOK">确定</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmFontDialog">
+    <Phrase key="this">字体</Phrase>
+    <Phrase key="lblFontName">字体</Phrase>
+    <Phrase key="lblFontSize">大小</Phrase>
+    <Phrase key="gbStyle">样式</Phrase>
+    <Phrase key="chkBold">加粗</Phrase>
+    <Phrase key="chkItalic">斜体</Phrase>
+    <Phrase key="chkUnderline">下划线</Phrase>
+    <Phrase key="btnOK">确定</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmImageDialog">
+    <Phrase key="this">图片</Phrase>
+    <Phrase key="lblImages">图片</Phrase>
+    <Phrase key="lblImageProps">图片属性</Phrase>
+    <Phrase key="lblPreview">预览</Phrase>
+    <Phrase key="btnSelectEmpty">空</Phrase>
+    <Phrase key="btnSelect">选择</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+    <Phrase key="ImageFileFilter">图片 (*.jpg;*.png;*.gif;*.svg)|*.jpg;*.png;*.gif;*.svg|All Files (*.*)|*.*</Phrase>
+    <Phrase key="DisplayImageError">显示图片错误</Phrase>
+    <Phrase key="LoadImageError">加载图片时发生错误</Phrase>
+    <Phrase key="SaveImageError">保存图片时发生错误</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Model.PropertyGrid.FrmRangeDialog">
+    <Phrase key="this">整数范围</Phrase>
+    <Phrase key="lblExample">例: 1 - 5, 10</Phrase>
+    <Phrase key="btnOK">确定</Phrase>
+    <Phrase key="btnCancel">取消</Phrase>
+    <Phrase key="RangeNotValid">范围无效</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.Template.TemplateBindings">
+    <Phrase key="LoadTemplateBindingsError">从文件中加载图表模板绑定时发生错误</Phrase>
+    <Phrase key="SaveTemplateBindingsError">保存图表模板绑定文件时发生错误</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.CompManager">
+    <Phrase key="UnknownComponent">未知组件 {0}</Phrase>
+    <Phrase key="CompLibraryNotFound">找不到组件{0}对应的库</Phrase>
+    <Phrase key="UnableCreateComponent">无法创建组件 {0}</Phrase>
+    <Phrase key="ErrorCreatingComponent">创建组件{0}时发生错误</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Scheme.SchemeView">
+    <Phrase key="LoadSchemeViewError">从文件加载图表时发生错误</Phrase>
+    <Phrase key="SaveSchemeViewError">保存图表文件时发生错误</Phrase>
+    <Phrase key="IncorrectFileFormat">图表文件格式不正确</Phrase>
+  </Dictionary>
+</ScadaSchemeDictionaries>
