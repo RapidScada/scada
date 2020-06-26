@@ -13,7 +13,7 @@
 # This script was modified and adapted for Rapid SCADA by Nikita Yakuntsev and Mikhail Shiryaev
 
 SERVICE_NAME=SCADA-Server
-EXE_DIR=/etc/scada/ScadaServer/
+EXE_DIR=/opt/scada/ScadaServer/
 EXE_NAME=ScadaServerMono.exe
 STOP_FILE_PATH=./Cmd/serverstop
 PID_FILE_PATH=/tmp/scadaserver
