@@ -11,28 +11,78 @@
 <body>
     <h1>Rapid Gate Module</h1>
     <h2>Overview</h2>
-    <p>Rapid Gate Module is designed to synchronize data between several Rapid SCADA instances. The module allows to setup a backup server, as well as provides data transfer from SCADA installed on remote locations to the primary SCADA.</p>
+    <p>Rapid Gate Module is designed to synchronize data between different Rapid SCADA instances. The module allows to setup a backup server, as well as provides data transfer from SCADA installed on remote locations to the primary SCADA. The module supports an arbitrary number of independent gateways for exchanging information with several Rapid SCADA servers.</p>
 
     <h2>Installation</h2>
     <p>Rapid Gate Module is installed in accordance with <a href="../installation-and-run/module-installation.html#modules">the general sequence of installing Server modules</a>. The module library file is ModRapidGate.dll. After adding the module, perform several additional actions are needed:</p>
     <ol>
         <li>Copy the module configuration files ModRapidGate.xml and ModRapidGate_Reg.xml into the edited project. Inside the project these files are located in ScadaServer\Config\</li>
         <li>After activating the module, upload the project to the server in order to determine the computer code for module registration. The computer code is written in C:\SCADA\ScadaServer\Log\ModRapidGate.log</li>
-        <li>Register the module by contacting the developers or using <a href="http://trial.rapidscada.net/?prod=ModRapidGate" target="_blank">the trial key generator</a>. A register key must be stored in the project file ScadaServer\Config\ModRapidGate_Reg.xml between RegKey tags.</li>
+        <li>Register the module by contacting the developers or using <a href="https://rapidscada.net/trial/?prod=ModRapidGate" target="_blank">the trial key generator</a>. A register key must be stored in the project file ScadaServer\Config\ModRapidGate_Reg.xml between RegKey tags.</li>
         <li>Configure the module and upload the project to the server.</li>
     </ol>
 
     <h2>Configuring</h2>
-    <p>To cofigure Rapid Gate Module, edit the project file ScadaServer\Config\ModRapidGate.xml with a text editor. The settings contains the connection parameters for the SCADA server (target server) to which data are transferred and from which commands are received.</p>
-    <p>Note that you usually need to configure the firewall on the target server to allow incoming connections to TCP port 10000.</p>
+    <p>To cofigure Rapid Gate Module, edit the project file ScadaServer\Config\ModRapidGate.xml with a text editor. Note that you usually need to configure the firewall on the target server to allow incoming connections to TCP port 10000.</p>
 
-    <h2>Algorithm</h2>
-    <p>The algorithm of Rapid Gate Module has the following features:</p>
-    <ol>
-        <li>The module transmits only the data that are received from Communicator. The values of the calculated input channels are not transmitted.</li>
-        <li>The data is transmitted to the same input channel numbers to which they are received.</li>
-        <li>The transmitted values are already calculated by the formulas of the input channels, which can result in double applying of the formulas on the target server. Therefore, when using the module, it is recommended that calculations be performed in separate input channels of the calculated type.</li>
-        <li>The module has a data transfer queue to restore data in case of a short-term connection failure with a target server.</li>
-    </ol>
+    <p>Briefly consider the contents of the configuration file:</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>XML Tag</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>Gate</td>
+            <td>Gateway section. The file can contain several such sections</td>
+        </tr>
+        <tr>
+            <td>GeneralOptions</td>
+            <td>General gateway options</td>
+        </tr>
+        <tr>
+            <td>ConnectionOptions</td>
+            <td>Remote server connection options. Password must be encrypted using the <a href="https://rapidscada.org/download/encrypt_password.zip">EncryptPassword.exe</a> utility</td>
+        </tr>
+        <tr>
+            <td>MappingOptions</td>
+            <td>Defines matching of channel, objects and device numbers between this server and the remote server</td>
+        </tr>
+        <tr>
+            <td>TransferOptions</td>
+            <td>Options for transferring data to a remote server</td>
+        </tr>
+        <tr>
+            <td>CurDataTransferOptions</td>
+            <td>Current data transfer options</td>
+        </tr>
+        <tr>
+            <td>ArcDataTransferOptions</td>
+            <td>Archive data transfer options</td>
+        </tr>
+        <tr>
+            <td>EventTransferOptions</td>
+            <td>Event transfer options</td>
+        </tr>
+        <tr>
+            <td>InCmdTransferOptions</td>
+            <td>Options that determine receiving telecontrol commands from a remote server</td>
+        </tr>
+        <tr>
+            <td>OutCmdTransferOptions</td>
+            <td>Options that determine transferring telecontrol commands to a remote server</td>
+        </tr>
+        <tr>
+            <td>ArcUploadOptions</td>
+            <td>Options that determine uploading archives to a remote server</td>
+        </tr>
+    </table>
+
+    <h2>Archive Uploading</h2>
+    <p>The upload state of archives is saved during the operation of the module and is restored when the Server service is restarted. The state file is written to the Storage directory. Uploading archives is performed automatically. However, an operator can manually send a command to upload archives for a certain period. The command of the binary type must be sent using the output channel specified in the module configuration.</p>
+    <p>Command example:</p>
+    <pre>cmd=ArcUpload
+minDT=2020-02-18 10:00:00
+maxDT=2020-02-18 10:15:00</pre>
 </body>
 </html>
