@@ -35,7 +35,7 @@ function createSearch() {
     var protocol = window.location.protocol;
 
     if (protocol === "http:" || protocol === "https:") {
-        var searchHtml =
+        /*var searchHtml =
             "<script>" +
             "  (function() {" +
             "    var cx = '003943521229341952511:vsuy-pqfiri';" +
@@ -47,7 +47,10 @@ function createSearch() {
             "    s.parentNode.insertBefore(gcse, s);" +
             "  })();" +
             "</script>" +
-            "<gcse:search></gcse:search>";
+            "<gcse:search></gcse:search>";*/
+
+        var yandexScript = "(function(w,d,c){var s=d.createElement('script'),h=d.getElementsByTagName('script')[0],e=d.documentElement;if((' '+e.className+' ').indexOf(' ya-page_js_yes ')===-1){e.className+=' ya-page_js_yes';}s.type='text/javascript';s.async=true;s.charset='utf-8';s.src=(d.location.protocol==='https:'?'https:':'http:')+'//site.yandex.net/v2.0/js/all.js';h.parentNode.insertBefore(s,h);(w[c]||(w[c]=[])).push(function(){Ya.Site.Form.init()})})(window,document,'yandex_site_callbacks');";
+        var searchHtml = '<div class="ya-site-form ya-site-form_inited_no" data-bem="{&quot;action&quot;:&quot;https://yandex.com/search/site/&quot;,&quot;arrow&quot;:false,&quot;bg&quot;:&quot;#ffcc00&quot;,&quot;fontsize&quot;:12,&quot;fg&quot;:&quot;#000000&quot;,&quot;language&quot;:&quot;en&quot;,&quot;logo&quot;:&quot;rb&quot;,&quot;publicname&quot;:&quot;Search rapidscada.net/doc/&quot;,&quot;suggest&quot;:true,&quot;target&quot;:&quot;_blank&quot;,&quot;tld&quot;:&quot;com&quot;,&quot;type&quot;:3,&quot;usebigdictionary&quot;:true,&quot;searchid&quot;:2413672,&quot;input_fg&quot;:&quot;#000000&quot;,&quot;input_bg&quot;:&quot;#ffffff&quot;,&quot;input_fontStyle&quot;:&quot;normal&quot;,&quot;input_fontWeight&quot;:&quot;normal&quot;,&quot;input_placeholder&quot;:&quot;Search&quot;,&quot;input_placeholderColor&quot;:&quot;#000000&quot;,&quot;input_borderColor&quot;:&quot;#7f9db9&quot;}"><form action="https://yandex.com/search/site/" method="get" target="_blank" accept-charset="utf-8"><input type="hidden" name="searchid" value="2413672"/><input type="hidden" name="l10n" value="en"/><input type="hidden" name="reqenc" value=""/><input type="search" name="text" value=""/><input type="submit" value="Search"/></form></div><style type="text/css">.ya-page_js_yes .ya-site-form_inited_no { display: none; }</style><script type="text/javascript">' + yandexScript + '</script>';
 
         $("div.sd-contents").append(searchHtml);
     }
