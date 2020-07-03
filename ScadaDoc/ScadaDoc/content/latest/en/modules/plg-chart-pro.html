@@ -22,5 +22,67 @@
         <li>Find the <em>Chart plugin</em> parameter, select the Chart Pro plugin from the dropdown list and click the <em>Save Configuration</em> button.</li>
         <li>Download the changed Webstation settings to the project using the Administrator application.</li>
     </ol>
+
+    <h2>Configuring</h2>
+    <p>Chart Pro Plugin is configured by default. Plugin settings are saved in the PlgChartPro.xml file, which is located in the project in the Webstation configuration directory. If necessary, the system administrator can change the settings by editing the existing file or creating a new settings file.</p>
+
+    <p>
+        In addition to the configuration file, chart displaying is determined by the query string. The query string has the following form:<br />
+        http://localhost/Scada/plugins/ChartPro/ChartPro.aspx?cnlNums=101&viewIDs=2&year=2020&month=3&day=31&mode=fixed&period=1&title=Test&config=PlgChartPro.xml
+    </p>
+
+    <p>The query string parameters are as follows.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Parameter</th>
+            <th>Values</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>cnlNums</td>
+            <td>Comma separated integers</td>
+            <td>Input channel numbers displayed on the chart</td>
+        </tr>
+        <tr>
+            <td>viewIDs</td>
+            <td>Comma separated integers</td>
+            <td>View IDs for each input channel</td>
+        </tr>
+        <tr>
+            <td>year, month, day</td>
+            <td>Integers</td>
+            <td>Start date of the displayed data. If not specified, the current date is used</td>
+        </tr>
+        <tr>
+            <td>mode</td>
+            <td>fixed | rolling</td>
+            <td>Chart mode: fixed or rolling</td>
+        </tr>
+        <tr>
+            <td>period</td>
+            <td>Integer. It can be positive or negative</td>
+            <td>Period of the chart relative to the start date. In days for fixed mode and in minutes for rolling mode</td>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>String. Can be empty</td>
+            <td>Chart title</td>
+        </tr>
+        <tr>
+            <td>config</td>
+            <td>String. Can be empty</td>
+            <td>Chart configuration file name relative to the web application configuration directory</td>
+        </tr>
+    </table>
+
+    <p>In the fixed mode, the plugin displays a chart for a selected period of time. The chart data is automatically updated by adding new values to the right side of the chart.</p>
+
+    <p>In the rolling mode, the plugin displays a graph from the current moment to the specified depth. The chart data is automatically updated, while the chart shifts from right to left.</p>
+
+    <p>The following figure helps to understand the layout of the chart in order to change the plugin configuration.</p>
+    <p class="sd-article-image">
+        <img src="plg-chart-pro-files/chart_parts.svg" alt="Chart layout" /><br />
+    </p>
 </body>
 </html>
