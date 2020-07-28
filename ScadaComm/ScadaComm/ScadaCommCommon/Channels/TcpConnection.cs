@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices;
@@ -239,7 +239,11 @@ namespace Scada.Comm.Channels
                 while (readCnt < count && startDT <= utcNowDT && utcNowDT <= stopDT)
                 {
                     // считывание данных
-                    try { readCnt += NetStream.Read(buffer, readCnt + offset, count - readCnt); }
+                    try
+                    {
+                        if (NetStream.DataAvailable) // checking DataAvailable is critical in Mono
+                            readCnt += NetStream.Read(buffer, readCnt + offset, count - readCnt);
+                    }
                     catch (IOException) { }
 
                     // накопление данных во внутреннем буфере соединения
@@ -283,7 +287,7 @@ namespace Scada.Comm.Channels
                 {
                     // считывание одного байта данных
                     bool readOk;
-                    try { readOk = NetStream.Read(buffer, curOffset, 1) > 0; }
+                    try { readOk = NetStream.DataAvailable && NetStream.Read(buffer, curOffset, 1) > 0; }
                     catch (IOException) { readOk = false; }
 
                     if (readOk)
@@ -337,7 +341,7 @@ namespace Scada.Comm.Channels
                 {
                     // считывание одного байта данных
                     bool readOk;
-                    try { readOk = NetStream.Read(buffer, 0, 1) > 0; }
+                    try { readOk = NetStream.DataAvailable && NetStream.Read(buffer, 0, 1) > 0; }
                     catch (IOException) { readOk = false; }
 
                     if (readOk)
@@ -552,7 +556,7 @@ namespace Scada.Comm.Channels
             try
             {
                 int count = TcpClient.Available;
-                int readCnt = NetStream.Read(buffer, offset, count);
+                int readCnt = NetStream.DataAvailable ? NetStream.Read(buffer, offset, count) : 0;
                 logText = BuildReadLogText(buffer, offset, count, readCnt, logFormat);
 
                 if (readCnt > 0)
