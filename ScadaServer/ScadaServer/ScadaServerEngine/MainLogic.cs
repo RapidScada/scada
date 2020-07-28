@@ -1506,26 +1506,34 @@ namespace Scada.Server.Engine
                             Math.Truncate(oldCnlData.Val) + 1 : Math.Truncate(oldCnlData.Val);
                     }
 
-                    // корректировка нового статуса, если задана проверка границ значения
-                    if (newCnlData.Stat == BaseValues.CnlStatuses.Defined &&
-                        (inCnl.LimLow < inCnl.LimHigh || inCnl.LimLowCrash < inCnl.LimHighCrash))
+                    // корректировка нового статуса
+                    if (newCnlData.Stat == BaseValues.CnlStatuses.Defined)
                     {
-                        newCnlData.Stat = BaseValues.CnlStatuses.Normal;
-
-                        if (inCnl.LimLow < inCnl.LimHigh)
+                        if (double.IsNaN(newCnlData.Val))
                         {
-                            if (newCnlData.Val < inCnl.LimLow)
-                                newCnlData.Stat = BaseValues.CnlStatuses.Low;
-                            else if (newCnlData.Val > inCnl.LimHigh)
-                                newCnlData.Stat = BaseValues.CnlStatuses.High;
+                            // установка неопределённого статуса, если значение не является числом
+                            newCnlData.Stat = BaseValues.CnlStatuses.Undefined;
                         }
-
-                        if (inCnl.LimLowCrash < inCnl.LimHighCrash)
+                        else if (inCnl.LimLow < inCnl.LimHigh || inCnl.LimLowCrash < inCnl.LimHighCrash)
                         {
-                            if (newCnlData.Val < inCnl.LimLowCrash)
-                                newCnlData.Stat = BaseValues.CnlStatuses.LowCrash;
-                            else if (newCnlData.Val > inCnl.LimHighCrash)
-                                newCnlData.Stat = BaseValues.CnlStatuses.HighCrash;
+                            // установка статуса в зависимости от границ
+                            newCnlData.Stat = BaseValues.CnlStatuses.Normal;
+
+                            if (inCnl.LimLow < inCnl.LimHigh)
+                            {
+                                if (newCnlData.Val < inCnl.LimLow)
+                                    newCnlData.Stat = BaseValues.CnlStatuses.Low;
+                                else if (newCnlData.Val > inCnl.LimHigh)
+                                    newCnlData.Stat = BaseValues.CnlStatuses.High;
+                            }
+
+                            if (inCnl.LimLowCrash < inCnl.LimHighCrash)
+                            {
+                                if (newCnlData.Val < inCnl.LimLowCrash)
+                                    newCnlData.Stat = BaseValues.CnlStatuses.LowCrash;
+                                else if (newCnlData.Val > inCnl.LimHighCrash)
+                                    newCnlData.Stat = BaseValues.CnlStatuses.HighCrash;
+                            }
                         }
                     }
                 }
