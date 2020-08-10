@@ -265,11 +265,11 @@ scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr)
 // scaleVal is a floating point number
 scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
     if (component.dom) {
-        var sizeCoef = Math.min(scaleVal, 1);
+        //var sizeCoef = Math.min(scaleVal, 1);
         component.dom.css({
-            "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
-            "width": component.props.Size.Width * sizeCoef,
-            "height": component.props.Size.Height * sizeCoef
+            "transform": "scale(" + scaleVal + ", " + scaleVal + ")"//,
+            //"width": component.props.Size.Width * sizeCoef,
+            //"height": component.props.Size.Height * sizeCoef
         });
     }
 };
