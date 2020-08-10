@@ -2,5 +2,5 @@ Language                 : Chinese-Simplified
 Culture name:            : zh-CN
 Rapid SCADA version      : 5.8.1
 Rapid SCADA applications : All
-Author                   : circler3
-Author's email           : circler3@sina.com
+Authors                  : circler3, circler3@sina.com
+                           qiuqiaoan, 99256197@qq.com
