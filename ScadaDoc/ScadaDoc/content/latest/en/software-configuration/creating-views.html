@@ -61,12 +61,12 @@
         <em>inCnlOffset</em> - input channel number offset;<br />
         <em>ctrlCnlOffset</em> - output channel number offset;<br />
         <em>titleCompID</em> - title component identifier;<br />
-        <em>bindingFileName</em> - file name of the bindings relative to the interface directory.
+        <em>bindingFileName</em> - file name of the bindings relative to the Webstation configuration directory.
     </p>
 
     <p>The title text of a scheme working in the template mode is taken from the <em>Title</em> field of the <em>Interface</em> table. When creating a scheme template using Scheme Editor, it is recommended to leave the scheme title property blank.</p>
 
-    <p>Binding files must be located inside the interface directory. Binding file example:</p>
+    <p>Binding files must be located inside the Webstation configuration directory, by default C:\SCADA\ScadaWeb\config\. Binding file example:</p>
     <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
 &lt;TemplateBindings&gt;
   &lt;TemplateFileName&gt;MyScheme.sch&lt;/TemplateFileName&gt;
