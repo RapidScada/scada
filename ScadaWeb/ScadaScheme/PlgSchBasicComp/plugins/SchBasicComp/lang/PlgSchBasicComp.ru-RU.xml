@@ -72,6 +72,9 @@
     <Phrase key="UnderlineOnHover.DisplayName">Подчёркивание при наведени</Phrase>
     <Phrase key="UnderlineOnHover.Category">Поведение</Phrase>
     <Phrase key="UnderlineOnHover.Description">Подчёркивание надписи при наведени указателя мыши.</Phrase>
+    <Phrase key="CnlNums.DisplayName">Входные каналы</Phrase>
+    <Phrase key="CnlNums.Category">Данные</Phrase>
+    <Phrase key="CnlNums.Description">Входные каналы, вставляемые как параметры адреса.</Phrase>
     <Phrase key="PopupSize.DisplayName">Размер всплывающего окна</Phrase>
     <Phrase key="PopupSize.Category">Навигация</Phrase>
     <Phrase key="PopupSize.Description">Размер всплывающего окна для соответствующей цели.</Phrase>

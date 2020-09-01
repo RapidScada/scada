@@ -26,6 +26,7 @@
 using Scada.Scheme.Model;
 using Scada.Scheme.Model.PropertyGrid;
 using System;
+using System.Collections.Generic;
 using System.Drawing.Design;
 using System.Xml;
 using CM = System.ComponentModel;
@@ -59,7 +60,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             BorderColorOnHover = "";
             ForeColorOnHover = "";
             UnderlineOnHover = true;
-
+            CnlNums = new List<int>();
             PopupSize = PopupSize.Default;
             Target = LinkTarget.Self;
             Url = "";
@@ -107,6 +108,15 @@ namespace Scada.Web.Plugins.SchBasicComp
         #endregion
         public bool UnderlineOnHover { get; set; }
 
+        /// <summary>
+        /// Gets the input channels displayed on the chart.
+        /// </summary>
+        #region Attributes
+        [DisplayName("Input channels"), Category(Categories.Data)]
+        [Description("The input channels that are inserted as URL parameters.")]
+        [CM.TypeConverter(typeof(RangeConverter)), CM.Editor(typeof(RangeEditor), typeof(UITypeEditor))]
+        #endregion
+        public List<int> CnlNums { get; protected set; }
 
         /// <summary>
         /// Получить или установить размер всплывающего окна
@@ -131,7 +141,7 @@ namespace Scada.Web.Plugins.SchBasicComp
         /// Получить или установить адрес для перехода
         /// </summary>
         #region Attributes
-        [DisplayName("Url"), Category("Navigation")]
+        [DisplayName("URL"), Category("Navigation")]
         [Description("The address to navigate.")]
         #endregion
         public string Url { get; set; }
@@ -148,6 +158,14 @@ namespace Scada.Web.Plugins.SchBasicComp
 
 
         /// <summary>
+        /// Gets the input channel numbers associated with the component.
+        /// </summary>
+        public override List<int> GetInCnlNums()
+        {
+            return CnlNums;
+        }
+
+        /// <summary>
         /// Загрузить конфигурацию компонента из XML-узла
         /// </summary>
         public override void LoadFromXml(XmlNode xmlNode)
@@ -158,6 +176,8 @@ namespace Scada.Web.Plugins.SchBasicComp
             BorderColorOnHover = xmlNode.GetChildAsString("BorderColorOnHover");
             ForeColorOnHover = xmlNode.GetChildAsString("ForeColorOnHover");
             UnderlineOnHover = xmlNode.GetChildAsBool("UnderlineOnHover");
+            CnlNums.Clear();
+            CnlNums.AddRange(ScadaUtils.ParseIntArray(xmlNode.GetChildAsString("CnlNums")));
             PopupSize = PopupSize.GetChildAsSize(xmlNode, "PopupSize");
             Target = xmlNode.GetChildAsEnum<LinkTarget>("Target");
             Url = xmlNode.GetChildAsString("Url");
@@ -175,6 +195,7 @@ namespace Scada.Web.Plugins.SchBasicComp
             xmlElem.AppendElem("BorderColorOnHover", BorderColorOnHover);
             xmlElem.AppendElem("ForeColorOnHover", ForeColorOnHover);
             xmlElem.AppendElem("UnderlineOnHover", UnderlineOnHover);
+            xmlElem.AppendElem("CnlNums", ScadaUtils.IntCollectionToStr(CnlNums));
             PopupSize.AppendElem(xmlElem, "PopupSize", PopupSize);
             xmlElem.AppendElem("Target", Target);
             xmlElem.AppendElem("Url", Url);

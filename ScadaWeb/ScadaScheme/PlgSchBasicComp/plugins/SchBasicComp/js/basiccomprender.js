@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -168,6 +168,7 @@ scada.scheme.LedRenderer.prototype.updateData = function (component, renderConte
 /********** Link Renderer **********/
 
 scada.scheme.LinkRenderer = function () {
+    this.cnlVals = [];
     scada.scheme.StaticTextRenderer.call(this);
 };
 
@@ -217,10 +218,21 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
 
         if (!renderContext.editMode) {
             spanComp.click(function () {
-                var url = props.Url;
+                let url = "";
 
-                if (props.ViewID > 0 && renderContext.schemeEnv.viewHub) {
-                    url = renderContext.schemeEnv.viewHub.getFullViewUrl(props.ViewID, props.Target === 2 /*Popup*/);
+                if (props.ViewID > 0) {
+                    let viewHub = renderContext.schemeEnv.viewHub;
+                    if (viewHub) {
+                        url = viewHub.getFullViewUrl(props.ViewID, props.Target === 2 /*Popup*/);
+                    }
+                } else {
+                    url = props.Url;
+
+                    // insert input channel values into the address
+                    for (let i = 0, cnlCnt = props.CnlNums.length; i < cnlCnt; i++) {
+                        let cnlVal = thisRenderer.cnlVals[i];
+                        url = url.replace("{" + i + "}", isNaN(cnlVal) ? "" : cnlVal);
+                    }
                 }
 
                 if (url) {
@@ -243,6 +255,19 @@ scada.scheme.LinkRenderer.prototype.createDom = function (component, renderConte
                     console.warn("URL is undefined");
                 }
             });
+        }
+    }
+};
+
+scada.scheme.LinkRenderer.prototype.updateData = function (component, renderContext) {
+    var props = component.props;
+    var cnlCnt = props.CnlNums.length;
+
+    // get the current values of the input channels specified for the link
+    if (cnlCnt > 0) {
+        for (let i = 0; i < cnlCnt; i++) {
+            var cnlDataExt = renderContext.getCnlDataExt(props.CnlNums[i]);
+            this.cnlVals[i] = cnlDataExt.Stat > 0 ? cnlDataExt.Val : NaN;
         }
     }
 };

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Scheme;
@@ -39,7 +39,7 @@ namespace Scada.Web.Plugins
         /// <summary>
         /// Версия плагина
         /// </summary>
-        internal const string PlgVersion = "5.1.0.0";
+        internal const string PlgVersion = "5.1.1.0";
 
         
         /// <summary>
