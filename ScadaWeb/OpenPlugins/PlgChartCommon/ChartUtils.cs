@@ -42,7 +42,7 @@ namespace Scada.Web.Plugins.Chart
         /// <summary>
         /// Версия графиков
         /// </summary>
-        public const string ChartVersion = "5.1.0.0";
+        public const string ChartVersion = "5.1.0.1";
         /// <summary>
         /// Количество графиков, выше которого могут быть проблемы с производительностью
         /// </summary>

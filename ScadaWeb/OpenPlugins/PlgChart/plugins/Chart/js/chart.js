@@ -1386,7 +1386,8 @@ scada.chart.Chart.prototype.buildDom = function () {
 
             var menuHolderHtml = titleConfig.showMenu && menuExists ? "<div class='chart-menu-holder'></div>" : "";
             var titleTextHtml = "<div class='chart-title-text'></div>";
-            var statusHtml = titleConfig.showStatus ? "<div class='chart-status'></div>" : "";
+            var statusHtml = titleConfig.showStatus ?
+                "<div class='chart-status'><span class='chart-status-text'></span></div>" : "";
 
             this._titleJqElem.append(menuHolderHtml + titleTextHtml + statusHtml);
             this._chartJqElem.append(this._titleJqElem);
@@ -1436,7 +1437,7 @@ scada.chart.Chart.prototype.showTitle = function (s) {
 scada.chart.Chart.prototype.showStatus = function (s, opt_error) {
     if (this._titleJqElem) {
         var statusElem = this._titleJqElem.find(".chart-status:first");
-        statusElem.text(s);
+        statusElem.children(".chart-status-text:first").text(s);
 
         if (opt_error) {
             statusElem.addClass("error");
