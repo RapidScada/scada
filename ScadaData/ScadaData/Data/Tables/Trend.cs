@@ -161,7 +161,7 @@ namespace Scada.Data.Tables
             }
             set
             {
-                fileModTime = value;
+                lastFillTime = value;
             }
         }
 
