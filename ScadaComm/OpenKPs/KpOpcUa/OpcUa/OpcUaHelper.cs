@@ -164,8 +164,8 @@ namespace Scada.Comm.Devices.OpcUa
             // create session
             EndpointDescription selectedEndpoint = CoreClientUtils.SelectEndpoint(
                 connectionOptions.ServerUrl, haveAppCertificate, operationTimeout);
-            selectedEndpoint.SecurityMode = connectionOptions.SecurityMode;
-            selectedEndpoint.SecurityPolicyUri = connectionOptions.GetSecurityPolicy();
+            /*selectedEndpoint.SecurityMode = connectionOptions.SecurityMode;
+            selectedEndpoint.SecurityPolicyUri = connectionOptions.GetSecurityPolicy();*/
             EndpointConfiguration endpointConfiguration = EndpointConfiguration.Create(config);
             ConfiguredEndpoint endpoint = new ConfiguredEndpoint(null, selectedEndpoint, endpointConfiguration);
             UserIdentity userIdentity = connectionOptions.AuthenticationMode == AuthenticationMode.Username ?
