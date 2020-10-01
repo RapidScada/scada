@@ -23,7 +23,7 @@
     <!-- The location of the application instance certificate in the Windows certificate store -->
     <ApplicationCertificate>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/app</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/app</StorePath>
 
       <!-- The subject for the certificate 
            Note that subject names are complex structures. Only text that appears here is treated as the CommonName component.
@@ -53,7 +53,7 @@
          specify the certificate for each trusted certification authority. -->
     <TrustedIssuerCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/issuer</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/issuer</StorePath>
     </TrustedIssuerCertificates>
     
     <!-- The list of trusted certificates. 
@@ -72,7 +72,7 @@
          -->
     <TrustedPeerCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/trusted</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/trusted</StorePath>
     </TrustedPeerCertificates>
     
     <!-- Applications exchange Nonces during the CreateSession. This value specifies the length. Must be >= 32 -->
@@ -81,7 +81,7 @@
     <!-- The directory used to store invalid certficates for later review by the administrator. -->
     <RejectedCertificateStore>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/rejected</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/rejected</StorePath>
     </RejectedCertificateStore>
     
     <!-- WARNING: SHA1 signed certficates are by default rejected and should be phased out. -->
@@ -94,13 +94,13 @@
     <!-- Where the User issuer certificates are stored -->
     <UserIssuerCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/issuerUser</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/issuerUser</StorePath>
     </UserIssuerCertificates>
 
     <!-- Where the User trust list is stored-->
     <TrustedUserCertificates>
       <StoreType>Directory</StoreType>
-      <StorePath>%LocalApplicationData%/OPC Foundation/pki/trustedUser</StorePath>
+      <StorePath>%CommonApplicationData%/OPC Foundation/pki/trustedUser</StorePath>
     </TrustedUserCertificates>
 
     <!-- WARNING: The following setting (to automatically accept untrusted certificates) should be used
@@ -233,7 +233,7 @@
   -->
   
   <TraceConfiguration>
-    <OutputFilePath>%LocalApplicationData%/OPC Foundation/Logs/Scada.Comm.Devices.KpOpcUa.log.txt</OutputFilePath>
+    <OutputFilePath>%CommonApplicationData%/OPC Foundation/Logs/Scada.Comm.Devices.KpOpcUa.log.txt</OutputFilePath>
     <DeleteOnLoad>true</DeleteOnLoad>
     <!-- Show Only Errors -->
     <!-- <TraceMasks>1</TraceMasks> -->
