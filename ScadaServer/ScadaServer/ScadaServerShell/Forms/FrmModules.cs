@@ -181,6 +181,7 @@ namespace Scada.Server.Shell.Forms
                     if (File.Exists(moduleItem.FilePath))
                     {
                         ModView modView = environment.GetModuleView(moduleItem.FilePath);
+                        modView.ServerComm = environment.GetServerComm(settings);
                         moduleItem.Descr = CorrectItemDescr(modView.Descr);
                         moduleItem.ModView = modView;
                     }
