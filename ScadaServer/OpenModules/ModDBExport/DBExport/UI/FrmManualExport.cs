@@ -148,6 +148,13 @@ namespace Scada.Server.Modules.DBExport
             gbCurData.Enabled = gbArcData.Enabled = gbEvents.Enabled = 
                 cbDataSource.Items.Count > 0;
             dtpArcDataDate.Value = dtpEventsDate.Value = dtpArcDataTime.Value = DateTime.Today;
+
+            if (ServerComm == null)
+            {
+                btnExportCurData.Enabled = false;
+                btnExportArcData.Enabled = false;
+                btnExportEvents.Enabled = false;
+            }
         }
 
         private void numCurDataCtrlCnlNum_ValueChanged(object sender, EventArgs e)
@@ -190,10 +197,9 @@ namespace Scada.Server.Modules.DBExport
                 ctrlCnlNum = CurDataCtrlCnlNum;
             }
 
-            bool result;
             byte[] cmdData = Encoding.Default.GetBytes(cmdDataStr);
 
-            if (ServerComm.SendBinaryCommand(0, ctrlCnlNum, cmdData, out result))
+            if (ServerComm.SendBinaryCommand(0, ctrlCnlNum, cmdData, out bool result))
                 ScadaUiUtils.ShowInfo(ModPhrases.CmdSentSuccessfully);
             else
                 ScadaUiUtils.ShowError(ServerComm.ErrMsg);
