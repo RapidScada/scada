@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Initializes a new instance of the class. Designed for general configuring.
+        /// Initializes a new instance of the class. Designed for configuring a particular device.
         /// </summary>
         public KpHttpNotifView(int number)
             : base(number)
@@ -103,7 +103,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Gets the prototypes of default device channels.
+        /// Gets the default channel prototypes.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
