@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,11 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpHttpNotif
- * Summary  : Device library user interface
+ * Summary  : Device driver user interface
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.AB;
@@ -32,19 +32,19 @@ using Scada.UI;
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device library user interface
-    /// <para>Пользовательский интерфейс библиотеки КП</para>
+    /// Device driver user interface.
+    /// <para>Пользовательский интерфейс драйвера КП.</para>
     /// </summary>
     public class KpHttpNotifView : KPView
     {
         /// <summary>
-        /// Версия библиотеки КП
+        /// The driver version.
         /// </summary>
-        internal const string KpVersion = "5.0.0.2";
+        internal const string KpVersion = "5.0.1.0";
 
 
         /// <summary>
-        /// Конструктор для общей настройки библиотеки КП
+        /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
         public KpHttpNotifView()
             : this(0)
@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Конструктор для настройки конкретного КП
+        /// Initializes a new instance of the class. Designed for general configuring.
         /// </summary>
         public KpHttpNotifView(int number)
             : base(number)
@@ -62,7 +62,7 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Описание библиотеки КП
+        /// Gets the driver description.
         /// </summary>
         public override string KPDescr
         {
@@ -92,7 +92,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить версию библиотеки КП
+        /// Gets the driver version.
         /// </summary>
         public override string Version
         {
@@ -103,7 +103,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить прототипы каналов КП по умолчанию
+        /// Gets the prototypes of default device channels.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
@@ -133,7 +133,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Получить параметры опроса КП по умолчанию
+        /// Gets the default request parameters.
         /// </summary>
         public override KPReqParams DefaultReqParams
         {
@@ -143,8 +143,9 @@ namespace Scada.Comm.Devices
             }
         }
 
+
         /// <summary>
-        /// Отобразить свойства КП
+        /// Shows the driver properties.
         /// </summary>
         public override void ShowProps()
         {
