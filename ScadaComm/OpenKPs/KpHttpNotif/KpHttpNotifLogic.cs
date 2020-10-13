@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,34 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpHttpNotif
- * Summary  : Device communication logic
+ * Summary  : Device driver communication logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.HttpNotif;
+using Scada.Comm.Devices.HttpNotif.Config;
 using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// Device driver communication logic.
+    /// <para>Логика работы драйвера КП.</para>
     /// </summary>
     public class KpHttpNotifLogic : KPLogic
     {
@@ -101,15 +105,31 @@ namespace Scada.Comm.Devices
         // Кодировка ответа на запрос
         private static readonly Encoding RespEncoding = Encoding.UTF8;
 
-        private AB.AddressBook addressBook; // адресная книга, общая для линии связи
-        private SessStates sessState;       // состояние опроса КП
-        private bool writeSessState;        // вывести состояние опроса КП
-        private ParamString reqTemplate;    // шаблон запроса
-        private char[] respBuf;             // буфер ответа на запрос
+        /// <summary>
+        /// The index of the notification counter tag.
+        /// </summary>
+        private const int NotifCounterTagIndex = 0;
+        /// <summary>
+        /// The displayed lenght of a response content.
+        /// </summary>
+        private const int ResponseDisplayLenght = 100;
+
+        private readonly Stopwatch stopwatch; // measures the time of operations
+        private DeviceConfig deviceConfig;    // the device configuration
+        private AddressBook addressBook;      // the address book shared for the communication line
+        private ParamString requestUri;       // the parametrized request URI
+        private ParamString requestContent;   // the parametrized request content
+        private HttpClient httpClient;        // sends HTTP requests
+        private bool isReady;                 // indicates that the device is ready to send requests
+
+        private SessStates sessState;         // состояние опроса КП
+        private bool writeSessState;          // вывести состояние опроса КП
+        private ParamString reqTemplate;      // шаблон запроса
+        private char[] respBuf;               // буфер ответа на запрос
 
 
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
         public KpHttpNotifLogic(int number)
             : base(number)
@@ -117,7 +137,14 @@ namespace Scada.Comm.Devices
             CanSendCmd = true;
             ConnRequired = false;
 
+            stopwatch = new Stopwatch();
+            deviceConfig = null;
             addressBook = null;
+            requestUri = null;
+            requestContent = null;
+            httpClient = null;
+            isReady = false;
+
             sessState = SessStates.Waiting;
             writeSessState = true;
             reqTemplate = null;
@@ -338,7 +365,113 @@ namespace Scada.Comm.Devices
 
 
         /// <summary>
-        /// Выполнить сеанс опроса КП
+        /// Initializes the device tags.
+        /// </summary>
+        private void InitDeviceTags()
+        {
+
+        }
+
+        /// <summary>
+        /// Writes the ready flag to the log.
+        /// </summary>
+        private void WriteReadyFlag()
+        {
+            if (isReady)
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Ожидание команд..." :
+                    "Waiting for commands...");
+            }
+            else
+            {
+                WriteToLog(Localization.UseRussian ?
+                    "Отправка уведомлений невозможна" :
+                    "Sending notifocations is impossible");
+            }
+        }
+
+        /// <summary>
+        /// Sends a notification with the specified arguments.
+        /// </summary>
+        private bool SendNotification(List<KeyValuePair<string, string>> args)
+        {
+            try
+            {
+                // initialize the HTTP client
+                if (httpClient == null)
+                {
+                    httpClient = new HttpClient();
+
+                    foreach (Header header in deviceConfig.Headers)
+                    {
+                        httpClient.DefaultRequestHeaders.Add(header.Name, header.Value);
+                    }
+                }
+
+                // create request
+                requestUri.ResetParams();
+                requestContent.ResetParams();
+
+                foreach (var arg in args)
+                {
+                    requestUri.SetParam(arg.Key, arg.Value, EscapingMethod.EncodeUrl);
+                    requestContent.SetParam(arg.Key, arg.Value, deviceConfig.ContentEscaping);
+                }
+
+                HttpRequestMessage request = new HttpRequestMessage
+                {
+                    Method = deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get,
+                    RequestUri = new Uri(requestUri.ToString()),
+                    Content = new StringContent(requestContent.ToString(), Encoding.UTF8, deviceConfig.ContentType)
+                };
+
+                // send request and receive response
+                stopwatch.Restart();
+                HttpResponseMessage response = httpClient.SendAsync(request).Result;
+                HttpStatusCode responseStatus = response.StatusCode;
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+                stopwatch.Stop();
+
+                // output response to log
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ответ получен за {0} мс. Статус: {1} ({2})" :
+                    "Response received in {0} ms. Status: {1} ({2})",
+                    stopwatch.ElapsedMilliseconds, (int)responseStatus, responseStatus));
+
+                if (responseContent.Length > 0)
+                {
+                    WriteToLog(Localization.UseRussian ?
+                        "Содержимое ответа:" :
+                        "Response content:");
+                    WriteToLog(responseContent.Length <= ResponseDisplayLenght ?
+                        responseContent :
+                        responseContent.Substring(0, ResponseDisplayLenght));
+                }
+
+                IncCurData(NotifCounterTagIndex, 1); // increase notification counter
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WriteToLog((Localization.UseRussian ?
+                    "Ошибка при отправке уведомления: " :
+                    "Error sending notification: ") + ex);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Converts the tag data to string.
+        /// </summary>
+        protected override string ConvertTagDataToStr(KPTag kpTag, SrezTableLight.CnlData tagData)
+        {
+            return base.ConvertTagDataToStr(kpTag, tagData);
+        }
+
+
+        /// <summary>
+        /// Performs a communication session.
         /// </summary>
         public override void Session()
         {
@@ -353,7 +486,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Отправить команду ТУ
+        /// Sends the telecontrol command.
         /// </summary>
         public override void SendCmd(Command cmd)
         {
@@ -394,10 +527,46 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Выполнить действия при запуске линии связи
+        /// Performs actions when starting a communication line.
         /// </summary>
         public override void OnCommLineStart()
         {
+            // load device configuration
+            isReady = false;
+            deviceConfig = new DeviceConfig();
+            string fileName = DeviceConfig.GetFileName(AppDirs.ConfigDir, Number);
+            string errMsg;
+
+            if (File.Exists(fileName))
+            {
+                if (!deviceConfig.Load(fileName, out errMsg))
+                    WriteToLog(errMsg);
+            }
+            else
+            {
+                // get URI from command line for backward compatibility
+                deviceConfig.Uri = ReqParams.CmdLine;
+            }
+
+            // initialize variables if the configuration is valid
+            if (deviceConfig.Validate(out errMsg))
+            {
+                requestUri = new ParamString(deviceConfig.Uri);
+                requestContent = new ParamString(deviceConfig.Content);
+
+                addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
+                SetCurData(NotifCounterTagIndex, 0, 1); // reset notification counter
+                isReady = true;
+            }
+            else
+            {
+                WriteToLog(errMsg);
+            }
+
+            if (!isReady)
+                WriteToLog(CommPhrases.NormalKpExecImpossible);
+
+            /*
             // получение адресной книги
             addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
             // создание шаблона запроса
@@ -406,6 +575,7 @@ namespace Scada.Comm.Devices
             SetCurData(0, 0, 1);
             // установка состояния работы КП
             WorkState = sessState == SessStates.FatalError ? WorkStates.Error : WorkStates.Normal;
+            */
         }
     }
 }

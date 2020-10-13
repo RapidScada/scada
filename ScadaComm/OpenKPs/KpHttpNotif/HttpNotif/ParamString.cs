@@ -155,6 +155,14 @@ namespace Scada.Comm.Devices.HttpNotif
         }
 
         /// <summary>
+        /// Resets the parameter values.
+        /// </summary>
+        public void ResetParams()
+        {
+
+        }
+
+        /// <summary>
         /// Установить значение параметра
         /// </summary>
         public void SetParam(string paramName, string paramVal)
@@ -170,6 +178,14 @@ namespace Scada.Comm.Devices.HttpNotif
                         StringParts[index] = paramVal;
                 }
             }
+        }
+
+        /// <summary>
+        /// Sets the parameter value escaped by the specified method.
+        /// </summary>
+        public void SetParam(string name, string value, EscapingMethod escapingMethod)
+        {
+
         }
 
         /// <summary>
