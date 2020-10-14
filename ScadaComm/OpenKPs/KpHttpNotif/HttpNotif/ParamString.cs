@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,134 +16,114 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpHttpNotif
- * Summary  : Parameterized string
+ * Summary  : Represents a parameterized string
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using System.Collections.Generic;
+using System.Web;
 
 namespace Scada.Comm.Devices.HttpNotif
 {
     /// <summary>
-    /// Parameterized string
-    /// <para>Параметризованная строка</para>
+    /// Represents a parameterized string.
+    /// <para>Представляет параметризованную строку.</para>
     /// </summary>
     internal class ParamString
     {
         /// <summary>
-        /// Параметр строки
+        /// Represents a string parameter.
         /// </summary>
         public class Param
         {
             /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Param()
-                : this("")
-            {
-            }
-            /// <summary>
-            /// Конструктор
+            /// Initializes a new instance of the class.
             /// </summary>
             public Param(string name)
             {
                 Name = name;
-                PartIndexes = new List<int>();
+                PartIndices = new List<int>();
             }
 
             /// <summary>
-            /// Получить или установить наименование
+            /// Gets the parameter name.
             /// </summary>
-            public string Name { get; set; }
+            public string Name { get; }
             /// <summary>
-            /// Получить индексы параметра среди частей строки
+            /// Gets the parameter indices among the parts of a string.
             /// </summary>
-            public List<int> PartIndexes { get; protected set; }
+            public List<int> PartIndices { get; }
         }
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание объекта без параметров
+        /// Initializes a new instance of the class.
         /// </summary>
-        protected ParamString()
+        public ParamString(string sourceString)
         {
-        }
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        public ParamString(string srcString)
-        {
-            SrcString = srcString;
-            Parse();
+            Parse(sourceString);
         }
 
 
         /// <summary>
-        /// Получить исходную строку
+        /// Gets the string parts.
         /// </summary>
-        public string SrcString { get; protected set; }
+        public string[] StringParts { get; private set; }
 
         /// <summary>
-        /// Получить части строки
+        /// Gets the parameters accessed by name.
         /// </summary>
-        public string[] StringParts { get; protected set; }
-
-        /// <summary>
-        /// Получить словарь параметров, ключ - имя параметра
-        /// </summary>
-        public Dictionary<string, Param> Params { get; protected set; }
+        public Dictionary<string, Param> Params { get; private set; }
 
 
         /// <summary>
-        /// Выполнить разбор строки
+        /// Parses the specified string, creates string parts and parameters.
         /// </summary>
-        protected void Parse()
+        private void Parse(string sourceString)
         {
             List<string> stringParts = new List<string>();
             Dictionary<string, Param> stringParams = new Dictionary<string, Param>();
 
-            // разбиение строки на части, разделяемые скобками { и }
-            if (!string.IsNullOrEmpty(SrcString))
+            // split the string into parts separated by curly braces { and }
+            if (!string.IsNullOrEmpty(sourceString))
             {
                 int ind = 0;
-                int len = SrcString.Length;
+                int len = sourceString.Length;
 
                 while (ind < len)
                 {
-                    int braceInd1 = SrcString.IndexOf('{', ind);
+                    int braceInd1 = sourceString.IndexOf('{', ind);
                     if (braceInd1 < 0)
                     {
-                        stringParts.Add(SrcString.Substring(ind));
+                        stringParts.Add(sourceString.Substring(ind));
                         break;
                     }
                     else
                     {
-                        int braceInd2 = SrcString.IndexOf('}', braceInd1 + 1);
+                        int braceInd2 = sourceString.IndexOf('}', braceInd1 + 1);
                         int paramNameLen = braceInd2 - braceInd1 - 1;
 
                         if (paramNameLen <= 0)
                         {
-                            stringParts.Add(SrcString.Substring(ind));
+                            stringParts.Add(sourceString.Substring(ind));
                             break;
                         }
                         else
                         {
-                            string paramName = SrcString.Substring(braceInd1 + 1, paramNameLen);
-                            Param param;
+                            string paramName = sourceString.Substring(braceInd1 + 1, paramNameLen);
 
-                            if (!stringParams.TryGetValue(paramName, out param))
+                            if (!stringParams.TryGetValue(paramName, out Param param))
                             {
                                 param = new Param(paramName);
                                 stringParams.Add(paramName, param);
                             }
 
-                            stringParts.Add(SrcString.Substring(ind, braceInd1 - ind));
-                            param.PartIndexes.Add(stringParts.Count);
-                            stringParts.Add("");
+                            stringParts.Add(sourceString.Substring(ind, braceInd1 - ind));
+                            param.PartIndices.Add(stringParts.Count);
+                            stringParts.Add(""); // empty parameter value
                             ind = braceInd2 + 1;
                         }
                     }
@@ -159,25 +139,21 @@ namespace Scada.Comm.Devices.HttpNotif
         /// </summary>
         public void ResetParams()
         {
-
+            foreach (Param param in Params.Values)
+            {
+                foreach (int index in param.PartIndices)
+                {
+                    StringParts[index] = "";
+                }
+            }
         }
 
         /// <summary>
-        /// Установить значение параметра
+        /// Sets the parameter value.
         /// </summary>
-        public void SetParam(string paramName, string paramVal)
+        public void SetParam(string name, string value)
         {
-            Param param;
-            if (Params.TryGetValue(paramName, out param))
-            {
-                int partsLen = StringParts.Length;
-
-                foreach (int index in param.PartIndexes)
-                {
-                    if (0 <= index && index < partsLen)
-                        StringParts[index] = paramVal;
-                }
-            }
+            SetParam(name, value, EscapingMethod.None);
         }
 
         /// <summary>
@@ -185,11 +161,22 @@ namespace Scada.Comm.Devices.HttpNotif
         /// </summary>
         public void SetParam(string name, string value, EscapingMethod escapingMethod)
         {
+            if (Params.TryGetValue(name, out Param param))
+            {
+                if (escapingMethod == EscapingMethod.EncodeUrl)
+                    value = HttpUtility.UrlEncode(value); // or WebUtility.UrlEncode or Uri.EscapeDataString
+                else if (escapingMethod == EscapingMethod.EncodeUrl)
+                    value = HttpUtility.JavaScriptStringEncode(value, false);
 
+                foreach (int index in param.PartIndices)
+                {
+                    StringParts[index] = value;
+                }
+            }
         }
 
         /// <summary>
-        /// Получить строковое представление объекта
+        /// Returns a string that represents the current object.
         /// </summary>
         public override string ToString()
         {

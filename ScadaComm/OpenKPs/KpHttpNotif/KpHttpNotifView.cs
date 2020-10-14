@@ -77,7 +77,11 @@ namespace Scada.Comm.Devices
                     "Примеры текста команды:\n" +
                     "имя_группы;сообщение\n" +
                     "имя_контакта;сообщение\n" +
-                    "эл_почта;сообщение" :
+                    "эл_почта;сообщение\n\n" +
+                    "2 (бинарная) - отправка произвольного запроса.\n\n" +
+                    "Текст команды содержит аргументы:\n" +
+                    "arg1=value1\\n\n" +
+                    "arg2=value2\n" :
 
                     "Sending notifications via HTTP requests.\n\n" +
                     "Command line parameter:\n" +
@@ -87,7 +91,12 @@ namespace Scada.Comm.Devices
                     "Command text examples:\n" +
                     "group_name;message\n" +
                     "contact_name;message\n" +
-                    "email;message";
+                    "email;message\n\n" +
+                    "2 (binary) - send custom request.\n\n" +
+                    "Command text contains arguments:\n" +
+                    "arg1=value1\\n\n" +
+                    "arg2=value2\n";
+
             }
         }
 

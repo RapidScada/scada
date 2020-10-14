@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Data.Configuration;
 using System;
+using System.Collections.Generic;
 using System.Text;
 
 namespace Scada.Data.Models
@@ -103,6 +104,29 @@ namespace Scada.Data.Models
         public string GetCmdDataStr()
         {
             return CmdDataToStr(CmdData);
+        }
+
+        /// <summary>
+        /// Retrieves command arguments from the command data.
+        /// </summary>
+        public Dictionary<string, string> GetCmdDataArgs()
+        {
+            Dictionary<string, string> args = new Dictionary<string, string>();
+            string[] lines = CmdDataToStr(CmdData).Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+            foreach (string line in lines)
+            {
+                int operIdx = line.IndexOf('=');
+
+                if (operIdx > 0)
+                {
+                    string name = line.Substring(0, operIdx).Trim();
+                    if (name != "")
+                        args[name] = line.Substring(operIdx + 1).Trim();
+                }
+            }
+
+            return args;
         }
 
         /// <summary>

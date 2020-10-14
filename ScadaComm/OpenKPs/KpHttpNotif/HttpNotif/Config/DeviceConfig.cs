@@ -175,15 +175,6 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         }
 
         /// <summary>
-        /// Validates the configuration.
-        /// </summary>
-        public bool Validate(out string errMsg)
-        {
-            errMsg = "";
-            return true;
-        }
-
-        /// <summary>
         /// Gets the configuration file name.
         /// </summary>
         public static string GetFileName(string configDir, int kpNum)

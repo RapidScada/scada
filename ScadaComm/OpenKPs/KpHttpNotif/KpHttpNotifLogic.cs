@@ -48,67 +48,34 @@ namespace Scada.Comm.Devices
     public class KpHttpNotifLogic : KPLogic
     {
         /// <summary>
-        /// Состояния опроса КП
+        /// The tag indices.
         /// </summary>
-        private enum SessStates
+        private static class TagIndex
         {
-            /// <summary>
-            /// Фатальная ошибка
-            /// </summary>
-            FatalError,
-            /// <summary>
-            /// Ожидание команд
-            /// </summary>
-            Waiting
+            public const int NotifCounter = 0;
+            public const int ResponseStatus = 1;
         }
 
         /// <summary>
-        /// Отправляемое уведомление
+        /// The predefined parameter names.
         /// </summary>
-        private class Notification
+        private static class ParamName
         {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Notification()
-            {
-                PhoneNumbers = new List<string>();
-                Emails = new List<string>();
-                Text = "";
-            }
-
-            /// <summary>
-            /// Получить телефонные номера
-            /// </summary>
-            public List<string> PhoneNumbers { get; private set; }
-            /// <summary>
-            /// Получить адреса эл. почты
-            /// </summary>
-            public List<string> Emails { get; private set; }
-            /// <summary>
-            /// Получить или установить текст
-            /// </summary>
-            public string Text { get; set; }
+            public const string Address = "address";
+            public const string Phone = "phone";
+            public const string Email = "email";
+            public const string Text = "text";
         }
 
 
-        // Имена переменных в командной строке для формирования запроса
-        private const string PhoneVarName = "phone";
-        private const string EmailVarName = "email";
-        private const string TextVarName = "text";
-        // Разделитель адресов в запросе
-        private const string ReqAddrSep = ";";
-        // Разделитель адресов в команде ТУ
-        private const string CmdAddrSep = ";";
-        // Длина буфера ответа на запрос
-        private const int RespBufLen = 100;
-        // Кодировка ответа на запрос
-        private static readonly Encoding RespEncoding = Encoding.UTF8;
-
         /// <summary>
-        /// The index of the notification counter tag.
+        /// The parameter separator of the 1st command.
         /// </summary>
-        private const int NotifCounterTagIndex = 0;
+        private const char CmdSep = ';';
+        /// <summary>
+        /// The separator for parts of an address.
+        /// </summary>
+        private const string AddrSep = ";";
         /// <summary>
         /// The displayed lenght of a response content.
         /// </summary>
@@ -121,11 +88,7 @@ namespace Scada.Comm.Devices
         private ParamString requestContent;   // the parametrized request content
         private HttpClient httpClient;        // sends HTTP requests
         private bool isReady;                 // indicates that the device is ready to send requests
-
-        private SessStates sessState;         // состояние опроса КП
-        private bool writeSessState;          // вывести состояние опроса КП
-        private ParamString reqTemplate;      // шаблон запроса
-        private char[] respBuf;               // буфер ответа на запрос
+        private bool flagLoggingRequired;     // logging of the ready flag is required
 
 
         /// <summary>
@@ -144,223 +107,9 @@ namespace Scada.Comm.Devices
             requestContent = null;
             httpClient = null;
             isReady = false;
+            flagLoggingRequired = false;
 
-            sessState = SessStates.Waiting;
-            writeSessState = true;
-            reqTemplate = null;
-            respBuf = new char[RespBufLen];
-
-            InitKPTags(new List<KPTag>()
-            {
-                new KPTag(1, Localization.UseRussian ? "Отправлено уведомлений" : "Sent notifications")
-            });
-        }
-
-
-        /// <summary>
-        /// Создать шаблон запроса
-        /// </summary>
-        private void CreateReqTemplate()
-        {
-            try
-            {
-                if (ReqParams.CmdLine == "")
-                {
-                    throw new ScadaException(Localization.UseRussian ?
-                        "Командная строка пуста." :
-                        "The command line is empty.");
-                }
-                else
-                {
-                    reqTemplate = new ParamString(ReqParams.CmdLine);
-                    ValidateReqTemplate();
-                    sessState = SessStates.Waiting;
-                }
-            }
-            catch (Exception ex)
-            {
-                sessState = SessStates.FatalError;
-                reqTemplate = null;
-                WriteToLog((Localization.UseRussian ?
-                    "Не удалось получить HTTP-запрос из командной строки КП: " :
-                    "Unable to get HTTP request from the device command line: ") + ex.Message);
-            }
-
-            writeSessState = true;
-        }
-
-        /// <summary>
-        /// Проверить шаблон запроса
-        /// </summary>
-        private void ValidateReqTemplate()
-        {
-            string reqUrl = reqTemplate.ToString();
-            WebRequest req = WebRequest.Create(reqUrl);
-
-            if (!(req is HttpWebRequest))
-            {
-                throw new ScadaException(Localization.UseRussian ?
-                    "Некорректный HTTP-запрос." :
-                    "Incorrect HTTP request.");
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать состояние опроса КП в строку
-        /// </summary>
-        private string SessStateToStr()
-        {
-            switch (sessState)
-            {
-                case SessStates.FatalError:
-                    return Localization.UseRussian ?
-                        "Отправка уведомлений невозможна" :
-                        "Sending notifocations is impossible";
-                case SessStates.Waiting:
-                    return Localization.UseRussian ?
-                        "Ожидание команд..." :
-                        "Waiting for commands...";
-                default:
-                    return "";
-            }
-        }
-
-        /// <summary>
-        /// Попытаться получить уведомление из команды ТУ
-        /// </summary>
-        private bool TryGetNotif(Command cmd, out Notification notif)
-        {
-            string cmdDataStr = cmd.GetCmdDataStr();
-            int sepInd = cmdDataStr.IndexOf(CmdAddrSep);
-
-            if (sepInd >= 0)
-            {
-                string recipient = cmdDataStr.Substring(0, sepInd);
-                string text = cmdDataStr.Substring(sepInd + 1);
-
-                notif = new Notification() { Text = text };
-
-                if (addressBook == null)
-                {
-                    // добавление данных получателя, явно указанных в команде ТУ
-                    notif.PhoneNumbers.Add(recipient);
-                    notif.Emails.Add(recipient);
-                }
-                else
-                {
-                    // поиск адресов получателей в адресной книге
-                    AB.AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
-                    if (contactGroup == null)
-                    {
-                        AB.AddressBook.Contact contact = addressBook.FindContact(recipient);
-                        if (contact == null)
-                        {
-                            // добавление данных получателя, явно указанных в команде ТУ
-                            notif.PhoneNumbers.Add(recipient);
-                            notif.Emails.Add(recipient);
-                        }
-                        else
-                        {
-                            // добавление данных получателя из контакта
-                            notif.PhoneNumbers.AddRange(contact.PhoneNumbers);
-                            notif.Emails.AddRange(contact.Emails);
-                        }
-                    }
-                    else
-                    {
-                        // добавление данных получателей из группы контактов
-                        foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
-                        {
-                            notif.PhoneNumbers.AddRange(contact.PhoneNumbers);
-                            notif.Emails.AddRange(contact.Emails);
-                        }
-                    }
-                }
-
-                return true;
-            }
-            else
-            {
-                notif = null;
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Отправить уведомление
-        /// </summary>
-        private bool SendNotif(Notification notif)
-        {
-            try
-            {
-                // получение адреса запроса
-                // использовать WebUtility.UrlEncode в .NET 4.5
-                reqTemplate.SetParam(PhoneVarName, Uri.EscapeDataString(string.Join(ReqAddrSep, notif.PhoneNumbers)));
-                reqTemplate.SetParam(EmailVarName, Uri.EscapeDataString(string.Join(ReqAddrSep, notif.Emails)));
-                reqTemplate.SetParam(TextVarName, Uri.EscapeDataString(notif.Text));
-                string reqUrl = reqTemplate.ToString();
-
-                // создание запроса
-                WebRequest req = WebRequest.Create(reqUrl);
-                req.Timeout = ReqParams.Timeout;
-
-                // отправка запроса и приём ответа
-                WriteToLog(Localization.UseRussian ?
-                    "Отправка уведомления. Запрос: " :
-                    "Send notification. Request: ");
-                WriteToLog(reqUrl);
-
-                using (WebResponse resp = req.GetResponse())
-                {
-                    using (Stream respStream = resp.GetResponseStream())
-                    {
-                        // чтение данных из ответа
-                        using (StreamReader reader = new StreamReader(respStream, RespEncoding))
-                        {
-                            int readCnt = reader.Read(respBuf, 0, RespBufLen);
-
-                            if (readCnt > 0)
-                            {
-                                string respString = new string(respBuf, 0, readCnt);
-                                WriteToLog(Localization.UseRussian ?
-                                    "Полученный ответ:" :
-                                    "Received response:");
-                                WriteToLog(respString);
-                            }
-                            else
-                            {
-                                WriteToLog(Localization.UseRussian ?
-                                    "Ответ не получен" :
-                                    "No response");
-                            }
-                        }
-                    }
-                }
-
-                IncCurData(0, 1); // увеличение счётчика уведомлений
-                return true;
-            }
-            catch (Exception ex)
-            {
-                WriteToLog((Localization.UseRussian ?
-                    "Ошибка при отправке уведомления: " :
-                    "Error sending notification: ") + ex.Message);
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать данные тега КП в строку
-        /// </summary>
-        protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
-        {
-            if (tagData.Stat > 0)
-            {
-                if (signal == 1)
-                    return tagData.Val.ToString("N0");
-            }
-
-            return base.ConvertTagDataToStr(signal, tagData);
+            InitDeviceTags();
         }
 
 
@@ -369,7 +118,53 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void InitDeviceTags()
         {
+            if (Localization.UseRussian)
+            {
+                InitKPTags(new List<KPTag>()
+                {
+                    new KPTag(1, "Отправлено уведомлений"),
+                    new KPTag(2, "Статус ответа")
+                });
+            }
+            else
+            {
+                InitKPTags(new List<KPTag>()
+                {
+                    new KPTag(1, "Notifications sent"),
+                    new KPTag(2, "Response status")
+                });
+            }
+        }
 
+        /// <summary>
+        /// Validates the configuration.
+        /// </summary>
+        private bool ValidateConfig(DeviceConfig deviceConfig, out string errMsg)
+        {
+            if (string.IsNullOrEmpty(deviceConfig.Uri))
+            {
+                errMsg = Localization.UseRussian ? 
+                    "Ошибка: URI не может быть пустым." :
+                    "Error: URI must not be empty.";
+                return false;
+            }
+            else
+            {
+                try
+                {
+                    Uri uri = new Uri(deviceConfig.Uri);
+                }
+                catch
+                {
+                    errMsg = Localization.UseRussian ?
+                        "Ошибка: некорректный URI" :
+                        "Error: invalid URI.";
+                    return false;
+                }
+            }
+
+            errMsg = "";
+            return true;
         }
 
         /// <summary>
@@ -379,22 +174,112 @@ namespace Scada.Comm.Devices
         {
             if (isReady)
             {
-                WriteToLog(Localization.UseRussian ?
-                    "Ожидание команд..." :
-                    "Waiting for commands...");
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0} Ожидание команд..." :
+                    "{0} Waiting for commands...", Caption));
             }
             else
             {
-                WriteToLog(Localization.UseRussian ?
-                    "Отправка уведомлений невозможна" :
-                    "Sending notifocations is impossible");
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0} Отправка уведомлений невозможна" :
+                    "{0} Sending notifications is impossible", Caption));
+            }
+        }
+
+        /// <summary>
+        /// Gets notification arguments from the command.
+        /// </summary>
+        private bool GetArguments(Command cmd, out Dictionary<string, string> args)
+        {
+            if (cmd.CmdNum == 1)
+            {
+                string cmdDataStr = cmd.GetCmdDataStr();
+                int sepInd = cmdDataStr.IndexOf(CmdSep);
+
+                if (sepInd >= 0)
+                {
+                    args = new Dictionary<string, string>
+                    {
+                        { ParamName.Address, cmdDataStr.Substring(0, sepInd) },
+                        { ParamName.Text, cmdDataStr.Substring(sepInd + 1) }
+                    };
+                }
+                else
+                {
+                    args = null;
+                }
+            }
+            else
+            {
+                args = cmd.GetCmdDataArgs();
+            }
+
+            if (args == null)
+            {
+                return false;
+            }
+            else
+            {
+                AddContactDetails(args);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Adds the contact phones and emails.
+        /// </summary>
+        private void AddContactDetails(Dictionary<string, string> args)
+        {
+            if (args.TryGetValue(ParamName.Address, out string address) &&
+                !(args.ContainsKey(ParamName.Phone) && args.ContainsKey(ParamName.Email)))
+            {
+                List<string> phoneNumbers = new List<string>();
+                List<string> emails = new List<string>();
+
+                if (addressBook == null)
+                {
+                    // add the known address as phone number and email
+                    phoneNumbers.Add(address);
+                    emails.Add(address);
+                }
+                else
+                {
+                    // search in the address book
+                    if (addressBook.FindContactGroup(address) is AddressBook.ContactGroup contactGroup)
+                    {
+                        // add all contacts from the group
+                        foreach (AddressBook.Contact contact in contactGroup.Contacts)
+                        {
+                            phoneNumbers.AddRange(contact.PhoneNumbers);
+                            emails.AddRange(contact.Emails);
+                        }
+                    }
+                    else if (addressBook.FindContact(address) is AddressBook.Contact contact)
+                    {
+                        // add the contact phone numbers and emails
+                        phoneNumbers.AddRange(contact.PhoneNumbers);
+                        emails.AddRange(contact.Emails);
+                    }
+                    else
+                    {
+                        // add the known address as phone number and email
+                        phoneNumbers.Add(address);
+                        emails.Add(address);
+                    }
+                }
+
+                if (!args.ContainsKey(ParamName.Phone))
+                    args.Add(ParamName.Phone, string.Join(AddrSep, phoneNumbers));
+
+                if (!args.ContainsKey(ParamName.Email))
+                    args.Add(ParamName.Email, string.Join(AddrSep, emails));
             }
         }
 
         /// <summary>
         /// Sends a notification with the specified arguments.
         /// </summary>
-        private bool SendNotification(List<KeyValuePair<string, string>> args)
+        private bool SendNotification(Dictionary<string, string> args)
         {
             try
             {
@@ -427,6 +312,11 @@ namespace Scada.Comm.Devices
                 };
 
                 // send request and receive response
+                WriteToLog(Localization.UseRussian ?
+                    "Отправка запроса:" :
+                    "Send request:");
+                WriteToLog(request.RequestUri.ToString());
+
                 stopwatch.Restart();
                 HttpResponseMessage response = httpClient.SendAsync(request).Result;
                 HttpStatusCode responseStatus = response.StatusCode;
@@ -449,7 +339,10 @@ namespace Scada.Comm.Devices
                         responseContent.Substring(0, ResponseDisplayLenght));
                 }
 
-                IncCurData(NotifCounterTagIndex, 1); // increase notification counter
+                // update tag values
+                IncCurData(TagIndex.NotifCounter, 1);
+                SetCurData(TagIndex.ResponseStatus, (int)responseStatus, 1);
+
                 return true;
             }
             catch (Exception ex)
@@ -457,6 +350,7 @@ namespace Scada.Comm.Devices
                 WriteToLog((Localization.UseRussian ?
                     "Ошибка при отправке уведомления: " :
                     "Error sending notification: ") + ex);
+                InvalidateCurData(TagIndex.ResponseStatus, 1);
                 return false;
             }
         }
@@ -466,6 +360,14 @@ namespace Scada.Comm.Devices
         /// </summary>
         protected override string ConvertTagDataToStr(KPTag kpTag, SrezTableLight.CnlData tagData)
         {
+            if (tagData.Stat > 0)
+            {
+                if (kpTag.Index == TagIndex.NotifCounter)
+                    return tagData.Val.ToString("N0");
+                else if (kpTag.Index == TagIndex.ResponseStatus)
+                    return tagData.Val.ToString("N0") + " (" + (HttpStatusCode)tagData.Val + ")";
+            }
+
             return base.ConvertTagDataToStr(kpTag, tagData);
         }
 
@@ -475,11 +377,11 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void Session()
         {
-            if (writeSessState)
+            if (flagLoggingRequired)
             {
-                writeSessState = false;
+                flagLoggingRequired = false;
                 WriteToLog("");
-                WriteToLog(SessStateToStr());
+                WriteReadyFlag();
             }
 
             Thread.Sleep(ScadaUtils.ThreadDelay);
@@ -493,22 +395,20 @@ namespace Scada.Comm.Devices
             base.SendCmd(cmd);
             lastCommSucc = false;
 
-            if (sessState == SessStates.FatalError)
+            if (isReady)
             {
-                WriteToLog(SessStateToStr());
-            }
-            else
-            {
-                if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
+                if ((cmd.CmdNum == 1 || cmd.CmdNum == 2) && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    Notification notif;
-                    if (TryGetNotif(cmd, out notif))
+                    if (GetArguments(cmd, out Dictionary<string, string> args))
                     {
-                        if (SendNotif(notif))
-                            lastCommSucc = true;
+                        int tryNum = 0;
 
-                        // задержка позволяет ограничить скорость отправки уведомлений
-                        Thread.Sleep(ReqParams.Delay);
+                        while (RequestNeeded(ref tryNum))
+                        {
+                            lastCommSucc = SendNotification(args);
+                            FinishRequest();
+                            tryNum++;
+                        }
                     }
                     else
                     {
@@ -520,7 +420,11 @@ namespace Scada.Comm.Devices
                     WriteToLog(CommPhrases.IllegalCommand);
                 }
 
-                writeSessState = true;
+                flagLoggingRequired = true;
+            }
+            else
+            {
+                WriteReadyFlag();
             }
 
             CalcCmdStats();
@@ -531,8 +435,10 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void OnCommLineStart()
         {
-            // load device configuration
             isReady = false;
+            flagLoggingRequired = true;
+
+            // load device configuration
             deviceConfig = new DeviceConfig();
             string fileName = DeviceConfig.GetFileName(AppDirs.ConfigDir, Number);
             string errMsg;
@@ -549,13 +455,13 @@ namespace Scada.Comm.Devices
             }
 
             // initialize variables if the configuration is valid
-            if (deviceConfig.Validate(out errMsg))
+            if (ValidateConfig(deviceConfig, out errMsg))
             {
                 requestUri = new ParamString(deviceConfig.Uri);
                 requestContent = new ParamString(deviceConfig.Content);
 
                 addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
-                SetCurData(NotifCounterTagIndex, 0, 1); // reset notification counter
+                SetCurData(TagIndex.NotifCounter, 0, 1); // reset notification counter
                 isReady = true;
             }
             else
@@ -565,17 +471,6 @@ namespace Scada.Comm.Devices
 
             if (!isReady)
                 WriteToLog(CommPhrases.NormalKpExecImpossible);
-
-            /*
-            // получение адресной книги
-            addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
-            // создание шаблона запроса
-            CreateReqTemplate();
-            // сброс счётчика уведомлений
-            SetCurData(0, 0, 1);
-            // установка состояния работы КП
-            WorkState = sessState == SessStates.FatalError ? WorkStates.Error : WorkStates.Normal;
-            */
         }
     }
 }
