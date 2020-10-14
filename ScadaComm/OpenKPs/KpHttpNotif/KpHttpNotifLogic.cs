@@ -35,7 +35,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Net;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 
@@ -48,7 +47,7 @@ namespace Scada.Comm.Devices
     public class KpHttpNotifLogic : KPLogic
     {
         /// <summary>
-        /// The tag indices.
+        /// Specifies the tag indices.
         /// </summary>
         private static class TagIndex
         {
@@ -57,7 +56,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// The predefined parameter names.
+        /// Specifies the predefined parameter names.
         /// </summary>
         private static class ParamName
         {
@@ -143,9 +142,9 @@ namespace Scada.Comm.Devices
         {
             if (string.IsNullOrEmpty(deviceConfig.Uri))
             {
-                errMsg = Localization.UseRussian ? 
-                    "Ошибка: URI не может быть пустым." :
-                    "Error: URI must not be empty.";
+                errMsg = string.Format(Localization.UseRussian ? 
+                    "Ошибка: {0}: URI не может быть пустым." :
+                    "Error: {0}: URI must not be empty.", Caption);
                 return false;
             }
             else
@@ -156,9 +155,9 @@ namespace Scada.Comm.Devices
                 }
                 catch
                 {
-                    errMsg = Localization.UseRussian ?
-                        "Ошибка: некорректный URI" :
-                        "Error: invalid URI.";
+                    errMsg = string.Format(Localization.UseRussian ?
+                        "Ошибка: {0}: некорректный URI" :
+                        "Error: {0}: invalid URI.", Caption);
                     return false;
                 }
             }
@@ -175,14 +174,14 @@ namespace Scada.Comm.Devices
             if (isReady)
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
-                    "{0} Ожидание команд..." :
-                    "{0} Waiting for commands...", Caption));
+                    "{0} ожидает команд..." :
+                    "{0} is waiting for commands...", Caption));
             }
             else
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
-                    "{0} Отправка уведомлений невозможна" :
-                    "{0} Sending notifications is impossible", Caption));
+                    "Ошибка: {0} не может отправлять уведомления" :
+                    "Error: {0} unable to send notifications", Caption));
             }
         }
 
@@ -304,12 +303,16 @@ namespace Scada.Comm.Devices
                     requestContent.SetParam(arg.Key, arg.Value, deviceConfig.ContentEscaping);
                 }
 
-                HttpRequestMessage request = new HttpRequestMessage
+                HttpRequestMessage request = new HttpRequestMessage(
+                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get,
+                    new Uri(requestUri.ToString()));
+
+                if (deviceConfig.Method == RequestMethod.Post)
                 {
-                    Method = deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get,
-                    RequestUri = new Uri(requestUri.ToString()),
-                    Content = new StringContent(requestContent.ToString(), Encoding.UTF8, deviceConfig.ContentType)
-                };
+                    request.Content = string.IsNullOrEmpty(deviceConfig.ContentType) ?
+                        new StringContent(requestContent.ToString(), Encoding.UTF8) :
+                        new StringContent(requestContent.ToString(), Encoding.UTF8, deviceConfig.ContentType);
+                }
 
                 // send request and receive response
                 WriteToLog(Localization.UseRussian ?
@@ -334,9 +337,16 @@ namespace Scada.Comm.Devices
                     WriteToLog(Localization.UseRussian ?
                         "Содержимое ответа:" :
                         "Response content:");
-                    WriteToLog(responseContent.Length <= ResponseDisplayLenght ?
-                        responseContent :
-                        responseContent.Substring(0, ResponseDisplayLenght));
+
+                    if (responseContent.Length <= ResponseDisplayLenght)
+                    {
+                        WriteToLog(responseContent);
+                    }
+                    else
+                    {
+                        WriteToLog(responseContent.Substring(0, ResponseDisplayLenght));
+                        WriteToLog("...");
+                    }
                 }
 
                 // update tag values
@@ -436,7 +446,7 @@ namespace Scada.Comm.Devices
         public override void OnCommLineStart()
         {
             isReady = false;
-            flagLoggingRequired = true;
+            flagLoggingRequired = false;
 
             // load device configuration
             deviceConfig = new DeviceConfig();
@@ -463,14 +473,12 @@ namespace Scada.Comm.Devices
                 addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
                 SetCurData(TagIndex.NotifCounter, 0, 1); // reset notification counter
                 isReady = true;
+                flagLoggingRequired = true;
             }
             else
             {
                 WriteToLog(errMsg);
             }
-
-            if (!isReady)
-                WriteToLog(CommPhrases.NormalKpExecImpossible);
         }
     }
 }

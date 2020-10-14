@@ -26,7 +26,6 @@
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.HttpNotif.UI;
 using Scada.Data.Configuration;
-using Scada.Data.Tables;
 using Scada.UI;
 
 namespace Scada.Comm.Devices
@@ -68,31 +67,32 @@ namespace Scada.Comm.Devices
         {
             get
             {
+                // TODO: description
                 return Localization.UseRussian ?
                     "Отправка уведомлений с помощью HTTP-запросов.\n\n" +
-                    "Параметр командной строки:\n" +
-                    "URL запроса, содержащее опциональные параметры {phone}, {email} и {text}.\n\n" +
+                    //"Параметр командной строки:\n" +
+                    //"URL запроса, содержащее опциональные параметры {phone}, {email} и {text}.\n\n" +
                     "Команды ТУ:\n" +
-                    "1 (бинарная) - отправка уведомления.\n\n" +
+                    "1 (бинарная) - отправка уведомления.\n" +
                     "Примеры текста команды:\n" +
                     "имя_группы;сообщение\n" +
                     "имя_контакта;сообщение\n" +
                     "эл_почта;сообщение\n\n" +
-                    "2 (бинарная) - отправка произвольного запроса.\n\n" +
+                    "2 (бинарная) - отправка произвольного запроса.\n" +
                     "Текст команды содержит аргументы:\n" +
                     "arg1=value1\\n\n" +
                     "arg2=value2\n" :
 
                     "Sending notifications via HTTP requests.\n\n" +
-                    "Command line parameter:\n" +
-                    "Request URL with optional parameters {phone}, {email} and {text}.\n\n" +
+                    //"Command line parameter:\n" +
+                    //"Request URL with optional parameters {phone}, {email} and {text}.\n\n" +
                     "Commands:\n" +
-                    "1 (binary) - send the notification.\n\n" +
+                    "1 (binary) - send notification.\n" +
                     "Command text examples:\n" +
                     "group_name;message\n" +
                     "contact_name;message\n" +
                     "email;message\n\n" +
-                    "2 (binary) - send custom request.\n\n" +
+                    "2 (binary) - send custom request.\n" +
                     "Command text contains arguments:\n" +
                     "arg1=value1\\n\n" +
                     "arg2=value2\n";
@@ -120,6 +120,7 @@ namespace Scada.Comm.Devices
             {
                 KPCnlPrototypes prototypes = new KPCnlPrototypes();
 
+                // output channels
                 prototypes.CtrlCnls.Add(new CtrlCnlPrototype(
                     Localization.UseRussian ? "Отправка уведомления" : "Send notification",
                     BaseValues.CmdTypes.Binary)
@@ -127,14 +128,30 @@ namespace Scada.Comm.Devices
                     CmdNum = 1
                 });
 
+                prototypes.CtrlCnls.Add(new CtrlCnlPrototype(
+                    Localization.UseRussian ? "Отправка запроса" : "Send request",
+                    BaseValues.CmdTypes.Binary)
+                {
+                    CmdNum = 2
+                });
+
+                // input channels
                 prototypes.InCnls.Add(new InCnlPrototype(
-                    Localization.UseRussian ? "Отправлено уведомлений" : "Sent notifications",
+                    Localization.UseRussian ? "Отправлено уведомлений" : "Notifications sent",
                     BaseValues.CnlTypes.TI)
                 {
                     Signal = 1,
                     DecDigits = 0,
                     UnitName = BaseValues.UnitNames.Pcs,
                     CtrlCnlProps = prototypes.CtrlCnls[0]
+                });
+
+                prototypes.InCnls.Add(new InCnlPrototype(
+                    Localization.UseRussian ? "Статус ответа" : "Response status",
+                    BaseValues.CnlTypes.TI)
+                {
+                    Signal = 2,
+                    DecDigits = 0
                 });
 
                 return prototypes;
@@ -159,8 +176,7 @@ namespace Scada.Comm.Devices
         public override void ShowProps()
         {
             // загрузка словарей
-            string errMsg;
-            if (!Localization.LoadDictionaries(AppDirs.LangDir, "KpHttpNotif", out errMsg))
+            if (!Localization.LoadDictionaries(AppDirs.LangDir, "KpHttpNotif", out string errMsg))
                 ScadaUiUtils.ShowError(errMsg);
 
             if (Number > 0)
