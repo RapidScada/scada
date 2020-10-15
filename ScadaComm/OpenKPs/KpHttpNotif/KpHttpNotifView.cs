@@ -67,11 +67,8 @@ namespace Scada.Comm.Devices
         {
             get
             {
-                // TODO: description
                 return Localization.UseRussian ?
                     "Отправка уведомлений с помощью HTTP-запросов.\n\n" +
-                    //"Параметр командной строки:\n" +
-                    //"URL запроса, содержащее опциональные параметры {phone}, {email} и {text}.\n\n" +
                     "Команды ТУ:\n" +
                     "1 (бинарная) - отправка уведомления.\n" +
                     "Примеры текста команды:\n" +
@@ -84,8 +81,6 @@ namespace Scada.Comm.Devices
                     "arg2=value2\n" :
 
                     "Sending notifications via HTTP requests.\n\n" +
-                    //"Command line parameter:\n" +
-                    //"Request URL with optional parameters {phone}, {email} and {text}.\n\n" +
                     "Commands:\n" +
                     "1 (binary) - send notification.\n" +
                     "Command text examples:\n" +
@@ -175,16 +170,20 @@ namespace Scada.Comm.Devices
         /// </summary>
         public override void ShowProps()
         {
-            // загрузка словарей
-            if (!Localization.LoadDictionaries(AppDirs.LangDir, "KpHttpNotif", out string errMsg))
-                ScadaUiUtils.ShowError(errMsg);
-
             if (Number > 0)
-                // отображение формы свойств КП
-                FrmDevProps.ShowDialog(Number, KPProps, AppDirs);
+            {
+                // show configuration form
+                new FrmConfig(AppDirs, Number)
+                {
+                    DefaultUri = KPProps.CmdLine
+                }
+                .ShowDialog();
+            }
             else
-                // отображение адресной книги
+            {
+                // show address book
                 FrmAddressBook.ShowDialog(AppDirs);
+            }
         }
     }
 }

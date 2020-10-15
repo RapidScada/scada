@@ -315,8 +315,7 @@ namespace Scada.Comm.Devices.DbImport.UI
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        string errMsg;
-                        if (!config.Save(configFileName, out errMsg))
+                        if (!config.Save(configFileName, out string errMsg))
                         {
                             ScadaUiUtils.ShowError(errMsg);
                             e.Cancel = true;

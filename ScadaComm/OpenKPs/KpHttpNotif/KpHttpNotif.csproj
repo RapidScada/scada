@@ -57,11 +57,11 @@
     <Compile Include="HttpNotif\Config\Header.cs" />
     <Compile Include="HttpNotif\Config\DeviceConfig.cs" />
     <Compile Include="HttpNotif\Config\RequestMethod.cs" />
-    <Compile Include="HttpNotif\UI\FrmDevProps.cs">
+    <Compile Include="HttpNotif\UI\FrmConfig.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="HttpNotif\UI\FrmDevProps.Designer.cs">
-      <DependentUpon>FrmDevProps.cs</DependentUpon>
+    <Compile Include="HttpNotif\UI\FrmConfig.Designer.cs">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
     </Compile>
     <Compile Include="KpHttpNotifLogic.cs" />
     <Compile Include="KpHttpNotifView.cs" />
@@ -69,8 +69,8 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="HttpNotif\UI\FrmDevProps.resx">
-      <DependentUpon>FrmDevProps.cs</DependentUpon>
+    <EmbeddedResource Include="HttpNotif\UI\FrmConfig.resx">
+      <DependentUpon>FrmConfig.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
