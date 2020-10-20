@@ -51,12 +51,19 @@
             this.lblContentEscaping = new System.Windows.Forms.Label();
             this.cbContentType = new System.Windows.Forms.ComboBox();
             this.lblContentType = new System.Windows.Forms.Label();
+            this.chkParamEnabled = new System.Windows.Forms.CheckBox();
+            this.lblParamBegin = new System.Windows.Forms.Label();
+            this.txtParamBegin = new System.Windows.Forms.TextBox();
+            this.txtParamEnd = new System.Windows.Forms.TextBox();
+            this.lblParamEnd = new System.Windows.Forms.Label();
+            this.gbParam = new System.Windows.Forms.GroupBox();
             this.pnlBottom.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageGeneral.SuspendLayout();
             this.pageHeaders.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dgvHeaders)).BeginInit();
             this.pageContent.SuspendLayout();
+            this.gbParam.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlBottom
@@ -116,6 +123,7 @@
             // 
             // pageGeneral
             // 
+            this.pageGeneral.Controls.Add(this.gbParam);
             this.pageGeneral.Controls.Add(this.lblUriHint);
             this.pageGeneral.Controls.Add(this.txtUri);
             this.pageGeneral.Controls.Add(this.lblUri);
@@ -133,7 +141,7 @@
             // 
             this.lblUriHint.AutoSize = true;
             this.lblUriHint.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblUriHint.Location = new System.Drawing.Point(3, 228);
+            this.lblUriHint.Location = new System.Drawing.Point(3, 160);
             this.lblUriHint.Name = "lblUriHint";
             this.lblUriHint.Size = new System.Drawing.Size(308, 13);
             this.lblUriHint.TabIndex = 4;
@@ -145,7 +153,7 @@
             this.txtUri.Multiline = true;
             this.txtUri.Name = "txtUri";
             this.txtUri.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtUri.Size = new System.Drawing.Size(464, 166);
+            this.txtUri.Size = new System.Drawing.Size(464, 98);
             this.txtUri.TabIndex = 3;
             this.txtUri.TextChanged += new System.EventHandler(this.control_Changed);
             // 
@@ -298,7 +306,7 @@
             this.cbContentType.Name = "cbContentType";
             this.cbContentType.Size = new System.Drawing.Size(338, 21);
             this.cbContentType.TabIndex = 1;
-            this.cbContentType.SelectedIndexChanged += new System.EventHandler(this.control_Changed);
+            this.cbContentType.TextChanged += new System.EventHandler(this.control_Changed);
             // 
             // lblContentType
             // 
@@ -308,6 +316,67 @@
             this.lblContentType.Size = new System.Drawing.Size(67, 13);
             this.lblContentType.TabIndex = 0;
             this.lblContentType.Text = "Content type";
+            // 
+            // chkParamEnabled
+            // 
+            this.chkParamEnabled.AutoSize = true;
+            this.chkParamEnabled.Location = new System.Drawing.Point(13, 21);
+            this.chkParamEnabled.Name = "chkParamEnabled";
+            this.chkParamEnabled.Size = new System.Drawing.Size(120, 17);
+            this.chkParamEnabled.TabIndex = 0;
+            this.chkParamEnabled.Text = "Parameters enabled";
+            this.chkParamEnabled.UseVisualStyleBackColor = true;
+            // 
+            // lblParamBegin
+            // 
+            this.lblParamBegin.AutoSize = true;
+            this.lblParamBegin.Location = new System.Drawing.Point(180, 23);
+            this.lblParamBegin.Name = "lblParamBegin";
+            this.lblParamBegin.Size = new System.Drawing.Size(34, 13);
+            this.lblParamBegin.TabIndex = 1;
+            this.lblParamBegin.Text = "Begin";
+            // 
+            // txtParamBegin
+            // 
+            this.txtParamBegin.Location = new System.Drawing.Point(220, 19);
+            this.txtParamBegin.MaxLength = 1;
+            this.txtParamBegin.Name = "txtParamBegin";
+            this.txtParamBegin.Size = new System.Drawing.Size(50, 20);
+            this.txtParamBegin.TabIndex = 2;
+            this.txtParamBegin.Text = "{";
+            // 
+            // txtParamEnd
+            // 
+            this.txtParamEnd.Location = new System.Drawing.Point(308, 19);
+            this.txtParamEnd.MaxLength = 1;
+            this.txtParamEnd.Name = "txtParamEnd";
+            this.txtParamEnd.Size = new System.Drawing.Size(50, 20);
+            this.txtParamEnd.TabIndex = 4;
+            this.txtParamEnd.Text = "}";
+            // 
+            // lblParamEnd
+            // 
+            this.lblParamEnd.AutoSize = true;
+            this.lblParamEnd.Location = new System.Drawing.Point(276, 23);
+            this.lblParamEnd.Name = "lblParamEnd";
+            this.lblParamEnd.Size = new System.Drawing.Size(26, 13);
+            this.lblParamEnd.TabIndex = 3;
+            this.lblParamEnd.Text = "End";
+            // 
+            // gbParam
+            // 
+            this.gbParam.Controls.Add(this.txtParamEnd);
+            this.gbParam.Controls.Add(this.lblParamEnd);
+            this.gbParam.Controls.Add(this.txtParamBegin);
+            this.gbParam.Controls.Add(this.lblParamBegin);
+            this.gbParam.Controls.Add(this.chkParamEnabled);
+            this.gbParam.Location = new System.Drawing.Point(6, 186);
+            this.gbParam.Name = "gbParam";
+            this.gbParam.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
+            this.gbParam.Size = new System.Drawing.Size(464, 52);
+            this.gbParam.TabIndex = 5;
+            this.gbParam.TabStop = false;
+            this.gbParam.Text = "Parameters";
             // 
             // FrmConfig
             // 
@@ -334,6 +403,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.dgvHeaders)).EndInit();
             this.pageContent.ResumeLayout(false);
             this.pageContent.PerformLayout();
+            this.gbParam.ResumeLayout(false);
+            this.gbParam.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -363,5 +434,11 @@
         private System.Windows.Forms.Label lblContentHint;
         private System.Windows.Forms.DataGridViewTextBoxColumn colName;
         private System.Windows.Forms.DataGridViewTextBoxColumn colValue;
+        private System.Windows.Forms.CheckBox chkParamEnabled;
+        private System.Windows.Forms.TextBox txtParamBegin;
+        private System.Windows.Forms.Label lblParamBegin;
+        private System.Windows.Forms.TextBox txtParamEnd;
+        private System.Windows.Forms.Label lblParamEnd;
+        private System.Windows.Forms.GroupBox gbParam;
     }
 }

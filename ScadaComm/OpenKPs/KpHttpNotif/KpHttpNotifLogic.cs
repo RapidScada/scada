@@ -310,8 +310,8 @@ namespace Scada.Comm.Devices
                 if (deviceConfig.Method == RequestMethod.Post)
                 {
                     request.Content = string.IsNullOrEmpty(deviceConfig.ContentType) ?
-                        new StringContent(requestContent.ToString(), Encoding.UTF8) :
-                        new StringContent(requestContent.ToString(), Encoding.UTF8, deviceConfig.ContentType);
+                        new StringContent(deviceConfig.Content /*requestContent.ToString()*/, Encoding.UTF8) :
+                        new StringContent(deviceConfig.Content /*requestContent.ToString()*/, Encoding.UTF8, deviceConfig.ContentType);
                 }
 
                 // send request and receive response

@@ -8,4 +8,7 @@
   <Content />
   <ContentType />
   <ContentEscaping>None</ContentEscaping>
+  <ParamEnabled>true</ParamEnabled>
+  <ParamBegin>{</ParamBegin>
+  <ParamEnd>}</ParamEnd>
 </KpHttpNotif>
