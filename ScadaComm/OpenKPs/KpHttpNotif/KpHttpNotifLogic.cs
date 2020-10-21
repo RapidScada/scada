@@ -83,8 +83,8 @@ namespace Scada.Comm.Devices
         private readonly Stopwatch stopwatch; // measures the time of operations
         private DeviceConfig deviceConfig;    // the device configuration
         private AddressBook addressBook;      // the address book shared for the communication line
-        private ParamString requestUri;       // the parametrized request URI
-        private ParamString requestContent;   // the parametrized request content
+        private ParamString paramUri;         // the parametrized request URI
+        private ParamString paramContent;     // the parametrized request content
         private HttpClient httpClient;        // sends HTTP requests
         private bool isReady;                 // indicates that the device is ready to send requests
         private bool flagLoggingRequired;     // logging of the ready flag is required
@@ -102,8 +102,8 @@ namespace Scada.Comm.Devices
             stopwatch = new Stopwatch();
             deviceConfig = null;
             addressBook = null;
-            requestUri = null;
-            requestContent = null;
+            paramUri = null;
+            paramContent = null;
             httpClient = null;
             isReady = false;
             flagLoggingRequired = false;
@@ -294,24 +294,21 @@ namespace Scada.Comm.Devices
                 }
 
                 // create request
-                requestUri.ResetParams();
-                requestContent.ResetParams();
+                paramUri?.ResetParams(args, EscapingMethod.EncodeUrl);
+                paramContent?.ResetParams(args, deviceConfig.ContentEscaping);
 
-                foreach (var arg in args)
-                {
-                    requestUri.SetParam(arg.Key, arg.Value, EscapingMethod.EncodeUrl);
-                    requestContent.SetParam(arg.Key, arg.Value, deviceConfig.ContentEscaping);
-                }
+                string uri = paramUri == null ? deviceConfig.Uri : paramUri.ToString();
+                string content = paramContent == null ? deviceConfig.Content : paramContent.ToString();
 
                 HttpRequestMessage request = new HttpRequestMessage(
-                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get,
-                    new Uri(requestUri.ToString()));
+                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get, 
+                    uri);
 
                 if (deviceConfig.Method == RequestMethod.Post)
                 {
                     request.Content = string.IsNullOrEmpty(deviceConfig.ContentType) ?
-                        new StringContent(deviceConfig.Content /*requestContent.ToString()*/, Encoding.UTF8) :
-                        new StringContent(deviceConfig.Content /*requestContent.ToString()*/, Encoding.UTF8, deviceConfig.ContentType);
+                        new StringContent(content, Encoding.UTF8) :
+                        new StringContent(content, Encoding.UTF8, deviceConfig.ContentType);
                 }
 
                 // send request and receive response
@@ -467,8 +464,16 @@ namespace Scada.Comm.Devices
             // initialize variables if the configuration is valid
             if (ValidateConfig(deviceConfig, out errMsg))
             {
-                requestUri = new ParamString(deviceConfig.Uri);
-                requestContent = new ParamString(deviceConfig.Content);
+                if (deviceConfig.ParamEnabled)
+                {
+                    paramUri = new ParamString(deviceConfig.Uri, deviceConfig.ParamBegin, deviceConfig.ParamEnd);
+                    paramContent = new ParamString(deviceConfig.Content, deviceConfig.ParamBegin, deviceConfig.ParamEnd);
+                }
+                else
+                {
+                    paramUri = null;
+                    paramContent = null;
+                }
 
                 addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
                 SetCurData(TagIndex.NotifCounter, 0, 1); // reset notification counter

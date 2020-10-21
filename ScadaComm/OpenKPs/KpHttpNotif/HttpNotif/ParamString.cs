@@ -60,11 +60,21 @@ namespace Scada.Comm.Devices.HttpNotif
 
 
         /// <summary>
+        /// The default character that marks the beginning of a parameter.
+        /// </summary>
+        public const char DefaultParamBegin = '{';
+        /// <summary>
+        /// The default character that marks the end of a parameter.
+        /// </summary>
+        public const char DefaultParamEnd = '}';
+
+
+        /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public ParamString(string sourceString)
+        public ParamString(string sourceString, char paramBegin, char paramEnd)
         {
-            Parse(sourceString);
+            Parse(sourceString, paramBegin, paramEnd);
         }
 
 
@@ -82,7 +92,7 @@ namespace Scada.Comm.Devices.HttpNotif
         /// <summary>
         /// Parses the specified string, creates string parts and parameters.
         /// </summary>
-        private void Parse(string sourceString)
+        private void Parse(string sourceString, char paramBegin, char paramEnd)
         {
             List<string> stringParts = new List<string>();
             Dictionary<string, Param> stringParams = new Dictionary<string, Param>();
@@ -95,7 +105,7 @@ namespace Scada.Comm.Devices.HttpNotif
 
                 while (ind < len)
                 {
-                    int braceInd1 = sourceString.IndexOf('{', ind);
+                    int braceInd1 = sourceString.IndexOf(paramBegin, ind);
                     if (braceInd1 < 0)
                     {
                         stringParts.Add(sourceString.Substring(ind));
@@ -103,7 +113,7 @@ namespace Scada.Comm.Devices.HttpNotif
                     }
                     else
                     {
-                        int braceInd2 = sourceString.IndexOf('}', braceInd1 + 1);
+                        int braceInd2 = sourceString.IndexOf(paramEnd, braceInd1 + 1);
                         int paramNameLen = braceInd2 - braceInd1 - 1;
 
                         if (paramNameLen <= 0)
@@ -135,31 +145,9 @@ namespace Scada.Comm.Devices.HttpNotif
         }
 
         /// <summary>
-        /// Resets the parameter values.
-        /// </summary>
-        public void ResetParams()
-        {
-            foreach (Param param in Params.Values)
-            {
-                foreach (int index in param.PartIndices)
-                {
-                    StringParts[index] = "";
-                }
-            }
-        }
-
-        /// <summary>
-        /// Sets the parameter value.
-        /// </summary>
-        public void SetParam(string name, string value)
-        {
-            SetParam(name, value, EscapingMethod.None);
-        }
-
-        /// <summary>
         /// Sets the parameter value escaped by the specified method.
         /// </summary>
-        public void SetParam(string name, string value, EscapingMethod escapingMethod)
+        private void SetParam(string name, string value, EscapingMethod escapingMethod)
         {
             if (Params.TryGetValue(name, out Param param))
             {
@@ -171,6 +159,30 @@ namespace Scada.Comm.Devices.HttpNotif
                 foreach (int index in param.PartIndices)
                 {
                     StringParts[index] = value;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Resets the parameter values.
+        /// </summary>
+        public void ResetParams(IDictionary<string, string> args, EscapingMethod escapingMethod)
+        {
+            // clear all parts
+            foreach (Param param in Params.Values)
+            {
+                foreach (int index in param.PartIndices)
+                {
+                    StringParts[index] = "";
+                }
+            }
+
+            // set new values
+            if (args != null)
+            {
+                foreach (var arg in args)
+                {
+                    SetParam(arg.Key, arg.Value, escapingMethod);
                 }
             }
         }

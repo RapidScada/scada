@@ -75,6 +75,21 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         /// </summary>
         public EscapingMethod ContentEscaping { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether URI and content can include parameters.
+        /// </summary>
+        public bool ParamEnabled { get; set; }
+
+        /// <summary>
+        /// Gets or sets the character that marks the beginning of a parameter.
+        /// </summary>
+        public char ParamBegin { get; set; }
+
+        /// <summary>
+        /// Gets or sets the character that marks the end of a parameter.
+        /// </summary>
+        public char ParamEnd { get; set; }
+
 
         /// <summary>
         /// Sets the default values.
@@ -87,6 +102,25 @@ namespace Scada.Comm.Devices.HttpNotif.Config
             Content = "";
             ContentType = "";
             ContentEscaping = EscapingMethod.None;
+            ParamEnabled = true;
+            ParamBegin = ParamString.DefaultParamBegin;
+            ParamEnd = ParamString.DefaultParamEnd;
+        }
+
+        /// <summary>
+        /// Sets the character that marks the beginning of a parameter.
+        /// </summary>
+        public void SetParamBegin(string s)
+        {
+            ParamBegin = string.IsNullOrEmpty(s) ? ParamString.DefaultParamBegin : s[0];
+        }
+
+        /// <summary>
+        /// Sets the character that marks the end of a parameter.
+        /// </summary>
+        public void SetParamEnd(string s)
+        {
+            ParamBegin = string.IsNullOrEmpty(s) ? ParamString.DefaultParamEnd : s[0];
         }
 
         /// <summary>
@@ -123,6 +157,9 @@ namespace Scada.Comm.Devices.HttpNotif.Config
                 Content = rootElem.GetChildAsString("Content");
                 ContentType = rootElem.GetChildAsString("ContentType");
                 ContentEscaping = rootElem.GetChildAsEnum("ContentEscaping", EscapingMethod.None);
+                ParamEnabled = rootElem.GetAttrAsBool("ParamEnabled");
+                SetParamBegin(rootElem.GetChildAsString("ParamBegin"));
+                SetParamEnd(rootElem.GetChildAsString("ParamEnd"));
 
                 errMsg = "";
                 return true;
@@ -162,6 +199,9 @@ namespace Scada.Comm.Devices.HttpNotif.Config
                 rootElem.AppendElem("Content", Content);
                 rootElem.AppendElem("ContentType", ContentType);
                 rootElem.AppendElem("ContentEscaping", ContentEscaping);
+                rootElem.AppendElem("ParamEnabled", ParamEnabled);
+                rootElem.AppendElem("ParamBegin", ParamBegin);
+                rootElem.AppendElem("ParamEnd", ParamEnd);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";
