@@ -120,7 +120,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         /// </summary>
         public void SetParamEnd(string s)
         {
-            ParamBegin = string.IsNullOrEmpty(s) ? ParamString.DefaultParamEnd : s[0];
+            ParamEnd = string.IsNullOrEmpty(s) ? ParamString.DefaultParamEnd : s[0];
         }
 
         /// <summary>
@@ -157,7 +157,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
                 Content = rootElem.GetChildAsString("Content");
                 ContentType = rootElem.GetChildAsString("ContentType");
                 ContentEscaping = rootElem.GetChildAsEnum("ContentEscaping", EscapingMethod.None);
-                ParamEnabled = rootElem.GetAttrAsBool("ParamEnabled");
+                ParamEnabled = rootElem.GetChildAsBool("ParamEnabled", true);
                 SetParamBegin(rootElem.GetChildAsString("ParamBegin"));
                 SetParamEnd(rootElem.GetChildAsString("ParamEnd"));
 

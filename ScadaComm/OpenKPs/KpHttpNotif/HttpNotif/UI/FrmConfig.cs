@@ -103,6 +103,9 @@ namespace Scada.Comm.Devices.HttpNotif.UI
         {
             cbMethod.SelectedIndex = (int)config.Method;
             txtUri.Text = string.IsNullOrEmpty(config.Uri) ? DefaultUri : config.Uri;
+            chkParamEnabled.Checked = config.ParamEnabled;
+            txtParamBegin.Text = config.ParamBegin.ToString();
+            txtParamEnd.Text = config.ParamEnd.ToString();
             cbContentType.Text = config.ContentType;
             cbContentEscaping.SelectedIndex = (int)config.ContentEscaping;
             txtContent.Text = config.Content;
@@ -116,18 +119,12 @@ namespace Scada.Comm.Devices.HttpNotif.UI
         {
             config.Method = (RequestMethod)cbMethod.SelectedIndex;
             config.Uri = txtUri.Text;
+            config.ParamEnabled = chkParamEnabled.Checked;
+            config.SetParamBegin(txtParamBegin.Text);
+            config.SetParamEnd(txtParamEnd.Text);
             config.ContentType = cbContentType.Text;
             config.ContentEscaping = (EscapingMethod)cbContentEscaping.SelectedIndex;
             config.Content = txtContent.Text;
-            /*config.Headers.Clear();
-
-            foreach (Header header in (IList<Header>)dgvHeaders.DataSource)
-            {
-                if (!string.IsNullOrEmpty(header.Name))
-                {
-                    config.Headers.Add(header);
-                }
-            }*/
         }
 
 

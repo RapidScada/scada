@@ -153,7 +153,7 @@ namespace Scada.Comm.Devices.HttpNotif
             {
                 if (escapingMethod == EscapingMethod.EncodeUrl)
                     value = HttpUtility.UrlEncode(value); // or WebUtility.UrlEncode or Uri.EscapeDataString
-                else if (escapingMethod == EscapingMethod.EncodeUrl)
+                else if (escapingMethod == EscapingMethod.EncodeJson)
                     value = HttpUtility.JavaScriptStringEncode(value, false);
 
                 foreach (int index in param.PartIndices)
