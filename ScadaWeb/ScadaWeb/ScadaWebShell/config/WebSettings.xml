@@ -37,8 +37,8 @@
   </Plugins>
   <CustomOptions>
     <OptionGroup name="Scheme">
-      <!-- DefaultScale: Numeric, FitScreen, FitWidth -->
-      <Option name="DefaultScale" value="Numeric" />
+      <!-- ScaleType: Numeric, FitScreen, FitWidth -->
+      <Option name="ScaleType" value="Numeric" />
       <Option name="ScaleValue" value="100" />
       <Option name="RestoreScale" value="true" />
     </OptionGroup>

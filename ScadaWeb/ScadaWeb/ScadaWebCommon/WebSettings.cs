@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
@@ -57,6 +57,7 @@ namespace Scada.Web
             CommSettings = new CommSettings();
             ScriptPaths = new ScriptPaths();
             PluginFileNames = new List<string>();
+            CustomOptions = new SortedList<string, OptionList>();
             SetToDefault();
         }
 
@@ -121,17 +122,17 @@ namespace Scada.Web
         /// <summary>
         /// Получить настройки соединения с сервером
         /// </summary>
-        public CommSettings CommSettings { get; protected set; }
+        public CommSettings CommSettings { get; }
 
         /// <summary>
         /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
         /// </summary>
-        public ScriptPaths ScriptPaths { get; protected set; }
+        public ScriptPaths ScriptPaths { get; }
 
         /// <summary>
         /// Получить имена файлов библиотек подключенных плагинов, упорядоченные по возрастанию
         /// </summary>
-        public List<string> PluginFileNames { get; protected set; }
+        public List<string> PluginFileNames { get; }
 
         /// <summary>
         /// Gets the groups of custom options.
@@ -159,6 +160,7 @@ namespace Scada.Web
             CommSettings.SetToDefault();
             ScriptPaths.SetToDefault();
             PluginFileNames.Clear();
+            CustomOptions.Clear();
         }
 
 
