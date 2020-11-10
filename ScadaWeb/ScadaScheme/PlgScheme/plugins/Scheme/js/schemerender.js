@@ -173,6 +173,32 @@ scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext
     }
 };
 
+scada.scheme.SchemeRenderer.prototype._calcScale = function (component, scaleType, scaleValue) {
+    var ScaleTypes = scada.scheme.ScaleTypes;
+
+    if (scaleType === ScaleTypes.NUMERIC) {
+        if (!isNaN(scaleValue) && scaleValue >= 0) {
+            return scaleValue;
+        }
+    }
+    else if (component.parentDomElem) {
+        var areaWidth = component.parentDomElem.innerWidth();
+        var schemeWidth = component.props.Size.Width;
+        var horScale = areaWidth / schemeWidth;
+
+        if (scaleType === ScaleTypes.FIT_SCREEN) {
+            var schemeHeight = component.props.Size.Height;
+            var areaHeight = component.parentDomElem.innerHeight();
+            var vertScale = areaHeight / schemeHeight;
+            return Math.min(horScale, vertScale);
+        } else if (scaleType === ScaleTypes.FIT_WIDTH) {
+            return horScale;
+        }
+    }
+
+    return 1.0;
+};
+
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
     var divScheme = $("<div class='scheme'></div>");
     component.dom = divScheme;
@@ -240,37 +266,14 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
     }
 };
 
-// Calculate numeric scale based on the predefined string value
-scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr) {
-    if (component.parentDomElem) {
-        var Scales = scada.scheme.Scales;
-        var areaWidth = component.parentDomElem.innerWidth();
-        var schemeWidth = component.props.Size.Width;
-        var horScale = areaWidth / schemeWidth;
-
-        if (scaleStr === Scales.FIT_SCREEN) {
-            var schemeHeight = component.props.Size.Height;
-            var areaHeight = component.parentDomElem.innerHeight();
-            var vertScale = areaHeight / schemeHeight;
-            return Math.min(horScale, vertScale);
-        } else if (scaleStr === Scales.FIT_WIDTH) {
-            return horScale;
-        }
-    }
-
-    return 1.0;
-};
-
-// Set the scheme scale.
-// scaleVal is a floating point number
-scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
+// Set the scheme scale
+scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleType, scaleValue) {
     if (component.dom) {
-        //var sizeCoef = Math.min(scaleVal, 1);
+        var scale = this._calcScale(component, scaleType, scaleValue);
         component.dom.css({
-            "transform": "scale(" + scaleVal + ", " + scaleVal + ")"//,
-            //"width": component.props.Size.Width * sizeCoef,
-            //"height": component.props.Size.Height * sizeCoef
+            "transform": "scale(" + scale + ", " + scale + ")"
         });
+        return scale;
     }
 };
 

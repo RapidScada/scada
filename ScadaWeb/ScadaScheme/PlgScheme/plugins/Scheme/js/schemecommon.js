@@ -74,17 +74,11 @@ scada.scheme.ScaleTypes = {
     FIT_WIDTH: 2
 };
 
-// Predefined scales enumeration
-scada.scheme.Scales = {
-    FIT_SCREEN: "FitScreen",
-    FIT_WIDTH: "FitWidth"
-};
-
 // The default scheme options
 scada.scheme.defaultOptions = {
     scaleType: scada.scheme.ScaleTypes.NUMERIC,
     scaleValue: 1.0,
-    restoreScale: true
+    rememberScale: true
 };
 
 // Scheme calculations

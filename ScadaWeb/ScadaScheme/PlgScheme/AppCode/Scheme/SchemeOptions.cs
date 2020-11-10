@@ -45,7 +45,7 @@ namespace Scada.Web.Plugins.Scheme
 
             ScaleType = options.GetValueAsEnum("ScaleType", ScaleType.Numeric);
             ScaleValue = options.GetValueAsDouble("ScaleValue", 100) / 100;
-            RestoreScale = options.GetValueAsBool("RestoreScale", true);
+            RememberScale = options.GetValueAsBool("RememberScale", true);
         }
 
 
@@ -60,9 +60,9 @@ namespace Scada.Web.Plugins.Scheme
         public double ScaleValue { get; set; }
 
         /// <summary>
-        /// Gets or sets a value indicating whether to restore a scheme scale when the scheme is opened.
+        /// Gets or sets a value indicating whether to remember last scheme scale.
         /// </summary>
-        public bool RestoreScale { get; set; }
+        public bool RememberScale { get; set; }
 
 
         /// <summary>
@@ -74,7 +74,7 @@ namespace Scada.Web.Plugins.Scheme
                 "{ " +
                 $"scaleType: {(int)ScaleType}, " +
                 $"scaleValue: {ScaleValue.ToString(CultureInfo.InvariantCulture)}, " +
-                $"restoreScale: {RestoreScale.ToString().ToLowerInvariant()} " +
+                $"rememberScale: {RememberScale.ToString().ToLowerInvariant()} " +
                 "}";
         }
     }

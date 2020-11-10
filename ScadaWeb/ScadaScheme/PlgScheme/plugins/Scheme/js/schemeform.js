@@ -82,28 +82,28 @@ function startUpdatingScheme() {
 
 // Bind handlers of the toolbar buttons
 function initToolbar() {
-    var Scales = scada.scheme.Scales;
+    var ScaleTypes = scada.scheme.ScaleTypes;
 
     $("#lblFitScreenBtn").click(function () {
-        scheme.setScale(Scales.FIT_SCREEN);
+        scheme.setScale(ScaleTypes.FIT_SCREEN, 0);
         displayScale();
-        saveScale(Scales.FIT_SCREEN);
+        saveScale();
     });
 
     $("#lblFitWidthBtn").click(function () {
-        scheme.setScale(Scales.FIT_WIDTH);
+        scheme.setScale(ScaleTypes.FIT_WIDTH, 0);
         displayScale();
-        saveScale(Scales.FIT_WIDTH);
+        saveScale();
     });
 
     $("#lblZoomInBtn").click(function (event) {
-        scheme.setScale(getNextScale());
+        scheme.setScale(ScaleTypes.NUMERIC, getNextScale());
         displayScale();
         saveScale();
     });
 
     $("#lblZoomOutBtn").click(function (event) {
-        scheme.setScale(getPrevScale());
+        scheme.setScale(ScaleTypes.NUMERIC, getPrevScale());
         displayScale();
         saveScale();
     });
@@ -111,7 +111,7 @@ function initToolbar() {
 
 // Get the previous scale value from the possible values array
 function getPrevScale() {
-    var curScale = scheme.scale;
+    var curScale = scheme.scaleValue;
     for (var i = scaleVals.length - 1; i >= 0; i--) {
         var prevScale = scaleVals[i];
         if (curScale > prevScale) {
@@ -123,7 +123,7 @@ function getPrevScale() {
 
 // Get the next scale value from the possible values array
 function getNextScale() {
-    var curScale = scheme.scale;
+    var curScale = scheme.scaleValue;
     for (var i = 0, len = scaleVals.length; i < len; i++) {
         var nextScale = scaleVals[i];
         if (curScale < nextScale) {
@@ -135,20 +135,30 @@ function getNextScale() {
 
 // Display the scheme scale
 function displayScale() {
-    $("#spanCurScale").text(Math.round(scheme.scale * 100) + "%");
+    $("#spanCurScale").text(Math.round(scheme.scaleValue * 100) + "%");
 }
 
 // Load the scheme scale from the local storage
 function loadScale() {
-    var scale = localStorage.getItem("Scheme.SchemeScale");
-    if (scale) {
-        scheme.setScale(scale);
+    var scaleType = NaN;
+    var scaleValue = NaN;
+
+    if (schemeOptions.rememberScale) {
+        scaleType = parseInt(localStorage.getItem("Scheme.ScaleType"));
+        scaleValue = parseFloat(localStorage.getItem("Scheme.ScaleValue"));
+    }
+
+    if (isNaN(scaleType) || isNaN(scaleValue)) {
+        scheme.setScale(schemeOptions.scaleType, schemeOptions.scaleValue);
+    } else {
+        scheme.setScale(scaleType, scaleValue);
     }
 }
 
 // Save the scheme scale in the local storage
-function saveScale(opt_scale) {
-    localStorage.setItem("Scheme.SchemeScale", opt_scale ? opt_scale : scheme.scale);
+function saveScale() {
+    localStorage.setItem("Scheme.ScaleType", scheme.scaleType);
+    localStorage.setItem("Scheme.ScaleValue", scheme.scaleValue);
 }
 
 // Update the scheme scale if the scheme should fit size
