@@ -54,6 +54,7 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
+    <Compile Include="Config\OptionList.cs" />
     <Compile Include="Data\Entities\EvType.cs" />
     <Compile Include="Data\Entities\CnlType.cs" />
     <Compile Include="Data\Entities\CmdVal.cs" />
