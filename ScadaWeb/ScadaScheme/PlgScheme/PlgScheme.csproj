@@ -111,6 +111,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AppCode\PlgSchemeSpec.cs" />
+    <Compile Include="AppCode\Scheme\ScaleType.cs" />
+    <Compile Include="AppCode\Scheme\SchemeOptions.cs" />
     <Compile Include="AppCode\Scheme\SchemeViewSpec.cs" />
     <Compile Include="plugins\Scheme\Scheme.aspx.cs">
       <DependentUpon>Scheme.aspx</DependentUpon>

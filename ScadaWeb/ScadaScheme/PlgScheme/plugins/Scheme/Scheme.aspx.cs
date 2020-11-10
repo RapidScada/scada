@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Data.Models;
@@ -52,6 +52,7 @@ namespace Scada.Web.Plugins.Scheme
         protected int refrRate;           // частота обновления данных
         protected string phrases;         // локализованные фразы
         protected bool controlRight;      // право на управление представлением
+        protected string schemeOptions;   // the scheme options
 
 
         /// <summary>
@@ -134,6 +135,7 @@ namespace Scada.Web.Plugins.Scheme
             refrRate = userData.WebSettings.DataRefrRate;
             phrases = WebUtils.DictionaryToJs("Scada.Web.Plugins.Scheme.WFrmScheme.Js");
             controlRight = userData.WebSettings.CmdEnabled && rights.ControlRight;
+            schemeOptions = new SchemeOptions(userData.WebSettings.GetOptions("Scheme")).ToJs();
         }
     }
 }

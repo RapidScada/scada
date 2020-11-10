@@ -30,6 +30,7 @@
         var refrRate = <%= refrRate %>;
         var phrases = <%= phrases %>;
         var controlRight = <%= controlRight ? "true" : "false" %>;
+        var schemeOptions = <%= schemeOptions %>;
     </script>
     <script type="text/javascript" src="js/schemeform.js"></script>
 </head>

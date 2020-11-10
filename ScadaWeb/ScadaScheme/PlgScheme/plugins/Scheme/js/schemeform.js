@@ -19,6 +19,8 @@ var refrRate = refrRate || 1000;
 var phrases = phrases || {};
 // View control right
 var controlRight = controlRight || false;
+// Scheme options
+var schemeOptions = schemeOptions || scada.scheme.defaultOptions;
 
 // Scheme environment object accessible by the scheme and its components
 scada.scheme.env = {
