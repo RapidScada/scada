@@ -1,0 +1,6 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgWebPageDictionaries>
+  <Dictionary key="Scada.Web.Plugins.WebPage.WFrmLanding">
+    <Phrase key="lblRedirect">Переход на </Phrase>
+  </Dictionary>
+</PlgWebPageDictionaries>

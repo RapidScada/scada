@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Web.Plugins.WebPage;
@@ -30,28 +30,21 @@ using System.IO;
 namespace Scada.Web.Plugins
 {
     /// <summary>
-    /// Web page plugin specification
-    /// <para>Спецификация плагина веб-страниц</para>
+    /// Web page plugin specification.
+    /// <para>Спецификация плагина веб-страниц.</para>
     /// </summary>
     public class PlgWebPageSpec : PluginSpec
     {
         /// <summary>
-        /// Версия плагина
+        /// The plugin version.
         /// </summary>
-        internal const string PlgVersion = "5.0.0.1";
+        internal const string PlgVersion = "5.0.1.0";
+
+        private DictUpdater dictUpdater; // updates the plugin dictionary
 
 
         /// <summary>
-        /// Конструктор
-        /// </summary>
-        public PlgWebPageSpec()
-            : base()
-        {
-        }
-
-
-        /// <summary>
-        /// Получить наименование плагина
+        /// Gets the plugin name.
         /// </summary>
         public override string Name
         {
@@ -64,7 +57,7 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить описание плагина
+        /// Gets the plugin description.
         /// </summary>
         public override string Descr
         {
@@ -77,7 +70,7 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить версию плагина
+        /// Gets the plugin version.
         /// </summary>
         public override string Version
         {
@@ -88,7 +81,7 @@ namespace Scada.Web.Plugins
         }
 
         /// <summary>
-        /// Получить спецификации представлений, которые реализуются плагином
+        /// Get the view specifications that the plugin implements.
         /// </summary>
         public override List<ViewSpec> ViewSpecs
         {
@@ -96,6 +89,25 @@ namespace Scada.Web.Plugins
             {
                 return new List<ViewSpec>() { new WebPageViewSpec() };
             }
+        }
+
+        
+        /// <summary>
+        /// Initializes the plugin.
+        /// </summary>
+        public override void Init()
+        {
+            dictUpdater = new DictUpdater(
+                string.Format("{0}WebPage{1}lang{1}", AppDirs.PluginsDir, Path.DirectorySeparatorChar),
+                "PlgWebPage", null, Log);
+        }
+
+        /// <summary>
+        /// Perform actions after a successful user login.
+        /// </summary>
+        public override void OnUserLogin(UserData userData)
+        {
+            dictUpdater.Update();
         }
     }
 }
