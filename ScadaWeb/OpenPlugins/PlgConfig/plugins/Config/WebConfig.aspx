@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Web Application Configuration - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="WebConfig.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmWebConfig" %>
+﻿<%@ Page Title="Web Application Configuration" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="WebConfig.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmWebConfig" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/webconfig.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>

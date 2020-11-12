@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Installed Plugins - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Plugins.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmPlugins" %>
+﻿<%@ Page Title="Installed Plugins" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Plugins.aspx.cs" Inherits="Scada.Web.Plugins.Config.WFrmPlugins" %>
 <%@ Import Namespace="Scada.Web" %>
 <%@ Import Namespace="Scada.Web.Plugins.Config" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
