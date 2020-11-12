@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
-    <title>Web Page - Rapid SCADA</title>
+    <title>Web Page</title>
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/WebPage/css/webpage.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
@@ -30,7 +30,7 @@
         }
 
         $(document).ready(function () {
-            const REDIRECT_DELAY = 1000;
+            const REDIRECT_DELAY = 500;
             var url = replaceLocalhost(viewPath);
 
             if (url) {
