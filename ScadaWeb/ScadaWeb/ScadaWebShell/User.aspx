@@ -1,4 +1,4 @@
-﻿<%@ Page Title="User Profile - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Scada.Web.WFrmUser" %>
+﻿<%@ Page Title="User Profile" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="User.aspx.cs" Inherits="Scada.Web.WFrmUser" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/user.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>

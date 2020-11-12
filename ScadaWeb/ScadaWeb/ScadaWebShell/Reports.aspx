@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Reports - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="Scada.Web.WFrmReports" %>
+﻿<%@ Page Title="Reports" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="Reports.aspx.cs" Inherits="Scada.Web.WFrmReports" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/reports.min.css" rel="stylesheet" type="text/css" />
 </asp:Content>

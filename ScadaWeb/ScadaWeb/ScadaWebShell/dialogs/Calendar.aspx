@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
-    <title>Calendar - Rapid SCADA</title>
+    <title>Calendar</title>
     <link href="~/css/dialogs/calendar.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../lib/jquery/jquery.min.js"></script>
     <script type="text/javascript" src="../js/api/utils.js"></script>

@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags are required by Bootstrap -->
-    <title>Login - Rapid SCADA</title>
+    <title>Login</title>
     <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
@@ -25,9 +25,9 @@
     <form id="LoginForm" runat="server">
         <div id="divLoginContainer">
             <div id="divLogo">
-                <asp:HyperLink ID="hlRapidScada" runat="server" NavigateUrl="http://rapidscada.org" Target="_blank"><img src="images/gear.png" alt="Rapid SCADA" /></asp:HyperLink></div>
+                <asp:HyperLink ID="hlRapidScada" runat="server" NavigateUrl="http://rapidscada.org" Target="_blank"><img src="images/gear.png" alt="Logo" /></asp:HyperLink></div>
             <div id="divTitle">
-                Rapid SCADA
+                <asp:Label ID="lblProductName" runat="server" Text="Rapid SCADA"></asp:Label>
             </div>
             <div id="divAlertsOuter"><div id="divAlertsInner"></div></div>
             <div id="divLogin">

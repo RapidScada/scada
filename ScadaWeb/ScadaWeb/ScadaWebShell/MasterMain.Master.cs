@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.UI;
@@ -30,8 +30,8 @@ using System;
 namespace Scada.Web
 {
     /// <summary>
-    /// Main master page
-    /// <para>Основная страница-шаблон</para>
+    /// Main master page.
+    /// <para>Основная страница-шаблон.</para>
     /// </summary>
     public partial class MasterMain : System.Web.UI.MasterPage
     {
@@ -102,6 +102,7 @@ namespace Scada.Web
                 Translator.TranslatePage(Page, "Scada.Web.MasterMain");
 
                 // настройка элементов управления
+                lblProductName.Text = CommonPhrases.ProductName;
                 hlMainUser.Text = userData.UserProps.UserName;
                 hlMainUser.NavigateUrl = string.Format(UrlTemplates.User, userData.UserProps.UserID);
             }

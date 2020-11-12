@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
-    <title>No View - Rapid SCADA</title>
+    <title>No View</title>
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/noview.min.css" rel="stylesheet" type="text/css" />
 </head>

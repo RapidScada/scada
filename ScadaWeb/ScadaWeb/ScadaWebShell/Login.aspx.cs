@@ -137,6 +137,7 @@ namespace Scada.Web
                 }
 
                 // настройка элементов управления
+                lblProductName.Text = CommonPhrases.ProductName;
                 pnlRememberMe.Visible = userData.WebSettings.RemEnabled;
                 txtUsername.Text = userData.LoggedOn ?
                     userData.UserProps.UserName :

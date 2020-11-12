@@ -202,7 +202,7 @@ scada.view = {
                     history.replaceState(state, "", scada.utils.getViewUrl(viewID));
                 }
             } else if (!document.title) {
-                document.title = phrases.ExternalLinkTitle;
+                document.title = viewHub.getEnv().productName;
             }
         });
 

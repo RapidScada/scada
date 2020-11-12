@@ -33,6 +33,7 @@
         scada.env = {
             rootPath: "<%= VirtualPathUtility.AppendTrailingSlash(VirtualPathUtility.ToAbsolute("~")) %>",
             locale: "<%= Scada.Localization.Culture.Name %>",
+            productName: "<%= Scada.CommonPhrases.ProductName %>",
             dataRefrRate: <%= userData.WebSettings.DataRefrRate %>,
             arcRefrRate: <%= userData.WebSettings.ArcRefrRate %>
         };
@@ -49,7 +50,7 @@
         <div id="divMainHeader" class="main-shell">
             <span 
                 id="spanMainShowMenuBtn" class="main-hdr-btn main-img-btn hidden"><span class="glyphicon glyphicon-menu-hamburger"></span></span><span 
-                id="spanMainAppName">Rapid SCADA</span>
+                id="spanMainAppName"><asp:Label ID="lblProductName" runat="server" Text="Rapid SCADA"></asp:Label></span>
             <div id="divMainUserMenu">
                 <asp:Label 
                     ID="lblMainNotifBtn" ClientIDMode="Static" runat="server" CssClass="main-hdr-btn notif-bell hidden" ToolTip="Notifications"><i class="fa fa-bell-o"></i><i class="fa fa-bell"></i></asp:Label><asp:HyperLink 

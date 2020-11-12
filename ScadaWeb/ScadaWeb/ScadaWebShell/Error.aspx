@@ -6,7 +6,7 @@
 <head runat="server">
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Application Error - Rapid SCADA</title>
+    <title>Application Error</title>
     <link href="~/images/favicon.ico" rel="shortcut icon" type="image/x-icon" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/error.min.css" rel="stylesheet" type="text/css" />
@@ -14,7 +14,7 @@
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/error.js") %>"></script>
 </head>
 <body>
-    <div id="divHeader" class="plain-header">Rapid SCADA</div>
+    <div id="divHeader" class="plain-header"><asp:Label ID="lblProductName" runat="server" Text="Rapid SCADA"></asp:Label></div>
     <div id="divContent">
         <h1><asp:Label ID="lblTitle" runat="server" Text="Application Error"></asp:Label></h1>
         <div class="error"><asp:Label ID="lblErrMsg" runat="server" Text="An application error occurred. If it repeats often, please contact the support."></asp:Label></div>
