@@ -8,7 +8,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <!-- The above 3 meta tags are required by Bootstrap -->
-    <title>Event Acknowledgement - Rapid SCADA</title>
+    <title>Event Acknowledgement</title>
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Table/css/eventack.min.css" rel="stylesheet" type="text/css" />

@@ -26,11 +26,9 @@ var viewTitle = viewTitle || "";
 
 // Set window title
 function setTitle() {
-    if (viewTitle) {
-        document.title = viewTitle + " - Rapid SCADA";
-        if (viewHub) {
-            viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
-        }
+    if (viewTitle && viewHub) {
+        document.title = viewTitle + " - " + viewHub.getEnv().productName;
+        viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
     }
 }
 
@@ -249,7 +247,7 @@ function displayCellData(cell, cnlDataMap) {
             color = cnlData.Color;
         }
 
-        var textChanged = cell.text() != text;
+        var textChanged = cell.text() !== text;
         cell.text(text); // special characters are encoded
         cell.css("color", color);
         return textChanged;
@@ -290,7 +288,7 @@ function updateHourData(callback) {
 
     scada.clientAPI.getHourCnlData(hourPeriod, cnlFilter, scada.HourDataModes.INTEGER_HOURS, reqDataAge,
         function (success, hourCnlDataArr, respDataAge) {
-            if (reqHourPeriod != hourPeriod) {
+            if (reqHourPeriod !== hourPeriod) {
                 // do nothing
             }
             else if (success) {
@@ -314,7 +312,7 @@ function updateHourData(callback) {
                     } else {
                         $.each(hourCol, function () {
                             var cell = $(this);
-                            if (cell.text() != "") {
+                            if (cell.text() !== "") {
                                 updateHeader = true;
                             }
                             cell.text("");
@@ -413,7 +411,7 @@ $(document).ready(function () {
     $("#selTimeFrom, #selTimeTo").change(function () {
         createHourPeriod();
 
-        if ($(this).attr("id") == "selTimeFrom") {
+        if ($(this).attr("id") === "selTimeFrom") {
             correctEndHour();
         } else {
             correctStartHour();

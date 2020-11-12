@@ -77,7 +77,7 @@
     <Phrase key="EventsTitle">События</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
-    <Phrase key="this">Команда - Rapid SCADA</Phrase>
+    <Phrase key="this">Команда</Phrase>
     <Phrase key="lblCtrlCnlNotFound">Канал управления {0} не найден.</Phrase>
     <Phrase key="lblWrongPwd">Неверный пароль.</Phrase>
     <Phrase key="lblNoRights">Недостаточно прав.</Phrase>
@@ -99,7 +99,7 @@
     <Phrase key="lblCmdRejected">Команда отклонена сервером.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
-    <Phrase key="this">Квитирование события - Rapid SCADA</Phrase>
+    <Phrase key="this">Квитирование события</Phrase>
     <Phrase key="lblEventNotFound">Событие не найдено.</Phrase>
     <Phrase key="lblAckNotSent">Невозможно отправить команду квитирования. Сервер недоступен.</Phrase>
     <Phrase key="lblAckRejected">Команда квитирования отклонена сервером.</Phrase>
