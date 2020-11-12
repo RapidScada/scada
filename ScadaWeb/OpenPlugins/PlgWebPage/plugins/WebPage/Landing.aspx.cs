@@ -45,7 +45,7 @@ namespace Scada.Web.Plugins.WebPage
             UserData userData = UserData.GetUserData();
 
             // translate the web page
-            Translator.TranslatePage(Page, "Scada.Web.Plugins.WebPage.WFrmLanding");
+            Translator.TranslatePage(Page, typeof(WFrmLanding).FullName);
 
             // получение ид. представления из параметров запроса
             int viewID = Request.QueryString.GetParamAsInt("viewID");
