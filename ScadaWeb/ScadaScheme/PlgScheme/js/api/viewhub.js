@@ -2,7 +2,7 @@
  * View hub provides data exchange between a view, data windows and the shell
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2019
  *
  * Requires:
  * - jquery
@@ -37,9 +37,9 @@ scada.ViewHub = function (mainWindow) {
     this.dialogs = scada.dialogs;
 };
 
-// Get the environment object if it is accessible
-scada.ViewHub.prototype._getEnvObj = function () {
-    return this.mainWindow && this.mainWindow.scada ? this.mainWindow.scada.env : null;
+// Get the environment object, or an empty object if environment is not available
+scada.ViewHub.prototype.getEnv = function () {
+    return this.mainWindow && this.mainWindow.scada ? this.mainWindow.scada.env : {};
 };
 
 // Add the specified view to the hub.
@@ -64,12 +64,12 @@ scada.ViewHub.prototype.removeDataWindow = function () {
 // The method is called by a child window
 scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams) {
     // preprocess events
-    if (eventType == scada.EventTypes.VIEW_DATE_CHANGED) {
+    if (eventType === scada.EventTypes.VIEW_DATE_CHANGED) {
         this.curViewDateMs = opt_extraParams.getTime();
     }
 
     // pass the notification to the main window
-    if (this.mainWindow && this.mainWindow != senderWnd) {
+    if (this.mainWindow && this.mainWindow !== senderWnd) {
         var jq = this.mainWindow.$;
         if (jq) {
             jq(this.mainWindow).trigger(eventType, [senderWnd, opt_extraParams]);
@@ -77,16 +77,16 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
     }
 
     // pass the notification to the view window
-    if (this.viewWindow && this.viewWindow != senderWnd) {
-        var jq = this.viewWindow.$;
+    if (this.viewWindow && this.viewWindow !== senderWnd) {
+        jq = this.viewWindow.$;
         if (jq) {
             jq(this.viewWindow).trigger(eventType, [senderWnd, opt_extraParams]);
         }
     }
 
     // pass the notification to the data window
-    if (this.dataWindow && this.dataWindow != senderWnd) {
-        var jq = this.dataWindow.$;
+    if (this.dataWindow && this.dataWindow !== senderWnd) {
+        jq = this.dataWindow.$;
         if (jq) {
             jq(this.dataWindow).trigger(eventType, [senderWnd, opt_extraParams]);
         }
@@ -94,10 +94,9 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
 };
 
 // Get absolute URL of the view
-scada.ViewHub.prototype.getFullViewUrl = function (viewID, opt_isPopup) {
-    var env = this._getEnvObj();
-    return (env ? env.rootPath : "") + scada.utils.getViewUrl(viewID, opt_isPopup);
-}
+scada.ViewHub.prototype.getFullViewUrl = function (viewID, opt_openInFrame) {
+    return this.getEnv().rootPath + scada.utils.getViewUrl(viewID, opt_openInFrame);
+};
 
 // View hub locator object
 scada.viewHubLocator = {
@@ -108,7 +107,7 @@ scada.viewHubLocator = {
             if (wnd.viewHub) {
                 return wnd.viewHub;
             }
-            wnd = wnd == window.top ? null : window.parent;
+            wnd = wnd === window.top ? null : wnd.parent;
         }
         return null;
     }

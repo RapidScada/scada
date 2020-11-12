@@ -157,8 +157,8 @@ scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prot
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
 scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext) {
-    if (title) {
-        document.title = title + " - " + renderContext.schemeEnv.phrases.ProductName;
+    if (title && renderContext.schemeEnv.viewHub) {
+        document.title = title + " - " + renderContext.schemeEnv.viewHub.getEnv().productName;
 
         // set title of a popup in case the scheme is in the popup
         var popup = scada.popupLocator.getPopup();
@@ -167,9 +167,7 @@ scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext
         }
 
         // send notification about title change
-        if (renderContext.schemeEnv.viewHub) {
-            renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
-        }
+        renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
     }
 };
 
