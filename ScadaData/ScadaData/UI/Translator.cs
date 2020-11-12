@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2018
+ * Modified : 2020
  */
 
 using System;
@@ -100,6 +100,12 @@ namespace Scada.UI
                 }
             }
         }
+
+
+        /// <summary>
+        /// Gets or sets a value indicating whether to append the product name to a form title.
+        /// </summary>
+        public static bool AppendProductName { get; set; } = false;
 
 
         /// <summary>
@@ -367,6 +373,22 @@ namespace Scada.UI
             }
         }
 
+        /// <summary>
+        /// Gets the form title, optionally adding the product name.
+        /// </summary>
+        private static string GetFormTitle(string s)
+        {
+            if (AppendProductName)
+            {
+                string suffix = " - " + CommonPhrases.ProductName;
+                return s.EndsWith(suffix) ? s : s + suffix;
+            }
+            else
+            {
+                return s;
+            }
+        }
+
 
         /// <summary>
         /// Перевести форму, используя заданный словарь
@@ -380,9 +402,8 @@ namespace Scada.UI
                 Dictionary<string, ControlInfo> controlInfoDict = GetControlInfoDict(dict);
 
                 // перевод заголовка формы
-                ControlInfo controlInfo;
-                if (controlInfoDict.TryGetValue("this", out controlInfo) && controlInfo.Text != null)
-                    form.Text = controlInfo.Text;
+                if (controlInfoDict.TryGetValue("this", out ControlInfo controlInfo) && controlInfo.Text != null)
+                    form.Text = GetFormTitle(controlInfo.Text);
 
                 // перевод элементов управления
                 TranslateWinControls(form.Controls, toolTip, controlInfoDict);
@@ -405,9 +426,8 @@ namespace Scada.UI
                 Dictionary<string, ControlInfo> controlInfoDict = GetControlInfoDict(dict);
 
                 // перевод заголовка страницы
-                ControlInfo controlInfo;
-                if (controlInfoDict.TryGetValue("this", out controlInfo) && controlInfo.Text != null)
-                    page.Title = controlInfo.Text;
+                if (controlInfoDict.TryGetValue("this", out ControlInfo controlInfo) && controlInfo.Text != null)
+                    page.Title = GetFormTitle(controlInfo.Text);
 
                 // перевод элементов управления
                 TranslateWebControls(page.Controls, controlInfoDict);
