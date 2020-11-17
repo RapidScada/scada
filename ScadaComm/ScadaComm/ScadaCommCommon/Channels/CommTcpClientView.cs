@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Comm.Channels.UI;
@@ -116,9 +116,9 @@ namespace Scada.Comm.Channels
         {
             CommTcpClientLogic.Settings defSett = new CommTcpClientLogic.Settings();
             return BuildPropsInfo(commCnlParams,
-                new string[] { "Host", "TcpPort", "ReconnectAfter", "Behavior", "ConnMode" },
-                new object[] { defSett.Host, defSett.TcpPort, defSett.ReconnectAfter, defSett.Behavior,
-                    defSett.ConnMode });
+                new string[] { "Host", "TcpPort", "ReconnectAfter", "StayConnected", "Behavior", "ConnMode" },
+                new object[] { defSett.Host, defSett.TcpPort, defSett.ReconnectAfter, defSett.StayConnected, 
+                    defSett.Behavior, defSett.ConnMode });
         }
     }
 }
