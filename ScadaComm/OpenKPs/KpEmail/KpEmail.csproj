@@ -49,7 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
+    <Compile Include="KpConfig.cs" />
     <Compile Include="FrmConfig.cs">
       <SubType>Form</SubType>
     </Compile>

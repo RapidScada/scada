@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2020
  * 
  * Description
  * Sending email notifications.
@@ -47,7 +47,7 @@ namespace Scada.Comm.Devices
     public class KpEmailLogic : KPLogic
     {
         private AddressBook addressBook; // адресная книга, общая для линии связи
-        private Config config;           // конфигурация соединения с почтовым сервером
+        private KpConfig config;         // конфигурация соединения с почтовым сервером
         private SmtpClient smtpClient;   // клиент SMTP
         private bool fatalError;         // фатальная ошибка при инициализации КП
         private string state;            // состояние КП
@@ -65,7 +65,7 @@ namespace Scada.Comm.Devices
             WorkState = WorkStates.Normal;
 
             addressBook = null;
-            config = new Config();
+            config = new KpConfig();
             smtpClient = new SmtpClient();
             fatalError = false;
             state = "";
@@ -83,7 +83,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void LoadConfig()
         {
-            fatalError = !config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out string errMsg);
+            fatalError = !config.Load(KpConfig.GetFileName(AppDirs.ConfigDir, Number), out string errMsg);
 
             if (fatalError)
             {
