@@ -51,14 +51,14 @@ namespace Scada.Server.Modules.DBExport
         /// Отобразить форму модально
         /// </summary>
         public static bool ShowDialog(ServerComm serverComm,
-            List<Config.ExportDestination> expDests, Config.ExportDestination selExpDest,
+            List<ModConfig.ExportDestination> expDests, ModConfig.ExportDestination selExpDest,
             ref int curDataCtrlCnlNum, ref int arcDataCtrlCnlNum, ref int eventsCtrlCnlNum)
         {
             FrmManualExport frmManualExport = new FrmManualExport();
             frmManualExport.ServerComm = serverComm;
 
             // заполнение списка источников данных
-            foreach (Config.ExportDestination expDest in expDests)
+            foreach (ModConfig.ExportDestination expDest in expDests)
             {
                 int ind = frmManualExport.cbDataSource.Items.Add(expDest.DataSource);
                 if (expDest == selExpDest)

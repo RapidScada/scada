@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2015 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2015
+ * Modified : 2010
  * 
  * Description
  * Server module for real time data export from Rapid SCADA to DB.
@@ -63,7 +63,7 @@ namespace Scada.Server.Modules
         private Log log;                  // журнал работы модуля
         private string infoFileName;      // полное имя файла информации
         private Thread infoThread;        // поток для обновления файла информации
-        private Config config;            // конфигурация модуля
+        private ModConfig config;         // конфигурация модуля
         private List<Exporter> exporters; // экспортёры
 
 
@@ -306,13 +306,13 @@ namespace Scada.Server.Modules
             infoFileName = AppDirs.LogDir + InfoFileName;
 
             // загрука конфигурации
-            config = new Config(AppDirs.ConfigDir);
+            config = new ModConfig(AppDirs.ConfigDir);
 
             if (config.Load(out string errMsg))
             {
                 // создание и запуск экспортёров
                 exporters = new List<Exporter>();
-                foreach (Config.ExportDestination expDest in config.ExportDestinations)
+                foreach (ModConfig.ExportDestination expDest in config.ExportDestinations)
                 {
                     Exporter exporter = new Exporter(expDest, log);
                     exporters.Add(exporter);
