@@ -39,7 +39,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private AppDirs appDirs;       // директории приложения
         private int kpNum;             // номер настраиваемого КП
         private string cmdLine;        // командная строка КП
-        private Config config;         // конфигурация КП
+        private KpConfig config;         // конфигурация КП
         private string configFileName; // имя файла конфигурации КП
         private bool modified;         // признак изменения конфигурации
         private TreeNode rootNode;     // корневой узел дерева
@@ -55,7 +55,7 @@ namespace Scada.Comm.Devices.KpSnmp
             appDirs = null;
             kpNum = 0;
             cmdLine = "";
-            config = new Config();
+            config = new KpConfig();
             configFileName = "";
             modified = false;
             rootNode = treeView.Nodes["nodeDevice"];
@@ -87,7 +87,7 @@ namespace Scada.Comm.Devices.KpSnmp
             get
             {
                 object selObj = treeView.GetSelectedObject();
-                return selObj is Config.VarGroup || selObj is Config.Variable;
+                return selObj is KpConfig.VarGroup || selObj is KpConfig.Variable;
             }
         }
 
@@ -102,7 +102,7 @@ namespace Scada.Comm.Devices.KpSnmp
                 treeView.BeginUpdate();
                 rootNode.Nodes.Clear();
 
-                foreach (Config.VarGroup group in config.VarGroups)
+                foreach (KpConfig.VarGroup group in config.VarGroups)
                     rootNode.Nodes.Add(CreateGroupNode(group));
 
                 rootNode.Expand();
@@ -119,12 +119,12 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Создать узел дерева для группы переменных
         /// </summary>
-        private TreeNode CreateGroupNode(Config.VarGroup group)
+        private TreeNode CreateGroupNode(KpConfig.VarGroup group)
         {
             string imageKey = group.Variables.Count > 0 ? "folder_open.png" : "folder_closed.png";
             TreeNode groupNode = TreeViewUtils.CreateNode(group, imageKey, true);
 
-            foreach (Config.Variable variable in group.Variables)
+            foreach (KpConfig.Variable variable in group.Variables)
                 groupNode.Nodes.Add(CreateVariableNode(variable));
 
             return groupNode;
@@ -133,7 +133,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Создать узел дерева для переменной
         /// </summary>
-        private TreeNode CreateVariableNode(Config.Variable variable)
+        private TreeNode CreateVariableNode(KpConfig.Variable variable)
         {
             return TreeViewUtils.CreateNode(variable, "variable.png");
         }
@@ -144,7 +144,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private int CalcSignal()
         {
             TreeNode selectedNode = treeView.SelectedNode;
-            if (selectedNode != null && selectedNode.Tag is Config.Variable)
+            if (selectedNode != null && selectedNode.Tag is KpConfig.Variable)
             {
                 int signal = 1;
                 TreeNode selGroupNode = selectedNode.Parent;
@@ -220,7 +220,7 @@ namespace Scada.Comm.Devices.KpSnmp
             Text = string.Format(Text, kpNum);
 
             // загрузка конфигурации КП
-            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum, cmdLine);
+            configFileName = KpConfig.GetFileName(appDirs.ConfigDir, kpNum, cmdLine);
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
             Modified = false;
@@ -262,7 +262,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnAddVarGroup_Click(object sender, EventArgs e)
         {
             // добавление группы переменных
-            Config.VarGroup newVarGroup = FrmVarGroup.CreateVarGroup();
+            KpConfig.VarGroup newVarGroup = FrmVarGroup.CreateVarGroup();
             if (newVarGroup != null)
             {
                 TreeNode groupNode = CreateGroupNode(newVarGroup);
@@ -274,10 +274,10 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnAddVariable_Click(object sender, EventArgs e)
         {
             // добавление переменной
-            TreeNode closestGroupNode = treeView.SelectedNode?.FindClosest(typeof(Config.VarGroup));
+            TreeNode closestGroupNode = treeView.SelectedNode?.FindClosest(typeof(KpConfig.VarGroup));
             if (closestGroupNode != null)
             {
-                Config.Variable newVariable = FrmVariable.CreateVariable();
+                KpConfig.Variable newVariable = FrmVariable.CreateVariable();
                 if (newVariable != null)
                 {
                     TreeNode variableNode = CreateVariableNode(newVariable);
@@ -293,10 +293,10 @@ namespace Scada.Comm.Devices.KpSnmp
             object selObj = treeView.GetSelectedObject();
             bool edited = false;
 
-            if (selObj is Config.VarGroup)
-                edited = FrmVarGroup.EditVarGroup((Config.VarGroup)selObj);
-            else if (selObj is Config.Variable)
-                edited = FrmVariable.EditVariable((Config.Variable)selObj, CalcSignal());
+            if (selObj is KpConfig.VarGroup)
+                edited = FrmVarGroup.EditVarGroup((KpConfig.VarGroup)selObj);
+            else if (selObj is KpConfig.Variable)
+                edited = FrmVariable.EditVariable((KpConfig.Variable)selObj, CalcSignal());
 
             if (edited)
             {
@@ -352,14 +352,14 @@ namespace Scada.Comm.Devices.KpSnmp
         private void treeView_BeforeExpand(object sender, TreeViewCancelEventArgs e)
         {
             // установка изображения развёрнутой группы
-            if (e.Node.Tag is Config.VarGroup)
+            if (e.Node.Tag is KpConfig.VarGroup)
                 e.Node.SetImageKey("folder_open.png");
         }
 
         private void treeView_BeforeCollapse(object sender, TreeViewCancelEventArgs e)
         {
             // установка изображения свёрнутой группы
-            if (e.Node.Tag is Config.VarGroup)
+            if (e.Node.Tag is KpConfig.VarGroup)
                 e.Node.SetImageKey("folder_closed.png");
         }
 

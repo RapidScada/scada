@@ -55,7 +55,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Config.cs" />
+    <Compile Include="KpConfig.cs" />
     <Compile Include="FrmSettings.cs">
       <SubType>Form</SubType>
     </Compile>

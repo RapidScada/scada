@@ -35,7 +35,7 @@ namespace Scada.Comm.Devices.KpSnmp
     /// </summary>
     internal partial class FrmVarGroup : Form
     {
-        private Config.VarGroup varGroup; // созданная или редактируемая группа переменных
+        private KpConfig.VarGroup varGroup; // созданная или редактируемая группа переменных
 
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Создать группу переменных
         /// </summary>
         /// <returns>Возвращает новую группу переменных или null в случае отмены</returns>
-        public static Config.VarGroup CreateVarGroup()
+        public static KpConfig.VarGroup CreateVarGroup()
         {
             FrmVarGroup frmVarGroup = new FrmVarGroup();
             frmVarGroup.ShowDialog();
@@ -63,7 +63,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Редактировать группу переменных
         /// </summary>
         /// <returns>Возвращает true, если группа переменных была изменена</returns>
-        public static bool EditVarGroup(Config.VarGroup varGroup)
+        public static bool EditVarGroup(KpConfig.VarGroup varGroup)
         {
             if (varGroup == null)
                 throw new ArgumentNullException("varGroup");
@@ -104,7 +104,7 @@ namespace Scada.Comm.Devices.KpSnmp
         private void btnAdd_Click(object sender, EventArgs e)
         {
             // создание группы переменных
-            varGroup = new Config.VarGroup() { Name = txtName.Text.Trim() };
+            varGroup = new KpConfig.VarGroup() { Name = txtName.Text.Trim() };
             DialogResult = DialogResult.OK;
         }
 

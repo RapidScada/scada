@@ -36,7 +36,7 @@ namespace Scada.Comm.Devices.KpSnmp
     /// </summary>
     internal partial class FrmVariable : Form
     {
-        private Config.Variable variable; // созданная или редактируемая переменная
+        private KpConfig.Variable variable; // созданная или редактируемая переменная
 
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Создать переменную
         /// </summary>
         /// <returns>Возвращает новую переменную или null в случае отмены</returns>
-        public static Config.Variable CreateVariable()
+        public static KpConfig.Variable CreateVariable()
         {
             FrmVariable frmVariable = new FrmVariable();
             frmVariable.ShowDialog();
@@ -81,7 +81,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Редактировать переменную
         /// </summary>
         /// <returns>Возвращает true, если переменная была изменена</returns>
-        public static bool EditVariable(Config.Variable variable, int signal)
+        public static bool EditVariable(KpConfig.Variable variable, int signal)
         {
             if (variable == null)
                 throw new ArgumentNullException("variable");
@@ -134,7 +134,7 @@ namespace Scada.Comm.Devices.KpSnmp
 
             if (CheckOID(oidStr))
             {
-                variable = new Config.Variable() { Name = txtName.Text.Trim(), OID = oidStr, IsBits = chkBits.Checked };
+                variable = new KpConfig.Variable() { Name = txtName.Text.Trim(), OID = oidStr, IsBits = chkBits.Checked };
                 DialogResult = DialogResult.OK;
             }
             else

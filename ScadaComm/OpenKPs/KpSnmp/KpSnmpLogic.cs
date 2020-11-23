@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  * 
  * Description
  * Interacting with controllers via SNMP protocol.
@@ -99,7 +99,7 @@ namespace Scada.Comm.Devices
         /// </summary>
         private const int MaxTagStrLen = 50;
 
-        private Config config;              // конфигурация КП
+        private KpConfig config;            // конфигурация КП
         private bool fatalError;            // фатальная ошибка при инициализации КП
         private VarGroup[] varGroups;       // группы запрашиваемых переменных
         private string[] strVals;           // строковые значения тегов для отображения
@@ -119,7 +119,7 @@ namespace Scada.Comm.Devices
             CanSendCmd = true;
             ConnRequired = false;
 
-            config = new Config();
+            config = new KpConfig();
             fatalError = false;
             varGroups = null;
             strVals = null;
@@ -134,7 +134,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Создать переменную для работы по SNMP на основе переменной конфигурации
         /// </summary>
-        private Variable CreateVariable(Config.Variable configVar)
+        private Variable CreateVariable(KpConfig.Variable configVar)
         {
             try
             {
@@ -162,14 +162,14 @@ namespace Scada.Comm.Devices
 
             for (int i = 0; i < groupCnt; i++)
             {
-                Config.VarGroup configVarGroup = config.VarGroups[i];
+                KpConfig.VarGroup configVarGroup = config.VarGroups[i];
                 int varCnt = configVarGroup.Variables.Count;
                 TagGroup tagGroup = new TagGroup(configVarGroup.Name);
                 VarGroup varGroup = new VarGroup(configVarGroup.Name, varCnt, signal);
 
                 for (int j = 0; j < varCnt; j++)
                 {
-                    Config.Variable configVar = configVarGroup.Variables[j];
+                    KpConfig.Variable configVar = configVarGroup.Variables[j];
                     KPTag kpTag = new KPTag(signal++, configVar.Name);
                     tagGroup.KPTags.Add(kpTag);
                     varGroup.Variables[j] = CreateVariable(configVar);
@@ -642,7 +642,7 @@ namespace Scada.Comm.Devices
         public override void OnAddedToCommLine()
         {
             // загрузка конфигурации КП
-            bool configLoaded = config.Load(Config.GetFileName(AppDirs.ConfigDir, Number, ReqParams.CmdLine), 
+            bool configLoaded = config.Load(KpConfig.GetFileName(AppDirs.ConfigDir, Number, ReqParams.CmdLine), 
                 out string errMsg);
 
             if (configLoaded)

@@ -35,7 +35,7 @@ namespace Scada.Comm.Devices.KpSnmp
     /// </summary>
     internal partial class FrmSettings : Form
     {
-        private Config config; // конфигурация связи с КП
+        private KpConfig config; // конфигурация связи с КП
 
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// Отобразить форму
         /// </summary>
         /// <returns>Возвращает true, если конфигурация была изменена</returns>
-        public static bool Show(Config config)
+        public static bool Show(KpConfig config)
         {
             if (config == null)
                 throw new ArgumentNullException("config");

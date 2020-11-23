@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.KpSnmp;
@@ -40,7 +40,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Версия библиотеки КП.
         /// </summary>
-        internal const string KpVersion = "5.0.1.0";
+        internal const string KpVersion = "5.0.2.0";
 
 
         /// <summary>
@@ -126,12 +126,12 @@ namespace Scada.Comm.Devices
             get
             {
                 // получение имени файла шаблона устройства
-                string configFileName = Config.GetFileName(AppDirs.ConfigDir, Number, KPProps?.CmdLine);
+                string configFileName = KpConfig.GetFileName(AppDirs.ConfigDir, Number, KPProps?.CmdLine);
                 if (!File.Exists(configFileName))
                     return null;
 
                 // загрузка конфигурации КП
-                Config config = new Config();
+                KpConfig config = new KpConfig();
                 if (!config.Load(configFileName, out string errMsg))
                     throw new Exception(errMsg);
 
@@ -140,9 +140,9 @@ namespace Scada.Comm.Devices
                 List<InCnlPrototype> inCnls = prototypes.InCnls;
                 int signal = 1;
 
-                foreach (Config.VarGroup varGroup in config.VarGroups)
+                foreach (KpConfig.VarGroup varGroup in config.VarGroups)
                 {
-                    foreach (Config.Variable variable in varGroup.Variables)
+                    foreach (KpConfig.Variable variable in varGroup.Variables)
                     {
                         inCnls.Add(new InCnlPrototype(variable.Name, BaseValues.CnlTypes.TI) { Signal = signal++ });
                     }
