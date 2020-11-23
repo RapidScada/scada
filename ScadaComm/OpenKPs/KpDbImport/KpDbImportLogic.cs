@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
@@ -68,7 +68,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Initializes the data source.
         /// </summary>
-        private void InitDataSource(Config config)
+        private void InitDataSource(KpConfig config)
         {
             switch (config.DataSourceType)
             {
@@ -118,7 +118,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Initializes the device tags.
         /// </summary>
-        private void InitDeviceTags(Config config)
+        private void InitDeviceTags(KpConfig config)
         {
             string[] tagNames = GetTagNames(config);
             int tagCnt = tagNames.Length;
@@ -415,9 +415,9 @@ namespace Scada.Comm.Devices
         public override void OnAddedToCommLine()
         {
             // load configuration
-            Config config = new Config();
+            KpConfig config = new KpConfig();
 
-            if (config.Load(Config.GetFileName(AppDirs.ConfigDir, Number), out string errMsg))
+            if (config.Load(KpConfig.GetFileName(AppDirs.ConfigDir, Number), out string errMsg))
             {
                 InitDataSource(config);
                 InitDeviceTags(config);
@@ -434,7 +434,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// Gets an array of tag names according to the configuration.
         /// </summary>
-        internal static string[] GetTagNames(Config config)
+        internal static string[] GetTagNames(KpConfig config)
         {
             int tagCount = config.AutoTagCount ? config.CalcTagCount() : config.TagCount;
             string[] tagNames = new string[tagCount];
