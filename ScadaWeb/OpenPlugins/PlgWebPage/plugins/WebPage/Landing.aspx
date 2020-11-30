@@ -9,6 +9,7 @@
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/WebPage/css/webpage.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript">
         <%= sbClientScript.ToString() %>
 
@@ -34,16 +35,16 @@
             var url = replaceLocalhost(viewPath);
 
             if (url) {
-                $("#aDestination")
-                    .attr("href", url)
-                    .text(url);
-
+                $("body").addClass("loading");
+                console.log(scada.utils.getCurTime() + " Redirect to " + url)
                 setTimeout(function () { location.href = url }, REDIRECT_DELAY);
+            } else {
+                $("#lblEmptyUrl").css("display", "");
             }
         });
     </script>
 </head>
 <body>
-    <div id="divMessage"><asp:Label ID="lblRedirect" runat="server" Text="Redirecting to "></asp:Label><a id="aDestination"></a></div>    
+    <div id="divMessage"><asp:Label ID="lblEmptyUrl" runat="server" Text="Unable to redirect because URL is empty" Style="display: none"></asp:Label></div>    
 </body>
 </html>

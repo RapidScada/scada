@@ -69,6 +69,7 @@
     <Content Include="plugins\WebPage\css\webpage.min.css">
       <DependentUpon>webpage.css</DependentUpon>
     </Content>
+    <Content Include="plugins\WebPage\images\loading.gif" />
     <Content Include="plugins\WebPage\images\webpageicon.png" />
     <Content Include="plugins\WebPage\Landing.aspx" />
     <Content Include="plugins\WebPage\lang\PlgWebPage.ru-RU.xml" />
