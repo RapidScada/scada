@@ -163,9 +163,8 @@ function saveScale() {
 
 // Update the scheme scale if the scheme should fit size
 function updateScale() {
-    var scale = localStorage.getItem("Scheme.SchemeScale");
-    if (scale && !$.isNumeric(scale)) {
-        scheme.setScale(scale);
+    if (scheme.scaleType !== scada.scheme.ScaleTypes.NUMERIC) {
+        scheme.setScale(scheme.scaleType, scheme.scaleValue);
         displayScale();
     }
 }
