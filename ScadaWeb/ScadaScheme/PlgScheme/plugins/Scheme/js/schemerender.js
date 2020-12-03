@@ -224,10 +224,8 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         var divScheme = component.dom.first();
         divScheme.css({
-            "position": "relative", // to position scheme components
             "width": schemeWidth,
             "height": schemeHeight,
-            "transform-origin": "left top" // for scaling
         });
 
         if (!renderContext.editMode) {
@@ -268,9 +266,14 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleType, scaleValue) {
     if (component.dom) {
         var scale = this._calcScale(component, scaleType, scaleValue);
+        //var sizeCoef = Math.min(scale, 1);
+
         component.dom.css({
-            "transform": "scale(" + scale + ", " + scale + ")"
+            "transform": "scale(" + scale + ", " + scale + ")",
+            //"width": component.props.Size.Width * sizeCoef,
+            //"height": component.props.Size.Height * sizeCoef
         });
+
         return scale;
     }
 };
