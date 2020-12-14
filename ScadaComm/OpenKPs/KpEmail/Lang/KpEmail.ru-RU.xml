@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<KpEmailDictionaries>
+  <Dictionary key="Scada.Comm.Devices.KpEmail.FrmConfig">
+    <Phrase key="this">Email - Свойства КП {0}</Phrase>
+    <Phrase key="gbServer">SMTP-сервер</Phrase>
+    <Phrase key="lblHost">Адрес сервера</Phrase>
+    <Phrase key="lblPort">Порт</Phrase>
+    <Phrase key="lblUser">Пользователь</Phrase>
+    <Phrase key="lblPassword">Пароль</Phrase>
+    <Phrase key="chkEnableSsl">Использовать SSL</Phrase>
+    <Phrase key="gbSender">Отправитель</Phrase>
+    <Phrase key="lblSenderAddress">Адрес отправителя</Phrase>
+    <Phrase key="lblSenderDisplayName">Отображаемое имя</Phrase>
+    <Phrase key="btnEditAddressBook">Адресная книга</Phrase>
+    <Phrase key="btnOK">OK</Phrase>
+    <Phrase key="btnCancel">Отмена</Phrase>
+  </Dictionary>
+</KpEmailDictionaries>

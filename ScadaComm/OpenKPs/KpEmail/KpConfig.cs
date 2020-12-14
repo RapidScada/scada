@@ -29,8 +29,8 @@ using System.Xml;
 namespace Scada.Comm.Devices.KpEmail
 {
     /// <summary>
-    /// Mail server connection configuration
-    /// <para>Конфигурация соединения с почтовым сервером</para>
+    /// Mail server connection configuration.
+    /// <para>Конфигурация соединения с почтовым сервером.</para>
     /// </summary>
     internal class KpConfig
     {
@@ -59,11 +59,6 @@ namespace Scada.Comm.Devices.KpEmail
         public string User { get; set; }
 
         /// <summary>
-        /// Получить или установить отображаемое имя пользователя
-        /// </summary>
-        public string UserDisplayName { get; set; }
-
-        /// <summary>
         /// Получить или установить пароль
         /// </summary>
         public string Password { get; set; }
@@ -72,6 +67,16 @@ namespace Scada.Comm.Devices.KpEmail
         /// Получить или установить признак использования SSL
         /// </summary>
         public bool EnableSsl { get; set; }
+
+        /// <summary>
+        /// Gets or sets the email address of the sender.
+        /// </summary>
+        public string SenderAddress { get; set; }
+
+        /// <summary>
+        /// Gets or sets the display name of the sender.
+        /// </summary>
+        public string SenderDisplayName { get; set; }
 
 
         /// <summary>
@@ -84,9 +89,10 @@ namespace Scada.Comm.Devices.KpEmail
             Host = "smtp.gmail.com";
             Port = 587;
             User = "example@gmail.com";
-            UserDisplayName = "Rapid SCADA";
             Password = "";
             EnableSsl = true;
+            SenderAddress = "example@gmail.com";
+            SenderDisplayName = "Rapid SCADA";
         }
 
 
@@ -106,9 +112,11 @@ namespace Scada.Comm.Devices.KpEmail
                 Host = rootElem.GetChildAsString("Host");
                 Port = rootElem.GetChildAsInt("Port");
                 User = rootElem.GetChildAsString("User");
-                UserDisplayName = rootElem.GetChildAsString("UserDisplayName");
                 Password = ScadaUtils.Decrypt(rootElem.GetChildAsString("Password"));
                 EnableSsl = rootElem.GetChildAsBool("EnableSsl");
+                SenderAddress = rootElem.GetChildAsString("SenderAddress", User);
+                string userDisplayName = rootElem.GetChildAsString("UserDisplayName"); // for backward compatibility
+                SenderDisplayName = rootElem.GetChildAsString("SenderDisplayName", userDisplayName);
 
                 errMsg = "";
                 return true;
@@ -138,9 +146,10 @@ namespace Scada.Comm.Devices.KpEmail
                 rootElem.AppendElem("Host", Host);
                 rootElem.AppendElem("Port", Port);
                 rootElem.AppendElem("User", User);
-                rootElem.AppendElem("UserDisplayName", UserDisplayName);
                 rootElem.AppendElem("Password", ScadaUtils.Encrypt(Password));
                 rootElem.AppendElem("EnableSsl", EnableSsl);
+                rootElem.AppendElem("SenderAddress", SenderAddress);
+                rootElem.AppendElem("SenderDisplayName", SenderDisplayName);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";
