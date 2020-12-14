@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgChartProDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Chart">
+    <Phrase key="IncorrectStartDate">起始日期错误.</Phrase>
+    <Phrase key="IncorrectEndDate">截止日期错误.</Phrase>
+    <Phrase key="IncorrectPeriod">起始日期必须早于或等于截止日期.</Phrase>
+    <Phrase key="PeriodTooLong">最大周期长度是{0} 天.</Phrase>
+    <Phrase key="CnlNumsEmptyError">通道号没有指定.</Phrase>
+    <Phrase key="CountMismatchError">通道号和视图ID不匹配</Phrase>
+    <Phrase key="PerfWarning">警告! 过多的通道会影响性能.</Phrase>
+    <Phrase key="AddCnlBtn">添加</Phrase>
+    <Phrase key="RemoveCnlBtn">移除</Phrase>
+    <Phrase key="CnlInfoBtn">信息</Phrase>
+    <Phrase key="ObjectHint">对象: </Phrase>
+    <Phrase key="DeviceHint">设备: </Phrase>
+    <Phrase key="ViewHint">视图: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartCnls">
+    <Phrase key="this">图表通道</Phrase>
+    <Phrase key="btnAddCnls">添加通道</Phrase>
+    <Phrase key="lblSelCnls">已选通道:</Phrase>
+    <Phrase key="lblNoSelCnls">没有选择的输入通道</Phrase>
+    <Phrase key="lbtnBackToCnls">回到已选通道</Phrase>
+    <Phrase key="lblLoading">加载...</Phrase>
+    <Phrase key="lblUnableLoadView">无法加载视图</Phrase>
+    <Phrase key="lblNoCnlsByView">输入通道未找到</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartExport">
+    <Phrase key="this">导出图标</Phrase>
+    <Phrase key="btnExportPdf">导出图标成PDF</Phrase>
+    <Phrase key="btnExportPng">导出图标成PNG</Phrase>
+    <Phrase key="btnExportExcel">导出数据到Excel</Phrase>
+    <Phrase key="lblDateFrom">从</Phrase>
+    <Phrase key="txtDateTo">到</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPeriod">
+    <Phrase key="this">图标周期</Phrase>
+    <Phrase key="lblDateFrom">从</Phrase>
+    <Phrase key="txtDateTo">到</Phrase>
+    <Phrase key="btnPrevDay">前一天</Phrase>
+    <Phrase key="btnNextDay">后一天</Phrase>
+    <Phrase key="btnPrevWeek">前一周</Phrase>
+    <Phrase key="btnNextWeek">后一周</Phrase>
+    <Phrase key="btnPrevMonth">前一月</Phrase>
+    <Phrase key="btnNextMonth">后一月</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPeriodRolling">
+    <Phrase key="this">图标周期</Phrase>
+    <Phrase key="lblPeriod">周期</Phrase>
+    <Phrase key="lblPeriodUnit">分钟</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPro">
+    <Phrase key="this">专业图标</Phrase>
+    <Phrase key="lblStatus">生成于 </Phrase>
+    <Phrase key="hlSelectCnls">已选通道</Phrase>
+    <Phrase key="hlChangePeriod">修改周期</Phrase>
+    <Phrase key="hlShowData">显示数据</Phrase>
+    <Phrase key="hlHideData">隐藏数据</Phrase>
+    <Phrase key="hlExport">导出</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.ChartPro.WFrmChartPro.Js">
+    <Phrase key="DataLoading">数据加载...</Phrase>
+    <Phrase key="LoadError">数据加载出错</Phrase>
+    <Phrase key="Generated">生成于 </Phrase>
+    <Phrase key="TimeCol">时间</Phrase>
+    <Phrase key="ZoomIn">放大</Phrase>
+    <Phrase key="ZoomOut">缩小</Phrase>
+    <Phrase key="ResetZoom">重置</Phrase>
+  </Dictionary>
+</PlgChartProDictionaries>

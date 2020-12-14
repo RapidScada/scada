@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgTableDictionaries>
+  <Dictionary key="Scada.Table.TableView">
+    <Phrase key="LoadTableViewError">从文件加载表格出错</Phrase>
+    <Phrase key="SaveTableViewError">保存表格到文件出错</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmItemInfo">
+    <Phrase key="this">条目信息</Phrase>
+    <Phrase key="gbInCnl">输入通道</Phrase>
+    <Phrase key="lblInCnl">通道</Phrase>
+    <Phrase key="lblInCnlObj">对象</Phrase>
+    <Phrase key="lblInCnlKP">设备</Phrase>
+    <Phrase key="gbCtrlCnl">输出通道</Phrase>
+    <Phrase key="lblCtrlCnl">通道</Phrase>
+    <Phrase key="lblCtrlCnlObj">对象</Phrase>
+    <Phrase key="lblCtrlCnlKP">设备</Phrase>
+    <Phrase key="btnClose">关闭</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Table.Editor.Forms.FrmMain">
+    <Phrase key="miFile">&amp;文件</Phrase>
+    <Phrase key="miFileNew">新建</Phrase>
+    <Phrase key="miFileOpen">打开...</Phrase>
+    <Phrase key="miFileSave">保存</Phrase>
+    <Phrase key="miFileSaveAs">另存为...</Phrase>
+    <Phrase key="miFileExit">退出</Phrase>
+    <Phrase key="miHelp">&amp;帮助</Phrase>
+    <Phrase key="miHelpAbout">关于</Phrase>
+    <Phrase key="btnFileNew.ToolTip">新建表格 (Ctrl+N)</Phrase>
+    <Phrase key="btnFileOpen.ToolTip">打开表格 (Ctrl+O)</Phrase>
+    <Phrase key="btnFileSave.ToolTip">保存表格 (Ctrl+S)</Phrase>
+    <Phrase key="btnRefreshBase.ToolTip">刷新配置数据库</Phrase>
+    <Phrase key="btnAddItem.ToolTip">添加条目</Phrase>
+    <Phrase key="btnAddEmptyItem.ToolTip">添加空条目</Phrase>
+    <Phrase key="btnMoveUpItem.ToolTip">上移条目</Phrase>
+    <Phrase key="btnMoveDownItem.ToolTip">下移条目</Phrase>
+    <Phrase key="btnDeleteItem.ToolTip">删除选中的条目</Phrase>
+    <Phrase key="btnItemInfo.ToolTip">显示条目信息</Phrase>
+    <Phrase key="miDeviceAddItems">添加所有条目</Phrase>
+    <Phrase key="cbCnlKind.Items[0]">输入通道</Phrase>
+    <Phrase key="cbCnlKind.Items[1]">输出通道</Phrase>
+    <Phrase key="lblHint">回车或双击一个节点将其添加到表格。右键单击设备节点显示其上下文菜单。</Phrase>
+    <Phrase key="colItemCnlNum">输入通道</Phrase>
+    <Phrase key="colItemCtrlCnlNum">输出通道</Phrase>
+    <Phrase key="colItemCaption">标题</Phrase>
+    <Phrase key="colItemHidden">隐藏</Phrase>
+    <Phrase key="EditorTitle">{0} - 表格编辑器</Phrase>
+    <Phrase key="DefaultTableTitle">表格标题</Phrase>
+    <Phrase key="TableFileFilter">表格视图 (*.tbl)|*.tbl|所有文件 (*.*)|*.*</Phrase>
+    <Phrase key="SaveTableConfirm">表格视图已修改，要保存么？</Phrase>
+    <Phrase key="BaseNotFound">配置数据库未找到</Phrase>
+    <Phrase key="EmptyDeviceNode">空设备</Phrase>
+    <Phrase key="LoadConfigBaseError">加载配置数据库出错</Phrase>
+    <Phrase key="FillCnlTreeError">填充通道树出错</Phrase>
+    <Phrase key="LoadFormStateError">加载表单状态出错</Phrase>
+    <Phrase key="SaveFormStateError">保存表单状态出错</Phrase>
+    <Phrase key=""></Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsRepBuilder">
+    <Phrase key="EventsWorksheet">事件</Phrase>
+    <Phrase key="AllEventsTitle">所有事件, {0}</Phrase>
+    <Phrase key="EventsByViewTitle">{0}, {1}</Phrase>
+    <Phrase key="EventsGen">生成 </Phrase>
+    <Phrase key="NumCol">序号</Phrase>
+    <Phrase key="TimeCol">日期和时间</Phrase>
+    <Phrase key="ObjCol">对象</Phrase>
+    <Phrase key="DevCol">设备</Phrase>
+    <Phrase key="CnlCol">通道</Phrase>
+    <Phrase key="TextCol">描述</Phrase>
+    <Phrase key="AckCol">确认</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.HourDataRepBuilder">
+    <Phrase key="HourDataWorksheet">小时数据</Phrase>
+    <Phrase key="HourDataTitle">{0}, {1}, {2}</Phrase>
+    <Phrase key="HourDataGen">生成 </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.EventsWndSpec">
+    <Phrase key="EventsTitle">事件</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
+    <Phrase key="this">命令 - Rapid SCADA</Phrase>
+    <Phrase key="lblCtrlCnlNotFound">输出通道 {0} 未找到.</Phrase>
+    <Phrase key="lblWrongPwd">密码错误.</Phrase>
+    <Phrase key="lblNoRights">权限不足.</Phrase>
+    <Phrase key="lblIncorrectCmdVal">错误的命令值.</Phrase>
+    <Phrase key="lblIncorrectCmdData">错误的命令数据.</Phrase>
+    <Phrase key="lblCtrlCnlCaption">输出通道:</Phrase>
+    <Phrase key="lblObjCaption">对象:</Phrase>
+    <Phrase key="lblDevCaption">设备:</Phrase>
+    <Phrase key="lblPassword">密码</Phrase>
+    <Phrase key="lblCmdVal">值</Phrase>
+    <Phrase key="lblCommand">命令</Phrase>
+    <Phrase key="lblCmdData">数据</Phrase>
+    <Phrase key="lblStr">字符串</Phrase>
+    <Phrase key="lblHex">十六进制</Phrase>
+    <Phrase key="lblCmdEnqueded">命令已加入队列准备执行.</Phrase>
+    <Phrase key="lblCloseAfter">窗口将关闭</Phrase>
+    <Phrase key="lblSec">秒.</Phrase>
+    <Phrase key="lblCmdNotSent">无法执行命令。服务器不可用。</Phrase>
+    <Phrase key="lblCmdRejected">命令被服务器拒绝.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
+    <Phrase key="this">事件确认 - Rapid SCADA</Phrase>
+    <Phrase key="lblEventNotFound">事件未找到.</Phrase>
+    <Phrase key="lblAckNotSent">无法发送“确认”. 服务器不可用.</Phrase>
+    <Phrase key="lblAckRejected">“确认”被服务器拒绝.</Phrase>
+    <Phrase key="lblNumCaption">序号:</Phrase>
+    <Phrase key="lblTimeCaption">日期和时间:</Phrase>
+    <Phrase key="lblObjCaption">对象:</Phrase>
+    <Phrase key="lblDevCaption">设备:</Phrase>
+    <Phrase key="lblCnlCaption">通道:</Phrase>
+    <Phrase key="lblTextCaption">描述:</Phrase>
+    <Phrase key="lblAckCaption">已确认:</Phrase>
+    <Phrase key="lblByUser">被 {0}</Phrase>
+    <Phrase key="lblTip">点击“OK” 按钮确认事件.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">
+    <Phrase key="lblAllEventsBtn">所有事件</Phrase>
+    <Phrase key="lblEventsByViewBtn">视图事件</Phrase>
+    <Phrase key="lblNumCol">序号</Phrase>
+    <Phrase key="lblTimeCol">日期和时间</Phrase>
+    <Phrase key="lblObjCol">对象</Phrase>
+    <Phrase key="lblDevCol">设备</Phrase>
+    <Phrase key="lblCnlCol">通道</Phrase>
+    <Phrase key="lblTextCol">描述</Phrase>
+    <Phrase key="lblAckCol">确认</Phrase>
+    <Phrase key="lblNoEvents">没有事件</Phrase>
+    <Phrase key="lblLoading">加载中...</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents.Js">
+    <Phrase key="UpdateEventsError">更新事件出错</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable">
+    <Phrase key="SelectedDay">选择的日期:</Phrase>
+    <Phrase key="PreviousDay">过去的日期:</Phrase>
+    <Phrase key="PrevDayItem">过去. </Phrase>
+    <Phrase key="ItemCol">条目</Phrase>
+    <Phrase key="CurCol">当前</Phrase>
+    <Phrase key="InCnlHint">输入通道: </Phrase>
+    <Phrase key="CtrlCnlHint">输出通道: </Phrase>
+    <Phrase key="ObjectHint">对象: </Phrase>
+    <Phrase key="DeviceHint">设备: </Phrase>
+    <Phrase key="QuantityHint">数量: </Phrase>
+    <Phrase key="UnitHint">单位: </Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Table.WFrmTable.Js">
+    <Phrase key="UpdateCurDataError">更新当前数据出错</Phrase>
+    <Phrase key="UpdateHourDataError">更新小时数据出错</Phrase>
+  </Dictionary>
+</PlgTableDictionaries>

@@ -1,4 +1,4 @@
-﻿<%@ Page Title="Minute Data Report - Rapid SCADA" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="MinDataRep.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmMinDataRep" %>
+﻿<%@ Page Title="Minute Data Report" Language="C#" MasterPageFile="~/MasterMain.Master" AutoEventWireup="true" CodeBehind="MinDataRep.aspx.cs" Inherits="Scada.Web.Plugins.Chart.WFrmMinDataRep" %>
 <%@ Import Namespace="Scada.Web.Plugins.Chart" %>
 <asp:Content ID="Content1" ContentPlaceHolderID="cphMainHead" runat="server">
     <link href="css/mindatarep.min.css" rel="stylesheet" type="text/css" />

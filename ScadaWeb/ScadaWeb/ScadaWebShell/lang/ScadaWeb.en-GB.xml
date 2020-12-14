@@ -58,18 +58,18 @@
     <Phrase key="SaveWebSettingsError">Error saving web application settings</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmAbout">
-    <Phrase key="this">About - Rapid SCADA</Phrase>
+    <Phrase key="this">About</Phrase>
     <Phrase key="hlAppName">Webstation</Phrase>
     <Phrase key="hlAppName.NavigateUrl">http://rapidscada.org</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmError">
-    <Phrase key="this">Application Error - Rapid SCADA</Phrase>
+    <Phrase key="this">Application Error</Phrase>
     <Phrase key="lblTitle">Application Error</Phrase>
     <Phrase key="lblErrMsg">An application error occurred. If it repeats often, please contact the support.</Phrase>
     <Phrase key="lblErrDetailsCaption">Details:</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
-    <Phrase key="this">Login - Rapid SCADA</Phrase>
+    <Phrase key="this">Login</Phrase>
     <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.org</Phrase>
     <Phrase key="lblUsername">Username</Phrase>
     <Phrase key="lblPassword">Password</Phrase>
@@ -81,16 +81,16 @@
     <Phrase key="CookiesDisabled">Cookies are disabled. Please enable cookies.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
-    <Phrase key="this">No View - Rapid SCADA</Phrase>
+    <Phrase key="this">No View</Phrase>
     <Phrase key="lblViewNotExist">The requested view does not exist or you have insufficient rights to access it.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmReports">
-    <Phrase key="this">Reports - Rapid SCADA</Phrase>
+    <Phrase key="this">Reports</Phrase>
     <Phrase key="lblTitle">Available Reports</Phrase>
     <Phrase key="lblNoReports">No reports available</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmUser">
-    <Phrase key="this">User Profile - Rapid SCADA</Phrase>
+    <Phrase key="this">User Profile</Phrase>
     <Phrase key="lblTitle">User Profile</Phrase>
     <Phrase key="lblUserNameCaption">Username:</Phrase>
     <Phrase key="lblRoleNameCaption">Role:</Phrase>
@@ -102,10 +102,7 @@
     <Phrase key="RightNo">No</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
-    <Phrase key="this">View - Rapid SCADA</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.WFrmView.Js">
-    <Phrase key="ExternalLinkTitle">External Link - Rapid SCADA</Phrase>
+    <Phrase key="this">View</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins">
     <Phrase key="LoadPluginConfigError">Error loading {0} plugin configuration: {1}</Phrase>

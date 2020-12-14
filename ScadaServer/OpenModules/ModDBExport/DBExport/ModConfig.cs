@@ -26,9 +26,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Xml;
 
 namespace Scada.Server.Modules.DBExport
@@ -37,7 +34,7 @@ namespace Scada.Server.Modules.DBExport
     /// Module configuration.
     /// <para>Конфигурация модуля.</para>
     /// </summary>
-    internal class Config
+    internal class ModConfig
     {
         /// <summary>
         /// Параметры экспорта.
@@ -199,14 +196,14 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Конструктор, ограничивающий создание объекта без параметров
         /// </summary>
-        private Config()
+        private ModConfig()
         {
         }
 
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Config(string configDir)
+        public ModConfig(string configDir)
         {
             FileName = ScadaUtils.NormalDir(configDir) + ConfigFileName;
             SetToDefault();
@@ -418,9 +415,9 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Клонировать конфигурацию модуля
         /// </summary>
-        public Config Clone()
+        public ModConfig Clone()
         {
-            Config configCopy = new Config
+            ModConfig configCopy = new ModConfig
             {
                 FileName = FileName,
                 ExportDestinations = new List<ExportDestination>()

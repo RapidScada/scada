@@ -34,6 +34,7 @@ function addContents(context) {
 
     addArticle(context, "modules/", "Модули");
     addArticle(context, "modules/kp-db-import.html", "Драйвер импорта из БД", 1);
+    addArticle(context, "modules/kp-modbus-slave.html", "Драйвер Modbus Slave", 1);
     addArticle(context, "modules/kp-telegram.html", "Драйвер Telegram", 1);
     addArticle(context, "modules/mod-auto-control.html", "Модуль автоматического управления", 1);
     addArticle(context, "modules/mod-db-export.html", "Модуль экспорта в БД", 1);

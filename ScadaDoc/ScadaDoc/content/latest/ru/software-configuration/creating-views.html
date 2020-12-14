@@ -4,7 +4,9 @@
     <title>Создание представлений - Документация Rapid SCADA</title>
     <meta charset="utf-8" />
     <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../../lib/prism/prism.css" rel="stylesheet" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../../../lib/prism/prism.js"></script>
     <script type="text/javascript" src="../js/contents.js"></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
@@ -15,9 +17,11 @@
 
     <p>Для создания представлений предназначены специальные редакторы: <a href="../software-overview/applications/table-editor-application.html">Редактор таблиц</a> и <a href="../software-overview/applications/scheme-editor-application.html">Редактор схем</a>. Созданые представления сохраняются в файлы, которые должны располагаться в директории интерфейса внутри проекта. В процессе выполнения файлы представлений располагаются в директории интерфейса, указанной в настройках приложения Сервер, или в её поддиректориях, по умолчанию C:\SCADA\Interface\</p>
 
-    <p>Примеры файлов представлений:<br />
+    <p>
+        Примеры файлов представлений:<br />
         Interface\Servers\ServerRoom.sch - схема,<br />
-        Interface\Servers\ServerRoom.tbl - табличное представление.</p>
+        Interface\Servers\ServerRoom.tbl - табличное представление.
+    </p>
 
     <p>Чтобы открыть диалог для создания представления, выберите пункт контекстного меню <em>Создать файл</em> (рис. 1 и 2). Затем в открывшемся окне выберите тип представления, укажите имя файла и нажмите кнопку <em>OK</em>. Созданный файл отобразится в проводнике проекта. По двойному щечку на соответствующем узле проводника проекта, представление открывается в редакторе.</p>
 
@@ -37,5 +41,40 @@
         <img src="creating-views-files/interface_table_ru.png" alt="Редактирование таблицы Интерфейс" /><br />
         Рис. 3. Редактирование таблицы Интерфейс
     </p>
+
+    <h2>Шаблоны схем</h2>
+    <p>Мнемосхемы поддерживают режим работы по шаблону. Шаблон – это обычная мнемосхема, созданная с помощью Редактора схем, которая может быть привязана к произвольным входным каналам и каналам управления.</p>
+
+    <p>Чтобы использовать схему в режиме шаблона, необходимо задать соответствующие аргументы в таблице <em>Интерфейс</em>. Возможны два варианта (рис. 3):</p>
+    <ol>
+        <li>Указывается смещение номеров каналов относительно исходной схемы, а также идентификатор компонента-заголовка.</li>
+        <li>Указывается имя файла, который содержит привязку компонентов схемы к каналам.</li>
+    </ol>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/scheme_template_table_ru.png" alt="Шаблон схемы в таблице Интерфейс" /><br />
+        Рис. 3. Шаблон схемы в таблице Интерфейс
+    </p>
+
+    <p>
+        Описание аргументов:<br />
+        <em>inCnlOffset</em> - смещение номеров входных каналов;<br />
+        <em>ctrlCnlOffset</em> - смещение номеров каналов управления;<br />
+        <em>titleCompID</em> - идентификатор компонента схемы для вывода заголовка;<br />
+        <em>bindingFileName</em> - имя файла привязки компонентов схемы к каналам относительно директории конфигурации Вебстанции.
+    </p>
+
+    <p>Текст заголовка для схемы, работающей в режиме шаблона, берётся из поля <em>Заголовок</em> таблицы <em>Интерфейс</em>. Рекомендуется в Редакторе схем в свойствах схемы оставить свойство Заголовок пустым.</p>
+
+    <p>Файлы привязки компонентов схемы должны располагаться внутри директории конфигурации Вебстанции, по умолчанию C:\SCADA\ScadaWeb\config\. Пример файла привязки:</p>
+    <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;TemplateBindings&gt;
+  &lt;TemplateFileName&gt;MyScheme.sch&lt;/TemplateFileName&gt;
+  &lt;TitleCompID&gt;3&lt;/TitleCompID&gt;
+  &lt;Binding compID=&quot;1&quot; inCnlNum=&quot;101&quot; ctrlCnlNum=&quot;101&quot; /&gt;
+  &lt;Binding compID=&quot;2&quot; inCnlNum=&quot;102&quot; /&gt;
+&lt;/TemplateBindings&gt;
+</code></pre>
+
 </body>
 </html>

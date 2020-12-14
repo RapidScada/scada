@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Client;
+using Scada.Config;
 using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
@@ -56,6 +57,7 @@ namespace Scada.Web
             CommSettings = new CommSettings();
             ScriptPaths = new ScriptPaths();
             PluginFileNames = new List<string>();
+            CustomOptions = new SortedList<string, OptionList>();
             SetToDefault();
         }
 
@@ -120,17 +122,22 @@ namespace Scada.Web
         /// <summary>
         /// Получить настройки соединения с сервером
         /// </summary>
-        public CommSettings CommSettings { get; protected set; }
+        public CommSettings CommSettings { get; }
 
         /// <summary>
         /// Получить пути к дополнительным скриптам, реализующим функциональность оболочки
         /// </summary>
-        public ScriptPaths ScriptPaths { get; protected set; }
+        public ScriptPaths ScriptPaths { get; }
 
         /// <summary>
         /// Получить имена файлов библиотек подключенных плагинов, упорядоченные по возрастанию
         /// </summary>
-        public List<string> PluginFileNames { get; protected set; }
+        public List<string> PluginFileNames { get; }
+
+        /// <summary>
+        /// Gets the groups of custom options.
+        /// </summary>
+        public SortedList<string, OptionList> CustomOptions { get; }
 
 
         /// <summary>
@@ -153,6 +160,7 @@ namespace Scada.Web
             CommSettings.SetToDefault();
             ScriptPaths.SetToDefault();
             PluginFileNames.Clear();
+            CustomOptions.Clear();
         }
 
 
@@ -191,16 +199,13 @@ namespace Scada.Web
                 XmlElement rootElem = xmlDoc.DocumentElement;
 
                 // загрузка настроек соединения с сервером
-                XmlNode commSettingsNode = rootElem.SelectSingleNode("CommSettings");
-                if (commSettingsNode != null)
+                if (rootElem.SelectSingleNode("CommSettings") is XmlNode commSettingsNode)
                     CommSettings.LoadFromXml(commSettingsNode);
 
                 // загрузка общих параметров
-                XmlNode commonParamsNode = rootElem.SelectSingleNode("CommonParams");
-                if (commonParamsNode != null)
+                if (rootElem.SelectSingleNode("CommonParams") is XmlNode commonParamsNode)
                 {
-                    XmlNodeList paramNodeList = commonParamsNode.SelectNodes("Param");
-                    foreach (XmlElement paramElem in paramNodeList)
+                    foreach (XmlElement paramElem in commonParamsNode.SelectNodes("Param"))
                     {
                         string name = paramElem.GetAttribute("name").Trim();
                         string nameL = name.ToLowerInvariant();
@@ -239,11 +244,9 @@ namespace Scada.Web
                 }
 
                 // загрузка путей к скриптам
-                XmlNode scriptPathsNode = rootElem.SelectSingleNode("ScriptPaths");
-                if (scriptPathsNode != null)
+                if (rootElem.SelectSingleNode("ScriptPaths") is XmlNode scriptPathsNode)
                 {
-                    XmlNodeList scriptNodeList = scriptPathsNode.SelectNodes("Script");
-                    foreach (XmlElement scriptElem in scriptNodeList)
+                    foreach (XmlElement scriptElem in scriptPathsNode.SelectNodes("Script"))
                     {
                         string name = scriptElem.GetAttribute("name").Trim();
                         string nameL = name.ToLowerInvariant();
@@ -259,14 +262,26 @@ namespace Scada.Web
                 }
 
                 // загрузка имён файлов модулей
-                XmlNode pluginsNode = rootElem.SelectSingleNode("Plugins");
-                if (pluginsNode != null)
+                if (rootElem.SelectSingleNode("Plugins") is XmlNode pluginsNode)
                 {
-                    XmlNodeList moduleNodeList = pluginsNode.SelectNodes("Plugin");
-                    foreach (XmlElement moduleElem in moduleNodeList)
+                    foreach (XmlElement moduleElem in pluginsNode.SelectNodes("Plugin"))
+                    {
                         PluginFileNames.Add(moduleElem.GetAttribute("fileName"));
+                    }
                 }
+
                 PluginFileNames.Sort();
+
+                // custom options
+                if (rootElem.SelectSingleNode("CustomOptions") is XmlNode customOptionsNode)
+                {
+                    foreach (XmlElement optionGroupElem in customOptionsNode.SelectNodes("OptionGroup"))
+                    {
+                        OptionList optionList = new OptionList();
+                        optionList.LoadFromXml(optionGroupElem);
+                        CustomOptions[optionGroupElem.GetAttrAsString("name")] = optionList;
+                    }
+                }
 
                 errMsg = "";
                 return true;
@@ -355,6 +370,16 @@ namespace Scada.Web
                     pluginsElem.AppendChild(scriptElem);
                 }
 
+                // custom options
+                XmlElement customOptionsElem = rootElem.AppendElem("CustomOptions");
+
+                foreach (KeyValuePair<string, OptionList> pair in CustomOptions)
+                {
+                    XmlElement optionGroupElem = customOptionsElem.AppendElem("OptionGroup");
+                    optionGroupElem.SetAttribute("name", pair.Key);
+                    pair.Value.SaveToXml(optionGroupElem);
+                }
+
                 // сохранение в файле
                 string bakName = fileName + ".bak";
                 File.Copy(fileName, bakName, true);
@@ -394,6 +419,14 @@ namespace Scada.Web
                 if (ind >= 0)
                     PluginFileNames.RemoveAt(ind);
             }
+        }
+
+        /// <summary>
+        /// Gets the list of options by the specified group name, or an empty list if the group is not found.
+        /// </summary>
+        public OptionList GetOptions(string groupName)
+        {
+            return CustomOptions.TryGetValue(groupName, out OptionList options) ? options : new OptionList();
         }
     }
 }

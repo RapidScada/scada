@@ -146,11 +146,35 @@ namespace Scada
         }
 
         /// <summary>
+        /// Creates and appends to the parent a new XML element of the option 
+        /// with the specified name, value and description.
+        /// </summary>
+        public static XmlElement AppendOptionElem(this XmlElement parentXmlElem, string optionName, object value,
+            string descr = "")
+        {
+            XmlElement paramElem = parentXmlElem.OwnerDocument.CreateElement("Option");
+            paramElem.SetAttribute("name", optionName);
+            paramElem.SetAttribute("value", XmlValToStr(value));
+            if (!string.IsNullOrEmpty(descr))
+                paramElem.SetAttribute("descr", descr);
+            return (XmlElement)parentXmlElem.AppendChild(paramElem);
+        }
+
+        /// <summary>
         /// Получить XML-элемент параметра.
         /// </summary>
         public static XmlElement GetParamElem(this XmlElement parentXmlElem, string paramName)
         {
             XmlNodeList xmlNodes = parentXmlElem.SelectNodes(string.Format("Param[@name='{0}'][1]", paramName));
+            return xmlNodes.Count > 0 ? xmlNodes[0] as XmlElement : null;
+        }
+
+        /// <summary>
+        /// Finds an XML element of the option having the specified name.
+        /// </summary>
+        public static XmlElement GetOptionElem(this XmlElement parentXmlElem, string optionName)
+        {
+            XmlNodeList xmlNodes = parentXmlElem.SelectNodes(string.Format("Option[@name='{0}'][1]", optionName));
             return xmlNodes.Count > 0 ? xmlNodes[0] as XmlElement : null;
         }
 

@@ -76,7 +76,7 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Exporter(Config.ExportDestination expDest, Log log)
+        public Exporter(ModConfig.ExportDestination expDest, Log log)
         {
             if (expDest == null)
                 throw new ArgumentNullException("expDest");
@@ -106,7 +106,7 @@ namespace Scada.Server.Modules.DBExport
         /// <summary>
         /// Получить параметры экспорта
         /// </summary>
-        public Config.ExportParams ExportParams { get; private set; }
+        public ModConfig.ExportParams ExportParams { get; private set; }
 
         /// <summary>
         /// Получить признак, что экспортёр работает

@@ -54,7 +54,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DbImport\Configuration\Config.cs" />
+    <Compile Include="DbImport\Configuration\KpConfig.cs" />
     <Compile Include="DbImport\Configuration\DbConnSettings.cs" />
     <Compile Include="DbImport\Configuration\DataSourceType.cs" />
     <Compile Include="DbImport\Configuration\ExportCmd.cs" />

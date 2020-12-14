@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Data.Tables;
@@ -252,7 +252,7 @@ namespace Scada.Server.Shell.Forms
         private void FrmSrezTableEdit_Load(object sender, EventArgs e)
         {
             Translator.TranslateForm(this, GetType().FullName);
-            sfdCsv.Filter = ServerShellPhrases.CsvFileFilter;
+            sfdCsv.SetFilter(ServerShellPhrases.CsvFileFilter);
 
             if (lblCount1.Text.Contains("{0}"))
                 bindingNavigator1.CountItemFormat = lblCount1.Text;

@@ -77,7 +77,7 @@
     <Phrase key="EventsTitle">Events</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmCommand">
-    <Phrase key="this">Command - Rapid SCADA</Phrase>
+    <Phrase key="this">Command</Phrase>
     <Phrase key="lblCtrlCnlNotFound">Output channel {0} not found.</Phrase>
     <Phrase key="lblWrongPwd">Incorrect password.</Phrase>
     <Phrase key="lblNoRights">Insufficient rights.</Phrase>
@@ -99,7 +99,7 @@
     <Phrase key="lblCmdRejected">The command is rejected by the server.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEventAck">
-    <Phrase key="this">Event Acknowledgement - Rapid SCADA</Phrase>
+    <Phrase key="this">Event Acknowledgement</Phrase>
     <Phrase key="lblEventNotFound">Event not found.</Phrase>
     <Phrase key="lblAckNotSent">Unable to send the acknowledgement. Server is unavailable.</Phrase>
     <Phrase key="lblAckRejected">The acknowledgement is rejected by the server.</Phrase>

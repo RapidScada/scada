@@ -1,10 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<KpHttpNotiflDictionaries>
-  <Dictionary key="Scada.Comm.Devices.HttpNotif.UI.FrmDevProps">
+<KpHttpNotifDictionaries>
+  <Dictionary key="Scada.Comm.Devices.HttpNotif.UI.FrmConfig">
     <Phrase key="this">HTTP-уведомления - Свойства КП {0}</Phrase>
-    <Phrase key="lblReqUrl">URL запроса</Phrase>
+    <Phrase key="pageGeneral">Основные</Phrase>
+    <Phrase key="lblMethod">Метод</Phrase>
+    <Phrase key="lblUri">URI</Phrase>
+    <Phrase key="lblUriHint">Может содержать параметры, например, {phone}, {email} и {text}</Phrase>
+    <Phrase key="gbParam">Параметры</Phrase>
+    <Phrase key="chkParamEnabled">Параметры включены</Phrase>
+    <Phrase key="lblParamBegin">Начало</Phrase>
+    <Phrase key="lblParamEnd">Окончание</Phrase>
+    <Phrase key="pageHeaders">Заголовки</Phrase>
+    <Phrase key="colName">Наименование</Phrase>
+    <Phrase key="colValue">Значение</Phrase>
+    <Phrase key="pageContent">Содержимое</Phrase>
+    <Phrase key="lblContentType">Тип содержимого</Phrase>
+    <Phrase key="lblContentEscaping">Кодирование</Phrase>
+    <Phrase key="cbContentEscaping.Items[0]">Нет</Phrase>
+    <Phrase key="cbContentEscaping.Items[1]">URL</Phrase>
+    <Phrase key="cbContentEscaping.Items[2]">JSON</Phrase>
+    <Phrase key="lblContent">Тело запроса</Phrase>
+    <Phrase key="lblContentHint">Может содержать параметры, например, {phone}, {email} и {text}</Phrase>
     <Phrase key="btnAddressBook">Адресная книга</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Отмена</Phrase>
+    <Phrase key="btnSave">Сохранить</Phrase>
+    <Phrase key="btnClose">Закрыть</Phrase>
   </Dictionary>
-</KpHttpNotiflDictionaries>
+</KpHttpNotifDictionaries>

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Modbus Slave Driver - Rapid SCADA Documentation</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Modbus Slave Driver</h1>
+    <h2>Overview</h2>
+    <p>The driver supports the standard <a href="https://en.wikipedia.org/wiki/Modbus" target="_blank">Modbus communication protocol</a> and works as a slave. Using the driver, the Communicator waits for incoming requests and commands from a third-party device or application that works as a master. The following communication channels are supported: serial port, TCP server, and UDP. The driver can work in Modbus RTU or Modbus TCP mode.</p>
+
+    <p>Modbus Slave Driver features:</p>
+    <ol>
+        <li>Receives data from a device using write commands.</li>
+        <li>Provides data to a device in response to read commands.</li>
+        <li>Transmits values of Rapid SCADA input channels received from other devices in order to integrate with third-party systems.</li>
+    </ol>
+
+    <h2>Installation</h2>
+    <p>Modbus Slave Driver is installed in accordance with <a href="../installation-and-run/module-installation.html#drivers">the general sequence of installing Communicator drivers</a>. The driver library file is KpModbusSlave.dll.</p>
+
+    <h2>Configuring</h2>
+    <p>First of all, create a new communication line and a new device in the configuration database, as well as in the Communicator settings. For this purpose, it is suggested to use wizards that are opened by the <img src="../../common-images/add_line.png" /> and <img src="../../common-images/add_device.png" /> buttons. The device address matters, because this is the unit ID that the Communicator validates to respond. Then open the main parameters of the communication line, select the communication channel type and configure its properties. Examples of communication channel properties are shown below.</p>
+
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/serial_port_en.png" alt="Serial port properties" /><br />
+    </p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/tcp_server_en.png" alt="TCP server properties" /><br />
+    </p>
+
+    <p>After creating a device in Communicator, open the the device properties form and configure the device.</p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/device_props_en.png" alt="Modbus Slave device properties" /><br />
+    </p>
+
+    <p><em>Input data validity period</em> allows to automatically set the undefined status of the device input tags, if no new data has been received from the device within a specified time.</p>
+    <p><em>Device template</em> defines the Modbus register map. Device templates of the KpModbus.dll and KpModbusSlave.dll drivers are fully compatible.</p>
+    <p><em>Data source device</em> is set to non-zero to transmit the input channels values received from another device into a third-party system. If the driver is used to interact with a real device, this parameter should be 0.</p>
+
+    <p>The following figure shows the Modbus template editor:</p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/template_editor_en.png" alt="Modbus template editor" /><br />
+    </p>
+
+    <p>Modbus Slave Driver requires registration. After completing the settings, upload the project to the server using the <img src="../../common-images/upload.png" /> button. Then open the <em>Drivers</em> page in the Administrator application, select the KpModbusSlave.dll driver, open the driver properties and register it. After registration, upload the project to the server again.</p>
+</body>
+</html>

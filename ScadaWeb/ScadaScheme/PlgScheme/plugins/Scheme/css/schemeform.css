@@ -1,11 +1,19 @@
 ﻿.scheme-wrapper {
   overflow: auto;
+  position: relative;
+  /*affects scrolling and scaling*/
 }
 .scheme-wrapper.loading {
   background-image: url('../images/loading.gif');
   background-position: center;
   background-repeat: no-repeat;
   background-attachment: fixed;
+}
+.scheme {
+  position: absolute;
+  /*affects scaling*/
+  transform-origin: left top;
+  /*affects scaling*/
 }
 .scheme .comp {
   box-sizing: border-box;

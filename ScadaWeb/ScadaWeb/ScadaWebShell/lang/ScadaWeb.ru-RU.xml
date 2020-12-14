@@ -58,18 +58,18 @@
     <Phrase key="SaveWebSettingsError">Ошибка при сохранении настроек веб-приложения</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmAbout">
-    <Phrase key="this">О приложении - Rapid SCADA</Phrase>
+    <Phrase key="this">О приложении</Phrase>
     <Phrase key="hlAppName">Вебстанция</Phrase>
     <Phrase key="hlAppName.NavigateUrl">http://rapidscada.ru</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmError">
-    <Phrase key="this">Ошибка приложения - Rapid SCADA</Phrase>
+    <Phrase key="this">Ошибка приложения</Phrase>
     <Phrase key="lblTitle">Ошибка приложения</Phrase>
     <Phrase key="lblErrMsg">Произошла ошибка приложения. Если она повторяется часто, обратитесь в службу поддержки, пожалуйста.</Phrase>
     <Phrase key="lblErrDetailsCaption">Дополнительная информация:</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmLogin">
-    <Phrase key="this">Вход в систему - Rapid SCADA</Phrase>
+    <Phrase key="this">Вход в систему</Phrase>
     <Phrase key="hlRapidScada.NavigateUrl">http://rapidscada.ru</Phrase>
     <Phrase key="lblUsername">Имя пользователя</Phrase>
     <Phrase key="lblPassword">Пароль</Phrase>
@@ -81,16 +81,16 @@
     <Phrase key="CookiesDisabled">Файлы cookie запрещены. Разрешите их, пожалуйста.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmNoView">
-    <Phrase key="this">Представление не существует - Rapid SCADA</Phrase>
+    <Phrase key="this">Представление не существует</Phrase>
     <Phrase key="lblViewNotExist">Запрошенное представление не существует или у Вас недостаточно прав для доступа к нему.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmReports">
-    <Phrase key="this">Отчёты - Rapid SCADA</Phrase>
+    <Phrase key="this">Отчёты</Phrase>
     <Phrase key="lblTitle">Доступные отчёты</Phrase>
     <Phrase key="lblNoReports">Нет доступных отчетов</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmUser">
-    <Phrase key="this">Профиль пользователя - Rapid SCADA</Phrase>
+    <Phrase key="this">Профиль пользователя</Phrase>
     <Phrase key="lblTitle">Профиль пользователя</Phrase>
     <Phrase key="lblUserNameCaption">Имя пользователя:</Phrase>
     <Phrase key="lblRoleNameCaption">Роль:</Phrase>
@@ -102,10 +102,7 @@
     <Phrase key="RightNo">Нет</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.WFrmView">
-    <Phrase key="this">Представление - Rapid SCADA</Phrase>
-  </Dictionary>
-  <Dictionary key="Scada.Web.WFrmView.Js">
-    <Phrase key="ExternalLinkTitle">Внешняя ссылка - Rapid SCADA</Phrase>
+    <Phrase key="this">Представление</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins">
     <Phrase key="LoadPluginConfigError">Ошибка при загрузке конфигурации плагина {0}: {1}</Phrase>

@@ -15,6 +15,7 @@
     <Compile Include="..\ScadaData\Client\ServerComm.cs" Link="Client\ServerComm.cs" />
     <Compile Include="..\ScadaData\Client\ViewCache.cs" Link="Client\ViewCache.cs" />
     <Compile Include="..\ScadaData\CommonPhrases.cs" Link="CommonPhrases.cs" />
+    <Compile Include="..\ScadaData\Config\OptionList.cs" Link="Config\OptionList.cs" />
     <Compile Include="..\ScadaData\Data\Configuration\BaseTables.cs" Link="Data\Configuration\BaseTables.cs" />
     <Compile Include="..\ScadaData\Data\Configuration\BaseValues.cs" Link="Data\Configuration\BaseValues.cs" />
     <Compile Include="..\ScadaData\Data\Configuration\ConfDAO.cs" Link="Data\Configuration\ConfDAO.cs" />
@@ -61,6 +62,7 @@
     <Folder Include="Data\Configuration\" />
     <Folder Include="Data\Models\" />
     <Folder Include="Data\Tables\" />
+    <Folder Include="Config\" />
   </ItemGroup>
 
   <ItemGroup>

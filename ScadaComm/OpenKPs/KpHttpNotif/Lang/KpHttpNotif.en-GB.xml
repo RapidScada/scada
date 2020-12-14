@@ -1,10 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<KpHttpNotiflDictionaries>
-  <Dictionary key="Scada.Comm.Devices.HttpNotif.UI.FrmDevProps">
+<KpHttpNotifDictionaries>
+  <Dictionary key="Scada.Comm.Devices.HttpNotif.UI.FrmConfig">
     <Phrase key="this">HTTP Notifications - Device {0} Properties</Phrase>
-    <Phrase key="lblReqUrl">Request URL</Phrase>
+    <Phrase key="pageGeneral">General</Phrase>
+    <Phrase key="lblMethod">Method</Phrase>
+    <Phrase key="lblUri">URI</Phrase>
+    <Phrase key="lblUriHint">May contain parameters, for example {phone}, {email} and {text}</Phrase>
+    <Phrase key="gbParam">Parameters</Phrase>
+    <Phrase key="chkParamEnabled">Parameters enabled</Phrase>
+    <Phrase key="lblParamBegin">Begin</Phrase>
+    <Phrase key="lblParamEnd">End</Phrase>
+    <Phrase key="pageHeaders">Headers</Phrase>
+    <Phrase key="colName">Name</Phrase>
+    <Phrase key="colValue">Value</Phrase>
+    <Phrase key="pageContent">Content</Phrase>
+    <Phrase key="lblContentType">Content type</Phrase>
+    <Phrase key="lblContentEscaping">Escaping</Phrase>
+    <Phrase key="cbContentEscaping.Items[0]">None</Phrase>
+    <Phrase key="cbContentEscaping.Items[1]">URL</Phrase>
+    <Phrase key="cbContentEscaping.Items[2]">JSON</Phrase>
+    <Phrase key="lblContent">Body</Phrase>
+    <Phrase key="lblContentHint">May contain parameters, for example {phone}, {email} and {text}</Phrase>
     <Phrase key="btnAddressBook">Address book</Phrase>
-    <Phrase key="btnOK">OK</Phrase>
-    <Phrase key="btnCancel">Cancel</Phrase>
+    <Phrase key="btnSave">Save</Phrase>
+    <Phrase key="btnClose">Close</Phrase>
   </Dictionary>
-</KpHttpNotiflDictionaries>
+</KpHttpNotifDictionaries>

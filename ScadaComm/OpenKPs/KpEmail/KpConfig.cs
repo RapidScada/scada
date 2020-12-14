@@ -24,9 +24,6 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Xml;
 
 namespace Scada.Comm.Devices.KpEmail
@@ -35,12 +32,12 @@ namespace Scada.Comm.Devices.KpEmail
     /// Mail server connection configuration
     /// <para>Конфигурация соединения с почтовым сервером</para>
     /// </summary>
-    internal class Config
+    internal class KpConfig
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Config()
+        public KpConfig()
         {
             SetToDefault();
         }

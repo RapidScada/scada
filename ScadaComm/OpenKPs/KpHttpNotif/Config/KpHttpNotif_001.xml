@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<KpHttpNotif>
+  <Uri>http://rapidscada.net/minicrm/api/v1/StoreSvc.svc/GetModules?locale=en-GB</Uri>
+  <Method>Get</Method>
+  <Headers>
+    <Header name="Accept" value="application/json" />
+  </Headers>
+  <Content />
+  <ContentType />
+  <ContentEscaping>None</ContentEscaping>
+  <ParamEnabled>true</ParamEnabled>
+  <ParamBegin>{</ParamBegin>
+  <ParamEnd>}</ParamEnd>
+</KpHttpNotif>

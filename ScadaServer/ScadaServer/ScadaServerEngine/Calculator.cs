@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Microsoft.CSharp;
@@ -180,21 +180,19 @@ namespace Scada.Server.Engine
                 }
 
                 // добавление членов класса CalcEngine
-                int todoInd = source.IndexOf("/*TODO*/");
+                const string InsertMarker = "/*TODO*/";
+                int insertInd = source.IndexOf(InsertMarker);
 
-                if (todoInd >= 0)
+                if (insertInd >= 0)
                 {
-                    StringBuilder sourceSB = new StringBuilder(source);
-                    sourceSB.Remove(todoInd, "/*TODO*/".Length);
+                    StringBuilder sourceSB = new StringBuilder(source.Substring(0, insertInd));
 
-                    for (int i = exprList.Count - 1; i >= 0; i--)
+                    for (int i = 0, cnt = exprList.Count; i < cnt; i++)
                     {
-                        string expr = exprList[i];
-                        sourceSB.Insert(todoInd, expr);
-                        if (i > 0)
-                            sourceSB.Insert(todoInd, "\r\n");
+                        sourceSB.AppendLine(exprList[i]);
                     }
 
+                    sourceSB.Append(source.Substring(insertInd + InsertMarker.Length));
                     source = sourceSB.ToString();
                 }
 

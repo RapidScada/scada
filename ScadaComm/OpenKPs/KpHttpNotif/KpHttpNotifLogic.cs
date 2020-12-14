@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,100 +16,82 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpHttpNotif
- * Summary  : Device communication logic
+ * Summary  : Device driver communication logic
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.HttpNotif;
+using Scada.Comm.Devices.HttpNotif.Config;
 using Scada.Data.Configuration;
 using Scada.Data.Models;
 using Scada.Data.Tables;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Net;
+using System.Net.Http;
 using System.Text;
 using System.Threading;
 
 namespace Scada.Comm.Devices
 {
     /// <summary>
-    /// Device communication logic
-    /// <para>Логика работы КП</para>
+    /// Device driver communication logic.
+    /// <para>Логика работы драйвера КП.</para>
     /// </summary>
     public class KpHttpNotifLogic : KPLogic
     {
         /// <summary>
-        /// Состояния опроса КП
+        /// Specifies the tag indices.
         /// </summary>
-        private enum SessStates
+        private static class TagIndex
         {
-            /// <summary>
-            /// Фатальная ошибка
-            /// </summary>
-            FatalError,
-            /// <summary>
-            /// Ожидание команд
-            /// </summary>
-            Waiting
+            public const int NotifCounter = 0;
+            public const int ResponseStatus = 1;
         }
 
         /// <summary>
-        /// Отправляемое уведомление
+        /// Specifies the predefined parameter names.
         /// </summary>
-        private class Notification
+        private static class ParamName
         {
-            /// <summary>
-            /// Конструктор
-            /// </summary>
-            public Notification()
-            {
-                PhoneNumbers = new List<string>();
-                Emails = new List<string>();
-                Text = "";
-            }
-
-            /// <summary>
-            /// Получить телефонные номера
-            /// </summary>
-            public List<string> PhoneNumbers { get; private set; }
-            /// <summary>
-            /// Получить адреса эл. почты
-            /// </summary>
-            public List<string> Emails { get; private set; }
-            /// <summary>
-            /// Получить или установить текст
-            /// </summary>
-            public string Text { get; set; }
+            public const string Address = "address";
+            public const string Phone = "phone";
+            public const string Email = "email";
+            public const string Text = "text";
         }
 
 
-        // Имена переменных в командной строке для формирования запроса
-        private const string PhoneVarName = "phone";
-        private const string EmailVarName = "email";
-        private const string TextVarName = "text";
-        // Разделитель адресов в запросе
-        private const string ReqAddrSep = ";";
-        // Разделитель адресов в команде ТУ
-        private const string CmdAddrSep = ";";
-        // Длина буфера ответа на запрос
-        private const int RespBufLen = 100;
-        // Кодировка ответа на запрос
-        private static readonly Encoding RespEncoding = Encoding.UTF8;
+        /// <summary>
+        /// The parameter separator of the 1st command.
+        /// </summary>
+        private const char CmdSep = ';';
+        /// <summary>
+        /// The separator for parts of an address.
+        /// </summary>
+        private const string AddrSep = ";";
+        /// <summary>
+        /// The displayed lenght of a response content.
+        /// </summary>
+        private const int ResponseDisplayLenght = 100;
 
-        private AB.AddressBook addressBook; // адресная книга, общая для линии связи
-        private SessStates sessState;       // состояние опроса КП
-        private bool writeSessState;        // вывести состояние опроса КП
-        private ParamString reqTemplate;    // шаблон запроса
-        private char[] respBuf;             // буфер ответа на запрос
+        private readonly Stopwatch stopwatch; // measures the time of operations
+        private DeviceConfig deviceConfig;    // the device configuration
+        private AddressBook addressBook;      // the address book shared for the communication line
+        private ParamString paramUri;         // the parametrized request URI
+        private ParamString paramContent;     // the parametrized request content
+        private HttpClient httpClient;        // sends HTTP requests
+        private bool isReady;                 // indicates that the device is ready to send requests
+        private bool flagLoggingRequired;     // logging of the ready flag is required
 
 
         /// <summary>
-        /// Конструктор
+        /// Initializes a new instance of the class.
         /// </summary>
         public KpHttpNotifLogic(int number)
             : base(number)
@@ -117,265 +99,323 @@ namespace Scada.Comm.Devices
             CanSendCmd = true;
             ConnRequired = false;
 
+            stopwatch = new Stopwatch();
+            deviceConfig = null;
             addressBook = null;
-            sessState = SessStates.Waiting;
-            writeSessState = true;
-            reqTemplate = null;
-            respBuf = new char[RespBufLen];
+            paramUri = null;
+            paramContent = null;
+            httpClient = null;
+            isReady = false;
+            flagLoggingRequired = false;
 
-            InitKPTags(new List<KPTag>()
-            {
-                new KPTag(1, Localization.UseRussian ? "Отправлено уведомлений" : "Sent notifications")
-            });
+            InitDeviceTags();
         }
 
 
         /// <summary>
-        /// Создать шаблон запроса
+        /// Initializes the device tags.
         /// </summary>
-        private void CreateReqTemplate()
+        private void InitDeviceTags()
         {
-            try
+            if (Localization.UseRussian)
             {
-                if (ReqParams.CmdLine == "")
+                InitKPTags(new List<KPTag>()
                 {
-                    throw new ScadaException(Localization.UseRussian ?
-                        "Командная строка пуста." :
-                        "The command line is empty.");
-                }
-                else
-                {
-                    reqTemplate = new ParamString(ReqParams.CmdLine);
-                    ValidateReqTemplate();
-                    sessState = SessStates.Waiting;
-                }
-            }
-            catch (Exception ex)
-            {
-                sessState = SessStates.FatalError;
-                reqTemplate = null;
-                WriteToLog((Localization.UseRussian ?
-                    "Не удалось получить HTTP-запрос из командной строки КП: " :
-                    "Unable to get HTTP request from the device command line: ") + ex.Message);
-            }
-
-            writeSessState = true;
-        }
-
-        /// <summary>
-        /// Проверить шаблон запроса
-        /// </summary>
-        private void ValidateReqTemplate()
-        {
-            string reqUrl = reqTemplate.ToString();
-            WebRequest req = WebRequest.Create(reqUrl);
-
-            if (!(req is HttpWebRequest))
-            {
-                throw new ScadaException(Localization.UseRussian ?
-                    "Некорректный HTTP-запрос." :
-                    "Incorrect HTTP request.");
-            }
-        }
-
-        /// <summary>
-        /// Преобразовать состояние опроса КП в строку
-        /// </summary>
-        private string SessStateToStr()
-        {
-            switch (sessState)
-            {
-                case SessStates.FatalError:
-                    return Localization.UseRussian ?
-                        "Отправка уведомлений невозможна" :
-                        "Sending notifocations is impossible";
-                case SessStates.Waiting:
-                    return Localization.UseRussian ?
-                        "Ожидание команд..." :
-                        "Waiting for commands...";
-                default:
-                    return "";
-            }
-        }
-
-        /// <summary>
-        /// Попытаться получить уведомление из команды ТУ
-        /// </summary>
-        private bool TryGetNotif(Command cmd, out Notification notif)
-        {
-            string cmdDataStr = cmd.GetCmdDataStr();
-            int sepInd = cmdDataStr.IndexOf(CmdAddrSep);
-
-            if (sepInd >= 0)
-            {
-                string recipient = cmdDataStr.Substring(0, sepInd);
-                string text = cmdDataStr.Substring(sepInd + 1);
-
-                notif = new Notification() { Text = text };
-
-                if (addressBook == null)
-                {
-                    // добавление данных получателя, явно указанных в команде ТУ
-                    notif.PhoneNumbers.Add(recipient);
-                    notif.Emails.Add(recipient);
-                }
-                else
-                {
-                    // поиск адресов получателей в адресной книге
-                    AB.AddressBook.ContactGroup contactGroup = addressBook.FindContactGroup(recipient);
-                    if (contactGroup == null)
-                    {
-                        AB.AddressBook.Contact contact = addressBook.FindContact(recipient);
-                        if (contact == null)
-                        {
-                            // добавление данных получателя, явно указанных в команде ТУ
-                            notif.PhoneNumbers.Add(recipient);
-                            notif.Emails.Add(recipient);
-                        }
-                        else
-                        {
-                            // добавление данных получателя из контакта
-                            notif.PhoneNumbers.AddRange(contact.PhoneNumbers);
-                            notif.Emails.AddRange(contact.Emails);
-                        }
-                    }
-                    else
-                    {
-                        // добавление данных получателей из группы контактов
-                        foreach (AB.AddressBook.Contact contact in contactGroup.Contacts)
-                        {
-                            notif.PhoneNumbers.AddRange(contact.PhoneNumbers);
-                            notif.Emails.AddRange(contact.Emails);
-                        }
-                    }
-                }
-
-                return true;
+                    new KPTag(1, "Отправлено уведомлений"),
+                    new KPTag(2, "Статус ответа")
+                });
             }
             else
             {
-                notif = null;
-                return false;
+                InitKPTags(new List<KPTag>()
+                {
+                    new KPTag(1, "Notifications sent"),
+                    new KPTag(2, "Response status")
+                });
             }
         }
 
         /// <summary>
-        /// Отправить уведомление
+        /// Validates the configuration.
         /// </summary>
-        private bool SendNotif(Notification notif)
+        private bool ValidateConfig(DeviceConfig deviceConfig, out string errMsg)
         {
-            try
+            if (string.IsNullOrEmpty(deviceConfig.Uri))
             {
-                // получение адреса запроса
-                // использовать WebUtility.UrlEncode в .NET 4.5
-                reqTemplate.SetParam(PhoneVarName, Uri.EscapeDataString(string.Join(ReqAddrSep, notif.PhoneNumbers)));
-                reqTemplate.SetParam(EmailVarName, Uri.EscapeDataString(string.Join(ReqAddrSep, notif.Emails)));
-                reqTemplate.SetParam(TextVarName, Uri.EscapeDataString(notif.Text));
-                string reqUrl = reqTemplate.ToString();
-
-                // создание запроса
-                WebRequest req = WebRequest.Create(reqUrl);
-                req.Timeout = ReqParams.Timeout;
-
-                // отправка запроса и приём ответа
-                WriteToLog(Localization.UseRussian ?
-                    "Отправка уведомления. Запрос: " :
-                    "Send notification. Request: ");
-                WriteToLog(reqUrl);
-
-                using (WebResponse resp = req.GetResponse())
+                errMsg = string.Format(Localization.UseRussian ? 
+                    "Ошибка: {0}: URI не может быть пустым." :
+                    "Error: {0}: URI must not be empty.", Caption);
+                return false;
+            }
+            else
+            {
+                try
                 {
-                    using (Stream respStream = resp.GetResponseStream())
-                    {
-                        // чтение данных из ответа
-                        using (StreamReader reader = new StreamReader(respStream, RespEncoding))
-                        {
-                            int readCnt = reader.Read(respBuf, 0, RespBufLen);
+                    Uri uri = new Uri(deviceConfig.Uri);
+                }
+                catch
+                {
+                    errMsg = string.Format(Localization.UseRussian ?
+                        "Ошибка: {0}: некорректный URI" :
+                        "Error: {0}: invalid URI.", Caption);
+                    return false;
+                }
+            }
 
-                            if (readCnt > 0)
-                            {
-                                string respString = new string(respBuf, 0, readCnt);
-                                WriteToLog(Localization.UseRussian ?
-                                    "Полученный ответ:" :
-                                    "Received response:");
-                                WriteToLog(respString);
-                            }
-                            else
-                            {
-                                WriteToLog(Localization.UseRussian ?
-                                    "Ответ не получен" :
-                                    "No response");
-                            }
+            errMsg = "";
+            return true;
+        }
+
+        /// <summary>
+        /// Writes the ready flag to the log.
+        /// </summary>
+        private void WriteReadyFlag()
+        {
+            if (isReady)
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "{0} ожидает команд..." :
+                    "{0} is waiting for commands...", Caption));
+            }
+            else
+            {
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ошибка: {0} не может отправлять уведомления" :
+                    "Error: {0} unable to send notifications", Caption));
+            }
+        }
+
+        /// <summary>
+        /// Gets notification arguments from the command.
+        /// </summary>
+        private bool GetArguments(Command cmd, out Dictionary<string, string> args)
+        {
+            if (cmd.CmdNum == 1)
+            {
+                string cmdDataStr = cmd.GetCmdDataStr();
+                int sepInd = cmdDataStr.IndexOf(CmdSep);
+
+                if (sepInd >= 0)
+                {
+                    args = new Dictionary<string, string>
+                    {
+                        { ParamName.Address, cmdDataStr.Substring(0, sepInd) },
+                        { ParamName.Text, cmdDataStr.Substring(sepInd + 1) }
+                    };
+                }
+                else
+                {
+                    args = null;
+                }
+            }
+            else
+            {
+                args = cmd.GetCmdDataArgs();
+            }
+
+            if (args == null)
+            {
+                return false;
+            }
+            else
+            {
+                AddContactDetails(args);
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Adds the contact phones and emails.
+        /// </summary>
+        private void AddContactDetails(Dictionary<string, string> args)
+        {
+            if (args.TryGetValue(ParamName.Address, out string address) &&
+                !(args.ContainsKey(ParamName.Phone) && args.ContainsKey(ParamName.Email)))
+            {
+                List<string> phoneNumbers = new List<string>();
+                List<string> emails = new List<string>();
+
+                if (addressBook == null)
+                {
+                    // add the known address as phone number and email
+                    phoneNumbers.Add(address);
+                    emails.Add(address);
+                }
+                else
+                {
+                    // search in the address book
+                    if (addressBook.FindContactGroup(address) is AddressBook.ContactGroup contactGroup)
+                    {
+                        // add all contacts from the group
+                        foreach (AddressBook.Contact contact in contactGroup.Contacts)
+                        {
+                            phoneNumbers.AddRange(contact.PhoneNumbers);
+                            emails.AddRange(contact.Emails);
                         }
+                    }
+                    else if (addressBook.FindContact(address) is AddressBook.Contact contact)
+                    {
+                        // add the contact phone numbers and emails
+                        phoneNumbers.AddRange(contact.PhoneNumbers);
+                        emails.AddRange(contact.Emails);
+                    }
+                    else
+                    {
+                        // add the known address as phone number and email
+                        phoneNumbers.Add(address);
+                        emails.Add(address);
                     }
                 }
 
-                IncCurData(0, 1); // увеличение счётчика уведомлений
+                if (!args.ContainsKey(ParamName.Phone))
+                    args.Add(ParamName.Phone, string.Join(AddrSep, phoneNumbers));
+
+                if (!args.ContainsKey(ParamName.Email))
+                    args.Add(ParamName.Email, string.Join(AddrSep, emails));
+            }
+        }
+
+        /// <summary>
+        /// Sends a notification with the specified arguments.
+        /// </summary>
+        private bool SendNotification(Dictionary<string, string> args)
+        {
+            try
+            {
+                // initialize the HTTP client
+                if (httpClient == null)
+                {
+                    httpClient = new HttpClient();
+
+                    foreach (Header header in deviceConfig.Headers)
+                    {
+                        httpClient.DefaultRequestHeaders.Add(header.Name, header.Value);
+                    }
+                }
+
+                // create request
+                paramUri?.ResetParams(args, EscapingMethod.EncodeUrl);
+                paramContent?.ResetParams(args, deviceConfig.ContentEscaping);
+
+                string uri = paramUri == null ? deviceConfig.Uri : paramUri.ToString();
+                string content = paramContent == null ? deviceConfig.Content : paramContent.ToString();
+
+                HttpRequestMessage request = new HttpRequestMessage(
+                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get, 
+                    uri);
+
+                if (deviceConfig.Method == RequestMethod.Post)
+                {
+                    request.Content = string.IsNullOrEmpty(deviceConfig.ContentType) ?
+                        new StringContent(content, Encoding.UTF8) :
+                        new StringContent(content, Encoding.UTF8, deviceConfig.ContentType);
+                }
+
+                // send request and receive response
+                WriteToLog(Localization.UseRussian ?
+                    "Отправка запроса:" :
+                    "Send request:");
+                WriteToLog(request.RequestUri.ToString());
+
+                stopwatch.Restart();
+                HttpResponseMessage response = httpClient.SendAsync(request).Result;
+                HttpStatusCode responseStatus = response.StatusCode;
+                string responseContent = response.Content.ReadAsStringAsync().Result;
+                stopwatch.Stop();
+
+                // output response to log
+                WriteToLog(string.Format(Localization.UseRussian ?
+                    "Ответ получен за {0} мс. Статус: {1} ({2})" :
+                    "Response received in {0} ms. Status: {1} ({2})",
+                    stopwatch.ElapsedMilliseconds, (int)responseStatus, responseStatus));
+
+                if (responseContent.Length > 0)
+                {
+                    WriteToLog(Localization.UseRussian ?
+                        "Содержимое ответа:" :
+                        "Response content:");
+
+                    if (responseContent.Length <= ResponseDisplayLenght)
+                    {
+                        WriteToLog(responseContent);
+                    }
+                    else
+                    {
+                        WriteToLog(responseContent.Substring(0, ResponseDisplayLenght));
+                        WriteToLog("...");
+                    }
+                }
+
+                // update tag values
+                IncCurData(TagIndex.NotifCounter, 1);
+                SetCurData(TagIndex.ResponseStatus, (int)responseStatus, 1);
+
                 return true;
             }
             catch (Exception ex)
             {
                 WriteToLog((Localization.UseRussian ?
                     "Ошибка при отправке уведомления: " :
-                    "Error sending notification: ") + ex.Message);
+                    "Error sending notification: ") + ex);
+                InvalidateCurData(TagIndex.ResponseStatus, 1);
                 return false;
             }
         }
 
         /// <summary>
-        /// Преобразовать данные тега КП в строку
+        /// Converts the tag data to string.
         /// </summary>
-        protected override string ConvertTagDataToStr(int signal, SrezTableLight.CnlData tagData)
+        protected override string ConvertTagDataToStr(KPTag kpTag, SrezTableLight.CnlData tagData)
         {
             if (tagData.Stat > 0)
             {
-                if (signal == 1)
+                if (kpTag.Index == TagIndex.NotifCounter)
                     return tagData.Val.ToString("N0");
+                else if (kpTag.Index == TagIndex.ResponseStatus)
+                    return tagData.Val.ToString("N0") + " (" + (HttpStatusCode)tagData.Val + ")";
             }
 
-            return base.ConvertTagDataToStr(signal, tagData);
+            return base.ConvertTagDataToStr(kpTag, tagData);
         }
 
 
         /// <summary>
-        /// Выполнить сеанс опроса КП
+        /// Performs a communication session.
         /// </summary>
         public override void Session()
         {
-            if (writeSessState)
+            if (flagLoggingRequired)
             {
-                writeSessState = false;
+                flagLoggingRequired = false;
                 WriteToLog("");
-                WriteToLog(SessStateToStr());
+                WriteReadyFlag();
             }
 
             Thread.Sleep(ScadaUtils.ThreadDelay);
         }
 
         /// <summary>
-        /// Отправить команду ТУ
+        /// Sends the telecontrol command.
         /// </summary>
         public override void SendCmd(Command cmd)
         {
             base.SendCmd(cmd);
             lastCommSucc = false;
 
-            if (sessState == SessStates.FatalError)
+            if (isReady)
             {
-                WriteToLog(SessStateToStr());
-            }
-            else
-            {
-                if (cmd.CmdNum == 1 && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
+                if ((cmd.CmdNum == 1 || cmd.CmdNum == 2) && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    Notification notif;
-                    if (TryGetNotif(cmd, out notif))
+                    if (GetArguments(cmd, out Dictionary<string, string> args))
                     {
-                        if (SendNotif(notif))
-                            lastCommSucc = true;
+                        int tryNum = 0;
 
-                        // задержка позволяет ограничить скорость отправки уведомлений
-                        Thread.Sleep(ReqParams.Delay);
+                        while (RequestNeeded(ref tryNum))
+                        {
+                            lastCommSucc = SendNotification(args);
+                            FinishRequest();
+                            tryNum++;
+                        }
                     }
                     else
                     {
@@ -387,25 +427,63 @@ namespace Scada.Comm.Devices
                     WriteToLog(CommPhrases.IllegalCommand);
                 }
 
-                writeSessState = true;
+                flagLoggingRequired = true;
+            }
+            else
+            {
+                WriteReadyFlag();
             }
 
             CalcCmdStats();
         }
 
         /// <summary>
-        /// Выполнить действия при запуске линии связи
+        /// Performs actions when starting a communication line.
         /// </summary>
         public override void OnCommLineStart()
         {
-            // получение адресной книги
-            addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
-            // создание шаблона запроса
-            CreateReqTemplate();
-            // сброс счётчика уведомлений
-            SetCurData(0, 0, 1);
-            // установка состояния работы КП
-            WorkState = sessState == SessStates.FatalError ? WorkStates.Error : WorkStates.Normal;
+            isReady = false;
+            flagLoggingRequired = false;
+
+            // load device configuration
+            deviceConfig = new DeviceConfig();
+            string fileName = DeviceConfig.GetFileName(AppDirs.ConfigDir, Number);
+            string errMsg;
+
+            if (File.Exists(fileName))
+            {
+                if (!deviceConfig.Load(fileName, out errMsg))
+                    WriteToLog(errMsg);
+            }
+            else
+            {
+                // get URI from command line for backward compatibility
+                deviceConfig.Uri = ReqParams.CmdLine;
+            }
+
+            // initialize variables if the configuration is valid
+            if (ValidateConfig(deviceConfig, out errMsg))
+            {
+                if (deviceConfig.ParamEnabled)
+                {
+                    paramUri = new ParamString(deviceConfig.Uri, deviceConfig.ParamBegin, deviceConfig.ParamEnd);
+                    paramContent = new ParamString(deviceConfig.Content, deviceConfig.ParamBegin, deviceConfig.ParamEnd);
+                }
+                else
+                {
+                    paramUri = null;
+                    paramContent = null;
+                }
+
+                addressBook = AbUtils.GetAddressBook(AppDirs.ConfigDir, CommonProps, WriteToLog);
+                SetCurData(TagIndex.NotifCounter, 0, 1); // reset notification counter
+                isReady = true;
+                flagLoggingRequired = true;
+            }
+            else
+            {
+                WriteToLog(errMsg);
+            }
         }
     }
 }

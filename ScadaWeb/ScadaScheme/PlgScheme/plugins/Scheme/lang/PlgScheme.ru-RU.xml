@@ -1,14 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PlgSchemeDictionaries>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme">
-    <Phrase key="this">Схема - Rapid SCADA</Phrase>
+    <Phrase key="this">Схема</Phrase>
     <Phrase key="lblFitScreenBtn.ToolTip">По размеру экрана</Phrase>
     <Phrase key="lblFitWidthBtn.ToolTip">По ширине</Phrase>
     <Phrase key="lblZoomOutBtn.ToolTip">Уменьшить</Phrase>
     <Phrase key="lblZoomInBtn.ToolTip">Увеличить</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Scheme.WFrmScheme.Js">
-    <Phrase key="ProductName">Rapid SCADA</Phrase>
     <Phrase key="LoadSchemeError">Ошибка при загрузке схемы. Попробуйте перезагрузить схему</Phrase>
     <Phrase key="ReloadButton">Перезагрузить</Phrase>
     <Phrase key="UnableSendCommand">Не удалось отправить команду</Phrase>

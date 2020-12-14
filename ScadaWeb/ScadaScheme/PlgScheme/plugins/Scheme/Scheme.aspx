@@ -5,7 +5,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta charset="utf-8" />
-    <title>Scheme - Rapid SCADA</title>
+    <title>Scheme</title>
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
@@ -30,6 +30,7 @@
         var refrRate = <%= refrRate %>;
         var phrases = <%= phrases %>;
         var controlRight = <%= controlRight ? "true" : "false" %>;
+        var schemeOptions = <%= schemeOptions %>;
     </script>
     <script type="text/javascript" src="js/schemeform.js"></script>
 </head>

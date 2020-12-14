@@ -1,0 +1,28 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<PlgDashboardDictionaries>
+  <Dictionary key="Scada.Web.Plugins.Dashboard">
+    <Phrase key="LoadDashboardListError">加载仪表盘清单出错</Phrase>
+    <Phrase key="LoadDashboardError">加载仪表盘配置信息出错</Phrase>
+    <Phrase key="LoadDashboardNameError">加载仪表盘名字出错</Phrase>
+    <Phrase key="InvalidDashboardKey">无效的仪表盘序列号.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmCurDataWidget.Js">
+    <Phrase key="LoadError">加载数据出错</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard">
+    <Phrase key="btnExportPdf">导出成PDF</Phrase>
+    <Phrase key="DashboardNotFound">指定序列号的仪表盘未找到.</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboard.Js">
+    <Phrase key="ReceiveDashboardError">获取仪表盘配置信息出错</Phrase>
+    <Phrase key="NoWidgetsToExport">没有组件支持导出成PDF</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.Dashboard.WFrmDashboardList">
+    <Phrase key="this">仪表盘</Phrase>
+    <Phrase key="lblTitle">仪表盘</Phrase>
+    <Phrase key="lblNoDashboards">没有可用的仪表盘</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Plugins.PlgDashboardSpec">
+    <Phrase key="DashboardsMenuItem">仪表盘</Phrase>
+  </Dictionary>
+</PlgDashboardDictionaries>

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -34,12 +34,12 @@ namespace Scada.Comm.Devices.DbImport.Configuration
     /// Driver configuration.
     /// <para>Конфигурация драйвера.</para>
     /// </summary>
-    internal class Config
+    internal class KpConfig
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public Config()
+        public KpConfig()
         {
             SetToDefault();
         }

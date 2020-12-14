@@ -58,7 +58,7 @@ scada.view = {
 
     // Get outer height of the specified object considering its displaying
     _getOuterHeight: function (jqObj) {
-        return jqObj.css("display") == "none" ? 0 : jqObj.outerHeight();
+        return jqObj.css("display") === "none" ? 0 : jqObj.outerHeight();
     },
 
     // Load the splitter position from the local storage
@@ -90,16 +90,16 @@ scada.view = {
         if (activeDataWindow) {
             $("#divBottomTabsContainer .tab").each(function () {
                 var tabUrl = $(this).data("url");
-                if (activeDataWindow == tabUrl) {
+                if (activeDataWindow === tabUrl) {
                     thisView.activateDataWindow($(this));
                     return false; // break the loop
                 }
             });
-        } else if (activeDataWindow == null && !scada.utils.isSmallScreen()) {
+        } else if (activeDataWindow === null && !scada.utils.isSmallScreen()) {
             // activate events window if presented
             $("#divBottomTabsContainer .tab").each(function () {
                 var code = $(this).data("code");
-                if (code == thisView._EVENTS_WND_CODE) {
+                if (code === thisView._EVENTS_WND_CODE) {
                     thisView.activateDataWindow($(this));
                     return false;
                 }
@@ -114,7 +114,7 @@ scada.view = {
 
     // Hide bottom pane if no data windows exist
     hideBottomTabsIfEmpty: function () {
-        if ($("#divBottomTabsContainer .tab").length == 0) {
+        if ($("#divBottomTabsContainer .tab").length === 0) {
             $("#divBottomTabs").css("display", "none");
         }
     },
@@ -201,8 +201,8 @@ scada.view = {
                     state.viewUrl = frameWnd.location.href;
                     history.replaceState(state, "", scada.utils.getViewUrl(viewID));
                 }
-            } else {
-                document.title = phrases.ExternalLinkTitle;
+            } else if (!document.title) {
+                document.title = viewHub.getEnv().productName;
             }
         });
 
@@ -249,7 +249,7 @@ $(document).ready(function () {
 
     // operate the splitter
     scada.splitter.prepare(function (splitterBulk) {
-        if (splitterBulk.splitter.attr("id") == "divViewSplitter") {
+        if (splitterBulk.splitter.attr("id") === "divViewSplitter") {
             scada.view.saveSplitterPosition();
             scada.view.reloadWindowsOnIOS();
         }
@@ -263,7 +263,7 @@ $(document).ready(function () {
 
     // set window title on view title changed
     $(window).on(scada.EventTypes.VIEW_TITLE_CHANGED, function (event, sender, extraParams) {
-        if (sender == viewHub.viewWindow) {
+        if (sender === viewHub.viewWindow) {
             document.title = extraParams;
         }
     });

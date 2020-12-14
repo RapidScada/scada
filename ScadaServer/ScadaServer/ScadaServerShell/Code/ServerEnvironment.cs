@@ -24,6 +24,7 @@
  */
 
 using Scada.Agent.Connector;
+using Scada.Client;
 using Scada.Server.Modules;
 using System;
 using System.Collections.Generic;
@@ -86,6 +87,19 @@ namespace Scada.Server.Shell.Code
             }
 
             return modView;
+        }
+
+        /// <summary>
+        /// Gets the object that communicates with the Server service.
+        /// </summary>
+        public ServerComm GetServerComm(Settings settings)
+        {
+            if (AgentClient == null || settings == null)
+                return null;
+
+            CommSettings commSettings = AgentClient.CreateCommSettings();
+            commSettings.ServerPort = settings.TcpPort;
+            return new ServerComm(commSettings, new LogStub());
         }
     }
 }

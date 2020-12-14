@@ -62,7 +62,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DBExport\Config.cs" />
+    <Compile Include="DBExport\ModConfig.cs" />
     <Compile Include="DBExport\UI\CtrlExportQuery.cs">
       <SubType>UserControl</SubType>
     </Compile>

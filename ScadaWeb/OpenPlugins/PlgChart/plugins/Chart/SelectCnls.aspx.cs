@@ -131,7 +131,11 @@ namespace Scada.Web.Plugins.Chart
                     ViewState.Add("SelCnls", selCnls);
 
                     btnSubmit.Enabled = true;
+                    bool warnWasVisible = pnlPerfWarn.Visible;
                     pnlPerfWarn.Visible = selCnls.Count > ChartUtils.NormalChartCnt;
+
+                    if (pnlPerfWarn.Visible != warnWasVisible)
+                        ChartUtils.AddUpdateModalHeightScript(this);
                 }
 
                 Label lblCnlAdded = (Label)e.Item.FindControl("lblCnlAdded");

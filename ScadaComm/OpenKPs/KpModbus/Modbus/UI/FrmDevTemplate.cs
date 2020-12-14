@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -32,8 +32,8 @@ using System.Windows.Forms;
 namespace Scada.Comm.Devices.Modbus.UI
 {
     /// <summary>
-    /// Editing device template form
-    /// <para>Форма редактирования шаблона устройства</para>
+    /// Editing device template form.
+    /// <para>Форма редактирования шаблона устройства.</para>
     /// </summary>
     public partial class FrmDevTemplate : Form
     {
@@ -463,7 +463,8 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             // перевод формы
             Translator.TranslateForm(this, "Scada.Comm.Devices.Modbus.UI.FrmDevTemplate");
-            openFileDialog.Filter = saveFileDialog.Filter = KpPhrases.TemplateFileFilter;
+            openFileDialog.SetFilter(KpPhrases.TemplateFileFilter);
+            saveFileDialog.SetFilter(KpPhrases.TemplateFileFilter);
             TranslateTree();
 
             // настройка элементов управления

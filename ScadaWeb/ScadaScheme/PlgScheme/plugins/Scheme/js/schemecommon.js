@@ -3,7 +3,7 @@
  *
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2020
  *
  * Requires:
  * - jquery
@@ -67,10 +67,18 @@ scada.scheme.ShowValueKinds = {
     SHOW_WITHOUT_UNIT: 2
 };
 
-// Predefined scales enumeration
-scada.scheme.Scales = {
-    FIT_SCREEN: "FitScreen",
-    FIT_WIDTH: "FitWidth"
+// Specifies the scale types
+scada.scheme.ScaleTypes = {
+    NUMERIC: 0,
+    FIT_SCREEN: 1,
+    FIT_WIDTH: 2
+};
+
+// The default scheme options
+scada.scheme.defaultOptions = {
+    scaleType: scada.scheme.ScaleTypes.NUMERIC,
+    scaleValue: 1.0,
+    rememberScale: true
 };
 
 // Scheme calculations
@@ -79,12 +87,11 @@ scada.scheme.calc = {
     compare: function (val1, val2, compareOper) {
         var CompareOperators = scada.scheme.CompareOperators;
 
-        switch (compareOper)
-        {
+        switch (compareOper) {
             case CompareOperators.EQUAL:
-                return val1 == val2;
+                return val1 === val2;
             case CompareOperators.NOT_EQUAL:
-                return val1 != val2;
+                return val1 !== val2;
             case CompareOperators.LESS_THAN:
                 return val1 < val2;
             case CompareOperators.LESS_THAN_EQUAL:
@@ -102,8 +109,7 @@ scada.scheme.calc = {
     isTrue: function (val1, val2, logicalOper) {
         var LogicalOperators = scada.scheme.LogicalOperators;
 
-        switch (logicalOper)
-        {
+        switch (logicalOper) {
             case LogicalOperators.AND:
                 return val1 && val2;
             case LogicalOperators.OR:
@@ -118,11 +124,11 @@ scada.scheme.calc = {
         var LogicalOperators = scada.scheme.LogicalOperators;
         var comp1 = this.compare(cnlVal, cond.CompareArgument1, cond.CompareOperator1);
 
-        if (cond.LogicalOperator == LogicalOperators.NONE) {
+        if (cond.LogicalOperator === LogicalOperators.NONE) {
             return comp1;
         } else {
             var comp2 = this.compare(cnlVal, cond.CompareArgument2, cond.CompareOperator2);
             return this.isTrue(comp1, comp2, cond.LogicalOperator);
         }
     }
-}
+};

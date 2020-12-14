@@ -5,6 +5,7 @@
 
 .scheme-wrapper {
     overflow: auto;
+    position: relative; /*affects scrolling and scaling*/
 }
 
 .wait() {
@@ -16,6 +17,11 @@
 .scheme-wrapper.loading {
     .wait();
     background-attachment: fixed;
+}
+
+.scheme {
+    position: absolute; /*affects scaling*/
+    transform-origin: left top; /*affects scaling*/
 }
 
 .scheme .comp {

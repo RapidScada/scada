@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,9 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2016
+ * Modified : 2020
  */
 
+using Scada.UI;
 using System;
 using System.Web;
 using Utils;
@@ -30,8 +31,8 @@ using Utils;
 namespace Scada.Web
 {
     /// <summary>
-    /// Global web application events processing
-    /// <para>Обработка глобальных событий веб-приложения</para>
+    /// Global web application events processing.
+    /// <para>Обработка глобальных событий веб-приложения.</para>
     /// </summary>
     public class Global : System.Web.HttpApplication
     {
@@ -45,6 +46,8 @@ namespace Scada.Web
         {
             // добавление информации о пользователе 
             AppData.GetAppData().UserMonitor.AddUser(UserData.GetUserData());
+            // setup the translator
+            Translator.AppendProductName = true;
         }
 
         protected void Application_BeginRequest(object sender, EventArgs e)

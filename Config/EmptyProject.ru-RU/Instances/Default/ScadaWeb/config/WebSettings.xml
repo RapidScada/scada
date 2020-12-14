@@ -35,4 +35,12 @@
     <Plugin fileName="PlgTable.dll" />
     <Plugin fileName="PlgWebPage.dll" />
   </Plugins>
+  <CustomOptions>
+    <OptionGroup name="Scheme">
+      <!-- ScaleType: Numeric, FitScreen, FitWidth -->
+      <Option name="ScaleType" value="Numeric" />
+      <Option name="ScaleValue" value="100" />
+      <Option name="RememberScale" value="true" />
+    </OptionGroup>
+  </CustomOptions>
 </WebSettings>

@@ -66,8 +66,10 @@
   &lt;/DashboardOptions&gt;
   &lt;Widgets&gt;
     &lt;Widget type="Chart" cnlNums="101,102" viewIDs="2,2" period="2" /&gt;
-    &lt;Widget type="CurData" cnlNums="101,102,103,104,105,106,107,115" viewIDs="2,2,2,2,2,2,2,2" /&gt;
-    &lt;Widget type="CustomUrl" url="https://www.youtube.com/embed/xs8Tqkr-Gn4" /&gt;
+    &lt;Widget type="Chart" cnlNums="101,103" viewIDs="2,2" mode="fixed" period="2" title="Sample Chart" config="PlgChartPro.xml" /&gt;
+    &lt;Widget type="CurData" cnlNums="101,102,103,104,105,106,107,115" viewIDs="2,2,2,2,2,2,2,2" title="Sample Data" /&gt;
+    &lt;Widget type="View" viewID="2" /&gt;
+    &lt;Widget type="CustomUrl" url="https://www.youtube.com/embed/EEIk7gwjgIM" /&gt;
   &lt;/Widgets&gt;
 &lt;/DashboardConfig&gt;</code></pre>
 
@@ -82,8 +84,9 @@
 
     <p>
         Widgets of the following types are supported:<br />
-        Chart - chart of the specified input channels,<br />
-        CurData - table contains current data of the specified input channels,<br />
+        Chart - a chart of the specified input channels,<br />
+        CurData - a table contains current data of the specified input channels,<br />
+        View - a view having the specified ID,<br />
         CustomUrl - custom web page.
     </p>
 

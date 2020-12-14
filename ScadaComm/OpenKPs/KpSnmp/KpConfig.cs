@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -35,7 +35,7 @@ namespace Scada.Comm.Devices.KpSnmp
     /// Device communication configuration.
     /// <para>Конфигурация связи с КП.</para>
     /// </summary>
-    internal class Config : ITreeNode
+    internal class KpConfig : ITreeNode
     {
         /// <summary>
         /// Группа переменных
@@ -169,7 +169,7 @@ namespace Scada.Comm.Devices.KpSnmp
         /// <summary>
         /// Конструктор
         /// </summary>
-        public Config()
+        public KpConfig()
         {
             SetToDefault();
         }

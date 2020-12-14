@@ -37,9 +37,9 @@ scada.ViewHub = function (mainWindow) {
     this.dialogs = scada.dialogs;
 };
 
-// Get the environment object if it is accessible
-scada.ViewHub.prototype._getEnvObj = function () {
-    return this.mainWindow && this.mainWindow.scada ? this.mainWindow.scada.env : null;
+// Get the environment object, or an empty object if environment is not available
+scada.ViewHub.prototype.getEnv = function () {
+    return this.mainWindow && this.mainWindow.scada ? this.mainWindow.scada.env : {};
 };
 
 // Add the specified view to the hub.
@@ -95,8 +95,7 @@ scada.ViewHub.prototype.notify = function (eventType, senderWnd, opt_extraParams
 
 // Get absolute URL of the view
 scada.ViewHub.prototype.getFullViewUrl = function (viewID, opt_openInFrame) {
-    var env = this._getEnvObj();
-    return (env ? env.rootPath : "") + scada.utils.getViewUrl(viewID, opt_openInFrame);
+    return this.getEnv().rootPath + scada.utils.getViewUrl(viewID, opt_openInFrame);
 };
 
 // View hub locator object

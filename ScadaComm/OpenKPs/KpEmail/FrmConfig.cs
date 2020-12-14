@@ -39,7 +39,7 @@ namespace Scada.Comm.Devices.KpEmail
     {
         private AppDirs appDirs;       // директории приложения
         private int kpNum;             // номер настраиваемого КП
-        private Config config;         // конфигурация КП
+        private KpConfig config;         // конфигурация КП
         private string configFileName; // имя файла конфигурации КП
 
 
@@ -52,7 +52,7 @@ namespace Scada.Comm.Devices.KpEmail
 
             appDirs = null;
             kpNum = 0;
-            config = new Config();
+            config = new KpConfig();
             configFileName = "";
         }
 
@@ -115,7 +115,7 @@ namespace Scada.Comm.Devices.KpEmail
             Text = string.Format(Text, kpNum);
 
             // загрузка конфигурации КП
-            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
+            configFileName = KpConfig.GetFileName(appDirs.ConfigDir, kpNum);
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
 

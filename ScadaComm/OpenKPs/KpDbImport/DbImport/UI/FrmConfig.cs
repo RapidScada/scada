@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
@@ -39,13 +39,13 @@ namespace Scada.Comm.Devices.DbImport.UI
     /// </summary>
     public partial class FrmConfig : Form
     {
-        private readonly AppDirs appDirs; // the application directories
-        private readonly int kpNum;       // the device number
-        private readonly Config config;   // the device configuration
-        private string configFileName;    // the configuration file name
-        private bool modified;            // the configuration was modified
-        private bool connChanging;        // connection settings are changing
-        private bool cmdSelecting;        // a command is selecting
+        private readonly AppDirs appDirs;  // the application directories
+        private readonly int kpNum;        // the device number
+        private readonly KpConfig config; // the device configuration
+        private string configFileName;     // the configuration file name
+        private bool modified;             // the configuration was modified
+        private bool connChanging;         // connection settings are changing
+        private bool cmdSelecting;         // a command is selecting
 
 
 
@@ -65,7 +65,7 @@ namespace Scada.Comm.Devices.DbImport.UI
         {
             this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
             this.kpNum = kpNum;
-            config = new Config();
+            config = new KpConfig();
             configFileName = "";
             modified = false;
             connChanging = false;
@@ -295,7 +295,7 @@ namespace Scada.Comm.Devices.DbImport.UI
             Text = string.Format(Text, kpNum);
 
             // load a configuration
-            configFileName = Config.GetFileName(appDirs.ConfigDir, kpNum);
+            configFileName = KpConfig.GetFileName(appDirs.ConfigDir, kpNum);
 
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
@@ -315,8 +315,7 @@ namespace Scada.Comm.Devices.DbImport.UI
                 switch (result)
                 {
                     case DialogResult.Yes:
-                        string errMsg;
-                        if (!config.Save(configFileName, out errMsg))
+                        if (!config.Save(configFileName, out string errMsg))
                         {
                             ScadaUiUtils.ShowError(errMsg);
                             e.Cancel = true;

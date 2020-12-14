@@ -98,7 +98,8 @@ scada.scheme.Scheme = function () {
     // Parent jQuery object
     this.parentDomElem = null;
     // Current scale
-    this.scale = 1.0;
+    this.scaleType = scada.scheme.ScaleTypes.NUMERIC;
+    this.scaleValue = 1.0;
 };
 
 scada.scheme.Scheme.prototype = Object.create(scada.scheme.BaseComponent.prototype);
@@ -646,13 +647,12 @@ scada.scheme.Scheme.prototype.updateData = function (clientAPI, callback) {
     });
 };
 
-// Set the scheme scale.
-// scale is a predefined string or floating point number
-scada.scheme.Scheme.prototype.setScale = function (scale) {
+// Set the scheme scale
+scada.scheme.Scheme.prototype.setScale = function (scaleType, scaleValue) {
     try {
-        var scaleVal = $.isNumeric(scale) ? scale : this.renderer.calcScale(this, scale);
-        this.renderer.setScale(this, scaleVal);
-        this.scale = scaleVal;
+        var newScaleValue = this.renderer.setScale(this, scaleType, scaleValue);
+        this.scaleType = scaleType;
+        this.scaleValue = newScaleValue;
     }
     catch (ex) {
         console.error("Error scaling the scheme:", ex.message);

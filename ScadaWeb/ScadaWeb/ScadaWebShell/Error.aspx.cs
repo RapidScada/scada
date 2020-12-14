@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2017
+ * Modified : 2020
  */
 
 using Scada.UI;
@@ -32,8 +32,8 @@ using Utils;
 namespace Scada.Web
 {
     /// <summary>
-    /// Application error web form
-    /// <para>Веб-форма ошибки приложения</para>
+    /// Application error web form.
+    /// <para>Веб-форма ошибки приложения.</para>
     /// </summary>
     public partial class WFrmError : System.Web.UI.Page
     {
@@ -49,6 +49,7 @@ namespace Scada.Web
 
                 // перевод веб-страницы
                 Translator.TranslatePage(this, "Scada.Web.WFrmError");
+                lblProductName.Text = CommonPhrases.ProductName;
 
                 // определение сообщения об ошибке
                 Exception ex = Server.GetLastError();

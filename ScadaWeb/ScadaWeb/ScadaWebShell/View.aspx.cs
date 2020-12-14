@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.UI;
@@ -40,7 +40,6 @@ namespace Scada.Web
         private UserData userData;       // данные пользователя приложения
         protected int initialViewID;     // ид. первоначального представления
         protected string initialViewUrl; // ссылка первоначального представления
-        protected string phrases;        // локализованные фразы
 
 
         /// <summary>
@@ -73,10 +72,6 @@ namespace Scada.Web
 
             // перевод веб-страницы
             Translator.TranslatePage(Page, "Scada.Web.WFrmView");
-
-            Localization.Dict dict;
-            Localization.Dictionaries.TryGetValue("Scada.Web.WFrmView.Js", out dict);
-            phrases = WebUtils.DictionaryToJs(dict);
 
             // получение ид. и ссылки представления для загрузки
             initialViewID = Request.QueryString.GetParamAsInt("viewID");

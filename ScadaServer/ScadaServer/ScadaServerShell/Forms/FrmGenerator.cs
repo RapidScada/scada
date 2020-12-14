@@ -74,17 +74,13 @@ namespace Scada.Server.Shell.Forms
         /// </summary>
         private void InitServerComm()
         {
-            if (environment.AgentClient == null)
+            serverComm = environment.GetServerComm(settings);
+
+            if (serverComm == null)
             {
                 gbGenerator.Enabled = false;
                 pnlWarning.Visible = true;
                 lblWarning.Text = ServerShellPhrases.SetProfile;
-            }
-            else
-            {
-                CommSettings commSettings = environment.AgentClient.CreateCommSettings();
-                commSettings.ServerPort = settings.TcpPort;
-                serverComm = new ServerComm(commSettings, new LogStub());
             }
         }
 

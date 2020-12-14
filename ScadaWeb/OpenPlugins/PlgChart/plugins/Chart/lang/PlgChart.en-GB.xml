@@ -17,13 +17,13 @@
     <Phrase key="ValColTitle">Channel {0}</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart">
-    <Phrase key="this">Chart - Rapid SCADA</Phrase>
+    <Phrase key="this">Chart</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmChart.Js">
     <Phrase key="Generated">Generated </Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmMinDataRep">
-    <Phrase key="this">Minute Data Report - Rapid SCADA</Phrase>
+    <Phrase key="this">Minute Data Report</Phrase>
     <Phrase key="lblTitle">Minute Data Report</Phrase>
     <Phrase key="lblDateFrom">From</Phrase>
     <Phrase key="lblDateTo">To</Phrase>
@@ -34,7 +34,7 @@
     <Phrase key="lblGenStarted">Generating the report. Please wait...</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Chart.WFrmSelectCnls">
-    <Phrase key="this">Select Channels - Rapid SCADA</Phrase>
+    <Phrase key="this">Select Channels</Phrase>
     <Phrase key="lblLoading">Loading...</Phrase>
     <Phrase key="lblUnableLoadView">Unable to load view</Phrase>
     <Phrase key="lblNoCnlsByView">Input channels not found</Phrase>

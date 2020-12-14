@@ -157,8 +157,8 @@ scada.scheme.SchemeRenderer.prototype = Object.create(scada.scheme.Renderer.prot
 scada.scheme.SchemeRenderer.constructor = scada.scheme.SchemeRenderer;
 
 scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext) {
-    if (title) {
-        document.title = title + " - " + renderContext.schemeEnv.phrases.ProductName;
+    if (title && renderContext.schemeEnv.viewHub) {
+        document.title = title + " - " + renderContext.schemeEnv.viewHub.getEnv().productName;
 
         // set title of a popup in case the scheme is in the popup
         var popup = scada.popupLocator.getPopup();
@@ -167,10 +167,34 @@ scada.scheme.SchemeRenderer.prototype._setTitle = function (title, renderContext
         }
 
         // send notification about title change
-        if (renderContext.schemeEnv.viewHub) {
-            renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+        renderContext.schemeEnv.viewHub.notify(scada.EventTypes.VIEW_TITLE_CHANGED, window, document.title);
+    }
+};
+
+scada.scheme.SchemeRenderer.prototype._calcScale = function (component, scaleType, scaleValue) {
+    var ScaleTypes = scada.scheme.ScaleTypes;
+
+    if (scaleType === ScaleTypes.NUMERIC) {
+        if (!isNaN(scaleValue) && scaleValue >= 0) {
+            return scaleValue;
         }
     }
+    else if (component.parentDomElem) {
+        var areaWidth = component.parentDomElem.innerWidth();
+        var schemeWidth = component.props.Size.Width;
+        var horScale = areaWidth / schemeWidth;
+
+        if (scaleType === ScaleTypes.FIT_SCREEN) {
+            var schemeHeight = component.props.Size.Height;
+            var areaHeight = component.parentDomElem.innerHeight();
+            var vertScale = areaHeight / schemeHeight;
+            return Math.min(horScale, vertScale);
+        } else if (scaleType === ScaleTypes.FIT_WIDTH) {
+            return horScale;
+        }
+    }
+
+    return 1.0;
 };
 
 scada.scheme.SchemeRenderer.prototype.createDom = function (component, renderContext) {
@@ -200,10 +224,8 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
 
         var divScheme = component.dom.first();
         divScheme.css({
-            "position": "relative", // to position scheme components
             "width": schemeWidth,
             "height": schemeHeight,
-            "transform-origin": "left top" // for scaling
         });
 
         if (!renderContext.editMode) {
@@ -240,37 +262,19 @@ scada.scheme.SchemeRenderer.prototype.updateDom = function (component, renderCon
     }
 };
 
-// Calculate numeric scale based on the predefined string value
-scada.scheme.SchemeRenderer.prototype.calcScale = function (component, scaleStr) {
-    if (component.parentDomElem) {
-        var Scales = scada.scheme.Scales;
-        var areaWidth = component.parentDomElem.innerWidth();
-        var schemeWidth = component.props.Size.Width;
-        var horScale = areaWidth / schemeWidth;
-
-        if (scaleStr === Scales.FIT_SCREEN) {
-            var schemeHeight = component.props.Size.Height;
-            var areaHeight = component.parentDomElem.innerHeight();
-            var vertScale = areaHeight / schemeHeight;
-            return Math.min(horScale, vertScale);
-        } else if (scaleStr === Scales.FIT_WIDTH) {
-            return horScale;
-        }
-    }
-
-    return 1.0;
-};
-
-// Set the scheme scale.
-// scaleVal is a floating point number
-scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleVal) {
+// Set the scheme scale
+scada.scheme.SchemeRenderer.prototype.setScale = function (component, scaleType, scaleValue) {
     if (component.dom) {
-        var sizeCoef = Math.min(scaleVal, 1);
+        var scale = this._calcScale(component, scaleType, scaleValue);
+        //var sizeCoef = Math.min(scale, 1);
+
         component.dom.css({
-            "transform": "scale(" + scaleVal + ", " + scaleVal + ")",
-            "width": component.props.Size.Width * sizeCoef,
-            "height": component.props.Size.Height * sizeCoef
+            "transform": "scale(" + scale + ", " + scale + ")",
+            //"width": component.props.Size.Width * sizeCoef,
+            //"height": component.props.Size.Height * sizeCoef
         });
+
+        return scale;
     }
 };
 

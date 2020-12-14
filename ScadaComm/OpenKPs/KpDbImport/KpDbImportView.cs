@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
@@ -39,7 +39,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// The driver version.
         /// </summary>
-        internal const string KpVersion = "5.0.2.0";
+        internal const string KpVersion = "5.0.3.0";
 
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Gets the default device request parameters.
+        /// Gets the default request parameters.
         /// </summary>
         public override KPReqParams DefaultReqParams
         {
@@ -103,15 +103,15 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Gets the prototypes of default device channels.
+        /// Gets the default channel prototypes.
         /// </summary>
         public override KPCnlPrototypes DefaultCnls
         {
             get
             {
                 // load configuration
-                Config config = new Config();
-                string fileName = Config.GetFileName(AppDirs.ConfigDir, Number);
+                KpConfig config = new KpConfig();
+                string fileName = KpConfig.GetFileName(AppDirs.ConfigDir, Number);
 
                 if (!File.Exists(fileName))
                     return null;

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
@@ -79,6 +79,16 @@ namespace Scada
         {
             return dictionary.TryGetValue(key, out string valStr) && 
                 double.TryParse(valStr, NumberStyles.Float, NumberFormatInfo.InvariantInfo, out double val) ?
+                val : defaultValue;
+        }
+
+        /// <summary>
+        /// Gets the child XML node value as an enumeration element.
+        /// </summary>
+        public static T GetValueAsEnum<T>(this IDictionary<string, string> dictionary,
+            string key, T defaultValue = default(T)) where T : struct
+        {
+            return dictionary.TryGetValue(key, out string valStr) && Enum.TryParse(valStr, true, out T val) ? 
                 val : defaultValue;
         }
 

@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.DbImport.Configuration;
@@ -140,7 +140,7 @@ namespace Scada.Comm.Devices.DbImport.Data
         /// <summary>
         /// Initializes the data source.
         /// </summary>
-        public void Init(string connectionString, Config config)
+        public void Init(string connectionString, KpConfig config)
         {
             if (config == null)
                 throw new ArgumentNullException("config");
