@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,11 +20,10 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2010
- * Modified : 2019
+ * Modified : 2020
  */
 
 using System;
-using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using Scada.Admin.App.Code;
@@ -214,7 +213,7 @@ namespace Scada.Admin.App.Forms.Tables
         /// <summary>
         /// Finds the next match.
         /// </summary>
-        private bool FindNext(ColumnInfo columnInfo, bool showMsg)
+        private void FindNext(ColumnInfo columnInfo, bool showMsg, out bool found, out bool endReached)
         {
             bool isText = columnInfo.IsText;
             string findStr = isText ? txtFind.Text : "";
@@ -223,7 +222,6 @@ namespace Scada.Admin.App.Forms.Tables
             bool wholeCellOnly = chkWholeCellOnly.Checked;
 
             DataGridViewCell curCell = dataGridView.CurrentCell;
-            bool found;
             int colInd = columnInfo.Column.Index;
             int rowInd = curCell == null ? 0 : curCell.RowIndex;
             int rowCnt = dataGridView.RowCount;
@@ -251,17 +249,17 @@ namespace Scada.Admin.App.Forms.Tables
                 if (++rowInd >= rowCnt)
                     rowInd = 0;
 
-            } while (!found && rowInd != startRowIndex);
+                endReached = rowInd == startRowIndex;
 
-            if (!found || rowInd == startRowIndex)
+            } while (!found && !endReached);
+
+            if (!found || endReached)
             {
                 if (showMsg)
                     ScadaUiUtils.ShowInfo(foundSomething ? AppPhrases.SearchComplete : AppPhrases.ValueNotFound);
 
                 ResetSearch();
             }
-
-            return found;
         }
 
         /// <summary>
@@ -352,11 +350,11 @@ namespace Scada.Admin.App.Forms.Tables
 
             // replace other cells
             startRowIndex = dataGridView.CurrentCell == null ? 0 : dataGridView.CurrentCell.RowIndex;
-            bool found;
+            bool found, endReached;
 
             do
             {
-                found = FindNext(columnInfo, false);
+                FindNext(columnInfo, false, out found, out endReached);
 
                 if (found)
                 {
@@ -366,7 +364,7 @@ namespace Scada.Admin.App.Forms.Tables
                         replacedCnt++;
                 }
 
-            } while (found);
+            } while (found && !endReached);
 
             if (replacedCnt > 0)
                 ScadaUiUtils.ShowInfo(string.Format(AppPhrases.ReplaceCount, replacedCnt));
@@ -396,6 +394,7 @@ namespace Scada.Admin.App.Forms.Tables
         private void txtFind_TextChanged(object sender, EventArgs e)
         {
             ResetSearch();
+
             if (txtFind.Visible)
                 btnFindNext.Enabled = btnReplace.Enabled = btnReplaceAll.Enabled = txtFind.Text != "";
         }
@@ -413,16 +412,17 @@ namespace Scada.Admin.App.Forms.Tables
         private void btnFindNext_Click(object sender, EventArgs e)
         {
             if (cbColumn.SelectedItem is ColumnInfo columnInfo)
-                FindNext(columnInfo, true);
+                FindNext(columnInfo, true, out _, out _);
         }
 
         private void btnReplace_Click(object sender, EventArgs e)
         {
             if (cbColumn.SelectedItem is ColumnInfo columnInfo)
             {
-                ReplaceCell(columnInfo, true, out bool replaced, out bool noError);
+                ReplaceCell(columnInfo, true, out bool _, out bool noError);
+
                 if (noError)
-                    FindNext(columnInfo, true);
+                    FindNext(columnInfo, true, out _, out _);
             }
         }
 
