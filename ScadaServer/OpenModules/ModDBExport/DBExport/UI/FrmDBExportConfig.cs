@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Client;
@@ -88,9 +88,11 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         public static void ShowDialog(AppDirs appDirs, ServerComm serverComm)
         {
-            FrmDBExportConfig frmDBExportConfig = new FrmDBExportConfig();
-            frmDBExportConfig.appDirs = appDirs;
-            frmDBExportConfig.serverComm = serverComm;
+            FrmDBExportConfig frmDBExportConfig = new FrmDBExportConfig
+            {
+                appDirs = appDirs,
+                serverComm = serverComm
+            };
             frmDBExportConfig.ShowDialog();
         }
 
@@ -100,10 +102,9 @@ namespace Scada.Server.Modules.DBExport
         /// </summary>
         private TreeNode NewExpDestNode(ModConfig.ExportDestination expDest)
         {
-            TreeNode node = new TreeNode(expDest.DataSource.Name);
-            node.Tag = expDest;
-
+            TreeNode node = new TreeNode(expDest.DataSource.Name) { Tag = expDest };
             string imageKey;
+
             switch (expDest.DataSource.DBType)
             {
                 case DBType.MSSQL:
@@ -220,12 +221,13 @@ namespace Scada.Server.Modules.DBExport
         {
             if (selExpDest != null)
             {
-                string bldConnStr = selExpDest.DataSource.BuildConnectionString(true);
+                string bldConnStr = selExpDest.DataSource.BuildConnectionString();
+
                 if (!string.IsNullOrEmpty(bldConnStr))
                 {
                     selExpDest.DataSource.ConnectionString = bldConnStr;
                     changing = true;
-                    txtConnectionString.Text = bldConnStr;
+                    txtConnectionString.Text = selExpDest.DataSource.BuildConnectionString(true);
                     changing = false;
                     SetConnControlsBackColor(KnownColor.Window, KnownColor.Control);
                 }
@@ -260,8 +262,7 @@ namespace Scada.Server.Modules.DBExport
         {
             if (Modified)
             {
-                string errMsg;
-                if (config.Save(out errMsg))
+                if (config.Save(out string errMsg))
                 {
                     Modified = false;
                     return true;
