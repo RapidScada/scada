@@ -54,6 +54,8 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
+    <Compile Include="Config\DbConnectionOptions.cs" />
+    <Compile Include="Config\KnownDBMS.cs" />
     <Compile Include="Config\OptionList.cs" />
     <Compile Include="Data\Entities\EvType.cs" />
     <Compile Include="Data\Entities\CnlType.cs" />
