@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KpDBImport
+ * Module   : ScadaData.Db
  * Summary  : Implements a data source for Oracle
  * 
  * Author   : Mikhail Shiryaev
@@ -48,6 +48,18 @@ namespace Scada.Db
 
 
         /// <summary>
+        /// Gets the prefix of a query parameter.
+        /// </summary>
+        public override char ParamPrefix
+        {
+            get
+            {
+                return ':';
+            }
+        }
+
+
+        /// <summary>
         /// Creates a database connection.
         /// </summary>
         protected override DbConnection CreateConnection()
@@ -56,25 +68,16 @@ namespace Scada.Db
         }
 
         /// <summary>
-        /// Creates a command.
-        /// </summary>
-        protected override DbCommand CreateCommand()
-        {
-            return new OracleCommand();
-        }
-
-        /// <summary>
         /// Adds the command parameter containing the value.
         /// </summary>
-        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        protected override DbParameter AddParamWithValue(DbCommand cmd, string paramName, object value)
         {
             if (cmd == null)
-                throw new ArgumentNullException("cmd");
-            if (!(cmd is OracleCommand))
-                throw new ArgumentException("OracleCommand is required.", "cmd");
+                throw new ArgumentNullException(nameof(cmd));
 
-            OracleCommand oraCmd = (OracleCommand)cmd;
-            oraCmd.Parameters.AddWithValue(paramName, value);
+            return cmd is OracleCommand oraCmd ?
+                oraCmd.Parameters.AddWithValue(paramName, value) :
+                throw new ArgumentException("OracleCommand is required.", nameof(cmd));
         }
 
         /// <summary>

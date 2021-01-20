@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KpDBImport
+ * Module   : ScadaData.Db
  * Summary  : Implements a data source for MySQL
  * 
  * Author   : Mikhail Shiryaev
@@ -60,25 +60,16 @@ namespace Scada.Db
         }
 
         /// <summary>
-        /// Creates a command.
-        /// </summary>
-        protected override DbCommand CreateCommand()
-        {
-            return new MySqlCommand();
-        }
-
-        /// <summary>
         /// Adds the command parameter containing the value.
         /// </summary>
-        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        protected override DbParameter AddParamWithValue(DbCommand cmd, string paramName, object value)
         {
             if (cmd == null)
-                throw new ArgumentNullException("cmd");
-            if (!(cmd is MySqlCommand))
-                throw new ArgumentException("MySqlCommand is required.", "cmd");
+                throw new ArgumentNullException(nameof(cmd));
 
-            MySqlCommand mySqlCmd = (MySqlCommand)cmd;
-            mySqlCmd.Parameters.AddWithValue(paramName, value);
+            return cmd is MySqlCommand mySqlCmd ?
+                mySqlCmd.Parameters.AddWithValue(paramName, value) :
+                throw new ArgumentException("MySqlCommand is required.", nameof(cmd));
         }
 
         /// <summary>

@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KpDBImport
+ * Module   : ScadaData.Db
  * Summary  : Implements a data source for OLE DB
  * 
  * Author   : Mikhail Shiryaev
@@ -54,25 +54,16 @@ namespace Scada.Db
         }
 
         /// <summary>
-        /// Creates a command.
-        /// </summary>
-        protected override DbCommand CreateCommand()
-        {
-            return new OleDbCommand();
-        }
-
-        /// <summary>
         /// Adds the command parameter containing the value.
         /// </summary>
-        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        protected override DbParameter AddParamWithValue(DbCommand cmd, string paramName, object value)
         {
             if (cmd == null)
-                throw new ArgumentNullException("cmd");
-            if (!(cmd is OleDbCommand))
-                throw new ArgumentException("OleDbCommand is required.", "cmd");
+                throw new ArgumentNullException(nameof(cmd));
 
-            OleDbCommand oleDbCmd = (OleDbCommand)cmd;
-            oleDbCmd.Parameters.AddWithValue(paramName, value);
+            return cmd is OleDbCommand oleDbCmd ?
+                oleDbCmd.Parameters.AddWithValue(paramName, value) :
+                throw new ArgumentException("OleDbCommand is required.", nameof(cmd));
         }
 
         /// <summary>

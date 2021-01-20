@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KpDBImport
+ * Module   : ScadaData.Db
  * Summary  : The base class of the data source
  * 
  * Author   : Mikhail Shiryaev
@@ -57,6 +57,17 @@ namespace Scada.Db
         /// </summary>
         public DbConnection Connection { get; }
 
+        /// <summary>
+        /// Gets the prefix of a query parameter.
+        /// </summary>
+        public virtual char ParamPrefix
+        {
+            get
+            {
+                return '@';
+            }
+        }
+
 
         /// <summary>
         /// Creates a database connection.
@@ -64,14 +75,9 @@ namespace Scada.Db
         protected abstract DbConnection CreateConnection();
 
         /// <summary>
-        /// Creates a command.
-        /// </summary>
-        protected abstract DbCommand CreateCommand();
-
-        /// <summary>
         /// Adds the command parameter containing the value.
         /// </summary>
-        protected abstract void AddCmdParamWithValue(DbCommand cmd, string paramName, object value);
+        protected abstract DbParameter AddParamWithValue(DbCommand cmd, string paramName, object value);
 
         /// <summary>
         /// Clears the connection pool.
@@ -98,11 +104,6 @@ namespace Scada.Db
             }
         }
 
-
-        /// <summary>
-        /// Builds a connection string based on the specified connection settings.
-        /// </summary>
-        public abstract string BuildConnectionString(DbConnectionOptions connectionOptions);
 
         /// <summary>
         /// Connects to the database.
@@ -133,17 +134,36 @@ namespace Scada.Db
         }
 
         /// <summary>
+        /// Builds a connection string based on the specified connection settings.
+        /// </summary>
+        public abstract string BuildConnectionString(DbConnectionOptions connectionOptions);
+
+        /// <summary>
+        /// Creates a command.
+        /// </summary>
+        public virtual DbCommand CreateCommand()
+        {
+            return Connection.CreateCommand();
+        }
+
+        /// <summary>
         /// Sets the command parameter.
         /// </summary>
-        public void SetCmdParam(DbCommand cmd, string paramName, object value)
+        public virtual DbParameter SetParam(DbCommand cmd, string paramName, object value)
         {
             if (cmd == null)
-                throw new ArgumentNullException("cmd");
+                throw new ArgumentNullException(nameof(cmd));
 
             if (cmd.Parameters.Contains(paramName))
-                cmd.Parameters[paramName].Value = value;
+            {
+                DbParameter param = cmd.Parameters[paramName];
+                param.Value = value;
+                return param;
+            }
             else
-                AddCmdParamWithValue(cmd, paramName, value);
+            {
+                return AddParamWithValue(cmd, paramName, value);
+            }
         }
     }
 }

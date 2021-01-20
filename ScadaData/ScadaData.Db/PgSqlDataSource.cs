@@ -15,7 +15,7 @@
  * 
  * 
  * Product  : Rapid SCADA
- * Module   : KpDBImport
+ * Module   : ScadaData.Db
  * Summary  : Implements a data source for PostgreSQL
  * 
  * Author   : Mikhail Shiryaev
@@ -60,25 +60,16 @@ namespace Scada.Db
         }
 
         /// <summary>
-        /// Creates a command.
-        /// </summary>
-        protected override DbCommand CreateCommand()
-        {
-            return new NpgsqlCommand();
-        }
-
-        /// <summary>
         /// Adds the command parameter containing the value.
         /// </summary>
-        protected override void AddCmdParamWithValue(DbCommand cmd, string paramName, object value)
+        protected override DbParameter AddParamWithValue(DbCommand cmd, string paramName, object value)
         {
             if (cmd == null)
-                throw new ArgumentNullException("cmd");
-            if (!(cmd is NpgsqlCommand))
-                throw new ArgumentException("NpgsqlCommand is required.", "cmd");
+                throw new ArgumentNullException(nameof(cmd));
 
-            NpgsqlCommand pgSqlCmd = (NpgsqlCommand)cmd;
-            pgSqlCmd.Parameters.AddWithValue(paramName, value);
+            return cmd is NpgsqlCommand pgSqlCmd ?
+                pgSqlCmd.Parameters.AddWithValue(paramName, value) :
+                throw new ArgumentException("NpgsqlCommand is required.", nameof(cmd));
         }
 
         /// <summary>
