@@ -123,6 +123,21 @@ namespace Scada.Db
         }
 
         /// <summary>
+        /// Rollbacks the transaction safely.
+        /// </summary>
+        public void SafeRollback(DbTransaction trans)
+        {
+            try 
+            { 
+                trans?.Rollback(); 
+            } 
+            catch 
+            {
+            }
+        }
+
+
+        /// <summary>
         /// Builds a connection string based on the specified connection settings.
         /// </summary>
         public abstract string BuildConnectionString(DbConnectionOptions connectionOptions);
