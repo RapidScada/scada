@@ -57,17 +57,6 @@ namespace Scada.Db
         /// </summary>
         public DbConnection Connection { get; }
 
-        /// <summary>
-        /// Gets the prefix of a query parameter.
-        /// </summary>
-        public virtual char ParamPrefix
-        {
-            get
-            {
-                return '@';
-            }
-        }
-
 
         /// <summary>
         /// Creates a database connection.

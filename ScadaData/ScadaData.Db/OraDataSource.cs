@@ -48,18 +48,6 @@ namespace Scada.Db
 
 
         /// <summary>
-        /// Gets the prefix of a query parameter.
-        /// </summary>
-        public override char ParamPrefix
-        {
-            get
-            {
-                return ':';
-            }
-        }
-
-
-        /// <summary>
         /// Creates a database connection.
         /// </summary>
         protected override DbConnection CreateConnection()
