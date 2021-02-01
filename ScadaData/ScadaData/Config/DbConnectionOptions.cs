@@ -32,6 +32,7 @@ namespace Scada.Config
     /// Represents database connection options.
     /// <para>Представляет параметры подключения к базе данных.</para>
     /// </summary>
+    [Serializable]
     public class DbConnectionOptions
     {
         /// <summary>
