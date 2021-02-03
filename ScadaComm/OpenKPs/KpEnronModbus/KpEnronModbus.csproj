@@ -45,6 +45,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnronModbus\EnronDeviceTemplateFactory.cs" />
+    <Compile Include="EnronModbus\KpUtils.cs" />
+    <Compile Include="EnronModbus\Protocol\EnronDeviceTemplate.cs" />
+    <Compile Include="EnronModbus\Protocol\EnronElem.cs" />
+    <Compile Include="EnronModbus\Protocol\EnronElemGroup.cs" />
+    <Compile Include="EnronModbus\UI\EnronUiCustomization.cs" />
     <Compile Include="KpEnronModbusLogic.cs" />
     <Compile Include="KpEnronModbusView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,5 +61,6 @@
       <Name>KpModbus</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
