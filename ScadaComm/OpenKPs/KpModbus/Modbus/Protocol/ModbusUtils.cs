@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2019
+ * Modified : 2021
  */
 
 namespace Scada.Comm.Devices.Modbus.Protocol
@@ -217,8 +217,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
 
                 for (int i = 0; i < len; i++)
                 {
-                    int n;
-                    byteOrder[i] = int.TryParse(byteOrderStr[i].ToString(), out n) ? n : 0;
+                    byteOrder[i] = int.TryParse(byteOrderStr[i].ToString(), out int n) ? n : 0;
                 }
 
                 return byteOrder;
@@ -262,11 +261,11 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         {
             ApplyByteOrder(src, 0, dest, 0, dest.Length, byteOrder, false);
         }
-        
+
         /// <summary>
-        /// Получить количество элементов (количество адресов) в зависимости от типа элемента.
+        /// Gets the required quantity of addresses depending on the element type.
         /// </summary>
-        public static int GetElemCount(ElemType elemType)
+        public static int GetQuantity(ElemType elemType)
         {
             switch (elemType)
             {
@@ -278,9 +277,17 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 case ElemType.Int:
                 case ElemType.Float:
                     return 2;
-                default:
+                default: // Undefined, Bool
                     return 1;
             }
+        }
+
+        /// <summary>
+        /// Gets the length required to store element data depending on the element type.
+        /// </summary>
+        public static int GetDataLength(ElemType elemType)
+        {
+            return elemType == ElemType.Bool ? 1 : GetQuantity(elemType) * 2;
         }
 
         /// <summary>

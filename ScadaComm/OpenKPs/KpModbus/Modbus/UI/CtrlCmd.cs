@@ -292,7 +292,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 else
                 {
                     modbusCmd.ElemType = newElemType;
-                    numCmdElemCnt.Value = ModbusUtils.GetElemCount(modbusCmd.ElemType);
+                    numCmdElemCnt.Value = ModbusUtils.GetQuantity(modbusCmd.ElemType);
                     OnObjectChanged(TreeUpdateTypes.None);
                 }
             }

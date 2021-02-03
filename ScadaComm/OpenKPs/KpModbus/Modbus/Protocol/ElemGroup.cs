@@ -55,8 +55,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             reqDescr = "";
             Active = true;
             Elems = new List<Elem>();
-            ElemVals = null;
-            TotalElemLength = -1;
+            ElemData = null;
             StartKPTagInd = -1;
             StartSignal = 0;
 
@@ -77,14 +76,9 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public List<Elem> Elems { get; private set; }
 
         /// <summary>
-        /// Получить значения элементов в группе
+        /// Получить данные элементов в группе
         /// </summary>
-        public byte[][] ElemVals { get; private set; }
-
-        /// <summary>
-        /// Получить суммарную длину элементов (количество адресов) в группе
-        /// </summary>
-        public int TotalElemLength { get; private set; }
+        public byte[][] ElemData { get; private set; }
 
         /// <summary>
         /// Получить описание запроса
@@ -116,11 +110,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         /// </summary>
         public override void InitReqPDU()
         {
-            // определение суммарной длины запрашиваемых элементов
-            TotalElemLength = 0;
+            // определение суммарного количества запрашиваемых адресов
+            int totalQuantity = 0;
+            int totalDataLength = 0;
+
             foreach (Elem elem in Elems)
             {
-                TotalElemLength += elem.Length;
+                totalQuantity += elem.Quantity;
+                totalDataLength += elem.DataLength;
             }
 
             // формирование PDU
@@ -128,34 +125,34 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             ReqPDU[0] = FuncCode;
             ReqPDU[1] = (byte)(Address / 256);
             ReqPDU[2] = (byte)(Address % 256);
-            ReqPDU[3] = (byte)(TotalElemLength / 256);
-            ReqPDU[4] = (byte)(TotalElemLength % 256);
+            ReqPDU[3] = (byte)(totalQuantity / 256);
+            ReqPDU[4] = (byte)(totalQuantity % 256);
 
             // расчёт длины ответа
             if (TableType == TableType.DiscreteInputs || TableType == TableType.Coils)
             {
-                int n = TotalElemLength / 8;
-                if ((TotalElemLength % 8) > 0)
+                int n = totalQuantity / 8;
+                if ((totalQuantity % 8) > 0)
                     n++;
                 RespPduLen = 2 + n;
                 RespByteCnt = (byte)n;
             }
             else
             {
-                RespPduLen = 2 + TotalElemLength * 2;
-                RespByteCnt = (byte)(TotalElemLength * 2);
+                RespPduLen = 2 + totalDataLength;
+                RespByteCnt = (byte)totalDataLength;
             }
 
             // инициализация массива значений элементов
             int elemCnt = Elems.Count;
-            ElemVals = new byte[elemCnt][];
+            ElemData = new byte[elemCnt][];
 
             for (int i = 0; i < elemCnt; i++)
             {
                 Elem elem = Elems[i];
-                byte[] elemVal = new byte[elem.ElemType == ElemType.Bool ? 1 : elem.Length * 2];
+                byte[] elemVal = new byte[elem.DataLength];
                 Array.Clear(elemVal, 0, elemVal.Length);
-                ElemVals[i] = elemVal;
+                ElemData[i] = elemVal;
             }
         }
 
@@ -168,7 +165,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 if (buffer[offset + 1] == RespByteCnt)
                 {
-                    int len = ElemVals.Length;
+                    int len = ElemData.Length;
                     int byteNum = offset + 2;
 
                     if (TableType == TableType.DiscreteInputs || TableType == TableType.Coils)
@@ -176,7 +173,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                         int bitNum = 0;
                         for (int elemInd = 0; elemInd < len; elemInd++)
                         {
-                            ElemVals[elemInd][0] = ((buffer[byteNum] >> bitNum) & 0x01) > 0 ? (byte)1 : (byte)0;
+                            ElemData[elemInd][0] = ((buffer[byteNum] >> bitNum) & 0x01) > 0 ? (byte)1 : (byte)0;
 
                             if (++bitNum == 8)
                             {
@@ -189,13 +186,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                     {
                         for (int elemInd = 0; elemInd < len; elemInd++)
                         {
-                            byte[] elemVal = ElemVals[elemInd];
-                            int elemLen = Elems[elemInd].Length;
-                            int elemValLen = elemLen * 2;
+                            byte[] elemVal = ElemData[elemInd];
+                            int elemDataLen = Elems[elemInd].DataLength;
                             // копирование считанных байт в обратном порядке
-                            for (int i = elemValLen - 1, j = byteNum; i >= 0; i--, j++)
+                            for (int i = elemDataLen - 1, j = byteNum; i >= 0; i--, j++)
+                            {
                                 elemVal[i] = buffer[j];
-                            byteNum += elemValLen;
+                            }
+                            byteNum += elemDataLen;
                         }
                     }
 
@@ -336,18 +334,18 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public double GetElemVal(int elemInd)
         {
             Elem elem = Elems[elemInd];
-            byte[] elemVal = ElemVals[elemInd];
+            byte[] elemData = ElemData[elemInd];
             byte[] buf;
 
             // перестановка байт в случае необходимости
             if (elem.ByteOrder == null)
             {
-                buf = elemVal;
+                buf = elemData;
             }
             else
             {
-                buf = new byte[elemVal.Length];
-                ModbusUtils.ApplyByteOrder(elemVal, buf, elem.ByteOrder);
+                buf = new byte[elemData.Length];
+                ModbusUtils.ApplyByteOrder(elemData, buf, elem.ByteOrder);
             }
 
             // расчёт значения
