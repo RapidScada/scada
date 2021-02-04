@@ -121,7 +121,7 @@ namespace Scada.Comm.Devices
                 };
 
                 connected = helper.ConnectAsync(deviceConfig.ConnectionOptions, ReqParams.Timeout).Result;
-                autoAccept = autoAccept || helper.AutoAccept;
+                autoAccept = autoAccept || helper.AutoAccept; // TODO: autoAccept always true?
                 opcSession = helper.OpcSession;
                 opcSession.KeepAlive += OpcSession_KeepAlive;
                 opcSession.Notification += OpcSession_Notification;
