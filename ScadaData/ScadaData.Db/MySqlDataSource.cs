@@ -93,7 +93,7 @@ namespace Scada.Db
         /// <summary>
         /// Builds a connection string based on the specified connection settings.
         /// </summary>
-        public static string BuildMySqlConnectionString(DbConnectionOptions connectionOptions)
+        public static string BuildMySqlConnectionString(DbConnectionOptions connectionOptions, bool hidePassword = false)
         {
             if (connectionOptions == null)
                 throw new ArgumentNullException(nameof(connectionOptions));
@@ -106,7 +106,7 @@ namespace Scada.Db
                 Port = (uint)port,
                 Database = connectionOptions.Database,
                 UserID = connectionOptions.Username,
-                Password = connectionOptions.Password
+                Password = hidePassword ? HiddenPassword : connectionOptions.Password
             }
             .ToString();
         }

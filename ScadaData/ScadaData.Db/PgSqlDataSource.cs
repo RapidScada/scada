@@ -92,14 +92,15 @@ namespace Scada.Db
         /// <summary>
         /// Builds a connection string based on the specified connection settings.
         /// </summary>
-        public static string BuildPgSqlConnectionString(DbConnectionOptions connectionOptions)
+        public static string BuildPgSqlConnectionString(DbConnectionOptions connectionOptions, bool hidePassword = false)
         {
             if (connectionOptions == null)
                 throw new ArgumentNullException(nameof(connectionOptions));
 
             ExtractHostAndPort(connectionOptions.Server, DefaultPort, out string host, out int port);
             return string.Format("Server={0};Port={1};Database={2};User Id={3};Password={4}",
-                host, port, connectionOptions.Database, connectionOptions.Username, connectionOptions.Password);
+                host, port, connectionOptions.Database, connectionOptions.Username, 
+                hidePassword ? HiddenPassword : connectionOptions.Password);
         }
     }
 }

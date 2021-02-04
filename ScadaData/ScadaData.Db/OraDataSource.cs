@@ -89,7 +89,7 @@ namespace Scada.Db
         /// <summary>
         /// Builds a connection string based on the specified connection settings.
         /// </summary>
-        public static string BuildOraConnectionString(DbConnectionOptions connectionOptions)
+        public static string BuildOraConnectionString(DbConnectionOptions connectionOptions, bool hidePassword = false)
         {
             if (connectionOptions == null)
                 throw new ArgumentNullException(nameof(connectionOptions));
@@ -97,8 +97,8 @@ namespace Scada.Db
             return string.Format("Server={0}{1};User ID={2};Password={3}",
                 connectionOptions.Server, 
                 string.IsNullOrEmpty(connectionOptions.Database) ? "" : "/" + connectionOptions.Database,
-                connectionOptions.Username, 
-                connectionOptions.Password);
+                connectionOptions.Username,
+                hidePassword ? HiddenPassword : connectionOptions.Password);
         }
     }
 }

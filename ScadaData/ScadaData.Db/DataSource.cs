@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Config;
@@ -36,6 +36,12 @@ namespace Scada.Db
     /// </summary>
     public abstract class DataSource
     {
+        /// <summary>
+        /// The string to hide a password. 0x25CF character is uded.
+        /// </summary>
+        protected const string HiddenPassword = "●●●●●";
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>

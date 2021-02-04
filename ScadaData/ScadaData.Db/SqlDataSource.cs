@@ -87,7 +87,7 @@ namespace Scada.Db
         /// <summary>
         /// Builds a connection string based on the specified connection settings.
         /// </summary>
-        public static string BuildSqlConnectionString(DbConnectionOptions connectionOptions)
+        public static string BuildSqlConnectionString(DbConnectionOptions connectionOptions, bool hidePassword = false)
         {
             if (connectionOptions == null)
                 throw new ArgumentNullException(nameof(connectionOptions));
@@ -95,8 +95,8 @@ namespace Scada.Db
             return string.Format("Server={0};Database={1};User ID={2};Password={3}",
                 connectionOptions.Server, 
                 connectionOptions.Database, 
-                connectionOptions.Username, 
-                connectionOptions.Password);
+                connectionOptions.Username,
+                hidePassword ? HiddenPassword : connectionOptions.Password);
         }
     }
 }
