@@ -4,7 +4,7 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpEnronModbus
- * Summary  : Represents a group of Enron Modbus elements
+ * Summary  : Represents an Enron Modbus command
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2021
@@ -14,21 +14,23 @@
 using Scada.Comm.Devices.Modbus.Protocol;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Scada.Comm.Devices.EnronModbus.Protocol
 {
     /// <summary>
-    /// Represents a group of Enron Modbus elements.
-    /// <para>Представляет группу элементов Enron Modbus.</para>
+    /// Represents an Enron Modbus command.
+    /// <para>Представляет команду Enron Modbus.</para>
     /// </summary>
-    internal class EnronElemGroup : ElemGroup
+    internal class EnronCmd : ModbusCmd
     {
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
-        public EnronElemGroup(TableType tableType)
-            : base(tableType)
+        public EnronCmd(TableType tableType, bool multiple)
+            : base(tableType, multiple)
         {
         }
 
@@ -43,11 +45,11 @@ namespace Scada.Comm.Devices.EnronModbus.Protocol
         }
 
         /// <summary>
-        /// Creates a new Modbus element.
+        /// Gets the default number of command elements depending on the element type.
         /// </summary>
-        public override Elem CreateElem()
+        public override int GetDefElemCnt(ElemType elemType)
         {
-            return new EnronElem();
+            return 1;
         }
     }
 }

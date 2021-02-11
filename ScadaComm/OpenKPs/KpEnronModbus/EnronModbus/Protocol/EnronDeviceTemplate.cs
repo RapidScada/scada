@@ -28,5 +28,13 @@ namespace Scada.Comm.Devices.EnronModbus.Protocol
         {
             return new EnronElemGroup(tableType);
         }
+
+        /// <summary>
+        /// Creates a new Modbus command.
+        /// </summary>
+        public override ModbusCmd CreateModbusCmd(TableType tableType, bool multiple)
+        {
+            return new EnronCmd(tableType, multiple);
+        }
     }
 }

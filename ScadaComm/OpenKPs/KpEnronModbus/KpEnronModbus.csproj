@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="EnronModbus\EnronDeviceTemplateFactory.cs" />
     <Compile Include="EnronModbus\KpUtils.cs" />
+    <Compile Include="EnronModbus\Protocol\EnronCmd.cs" />
     <Compile Include="EnronModbus\Protocol\EnronDeviceTemplate.cs" />
     <Compile Include="EnronModbus\Protocol\EnronElem.cs" />
     <Compile Include="EnronModbus\Protocol\EnronElemGroup.cs" />

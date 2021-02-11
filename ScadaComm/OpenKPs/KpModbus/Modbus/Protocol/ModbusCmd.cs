@@ -144,24 +144,28 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             if (Multiple)
             {
                 // формирование PDU для команды WriteMultipleCoils или WriteMultipleRegisters
-                int byteCnt = TableType == TableType.Coils ?
+                int dataLength = TableType == TableType.Coils ?
                     ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) :
-                    ElemCnt * 2;
+                    ElemCnt * ModbusUtils.GetDataLength(ElemType);
 
-                ReqPDU = new byte[6 + byteCnt];
+                ReqPDU = new byte[6 + dataLength];
                 ReqPDU[0] = FuncCode;
                 ReqPDU[1] = (byte)(Address / 256);
                 ReqPDU[2] = (byte)(Address % 256);
                 ReqPDU[3] = (byte)(ElemCnt / 256);
                 ReqPDU[4] = (byte)(ElemCnt % 256);
-                ReqPDU[5] = (byte)byteCnt;
+                ReqPDU[5] = (byte)dataLength;
 
-                ModbusUtils.ApplyByteOrder(Data, 0, ReqPDU, 6, byteCnt, ByteOrder, false);
+                ModbusUtils.ApplyByteOrder(Data, 0, ReqPDU, 6, dataLength, ByteOrder, false);
+
+                // установка длины ответа
+                RespPduLen = 5;
             }
             else
             {
                 // формирование PDU для команды WriteSingleCoil или WriteSingleRegister
-                ReqPDU = new byte[5];
+                int dataLength = TableType == TableType.Coils ? 2 : ModbusUtils.GetDataLength(ElemType);
+                ReqPDU = new byte[3 + dataLength];
                 ReqPDU[0] = FuncCode;
                 ReqPDU[1] = (byte)(Address / 256);
                 ReqPDU[2] = (byte)(Address % 256);
@@ -173,17 +177,21 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                 }
                 else
                 {
-                    byte[] data = new byte[]
-                    {
-                        (byte)(Value / 256),
-                        (byte)(Value % 256)
-                    };
-                    ModbusUtils.ApplyByteOrder(data, 0, ReqPDU, 3, 2, ByteOrder, false);
-                }
-            }
 
-            // установка длины ответа
-            RespPduLen = 5;
+                    byte[] data = dataLength == 2 ?
+                        new byte[] // standard Modbus
+                        {
+                            (byte)(Value / 256),
+                            (byte)(Value % 256)
+                        } :
+                        Data;
+
+                    ModbusUtils.ApplyByteOrder(data, 0, ReqPDU, 3, dataLength, ByteOrder, false);
+                }
+
+                // установка длины ответа
+                RespPduLen = ReqPDU.Length; // echo
+            }
         }
 
         /// <summary>
@@ -208,6 +216,14 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 return false;
             }
+        }
+
+        /// <summary>
+        /// Gets the default number of command elements depending on the element type.
+        /// </summary>
+        public virtual int GetDefElemCnt(ElemType elemType)
+        {
+            return ModbusUtils.GetQuantity(elemType);
         }
 
         /// <summary>

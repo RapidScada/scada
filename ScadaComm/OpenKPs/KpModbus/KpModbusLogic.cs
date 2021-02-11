@@ -340,6 +340,8 @@ namespace Scada.Comm.Devices
                     // формирование команды Modbus
                     if (modbusCmd.Multiple)
                     {
+                        modbusCmd.Value = 0;
+
                         if (cmd.CmdTypeID == BaseValues.CmdTypes.Standard)
                             modbusCmd.SetCmdData(cmd.CmdVal);
                         else
@@ -350,6 +352,7 @@ namespace Scada.Comm.Devices
                         modbusCmd.Value = modbusCmd.TableType == TableType.HoldingRegisters ?
                             (ushort)cmd.CmdVal :
                             cmd.CmdVal > 0 ? (ushort)1 : (ushort)0;
+                        modbusCmd.SetCmdData(cmd.CmdVal);
                     }
 
                     modbusCmd.InitReqPDU();
