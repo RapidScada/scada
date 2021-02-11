@@ -35,14 +35,19 @@ namespace Scada.Config
     [Serializable]
     public class DbConnectionOptions
     {
+        private string dbms;         // the database management system
+        private KnownDBMS knownDBMS; // the one of known DBMSs
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
         public DbConnectionOptions()
         {
+            dbms = "";
+            knownDBMS = KnownDBMS.Undefined;
+
             Name = "";
-            DBMS = "";
-            KnownDBMS = KnownDBMS.Undefined;
             Server = "";
             Database = "";
             Username = "";
@@ -59,12 +64,34 @@ namespace Scada.Config
         /// <summary>
         /// Gets or sets the database management system.
         /// </summary>
-        public string DBMS { get; set; }
+        public string DBMS
+        {
+            get
+            {
+                return dbms;
+            }
+            set
+            {
+                dbms = value;
+                knownDBMS = Enum.TryParse(value, true, out KnownDBMS result) ? result : KnownDBMS.Undefined;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the database management system, if it is one of the known DBMSs.
         /// </summary>
-        public KnownDBMS KnownDBMS { get; set; }
+        public KnownDBMS KnownDBMS
+        {
+            get
+            {
+                return knownDBMS;
+            }
+            set
+            {
+                dbms = value.ToString();
+                knownDBMS = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets the server host.
@@ -102,7 +129,6 @@ namespace Scada.Config
 
             Name = xmlNode.GetChildAsString("Name");
             DBMS = xmlNode.GetChildAsString("DBMS");
-            KnownDBMS = Enum.TryParse(DBMS, true, out KnownDBMS knownDBMS) ? knownDBMS : KnownDBMS.Undefined;
             Server = xmlNode.GetChildAsString("Server");
             Database = xmlNode.GetChildAsString("Database");
             Username = xmlNode.GetChildAsString("Username");
