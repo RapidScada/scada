@@ -49,7 +49,9 @@ namespace Scada.Db
         {
             ConnectionOptions = connectionOptions ?? throw new ArgumentNullException(nameof(connectionOptions));
             Connection = CreateConnection();
-            Connection.ConnectionString = BuildConnectionString(connectionOptions);
+            Connection.ConnectionString = string.IsNullOrEmpty(connectionOptions.ConnectionString) ?
+                BuildConnectionString(connectionOptions) :
+                connectionOptions.ConnectionString;
         }
 
 
