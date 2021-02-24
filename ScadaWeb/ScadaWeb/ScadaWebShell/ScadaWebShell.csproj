@@ -102,6 +102,12 @@
     <Content Include="css\dialogs\confirm.min.css">
       <DependentUpon>confirm.css</DependentUpon>
     </Content>
+    <Content Include="css\mastermodal.css">
+      <DependentUpon>mastermodal.less</DependentUpon>
+    </Content>
+    <Content Include="css\mastermodal.min.css">
+      <DependentUpon>mastermodal.css</DependentUpon>
+    </Content>
     <Content Include="dialogs\Calendar.aspx" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
@@ -431,6 +437,7 @@
     <Content Include="css\user.less" />
     <Content Include="css\reports.less" />
     <Content Include="MasterModal.Master" />
+    <Content Include="css\mastermodal.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

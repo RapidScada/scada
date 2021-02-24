@@ -12,8 +12,7 @@
     <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/common/contentform.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/css/common/modalform.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/mastermodal.min.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap/js/bootstrap.min.js") %>"></script>
     <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/utils.js") %>"></script>

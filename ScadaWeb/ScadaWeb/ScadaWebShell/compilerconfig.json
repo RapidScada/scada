@@ -70,5 +70,9 @@
   {
     "outputFile": "css/controls/notifpanel.css",
     "inputFile": "css/controls/notifpanel.less"
+  },
+  {
+    "outputFile": "css/mastermodal.css",
+    "inputFile": "css/mastermodal.less"
   }
 ]

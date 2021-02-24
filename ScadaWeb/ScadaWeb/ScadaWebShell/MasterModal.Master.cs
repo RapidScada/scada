@@ -2,7 +2,7 @@
  * Copyright 2021 Mikhail Shiryaev
  * 
  * Product  : Rapid SCADA
- * Module   : PlgUserManagement
+ * Module   : SCADA-Web
  * Summary  : Represents a master page of modal forms
  * 
  * Author   : SCADA-Web
