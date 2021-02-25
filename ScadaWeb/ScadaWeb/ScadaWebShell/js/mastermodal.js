@@ -25,14 +25,12 @@ function closeModal(dialogResult, opt_extraParams) {
 $(document).ready(function () {
     // disable OK button according to the submit button state
     if (popup) {
-        var enabled = !$("input[type='submit']:first").is(":disabled");
+        var enabled = !$(".btn-modal-ok:first").is(":disabled");
         popup.setButtonEnabled(window, scada.ModalButtons.OK, enabled);
     }
 
-    // submit the form on OK button click
+    // submit the form by programmatically clicking the corresponding button
     $(window).on(scada.EventTypes.MODAL_BTN_CLICK, function (event, result) {
-        if (result == scada.ModalButtons.OK) {
-            $("input[type='submit']:first").click();
-        }
+        $(".btn-modal-" + result + ":first").click();
     });
 });

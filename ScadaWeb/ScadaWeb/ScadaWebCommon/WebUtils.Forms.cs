@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 
@@ -56,6 +57,35 @@ namespace Scada.Web
                 pnlMessage.Visible = true;
                 lblMessage.Visible = true;
             }
+        }
+
+        /// <summary>
+        /// Updates the modal dialog height.
+        /// </summary>
+        public static void UpdateModalHeight(this Page page)
+        {
+            page.ClientScript.RegisterStartupScript(page.GetType(), "UpdateModalHeight", "updateModalHeight();", true);
+        }
+
+        /// <summary>
+        /// Sets the modal dialog title.
+        /// </summary>
+        public static void SetModalTitle(this Page page, string title)
+        {
+            page.ClientScript.RegisterStartupScript(page.GetType(), "SetModalTitle",
+                $"setModalTitle('{ HttpUtility.JavaScriptStringEncode(title) }');", true);
+        }
+
+        /// <summary>
+        /// Closes the modal dialog.
+        /// </summary>
+        public static void CloseModal(this Page page, bool dialogResult = true, string extraParams = null)
+        {
+            string resultStr = dialogResult ? "true" : "false";
+            string script = string.IsNullOrEmpty(extraParams) ?
+                string.Format("closeModal({0});", resultStr) :
+                string.Format("closeModal({0}, '{1}');", resultStr, extraParams);
+            page.ClientScript.RegisterStartupScript(page.GetType(), "CloseModal", script, true);
         }
     }
 }
