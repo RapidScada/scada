@@ -17,6 +17,9 @@ label {
 .checkbox {
   margin-top: 0px;
 }
+.form-group .btn + .btn {
+  margin-left: 5px;
+}
 .main-content {
   padding: 20px;
   font-size: 14px;

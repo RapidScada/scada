@@ -60,6 +60,20 @@ namespace Scada.Web
         }
 
         /// <summary>
+        /// Sets the selected value of the drop down list if possible.
+        /// </summary>
+        public static void SetSelectedValue(this DropDownList dropDownList, object value)
+        {
+            try 
+            { 
+                dropDownList.SelectedValue = value == null ? "" : value.ToString();
+            } 
+            catch
+            { 
+            }
+        }
+
+        /// <summary>
         /// Updates the modal dialog height.
         /// </summary>
         public static void UpdateModalHeight(this Page page)
