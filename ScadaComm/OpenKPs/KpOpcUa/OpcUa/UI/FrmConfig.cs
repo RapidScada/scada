@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Opc.Ua;
@@ -94,9 +94,10 @@ namespace Scada.Comm.Devices.OpcUa.UI
 
         private static readonly Dictionary<string, Type> KnownTypes = new Dictionary<string, Type>
         {
-            {  "byte", typeof(byte) },
-            {  "double", typeof(double) },
-            {  "Int16", typeof(Int16) },
+            {  "boolean", typeof(Boolean) },
+            {  "byte", typeof(Byte) },
+            {  "double", typeof(Double) },
+            {  "int16", typeof(Int16) },
             {  "int32", typeof(Int32) },
             {  "int64", typeof(Int64) },
             {  "sbyte", typeof(SByte) },
@@ -336,44 +337,52 @@ namespace Scada.Comm.Devices.OpcUa.UI
             try
             {
                 tvServer.BeginUpdate();
-                bool fillNode = false;
+                bool fillNodeRequired = false;
                 TreeNodeCollection nodeCollection = null;
+                ServerNodeTag serverNodeTag = null;
                 NodeId nodeId = null;
 
                 if (treeNode == null)
                 {
-                    fillNode = true;
+                    fillNodeRequired = true;
                     nodeCollection = tvServer.Nodes;
+                    serverNodeTag = null;
                     nodeId = ObjectIds.ObjectsFolder;
                 }
-                else if (treeNode.Tag is ServerNodeTag serverNodeTag)
+                else if (treeNode.Tag is ServerNodeTag nodeTag)
                 {
-                    fillNode = !serverNodeTag.IsFilled;
+                    fillNodeRequired = !nodeTag.IsFilled;
                     nodeCollection = treeNode.Nodes;
-                    nodeId = serverNodeTag.OpcNodeId;
+                    serverNodeTag = nodeTag;
+                    nodeId = nodeTag.OpcNodeId;
                 }
 
-                if (fillNode && nodeId != null && opcSession != null)
+                if (fillNodeRequired && nodeId != null && opcSession != null)
                 {
-                    opcSession.Browse(null, null, nodeId,
-                        0, BrowseDirection.Forward, ReferenceTypeIds.HierarchicalReferences, true,
-                        (uint)NodeClass.Variable | (uint)NodeClass.Object | (uint)NodeClass.Method,
-                        out byte[] continuationPoint, out ReferenceDescriptionCollection references);
+                    Browser browser = new Browser(opcSession)
+                    {
+                        BrowseDirection = BrowseDirection.Forward,
+                        NodeClassMask = (int)NodeClass.Variable | (int)NodeClass.Object | (int)NodeClass.Method,
+                        ReferenceTypeId = ReferenceTypeIds.HierarchicalReferences
+                    };
+
+                    ReferenceDescriptionCollection browseResults = browser.Browse(nodeId);
                     nodeCollection.Clear();
 
-                    foreach (ReferenceDescription rd in references)
+                    foreach (ReferenceDescription rd in browseResults)
                     {
                         TreeNode childNode = TreeViewUtils.CreateNode(rd.DisplayName, SelectImageKey(rd.NodeClass));
-                        childNode.Tag = new ServerNodeTag(rd, opcSession.NamespaceUris); 
+                        childNode.Tag = new ServerNodeTag(rd, opcSession.NamespaceUris);
 
-                        if (rd.NodeClass.HasFlag(NodeClass.Object))
-                        {
-                            TreeNode emptyNode = TreeViewUtils.CreateNode(KpPhrases.EmptyNode, "empty.png");
-                            childNode.Nodes.Add(emptyNode);
-                        }
+                        // allow to expand any node
+                        TreeNode emptyNode = TreeViewUtils.CreateNode(KpPhrases.EmptyNode, "empty.png");
+                        childNode.Nodes.Add(emptyNode);
 
                         nodeCollection.Add(childNode);
                     }
+
+                    if (serverNodeTag != null)
+                        serverNodeTag.IsFilled = true;
                 }
             }
             catch (Exception ex)
