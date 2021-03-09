@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Scada.UI;
@@ -253,16 +253,20 @@ namespace Scada.Scheme.Model.PropertyGrid
             {
                 try
                 {
-                    // display image in the picture box anyway
-                    pictureBox.Image = imageInfo.Source;
-                    pictureBox.SizeMode =
-                        imageInfo.ImageSize.Width <= pictureBox.Width &&
-                        imageInfo.ImageSize.Height <= pictureBox.Height ?
-                        PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
-
-                    // display SVG
-                    if (ctrlSvgViewer != null && ctrlSvgViewer.Visible)
+                    if (ctrlSvgViewer != null && imageInfo.IsSvg)
+                    {
+                        // display SVG
                         ctrlSvgViewer.ShowImage(imageInfo.Image.Data);
+                    }
+                    else
+                    {
+                        // display other type of image in the picture box
+                        pictureBox.Image = imageInfo.Source;
+                        pictureBox.SizeMode =
+                            imageInfo.ImageSize.Width <= pictureBox.Width &&
+                            imageInfo.ImageSize.Height <= pictureBox.Height ?
+                            PictureBoxSizeMode.CenterImage : PictureBoxSizeMode.Zoom;
+                    }
                 }
                 catch (Exception ex)
                 {
