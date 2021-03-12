@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2021
  */
 
 namespace Scada.Web.Shell
@@ -40,11 +40,16 @@ namespace Scada.Web.Shell
         /// Вход в систему с указанием ссылки для возврата и выводом сообщения
         /// </summary>
         public const string LoginWithAlert = "~/Login.aspx?return={0}&alert={1}";
-        
+
         /// <summary>
-        /// Информация о пользователе
+        /// Профиль пользователя по умолчанию
         /// </summary>
-        public const string User = "~/User.aspx?userID={0}";
+        public const string DefaultUserProfile = "~/User.aspx?userID={0}";
+
+        /// <summary>
+        /// Стартовая страница по умолчанию
+        /// </summary>
+        public const string DefaultStartPage = "~/View.aspx";
 
         /// <summary>
         /// Представление

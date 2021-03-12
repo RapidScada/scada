@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2018
+ * Modified : 2021
  */
 
 using System.Collections.Generic;
@@ -60,6 +60,11 @@ namespace Scada.Web.Shell
         public string EventAckScriptPath { get; set; }
 
         /// <summary>
+        /// Gets or sets the user profile URL template.
+        /// </summary>
+        public string UserProfilePath { get; set; }
+
+        /// <summary>
         /// Получить или установить пути к дополнительным скриптам
         /// </summary>
         public ICollection<string> ExtraScripts { get; set; }
@@ -73,6 +78,7 @@ namespace Scada.Web.Shell
             ChartScriptPath = "";
             CmdScriptPath = "";
             EventAckScriptPath = "";
+            UserProfilePath = "";
             ExtraScripts = null;
         }
 

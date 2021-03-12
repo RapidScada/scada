@@ -24,6 +24,7 @@
  */
 
 using Scada.UI;
+using Scada.Web.Shell;
 using System;
 using System.IO;
 using System.Web;
@@ -36,11 +37,6 @@ namespace Scada.Web
     /// </summary>
     public partial class WFrmLogin : System.Web.UI.Page
     {
-        /// <summary>
-        /// Стартовая страница по умолчанию
-        /// </summary>
-        private const string DefaultStartPage = "~/View.aspx";
-
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
 
@@ -71,14 +67,14 @@ namespace Scada.Web
 
             if (startPage == "")
             {
-                return DefaultStartPage;
+                return UrlTemplates.DefaultStartPage;
             }
             else
             {
                 int ind = startPage.IndexOf('?');
                 string virtPath = ind >= 0 ? startPage.Substring(0, ind) : startPage;
                 string physPath = Server.MapPath(virtPath);
-                return File.Exists(physPath) ? startPage : DefaultStartPage;
+                return File.Exists(physPath) ? startPage : UrlTemplates.DefaultStartPage;
             }
         }
 

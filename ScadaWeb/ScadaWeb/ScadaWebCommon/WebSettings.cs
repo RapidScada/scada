@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2011
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Client;
@@ -34,8 +34,8 @@ using System.Xml;
 namespace Scada.Web
 {
     /// <summary>
-    /// Web application settings
-    /// <para>Настройки веб-приложения</para>
+    /// Web application settings.
+    /// <para>Настройки веб-приложения.</para>
     /// </summary>
     public class WebSettings : ISettings
     {
@@ -258,6 +258,8 @@ namespace Scada.Web
                             ScriptPaths.CmdScriptPath = path;
                         else if (nameL == "eventackscript")
                             ScriptPaths.EventAckScriptPath = path;
+                        else if (nameL == "userprofile")
+                            ScriptPaths.UserProfilePath = path;
                     }
                 }
 
@@ -341,33 +343,30 @@ namespace Scada.Web
                     "Поделиться обезличенной статистикой с разработчиками", "Share depersonalized stats with the developers");
 
                 // пути к скриптам
-                XmlElement scriptPathsElem = xmlDoc.CreateElement("ScriptPaths");
-                rootElem.AppendChild(scriptPathsElem);
-
-                XmlElement scriptElem = xmlDoc.CreateElement("Script");
+                XmlElement scriptPathsElem = rootElem.AppendElem("ScriptPaths");
+                XmlElement scriptElem = scriptPathsElem.AppendElem("Script");
                 scriptElem.SetAttribute("name", "ChartScript");
                 scriptElem.SetAttribute("path", ScriptPaths.ChartScriptPath);
-                scriptPathsElem.AppendChild(scriptElem);
 
-                scriptElem = xmlDoc.CreateElement("Script");
+                scriptElem = scriptPathsElem.AppendElem("Script");
                 scriptElem.SetAttribute("name", "CmdScript");
                 scriptElem.SetAttribute("path", ScriptPaths.CmdScriptPath);
-                scriptPathsElem.AppendChild(scriptElem);
 
-                scriptElem = xmlDoc.CreateElement("Script");
+                scriptElem = scriptPathsElem.AppendElem("Script");
                 scriptElem.SetAttribute("name", "EventAckScript");
                 scriptElem.SetAttribute("path", ScriptPaths.EventAckScriptPath);
-                scriptPathsElem.AppendChild(scriptElem);
+
+                scriptElem = scriptPathsElem.AppendElem("Script");
+                scriptElem.SetAttribute("name", "UserProfile");
+                scriptElem.SetAttribute("path", ScriptPaths.UserProfilePath);
 
                 // плагины
-                XmlElement pluginsElem = xmlDoc.CreateElement("Plugins");
-                rootElem.AppendChild(pluginsElem);
+                XmlElement pluginsElem = rootElem.AppendElem("Plugins");
 
                 foreach (string pluginFileName in PluginFileNames)
                 {
-                    scriptElem = xmlDoc.CreateElement("Plugin");
+                    scriptElem = pluginsElem.AppendElem("Plugin");
                     scriptElem.SetAttribute("fileName", pluginFileName);
-                    pluginsElem.AppendChild(scriptElem);
                 }
 
                 // custom options
