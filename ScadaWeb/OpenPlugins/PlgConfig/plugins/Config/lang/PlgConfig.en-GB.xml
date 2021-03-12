@@ -46,6 +46,7 @@
     <Phrase key="lblChartScript">Chart plugin</Phrase>
     <Phrase key="lblCmdScript">Command plugin</Phrase>
     <Phrase key="lblEventAckScript">Acknowledgement plugin</Phrase>
+    <Phrase key="lblUserProfile">User profile plugin</Phrase>
     <Phrase key="btnSave">Save Configuration</Phrase>
     <Phrase key="UnknownPlugin">Unknown plugin</Phrase>
     <Phrase key="IncorrectFields">The following fields are incorrect:</Phrase>

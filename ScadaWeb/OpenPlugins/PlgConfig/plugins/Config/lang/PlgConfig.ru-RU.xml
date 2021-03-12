@@ -46,6 +46,7 @@
     <Phrase key="lblChartScript">Плагин графиков</Phrase>
     <Phrase key="lblCmdScript">Плагин команд</Phrase>
     <Phrase key="lblEventAckScript">Плагин квитирования</Phrase>
+    <Phrase key="lblUserProfile">Плагин профиля пользователя</Phrase>
     <Phrase key="btnSave">Сохранить конфигурацию</Phrase>
     <Phrase key="UnknownPlugin">Неизвестный плагин</Phrase>
     <Phrase key="IncorrectFields">Следующие поля некорректны:</Phrase>
