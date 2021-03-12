@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Scada.Data.Configuration;
@@ -437,7 +437,9 @@ namespace Scada.Client
                     DataView viewUser = baseTables.UserTable.DefaultView;
                     viewUser.Sort = "UserID";
                     int rowInd = viewUser.Find(userID);
-                    return rowInd >= 0 ? (string)viewUser[rowInd]["Name"] : "";
+                    return rowInd >= 0 ? 
+                        (string)viewUser[rowInd]["Name"] : 
+                        "[" + userID + "]"; // deleted or external user
                 }
             }
             catch (Exception ex)
