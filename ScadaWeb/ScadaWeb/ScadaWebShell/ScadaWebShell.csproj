@@ -108,10 +108,10 @@
     <Content Include="css\mastermodal.min.css">
       <DependentUpon>mastermodal.css</DependentUpon>
     </Content>
-    <Content Include="css\searchform.css">
+    <Content Include="css\common\searchform.css">
       <DependentUpon>searchform.less</DependentUpon>
     </Content>
-    <Content Include="css\searchform.min.css">
+    <Content Include="css\common\searchform.min.css">
       <DependentUpon>searchform.css</DependentUpon>
     </Content>
     <Content Include="dialogs\Calendar.aspx" />
@@ -229,7 +229,7 @@
     <Content Include="js\controls\splitter.js" />
     <Content Include="js\controls\treeview.js" />
     <Content Include="js\mastermodal.js" />
-    <Content Include="js\searchform.js" />
+    <Content Include="js\common\searchform.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap.css" />
@@ -445,7 +445,7 @@
     <Content Include="css\reports.less" />
     <Content Include="MasterModal.Master" />
     <Content Include="css\mastermodal.less" />
-    <Content Include="css\searchform.less" />
+    <Content Include="css\common\searchform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

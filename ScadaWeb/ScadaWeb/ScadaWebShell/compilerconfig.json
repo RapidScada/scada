@@ -76,7 +76,7 @@
     "inputFile": "css/mastermodal.less"
   },
   {
-    "outputFile": "css/searchform.css",
-    "inputFile": "css/searchform.less"
+    "outputFile": "css/common/searchform.css",
+    "inputFile": "css/common/searchform.less"
   }
 ]
