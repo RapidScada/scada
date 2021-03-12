@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2018
+ * Modified : 2021
  */
 
 using Scada.Data.Models;
@@ -32,15 +32,15 @@ using System.Collections.Generic;
 namespace Scada.Web
 {
     /// <summary>
-    /// Snapshot of application user data
-    /// <para>Снимок данных пользователя приложения</para>
+    /// Snapshot of application user data.
+    /// <para>Снимок данных пользователя приложения.</para>
     /// </summary>
     public class UserShot
     {
         /// <summary>
         /// Конструктор
         /// </summary>
-        public UserShot()
+        protected UserShot()
         {
         }
 
@@ -53,6 +53,7 @@ namespace Scada.Web
             SessionID = source.SessionID;
             LoggedOn = source.LoggedOn;
             LogonDT = source.LogonDT;
+            StartPage = source.StartPage;
             UserProps = source.UserProps;
             UserRights = source.UserRights;
             UserMenu = source.UserMenu;
@@ -85,6 +86,11 @@ namespace Scada.Web
         /// Получить дату и время входа пользователя в систему
         /// </summary>
         public DateTime LogonDT { get; protected set; }
+
+        /// <summary>
+        /// Gets or sets the start page for the current user.
+        /// </summary>
+        public string StartPage { get; set; }
 
         /// <summary>
         /// Получить свойства пользователя
