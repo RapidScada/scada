@@ -11,16 +11,78 @@
 <body>
     <h1>Chart Pro Plugin</h1>
     <h2>Introducción</h2>
-    <p>Chart Pro Plugin es un complemento opcional para la aplicación Webstation. Extiende las capacidades de los gráficos de Rapid SCADA: agrega escalado, muestra múltiples curvas, muestra datos en forma tabular y exporta en formatos PNG y PDF.</p>
+    <p>Chart Pro Plugin es un complemento adicional, opcional, para la aplicación Webstation. Extiende las capacidades de los gráficos de Rapid SCADA: agrega escalado, permite mostrar múltiples curvas y las exporta en formatos PNG y PDF.</p>
 
     <h2>Instalación</h2>
-    <p>Primero debe realizar la <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins</a> (secuencia general de instalación de complementos) y luego realizar varias acciones adicionales:</p>
+    <p>Primero debe realizar la <a href="../installation-and-run/module-installation.html#plugins">the general sequence of installing plugins (secuencia general de instalación de complementos)</a> y luego realizar varias acciones adicionales:</p>
     <ol>
-        <li>Vaya a<em>Main Menu &gt; Registration &gt; Chart Pro</em>.</li>
-        <li>Registre el plugin utilizando los hipervínculos en la página.</li>
+        <li>Vaya a <em>Main Menu &gt; Registration &gt; Chart Pro</em>.</li>
+        <li>Registre el plugin utilizando los hipervínculos que encontrará en la página.</li>
         <li>Vaya a <em>Main Menu &gt; Configuration &gt; Web application</em>.</li>
         <li>Busque el parámetro <em>Chart plugin</em>, seleccione Chart Pro plugin de la lista desplegable y haga clic en el botón <em>Save Configuration</em>.</li>
-        <li>Descargue la configuración de Webstation modificada al proyecto utilizando la aplicación Administrador.</li>
+        <li>Descargue la configuración de Webstation modificada al proyecto utilizando la aplicación Administrator.</li>
     </ol>
+
+    <h2>Configuración</h2>
+    <p>El complemento Chart Pro viene configurado de forma predeterminada. La configuración del complemento está guardada en el archivo PlgChartPro.xml, que se encuentra en el Proyecto en el directorio de configuración de la Webstation. Si es necesario, el administrador del sistema podrá cambiar la configuración editando el archivo existente o creando un nuevo archivo de configuración.</p>
+
+    <p>
+        Además del archivo de configuración, la visualización de las gráficas está determinada por la cadena de consulta. La cadena de consulta tiene la siguiente forma:<br />
+        http://localhost/Scada/plugins/ChartPro/ChartPro.aspx?cnlNums=101&viewIDs=2&year=2020&month=3&day=31&mode=fixed&period=1&title=Test&config=PlgChartPro.xml
+    </p>
+
+    <p>Los parámetros de la cadena de consulta son los siguientes.</p>
+
+    <table class="sd-article-table">
+        <tr>
+            <th>Parámetro</th>
+            <th>Valores</th>
+            <th>Descripción</th>
+        </tr>
+        <tr>
+            <td>cnlNums</td>
+            <td>Enteros separados por coma</td>
+            <td>Números de canales de entrada mostrados en la gráfica</td>
+        </tr>
+        <tr>
+            <td>viewIDs</td>
+            <td>Enteros separados por coma</td>
+            <td>Identificadores de Vista para cada canal de entrada</td>
+        </tr>
+        <tr>
+            <td>year, month, day</td>
+            <td>Enteros</td>
+            <td>Fecha de inicio de los datos mostrados. Si no se les especifica, se usa la fecha actual</td>
+        </tr>
+        <tr>
+            <td>mode</td>
+            <td>fijo | rodante</td>
+            <td>Modo operativo de la gráfica: fija o rodante (continuo)</td>
+        </tr>
+        <tr>
+            <td>period</td>
+            <td>Entero (positivo o negativo)</td>
+            <td>Período de la gráfica en relación a la fecha de inicio. Días para el modo fijo y minutos para el modo rodante (continuo)</td>
+        </tr>
+        <tr>
+            <td>title</td>
+            <td>Cadena. Puede estar vacía</td>
+            <td>Título de la gráfica</td>
+        </tr>
+        <tr>
+            <td>config</td>
+            <td>Cadena. Puede estar vacía</td>
+            <td>Nombre del archivo de configuración de la gráfica en relación con el directorio de configuración de la aplicación Web</td>
+        </tr>
+    </table>
+
+    <p>En el modo fijo, el complemento (plugin) muestra una gráfica durante el período de tiempo seleccionado. Los datos de la gráfica son actualizados automáticamente agregándose los nuevos valores en el lado derecho de la misma.</p>
+
+    <p>En el modo rodante o continuo, el plugin muestra una gráfica desde el momento actual hasta un tiempo especificado. Los datos de la gráfica se actualizan automáticamente, mientras que la gráfica se desplaza de derecha a izquierda.</p>
+
+    <p>La siguiente figura ayuda a comprender el diseño del gráfico para cambiar la configuración del complemento:</p>
+    <p class="sd-article-image">
+        <img src="plg-chart-pro-files/chart_parts.svg" alt="Chart layout" /><br />
+    </p>
 </body>
 </html>
