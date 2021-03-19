@@ -26,6 +26,9 @@
     <Phrase key="mute">Mute</Phrase>
     <Phrase key="emptyNotif">No notifications</Phrase>
   </Dictionary>
+  <Dictionary key="Scada.Web.Js.SearchForm">
+    <Phrase key="deleteRowConfirm">Are you sure to delete the row?</Phrase>
+  </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lblMainNotifBtn.ToolTip">Notifications</Phrase>
     <Phrase key="lbtnMainLogout">Logout</Phrase>

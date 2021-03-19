@@ -1,5 +1,7 @@
 ﻿var scada = scada || {};
 
+scada.searchPhrases = {};
+
 scada.searchForm = {
     // The popup dialogs manipulation object.
     popup: scada.popupLocator.getPopup(),
@@ -87,7 +89,7 @@ scada.searchForm = {
         $(".search-row-del")
             .off("click")
             .on("click", function () {
-                if (!confirm("Are you sure to delete the row?")) {
+                if (!confirm(scada.searchPhrases.deleteRowConfirm)) {
                     return false;
                 }
             });

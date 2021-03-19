@@ -198,10 +198,11 @@ namespace Scada.UI
 
                         if (controlInfo.Items != null)
                         {
+                            int itemCnt = controlInfo.Items.Count;
+
                             if (elem is WinForms.ComboBox comboBox)
                             {
-                                for (int i = 0, cnt = Math.Min(comboBox.Items.Count, controlInfo.Items.Count); 
-                                    i < cnt; i++)
+                                for (int i = 0, cnt = Math.Min(comboBox.Items.Count, itemCnt); i < cnt; i++)
                                 {
                                     string itemText = controlInfo.Items[i];
                                     if (itemText != null)
@@ -210,8 +211,7 @@ namespace Scada.UI
                             }
                             else if (elem is WinForms.ListBox listBox)
                             {
-                                for (int i = 0, cnt = Math.Min(listBox.Items.Count, controlInfo.Items.Count); 
-                                    i < cnt; i++)
+                                for (int i = 0, cnt = Math.Min(listBox.Items.Count, itemCnt); i < cnt; i++)
                                 {
                                     string itemText = controlInfo.Items[i];
                                     if (itemText != null)
@@ -220,8 +220,7 @@ namespace Scada.UI
                             }
                             else if (elem is WinForms.ListView listView)
                             {
-                                for (int i = 0, cnt = Math.Min(listView.Items.Count, controlInfo.Items.Count); 
-                                    i < cnt; i++)
+                                for (int i = 0, cnt = Math.Min(listView.Items.Count, itemCnt); i < cnt; i++)
                                 {
                                     string itemText = controlInfo.Items[i];
                                     if (itemText != null)
@@ -366,12 +365,11 @@ namespace Scada.UI
                         if (controlInfo.Text != null)
                             hiddenField.Value = controlInfo.Text;
                     }
-                    else if (controlInfo.Items != null)
+                    else if (control is GridView gridView)
                     {
-                        // control that may include items
-                        if (control is GridView gridView)
+                        if (controlInfo.Items != null)
                         {
-                            for (int i = 0, cnt = Math.Min(gridView.Columns.Count, controlInfo.Items.Count);
+                            for (int i = 0, cnt = Math.Min(gridView.Columns.Count, controlInfo.Items.Count); 
                                 i < cnt; i++)
                             {
                                 string itemText = controlInfo.Items[i];
