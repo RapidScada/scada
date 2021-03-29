@@ -36,7 +36,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Версия модуля.
         /// </summary>
-        internal const string ModVersion = "5.0.1.2";
+        internal const string ModVersion = "5.0.1.3";
 
 
         /// <summary>
