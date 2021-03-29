@@ -193,7 +193,7 @@
     <Descr>Взаимодействие с контроллерами по спецификации OPC UA</Descr>
   </KPType>
   <KPType>
-    <KPTypeID>231</KPTypeID>
+    <KPTypeID>233</KPTypeID>
     <Name>Enron Modbus</Name>
     <DllFileName>KpEnronModbus.dll</DllFileName>
     <Descr>Реализует Enron Modbus https://www.simplymodbus.ca/Enron.htm</Descr>
