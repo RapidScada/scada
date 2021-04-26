@@ -6,6 +6,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.AppData">
     <Phrase key="ServerUnavailable">Server is unavailable.</Phrase>
+    <Phrase key="UserDisabled">User is disabled.</Phrase>
     <Phrase key="WrongPassword">Incorrect username or password.</Phrase>
     <Phrase key="IllegalRole">Illegal user role.</Phrase>
   </Dictionary>

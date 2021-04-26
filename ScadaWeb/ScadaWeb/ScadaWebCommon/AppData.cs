@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2005
- * Modified : 2018
+ * Modified : 2021
  */
 
 using Scada.Client;
@@ -508,7 +508,7 @@ namespace Scada.Web
                 {
                     if (roleID == BaseValues.Roles.Disabled)
                     {
-                        errMsg = CommonPhrases.NoRights;
+                        errMsg = WebPhrases.UserDisabled;
                         return false;
                     }
                     else if (roleID == BaseValues.Roles.App)
