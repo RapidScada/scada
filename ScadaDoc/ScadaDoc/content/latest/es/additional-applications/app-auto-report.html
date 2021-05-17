@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Aplicación de Informe Automático -  Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Aplicación de Informe Automático</h1>
+
+    <h2>Generalidades</h2>
+
+    <p>La aplicación “Auto Report” (Informe automático) está diseñada para generar varios informes en forma automática, guardarlos en disco y enviarlos por correo electrónico. El horario en que generar los informes se define utilizando el Módulo de Control Automático <a href="../modules/mod-auto-control.html">(Automatic Control Module)</a>. El envío de informes por correo electrónico se realiza mediante el controlador o driver KpEmail.dll correspondiente, que viene incluido  en la instalación estándar de Rapid SCADA.</p>
+
+    <p>Se admiten los siguientes tipos de informes:</p>
+
+    <ul>
+        <li>Informe de datos por horas  (“Hourly data report”);</li>
+        <li>Informe de eventos  (“Event report”);</li>
+        <li>Informe de datos de minutos  (“Minute data report”);</li>
+        <li>Informe elástico  (“Elastic report”).</li>
+    </ul>
+
+    <h2>Algoritmo de trabajo</h2>
+
+    <p>Auto Report funciona como un servicio. Se conecta a la aplicación del servidor <a href="../software-overview/applications/server-application.html">(the Server application)</a> y está siempre listo para recibir comandos. El módulo de Control Automático, que opera como parte del servidor, envía los comandos para ejecutar las tareas necesarias  para generar los informes en un momento específico. Ante un comando, se genera un conjunto de informes y se guardan en disco en un formato de archivos de MS Office. Si se activa la opción correspondiente, la aplicación Auto Report le pasa un comando al servidor para enviar los informes generados por correo electrónico.</p>
+
+    <h2>Instalación</h2>
+
+    <ol>
+        <li>Descomprima el paquete de instalación de la aplicación.</li>
+        <li>Copie todos los archivos de la carpeta SCADA del paquete de instalación al directorio de instalación de Rapid SCADA, lo predeterminado es en C:\SCADA, reteniendo la jerarquía de directorios.</li>
+        <li>Ejecute el archivo ScadaAutoReport\svc_install.bat como administrador para registrar el servicio.</li>
+        <li>Ejecute el archivo ScadaAutoReport\svc_start.bat como administrador para ejecutar el servicio.</li>
+        <li>Abra la aplicación ScadaAutoReport\ScadaAutoReportConfig.exe y vaya a la pestaña <em>Registration</em>  para registrar la aplicación.</li>
+    </ol>
+
+    <h2>Configuración</h2>
+
+    <p>La configuración de Auto Report se almacena en el archivo C:\SCADA\ScadaAutoReport\Config\ScadaAutoReportConfig.xml. Para editarla se usa la aplicación ScadaAutoReportConfig.exe. La interfaz de usuario correspondiente se muestra en las siguientes figuras:</p>
+
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_general_en.png" alt="General options of Auto Report" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_tasks_en.png" alt="Task options of Auto Report" /></p>
+
+    <p>Para que el Informe Automático funcione, es necesario realizar ciertas configuraciones en el proyecto:</p>
+
+    <ol>
+        <li>Cree una línea de comunicación, un dispositivo y un canal de salida para enviar informes por correo electrónico a los destinatarios especificados.</li>
+        <li>Cree un dispositivo y un canal de salida para enviar y recibir comandos para generar informes.</li>
+        <li>Agregue un nuevo usuario, que se utilizará para conectar la aplicación al Servidor.</li>
+        <li>Configure el Módulo de Control Automático para enviar comandos según un horario.</li>
+        <li>Configure el envío de correo electrónico en Communicator.</li>
+    </ol>
+
+    <p>Las siguientes figuras muestran las acciones 1, 2 y 3:</p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_lines_en.png" alt="Communication lines" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_devices_en.png" alt="Devices" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_out_cnls_en.png" alt="Output channels" /></p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_users_en.png" alt="Users" /></p>
+
+    <p>Abajo, se muestra la configuración del Módulo de Control Automático:</p>
+    <p class="sd-article-image"><img src="auto-report-files/auto_report_module_en.png" alt="Automatic control module" /></p>
+
+    <p>En el proyecto DemoProject.en-GB.rsproj se incluye un ejemplo de la configuración de Communicator  para enviar correos electrónicos (ítem 5). La siguiente figura muestra las propiedades del dispositivo:</p>
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_email_en.png" alt="Email settings" /></p>
+
+    <h2>Operación</h2>
+
+    <p>Después de completar la configuración o cambiar la configuración existente, reinicie el servicio Auto Report. Para hacerlo, ejecute el archivo ScadaAutoReport\svc_restart.bat como administrador. El nombre del servicio es ScadaAutoReportService.</p>
+
+    <p>Para verificar, ejecute la tarea de generar un informe mediante la aplicación <a href="../software-overview/applications/administrator-application.html">the Administrator application</a>. Abra el formulario <em>Generador</em> y envíe un comando estándar, especificando el canal de control que se encarga de generar informes. En este ejemplo, el número del canal de salida es 201. Utilice el ID de tarea como valor del comando. Luego verifique los archivos de registro ubicados en el directorio C:\SCADA\ScadaAutoReport\Log\</p>
+
+    <p class="sd-article-image"><img src="app-auto-report-files/auto_report_cmd_en.png" alt="Telecontrol command" /></p>
+
+    <p>Si la aplicación funciona bien, los informes generados se aparecerán en el directorio especificado en opciones generales, por defecto C:\SCADA\Reports\</p>
+</body>
+</html>

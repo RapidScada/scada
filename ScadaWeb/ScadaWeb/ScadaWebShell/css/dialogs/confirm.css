@@ -14,6 +14,12 @@ table {
 label {
   font-weight: 600;
 }
+.checkbox {
+  margin-top: 0px;
+}
+.form-group .btn + .btn {
+  margin-left: 5px;
+}
 body {
   font-size: 14px;
 }

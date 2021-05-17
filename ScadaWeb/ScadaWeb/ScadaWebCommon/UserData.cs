@@ -70,6 +70,7 @@ namespace Scada.Web
         {
             LoggedOn = false;
             LogonDT = DateTime.MinValue;
+            StartPage = "";
             UserProps = null;
             UserRights = null;
             UserMenu = null;
@@ -189,6 +190,7 @@ namespace Scada.Web
                 UserRights = userRights;
 
                 AppData.UserMonitor.AddUser(this);
+                StartPage = AppData.WebSettings.StartPage; // set start page by default
                 UpdateAppDataRefs();
                 RaiseOnUserLogin();
 

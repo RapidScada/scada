@@ -236,7 +236,7 @@ namespace Scada.Comm.Devices.Modbus.Protocol
                             foreach (Elem elem in elemGroup.Elems)
                             {
                                 if (elem.ByteOrder == null)
-                                    elem.ByteOrder = Sett.GetDefByteOrder(elem.Length);
+                                    elem.ByteOrder = Sett.GetDefByteOrder(elem.Quantity);
                             }
                         }
 

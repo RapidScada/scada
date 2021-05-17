@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2020 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2020
  */
 
 using Scada.Comm.Devices.AB;
@@ -32,28 +32,37 @@ using System.Windows.Forms;
 namespace Scada.Comm.Devices.KpEmail
 {
     /// <summary>
-    /// Device properties form
-    /// <para>Форма настройки свойств КП</para>
+    /// Device properties form.
+    /// <para>Форма настройки свойств КП.</para>
     /// </summary>
     public partial class FrmConfig : Form
     {
-        private AppDirs appDirs;       // директории приложения
-        private int kpNum;             // номер настраиваемого КП
-        private KpConfig config;         // конфигурация КП
-        private string configFileName; // имя файла конфигурации КП
+        private readonly AppDirs appDirs; // директории приложения
+        private readonly int kpNum;       // номер настраиваемого КП
+        private readonly KpConfig config; // конфигурация КП
+        private string configFileName;    // имя файла конфигурации КП
+        private string prevUser;          // the previous user name
 
 
         /// <summary>
-        /// Конструктор, ограничивающий создание формы без параметров
+        /// Initializes a new instance of the class.
         /// </summary>
         private FrmConfig()
         {
             InitializeComponent();
+        }
 
-            appDirs = null;
-            kpNum = 0;
+        /// <summary>
+        /// Initializes a new instance of the class.
+        /// </summary>
+        private FrmConfig(AppDirs appDirs, int kpNum)
+            : this()
+        {
             config = new KpConfig();
+            this.appDirs = appDirs ?? throw new ArgumentNullException("appDirs");
+            this.kpNum = kpNum;
             configFileName = "";
+            prevUser = "";
         }
 
 
@@ -66,8 +75,9 @@ namespace Scada.Comm.Devices.KpEmail
             numPort.SetValue(config.Port);
             txtUser.Text = config.User;
             txtPassword.Text = config.Password;
-            txtUserDisplayName.Text = config.UserDisplayName;
             chkEnableSsl.Checked = config.EnableSsl;
+            txtSenderAddress.Text = config.SenderAddress;
+            txtSenderDisplayName.Text = config.SenderDisplayName;
         }
 
         /// <summary>
@@ -79,8 +89,9 @@ namespace Scada.Comm.Devices.KpEmail
             config.Port = Convert.ToInt32(numPort.Value);
             config.User = txtUser.Text;
             config.Password = txtPassword.Text;
-            config.UserDisplayName = txtUserDisplayName.Text;
             config.EnableSsl = chkEnableSsl.Checked;
+            config.SenderAddress = txtSenderAddress.Text;
+            config.SenderDisplayName = txtSenderDisplayName.Text;
         }
 
 
@@ -89,37 +100,27 @@ namespace Scada.Comm.Devices.KpEmail
         /// </summary>
         public static void ShowDialog(AppDirs appDirs, int kpNum)
         {
-            if (appDirs == null)
-                throw new ArgumentNullException("appDirs");
-
-            FrmConfig frmConfig = new FrmConfig();
-            frmConfig.appDirs = appDirs;
-            frmConfig.kpNum = kpNum;
-            frmConfig.ShowDialog();
+            new FrmConfig(appDirs, kpNum).ShowDialog();
         }
 
 
         private void FrmConfig_Load(object sender, EventArgs e)
         {
-            // локализация модуля
-            string errMsg;
-            if (!Localization.UseRussian)
-            {
-                if (Localization.LoadDictionaries(appDirs.LangDir, "KpEmail", out errMsg))
-                    Translator.TranslateForm(this, "Scada.Comm.Devices.KpEmail.FrmConfig");
-                else
-                    ScadaUiUtils.ShowError(errMsg);
-            }
+            // translate the form
+            if (Localization.LoadDictionaries(appDirs.LangDir, "KpEmail", out string errMsg))
+                Translator.TranslateForm(this, GetType().FullName);
+            else
+                ScadaUiUtils.ShowError(errMsg);
 
-            // вывод заголовка
             Text = string.Format(Text, kpNum);
 
-            // загрузка конфигурации КП
+            // load a configuration
             configFileName = KpConfig.GetFileName(appDirs.ConfigDir, kpNum);
+
             if (File.Exists(configFileName) && !config.Load(configFileName, out errMsg))
                 ScadaUiUtils.ShowError(errMsg);
 
-            // вывод конфигурации КП
+            // display the configuration
             ConfigToControls();
         }
 
@@ -135,11 +136,18 @@ namespace Scada.Comm.Devices.KpEmail
             ControlsToConfig();
 
             // сохранение конфигурации КП
-            string errMsg;
-            if (config.Save(configFileName, out errMsg))
+            if (config.Save(configFileName, out string errMsg))
                 DialogResult = DialogResult.OK;
             else
                 ScadaUiUtils.ShowError(errMsg);
+        }
+
+        private void txtUser_TextChanged(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtSenderAddress.Text) || txtSenderAddress.Text == prevUser)
+                txtSenderAddress.Text = txtUser.Text;
+
+            prevUser = txtUser.Text;
         }
     }
 }

@@ -192,4 +192,10 @@
     <DllFileName>KpOpcUa.dll</DllFileName>
     <Descr>Interacting with controllers using OPC UA specification</Descr>
   </KPType>
+  <KPType>
+    <KPTypeID>233</KPTypeID>
+    <Name>Enron Modbus</Name>
+    <DllFileName>KpEnronModbus.dll</DllFileName>
+    <Descr>Implements Enron Modbus https://www.simplymodbus.ca/Enron.htm</Descr>
+  </KPType>
 </ArrayOfKPType>

@@ -38,7 +38,7 @@ namespace Scada.Admin
         /// <summary>
         /// Version of Administrator.
         /// </summary>
-        public const string AppVersion = "5.5.2.1";
+        public const string AppVersion = "5.5.2.2";
         /// <summary>
         /// Extension of a project file.
         /// </summary>

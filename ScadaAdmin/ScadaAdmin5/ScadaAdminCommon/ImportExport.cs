@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2018
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Scada.Admin.Deployment;
@@ -513,20 +513,20 @@ namespace Scada.Admin
                 int itemID = srcTable.GetPkValue(item);
                 if (srcStartID <= itemID && itemID <= srcEndID)
                 {
-                    if (shiftID > 0)
+                    if (shiftID == 0)
+                    {
+                        baseTable.AddObject(item);
+                        affectedRows++;
+                    }
+                    else
                     {
                         int newItemID = itemID + shiftID;
-                        if (newItemID <= AdminUtils.MaxCnlNum)
+                        if (1 <= newItemID && newItemID <= AdminUtils.MaxCnlNum)
                         {
                             srcTable.SetPkValue(item, newItemID);
                             baseTable.AddObject(item);
                             affectedRows++;
                         }
-                    }
-                    else
-                    {
-                        baseTable.AddObject(item);
-                        affectedRows++;
                     }
                 }
                 else if (itemID > srcEndID)

@@ -1,0 +1,52 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Controlador de Modbus esclavo - Documentación de Rapid SCADA</title>
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
+</head>
+<body>
+    <h1>Controlador de Modbus esclavo</h1>
+    <h2>Generalidades</h2>
+    <p>El controlador (driver) admite el <a href="https://en.wikipedia.org/wiki/Modbus" target="_blank">protocolo estándar de comunicación Modbus (Modbus communication protocol)</a> trabajando como esclavo. Usando este controlador, el Communicator espera solicitudes entrantes y comandos de un dispositivo o de una aplicación de terceros que trabaje como maestro. Se admiten los siguientes canales de comunicación: puerto serie, servidor TCP y UDP. El controlador puede funcionar en modo Modbus RTU o Modbus TCP.</p>
+
+    <p>Características del Modbus Slave Driver:</p>
+    <ol>
+        <li>Recibe datos de un dispositivo mediante comandos de escritura.</li>
+        <li>Proporciona datos a un dispositivo en respuesta a comandos de lectura.</li>
+        <li>Transmite valores de los canales de entrada de Rapid SCADA recibidos de otros dispositivos a fin de integrarlos con los sistemas de terceros.</li>
+    </ol>
+
+    <h2>Instalación</h2>
+    <p>El Modbus Slave Driver se instala de acuerdo con la secuencia general de instalación de controladores de Communicator <a href="../installation-and-run/module-installation.html#drivers">(the general sequence of installing Communicator drivers)</a>. El archivo en la librería de controladores es KpModbusSlave.dll.</p>
+
+    <h2>Configuración</h2>
+    <p>En primer lugar, cree una nueva línea de comunicación y un nuevo dispositivo en la base de datos de configuración, así como en la configuración del Communicator. Para este propósito, se recomienda utilizar los asistentes que se abren con los botones <img src="../../common-images/add_line.png" /> y <img src="../../common-images/add_device.png" />. La dirección del dispositivo es importante, porque es la ID del elemento que Communicator reconoce para responderle. Luego abra los parámetros principales de la línea de comunicación, seleccione el tipo de canal de comunicación y configure sus propiedades. A continuación se muestran ejemplos de propiedades del canal de comunicación:</p>
+
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/serial_port_en.png" alt="Serial port properties" /><br />
+    </p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/tcp_server_en.png" alt="TCP server properties" /><br />
+    </p>
+
+    <p>Después de crear un dispositivo en Communicator, abra el formulario de propiedades del dispositivo y configure el dispositivo.</p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/device_props_en.png" alt="Modbus Slave device properties" /><br />
+    </p>
+
+    <p>El período de validez de los datos de entrada <em>(Input data validity period)</em> permite establecer automáticamente el estado hasta entonces indefinido, de las etiquetas de entrada del dispositivo cuando no se reciben datos nuevos del dispositivo dentro de un tiempo especificado.</p>
+    <p>La plantilla de dispositivo <em>(Device template)</em> define el mapa de registros Modbus. Las plantillas de dispositivo de los controladores KpModbus.dll y KpModbusSlave.dll son totalmente compatibles.</p>
+    <p>El dispositivo de origen de los datos <em>(Data source device)</em> se establece en un valor distinto de cero, para transmitir los valores de los canales de entrada recibidos desde otro dispositivo hacia un sistema de terceros. Si el controlador se utiliza para interactuar con un dispositivo real, el parámetro debe ser 0.</p>
+
+    <p>La siguiente figura muestra el editor de plantillas Modbus:</p>
+    <p class="sd-article-image">
+        <img src="kp-modbus-slave-files/template_editor_en.png" alt="Modbus template editor" /><br />
+    </p>
+
+    <p>El Modbus Slave Driver requiere ser registrado. Después de completar la configuración, suba el proyecto al Servidor usando el botón <img src="../../common-images/upload.png" />. Luego abra la página de Controladores <em>(Drivers)</em> en la aplicación Administrator, seleccione el controlador KpModbusSlave.dll, abra el formulario de sus propiedades y regístrelo. Después del registro, vuelva a subir el proyecto al Servidor.</p>
+</body>
+</html>

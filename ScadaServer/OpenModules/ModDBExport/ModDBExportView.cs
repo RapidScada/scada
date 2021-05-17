@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Server.Modules.DBExport;
@@ -36,7 +36,7 @@ namespace Scada.Server.Modules
         /// <summary>
         /// Версия модуля.
         /// </summary>
-        internal const string ModVersion = "5.0.1.1";
+        internal const string ModVersion = "5.0.1.3";
 
 
         /// <summary>

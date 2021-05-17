@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,10 +20,11 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.UI;
+using Scada.Web.Shell;
 using System;
 using System.IO;
 using System.Web;
@@ -31,16 +32,11 @@ using System.Web;
 namespace Scada.Web
 {
     /// <summary>
-    /// Login web form
-    /// <para>Веб-форма входа в систему</para>
+    /// Login web form.
+    /// <para>Веб-форма входа в систему.</para>
     /// </summary>
     public partial class WFrmLogin : System.Web.UI.Page
     {
-        /// <summary>
-        /// Стартовая страница по умолчанию
-        /// </summary>
-        private const string DefaultStartPage = "~/View.aspx";
-
         private AppData appData;   // общие данные веб-приложения
         private UserData userData; // данные пользователя приложения
 
@@ -71,14 +67,14 @@ namespace Scada.Web
 
             if (startPage == "")
             {
-                return DefaultStartPage;
+                return UrlTemplates.DefaultStartPage;
             }
             else
             {
                 int ind = startPage.IndexOf('?');
                 string virtPath = ind >= 0 ? startPage.Substring(0, ind) : startPage;
                 string physPath = Server.MapPath(virtPath);
-                return File.Exists(physPath) ? startPage : DefaultStartPage;
+                return File.Exists(physPath) ? startPage : UrlTemplates.DefaultStartPage;
             }
         }
 
@@ -89,7 +85,7 @@ namespace Scada.Web
         {
             string returnUrl = Request.QueryString["return"];
             Response.Redirect(string.IsNullOrEmpty(returnUrl) ?
-                GetStartPageUrl(userData.WebSettings.StartPage) :
+                GetStartPageUrl(userData.StartPage) :
                 returnUrl);
         }
 

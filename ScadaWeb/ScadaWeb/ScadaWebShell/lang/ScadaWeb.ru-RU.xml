@@ -6,6 +6,7 @@
   </Dictionary>
   <Dictionary key="Scada.Web.AppData">
     <Phrase key="ServerUnavailable">Сервер недоступен.</Phrase>
+    <Phrase key="UserDisabled">Пользователь отключен.</Phrase>
     <Phrase key="WrongPassword">Неверное имя пользователя или пароль.</Phrase>
     <Phrase key="IllegalRole">Недопустимая роль пользователя.</Phrase>
   </Dictionary>
@@ -25,6 +26,9 @@
     <Phrase key="unmute">Включить звук</Phrase>
     <Phrase key="mute">Отключить звук</Phrase>
     <Phrase key="emptyNotif">Уведомлений нет</Phrase>
+  </Dictionary>
+  <Dictionary key="Scada.Web.Js.SearchForm">
+    <Phrase key="deleteRowConfirm">Вы уверены, что хотите удалить строку?</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.MasterMain">
     <Phrase key="lblMainNotifBtn.ToolTip">Уведомления</Phrase>

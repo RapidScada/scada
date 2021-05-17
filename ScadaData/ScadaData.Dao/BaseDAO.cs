@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2018
+ * Modified : 2021
  */
 
 using System;
@@ -45,6 +45,22 @@ namespace Scada.Dao
         public BaseDAO()
         {
             selectedCount = 0;
+        }
+
+
+        /// <summary>
+        /// Gets the number of records selected as a result of the last request.
+        /// </summary>
+        public int SelectedCount
+        {
+            get
+            {
+                return selectedCount;
+            }
+            protected set 
+            {
+                selectedCount = value;
+            }
         }
 
 

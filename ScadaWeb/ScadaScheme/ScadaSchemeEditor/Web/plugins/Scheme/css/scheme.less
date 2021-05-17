@@ -1,15 +1,27 @@
 ﻿@scheme-back-color: #f1f1f1;
 @scheme-font-family: Verdana, Geneva, Tahoma, sans-serif;
+@cmd-frame-back-color: white;
+@cmd-frame-border-color: #999;
 
 .scheme-wrapper {
     overflow: auto;
+    position: relative; /*affects scrolling and scaling*/
+}
+
+.wait() {
+    background-image: url('../images/loading.gif');
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .scheme-wrapper.loading {
-    background-image: url('../images/loading.gif');
+    .wait();
     background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
+}
+
+.scheme {
+    position: absolute; /*affects scaling*/
+    transform-origin: left top; /*affects scaling*/
 }
 
 .scheme .comp {
@@ -19,4 +31,18 @@
 
 .scheme .comp.action {
     cursor: pointer;
+}
+
+.scheme .cmd-frame {
+    .wait();
+    width: 100px;
+    height: 50px;
+    left: 50%;
+    top: 50%;
+    position: fixed;
+    transform: translate(-50%, -50%);
+    background-color: @cmd-frame-back-color;
+    background-size: 40px 40px;
+    border: 1px solid @cmd-frame-border-color;
+    border-radius: 6px;
 }

@@ -65,7 +65,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                return ModbusUtils.GetAddressRange(Address, Elem.Length, Settings.ZeroAddr, Settings.DecAddr);
+                return ModbusUtils.GetAddressRange(Address, Elem.Quantity, Settings.ZeroAddr, Settings.DecAddr);
             }
         }
 

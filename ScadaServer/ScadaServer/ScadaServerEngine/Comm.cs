@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2013
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Scada.Data.Configuration;
@@ -247,6 +247,16 @@ namespace Scada.Server.Engine
             }
         }
 
+        /// <summary>
+        /// Команда ТУ и связанная с ней информация для последующей обработки.
+        /// </summary>
+        private class CmdItem
+        {
+            public int CtrlCnlNum { get; set; } 
+            public Command Cmd { get; set; }
+            public int UserID { get; set; }
+        }
+
 
         /// <summary>
         /// Таймаут отправки данных по TCP, мс
@@ -285,24 +295,19 @@ namespace Scada.Server.Engine
         /// </summary>
         private readonly string[] CmdDescrs;
 
-        private MainLogic mainLogic;      // ссылка на объект основной логики приложения
-        private Log appLog;               // журнал приложения
-        private Settings settings;        // настройки приложения
+        private readonly MainLogic mainLogic;      // ссылка на объект основной логики приложения
+        private readonly Log appLog;               // журнал приложения
+        private readonly Settings settings;        // настройки приложения
+        private readonly byte[] inBuf;             // буфер принимаемых данных
+        private readonly byte[] outBuf;            // буфер передаваемых данных
+        private readonly List<Command> cmdBuf;     // буфер команд ТУ для передачи подключенным клиентам
+        private readonly Queue<CmdItem> cmdQue;    // очередь команд для обработки
+        private readonly List<ClientInfo> clients; // информация о подключенных клиентах
+
         private Thread thread;            // поток взаимодействия с клиентами
         private volatile bool terminated; // работа потока прервана
         private TcpListener tcpListener;  // прослушиватель TCP-соединений
-        private List<ClientInfo> clients; // информация о подключенных клиентах
-        private byte[] inBuf;             // буфер принимаемых данных
-        private byte[] outBuf;            // буфер передаваемых данных
-        private List<Command> cmdBuf;     // буфер команд ТУ для передачи подключенным клиентам
 
-
-        /// <summary>
-        /// Конструктор
-        /// </summary>
-        private Comm()
-        {
-        }
 
         /// <summary>
         /// Конструктор
@@ -320,13 +325,15 @@ namespace Scada.Server.Engine
             this.mainLogic = mainLogic ?? throw new ArgumentNullException("mainLogic");
             appLog = mainLogic.AppLog ?? throw new ArgumentNullException("mainLogic.AppLog");
             settings = mainLogic.Settings ?? throw new ArgumentNullException("mainLogic.Settings");
-            thread = null;
-            terminated = false;
-            tcpListener = null;
-            clients = new List<ClientInfo>();
             inBuf = new byte[InBufLenght];
             outBuf = new byte[OutBufLenght];
             cmdBuf = new List<Command>();
+            cmdQue = new Queue<CmdItem>();
+            clients = new List<ClientInfo>();
+
+            thread = null;
+            terminated = false;
+            tcpListener = null;
         }
 
 
@@ -492,6 +499,9 @@ namespace Scada.Server.Engine
                             clientInd++;
                         }
                     }
+
+                    // передача команд ТУ на обработку
+                    ProcCommands();
 
                     // передача команд ТУ подключенным клиентам
                     lock (cmdBuf)
@@ -1130,6 +1140,68 @@ namespace Scada.Server.Engine
             }
         }
 
+        /// <summary>
+        /// Отправить команды ТУ из очереди на обработку.
+        /// </summary>
+        private void ProcCommands()
+        {
+            while (true)
+            {
+                CmdItem cmdItem;
+
+                lock (cmdQue)
+                {
+                    if (cmdQue.Count > 0)
+                        cmdItem = cmdQue.Dequeue();
+                    else
+                        break;
+                }
+
+                DoSendCommand(cmdItem.CtrlCnlNum, cmdItem.Cmd, cmdItem.UserID);
+            }
+        }
+
+        /// <summary>
+        /// Непосредственно отправить команду ТУ на обработку.
+        /// </summary>
+        private void DoSendCommand(int ctrlCnlNum, Command cmd, int userID)
+        {
+            MainLogic.CtrlCnl ctrlCnl = mainLogic.GetCtrlCnl(ctrlCnlNum);
+
+            if (ctrlCnl == null)
+            {
+                appLog.WriteAction(string.Format(Localization.UseRussian ?
+                    "Команда ТУ на несуществующий канал упр. {0}, ид. польз. = {1}" :
+                    "Command to nonexistent out channel {0}, user ID = {1}",
+                    ctrlCnlNum, userID));
+            }
+            else
+            {
+                appLog.WriteAction(string.Format(Localization.UseRussian ?
+                    "Команда ТУ: канал упр. = {0}, ид. польз. = {1}" :
+                    "Command: out channel = {0}, user ID = {1}",
+                    ctrlCnlNum, userID));
+
+                // заполнение свойств команды ТУ
+                FillCommandProps(cmd, ctrlCnl);
+
+                // обработка команды ТУ
+                mainLogic.ProcCommand(ctrlCnl, cmd, userID, out bool passToClients);
+
+                if (passToClients)
+                {
+                    // передача команды ТУ подключенным клиентам
+                    PassCommand(cmd);
+                }
+                else if (cmd.CmdNum > 0)
+                {
+                    appLog.WriteAction(Localization.UseRussian ?
+                        "Команда ТУ отменена" :
+                        "Command is canceled");
+                }
+            }
+        }
+
 
         /// <summary>
         /// Запустить взаимодействие с клиентами
@@ -1273,39 +1345,14 @@ namespace Scada.Server.Engine
             if (cmd == null)
                 throw new ArgumentNullException("cmd");
 
-            MainLogic.CtrlCnl ctrlCnl = mainLogic.GetCtrlCnl(ctrlCnlNum);
-
-            if (ctrlCnl == null)
+            lock (cmdQue)
             {
-                appLog.WriteAction(string.Format(Localization.UseRussian ?
-                    "Команда ТУ на несуществующий канал упр. {0}, ид. польз. = {1}" :
-                    "Command to nonexistent out channel {0}, user ID = {1}",
-                    ctrlCnlNum, userID));
-            }
-            else
-            {
-                appLog.WriteAction(string.Format(Localization.UseRussian ?
-                    "Команда ТУ: канал упр. = {0}, ид. польз. = {1}" :
-                    "Command: out channel = {0}, user ID = {1}",
-                    ctrlCnlNum, userID));
-
-                // заполнение свойств команды ТУ
-                FillCommandProps(cmd, ctrlCnl);
-
-                // обработка команды ТУ
-                mainLogic.ProcCommand(ctrlCnl, cmd, userID, out bool passToClients);
-
-                if (passToClients)
+                cmdQue.Enqueue(new CmdItem
                 {
-                    // передача команды ТУ подключенным клиентам
-                    PassCommand(cmd);
-                }
-                else if (cmd.CmdNum > 0)
-                {
-                    appLog.WriteAction(Localization.UseRussian ?
-                        "Команда ТУ отменена" :
-                        "Command is canceled");
-                }
+                    CtrlCnlNum = ctrlCnlNum,
+                    Cmd = cmd,
+                    UserID = userID
+                });
             }
         }
 

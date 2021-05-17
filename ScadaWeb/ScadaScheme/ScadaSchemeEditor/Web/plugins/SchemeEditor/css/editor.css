@@ -1,11 +1,19 @@
 ﻿.scheme-wrapper {
   overflow: auto;
+  position: relative;
+  /*affects scrolling and scaling*/
 }
 .scheme-wrapper.loading {
   background-image: url('../../Scheme/images/loading.gif');
-  background-attachment: fixed;
   background-position: center;
   background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+.scheme {
+  position: absolute;
+  /*affects scaling*/
+  transform-origin: left top;
+  /*affects scaling*/
 }
 .scheme .comp {
   box-sizing: border-box;
@@ -13,6 +21,21 @@
 }
 .scheme .comp.action {
   cursor: pointer;
+}
+.scheme .cmd-frame {
+  background-image: url('../../Scheme/images/loading.gif');
+  background-position: center;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 50px;
+  left: 50%;
+  top: 50%;
+  position: fixed;
+  transform: translate(-50%, -50%);
+  background-color: white;
+  background-size: 40px 40px;
+  border: 1px solid #999;
+  border-radius: 6px;
 }
 body {
   margin: 0;

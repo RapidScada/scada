@@ -102,6 +102,18 @@
     <Content Include="css\dialogs\confirm.min.css">
       <DependentUpon>confirm.css</DependentUpon>
     </Content>
+    <Content Include="css\mastermodal.css">
+      <DependentUpon>mastermodal.less</DependentUpon>
+    </Content>
+    <Content Include="css\mastermodal.min.css">
+      <DependentUpon>mastermodal.css</DependentUpon>
+    </Content>
+    <Content Include="css\common\searchform.css">
+      <DependentUpon>searchform.less</DependentUpon>
+    </Content>
+    <Content Include="css\common\searchform.min.css">
+      <DependentUpon>searchform.css</DependentUpon>
+    </Content>
     <Content Include="dialogs\Calendar.aspx" />
     <Content Include="config\ViewSettings.xml" />
     <Content Include="config\WebSettings.xml" />
@@ -216,6 +228,8 @@
     <Content Include="js\api\eventtypes.js" />
     <Content Include="js\controls\splitter.js" />
     <Content Include="js\controls\treeview.js" />
+    <Content Include="js\mastermodal.js" />
+    <Content Include="js\common\searchform.js" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.css" />
     <Content Include="lib\bootstrap\css\bootstrap-theme.min.css" />
     <Content Include="lib\bootstrap\css\bootstrap.css" />
@@ -303,6 +317,13 @@
     </Compile>
     <Compile Include="MasterMain.Master.designer.cs">
       <DependentUpon>MasterMain.Master</DependentUpon>
+    </Compile>
+    <Compile Include="MasterModal.Master.cs">
+      <DependentUpon>MasterModal.Master</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="MasterModal.Master.designer.cs">
+      <DependentUpon>MasterModal.Master</DependentUpon>
     </Compile>
     <Compile Include="NoView.aspx.cs">
       <DependentUpon>NoView.aspx</DependentUpon>
@@ -422,6 +443,9 @@
     <Content Include="css\noview.less" />
     <Content Include="css\user.less" />
     <Content Include="css\reports.less" />
+    <Content Include="MasterModal.Master" />
+    <Content Include="css\mastermodal.less" />
+    <Content Include="css\common\searchform.less" />
     <None Include="Properties\PublishProfiles\MainProfile.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

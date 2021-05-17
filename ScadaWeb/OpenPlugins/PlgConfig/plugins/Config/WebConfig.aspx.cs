@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2016 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2016
+ * Modified : 2021
  */
 
 using Scada.Client;
@@ -28,13 +28,14 @@ using Scada.UI;
 using Scada.Web.Shell;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Web.UI.WebControls;
 
 namespace Scada.Web.Plugins.Config
 {
     /// <summary>
-    /// Web application configuration web form
-    /// <para>Веб-форма конфигурации веб-приложения</para>
+    /// Web application configuration web form.
+    /// <para>Веб-форма конфигурации веб-приложения.</para>
     /// </summary>
     public partial class WFrmWebConfig : System.Web.UI.Page
     {
@@ -48,9 +49,9 @@ namespace Scada.Web.Plugins.Config
         private void LoadSettings()
         {
             WebSettings webSettings = new WebSettings();
-            string errMsg;
 
-            if (!webSettings.LoadFromFile(appData.AppDirs.ConfigDir + WebSettings.DefFileName, out errMsg))
+            if (!webSettings.LoadFromFile(Path.Combine(appData.AppDirs.ConfigDir, WebSettings.DefFileName), 
+                out string errMsg))
             {
                 appData.Log.WriteError(errMsg);
                 pnlErrMsg.ShowAlert(errMsg);
@@ -66,10 +67,9 @@ namespace Scada.Web.Plugins.Config
         {
             // загрузка актуальных настроек
             WebSettings webSettings = new WebSettings();
-            string errMsg;
-            string fileName = appData.AppDirs.ConfigDir + WebSettings.DefFileName;
+            string fileName = Path.Combine(appData.AppDirs.ConfigDir, WebSettings.DefFileName);
 
-            if (!webSettings.LoadFromFile(fileName, out errMsg))
+            if (!webSettings.LoadFromFile(fileName, out string errMsg))
                 appData.Log.WriteError(errMsg);
 
             // проверка и сохранение настроек
@@ -121,17 +121,21 @@ namespace Scada.Web.Plugins.Config
             ddlChartScript.Items.Clear();
             ddlCmdScript.Items.Clear();
             ddlEventAckScript.Items.Clear();
+            ddlUserProfile.Items.Clear();
 
             ddlChartScript.Items.Add("");
             ddlCmdScript.Items.Add("");
             ddlEventAckScript.Items.Add("");
+            ddlUserProfile.Items.Add("");
 
             string curChartScriptPath = webSettings.ScriptPaths.ChartScriptPath;
             string curCmdScriptPath = webSettings.ScriptPaths.CmdScriptPath;
             string curEventAckScriptPath = webSettings.ScriptPaths.EventAckScriptPath;
+            string curUserProfilePath = webSettings.ScriptPaths.UserProfilePath;
             int chartScriptInd = 0;
             int cmdScriptInd = 0;
             int eventAckScriptInd = 0;
+            int userProfileInd = 0;
 
             foreach (PluginSpec pluginSpec in userData.PluginSpecs)
             {
@@ -161,6 +165,14 @@ namespace Scada.Web.Plugins.Config
                         if (string.Equals(curEventAckScriptPath, scriptPaths.EventAckScriptPath, 
                             StringComparison.OrdinalIgnoreCase))
                             eventAckScriptInd = ddlEventAckScript.Items.Count - 1;
+                    }
+
+                    if (!string.IsNullOrEmpty(scriptPaths.UserProfilePath))
+                    {
+                        ddlUserProfile.Items.Add(new ListItem(pluginSpec.Name, scriptPaths.UserProfilePath));
+                        if (string.Equals(curUserProfilePath, scriptPaths.UserProfilePath,
+                            StringComparison.OrdinalIgnoreCase))
+                            userProfileInd = ddlUserProfile.Items.Count - 1;
                     }
                 }
             }
@@ -195,6 +207,16 @@ namespace Scada.Web.Plugins.Config
                 ddlEventAckScript.Items.Add(new ListItem(PlgPhrases.UnknownPlugin, curEventAckScriptPath));
                 ddlEventAckScript.SelectedIndex = ddlEventAckScript.Items.Count - 1;
             }
+
+            if (userProfileInd > 0 || string.IsNullOrEmpty(curUserProfilePath))
+            {
+                ddlUserProfile.SelectedIndex = userProfileInd;
+            }
+            else
+            {
+                ddlUserProfile.Items.Add(new ListItem(PlgPhrases.UnknownPlugin, curUserProfilePath));
+                ddlUserProfile.SelectedIndex = ddlUserProfile.Items.Count - 1;
+            }
         }
 
         /// <summary>
@@ -205,9 +227,8 @@ namespace Scada.Web.Plugins.Config
             // проверка текстовых полей и установка числовых настроек
             CommSettings commSettings = webSettings.CommSettings;
             List<string> errFields = new List<string>();
-            int val;
 
-            if (ValidateIntField(pnlServerPort, lblServerPort, txtServerPort, errFields, out val))
+            if (ValidateIntField(pnlServerPort, lblServerPort, txtServerPort, errFields, out int val))
                 commSettings.ServerPort = val;
 
             if (ValidateIntField(pnlServerTimeout, lblServerTimeout, txtServerTimeout, errFields, out val))
@@ -249,6 +270,7 @@ namespace Scada.Web.Plugins.Config
                 webSettings.ScriptPaths.ChartScriptPath = ddlChartScript.SelectedValue;
                 webSettings.ScriptPaths.CmdScriptPath = ddlCmdScript.SelectedValue;
                 webSettings.ScriptPaths.EventAckScriptPath = ddlEventAckScript.SelectedValue;
+                webSettings.ScriptPaths.UserProfilePath = ddlUserProfile.SelectedValue;
 
                 errMsg = "";
                 return true;

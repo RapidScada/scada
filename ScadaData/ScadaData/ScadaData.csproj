@@ -54,6 +54,8 @@
     <Compile Include="Cache.cs" />
     <Compile Include="Client\ISupportLoading.cs" />
     <Compile Include="Client\ViewCache.cs" />
+    <Compile Include="Config\DbConnectionOptions.cs" />
+    <Compile Include="Config\KnownDBMS.cs" />
     <Compile Include="Config\OptionList.cs" />
     <Compile Include="Data\Entities\EvType.cs" />
     <Compile Include="Data\Entities\CnlType.cs" />
@@ -79,6 +81,7 @@
     <Compile Include="Data\Models\Obj.cs" />
     <Compile Include="Data\Models\Device.cs" />
     <Compile Include="Data\Models\DispEvent.cs" />
+    <Compile Include="Data\Models\QueueItem.cs" />
     <Compile Include="Data\Models\UserProps.cs" />
     <Compile Include="Data\Tables\Adapter.cs" />
     <Compile Include="Data\Configuration\BaseTables.cs" />

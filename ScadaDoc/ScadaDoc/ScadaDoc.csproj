@@ -193,6 +193,17 @@
     <Content Include="content\latest\en\version-history\table-editor-history.html" />
     <Content Include="content\latest\en\version-history\webstation-history.html" />
     <Content Include="content\latest\en\version-history\webstation-plugins-history.html" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_cmd_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_devices_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_email_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_general_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_lines_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_module_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_out_cnls_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_tasks_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report-files\auto_report_users_en.png" />
+    <Content Include="content\latest\es\additional-applications\app-auto-report.html" />
+    <Content Include="content\latest\es\additional-applications\index.html" />
     <Content Include="content\latest\es\index.html" />
     <Content Include="content\latest\es\installation-and-run\index.html" />
     <Content Include="content\latest\es\installation-and-run\manual-installation.html" />
@@ -219,6 +230,11 @@
     <Content Include="content\latest\es\modules\kp-db-import-files\db_import_conn_en.png" />
     <Content Include="content\latest\es\modules\kp-db-import-files\db_import_query_en.png" />
     <Content Include="content\latest\es\modules\kp-db-import.html" />
+    <Content Include="content\latest\es\modules\kp-modbus-slave-files\device_props_en.png" />
+    <Content Include="content\latest\es\modules\kp-modbus-slave-files\serial_port_en.png" />
+    <Content Include="content\latest\es\modules\kp-modbus-slave-files\tcp_server_en.png" />
+    <Content Include="content\latest\es\modules\kp-modbus-slave-files\template_editor_en.png" />
+    <Content Include="content\latest\es\modules\kp-modbus-slave.html" />
     <Content Include="content\latest\es\modules\kp-telegram-files\bot_father.png" />
     <Content Include="content\latest\es\modules\kp-telegram-files\group_chat_en.png" />
     <Content Include="content\latest\es\modules\kp-telegram-files\kp_telegram_config_en.png" />
@@ -236,6 +252,7 @@
     <Content Include="content\latest\es\modules\mod-db-export-files\plus.png" />
     <Content Include="content\latest\es\modules\mod-db-export.html" />
     <Content Include="content\latest\es\modules\mod-rapid-gate.html" />
+    <Content Include="content\latest\es\modules\plg-chart-pro-files\chart_parts.svg" />
     <Content Include="content\latest\es\modules\plg-chart-pro.html" />
     <Content Include="content\latest\es\modules\plg-dashboard-files\dashboard_itf_file_en.png" />
     <Content Include="content\latest\es\modules\plg-dashboard-files\dashboard_itf_tbl_en.png" />
@@ -260,6 +277,7 @@
     <Content Include="content\latest\es\software-configuration\creating-views-files\interface_menu_en.png" />
     <Content Include="content\latest\es\software-configuration\creating-views-files\interface_new_file_en.png" />
     <Content Include="content\latest\es\software-configuration\creating-views-files\interface_table_en.png" />
+    <Content Include="content\latest\es\software-configuration\creating-views-files\scheme_template_table_en.png" />
     <Content Include="content\latest\es\software-configuration\creating-views.html" />
     <Content Include="content\latest\es\software-configuration\index.html" />
     <Content Include="content\latest\es\software-configuration\tune-database-files\admin_clone_cnls_en.png" />

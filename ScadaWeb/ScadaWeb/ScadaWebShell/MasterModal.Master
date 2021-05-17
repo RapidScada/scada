@@ -1,0 +1,31 @@
+﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="MasterModal.master.cs" Inherits="Scada.Web.MasterModal" %>
+
+<!DOCTYPE html>
+
+<html>
+<head runat="server">
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- The above 3 meta tags are required by Bootstrap -->
+    <title>Rapid SCADA</title>
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
+    <link href="~/css/mastermodal.min.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/jquery/jquery.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/lib/bootstrap/js/bootstrap.min.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/utils.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/api/eventtypes.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/controls/popup.js") %>"></script>
+    <script type="text/javascript" src="<%= ResolveClientUrl("~/js/mastermodal.js") %>"></script>
+    <asp:ContentPlaceHolder ID="cphModalHead" runat="server">
+    </asp:ContentPlaceHolder>
+</head>
+<body>
+    <form runat="server">
+        <asp:ContentPlaceHolder ID="cphModalContent" runat="server">
+        </asp:ContentPlaceHolder>
+    </form>
+</body>
+</html>

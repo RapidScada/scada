@@ -166,6 +166,12 @@
             </div>
         </div>
         <div class="form-group">
+            <asp:Label ID="lblUserProfile" runat="server" CssClass="col-sm-4 control-label" Text="User profile plugin" AssociatedControlID="ddlUserProfile"></asp:Label>
+            <div class="col-sm-8">
+                <asp:DropDownList ID="ddlUserProfile" runat="server" CssClass="form-control"></asp:DropDownList>
+            </div>
+        </div>
+        <div class="form-group">
             <div class="col-sm-offset-4 col-sm-8">
                 <asp:Button ID="btnSave" runat="server" CssClass="btn btn-primary" Text="Save Configuration" OnClick="btnSave_Click" />
             </div>

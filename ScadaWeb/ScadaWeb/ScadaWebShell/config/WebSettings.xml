@@ -24,6 +24,7 @@
     <Script name="ChartScript" path="~/plugins/Chart/js/chartdialog.js" />
     <Script name="CmdScript" path="~/plugins/Table/js/cmddialog.js" />
     <Script name="EventAckScript" path="~/plugins/Table/js/eventackdialog.js" />
+    <Script name="UserProfile" path="" />
   </ScriptPaths>
   <Plugins>
     <Plugin fileName="PlgChart.dll" />

@@ -110,7 +110,7 @@
     <Phrase key="lblCnlCaption">Channel:</Phrase>
     <Phrase key="lblTextCaption">Description:</Phrase>
     <Phrase key="lblAckCaption">Acknowledged:</Phrase>
-    <Phrase key="lblByUser">by {0}</Phrase>
+    <Phrase key="lblByUser">by user {0}</Phrase>
     <Phrase key="lblTip">Click OK button to acknowledge the event.</Phrase>
   </Dictionary>
   <Dictionary key="Scada.Web.Plugins.Table.WFrmEvents">

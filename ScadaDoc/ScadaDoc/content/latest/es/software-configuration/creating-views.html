@@ -1,31 +1,81 @@
-﻿<!DOCTYPE html>
+﻿ <!DOCTYPE html>
 <html dir="ltr">
 <head>
     <title>Creación de vistas - Documentación de Rapid SCADA</title>
-    <meta charset="utf-8">
-    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css">
+    <meta charset="utf-8" />
+    <link href="../../../../css/scadadoc.min.css" rel="stylesheet" type="text/css" />
+    <link href="../../../../lib/prism/prism.css" rel="stylesheet" />
     <script type="text/javascript" src="../../../../lib/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="../js/contents.js"></script>
+    <script type="text/javascript" src="../../../../lib/prism/prism.js"></script>
+    <script type="text/javascript" src="../js/contents.js "></script>
     <script type="text/javascript" src="../../../../js/scadadoc.js"></script>
 </head>
 <body>
     <h1>Creación de vistas</h1>
 
-    <p>Una vista es una forma de representación de datos en la aplicación Webstation. Existen dos tipos de vistas soportadas por defecto: vistas de tabla y vista de esquemas. Es posible agregar soporte para otros tipos vistas instalando complementos adicionales.
+    <p>Una vista es una forma de representación de datos en la aplicación Webstation. Existen dos tipos de vistas soportadas por defecto: vistas de tablas y vista de esquemas. Es posible agregar soporte para otros tipos vistas instalando complementos (plugins) adicionales.</p>
+
+    <p><a href="../software-overview/applications/table-editor-application.html">Table Editor (Editor de tablas)</a> y <a href="../software-overview/applications/scheme-editor-application.html">Scheme Editor (Editor de esquemas)</a> fueron diseñados para crear las vistas. Las mismas se guardan en archivos que deben estar ubicados en el directorio de la Interface de un proyecto. Durante la ejecución, las vistas están ubicadas en el directorio Interface especificado en la configuración de la aplicación Server o en sus subdirectorios. Por defecto C:\SCADA\Interface\</p>
+
+    <p>
+        Son ejemplos de archivos de vistas:<br />
+        Interface\Servers\ServerRoom.sch - esquema,<br />
+        Interface\Servers\ServerRoom.tbl - vista de tabla.
     </p>
 
-    <p><a href="../software-overview/applications/table-editor-application.html">Table Editor (Editor de tablas)</a> y <a href="../software-overview/applications/scheme-editor-application.html">Scheme Editor (Editor de esquemas)</a> están diseñados para crear las vistas. Las mismas se guardan en archivos que deben estar ubicados en el directorio de la Interface de un proyecto. Durante la ejecución, las vistas están ubicadas en el directorio Interface especificado en la configuración de la aplicación Server o en sus subdirectorios. Por defecto C:\SCADA\Interface\</p>
+    <p>Para abrir el formulario de creación de una vista, tras haber seleccionado su proyecto en el Administrator, vaya a <em>Interface</em> y haciendo clic derecho, seleccione <em>New file (Nuevo archivo)</em> (refiérase a las figuras 1 y 2). Luego, en el formulario que aparece, seleccione el tipo de vista deseado (en este caso Scheme View), escriba en “File name” el nombre del esquema a crear y haga clic en el botón <em>OK</em>. El archivo creado será mostrado en el explorador de proyectos. Haciendo doble clic en el nodo del árbol correspondiente, el editor abre la vista y la puede confeccionar, o puede editarla si era una vista ya creada.</p>
 
-    <p>Son ejemplos de archivos de vistas:<br> Interface\Servers\ServerRoom.sch - scheme,<br> Interface\Servers\ServerRoom.tbl - table view.</p>
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_menu_en.png" alt="Menu to create a view" /><br />
+        Figura 1. Menú para crear una vista
+    </p>
 
-    <p>Para abrir un diálogo de creación de una vista seleccione el elemento <em>New file (Nuevo archivo) </em>del men&#250; contextual (refiérase a las figuras 1 y 2). Luego, en el formulario que aparece, seleccione el tipo de vista deseado (en este caso Scheme View), escriba en “File name” el nombre del esquema a crear y haga clic en el botón <em>OK</em>. El archivo creado será mostrado en el explorador de proyectos. Haciendo doble clic en el nodo del árbol correspondiente, el editor abre la vista y la puede, confeccionar o puede editarla si era una vista ya creada.</p>
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_new_file_en.png" alt="View creation dialog" /><br />
+        Figura 2. Diálogo de creación de una vista
+    </p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_menu_en.png" alt="Menú para crear una vista"><br> Figura 1. Menú para crear una vista </p>
+    <p>Después de crear los archivos de vistas, éstos deben ser declarados en Administrator -  Configuration Database - System - <em>Interface</em> como se ve en la figura 3. Los identificadores de vistas deben ser únicos. La ruta (Path) de las vistas debe corresponder con la de su ubicación en el directorio C:\SCADA\Projects\“su projecto”\Interface. El texto especificado en la columna <em>Title (Título)</em> aparecerá en la aplicación Webstation, como un nodo en el árbol del explorador (izquierda), y los identificadores en columna ID determinan el orden de las vistas. Si los archivos de vistas están ubicados en los subdirectorios del directorio Interface, estos subdirectorios también deben estar especificados en la tabla <em>Interface</em>.</p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_new_file_en.png" alt="Diálogo de creación de una vista"><br> Figura 2. Diálogo de creación de una vista </p>
+    <p class="sd-article-image">
+        <img src="creating-views-files/interface_table_en.png" alt="Editing the Interface table" /><br />
+        Figura 3. Edición de la tabla Interfaz
+    </p>
 
-    <p>Después de crear los archivos de vistas, éstos deben ser declarados en la tabla Interface de Configuration Database – System <em>Interface (Interfaz) </em>como se ve en la figura 3. Los identificadores de vistas deben ser únicos. La ruta de las vistas es relativa al directorio de la interfaz. El texto especificado en la columna <em>Title (Título) </em>se muestra como texto de un nodo del árbol del explorador de la Webstation, y los identificadores determinan el orden de las vistas. Si los archivos de vistas están ubicados se ubican en los subdirectorios del directorio interfaz, estos subdirectorios también deben estar especificados en la tabla <em>Interface</em>.</p>
+    <h2>Plantillas de esquemas (Scheme Templates)</h2>
+    <p>Los esquemas admiten el modo de plantilla. Una plantilla de esquema es un esquema cualquiera creado en Scheme Editor, cuyos componentes pueden vincularse con canales de entrada y de salida arbitrarios..</p>
 
-    <p class="sd-article-image"> <img src="creating-views-files/interface_table_en.png" alt="Edición de la tabla Interfaz"><br> Figura 3. Edición de la tabla Interfaz </p>
+    <p>Para usar un esquema en el modo de plantilla, especifique los argumentos apropiados en la tabla <em>Interface</em>. Hay dos opciones disponibles (vea la Figura 4):</p>
+    <ol>
+        <li>Especifique el desplazamiento (offset) del número de canal en relación con el esquema original y el identificador del componente título.</li>
+        <li>Especifique el archivo que contiene los enlaces de los componentes del esquema a los canales.\.</li>
+    </ol>
+
+    <p class="sd-article-image">
+        <img src="creating-views-files/scheme_template_table_en.png" alt="Шаблон схемы в таблице Интерфейс" /><br />
+        Figura 4. Plantilla de esquema en la tabla Interface
+    </p>
+
+    <p>
+        Descripción de los argumentos:<br />
+        <em>inCnlOffset</em> - desplazamiento (offset) del número de canal de entrada;<br />
+        <em>ctrlCnlOffset</em> - desplazamiento del número de canal de salida;<br />
+        <em>titleCompID</em> - identificador del componente título;<br />
+        <em>bindingFileName</em> - nombre del archivo de los enlaces en relación al directorio de
+        configuración de Webstation.
+    </p>
+
+    <p>El texto del título de un esquema trabajando en el modo de plantilla se toma del campo <em>Title</em>  de la tabla <em>Interface</em>. Al crear una plantilla de esquema con el Scheme Editor, se recomienda dejar la propiedad del título del esquema en blanco.</p>
+
+    <p>Los archivos de enlace deben estar ubicados dentro del directorio de configuración de Webstation, por defecto en C:\SCADA\ScadaWeb\config\. Ejemplo de un archivo de enlace:</p>
+    <pre><code class="language-xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot; ?&gt;
+&lt;TemplateBindings&gt;
+  &lt;TemplateFileName&gt;MyScheme.sch&lt;/TemplateFileName&gt;
+  &lt;TitleCompID&gt;3&lt;/TitleCompID&gt;
+  &lt;Binding compID=&quot;1&quot; inCnlNum=&quot;101&quot; ctrlCnlNum=&quot;101&quot; /&gt;
+  &lt;Binding compID=&quot;2&quot; inCnlNum=&quot;102&quot; /&gt;
+&lt;/TemplateBindings&gt;
+</code></pre>
+
 </body>
 </html>

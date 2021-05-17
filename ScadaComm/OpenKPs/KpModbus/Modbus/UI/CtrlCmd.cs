@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2021
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -58,7 +58,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                return Settings == null ? false : Settings.ZeroAddr;
+                return Settings != null && Settings.ZeroAddr;
             }
         }
 
@@ -80,7 +80,7 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             get
             {
-                return Settings == null ? false : Settings.DecAddr;
+                return Settings != null && Settings.DecAddr;
             }
         }
 
@@ -150,10 +150,9 @@ namespace Scada.Comm.Devices.Modbus.UI
                 numCmdAddress.Value = modbusCmd.Address + AddrShift;
                 lblCmdAddressHint.Text = string.Format(KpPhrases.AddressHint, AddrNotation, AddrShift);
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.ElemType;
-                numCmdElemCnt.Value = 1;
-                numCmdElemCnt.Maximum = modbusCmd.MaxElemCnt;
-                numCmdElemCnt.Value = modbusCmd.ElemCnt;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Maximum = modbusCmd.MaxElemCnt;
+                numCmdElemCnt.SetValue(modbusCmd.ElemCnt);
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
                 numCmdNum.Value = modbusCmd.CmdNum;
                 gbCmd.Enabled = true;
@@ -232,13 +231,9 @@ namespace Scada.Comm.Devices.Modbus.UI
 
                 cbCmdElemType.SelectedIndex = (int)modbusCmd.DefElemType;
                 cbCmdElemType.Enabled = modbusCmd.ElemTypeEnabled;
+                numCmdElemCnt.Maximum = modbusCmd.MaxElemCnt;
+                numCmdElemCnt.SetValue(modbusCmd.ElemCnt);
                 numCmdElemCnt.Enabled = modbusCmd.Multiple;
-
-                // ограничение макс. количества элементов в команде
-                int maxElemCnt = modbusCmd.MaxElemCnt;
-                if (numCmdElemCnt.Value > maxElemCnt)
-                    numCmdElemCnt.Value = maxElemCnt;
-                numCmdElemCnt.Maximum = maxElemCnt;
 
                 OnObjectChanged(TreeUpdateTypes.CurrentNode);
             }
@@ -292,7 +287,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 else
                 {
                     modbusCmd.ElemType = newElemType;
-                    numCmdElemCnt.Value = ModbusUtils.GetElemCount(modbusCmd.ElemType);
+                    numCmdElemCnt.SetValue(modbusCmd.GetDefElemCnt(newElemType));
                     OnObjectChanged(TreeUpdateTypes.None);
                 }
             }

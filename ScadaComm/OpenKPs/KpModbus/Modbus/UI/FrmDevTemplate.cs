@@ -196,7 +196,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 };
 
                 grNode.Nodes.Add(NewElemNode(elemInfo));
-                elemAddr += (ushort)elem.Length;
+                elemAddr += (ushort)elem.Quantity;
             }
 
             return grNode;
@@ -269,7 +269,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                     elemInfo.Address = elemAddr;
                     elemInfo.Signal = elemSig++;
                     elemNode.Text = elemInfo.Caption;
-                    elemAddr += (ushort)elemInfo.Elem.Length;
+                    elemAddr += (ushort)elemInfo.Elem.Quantity;
                 }
             }
 
@@ -839,7 +839,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                             selNode.Nodes.Add(NewElemNode(elemInfo));
                         }
 
-                        elemAddr += (ushort)elem.Length;
+                        elemAddr += (ushort)elem.Quantity;
                     }
                 }
                 else if (oldElemCnt > newElemCnt)

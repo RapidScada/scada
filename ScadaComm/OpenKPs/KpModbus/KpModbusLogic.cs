@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Scada.Comm.Devices.Modbus;
@@ -197,9 +197,10 @@ namespace Scada.Comm.Devices
         /// </summary>
         private void SetTagsData(ElemGroup elemGroup)
         {
-            int len = elemGroup.ElemVals.Length;
-            for (int i = 0, j = elemGroup.StartKPTagInd + i; i < len; i++, j++)
+            for (int i = 0, j = elemGroup.StartKPTagInd + i, cnt = elemGroup.Elems.Count; i < cnt; i++, j++)
+            {
                 SetCurData(j, elemGroup.GetElemVal(i), BaseValues.CnlStatuses.Defined);
+            }
         }
 
 
@@ -302,7 +303,7 @@ namespace Scada.Comm.Devices
                         while (elemGroupInd < elemGroupCnt)
                         {
                             elemGroup = elemGroups[elemGroupInd];
-                            InvalidateCurData(elemGroup.StartKPTagInd, elemGroup.ElemVals.Length);
+                            InvalidateCurData(elemGroup.StartKPTagInd, elemGroup.Elems.Count);
                             elemGroupInd++;
                         }
                     }
@@ -339,6 +340,8 @@ namespace Scada.Comm.Devices
                     // формирование команды Modbus
                     if (modbusCmd.Multiple)
                     {
+                        modbusCmd.Value = 0;
+
                         if (cmd.CmdTypeID == BaseValues.CmdTypes.Standard)
                             modbusCmd.SetCmdData(cmd.CmdVal);
                         else
@@ -349,6 +352,7 @@ namespace Scada.Comm.Devices
                         modbusCmd.Value = modbusCmd.TableType == TableType.HoldingRegisters ?
                             (ushort)cmd.CmdVal :
                             cmd.CmdVal > 0 ? (ushort)1 : (ushort)0;
+                        modbusCmd.SetCmdData(cmd.CmdVal);
                     }
 
                     modbusCmd.InitReqPDU();

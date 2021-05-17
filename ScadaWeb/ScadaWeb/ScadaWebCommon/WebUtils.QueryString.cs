@@ -8,12 +8,6 @@ namespace Scada.Web
     partial class WebUtils
     {
         /// <summary>
-        /// Разделитель элементов массива, передаваемого в параметре запроса.
-        /// </summary>
-        private static readonly char[] QueryParamSeparator = { ',' };
-
-
-        /// <summary>
         /// Получить логическое значение параметра из строки запроса.
         /// </summary>
         public static bool GetParamAsBool(this NameValueCollection queryString, string paramName, 
@@ -78,7 +72,7 @@ namespace Scada.Web
         /// Gets the XML attribute value as an enumeration element.
         /// </summary>
         public static T GetParamAsEnum<T>(this NameValueCollection queryString, string paramName,
-            T defaultVal = default(T)) where T : struct
+            T defaultVal = default) where T : struct
         {
             return Enum.TryParse(queryString[paramName], true, out T paramVal) ?
                 paramVal : defaultVal;

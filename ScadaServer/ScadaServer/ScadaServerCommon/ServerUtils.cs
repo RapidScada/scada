@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2015
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Data.Tables;
@@ -39,7 +39,7 @@ namespace Scada.Server
         /// <summary>
         /// Версия Сервера
         /// </summary>
-        public const string AppVersion = "5.1.4.1";
+        public const string AppVersion = "5.1.4.2";
         /// <summary>
         /// Старший байт номера версии Сервера
         /// </summary>

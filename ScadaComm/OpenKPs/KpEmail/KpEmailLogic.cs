@@ -214,13 +214,13 @@ namespace Scada.Comm.Devices
 
             try
             {
-                message.From = new MailAddress(config.User, config.UserDisplayName);
+                message.From = new MailAddress(config.SenderAddress, config.SenderDisplayName);
             }
             catch
             {
                 WriteToLog(string.Format(Localization.UseRussian ?
                     "Некорректный адрес отправителя {0}" :
-                    "Incorrect sender address {0}", config.User));
+                    "Incorrect sender address {0}", config.SenderAddress));
                 return null;
             }
 

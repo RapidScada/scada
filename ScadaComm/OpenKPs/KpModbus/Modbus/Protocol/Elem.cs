@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2017 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,18 +16,18 @@
  * 
  * Product  : Rapid SCADA
  * Module   : KpModbus
- * Summary  : Modbus element (register)
+ * Summary  : Represents a Modbus element (register)
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2017
+ * Modified : 2021
  */
 
 namespace Scada.Comm.Devices.Modbus.Protocol
 {
     /// <summary>
-    /// Modbus element (register)
-    /// <para>Элемент (регистр) Modbus</para>
+    /// Represents a Modbus element (register).
+    /// <para>Представляет элемент (регистр) Modbus.</para>
     /// </summary>
     public class Elem
     {
@@ -54,13 +54,24 @@ namespace Scada.Comm.Devices.Modbus.Protocol
         public ElemType ElemType { get; set; }
 
         /// <summary>
-        /// Получить длину элемента (количество адресов)
+        /// Gets the quantity of addresses.
         /// </summary>
-        public int Length
+        public virtual int Quantity
         {
             get
             {
-                return ModbusUtils.GetElemCount(ElemType);
+                return ModbusUtils.GetQuantity(ElemType);
+            }
+        }
+
+        /// <summary>
+        /// Gets the element data length.
+        /// </summary>
+        public virtual int DataLength
+        {
+            get
+            {
+                return ModbusUtils.GetDataLength(ElemType);
             }
         }
 

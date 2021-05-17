@@ -32,6 +32,7 @@ function addContents(context) {
     addArticle(context, "software-configuration/creating-views.html", "Creación de vistas", 1);
 
     addArticle(context, "modules/", "Módulos");
+    addArticle(context, "modules/kp-modbus-slave.html", "Controlador de Modbus esclavo", 1);
     addArticle(context, "modules/kp-telegram.html", "Controlador de Telegram", 1);
     addArticle(context, "modules/mod-auto-control.html", "Módulo de Control Automático", 1);
     addArticle(context, "modules/mod-db-export.html", "Módulo de Exportación a Base de Datos", 1);
@@ -41,6 +42,9 @@ function addContents(context) {
     addArticle(context, "modules/plg-elastic-report.html", "Elastic Report Plugin", 1);
     addArticle(context, "modules/plg-map.html", "Map Plugin", 1);
     addArticle(context, "modules/plg-notification.html", "Notification Plugin", 1);
+
+    addArticle(context, "additional-applications/", "Additional Applications");
+    addArticle(context, "additional-applications/app-auto-report.html", "Aplicación de Informe Automático", 1);
 
     addArticle(context, "use-cases/", "Use Cases");
     addArticle(context, "use-cases/modbus-protocol.html", "Conexión de dispositivos mediante protocolo Modbus", 1);

@@ -7,11 +7,13 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Scada.Web.Plugins.Config {
-    
-    
-    public partial class WFrmWebConfig {
-        
+namespace Scada.Web.Plugins.Config
+{
+
+
+    public partial class WFrmWebConfig
+    {
+
         /// <summary>
         /// pnlErrMsg control.
         /// </summary>
@@ -20,7 +22,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlErrMsg;
-        
+
         /// <summary>
         /// lblErrMsg control.
         /// </summary>
@@ -29,7 +31,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblErrMsg;
-        
+
         /// <summary>
         /// pnlSuccMsg control.
         /// </summary>
@@ -38,7 +40,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlSuccMsg;
-        
+
         /// <summary>
         /// lblSuccMsg control.
         /// </summary>
@@ -47,7 +49,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblSuccMsg;
-        
+
         /// <summary>
         /// lblTitle control.
         /// </summary>
@@ -56,7 +58,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblTitle;
-        
+
         /// <summary>
         /// lblConnection control.
         /// </summary>
@@ -65,7 +67,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblConnection;
-        
+
         /// <summary>
         /// lblServerHost control.
         /// </summary>
@@ -74,7 +76,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerHost;
-        
+
         /// <summary>
         /// txtServerHost control.
         /// </summary>
@@ -83,7 +85,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerHost;
-        
+
         /// <summary>
         /// pnlServerPort control.
         /// </summary>
@@ -92,7 +94,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlServerPort;
-        
+
         /// <summary>
         /// lblServerPort control.
         /// </summary>
@@ -101,7 +103,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerPort;
-        
+
         /// <summary>
         /// txtServerPort control.
         /// </summary>
@@ -110,7 +112,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerPort;
-        
+
         /// <summary>
         /// pnlServerTimeout control.
         /// </summary>
@@ -119,7 +121,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlServerTimeout;
-        
+
         /// <summary>
         /// lblServerTimeout control.
         /// </summary>
@@ -128,7 +130,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerTimeout;
-        
+
         /// <summary>
         /// txtServerTimeout control.
         /// </summary>
@@ -137,7 +139,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerTimeout;
-        
+
         /// <summary>
         /// txtServerTimeoutUnit control.
         /// </summary>
@@ -146,7 +148,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label txtServerTimeoutUnit;
-        
+
         /// <summary>
         /// lblServerUser control.
         /// </summary>
@@ -155,7 +157,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerUser;
-        
+
         /// <summary>
         /// txtServerUser control.
         /// </summary>
@@ -164,7 +166,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerUser;
-        
+
         /// <summary>
         /// lblServerPwd control.
         /// </summary>
@@ -173,7 +175,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerPwd;
-        
+
         /// <summary>
         /// txtServerPwd control.
         /// </summary>
@@ -182,7 +184,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtServerPwd;
-        
+
         /// <summary>
         /// lblServerPwdHelp control.
         /// </summary>
@@ -191,7 +193,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblServerPwdHelp;
-        
+
         /// <summary>
         /// lblCommonParams control.
         /// </summary>
@@ -200,7 +202,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCommonParams;
-        
+
         /// <summary>
         /// lblCulture control.
         /// </summary>
@@ -209,7 +211,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCulture;
-        
+
         /// <summary>
         /// txtCulture control.
         /// </summary>
@@ -218,7 +220,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtCulture;
-        
+
         /// <summary>
         /// lblCultureHelp control.
         /// </summary>
@@ -227,7 +229,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCultureHelp;
-        
+
         /// <summary>
         /// pnlDataRefrRate control.
         /// </summary>
@@ -236,7 +238,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlDataRefrRate;
-        
+
         /// <summary>
         /// lblDataRefrRate control.
         /// </summary>
@@ -245,7 +247,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDataRefrRate;
-        
+
         /// <summary>
         /// txtDataRefrRate control.
         /// </summary>
@@ -254,7 +256,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDataRefrRate;
-        
+
         /// <summary>
         /// lbltxtDataRefrRateUnit control.
         /// </summary>
@@ -263,7 +265,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lbltxtDataRefrRateUnit;
-        
+
         /// <summary>
         /// pnlArcRefrRate control.
         /// </summary>
@@ -272,7 +274,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlArcRefrRate;
-        
+
         /// <summary>
         /// lblArcRefrRate control.
         /// </summary>
@@ -281,7 +283,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblArcRefrRate;
-        
+
         /// <summary>
         /// txtArcRefrRate control.
         /// </summary>
@@ -290,7 +292,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtArcRefrRate;
-        
+
         /// <summary>
         /// lblArcRefrRateUnit control.
         /// </summary>
@@ -299,7 +301,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblArcRefrRateUnit;
-        
+
         /// <summary>
         /// pnlDispEventCnt control.
         /// </summary>
@@ -308,7 +310,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlDispEventCnt;
-        
+
         /// <summary>
         /// lblDispEventCnt control.
         /// </summary>
@@ -317,7 +319,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblDispEventCnt;
-        
+
         /// <summary>
         /// txtDispEventCnt control.
         /// </summary>
@@ -326,7 +328,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtDispEventCnt;
-        
+
         /// <summary>
         /// pnlChartGap control.
         /// </summary>
@@ -335,7 +337,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlChartGap;
-        
+
         /// <summary>
         /// lblChartGap control.
         /// </summary>
@@ -344,7 +346,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChartGap;
-        
+
         /// <summary>
         /// txtChartGap control.
         /// </summary>
@@ -353,7 +355,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtChartGap;
-        
+
         /// <summary>
         /// lblChartGapUnit control.
         /// </summary>
@@ -362,7 +364,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChartGapUnit;
-        
+
         /// <summary>
         /// lblStartPage control.
         /// </summary>
@@ -371,7 +373,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblStartPage;
-        
+
         /// <summary>
         /// txtStartPage control.
         /// </summary>
@@ -380,7 +382,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox txtStartPage;
-        
+
         /// <summary>
         /// lblStartPageHelp control.
         /// </summary>
@@ -389,7 +391,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblStartPageHelp;
-        
+
         /// <summary>
         /// chkCmdEnabled control.
         /// </summary>
@@ -398,7 +400,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkCmdEnabled;
-        
+
         /// <summary>
         /// lblCmdEnabled control.
         /// </summary>
@@ -407,7 +409,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCmdEnabled;
-        
+
         /// <summary>
         /// chkCmdPassword control.
         /// </summary>
@@ -416,7 +418,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkCmdPassword;
-        
+
         /// <summary>
         /// lblCmdPassword control.
         /// </summary>
@@ -425,7 +427,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCmdPassword;
-        
+
         /// <summary>
         /// chkRemEnabled control.
         /// </summary>
@@ -434,7 +436,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkRemEnabled;
-        
+
         /// <summary>
         /// lblRemEnabled control.
         /// </summary>
@@ -443,7 +445,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblRemEnabled;
-        
+
         /// <summary>
         /// chkViewsFromBase control.
         /// </summary>
@@ -452,7 +454,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkViewsFromBase;
-        
+
         /// <summary>
         /// lblViewsFromBase control.
         /// </summary>
@@ -461,7 +463,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblViewsFromBase;
-        
+
         /// <summary>
         /// chkShareStats control.
         /// </summary>
@@ -470,7 +472,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.CheckBox chkShareStats;
-        
+
         /// <summary>
         /// lblShareStats control.
         /// </summary>
@@ -479,7 +481,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblShareStats;
-        
+
         /// <summary>
         /// lblChartScript control.
         /// </summary>
@@ -488,7 +490,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblChartScript;
-        
+
         /// <summary>
         /// ddlChartScript control.
         /// </summary>
@@ -497,7 +499,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlChartScript;
-        
+
         /// <summary>
         /// lblCmdScript control.
         /// </summary>
@@ -506,7 +508,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblCmdScript;
-        
+
         /// <summary>
         /// ddlCmdScript control.
         /// </summary>
@@ -515,7 +517,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlCmdScript;
-        
+
         /// <summary>
         /// lblEventAckScript control.
         /// </summary>
@@ -524,7 +526,7 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Label lblEventAckScript;
-        
+
         /// <summary>
         /// ddlEventAckScript control.
         /// </summary>
@@ -533,7 +535,25 @@ namespace Scada.Web.Plugins.Config {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.DropDownList ddlEventAckScript;
-        
+
+        /// <summary>
+        /// lblUserProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label lblUserProfile;
+
+        /// <summary>
+        /// ddlUserProfile control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DropDownList ddlUserProfile;
+
         /// <summary>
         /// btnSave control.
         /// </summary>
