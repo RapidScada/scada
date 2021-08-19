@@ -43,13 +43,5 @@ namespace Scada.Comm.Devices.EnronModbus.Protocol
             return tableType == TableType.DiscreteInputs || tableType == TableType.Coils ?
                 ElemType.Bool : ElemType.Float;
         }
-
-        /// <summary>
-        /// Gets the default number of command elements depending on the element type.
-        /// </summary>
-        public override int GetDefElemCnt(ElemType elemType)
-        {
-            return 1;
-        }
     }
 }

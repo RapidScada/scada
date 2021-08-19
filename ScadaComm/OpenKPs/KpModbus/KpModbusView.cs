@@ -41,7 +41,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// The driver version.
         /// </summary>
-        internal const string KpVersion = "5.1.3.0";
+        internal const string KpVersion = "5.1.3.1";
 
         /// <summary>
         /// The UI customization object.

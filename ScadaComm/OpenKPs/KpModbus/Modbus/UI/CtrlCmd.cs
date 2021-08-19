@@ -287,8 +287,7 @@ namespace Scada.Comm.Devices.Modbus.UI
                 else
                 {
                     modbusCmd.ElemType = newElemType;
-                    numCmdElemCnt.SetValue(modbusCmd.GetDefElemCnt(newElemType));
-                    OnObjectChanged(TreeUpdateTypes.None);
+                    OnObjectChanged(TreeUpdateTypes.CurrentNode);
                 }
             }
         }

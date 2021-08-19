@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2018 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2018
+ * Modified : 2021
  */
 
 using System;
@@ -144,16 +144,26 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             if (Multiple)
             {
                 // формирование PDU для команды WriteMultipleCoils или WriteMultipleRegisters
-                int dataLength = TableType == TableType.Coils ?
-                    ((ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1) :
-                    ElemCnt * ModbusUtils.GetDataLength(ElemType);
+                int quantity;   // quantity of registers
+                int dataLength; // data length in bytes
+
+                if (TableType == TableType.Coils)
+                {
+                    quantity = ElemCnt;
+                    dataLength = (ElemCnt % 8 == 0) ? ElemCnt / 8 : ElemCnt / 8 + 1;
+                }
+                else
+                {
+                    quantity = ElemCnt * ModbusUtils.GetQuantity(ElemType);
+                    dataLength = quantity * 2;
+                }
 
                 ReqPDU = new byte[6 + dataLength];
                 ReqPDU[0] = FuncCode;
                 ReqPDU[1] = (byte)(Address / 256);
                 ReqPDU[2] = (byte)(Address % 256);
-                ReqPDU[3] = (byte)(ElemCnt / 256);
-                ReqPDU[4] = (byte)(ElemCnt % 256);
+                ReqPDU[3] = (byte)(quantity / 256);
+                ReqPDU[4] = (byte)(quantity % 256);
                 ReqPDU[5] = (byte)dataLength;
 
                 ModbusUtils.ApplyByteOrder(Data, 0, ReqPDU, 6, dataLength, ByteOrder, false);
@@ -216,14 +226,6 @@ namespace Scada.Comm.Devices.Modbus.Protocol
             {
                 return false;
             }
-        }
-
-        /// <summary>
-        /// Gets the default number of command elements depending on the element type.
-        /// </summary>
-        public virtual int GetDefElemCnt(ElemType elemType)
-        {
-            return ModbusUtils.GetQuantity(elemType);
         }
 
         /// <summary>
