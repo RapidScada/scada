@@ -402,6 +402,17 @@ namespace Scada.Comm.Devices
             // определение режима передачи данных
             transMode = CustomParams.GetEnumParam("TransMode", false, TransMode.RTU);
 
+            // определение возможности отправки команд
+            CanSendCmd = deviceTemplate != null && deviceTemplate.Cmds.Count > 0;
+        }
+
+        /// <summary>
+        /// Выполнить действия при запуске линии связи
+        /// </summary>
+        public override void OnCommLineStart()
+        {
+            // инициализация запрашиваемых элементов и команд
+            // располагается в OnCommLineStart, т.к. здесь Address окончательно определён
             if (deviceTemplate == null)
             {
                 elemGroups = null;
@@ -428,15 +439,6 @@ namespace Scada.Comm.Devices
                 }
             }
 
-            // определение возможности отправки команд
-            CanSendCmd = deviceTemplate != null && deviceTemplate.Cmds.Count > 0;
-        }
-
-        /// <summary>
-        /// Выполнить действия при запуске линии связи
-        /// </summary>
-        public override void OnCommLineStart()
-        {
             // инициализация объекта для опроса КП
             InitModbusPoll();
 
