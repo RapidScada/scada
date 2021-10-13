@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * All rights reserved
  * 
  * Product  : Rapid SCADA
@@ -8,7 +8,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2019
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Opc.Ua;
@@ -80,7 +80,7 @@ namespace Scada.Comm.Devices.OpcUa.Config
             SecurityMode = xmlNode.GetChildAsEnum("SecurityMode", MessageSecurityMode.None);
             SecurityPolicy = xmlNode.GetChildAsEnum<SecurityPolicy>("SecurityPolicy");
             AuthenticationMode = xmlNode.GetChildAsEnum<AuthenticationMode>("AuthenticationMode");
-            Username = xmlNode.GetChildAsString("User");
+            Username = xmlNode.GetChildAsString("Username");
             Password = ScadaUtils.Decrypt(xmlNode.GetChildAsString("Password"));
         }
 
