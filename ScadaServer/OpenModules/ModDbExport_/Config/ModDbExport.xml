@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ModDbExport>
+  <ExportTarget>
+    <GeneralOptions>
+      <Active>true</Active>
+      <ID>1</ID>
+      <Name>Target 1</Name>
+      <MaxQueueSize>1000</MaxQueueSize>
+      <DataLifetime>3600</DataLifetime>
+      <OutCnlNum>0</OutCnlNum>
+    </GeneralOptions>
+    <ConnectionOptions>
+      <Name></Name>
+      <DBMS>PostgreSQL</DBMS>
+      <Server>localhost</Server>
+      <Database>rapid_scada</Database>
+      <Username>postgres</Username>
+      <Password>4D83D8AEB31C1B40335A78AF3539DD22</Password>
+      <ConnectionString />
+    </ConnectionOptions>
+    <Triggers>
+      <!-- Trigger types: CurDataTrigger, ArcDataTrigger, EventTrigger -->
+      <Trigger active="true" name="Trigger 1" type="CurDataTrigger">
+        <CnlNums>101-105</CnlNums>
+        <DeviceNums></DeviceNums>
+        <SingleQuery>false</SingleQuery>
+        <Query>
+          INSERT INTO mod_db_export.cnldata (datetime, cnlnum, val, stat)
+          VALUES (@dateTime, @cnlNum, @val, @stat)
+        </Query>
+      </Trigger>
+      <Trigger active="true" name="Trigger 2" type="ArcDataTrigger">
+        <CnlNums></CnlNums>
+        <DeviceNums></DeviceNums>
+        <SingleQuery>false</SingleQuery>
+        <Query>
+          WITH upsert AS (UPDATE mod_db_export.cnldata SET val = @val, stat = @stat
+          WHERE datetime = @datetime AND cnlnum = @cnlNum RETURNING *)
+          INSERT INTO mod_db_export.cnldata (datetime, cnlnum, val, stat)
+          SELECT @dateTime, @cnlNum, @val, @stat
+          WHERE NOT EXISTS (SELECT * FROM upsert)
+        </Query>
+      </Trigger>
+      <Trigger active="true" name="Trigger 3" type="EventTrigger">
+        <CnlNums></CnlNums>
+        <DeviceNums></DeviceNums>
+        <Query>
+          INSERT INTO mod_db_export.events (datetime, objnum, kpnum, paramid, cnlnum, oldcnlval, oldcnlstat, newcnlval, newcnlstat, checked, userid, descr, data)
+          VALUES (@dateTime, @objNum, @kpNum, @paramID, @cnlNum, @oldCnlVal, @oldCnlStat, @newCnlVal, @newCnlStat, @checked, @userID, @descr, @data)
+        </Query>
+      </Trigger>
+    </Triggers>
+    <ArcUploadOptions enabled="false">
+      <!-- SnapshotType: Min, Hour -->
+      <SnapshotType>Min</SnapshotType>
+      <Delay>10000</Delay>
+      <MaxAge>1</MaxAge>
+    </ArcUploadOptions>
+  </ExportTarget>
+</ModDbExport>

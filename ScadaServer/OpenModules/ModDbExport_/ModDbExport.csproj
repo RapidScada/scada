@@ -1,0 +1,195 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{1943BB06-1D1E-45A6-ADF0-B6437512138B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Scada.Server.Modules</RootNamespace>
+    <AssemblyName>ModDbExport</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Log">
+      <HintPath>..\..\..\..\scada\Log\Log\bin\Release\Log.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=6.9.12.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.6.9.12\lib\net45\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="Npgsql, Version=4.0.11.0, Culture=neutral, PublicKeyToken=5d8b90d52f46fda7, processorArchitecture=MSIL">
+      <HintPath>..\packages\Npgsql.4.0.11\lib\net451\Npgsql.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData">
+      <HintPath>..\..\..\..\scada\ScadaData\ScadaData\bin\Release\ScadaData.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaData.Db">
+      <HintPath>..\..\..\..\scada\ScadaData\ScadaData.Db\bin\Release\ScadaData.Db.dll</HintPath>
+    </Reference>
+    <Reference Include="ScadaServerCommon">
+      <HintPath>..\..\..\..\scada\ScadaServer\ScadaServer\ScadaServerCommon\bin\Release\ScadaServerCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.2.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Buffers.4.4.0\lib\netstandard2.0\System.Buffers.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.OracleClient" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Memory.4.5.3\lib\netstandard2.0\System.Memory.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.3.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Numerics.Vectors.4.4.0\lib\net46\System.Numerics.Vectors.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.1, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.2\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Threading.Tasks.Extensions.4.5.2\lib\netstandard2.0\System.Threading.Tasks.Extensions.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DbExport\ArcUploadState.cs" />
+    <Compile Include="DbExport\CmdParams.cs" />
+    <Compile Include="DbExport\Config\TriggerOptionList.cs" />
+    <Compile Include="DbExport\EntityMap.cs" />
+    <Compile Include="DbExport\CmdAction.cs" />
+    <Compile Include="DbExport\UI\LibPhrases.cs" />
+    <Compile Include="DbExport\Triggers\ArcDataTrigger.cs" />
+    <Compile Include="DbExport\Triggers\ClassifiedTriggers.cs" />
+    <Compile Include="DbExport\Config\ArcUploadOptions.cs" />
+    <Compile Include="DbExport\Config\ArcDataTriggerOptions.cs" />
+    <Compile Include="DbExport\Config\DataTriggerOptions.cs" />
+    <Compile Include="DbExport\Config\CurDataTriggerOptions.cs" />
+    <Compile Include="DbExport\Config\EventTriggerOptions.cs" />
+    <Compile Include="DbExport\Config\ExportTargetConfig.cs" />
+    <Compile Include="DbExport\Config\GeneralOptions.cs" />
+    <Compile Include="DbExport\Config\ModConfig.cs" />
+    <Compile Include="DbExport\Config\TriggerOptions.cs" />
+    <Compile Include="DbExport\Exporter.cs" />
+    <Compile Include="DbExport\Triggers\CurDataTrigger.cs" />
+    <Compile Include="DbExport\Triggers\DataTrigger.cs" />
+    <Compile Include="DbExport\Triggers\EventTrigger.cs" />
+    <Compile Include="DbExport\Triggers\Trigger.cs" />
+    <Compile Include="DbExport\UI\CtrlArcUploadOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlArcUploadOptions.Designer.cs">
+      <DependentUpon>CtrlArcUploadOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlConnectionOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlConnectionOptions.Designer.cs">
+      <DependentUpon>CtrlConnectionOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlEventTrigger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlEventTrigger.Designer.cs">
+      <DependentUpon>CtrlEventTrigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlGeneralOptions.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlGeneralOptions.Designer.cs">
+      <DependentUpon>CtrlGeneralOptions.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlTrigger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\CtrlTrigger.Designer.cs">
+      <DependentUpon>CtrlTrigger.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\FrmDbExportConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\FrmDbExportConfig.Designer.cs">
+      <DependentUpon>FrmDbExportConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="DbExport\UI\FrmRangeEdit.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="DbExport\UI\FrmRangeEdit.Designer.cs">
+      <DependentUpon>FrmRangeEdit.cs</DependentUpon>
+    </Compile>
+    <Compile Include="ModDbExportLogic.cs" />
+    <Compile Include="ModDbExportView.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Config\ModDbExport.xml" />
+    <Content Include="Lang\ModDbExport.en-GB.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Lang\ModDbExport.ru-RU.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="DbExport\UI\CtrlArcUploadOptions.resx">
+      <DependentUpon>CtrlArcUploadOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\CtrlConnectionOptions.resx">
+      <DependentUpon>CtrlConnectionOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\CtrlEventTrigger.resx">
+      <DependentUpon>CtrlEventTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\CtrlGeneralOptions.resx">
+      <DependentUpon>CtrlGeneralOptions.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\CtrlTrigger.resx">
+      <DependentUpon>CtrlTrigger.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\FrmDbExportConfig.resx">
+      <DependentUpon>FrmDbExportConfig.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="DbExport\UI\FrmRangeEdit.resx">
+      <DependentUpon>FrmRangeEdit.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>
