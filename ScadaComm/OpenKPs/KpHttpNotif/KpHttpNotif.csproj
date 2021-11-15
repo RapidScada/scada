@@ -74,7 +74,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\..\..\..\scada\ScadaComm\OpenKPs\AddressBook\Lang\AddressBook.en-GB.xml">
+    <Content Include="..\AddressBook\Lang\AddressBook.en-GB.xml">
       <Link>Lang\AddressBook.en-GB.xml</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

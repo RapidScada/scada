@@ -19,7 +19,7 @@ Microsoft Visual Studio 2017 is needed. Visual Studio Community is OK.
    OpenPlugins,
    ScadaScheme,
    ScadaTable,
-   ScadaAdmin.
+   ScadaAdmin5.
 
    Switch to the Release configuration so that the references are correct.
 

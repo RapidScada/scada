@@ -44,7 +44,7 @@ namespace Scada.Comm.Devices.OpcUa.UI
     /// </summary>
     public partial class FrmSecurityOptions : Form
     {
-        private ConnectionOptions connectionOptions; // the OPC server connection options
+        private readonly ConnectionOptions connectionOptions; // the OPC server connection options
 
 
         /// <summary>

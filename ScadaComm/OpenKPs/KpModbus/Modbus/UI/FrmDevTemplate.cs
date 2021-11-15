@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2020
+ * Modified : 2021
  */
 
 using Scada.Comm.Devices.Modbus.Protocol;
@@ -231,7 +231,8 @@ namespace Scada.Comm.Devices.Modbus.UI
         {
             return (string.IsNullOrEmpty(modbusCmd.Name) ? KpPhrases.DefCmdName : modbusCmd.Name) +
                 " (" + ModbusUtils.GetTableTypeName(modbusCmd.TableType) + ", " +
-                ModbusUtils.GetAddressRange(modbusCmd.Address, modbusCmd.ElemCnt,
+                ModbusUtils.GetAddressRange(modbusCmd.Address, 
+                    modbusCmd.ElemCnt * ModbusUtils.GetQuantity(modbusCmd.ElemType),
                     template.Sett.ZeroAddr, template.Sett.DecAddr) + ")";
         }
 
