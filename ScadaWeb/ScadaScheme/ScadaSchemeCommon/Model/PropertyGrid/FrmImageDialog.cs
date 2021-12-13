@@ -212,7 +212,8 @@ namespace Scada.Scheme.Model.PropertyGrid
                 using (FileStream fileStream = 
                     new FileStream(fileName, FileMode.Create, FileAccess.Write, FileShare.Read))
                 {
-                    fileStream.Write(imageInfo.Image.Data, 0, imageInfo.DataSize);
+                    if (imageInfo.Image.Data != null)
+                        fileStream.Write(imageInfo.Image.Data, 0, imageInfo.Image.Data.Length);
                 }
             }
             catch (Exception ex)

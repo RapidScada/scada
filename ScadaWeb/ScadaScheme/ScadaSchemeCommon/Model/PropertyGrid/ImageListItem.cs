@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2021 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2012
- * Modified : 2019
+ * Modified : 2021
  */
 
 using Svg;
@@ -60,9 +60,9 @@ namespace Scada.Scheme.Model.PropertyGrid
 
             Image = image ?? throw new ArgumentNullException("image");
             Name = image.Name;
-            DataSize = 0;
+            DataSize = image.Data == null ? 0 : image.Data.Length;
             ImageSize = Size.Empty;
-            Format = "";
+            Format = Path.GetExtension(Name)?.TrimStart('.');
         }
 
 
@@ -105,7 +105,7 @@ namespace Scada.Scheme.Model.PropertyGrid
         #region Attributes
         [DisplayName("Data size"), Category(ImageCat)]
         #endregion
-        public int DataSize { get; private set; }
+        public int DataSize { get; }
 
         /// <summary>
         /// Получить размер изображения.
@@ -153,7 +153,6 @@ namespace Scada.Scheme.Model.PropertyGrid
                 {
                     SvgDocument svgDocument = SvgDocument.Open<SvgDocument>(memStream);
                     source = svgDocument.Draw();
-                    DataSize = (int)memStream.Length;
                 }
 
                 ImageSize = new Size(source.Width, source.Height);
@@ -164,7 +163,6 @@ namespace Scada.Scheme.Model.PropertyGrid
                 // using не используется, т.к. поток memStream должен существовать одновременно с изображением
                 MemoryStream memStream = new MemoryStream(Image.Data);
                 source = System.Drawing.Image.FromStream(memStream);
-                DataSize = (int)memStream.Length;
                 ImageSize = new Size(source.Width, source.Height);
 
                 ImageFormat imageFormat = source.RawFormat;
