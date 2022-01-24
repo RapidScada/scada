@@ -427,16 +427,18 @@ namespace Scada.Comm.Devices
             {
                 if ((cmd.CmdNum == 1 || cmd.CmdNum == 2) && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    if (GetArguments(cmd, out Dictionary<string, string> args) &&
-                        CreateRequest(args, out HttpRequestMessage request))
+                    if (GetArguments(cmd, out Dictionary<string, string> args))
                     {
-                        int tryNum = 0;
-
-                        while (RequestNeeded(ref tryNum))
+                        if (CreateRequest(args, out HttpRequestMessage request))
                         {
-                            lastCommSucc = SendNotification(request);
-                            FinishRequest();
-                            tryNum++;
+                            int tryNum = 0;
+
+                            while (RequestNeeded(ref tryNum))
+                            {
+                                lastCommSucc = SendNotification(request);
+                                FinishRequest();
+                                tryNum++;
+                            }
                         }
                     }
                     else
