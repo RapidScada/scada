@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2020
+ * Modified : 2022
  */
 
 using Scada.Comm.Devices.AB;
@@ -276,20 +276,21 @@ namespace Scada.Comm.Devices
         }
 
         /// <summary>
-        /// Sends a notification with the specified arguments.
+        /// Creates a request for sending a notification.
         /// </summary>
-        private bool SendNotification(Dictionary<string, string> args)
+        private bool CreateRequest(Dictionary<string, string> args, out HttpRequestMessage request)
         {
             try
             {
-                // initialize the HTTP client
+                // initialize HTTP client
                 if (httpClient == null)
                 {
                     httpClient = new HttpClient();
 
                     foreach (Header header in deviceConfig.Headers)
                     {
-                        httpClient.DefaultRequestHeaders.Add(header.Name, header.Value);
+                        if (!string.IsNullOrEmpty(header.Name))
+                            httpClient.DefaultRequestHeaders.Add(header.Name, header.Value);
                     }
                 }
 
@@ -300,8 +301,8 @@ namespace Scada.Comm.Devices
                 string uri = paramUri == null ? deviceConfig.Uri : paramUri.ToString();
                 string content = paramContent == null ? deviceConfig.Content : paramContent.ToString();
 
-                HttpRequestMessage request = new HttpRequestMessage(
-                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get, 
+                request = new HttpRequestMessage(
+                    deviceConfig.Method == RequestMethod.Post ? HttpMethod.Post : HttpMethod.Get,
                     uri);
 
                 if (deviceConfig.Method == RequestMethod.Post)
@@ -311,6 +312,26 @@ namespace Scada.Comm.Devices
                         new StringContent(content, Encoding.UTF8, deviceConfig.ContentType);
                 }
 
+                return true;
+            }
+            catch (Exception ex)
+            {
+                WriteToLog((Localization.UseRussian ?
+                    "Ошибка при создании запроса: " :
+                    "Error creating request: ") + ex);
+                httpClient = null;
+                request = null;
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Sends a notification using the specified request.
+        /// </summary>
+        private bool SendNotification(HttpRequestMessage request)
+        {
+            try
+            {
                 // send request and receive response
                 WriteToLog(Localization.UseRussian ?
                     "Отправка запроса:" :
@@ -406,13 +427,14 @@ namespace Scada.Comm.Devices
             {
                 if ((cmd.CmdNum == 1 || cmd.CmdNum == 2) && cmd.CmdTypeID == BaseValues.CmdTypes.Binary)
                 {
-                    if (GetArguments(cmd, out Dictionary<string, string> args))
+                    if (GetArguments(cmd, out Dictionary<string, string> args) &&
+                        CreateRequest(args, out HttpRequestMessage request))
                     {
                         int tryNum = 0;
 
                         while (RequestNeeded(ref tryNum))
                         {
-                            lastCommSucc = SendNotification(args);
+                            lastCommSucc = SendNotification(request);
                             FinishRequest();
                             tryNum++;
                         }

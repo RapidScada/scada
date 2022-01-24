@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,13 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2016
- * Modified : 2020
+ * Modified : 2022
  */
 
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.HttpNotif.UI;
 using Scada.Data.Configuration;
-using Scada.UI;
 
 namespace Scada.Comm.Devices
 {
@@ -39,7 +38,7 @@ namespace Scada.Comm.Devices
         /// <summary>
         /// The driver version.
         /// </summary>
-        internal const string KpVersion = "5.0.1.0";
+        internal const string KpVersion = "5.0.1.1";
 
 
         /// <summary>
