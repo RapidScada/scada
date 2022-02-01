@@ -57,6 +57,8 @@
             this.lblContentEscaping = new System.Windows.Forms.Label();
             this.cbContentType = new System.Windows.Forms.ComboBox();
             this.lblContentType = new System.Windows.Forms.Label();
+            this.lblAddrSep = new System.Windows.Forms.Label();
+            this.txtAddrSep = new System.Windows.Forms.TextBox();
             this.pnlBottom.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageGeneral.SuspendLayout();
@@ -72,7 +74,7 @@
             this.pnlBottom.Controls.Add(this.btnSave);
             this.pnlBottom.Controls.Add(this.btnAddressBook);
             this.pnlBottom.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.pnlBottom.Location = new System.Drawing.Point(0, 270);
+            this.pnlBottom.Location = new System.Drawing.Point(0, 300);
             this.pnlBottom.Name = "pnlBottom";
             this.pnlBottom.Size = new System.Drawing.Size(484, 41);
             this.pnlBottom.TabIndex = 1;
@@ -118,7 +120,7 @@
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
-            this.tabControl.Size = new System.Drawing.Size(484, 270);
+            this.tabControl.Size = new System.Drawing.Size(484, 300);
             this.tabControl.TabIndex = 0;
             // 
             // pageGeneral
@@ -132,22 +134,24 @@
             this.pageGeneral.Location = new System.Drawing.Point(4, 22);
             this.pageGeneral.Name = "pageGeneral";
             this.pageGeneral.Padding = new System.Windows.Forms.Padding(3);
-            this.pageGeneral.Size = new System.Drawing.Size(476, 244);
+            this.pageGeneral.Size = new System.Drawing.Size(476, 274);
             this.pageGeneral.TabIndex = 0;
             this.pageGeneral.Text = "General";
             this.pageGeneral.UseVisualStyleBackColor = true;
             // 
             // gbParam
             // 
+            this.gbParam.Controls.Add(this.txtAddrSep);
+            this.gbParam.Controls.Add(this.lblAddrSep);
             this.gbParam.Controls.Add(this.txtParamEnd);
             this.gbParam.Controls.Add(this.lblParamEnd);
             this.gbParam.Controls.Add(this.txtParamBegin);
             this.gbParam.Controls.Add(this.lblParamBegin);
             this.gbParam.Controls.Add(this.chkParamEnabled);
-            this.gbParam.Location = new System.Drawing.Point(6, 186);
+            this.gbParam.Location = new System.Drawing.Point(6, 190);
             this.gbParam.Name = "gbParam";
             this.gbParam.Padding = new System.Windows.Forms.Padding(10, 3, 10, 10);
-            this.gbParam.Size = new System.Drawing.Size(464, 52);
+            this.gbParam.Size = new System.Drawing.Size(464, 78);
             this.gbParam.TabIndex = 5;
             this.gbParam.TabStop = false;
             this.gbParam.Text = "Parameters";
@@ -203,7 +207,7 @@
             // 
             this.lblUriHint.AutoSize = true;
             this.lblUriHint.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblUriHint.Location = new System.Drawing.Point(3, 160);
+            this.lblUriHint.Location = new System.Drawing.Point(3, 164);
             this.lblUriHint.Name = "lblUriHint";
             this.lblUriHint.Size = new System.Drawing.Size(308, 13);
             this.lblUriHint.TabIndex = 4;
@@ -215,7 +219,7 @@
             this.txtUri.Multiline = true;
             this.txtUri.Name = "txtUri";
             this.txtUri.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtUri.Size = new System.Drawing.Size(464, 98);
+            this.txtUri.Size = new System.Drawing.Size(464, 102);
             this.txtUri.TabIndex = 3;
             this.txtUri.TextChanged += new System.EventHandler(this.control_Changed);
             // 
@@ -256,7 +260,7 @@
             this.pageHeaders.Location = new System.Drawing.Point(4, 22);
             this.pageHeaders.Name = "pageHeaders";
             this.pageHeaders.Padding = new System.Windows.Forms.Padding(3);
-            this.pageHeaders.Size = new System.Drawing.Size(476, 244);
+            this.pageHeaders.Size = new System.Drawing.Size(476, 274);
             this.pageHeaders.TabIndex = 1;
             this.pageHeaders.Text = "Headers";
             this.pageHeaders.UseVisualStyleBackColor = true;
@@ -269,7 +273,7 @@
             this.colValue});
             this.dgvHeaders.Location = new System.Drawing.Point(6, 6);
             this.dgvHeaders.Name = "dgvHeaders";
-            this.dgvHeaders.Size = new System.Drawing.Size(464, 232);
+            this.dgvHeaders.Size = new System.Drawing.Size(464, 262);
             this.dgvHeaders.TabIndex = 0;
             this.dgvHeaders.CellValueChanged += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvHeaders_CellValueChanged);
             this.dgvHeaders.UserDeletedRow += new System.Windows.Forms.DataGridViewRowEventHandler(this.dgvHeaders_UserDeletedRow);
@@ -300,7 +304,7 @@
             this.pageContent.Location = new System.Drawing.Point(4, 22);
             this.pageContent.Name = "pageContent";
             this.pageContent.Padding = new System.Windows.Forms.Padding(3);
-            this.pageContent.Size = new System.Drawing.Size(476, 244);
+            this.pageContent.Size = new System.Drawing.Size(476, 274);
             this.pageContent.TabIndex = 2;
             this.pageContent.Text = "Content";
             this.pageContent.UseVisualStyleBackColor = true;
@@ -309,7 +313,7 @@
             // 
             this.lblContentHint.AutoSize = true;
             this.lblContentHint.ForeColor = System.Drawing.SystemColors.GrayText;
-            this.lblContentHint.Location = new System.Drawing.Point(3, 228);
+            this.lblContentHint.Location = new System.Drawing.Point(3, 258);
             this.lblContentHint.Name = "lblContentHint";
             this.lblContentHint.Size = new System.Drawing.Size(308, 13);
             this.lblContentHint.TabIndex = 6;
@@ -321,7 +325,7 @@
             this.txtContent.Multiline = true;
             this.txtContent.Name = "txtContent";
             this.txtContent.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.txtContent.Size = new System.Drawing.Size(464, 166);
+            this.txtContent.Size = new System.Drawing.Size(464, 196);
             this.txtContent.TabIndex = 5;
             this.txtContent.TextChanged += new System.EventHandler(this.control_Changed);
             // 
@@ -379,12 +383,28 @@
             this.lblContentType.TabIndex = 0;
             this.lblContentType.Text = "Content type";
             // 
+            // lblAddrSep
+            // 
+            this.lblAddrSep.Location = new System.Drawing.Point(144, 49);
+            this.lblAddrSep.Name = "lblAddrSep";
+            this.lblAddrSep.Size = new System.Drawing.Size(70, 13);
+            this.lblAddrSep.TabIndex = 5;
+            this.lblAddrSep.Text = "Separator";
+            this.lblAddrSep.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // txtAddrSep
+            // 
+            this.txtAddrSep.Location = new System.Drawing.Point(220, 45);
+            this.txtAddrSep.Name = "txtAddrSep";
+            this.txtAddrSep.Size = new System.Drawing.Size(50, 20);
+            this.txtAddrSep.TabIndex = 6;
+            // 
             // FrmConfig
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.btnClose;
-            this.ClientSize = new System.Drawing.Size(484, 311);
+            this.ClientSize = new System.Drawing.Size(484, 341);
             this.Controls.Add(this.tabControl);
             this.Controls.Add(this.pnlBottom);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
@@ -441,5 +461,7 @@
         private System.Windows.Forms.TextBox txtParamEnd;
         private System.Windows.Forms.Label lblParamEnd;
         private System.Windows.Forms.GroupBox gbParam;
+        private System.Windows.Forms.TextBox txtAddrSep;
+        private System.Windows.Forms.Label lblAddrSep;
     }
 }

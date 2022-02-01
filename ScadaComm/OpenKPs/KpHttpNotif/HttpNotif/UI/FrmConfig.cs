@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,21 +20,15 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2020
- * Modified : 2020
+ * Modified : 2022
  */
 
 using Scada.Comm.Devices.AB;
 using Scada.Comm.Devices.HttpNotif.Config;
 using Scada.UI;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Scada.Comm.Devices.HttpNotif.UI
@@ -106,6 +100,7 @@ namespace Scada.Comm.Devices.HttpNotif.UI
             chkParamEnabled.Checked = config.ParamEnabled;
             txtParamBegin.Text = config.ParamBegin.ToString();
             txtParamEnd.Text = config.ParamEnd.ToString();
+            txtAddrSep.Text = config.AddrSep;
             cbContentType.Text = config.ContentType;
             cbContentEscaping.SelectedIndex = (int)config.ContentEscaping;
             txtContent.Text = config.Content;
@@ -122,6 +117,7 @@ namespace Scada.Comm.Devices.HttpNotif.UI
             config.ParamEnabled = chkParamEnabled.Checked;
             config.SetParamBegin(txtParamBegin.Text);
             config.SetParamEnd(txtParamEnd.Text);
+            config.AddrSep = txtAddrSep.Text;
             config.ContentType = cbContentType.Text;
             config.ContentEscaping = (EscapingMethod)cbContentEscaping.SelectedIndex;
             config.Content = txtContent.Text;

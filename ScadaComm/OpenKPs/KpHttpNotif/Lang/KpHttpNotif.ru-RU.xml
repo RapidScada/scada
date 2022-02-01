@@ -10,6 +10,7 @@
     <Phrase key="chkParamEnabled">Параметры включены</Phrase>
     <Phrase key="lblParamBegin">Начало</Phrase>
     <Phrase key="lblParamEnd">Окончание</Phrase>
+    <Phrase key="lblAddrSep">Разделитель</Phrase>
     <Phrase key="pageHeaders">Заголовки</Phrase>
     <Phrase key="colName">Наименование</Phrase>
     <Phrase key="colValue">Значение</Phrase>

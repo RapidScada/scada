@@ -72,10 +72,6 @@ namespace Scada.Comm.Devices
         /// </summary>
         private const char CmdSep = ';';
         /// <summary>
-        /// The separator for parts of an address.
-        /// </summary>
-        private const string AddrSep = ";";
-        /// <summary>
         /// The displayed lenght of a response content.
         /// </summary>
         private const int ResponseDisplayLenght = 100;
@@ -268,10 +264,10 @@ namespace Scada.Comm.Devices
                 }
 
                 if (!args.ContainsKey(ParamName.Phone))
-                    args.Add(ParamName.Phone, string.Join(AddrSep, phoneNumbers));
+                    args.Add(ParamName.Phone, string.Join(deviceConfig.AddrSep, phoneNumbers));
 
                 if (!args.ContainsKey(ParamName.Email))
-                    args.Add(ParamName.Email, string.Join(AddrSep, emails));
+                    args.Add(ParamName.Email, string.Join(deviceConfig.AddrSep, emails));
             }
         }
 

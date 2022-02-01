@@ -11,4 +11,5 @@
   <ParamEnabled>true</ParamEnabled>
   <ParamBegin>{</ParamBegin>
   <ParamEnd>}</ParamEnd>
+  <AddrSep>;</AddrSep>
 </KpHttpNotif>

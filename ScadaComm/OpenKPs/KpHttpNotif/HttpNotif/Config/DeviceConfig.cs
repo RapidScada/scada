@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2020 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2020
- * Modified : 2020
+ * Modified : 2022
  */
 
 using System;
@@ -36,6 +36,20 @@ namespace Scada.Comm.Devices.HttpNotif.Config
     /// </summary>
     internal class DeviceConfig
     {
+        /// <summary>
+        /// The default character that marks the beginning of a parameter.
+        /// </summary>
+        private const char DefaultParamBegin = '{';
+        /// <summary>
+        /// The default character that marks the end of a parameter.
+        /// </summary>
+        private const char DefaultParamEnd = '}';
+        /// <summary>
+        /// The default address separator.
+        /// </summary>
+        private const string DefaultAddrSep = ";";
+
+
         /// <summary>
         /// Initializes a new instance of the class.
         /// </summary>
@@ -90,6 +104,11 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         /// </summary>
         public char ParamEnd { get; set; }
 
+        /// <summary>
+        /// Gets or sets the string that separates multiple phone numbers and email addresses.
+        /// </summary>
+        public string AddrSep { get; set; }
+
 
         /// <summary>
         /// Sets the default values.
@@ -103,8 +122,9 @@ namespace Scada.Comm.Devices.HttpNotif.Config
             ContentType = "";
             ContentEscaping = EscapingMethod.None;
             ParamEnabled = true;
-            ParamBegin = ParamString.DefaultParamBegin;
-            ParamEnd = ParamString.DefaultParamEnd;
+            ParamBegin = DefaultParamBegin;
+            ParamEnd = DefaultParamEnd;
+            AddrSep = DefaultAddrSep;
         }
 
         /// <summary>
@@ -112,7 +132,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         /// </summary>
         public void SetParamBegin(string s)
         {
-            ParamBegin = string.IsNullOrEmpty(s) ? ParamString.DefaultParamBegin : s[0];
+            ParamBegin = string.IsNullOrEmpty(s) ? DefaultParamBegin : s[0];
         }
 
         /// <summary>
@@ -120,7 +140,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
         /// </summary>
         public void SetParamEnd(string s)
         {
-            ParamEnd = string.IsNullOrEmpty(s) ? ParamString.DefaultParamEnd : s[0];
+            ParamEnd = string.IsNullOrEmpty(s) ? DefaultParamEnd : s[0];
         }
 
         /// <summary>
@@ -160,6 +180,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
                 ParamEnabled = rootElem.GetChildAsBool("ParamEnabled", true);
                 SetParamBegin(rootElem.GetChildAsString("ParamBegin"));
                 SetParamEnd(rootElem.GetChildAsString("ParamEnd"));
+                AddrSep = rootElem.GetChildAsString("AddrSep", AddrSep);
 
                 errMsg = "";
                 return true;
@@ -202,6 +223,7 @@ namespace Scada.Comm.Devices.HttpNotif.Config
                 rootElem.AppendElem("ParamEnabled", ParamEnabled);
                 rootElem.AppendElem("ParamBegin", ParamBegin);
                 rootElem.AppendElem("ParamEnd", ParamEnd);
+                rootElem.AppendElem("AddrSep", AddrSep);
 
                 xmlDoc.Save(fileName);
                 errMsg = "";

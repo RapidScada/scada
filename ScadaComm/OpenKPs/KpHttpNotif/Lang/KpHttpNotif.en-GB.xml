@@ -10,6 +10,7 @@
     <Phrase key="chkParamEnabled">Parameters enabled</Phrase>
     <Phrase key="lblParamBegin">Begin</Phrase>
     <Phrase key="lblParamEnd">End</Phrase>
+    <Phrase key="lblAddrSep">Separator</Phrase>
     <Phrase key="pageHeaders">Headers</Phrase>
     <Phrase key="colName">Name</Phrase>
     <Phrase key="colValue">Value</Phrase>
