@@ -35,6 +35,8 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.pageGeneral = new System.Windows.Forms.TabPage();
             this.gbParam = new System.Windows.Forms.GroupBox();
+            this.txtAddrSep = new System.Windows.Forms.TextBox();
+            this.lblAddrSep = new System.Windows.Forms.Label();
             this.txtParamEnd = new System.Windows.Forms.TextBox();
             this.lblParamEnd = new System.Windows.Forms.Label();
             this.txtParamBegin = new System.Windows.Forms.TextBox();
@@ -57,8 +59,6 @@
             this.lblContentEscaping = new System.Windows.Forms.Label();
             this.cbContentType = new System.Windows.Forms.ComboBox();
             this.lblContentType = new System.Windows.Forms.Label();
-            this.lblAddrSep = new System.Windows.Forms.Label();
-            this.txtAddrSep = new System.Windows.Forms.TextBox();
             this.pnlBottom.SuspendLayout();
             this.tabControl.SuspendLayout();
             this.pageGeneral.SuspendLayout();
@@ -155,6 +155,23 @@
             this.gbParam.TabIndex = 5;
             this.gbParam.TabStop = false;
             this.gbParam.Text = "Parameters";
+            // 
+            // txtAddrSep
+            // 
+            this.txtAddrSep.Location = new System.Drawing.Point(220, 45);
+            this.txtAddrSep.Name = "txtAddrSep";
+            this.txtAddrSep.Size = new System.Drawing.Size(50, 20);
+            this.txtAddrSep.TabIndex = 6;
+            this.txtAddrSep.TextChanged += new System.EventHandler(this.control_Changed);
+            // 
+            // lblAddrSep
+            // 
+            this.lblAddrSep.Location = new System.Drawing.Point(144, 49);
+            this.lblAddrSep.Name = "lblAddrSep";
+            this.lblAddrSep.Size = new System.Drawing.Size(70, 13);
+            this.lblAddrSep.TabIndex = 5;
+            this.lblAddrSep.Text = "Separator";
+            this.lblAddrSep.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // txtParamEnd
             // 
@@ -382,22 +399,6 @@
             this.lblContentType.Size = new System.Drawing.Size(67, 13);
             this.lblContentType.TabIndex = 0;
             this.lblContentType.Text = "Content type";
-            // 
-            // lblAddrSep
-            // 
-            this.lblAddrSep.Location = new System.Drawing.Point(144, 49);
-            this.lblAddrSep.Name = "lblAddrSep";
-            this.lblAddrSep.Size = new System.Drawing.Size(70, 13);
-            this.lblAddrSep.TabIndex = 5;
-            this.lblAddrSep.Text = "Separator";
-            this.lblAddrSep.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // txtAddrSep
-            // 
-            this.txtAddrSep.Location = new System.Drawing.Point(220, 45);
-            this.txtAddrSep.Name = "txtAddrSep";
-            this.txtAddrSep.Size = new System.Drawing.Size(50, 20);
-            this.txtAddrSep.TabIndex = 6;
             // 
             // FrmConfig
             // 

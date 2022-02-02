@@ -42,8 +42,8 @@ namespace Scada.Comm.Devices.HttpNotif.UI
         private readonly AppDirs appDirs;     // the application directories
         private readonly int kpNum;           // the device number
         private readonly DeviceConfig config; // the device configuration
-        private string configFileName;    // the configuration file name
-        private bool modified;            // the configuration was modified
+        private string configFileName;        // the configuration file name
+        private bool modified;                // the configuration was modified
 
 
         /// <summary>
