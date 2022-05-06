@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2019 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,14 +20,12 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2017
- * Modified : 2019
+ * Modified : 2022
  */
 
 using Scada.Scheme.DataTransfer;
-using Scada.Scheme.Model;
 using Scada.Web;
 using System;
-using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Web;
@@ -47,6 +45,10 @@ namespace Scada.Scheme.Editor
         /// Максимальное количество символов строке данных в формате JSON, 10 МБ.
         /// </summary>
         private const int MaxJsonLen = 10485760;
+        /// <summary>
+        /// Шаг сетки.
+        /// </summary>
+        private const int GridStep = 5;
         /// <summary>
         /// Обеспечивает сериализацию результатов методов сервиса.
         /// </summary>
@@ -92,6 +94,15 @@ namespace Scada.Scheme.Editor
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Обновляет координаты в соответствии с шагом сетки.
+        /// </summary>
+        private void AlignToGrid(ref int x, ref int y)
+        {
+            x = (int)(Math.Round((double)x / GridStep) * GridStep);
+            y = (int)(Math.Round((double)y / GridStep) * GridStep);
         }
 
 
@@ -272,6 +283,8 @@ namespace Scada.Scheme.Editor
 
                 if (CheckArguments(editorID, viewStamp, dto))
                 {
+                    AlignToGrid(ref x, ref y);
+
                     switch (Editor.PointerMode)
                     {
                         case PointerMode.Create:

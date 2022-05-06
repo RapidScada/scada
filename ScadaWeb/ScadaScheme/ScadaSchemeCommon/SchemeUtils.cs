@@ -23,8 +23,6 @@
  * Modified : 2019
  */
 
-using System.Reflection;
-
 namespace Scada.Scheme
 {
     /// <summary>
