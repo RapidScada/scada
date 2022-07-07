@@ -1,5 +1,5 @@
 ﻿/*
- * Copyright 2021 Mikhail Shiryaev
+ * Copyright 2022 Mikhail Shiryaev
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,7 @@
  * 
  * Author   : Mikhail Shiryaev
  * Created  : 2021
- * Modified : 2021
+ * Modified : 2022
  */
 
 using Scada.Data.Entities;
@@ -65,18 +65,21 @@ namespace Scada.Server.Modules.DbExport
 
             foreach (InCnl inCnl in inCnlTable.EnumerateItems())
             {
-                int deviceNum = inCnl.KPNum ?? 0;
-
-                if (deviceNum > 0)
-                    DeviceByCnlNum[inCnl.CnlNum] = deviceNum;
-
-                if (!cnlsByDevice.TryGetValue(deviceNum, out List<int> cnlNums))
+                if (inCnl.Active)
                 {
-                    cnlNums = new List<int>();
-                    cnlsByDevice.Add(deviceNum, cnlNums);
-                }
+                    int deviceNum = inCnl.KPNum ?? 0;
 
-                cnlNums.Add(inCnl.CnlNum);
+                    if (deviceNum > 0)
+                        DeviceByCnlNum[inCnl.CnlNum] = deviceNum;
+
+                    if (!cnlsByDevice.TryGetValue(deviceNum, out List<int> cnlNums))
+                    {
+                        cnlNums = new List<int>();
+                        cnlsByDevice.Add(deviceNum, cnlNums);
+                    }
+
+                    cnlNums.Add(inCnl.CnlNum);
+                }
             }
 
             foreach (List<int> cnlNums in cnlsByDevice.Values)
