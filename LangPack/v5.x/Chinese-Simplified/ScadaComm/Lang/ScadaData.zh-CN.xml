@@ -47,7 +47,7 @@
     <Phrase key="CmdValTable">命令值</Phrase>
     <Phrase key="CnlTypeTable">通道类型</Phrase>
     <Phrase key="CommLineTable">通讯线路</Phrase>
-    <Phrase key="CtrlCnlTable">输入通道</Phrase>
+    <Phrase key="CtrlCnlTable">输出通道</Phrase>
     <Phrase key="EvTypeTable">事件类型</Phrase>
     <Phrase key="FormatTable">数值格式</Phrase>
     <Phrase key="FormulaTable">公式</Phrase>
