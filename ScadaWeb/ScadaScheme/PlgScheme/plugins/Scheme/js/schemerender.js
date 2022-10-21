@@ -368,7 +368,9 @@ scada.scheme.ComponentRenderer.prototype.setVAlign = function (jqObj, vAlign) {
 // Set tooltip (title) of the jQuery object
 scada.scheme.ComponentRenderer.prototype.setToolTip = function (jqObj, toolTip) {
     if (toolTip) {
-        jqObj.prop("title", toolTip);
+        jqObj.prop("title", toolTip.replace(/\n|\r\n|\r/g, '<br>'));
+        jqObj.attr("data-toggle", "tooltip");
+        jqObj.addClass("user-select-none");
     }
 };
 

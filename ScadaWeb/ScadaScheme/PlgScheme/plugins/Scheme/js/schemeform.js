@@ -54,6 +54,9 @@ function loadScheme(viewID) {
                 scheme.createDom(controlRight);
                 loadScale();
                 displayScale();
+                $(function () {
+                    $('[data-toggle="tooltip"]').tooltip({ container: '#divSchWrapper', html: true, placement: 'auto top' })
+                })
                 startUpdatingScheme();
             }
         } else {

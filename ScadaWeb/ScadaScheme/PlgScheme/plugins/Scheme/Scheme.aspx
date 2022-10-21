@@ -10,8 +10,10 @@
     <link href="~/lib/open-sans/css/open-sans.css" rel="stylesheet" type="text/css" />
     <link href="~/css/controls/notifier.min.css" rel="stylesheet" type="text/css" />
     <link href="~/plugins/Scheme/css/schemeform.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/lib/bootstrap-tooltip/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <%= compStyles %>
     <script type="text/javascript" src="../../lib/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="../../lib/bootstrap-tooltip/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../../js/api/utils.js"></script>
     <script type="text/javascript" src="../../js/api/ajaxqueue.js"></script>
     <script type="text/javascript" src="../../js/api/clientapi.js"></script>
@@ -33,6 +35,11 @@
         var schemeOptions = <%= schemeOptions %>;
     </script>
     <script type="text/javascript" src="js/schemeform.js"></script>
+    <script>
+        $(function () {
+            $('[data-toggle-tb="tooltip"]').tooltip({ container: 'body', placement: 'bottom' })
+        })
+    </script>
 </head>
 <body>
     <div id="divNotif" class="notifier">
@@ -40,10 +47,10 @@
     <div id="divSchWrapper" class="scheme-wrapper">
     </div>
     <div id="divToolbar"><asp:Label 
-        ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen"><i class="fa fa-arrows"></i></asp:Label><asp:Label 
-        ID="lblFitWidthBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Width"><i class="fa fa-arrows-h"></i></asp:Label><asp:Label 
-        ID="lblZoomOutBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom Out"><i class="fa fa-search-minus"></i></asp:Label><asp:Label 
-        ID="lblZoomInBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom In"><i class="fa fa-search-plus"></i></asp:Label><span id="spanCurScale">100%</span><div id="divDebugTools"><span 
+        ID="lblFitScreenBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Screen" data-toggle-tb="tooltip"><i class="fa fa-arrows"></i></asp:Label><asp:Label 
+        ID="lblFitWidthBtn" runat="server" CssClass="tool-btn" ToolTip="Fit to Width" data-toggle-tb="tooltip"><i class="fa fa-arrows-h"></i></asp:Label><asp:Label 
+        ID="lblZoomOutBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom Out" data-toggle-tb="tooltip"><i class="fa fa-search-minus"></i></asp:Label><asp:Label 
+        ID="lblZoomInBtn" runat="server" CssClass="tool-btn" ToolTip="Zoom In" data-toggle-tb="tooltip"><i class="fa fa-search-plus"></i></asp:Label><span id="spanCurScale" class="user-select-none">100%</span><div id="divDebugTools"><span 
             id="spanLoadSchemeBtn" class="tool-btn">Load Scheme</span><span 
             id="spanCreateDomBtn" class="tool-btn">Create DOM</span><span 
             id="spanStartUpdBtn" class="tool-btn">Start Updating</span><span 
