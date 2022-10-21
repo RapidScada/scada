@@ -37,6 +37,20 @@
   border: 1px solid #999;
   border-radius: 6px;
 }
+.tooltip-inner {
+  text-align: left !important;
+  max-width: none !important;
+  white-space: nowrap;
+}
+.user-select-none {
+  cursor: default;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 body {
   margin: 0;
   padding: 0;
